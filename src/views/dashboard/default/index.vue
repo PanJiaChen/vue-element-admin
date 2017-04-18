@@ -19,13 +19,12 @@
 <script>
     import { mapGetters } from 'vuex';
     import PanThumb from 'components/PanThumb';
-    import emptyGif from 'assets/gifs/business_fella.gif';
     export default {
       name: 'dashboard-default',
       components: { PanThumb },
       data() {
         return {
-          emptyGif
+          emptyGif: 'https://wpimg.wallstcn.com/0e03b7da-db9e-4819-ba10-9016ddfdaed3'
         }
       },
       computed: {

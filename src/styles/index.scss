@@ -1,17 +1,17 @@
 @import './btn.scss';
 // @import './editor.scss';
 @import "./mixin.scss";
-
 body {
   //height: 100%;
   //overflow-y: scroll;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue,Helvetica,PingFang SC,Hiragino Sans GB,Microsoft YaHei,Arial,sans-serif;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   //@include scrollBar;
 }
-label{
+
+label {
   font-weight: 700;
 }
 
@@ -19,7 +19,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
@@ -68,21 +70,29 @@ a:hover {
   display: block;
 }
 
-.components-container{
+.components-container {
   margin: 30px 50px;
+  position: relative;
 }
 
-code{
-      background: #eef1f6;
-          padding: 20px 10px;
-    margin-bottom: 20px;
-        display: block;
+.editor-container .CodeMirror {
+  height: 100%!important;
 }
-.fade-enter-active, .fade-leave-active {
+
+code {
+  background: #eef1f6;
+  padding: 20px 10px;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.fade-enter-active,
+.fade-leave-active {
   transition: all .2s ease
 }
 
-.fade-enter, .fade-leave-active {
+.fade-enter,
+.fade-leave-active {
   opacity: 0;
 }
 
@@ -101,7 +111,6 @@ code{
 //    margin: 0 auto;
 //  }
 //}
-
 //main-container全局样式
 .app-container {
   padding: 20px;
@@ -139,7 +148,6 @@ code{
   .el-upload {
     float: left;
     width: 100px;
-
   }
   .el-upload-list {
     float: left;
@@ -190,15 +198,18 @@ code{
   }
 }
 
-.link-type,.link-type:focus {
+.link-type,
+.link-type:focus {
   color: #337ab7;
   cursor: pointer;
-  &:hover{
+  &:hover {
     color: rgb(32, 160, 255);
   }
 }
 
-.publishedTag, .draftTag, .deletedTag {
+.publishedTag,
+.draftTag,
+.deletedTag {
   color: #fff;
   background-color: $panGreen;
   line-height: 1;
@@ -242,7 +253,7 @@ code{
   .el-checkbox {
     margin: 0 20px 15px 0;
   }
-  .el-checkbox + .el-checkbox {
+  .el-checkbox+.el-checkbox {
     margin-left: 0px;
   }
 }
@@ -272,8 +283,8 @@ code{
   p {
     display: inline-block;
   }
-  .el-collapse-item__content{
-    padding-right:0px;
+  .el-collapse-item__content {
+    padding-right: 0px;
   }
 }
 
@@ -328,12 +339,14 @@ code{
     margin-right: 8px;
   }
 }
-.small-padding{
-  .cell{
+
+.small-padding {
+  .cell {
     padding-left: 8px;
     padding-right: 8px;
   }
 }
+
 .status-col {
   .cell {
     padding: 0 10px;
@@ -348,7 +361,10 @@ code{
 //  margin-left: 0px!important;
 //}
 .no-border {
-  .el-input-group__prepend, .el-input__inner, .el-date-editor__editor, .multiselect__tags {
+  .el-input-group__prepend,
+  .el-input__inner,
+  .el-date-editor__editor,
+  .multiselect__tags {
     border: none;
   }
 }
@@ -384,7 +400,7 @@ code{
 }
 
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
-.el-dialog{
+.el-dialog {
   transform: none;
   left: 0;
   position: relative;

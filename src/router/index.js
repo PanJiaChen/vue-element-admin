@@ -19,6 +19,12 @@ import reset from '../views/login/reset';
 /* components*/
 const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
 const Markdown = resolve => require(['../views/components/markdown'], resolve);
+const Jsoneditor = resolve => require(['../views/components/jsoneditor'], resolve);
+
+/* charts*/
+const KeyboardChart = resolve => require(['../views/charts/keyboard'], resolve);
+const KeyboardChart2 = resolve => require(['../views/charts/keyboard2'], resolve);
+
 
 /* admin*/
 // const AdminCreateUser = resolve => require(['../views/admin/createUser'], resolve);
@@ -52,14 +58,27 @@ export default new Router({
       ]
     },
     {
-      path: '/admin',
+      path: '/components',
       component: Layout,
       redirect: 'noredirect',
       name: '组件',
       icon: 'zujian',
       children: [
         { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
-         { path: 'markdown', component: Markdown, name: 'Markdown' }
+        { path: 'markdown', component: Markdown, name: 'Markdown' },
+        { path: 'jsoneditor', component: Jsoneditor, name: 'json编辑器' }
+
+      ]
+    },
+    {
+      path: '/charts',
+      component: Layout,
+      redirect: 'noredirect',
+      name: '图表',
+      icon: 'tubiaoleixingzhengchang',
+      children: [
+        { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
+         { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' }
 
       ]
     },

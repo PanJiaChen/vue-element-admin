@@ -2,6 +2,12 @@
 
   var svgSprite = '<svg>' +
     '' +
+    '<symbol id="icon-tubiaoleixingzhengchang" viewBox="0 0 1024 1024">' +
+    '' +
+    '<path d="M64 448 320 448 320 960 64 960 64 448 64 448ZM704 256 960 256 960 960 704 960 704 256 704 256ZM384 64 640 64 640 960 384 960 384 64 384 64Z"  ></path>' +
+    '' +
+    '</symbol>' +
+    '' +
     '<symbol id="icon-zujian" viewBox="0 0 1024 1024">' +
     '' +
     '<path d="M568.6 0h454.9v454.9H568.6V0z m0 568.6h454.9v454.9H568.6V568.6zM0 568.6h454.9v454.9H0V568.6zM0 0h454.9v454.9H0V0z" fill="" ></path>' +
