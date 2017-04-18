@@ -1,0 +1,348 @@
+//富文本
+//移除 至static/tinymce/skins/lightgray.content.min.css
+  .small-size {
+    width: 800px;
+    margin: 0 auto;
+  }
+  img{
+    max-height: 300px;
+  }
+  .note-color .dropdown-menu li .btn-group{
+    &:first-child{
+      display: none;
+    }
+  }
+  //禁止图片缩放
+  .note-control-sizing {
+    display: none;
+  }
+  .panel-body {
+    $blue: #1478F0;
+    font-size: 16px;
+    line-height: 1.4em;
+    & > :last-child {
+      margin-bottom: 0;
+    }
+    img {
+      max-width: 100%;
+      display: block;
+      margin: 0 auto;
+    }
+    table {
+      width: 100% !important;
+    }
+    embed {
+      max-width: 100%;
+      margin-bottom: 30px;
+    }
+    p {
+      // margin-bottom: 1em;
+      text-align: justify;
+      word-break: break-all;
+    }
+    ul {
+      margin-bottom: 30px;
+    }
+    li {
+      margin-left: 20px;
+      margin-bottom: 30px;
+    }
+    a {
+      color: $blue;
+    }
+    hr {
+      margin: 1em auto;
+      border: none;
+      padding: 0;
+      width: 100%;
+      height: 1px;
+      background: #DCDCDC;
+    }
+    //add type.css start
+    blockquote p {
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 28px;
+      color: #333;
+    }
+    blockquote p:last-of-type {
+      margin-bottom: 0;
+    }
+    /* HTML5 媒体文件跟 img 保持一致 */
+    audio,
+    canvas,
+    video {
+      display: inline-block;
+      *display: inline;
+      *zoom: 1;
+    }
+    /* 要注意表单元素并不继承父级 font 的问题 */
+    button,
+    input,
+    select,
+    textarea {
+      font: 500 14px/1.8 'Hiragino Sans GB', Microsoft YaHei, sans-serif;
+    }
+    /* 去掉各Table  cell 的边距并让其边重合 */
+    table {
+      border-collapse: collapse;
+      border-spacing: 0;
+    }
+    /* IE bug fixed: th 不继承 text-align*/
+    th {
+      text-align: inherit;
+    }
+    /* 去除默认边框 */
+    fieldset,
+    img {
+      border: 0;
+    }
+    /* 解决 IE6-7 图片缩放锯齿问题 */
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
+    /* ie6 7 8(q) bug 显示为行内表现 */
+    iframe {
+      display: block;
+    }
+    /* 块/段落引用 */
+    blockquote {
+      position: relative;
+      font-size: 16px;
+      letter-spacing: 1px;
+      line-height: 28px;
+      margin-bottom: 40px;
+      padding: 20px;
+      background: #f0f2f5;
+      &:before{
+          position: absolute;
+        content: " \300D";
+        top: 10px;
+        left: 2px;
+        -webkit-transform: rotate(180deg);
+        transform: rotate(180deg);
+        color: #333;
+      }
+      &:after{
+        position: absolute;
+        content: " \300D";
+        right: 6px;
+        bottom: 12px;
+        color: #333;
+      }
+    }
+    blockquote blockquote {
+      padding: 0 0 0 1em;
+      margin-left: 2em;
+      border-left: 3px solid $blue;
+    }
+    /* Firefox 以外，元素没有下划线，需添加 */
+    acronym,
+    abbr {
+      border-bottom: 1px dotted;
+      font-variant: normal;
+    }
+    /* 添加鼠标问号，进一步确保应用的语义是正确的（要知道，交互他们也有洁癖，如果你不去掉，那得多花点口舌） */
+    abbr {
+      cursor: help;
+    }
+    /* 一致的 del 样式 */
+    del {
+      text-decoration: line-through;
+    }
+    address,
+    caption,
+    cite,
+    code,
+    del,
+    em,
+    th,
+    var {
+      font-style: normal;
+      font-weight: 500;
+    }
+    em {
+      font-style: normal;
+      font-family: sans-serif;
+      font-weight: bold;
+    }
+    /* 对齐是排版最重要的因素, 别让什么都居中 */
+    caption,
+    th {
+      text-align: left;
+    }
+    q:before,
+    q:after {
+      content: '';
+    }
+    /* 统一上标和下标 */
+    sub,
+    sup {
+      font-size: 75%;
+      line-height: 0;
+      position: relative;
+      vertical-align: text-top;
+    }
+    :root sub,
+    :root sup {
+      vertical-align: baseline;
+      /* for ie9 and other mordern browsers */
+    }
+    sup {
+      top: -0.5em;
+    }
+    sub {
+      bottom: -0.25em;
+    }
+    /* 让链接在 hover 状态下显示下划线 */
+    a:hover {
+      text-decoration: underline;
+    }
+    /* 默认不显示下划线，保持页面简洁 */
+    ins,
+    a {
+      text-decoration: none;
+    }
+    u,
+    .typo-u {
+      text-decoration: underline;
+    }
+    /* 标记，类似于手写的荧光笔的作用 */
+    mark {
+      background: #fffdd1;
+    }
+    /* 代码片断 */
+    pre,
+    code {
+      font-family: "Courier New", Courier, monospace;
+    }
+    pre {
+      border: 1px solid #ddd;
+      border-left-width: 0.4em;
+      background: #fbfbfb;
+      padding: 10px;
+    }
+    /* 底部印刷体、版本等标记 */
+    small {
+      font-size: 12px;
+      color: #888;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1478f0;
+      border-left: 5px solid #1478f0;
+      padding-left: 10px;
+      margin: 30px 0;
+    }
+    h2 {
+      font-size: 1.2em;
+    }
+    /* 保证块/段落之间的空白隔行 */
+    .typo p,
+    .typo pre,
+    .typo ul,
+    .typo ol,
+    .typo dl,
+    .typo form,
+    .typo hr,
+    .typo table,
+    .typo-p,
+    .typo-pre,
+    .typo-ul,
+    .typo-ol,
+    .typo-dl,
+    .typo-form,
+    .typo-hr,
+    .typo-table {
+      margin-bottom: 15px;
+      line-height: 25px;
+    }
+    /* 标题应该更贴紧内容，并与其他块区分，margin 值要相应做优化 */
+    .typo h1,
+    .typo h2,
+    .typo h3,
+    .typo h4,
+    .typo h5,
+    .typo h6,
+    .typo-h1,
+    .typo-h2,
+    .typo-h3,
+    .typo-h4,
+    .typo-h5,
+    .typo-h6 {
+      margin-bottom: 0.4em;
+      line-height: 1.5;
+    }
+    .typo h1,
+    .typo-h1 {
+      font-size: 1.8em;
+    }
+    .typo h2,
+    .typo-h2 {
+      font-size: 1.6em;
+    }
+    .typo h3,
+    .typo-h3 {
+      font-size: 1.4em;
+    }
+    .typo h4,
+    .typo-h0 {
+      font-size: 1.2em;
+    }
+    .typo h5,
+    .typo h6,
+    .typo-h5,
+    .typo-h6 {
+      font-size: 1em;
+    }
+    /* 在文章中，应该还原 ul 和 ol 的样式 */
+    .typo ul,
+    .typo-ul {
+      margin-left: 1.3em;
+      list-style: disc;
+    }
+    .typo ol,
+    .typo-ol {
+      list-style: decimal;
+      margin-left: 1.9em;
+    }
+    .typo li ul,
+    .typo li ol,
+    .typo-ul ul,
+    .typo-ul ol,
+    .typo-ol ul,
+    .typo-ol ol {
+      margin-top: 0;
+      margin-bottom: 0;
+      margin-left: 2em;
+    }
+    .typo li ul,
+    .typo-ul ul,
+    .typo-ol ul {
+      list-style: circle;
+    }
+    /* 同 ul/ol，在文章中应用 table 基本格式 */
+    .typo table th,
+    .typo table td,
+    .typo-table th,
+    .typo-table td {
+      border: 1px solid #ddd;
+      padding: 5px 10px;
+    }
+    .typo table th,
+    .typo-table th {
+      background: #fbfbfb;
+    }
+    .typo table thead th,
+    .typo-table thead th {
+      background: #f1f1f1;
+    }
+  }
+
+

@@ -1,0 +1,10 @@
+.DS_Store
+node_modules/
+dist/
+static/ckeditor
+
+npm-debug.log
+test/unit/coverage
+test/e2e/reports
+selenium-debug.log
+.idea
