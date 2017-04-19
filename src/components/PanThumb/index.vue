@@ -5,7 +5,7 @@
                 <slot>pan</slot>
             </div>
         </div>
-        <div class="pan-thumb" :style="{ backgroundImage: 'url('+ image+')' }"></div>
+        <img class="pan-thumb" :src="image">
     </div>
 </template>
 <script>

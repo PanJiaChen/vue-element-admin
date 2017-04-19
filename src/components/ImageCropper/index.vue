@@ -104,7 +104,6 @@
 
 <script>
     /* eslint-disable */
-    import {getToken, upload} from 'api/qiniu';
     import {effectRipple, data2blob} from './utils';
     import langBag from './lang';
     const mimes = {
@@ -639,33 +638,74 @@
             },
             // 上传图片
             upload() {
-                let that = this,
-                        {
-                                lang,
-                                mime,
-                                createImgUrl
-                        } = this,
-                        formData = new FormData();
-                // 上传文件
-                that.loading = 1;
-                that.progress = 0;
-                that.setStep(3);
-                formData.append('file', data2blob(createImgUrl, mime));
-                const token = this.$store.getters.token;
-                getToken(token).then((response)=> {
-                    const url = response.data.qiniu_url;
-                    formData.append('token', response.data.qiniu_token);
-                    formData.append('key', response.data.qiniu_key);
-                    upload(formData).then((response)=> {
-                        that.loading = 2;
-                        that.$emit('crop-upload-success', url);
-                    }).catch(err => {
+            let that = this,
+                {
+                    lang,
+                    imgFormat,
+                    mime,
+                    url,
+                    params,
+                    headers,
+                    field,
+                    ki,
+                    createImgUrl
+                } = this,
+                fmData = new FormData();
+            fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat);
+            // 添加其他参数
+            if (typeof params == 'object' && params) {
+                Object.keys(params).forEach((k) => {
+                    fmData.append(k, params[k]);
+                })
+            }
+            // 监听进度回调
+            const uploadProgress = function(event) {
+                if (event.lengthComputable) {
+                    that.progress = 100 * Math.round(event.loaded) / event.total;
+                }
+            };
+            // 上传文件
+            that.reset();
+            that.loading = 1;
+            that.setStep(3);
+            that.$emit('crop-success', createImgUrl, field, ki);
+            new Promise(function(resolve, reject) {
+                let client = new XMLHttpRequest();
+                client.open('POST', url, true);
+                client.onreadystatechange = function() {
+                    if (this.readyState !== 4) {
+                        return;
+                    }
+                    if (this.status === 200) {
+                        resolve(JSON.parse(this.responseText));
+                    } else {
+                        reject(this.status);
+                    }
+                };
+                client.upload.addEventListener("progress", uploadProgress, false); //监听进度
+                // 设置header
+                if (typeof headers == 'object' && headers) {
+                    Object.keys(headers).forEach((k) => {
+                        client.setRequestHeader(k, headers[k]);
+                    })
+                }
+                client.send(fmData);
+            }).then(
+                // 上传成功
+                function(resData) {
+                    that.loading = 2;
+                    that.$emit('crop-upload-success', url);
+                },
+                // 上传失败
+                function(sts) {
+                    if (that.value) {
                         that.loading = 3;
                         that.hasError = true;
                         that.errorMsg = lang.fail;
-                        that.$emit('crop-upload-fail');
-                    });
-                });
+                        that.$emit('crop-upload-fail', sts, field, ki);
+                    }
+                }
+            );
             }
         }
     }

@@ -20,6 +20,7 @@ import 'vue-multiselect/dist/vue-multiselect.min.css';
 import vueWaves from './directive/waves';
 import vueSticky from './directive/sticky';
 import errLog from 'store/errLog';
+import './mock/index.js';
 // import './styles/mixin.scss';
 
 // register globally

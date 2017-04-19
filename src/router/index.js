@@ -19,11 +19,17 @@ import reset from '../views/login/reset';
 /* components*/
 const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
 const Markdown = resolve => require(['../views/components/markdown'], resolve);
-const Jsoneditor = resolve => require(['../views/components/jsoneditor'], resolve);
+const JsonEditor = resolve => require(['../views/components/jsoneditor'], resolve);
+const AvatarUpload = resolve => require(['../views/components/avatarupload'], resolve);
 
 /* charts*/
 const KeyboardChart = resolve => require(['../views/charts/keyboard'], resolve);
 const KeyboardChart2 = resolve => require(['../views/charts/keyboard2'], resolve);
+const LineMarker = resolve => require(['../views/charts/line'], resolve);
+const MixChart = resolve => require(['../views/charts/mixchart'], resolve);
+
+/* excel*/
+const ExcelDownload = resolve => require(['../views/excel/index'], resolve);
 
 
 /* admin*/
@@ -66,7 +72,8 @@ export default new Router({
       children: [
         { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
         { path: 'markdown', component: Markdown, name: 'Markdown' },
-        { path: 'jsoneditor', component: Jsoneditor, name: 'json编辑器' }
+        { path: 'jsoneditor', component: JsonEditor, name: 'json编辑器' },
+        { path: 'avatarupload', component: AvatarUpload, name: '头像上传' }
 
       ]
     },
@@ -78,8 +85,20 @@ export default new Router({
       icon: 'tubiaoleixingzhengchang',
       children: [
         { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
-         { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' }
-
+        { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
+        { path: 'line', component: LineMarker, name: '折线图' },
+        { path: 'mixchart', component: MixChart, name: '混合图表' }
+      ]
+    },
+    {
+      path: '/excel',
+      component: Layout,
+      redirect: 'noredirect',
+      name: 'excel',
+      icon: 'tubiaoleixingzhengchang',
+      noDropdown: true,
+      children: [
+        { path: 'download', component: ExcelDownload, name: '导出excel' }
       ]
     },
     // {

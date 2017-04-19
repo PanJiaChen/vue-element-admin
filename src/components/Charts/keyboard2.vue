@@ -17,11 +17,11 @@
       props: {
         className: {
           type: String,
-          default: 'bar-percent-chart'
+          default: 'chart'
         },
         id: {
           type: String,
-          default: 'bar-percent-chart'
+          default: 'chart'
         },
         width: {
           type: String,

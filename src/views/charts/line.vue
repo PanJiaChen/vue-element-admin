@@ -1,16 +1,18 @@
 <template>
   <div class="components-container" style='height:100vh'>
+    https://github.com/ecomfe/echarts/blob/master/index.js
+    http://echarts.baidu.com/tutorial.html
     <div class='chart-container'>
-       <keyboardChart2 id='apple' height='100%' width='100%' />
+       <lineMarker height='100%' width='100%' />
     </div>
 
   </div>
 </template>
 <script>
-    import keyboardChart2 from 'components/Charts/keyboard2';
+    import lineMarker from 'components/Charts/lineMarker';
 
     export default {
-      components: { keyboardChart2 }
+      components: { lineMarker }
     };
 </script>
 
@@ -18,7 +20,7 @@
 .chart-container{
     position: relative;
     width: 100%;
-    height: 90%;
+    height: 80%;
 }
 </style>
 

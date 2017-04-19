@@ -1,16 +1,16 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-       <keyboardChart2 id='apple' height='100%' width='100%' />
+       <mixchart id='apple' height='100%' width='100%' />
     </div>
 
   </div>
 </template>
 <script>
-    import keyboardChart2 from 'components/Charts/keyboard2';
+    import mixchart from 'components/Charts/mixchart';
 
     export default {
-      components: { keyboardChart2 }
+      components: { mixchart }
     };
 </script>
 
@@ -19,6 +19,7 @@
     position: relative;
     width: 100%;
     height: 90%;
+    padding-bottom: 40px;
 }
 </style>
 
