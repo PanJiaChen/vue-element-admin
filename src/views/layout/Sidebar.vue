@@ -7,7 +7,7 @@
                     {{item.name}}
                 </template>
                 <router-link v-for="child in item.children" :key="child.path" v-if="!child.hidden"
-                             class="title-link" :to="item.path+'/'+child.path + '#'+ +new Date()">
+                             class="title-link" :to="item.path+'/'+child.path">
                     <el-menu-item :index="item.path+'/'+child.path">
                         {{child.name}}
                     </el-menu-item>
@@ -16,7 +16,7 @@
             <router-link v-if="item.noDropdown&&item.children.length>0" class="title-link"
                          :to="item.path+'/'+item.children[0].path">
                 <el-menu-item
-                        :index="item.path+'/'+item.children[0].path +'#'+ +new Date()">
+                        :index="item.path+'/'+item.children[0].path">
                     <wscn-icon-svg :icon-class="item.icon||'geren1'"/>
                     {{item.children[0].name}}
                 </el-menu-item>

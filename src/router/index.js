@@ -7,9 +7,11 @@ import Layout from '../views/layout/Layout';
 // dashboard
 // import dashboard from '../views/dashboard/index';
 const dashboard = resolve => require(['../views/dashboard/index'], resolve);
-/* error*/
+
+/* error page*/
 const Err404 = resolve => require(['../views/error/404'], resolve);
 const Err401 = resolve => require(['../views/error/401'], resolve);
+
 /* login*/
 import Login from '../views/login/';
 import authRedirect from '../views/login/authredirect';
@@ -35,6 +37,7 @@ const MixChart = resolve => require(['../views/charts/mixchart'], resolve);
 
 /* excel*/
 const ExcelDownload = resolve => require(['../views/excel/index'], resolve);
+
 
 
 /* admin*/
@@ -96,6 +99,17 @@ export default new Router({
         { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
         { path: 'line', component: LineMarker, name: '折线图' },
         { path: 'mixchart', component: MixChart, name: '混合图表' }
+      ]
+    },
+    {
+      path: '/errorpage',
+      component: Layout,
+      redirect: 'noredirect',
+      name: '错误页面',
+      icon: 'tubiaoleixingzhengchang',
+      children: [
+        { path: '401', component: Err401, name: '401' },
+        { path: '404', component: Err404, name: '404' }
       ]
     },
     {
