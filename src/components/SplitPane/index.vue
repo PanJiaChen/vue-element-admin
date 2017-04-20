@@ -66,7 +66,6 @@
       mounted() {
         const element = this.$el;
         const elementOffset = element.getBoundingClientRect();
-        console.log(elementOffset.height)
 //            this.height = elementOffset.height+'px';
       },
       methods: {

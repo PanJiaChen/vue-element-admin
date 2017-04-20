@@ -20,7 +20,12 @@ import reset from '../views/login/reset';
 const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
 const Markdown = resolve => require(['../views/components/markdown'], resolve);
 const JsonEditor = resolve => require(['../views/components/jsoneditor'], resolve);
+const DndList = resolve => require(['../views/components/dndlist'], resolve);
 const AvatarUpload = resolve => require(['../views/components/avatarupload'], resolve);
+const Dropzone = resolve => require(['../views/components/dropzone'], resolve);
+const Sticky = resolve => require(['../views/components/sticky'], resolve);
+const SplitPane = resolve => require(['../views/components/splitpane'], resolve);
+
 
 /* charts*/
 const KeyboardChart = resolve => require(['../views/charts/keyboard'], resolve);
@@ -72,9 +77,12 @@ export default new Router({
       children: [
         { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
         { path: 'markdown', component: Markdown, name: 'Markdown' },
-        { path: 'jsoneditor', component: JsonEditor, name: 'json编辑器' },
-        { path: 'avatarupload', component: AvatarUpload, name: '头像上传' }
-
+        { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
+        { path: 'dndlist', component: DndList, name: '列表拖拽' },
+        { path: 'splitpane', component: SplitPane, name: 'SplitPane' },
+        { path: 'avatarupload', component: AvatarUpload, name: '头像上传' },
+        { path: 'dropzone', component: Dropzone, name: 'Dropzone' },
+        { path: 'sticky', component: Sticky, name: 'Sticky' }
       ]
     },
     {

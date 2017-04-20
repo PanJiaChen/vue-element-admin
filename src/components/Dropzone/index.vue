@@ -57,17 +57,20 @@
             }
           },
           accept: (file, done) => {
-            const token = this.$store.getters.token;
-            getToken(token).then(response => {
-              file.token = response.data.qiniu_token;
-              file.key = response.data.qiniu_key;
-              file.url = response.data.qiniu_url;
-              done();
-            })
+        /* 七牛*/
+            // const token = this.$store.getters.token;
+            // getToken(token).then(response => {
+            //   file.token = response.data.qiniu_token;
+            //   file.key = response.data.qiniu_key;
+            //   file.url = response.data.qiniu_url;
+            //   done();
+            // })
+            done();
           },
           sending: (file, xhr, formData) => {
-            formData.append('token', file.token);
-            formData.append('key', file.key);
+             /* 七牛*/
+            // formData.append('token', file.token);
+            // formData.append('key', file.key);
             vm.initOnce = false;
           }
         });

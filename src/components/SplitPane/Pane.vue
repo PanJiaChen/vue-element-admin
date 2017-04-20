@@ -7,32 +7,12 @@
 <script>
     export default {
       name: 'Pane',
-      props: {
-//            split: {
-//                validator: function (value) {
-//                    return ['vertical', 'horizontal'].indexOf(value) >= 0
-//                },
-//                required: true
-//            }
-      },
-//        computed:{
-//            classes () {
-//                return this.$parent.split
-//            },
-//        },
       data() {
         const classes = ['Pane', this.$parent.split, 'className'];
         return {
           classes: classes.join(' '),
           percent: 50
         }
-      },
-      created() {
-//          console.log(this.$parent.split)
-      },
-
-      methods: {
-
       }
     }
 </script>

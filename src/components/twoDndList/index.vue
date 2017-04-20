@@ -1,30 +1,28 @@
 <template>
-    <div class="twoDndList">
-        <div class="twoDndList-list" :style="{width:width1}">
-            <h3>{{list1Title}}</h3>
-            <draggable :list="list1" class="dragArea" :options="{group:'article'}">
-                <div class="list-complete-item" v-for="element in list1">
-                    <div class="list-complete-item-handle">[{{element.id}}] {{element.title}}</div>
-                    <div style="position:absolute;right:0px;">
-                       <a style="float: left ;margin-top: -20px;margin-right:5px;" :href="'/article/edit/'+element.id" target="_blank"><i style="color:#20a0ff" class="el-icon-information"></i></a>
-                    <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
+  <div class="twoDndList">
+    <div class="twoDndList-list" :style="{width:width1}">
+      <h3>{{list1Title}}</h3>
+      <draggable :list="list1" class="dragArea" :options="{group:'article'}">
+        <div class="list-complete-item" v-for="element in list1">
+          <div class="list-complete-item-handle">[{{element.author}}] {{element.title}}</div>
+          <div style="position:absolute;right:0px;">
+            <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
                         <i style="color:#ff4949" class="el-icon-delete"></i>
                     </span>
-                  </div>
-                </div>
-            </draggable>
+          </div>
         </div>
-
-        <div class="twoDndList-list" :style="{width:width2}">
-            <h3>{{list2Title}}</h3>
-            <draggable :list="filterList2" class="dragArea" :options="{group:'article'}">
-                <div  class="list-complete-item" v-for="element in filterList2">
-                  <div class='list-complete-item-handle2' @click="pushEle(element)"> [{{element.id}}] {{element.title}}</div>
-                  <a style="float: right ;margin-top: -20px;" :href="'/article/edit/'+element.id" target="_blank"><i style="color:#20a0ff" class="el-icon-information"></i></a>
-                </div>
-            </draggable>
-        </div>
+      </draggable>
     </div>
+
+    <div class="twoDndList-list" :style="{width:width2}">
+      <h3>{{list2Title}}</h3>
+      <draggable :list="filterList2" class="dragArea" :options="{group:'article'}">
+        <div class="list-complete-item" v-for="element in filterList2">
+          <div class='list-complete-item-handle2' @click="pushEle(element)"> [{{element.author}}] {{element.title}}</div>
+        </div>
+      </draggable>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -124,6 +122,7 @@
     .list-complete-item {
         cursor: pointer;
         position: relative;
+        font-size: 14px;
         padding: 5px 12px;
         margin-top: 4px;
         border: 1px solid #bfcbd9;
