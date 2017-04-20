@@ -73,12 +73,6 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-
-// 异步组件
-// Vue.component('async-Editor', function (resolve) {
-//     require(['components/Editor'], resolve)
-// });
-
 // window.onunhandledrejection = e => {
 //     console.log('unhandled', e.reason, e.promise);
 //     e.preventDefault()

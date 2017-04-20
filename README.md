@@ -22,6 +22,10 @@
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/uploadAvatar.gif)
 
+#### 错误统计
+
+![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/errorlog.png)
+
 #### 富文本(整合七牛 打水印等个性化功能)
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/editor.gif)
