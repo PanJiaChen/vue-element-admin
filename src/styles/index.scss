@@ -1,14 +1,11 @@
 @import './btn.scss';
-// @import './editor.scss';
+@import './element-ui.scss';
 @import "./mixin.scss";
 body {
-  //height: 100%;
-  //overflow-y: scroll;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
-  //@include scrollBar;
 }
 
 label {
@@ -66,17 +63,12 @@ a:hover {
   display: block;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 .inlineBlock {
   display: block;
-}
-
-.components-container {
-  margin: 30px 50px;
-  position: relative;
-}
-
-.editor-container .CodeMirror {
-  height: 100%!important;
 }
 
 code {
@@ -103,77 +95,21 @@ code {
   opacity: 0;
 }
 
-//editor
-//.editor-placeholder {
-//  margin: 0 auto;
-//  display: block;
-//  .editor-placeholder-title {
-//    text-align: center;
-//    font-size: 20px;
-//    padding-bottom: 5px;
-//  }
-//  .editor-placeholder-image {
-//    display: block;
-//    max-height: 100px;
-//    margin: 0 auto;
-//  }
-//}
 //main-container全局样式
 .app-container {
   padding: 20px;
-  //min-height: 100%;
 }
-
-//element ui upload
-.upload-container {
-  .el-upload {
-    width: 100%;
-    .el-upload-dragger {
-      width: 100%;
-      height: 200px;
-    }
-  }
+.components-container {
+  margin: 30px 50px;
+  position: relative;
 }
-
-.singleImageUpload2.upload-container {
-  .el-upload {
-    width: 100%;
-    height: 100%;
-    .el-upload-dragger {
-      width: 100%;
-      height: 100%;
-      .el-icon-upload {
-        margin: 30% 0 16px;
-      }
-    }
-  }
-}
-
-.editor-video-upload {
-  @include clearfix;
-  margin-bottom: 10px;
-  .el-upload {
-    float: left;
-    width: 100px;
-  }
-  .el-upload-list {
-    float: left;
-    .el-upload-list__item:first-child {
-      margin-top: 0px;
-    }
-  }
-}
-
-.el-upload-list--picture-card {
-  float: left;
-}
-
 .pagination-container {
   margin-top: 30px;
 }
 
-.pointer {
-  cursor: pointer;
+
+.editor-container .CodeMirror {
+  height: 100%!important;
 }
 
 .wscn-icon {
@@ -274,26 +210,6 @@ code {
   }
 }
 
-//文章页textarea修改样式
-.article-textarea {
-  textarea {
-    padding-right: 40px;
-    resize: none;
-    border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
-  }
-}
-
-//实时新闻创建页特殊处理
-.recentNews-container {
-  p {
-    display: inline-block;
-  }
-  .el-collapse-item__content {
-    padding-right: 0px;
-  }
-}
 
 //refine vue-multiselect plugin
 .multiselect {
@@ -302,108 +218,6 @@ code {
 
 .multiselect--active {
   z-index: 1000 !important;
-}
-
-//reset element ui
-.block-checkbox {
-  display: block;
-}
-
-//上传页面不显示删除icon
-.mediaUpload-container {
-  .el-upload__btn-delete {
-    display: none !important;
-  }
-}
-
-.operation-container {
-  .cell {
-    padding: 10px !important;
-  }
-  .el-button {
-    &:nth-child(3) {
-      margin-top: 10px;
-      margin-left: 0px;
-    }
-    &:nth-child(4) {
-      margin-top: 10px;
-    }
-  }
-}
-
-.el-upload {
-  input[type="file"] {
-    display: none !important;
-  }
-}
-
-.el-upload__input {
-  display: none;
-}
-
-.cell {
-  .el-tag {
-    margin-right: 8px;
-  }
-}
-
-.small-padding {
-  .cell {
-    padding-left: 8px;
-    padding-right: 8px;
-  }
-}
-
-.status-col {
-  .cell {
-    padding: 0 10px;
-    text-align: center;
-    .el-tag {
-      margin-right: 0px;
-    }
-  }
-}
-
-//.el-form-item__content{
-//  margin-left: 0px!important;
-//}
-.no-border {
-  .el-input-group__prepend,
-  .el-input__inner,
-  .el-date-editor__editor,
-  .multiselect__tags {
-    border: none;
-  }
-}
-
-.el-select__tags {
-  max-width: 100% !important;
-}
-
-.small-space .el-form-item {
-  margin-bottom: 10px;
-}
-
-.no-padding {
-  .el-dropdown-menu__item {
-    padding: 0px;
-  }
-  .el-dropdown-menu {
-    padding: 0px;
-  }
-}
-
-.no-hover {
-  .el-dropdown-menu__item:not(.is-disabled):hover {
-    background-color: #fff;
-  }
-}
-
-.el-tooltip-fullwidth {
-  width: 100%;
-  .el-tooltip__rel {
-    width: 100%;
-  }
 }
 
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461

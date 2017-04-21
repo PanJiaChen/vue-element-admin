@@ -39,13 +39,17 @@ const KeyboardChart2 = resolve => require(['../views/charts/keyboard2'], resolve
 const LineMarker = resolve => require(['../views/charts/line'], resolve);
 const MixChart = resolve => require(['../views/charts/mixchart'], resolve);
 
-/* excel*/
+/* error log*/
 const ErrorLog = resolve => require(['../views/errlog/index'], resolve);
 
 /* excel*/
 const ExcelDownload = resolve => require(['../views/excel/index'], resolve);
 
+/* theme*/
+const Theme = resolve => require(['../views/theme/index'], resolve);
 
+/* example*/
+const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
 
 
 /* admin*/
@@ -86,7 +90,7 @@ export default new Router({
       name: '组件',
       icon: 'zujian',
       children: [
-        { path: 'index', component: componentsIndex, name: '介绍' },
+        { path: 'index', component: componentsIndex, name: '介绍 ' },
         { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
         { path: 'markdown', component: Markdown, name: 'Markdown' },
         { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
@@ -144,6 +148,27 @@ export default new Router({
       noDropdown: true,
       children: [
         { path: 'download', component: ExcelDownload, name: '导出excel' }
+      ]
+    },
+    {
+      path: '/theme',
+      component: Layout,
+      redirect: 'noredirect',
+      name: 'theme',
+      icon: 'theme',
+      noDropdown: true,
+      children: [
+        { path: 'index', component: Theme, name: '换肤' }
+      ]
+    },
+    {
+      path: '/example',
+      component: Layout,
+      redirect: 'noredirect',
+      name: '综合实例',
+      icon: 'zonghe',
+      children: [
+        { path: 'dynamictable', component: DynamicTable, name: '动态table' }
       ]
     },
     // {
