@@ -31,7 +31,8 @@
     "vue-router": "2.3.0",
     "vuedraggable": "2.8.4",
     "vuex": "2.2.1",
-    "xlsx": "0.8.1"
+    "xlsx": "0.8.1",
+    "vue-count-to":"1.0.5"
   },
   "devDependencies": {
     "autoprefixer": "6.7.2",

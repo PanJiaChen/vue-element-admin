@@ -7,6 +7,7 @@ const articleList = {
   'data|20': [{
     id: '@id',
     title: '@ctitle(10, 20)',
+    'status|1': ['published', 'draft'],
     author: '@cname',
     display_time: '@datetime',
     pageviews: '@integer(300, 5000)'

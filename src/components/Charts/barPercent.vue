@@ -48,6 +48,7 @@
       methods: {
         initBar() {
           this.chart = echarts.init(document.getElementById(this.id));
+          this.setOptions();
         },
         setOptions() {
           this.chart.setOption({

@@ -46,6 +46,7 @@
       },
       mounted() {
         this.chart = echarts.init(document.getElementById(this.id));
+        this.setLine(this.listData);
       },
       methods: {
         setLine(dataList) {

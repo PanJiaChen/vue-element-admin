@@ -19,6 +19,7 @@ import sendPWD from '../views/login/sendpwd';
 import reset from '../views/login/reset';
 
 /* components*/
+const componentsIndex = resolve => require(['../views/components/index'], resolve);
 const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
 const Markdown = resolve => require(['../views/components/markdown'], resolve);
 const JsonEditor = resolve => require(['../views/components/jsoneditor'], resolve);
@@ -32,6 +33,7 @@ const Mixin = resolve => require(['../views/components/mixin'], resolve);
 
 
 /* charts*/
+const chartIndex = resolve => require(['../views/charts/index'], resolve);
 const KeyboardChart = resolve => require(['../views/charts/keyboard'], resolve);
 const KeyboardChart2 = resolve => require(['../views/charts/keyboard2'], resolve);
 const LineMarker = resolve => require(['../views/charts/line'], resolve);
@@ -80,10 +82,11 @@ export default new Router({
     {
       path: '/components',
       component: Layout,
-      redirect: 'noredirect',
+      redirect: '/components/index',
       name: '组件',
       icon: 'zujian',
       children: [
+        { path: 'index', component: componentsIndex, name: '介绍' },
         { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
         { path: 'markdown', component: Markdown, name: 'Markdown' },
         { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
@@ -99,10 +102,11 @@ export default new Router({
     {
       path: '/charts',
       component: Layout,
-      redirect: 'noredirect',
+      redirect: '/charts/index',
       name: '图表',
       icon: 'tubiaoleixingzhengchang',
       children: [
+        { path: 'index', component: chartIndex, name: '介绍' },
         { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
         { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
         { path: 'line', component: LineMarker, name: '折线图' },

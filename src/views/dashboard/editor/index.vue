@@ -7,32 +7,32 @@
             <div class="info-container">
                 <span class="display_name">{{name}}</span>
                 <div class="info-wrapper">
-                    <router-link class="info-item" :to="'/article/wscnlist?uid='+uid">
-                        <span class="info-item-num">{{statisticsData.article_count | toThousandslsFilter}}</span>
+                    <div class="info-item" :to="'/article/wscnlist?uid='+uid">
+                         <countTo class="info-item-num" :startVal='0' :endVal='statisticsData.article_count' :duration='3400'></countTo>
                         <span class="info-item-text">文章</span>
                         <wscn-icon-svg icon-class="a" class="dashboard-editor-icon"/>
-                    </router-link>
+                    </div>
                     <div class="info-item" style="cursor: auto">
-                        <span class="info-item-num"> {{statisticsData.pageviews_count | toThousandslsFilter}}</span>
+                        <countTo class="info-item-num"  :startVal='0' :endVal='statisticsData.pageviews_count' :duration='3600'></countTo>
                         <span class="info-item-text">浏览量</span>
                         <wscn-icon-svg icon-class="b" class="dashboard-editor-icon"/>
                     </div>
-                    <router-link class="info-item" :to="'/comment/commentslist?res_author_id='+uid">
-                        <span class="info-item-num">{{statisticsData.comment_count | toThousandslsFilter}}</span>
+                    <div class="info-item" :to="'/comment/commentslist?res_author_id='+uid">
+                         <countTo class="info-item-num" ref='countTo3' :startVal='0' :endVal='statisticsData.comment_count' :duration='3800'></countTo>
                         <span class="info-item-text">评论</span>
                         <wscn-icon-svg icon-class="c" class="dashboard-editor-icon"/>
-                    </router-link>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="btn-group">
-            <router-link class="pan-btn blue-btn" to="/article/create">发表文章</router-link>
-            <router-link class="pan-btn light-blue-btn" to="/livenews/create">发布快讯</router-link>
-            <router-link class="pan-btn red-btn" to="/push/create">推送</router-link>
-            <router-link class="pan-btn pink-btn" to="/comment/commentslist">评论管理</router-link>
-            <router-link class="pan-btn green-btn" to="/article/wscnlist">文章列表</router-link>
-            <router-link class="pan-btn tiffany-btn" to="/livenews/list">实时列表</router-link>
+            <router-link class="pan-btn blue-btn" to="/components/index">组价</router-link>
+            <router-link class="pan-btn light-blue-btn" to="/charts/index">图表</router-link>
+            <router-link class="pan-btn red-btn" to="/errorpage/404">错误页面</router-link>
+            <router-link class="pan-btn pink-btn" to="/errlog/log">错误日志</router-link>
+            <router-link class="pan-btn green-btn" to="/article/wscnlist">导出excel</router-link>
+            <router-link class="pan-btn tiffany-btn" to="/excel/download">实时列表</router-link>
         </div>
 
         <div class="clearfix main-dashboard-container">
@@ -47,10 +47,10 @@
                     <template v-if="recentArticles.length!=0">
                         <div class="recent-articles-item" v-for="item in  recentArticles">
                             <span class="recent-articles-status">{{item.status | statusFilter}}</span>
-                            <router-link class="recent-articles-content" :to="'/article/edit/'+item.id">
-                                <span>{{item.title}}</span>
-                            </router-link>
-                            <span class="recent-articles-time"><i style="padding-right: 4px;" class="el-icon-time"></i>{{item.display_time | parseTime('{m}-{d} {h}:{i}')}}</span>
+                             <span class="recent-articles-content" :to="'/article/edit/'+item.id">
+                                {{item.title}}
+                            </span>
+                            <span class="recent-articles-time">{{item.author}}</span>
                         </div>
                     </template>
                     <template v-else>
@@ -58,9 +58,6 @@
                         <!--<img class="emptyGif" :src="emptyGif">-->
                     </template>
                 </div>
-                <router-link class="recent-articles-more" :to="'/article/wscnlist?uid='+uid">
-                    Show more
-                </router-link>
             </div>
         </div>
     </div>
@@ -71,23 +68,37 @@
     import PanThumb from 'components/PanThumb';
     import MonthKpi from './monthKpi';
     import ArticlesChart from './articlesChart';
-    // import { getStatistics } from 'api/article';
-
+    import { getList } from 'api/article';
     import emptyGif from 'assets/compbig.gif';
+    import countTo from 'vue-count-to';
     export default {
       name: 'dashboard-editor',
-      components: { PanThumb, MonthKpi, ArticlesChart },
+      components: { PanThumb, MonthKpi, ArticlesChart, countTo },
       data() {
         return {
           chart: null,
           statisticsData: {
-            article_count: undefined,
-            comment_count: undefined,
+            article_count: 1024,
+            comment_count: 102400,
             latest_article: [],
-            month_article_count: undefined,
-            pageviews_count: undefined,
-            week_article: []
+            month_article_count: 28,
+            pageviews_count: 1024,
+            week_article: [
+               { count: 30, week: '201716' },
+                { count: 26, week: '201715' },
+                { count: 31, week: '201714' },
+                { count: 28, week: '201713' },
+                { count: 40, week: '201712' },
+                { count: 41, week: '201711' },
+                { count: 50, week: '201710' },
+                { count: 42, week: '201709' },
+                { count: 36, week: '201708' },
+                { count: 32, week: '201707' },
+                { count: 40, week: '201706' },
+                { count: 41, week: '201705' }
+            ]
           },
+          list: [],
           emptyGif
         }
       },
@@ -104,15 +115,15 @@
           'roles'
         ]),
         recentArticles() {
-          return this.statisticsData.latest_article.slice(0, 7)
+          return this.list.slice(0, 7)
         }
       },
       methods: {
         fetchData() {
-        //   getStatistics().then(response => {
-        //     this.statisticsData = response.data;
-        //     this.statisticsData.week_article = this.statisticsData.week_article.slice().reverse();
-        //   })
+          getList(this.listQuery).then(response => {
+            console.log(response.data)
+            this.list = response.data;
+          })
         }
       },
       filters: {
