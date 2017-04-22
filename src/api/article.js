@@ -1,7 +1,7 @@
-import { tpFetch } from 'utils/fetch';
+import { fetch } from 'utils/fetch';
 
 export function getList() {
-  return tpFetch({
+  return fetch({
     url: '/article/list',
     method: 'get'
   });

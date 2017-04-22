@@ -3,7 +3,7 @@ import { Message } from 'element-ui';
 import store from '../store';
 import router from '../router';
 
-export default function fetch(options) {
+export default function _fetch(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: process.env.BASE_API,
@@ -49,10 +49,10 @@ export default function fetch(options) {
   });
 }
 
-export function tpFetch(options) {
+export function fetch(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
-            // timeout: 2000,
+      timeout: 2000 // 超时
     });
     instance(options)
             .then(response => {

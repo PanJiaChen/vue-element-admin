@@ -50,6 +50,7 @@ const Theme = resolve => require(['../views/theme/index'], resolve);
 
 /* example*/
 const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
+const Table = resolve => require(['../views/example/table'], resolve);
 
 
 /* admin*/
@@ -168,7 +169,8 @@ export default new Router({
       name: '综合实例',
       icon: 'zonghe',
       children: [
-        { path: 'dynamictable', component: DynamicTable, name: '动态table' }
+        { path: 'dynamictable', component: DynamicTable, name: '动态table' },
+        { path: 'table', component: Table, name: '综合table' }
       ]
     },
     // {
