@@ -75,7 +75,7 @@
           //  language_url: '/static/tinymce/langs/zh_CN.js',
           toolbar: this.toolbar,
           menubar: this.menubar,
-          plugins: 'advlist,autolink,code,powerpaste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools,watermark',
+          plugins: 'advlist,autolink,code,paste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools,watermark',
           end_container_on_empty_block: true,
           powerpaste_word_import: 'clean',
           code_dialog_height: 450,

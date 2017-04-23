@@ -51,6 +51,8 @@ const Theme = resolve => require(['../views/theme/index'], resolve);
 /* example*/
 const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
 const Table = resolve => require(['../views/example/table'], resolve);
+const Form1 = resolve => require(['../views/example/form1'], resolve);
+const Form2 = resolve => require(['../views/example/form2'], resolve);
 
 
 /* admin*/
@@ -170,7 +172,9 @@ export default new Router({
       icon: 'zonghe',
       children: [
         { path: 'dynamictable', component: DynamicTable, name: '动态table' },
-        { path: 'table', component: Table, name: '综合table' }
+        { path: 'table', component: Table, name: '综合table' },
+        { path: 'form1', component: Form1, name: '综合form1' }
+        // { path: 'form2', component: Form2, name: '综合form2' }
       ]
     },
     // {

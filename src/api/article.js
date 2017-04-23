@@ -6,3 +6,11 @@ export function getList() {
     method: 'get'
   });
 }
+
+export function getArticle() {
+  return fetch({
+    url: '/article/detail',
+    method: 'get'
+  });
+}
+
