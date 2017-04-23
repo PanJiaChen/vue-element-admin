@@ -67,7 +67,7 @@ const Form2 = resolve => require(['../views/example/form2'], resolve);
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: [
         { path: '/login', component: Login, hidden: true },

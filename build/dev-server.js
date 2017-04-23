@@ -1,8 +1,7 @@
 require('./check-versions')(); // 检查 Node 和 npm 版本
 var config = require('../config');
 if (!process.env.NODE_ENV) {
-    process.env.NODE_ENV = config.dev.env;
-    // process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
+    process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
 
 var opn = require('opn')
