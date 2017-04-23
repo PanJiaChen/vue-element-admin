@@ -4,16 +4,12 @@
       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" placeholder="标题" v-model="listQuery.title">
       </el-input>
 
-      <el-date-picker class="filter-item" v-model="time" type="daterange" align="left" placeholder="选择日期范围" :picker-options="pickerOptions"
-        @input="timeFilter" style="width: 210px">
-      </el-date-picker>
-
       <el-select clearable style="width: 90px" class="filter-item" v-model="listQuery.importance" placeholder="重要性">
         <el-option v-for="item in importanceOptions" :key="item" :label="item" :value="item">
         </el-option>
       </el-select>
 
-      <el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.calendar_type" placeholder="类型">
+      <el-select clearable class="filter-item" style="width: 130px" v-model="listQuery.type" placeholder="类型">
         <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name+'('+item.key+')'" :value="item.key">
         </el-option>
       </el-select>
@@ -40,7 +36,7 @@
       <el-table-column min-width="300px" label="标题">
         <template scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
-          <el-tag>{{scope.row.calendar_type | typeFilter}}</el-tag>
+          <el-tag>{{scope.row.type | typeFilter}}</el-tag>
         </template>
       </el-table-column>
 
@@ -54,6 +50,12 @@
       <el-table-column width="80px" label="重要性">
         <template scope="scope">
            <wscn-icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n" />
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="阅读数" width="95">
+        <template scope="scope">
+          <span class="link-type" @click='handleFetchPv(scope.row.pageviews)'>{{scope.row.pageviews}}</span>
         </template>
       </el-table-column>
 
@@ -77,7 +79,7 @@
     </el-table>
 
     <div v-show="!listLoading" class="pagination-container">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.cursor" :page-sizes="[10,20,30, 50]"
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]"
         :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
@@ -85,7 +87,7 @@
     <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
       <el-form class="small-space" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="类型">
-          <el-select class="filter-item" v-model="temp.calendar_type" placeholder="请选择">
+          <el-select class="filter-item" v-model="temp.type" placeholder="请选择">
             <el-option v-for="item in  calendarTypeOptions" :key="item.key" :label="item.display_name" :value="item.key">
             </el-option>
           </el-select>
@@ -122,12 +124,23 @@
         <el-button v-else type="primary" @click="update">确 定</el-button>
       </div>
     </el-dialog>
+
+    <el-dialog title="阅读数统计" v-model="dialogPvVisible" size="small">
+       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
+          <el-table-column prop="key" label="渠道"> </el-table-column>
+          <el-table-column  prop="pv" label="pv"> </el-table-column>
+      </el-table>
+      <span slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogPvVisible = false">确 定</el-button>
+      </span>
+    </el-dialog >
+
   </div>
 </template>
 
 <script>
-    import { fetchList } from 'api/article_table';
-    import { parseTime, objectMerge, pickerOptions } from 'utils';
+    import { fetchList, fetchPv } from 'api/article_table';
+    import { parseTime, objectMerge } from 'utils';
 
     const calendarTypeOptions = [
       { key: 'FD', display_name: '经济数据' },
@@ -150,12 +163,11 @@
           total: null,
           listLoading: true,
           listQuery: {
-            cursor: 1,
+            page: 1,
             limit: 20,
-            start: undefined,
-            end: undefined,
             importance: undefined,
-            title: undefined
+            title: undefined,
+            type: undefined
           },
           temp: {
             id: undefined,
@@ -163,10 +175,9 @@
             remark: '',
             timestamp: 0,
             title: '',
-            calendar_type: '',
+            type: '',
             status: 'published'
           },
-          time: '', // 时间筛选项
           importanceOptions: [1, 2, 3],
           calendarTypeOptions,
           statusOptions: ['published', 'draft', 'deleted'],
@@ -176,9 +187,8 @@
             update: '编辑',
             create: '创建'
           },
-          pickerOptions: {
-            shortcuts: pickerOptions
-          }
+          dialogPvVisible: false,
+          pvData: []
         }
       },
       created() {
@@ -201,7 +211,6 @@
         getList() {
           this.listLoading = true;
           fetchList(this.listQuery).then(response => {
-            console.log(response)
             this.list = response.items;
             this.total = response.total;
             this.listLoading = false;
@@ -215,7 +224,7 @@
           this.getList();
         },
         handleCurrentChange(val) {
-          this.listQuery.cursor = val;
+          this.listQuery.page = val;
           this.getList();
         },
         timeFilter(time) {
@@ -291,14 +300,20 @@
             timestamp: 0,
             title: '',
             status: 'published',
-            calendar_type: ''
+            type: ''
           };
+        },
+        handleFetchPv(pv) {
+          fetchPv(pv).then(response => {
+            this.pvData = response.pvData
+            this.dialogPvVisible = true
+          })
         },
         handleDownload() {
           require.ensure([], () => {
             const { export_json_to_excel } = require('vendor/Export2Excel');
             const tHeader = ['时间', '地区', '类型', '标题', '重要性'];
-            const filterVal = ['timestamp', 'province', 'calendar_type', 'title', 'importance'];
+            const filterVal = ['timestamp', 'province', 'type', 'title', 'importance'];
             const data = this.formatJson(filterVal, this.list);
             export_json_to_excel(tHeader, data, 'table数据');
           })

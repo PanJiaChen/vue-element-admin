@@ -19,6 +19,7 @@ mock.onGet('/article/list').reply(200, data);
 
 
 mock.onGet('/article_table/list').reply(article_tableAPI.getList);
+mock.onGet('/article_table/pv').reply(article_tableAPI.getPv);
 
 
 
