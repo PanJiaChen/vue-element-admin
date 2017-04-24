@@ -61,10 +61,10 @@
           },
           loginRules: {
             email: [
-                        { required: true, trigger: 'blur', validator: validateEmail }
+                { required: true, trigger: 'blur', validator: validateEmail }
             ],
             password: [
-                        { required: true, trigger: 'blur', validator: validatePass }
+                { required: true, trigger: 'blur', validator: validatePass }
             ]
           },
           loading: false,
@@ -73,7 +73,6 @@
       },
       computed: {
         ...mapGetters([
-          'status',
           'auth_type'
         ])
       },

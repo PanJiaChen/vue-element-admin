@@ -121,7 +121,6 @@
       methods: {
         fetchData() {
           getList(this.listQuery).then(response => {
-            console.log(response.data)
             this.list = response.data;
           })
         }

@@ -22,4 +22,32 @@ const userMap = {
     name: '工程师小王'
   }
 }
-export default userMap
+
+export default {
+  loginByEmail: config => {
+    const { email } = config.params;
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([200, {
+          data: userMap[email.split('@')[0]]
+        }]);
+      }, 500);
+    })
+  },
+  getInfo: config => {
+    const { token } = config.params;
+    console.log(userMap[token])
+    return new Promise(resolve => {
+      setTimeout(() => {
+        resolve([200, {
+          data: userMap[token]
+        }]);
+      }, 100);
+    })
+  },
+  logout: () => new Promise(resolve => {
+    setTimeout(() => {
+      resolve([200, { data: 'success' }]);
+    }, 100);
+  })
+};

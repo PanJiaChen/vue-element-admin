@@ -49,7 +49,6 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      console.log('a')
       if (to.meta && to.meta.role) {
         if (hasPermission(store.getters.roles, to.meta.role)) {
           next();
