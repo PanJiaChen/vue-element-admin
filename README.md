@@ -25,22 +25,23 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 - [x] dashboard
 - [x] 二次登录
 - [x] 动态侧边栏
+- [x] mock
 
 
-###How to use?
+### 开发
 ```bash
-    git clone https://github.com/PanJiaChen/vue-element-admin.git //克隆项目
-    npm install //安装依赖
-
-
-	npm run dev //本地开发
+    git clone https://github.com/PanJiaChen/vue-element-admin.git   //克隆项目
+    npm install                                                     //安装依赖
+  	npm run dev                                                     //本地开发
     // 开启服务器，浏览器访问 http://localhost:9527
-
-    npm run build:sit-preview //发布测试环境 带webpack ananalyzer
-
-    npm run build:prod //构建生成环境
 ```
-##效果图
+### 发布
+```bash
+    npm run build:sit-preview                                       //发布测试环境 带webpack ananalyzer
+    npm run build:prod                                              //构建生成环境
+```
+
+## 效果图
 
 #### 两步验证登录 支持微信和qq
 
