@@ -2,7 +2,8 @@
 vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue-element-admin)
 
 这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，效率依然很高。这半年来积累了不少的后台开发经验，所以准备开源分享一下。
-###功能
+
+### 功能
 - [x] 登录/注销
 - [x] 权限验证
 - [x] 侧边栏
@@ -30,15 +31,22 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 
 ### 开发
 ```bash
-    git clone https://github.com/PanJiaChen/vue-element-admin.git   //克隆项目
-    npm install                                                     //安装依赖
-  	npm run dev                                                     //本地开发
-    // 开启服务器，浏览器访问 http://localhost:9527
+    # 克隆项目
+    git clone https://github.com/PanJiaChen/vue-element-admin.git   
+    
+    # 安装依赖
+    npm install
+    
+    # 本地开发 开启服务，浏览器访问 http://localhost:9527
+    npm run build
 ```
 ### 发布
 ```bash
-    npm run build:sit-preview                                       //发布测试环境 带webpack ananalyzer
-    npm run build:prod                                              //构建生成环境
+    # 发布测试环境 带webpack ananalyzer
+    npm run build:sit-preview
+    
+    # 构建生成环境
+    npm run build:prod
 ```
 
 ## 效果图
