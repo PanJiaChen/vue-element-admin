@@ -6,8 +6,8 @@
                 drag
                 :multiple="false"
                 :show-file-list="false"
-                action="https://upload.qbox.me"
-                :before-upload="beforeUpload"
+                action="https://httpbin.org/post"
+
                 :on-success="handleImageScucess">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">Drag或<em>点击上传</em></div>

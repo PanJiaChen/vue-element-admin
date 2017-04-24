@@ -36,7 +36,6 @@ Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });
 
-
 function hasPermission(roles, permissionRoles) {
   if (roles.indexOf('admin') >= 0) return true;
   return roles.some(role => permissionRoles.indexOf(role) >= 0)

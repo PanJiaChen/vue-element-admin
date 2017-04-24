@@ -54,6 +54,8 @@ const Table = resolve => require(['../views/example/table'], resolve);
 const Form1 = resolve => require(['../views/example/form1'], resolve);
 const Form2 = resolve => require(['../views/example/form2'], resolve);
 
+/* permission */
+const Permission = resolve => require(['../views/permission/index'], resolve);
 
 /* admin*/
 // const AdminCreateUser = resolve => require(['../views/admin/createUser'], resolve);
@@ -84,6 +86,19 @@ export default new Router({
       hidden: true,
       children: [
                 { path: 'dashboard', component: dashboard }
+      ]
+    },
+
+    {
+      path: '/permission',
+      component: Layout,
+      redirect: '/permission/index',
+      name: '权限测试',
+      icon: 'quanxian',
+      meta: { role: ['admin'] },
+      noDropdown: true,
+      children: [
+       { path: 'index', component: Permission, name: '权限测试页', meta: { role: ['admin'] } }
       ]
     },
     {

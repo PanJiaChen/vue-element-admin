@@ -5,14 +5,14 @@
         <el-dialog v-model="dialogVisible">
             <el-upload
                     class="editor-slide-upload"
-                    action="https://upload.qbox.me"
+                    action="https://httpbin.org/post"
                     :data="dataObj"
                     :multiple="true"
                     :file-list="fileList"
                     :show-file-list="true"
                     list-type="picture-card"
                     :on-remove="handleRemove"
-                    :before-upload="beforeUpload">
+                    :on-success="handleImageScucess">
                 <el-button size="small" type="primary">点击上传</el-button>
             </el-upload>
             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -55,6 +55,9 @@
               return
             }
           }
+        },
+        handleImageScucess(file) {
+          this.list.push({ url: file.files.file });
         },
         beforeUpload() {
           const _self = this;

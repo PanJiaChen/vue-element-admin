@@ -6,8 +6,8 @@
                 drag
                 :multiple="false"
                 :show-file-list="false"
-                action="https://upload.qbox.me"
-                :before-upload="beforeUpload"
+                action="https://httpbin.org/post"
+
                 :on-success="handleImageScucess">
             <i class="el-icon-upload"></i>
             <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
@@ -15,7 +15,7 @@
         <div class="image-preview image-app-preview">
             <div class="image-preview-wrapper" v-show="imageUrl.length>1">
                 <div class='app-fake-conver'>&nbsp&nbsp全球 付费节目单 最热 经济</div>
-                <img :src="imageUrl+'?imageView2/1/h/180/w/320/q/100'">
+                <img :src="imageUrl">
                 <div class="image-preview-action">
                     <i @click="rmImage" class="el-icon-delete"></i>
                 </div>
@@ -23,7 +23,7 @@
         </div>
         <div class="image-preview">
             <div class="image-preview-wrapper" v-show="imageUrl.length>1">
-                <img :src="imageUrl+'?imageView2/1/w/200/h/200'">
+                <img :src="imageUrl">
                 <div class="image-preview-action">
                     <i @click="rmImage" class="el-icon-delete"></i>
                 </div>
@@ -57,8 +57,8 @@
         emitInput(val) {
           this.$emit('input', val);
         },
-        handleImageScucess() {
-          this.emitInput(this.tempUrl)
+        handleImageScucess(file) {
+          this.emitInput(file.files.file)
         },
         beforeUpload() {
           const _self = this;
