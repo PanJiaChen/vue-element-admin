@@ -5,6 +5,8 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 ###功能
 - [x] 登录/注销
 - [x] 权限验证
+- [x] 侧边栏
+- [x] 面包屑
 - [x] 富文本编辑器
 - [x] Markdown编辑器
 - [x] JSON编辑器
@@ -20,6 +22,10 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 - [x] table example
 - [x] form example
 - [x] 多环境发布
+- [x] dashboard
+- [x] 二次登录
+- [x] 动态侧边栏
+
 
 ###How to use?
 ```bash

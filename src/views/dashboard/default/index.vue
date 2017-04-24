@@ -6,13 +6,12 @@
             </PanThumb>
             <div class="info-container">
                 <span class="display_name">{{name}}</span>
-                <span style='font-size:20px;padding-top:20px;display:inline-block;'>赶紧把你们想要的快捷键报给产品锦鲤!</span>
+                <span style='font-size:20px;padding-top:20px;display:inline-block;'>普通编辑dashboard</span>
             </div>
         </div>
         <div>
             <img class='emptyGif' :src="emptyGif" >
         </div>
-
     </div>
 </template>
 

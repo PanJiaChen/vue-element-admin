@@ -27,12 +27,12 @@
         </div>
 
         <div class="btn-group">
-            <router-link class="pan-btn blue-btn" to="/components/index">组价</router-link>
+            <router-link class="pan-btn blue-btn" to="/components/index">组件</router-link>
             <router-link class="pan-btn light-blue-btn" to="/charts/index">图表</router-link>
             <router-link class="pan-btn red-btn" to="/errorpage/404">错误页面</router-link>
-            <router-link class="pan-btn pink-btn" to="/errlog/log">错误日志</router-link>
-            <router-link class="pan-btn green-btn" to="/article/wscnlist">导出excel</router-link>
-            <router-link class="pan-btn tiffany-btn" to="/excel/download">实时列表</router-link>
+            <router-link class="pan-btn pink-btn" to="/excel/download">导出excel</router-link>
+            <router-link class="pan-btn green-btn" to="/example/table">table</router-link>
+            <router-link class="pan-btn tiffany-btn" to="/example/form1">form</router-link>
         </div>
 
         <div class="clearfix main-dashboard-container">

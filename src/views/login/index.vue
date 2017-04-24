@@ -19,6 +19,8 @@
                     登录
                 </el-button>
             </el-form-item>
+            <div class='tips'>admin账号为:admin@wallstreetcn 密码随便填</div>
+            <div class='tips'>editor账号:editor@wallstreetcn 密码随便填</div>
             <router-link to="/sendpwd" class="forget-pwd">
                 忘记密码?(或首次登录)
             </router-link>
@@ -56,7 +58,7 @@
         };
         return {
           loginForm: {
-            email: '',
+            email: 'admin@wallstreetcn.com',
             password: ''
           },
           loginRules: {
@@ -125,7 +127,11 @@
 
 <style rel="stylesheet/scss" lang="scss" scoprd>
     @import "src/styles/mixin.scss";
-
+    .tips{
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 5px;
+    }
     .login-container {
         @include relative;
         height: 100vh;

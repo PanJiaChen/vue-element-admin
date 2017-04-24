@@ -29,10 +29,11 @@
         if (this.roles.indexOf('admin') >= 0) {
           return;
         }
-        const isEditor = this.roles.some(v => v.indexOf('editor') >= 0)
-        if (!isEditor) {
-          this.currentRole = 'DefaultDashboard';
-        }
+        // const isEditor = this.roles.some(v => v.indexOf('editor') >= 0)
+        // if (!isEditor) {
+        //   this.currentRole = 'DefaultDashboard';
+        // }
+        this.currentRole = 'DefaultDashboard';
       }
     }
 </script>

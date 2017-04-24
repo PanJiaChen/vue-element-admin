@@ -61,7 +61,7 @@ export function fetch(options) {
             })
             .catch(error => {
               Message({
-                message: '发生异常错误,请刷新页面重试,或联系程序员',
+                message: error,
                 type: 'error',
                 duration: 5 * 1000
               });
