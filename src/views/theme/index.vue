@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <code>会补动态换肤的教程</code>
     <el-card class="box-card">
       <div slot="header">
         <span style="line-height: 36px;">偏好设置</span>
@@ -23,19 +24,19 @@
     </div>
 
     <div class="block">
-      <el-tag v-for="tag in tags" :type="tag.type">
+      <el-tag class='tag-item' v-for="tag in tags" :type="tag.type">
         {{tag.name}}
       </el-tag>
     </div>
 
     <div class="block">
-      <el-alert title="成功提示的文案" type="success">
+      <el-alert class='alert-item' title="成功提示的文案" type="success">
       </el-alert>
-      <el-alert title="消息提示的文案" type="info">
+      <el-alert class='alert-item' title="消息提示的文案" type="info">
       </el-alert>
-      <el-alert title="警告提示的文案" type="warning">
+      <el-alert class='alert-item' title="警告提示的文案" type="warning">
       </el-alert>
-      <el-alert title="错误提示的文案" type="error">
+      <el-alert class='alert-item' title="错误提示的文案" type="error">
       </el-alert>
     </div>
 
@@ -81,5 +82,11 @@ export default {
 }
 .block{
   padding: 30px 24px;
+}
+.alert-item{
+  margin-bottom: 10px;
+}
+.tag-item{
+  margin-right: 15px;
 }
 </style>

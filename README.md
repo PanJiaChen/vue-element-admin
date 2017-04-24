@@ -1,6 +1,40 @@
-这是一个vue+element+axios+webpack2的管理后台 先占个坑
-效果预览
+##vue-element-admin
+vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue-element-admin)
 
+这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，效率依然很高。这半年来积累了不少的后台开发经验，所以准备开源分享一下。
+###功能
+- [x] 登录/注销
+- [x] 权限验证
+- [x] 富文本编辑器
+- [x] Markdown编辑器
+- [x] JSON编辑器
+- [x] 列表拖拽
+- [x] SplitPane
+- [x] Dropzone
+- [x] Sticky
+- [x] CountTo
+- [x] echarts图表
+- [x] 401，401错误页面
+- [x] 错误日志
+- [x] 导出excel
+- [x] table example
+- [x] form example
+- [x] 多环境发布
+
+###How to use?
+```bash
+    git clone https://github.com/PanJiaChen/vue-element-admin.git //克隆项目
+    npm install //安装依赖
+
+
+	npm run dev //本地开发
+    // 开启服务器，浏览器访问 http://localhost:9527
+
+    npm run build:sit-preview //发布测试环境 带webpack ananalyzer
+
+    npm run build:prod //构建生成环境
+```
+##效果图
 
 #### 两步验证登录 支持微信和qq
 
