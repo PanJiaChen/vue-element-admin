@@ -57,7 +57,9 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 
 #### 真正的动态换肤
 
-![真正的动态换肤](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/theme.gif)
+![真正的动态换肤](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/theme.gif)<br />
+
+
 
 #### 可收起侧边栏
 
@@ -67,13 +69,17 @@ vue+element+axios 的管理后台 [线上地址](http://panjiachen.github.io/vue
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/order.gif)
 
+
+
 #### 上传裁剪头像
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/uploadAvatar.gif)
 
+
+
 #### 错误统计
 
-![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/errorlog.png)
+![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/errorlog.gif)
 
 #### 富文本(整合七牛 打水印等个性化功能)
 
