@@ -1,0 +1,601 @@
+body {
+  background-color: #FFFFFF;
+  color: #000000;
+  font-family: Helvetica,Microsoft YaHei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;
+  font-size: 14px;
+  scrollbar-3dlight-color: #F0F0EE;
+  scrollbar-arrow-color: #676662;
+  scrollbar-base-color: #F0F0EE;
+  scrollbar-darkshadow-color: #DDDDDD;
+  scrollbar-face-color: #E0E0DD;
+  scrollbar-highlight-color: #F0F0EE;
+  scrollbar-shadow-color: #F0F0EE;
+  scrollbar-track-color: #F5F5F5
+}
+
+td,
+th {
+  font-family: Helvetica,Microsoft YaHei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;
+  font-size: 14px
+}
+
+.mce-content-body .mce-reset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  vertical-align: top;
+  background: transparent;
+  text-decoration: none;
+  color: black;
+  font-family: Arial;
+  font-size: 11px;
+  text-shadow: none;
+  float: none;
+  position: static;
+  width: auto;
+  height: auto;
+  white-space: nowrap;
+  cursor: inherit;
+  line-height: normal;
+  font-weight: normal;
+  text-align: left;
+  -webkit-tap-highlight-color: transparent;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  direction: ltr;
+  max-width: none
+}
+
+.mce-object {
+  border: 1px dotted #3A3A3A;
+  background: #D5D5D5 url(img/object.gif) no-repeat center
+}
+
+.mce-preview-object {
+  display: inline-block;
+  position: relative;
+  margin: 0 2px 0 2px;
+  line-height: 0;
+  border: 1px solid gray
+}
+
+.mce-preview-object[data-mce-selected="2"] .mce-shim {
+  display: none
+}
+
+.mce-preview-object .mce-shim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url(data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7)
+}
+
+figure.align-left {
+  float: left
+}
+
+figure.align-right {
+  float: right
+}
+
+figure.image.align-center {
+  display: table;
+  margin-left: auto;
+  margin-right: auto
+}
+
+figure.image {
+  display: inline-block;
+  border: 1px solid gray;
+  margin: 0 2px 0 1px;
+  background: #f5f2f0
+}
+
+figure.image img {
+  margin: 8px 8px 0 8px
+}
+
+figure.image figcaption {
+  margin: 6px 8px 6px 8px;
+  text-align: center
+}
+
+.mce-toc {
+  border: 1px solid gray
+}
+
+.mce-toc h2 {
+  margin: 4px
+}
+
+.mce-toc li {
+  list-style-type: none
+}
+
+.mce-pagebreak {
+  cursor: default;
+  display: block;
+  border: 0;
+  width: 100%;
+  height: 5px;
+  border: 1px dashed #666;
+  margin-top: 15px;
+  page-break-before: always
+}
+
+@media print {
+  .mce-pagebreak {
+    border: 0
+  }
+}
+
+.mce-item-anchor {
+  cursor: default;
+  display: inline-block;
+  -webkit-user-select: all;
+  -webkit-user-modify: read-only;
+  -moz-user-select: all;
+  -moz-user-modify: read-only;
+  user-select: all;
+  user-modify: read-only;
+  width: 9px !important;
+  height: 9px !important;
+  border: 1px dotted #3A3A3A;
+  background: #D5D5D5 url(img/anchor.gif) no-repeat center
+}
+
+.mce-nbsp,
+.mce-shy {
+  background: #AAA
+}
+
+.mce-shy::after {
+  content: '-'
+}
+
+hr {
+  cursor: default
+}
+
+.mce-match-marker {
+  background: #AAA;
+  color: #fff
+}
+
+.mce-match-marker-selected {
+  background: #3399ff;
+  color: #fff
+}
+
+.mce-spellchecker-word {
+  border-bottom: 2px solid #F00;
+  cursor: default
+}
+
+.mce-spellchecker-grammar {
+  border-bottom: 2px solid #008000;
+  cursor: default
+}
+
+.mce-item-table,
+.mce-item-table td,
+.mce-item-table th,
+.mce-item-table caption {
+  border: 1px dashed #BBB
+}
+
+td[data-mce-selected],
+th[data-mce-selected] {
+  background-color: #3399ff !important
+}
+
+.mce-edit-focus {
+  outline: 1px dotted #333
+}
+
+.mce-content-body *[contentEditable=false] *[contentEditable=true]:focus {
+  outline: 2px solid #2d8ac7
+}
+
+.mce-content-body *[contentEditable=false] *[contentEditable=true]:hover {
+  outline: 2px solid #7ACAFF
+}
+
+.mce-content-body *[contentEditable=false][data-mce-selected] {
+  outline: 2px solid #2d8ac7
+}
+
+.mce-resize-bar-dragging {
+  background-color: blue;
+  opacity: .25;
+  filter: alpha(opacity=25);
+  zoom: 1
+}
+
+
+
+
+/*自定义*/
+.mce-resizehandle{
+  display: none;
+}
+b, strong {
+    font-weight: inherit;
+    font-weight: bolder;
+}
+/*img {
+  max-height: 300px;
+}*/
+
+.note-color .dropdown-menu li .btn-group:first-child {
+  display: none;
+}
+
+.note-control-sizing {
+  display: none;
+}
+
+.panel-body {
+  font-size: 16px;
+  color: #333;
+  letter-spacing: 0.5px;
+  line-height: 28px;
+  margin-bottom: 30px;
+  padding: 0 15px 0 10px;
+}
+
+.panel-body > :last-child {
+  margin-bottom: 0;
+}
+
+.panel-body img {
+  max-width: 100%;
+  display: block;
+  margin: 0 auto;
+}
+
+.panel-body table {
+  width: 100% !important;
+}
+
+.panel-body embed {
+  max-width: 100%;
+  margin-bottom: 30px;
+}
+
+.panel-body p {
+  font-size: 16px;
+  line-height: 28px;
+  letter-spacing: 0.5px;
+  margin-bottom: 30px;
+  text-align: justify;
+  word-break: break-all;
+}
+
+.panel-body ul {
+  margin-bottom: 30px;
+}
+
+.panel-body li {
+  margin-left: 20px;
+  margin-bottom: 30px;
+}
+
+.panel-body a {
+  color: #1478F0;
+}
+
+.panel-body hr {
+  margin: 1em auto;
+  border: none;
+  padding: 0;
+  width: 100%;
+  height: 1px;
+  background: #DCDCDC;
+}
+
+.panel-body blockquote p {
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 28px;
+  color: #333;
+}
+
+.panel-body blockquote p:last-of-type {
+  margin-bottom: 0;
+}
+
+.panel-body audio,
+.panel-body canvas,
+.panel-body video {
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
+}
+
+.panel-body button,
+.panel-body input,
+.panel-body select,
+.panel-body textarea {
+  font: 500 14px/1.8 'Hiragino Sans GB', Microsoft YaHei, sans-serif;
+}
+
+.panel-body table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.panel-body th {
+  text-align: inherit;
+}
+
+.panel-body fieldset,
+.panel-body img {
+  border: 0;
+}
+
+.panel-body img {
+  -ms-interpolation-mode: bicubic;
+}
+
+.panel-body iframe {
+  display: block;
+}
+
+.panel-body blockquote {
+  position: relative;
+  font-size: 16px;
+  letter-spacing: 1px;
+  line-height: 28px;
+  margin-bottom: 40px;
+  padding: 20px;
+  background: #f0f2f5;
+}
+
+.panel-body blockquote:before {
+  position: absolute;
+  content: " \300D";
+  top: 10px;
+  left: 2px;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+  color: #333;
+}
+
+.panel-body blockquote:after {
+  position: absolute;
+  content: " \300D";
+  right: 6px;
+  bottom: 12px;
+  color: #333;
+}
+
+.panel-body blockquote blockquote {
+  padding: 0 0 0 1em;
+  margin-left: 2em;
+  border-left: 3px solid #1478F0;
+}
+
+.panel-body acronym,
+.panel-body abbr {
+  border-bottom: 1px dotted;
+  font-variant: normal;
+}
+
+.panel-body abbr {
+  cursor: help;
+}
+
+.panel-body del {
+  text-decoration: line-through;
+}
+
+.panel-body address,
+.panel-body caption,
+.panel-body cite,
+.panel-body code,
+.panel-body del,
+.panel-body th,
+.panel-body var {
+  font-style: normal;
+  font-weight: 500;
+}
+
+.panel-body caption,
+.panel-body th {
+  text-align: left;
+}
+
+.panel-body q:before,
+.panel-body q:after {
+  content: '';
+}
+
+.panel-body sub,
+.panel-body sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: text-top;
+}
+
+.panel-body :root sub,
+.panel-body :root sup {
+  vertical-align: baseline;
+  /* for ie9 and other mordern browsers */
+}
+
+.panel-body sup {
+  top: -0.5em;
+}
+
+.panel-body sub {
+  bottom: -0.25em;
+}
+
+.panel-body a:hover {
+  text-decoration: underline;
+}
+
+.panel-body ins,
+.panel-body a {
+  text-decoration: none;
+}
+
+.panel-body u,
+.panel-body .typo-u {
+  text-decoration: underline;
+}
+
+.panel-body mark {
+  background: #fffdd1;
+}
+
+.panel-body pre,
+.panel-body code {
+  font-family: "Courier New", Courier, monospace;
+}
+
+.panel-body pre {
+  border: 1px solid #ddd;
+  border-left-width: 0.4em;
+  background: #fbfbfb;
+  padding: 10px;
+}
+
+.panel-body small {
+  font-size: 12px;
+  color: #888;
+}
+
+.panel-body h1,
+.panel-body h2,
+.panel-body h3,
+.panel-body h4,
+.panel-body h5,
+.panel-body h6 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1478f0;
+  border-left: 5px solid #1478f0;
+  padding-left: 10px;
+  margin: 30px 0;
+}
+
+.panel-body h2 {
+  font-size: 1.2em;
+}
+
+.panel-body .typo p,
+.panel-body .typo pre,
+.panel-body .typo ul,
+.panel-body .typo ol,
+.panel-body .typo dl,
+.panel-body .typo form,
+.panel-body .typo hr,
+.panel-body .typo table,
+.panel-body .typo-p,
+.panel-body .typo-pre,
+.panel-body .typo-ul,
+.panel-body .typo-ol,
+.panel-body .typo-dl,
+.panel-body .typo-form,
+.panel-body .typo-hr,
+.panel-body .typo-table {
+  margin-bottom: 15px;
+  line-height: 25px;
+}
+
+.panel-body .typo h1,
+.panel-body .typo h2,
+.panel-body .typo h3,
+.panel-body .typo h4,
+.panel-body .typo h5,
+.panel-body .typo h6,
+.panel-body .typo-h1,
+.panel-body .typo-h2,
+.panel-body .typo-h3,
+.panel-body .typo-h4,
+.panel-body .typo-h5,
+.panel-body .typo-h6 {
+  margin-bottom: 0.4em;
+  line-height: 1.5;
+}
+
+.panel-body .typo h1,
+.panel-body .typo-h1 {
+  font-size: 1.8em;
+}
+
+.panel-body .typo h2,
+.panel-body .typo-h2 {
+  font-size: 1.6em;
+}
+
+.panel-body .typo h3,
+.panel-body .typo-h3 {
+  font-size: 1.4em;
+}
+
+.panel-body .typo h4,
+.panel-body .typo-h0 {
+  font-size: 1.2em;
+}
+
+.panel-body .typo h5,
+.panel-body .typo h6,
+.panel-body .typo-h5,
+.panel-body .typo-h6 {
+  font-size: 1em;
+}
+
+.panel-body .typo ul,
+.panel-body .typo-ul {
+  margin-left: 1.3em;
+  list-style: disc;
+}
+
+.panel-body .typo ol,
+.panel-body .typo-ol {
+  list-style: decimal;
+  margin-left: 1.9em;
+}
+
+.panel-body .typo li ul,
+.panel-body .typo li ol,
+.panel-body .typo-ul ul,
+.panel-body .typo-ul ol,
+.panel-body .typo-ol ul,
+.panel-body .typo-ol ol {
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 2em;
+}
+
+.panel-body .typo li ul,
+.panel-body .typo-ul ul,
+.panel-body .typo-ol ul {
+  list-style: circle;
+}
+
+.panel-body .typo table th,
+.panel-body .typo table td,
+.panel-body .typo-table th,
+.panel-body .typo-table td {
+  border: 1px solid #ddd;
+  padding: 5px 10px;
+}
+
+.panel-body .typo table th,
+.panel-body .typo-table th {
+  background: #fbfbfb;
+}
+
+.panel-body .typo table thead th,
+.panel-body .typo-table thead th {
+  background: #f1f1f1;
+}
