@@ -24,7 +24,7 @@
     </div>
 
     <div class="block">
-      <el-tag class='tag-item' v-for="tag in tags" :type="tag.type">
+      <el-tag class='tag-item' v-for="tag in tags" :type="tag.type" :key='tag.type'>
         {{tag.name}}
       </el-tag>
     </div>

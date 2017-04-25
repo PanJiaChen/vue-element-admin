@@ -18,6 +18,9 @@ import authRedirect from '../views/login/authredirect';
 import sendPWD from '../views/login/sendpwd';
 import reset from '../views/login/reset';
 
+/* Introduction*/
+const Introduction = resolve => require(['../views/introduction/index'], resolve);
+
 /* components*/
 const componentsIndex = resolve => require(['../views/components/index'], resolve);
 const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
@@ -84,11 +87,19 @@ export default new Router({
       redirect: '/dashboard',
       name: '首页',
       hidden: true,
+      children: [{ path: 'dashboard', component: dashboard }]
+    },
+    {
+      path: '/introduction',
+      component: Layout,
+      redirect: '/introduction/index',
+      name: '简述',
+      icon: 'xinrenzhinan',
+      noDropdown: true,
       children: [
-                { path: 'dashboard', component: dashboard }
+       { path: 'index', component: Introduction, name: '简述' }
       ]
     },
-
     {
       path: '/permission',
       component: Layout,
