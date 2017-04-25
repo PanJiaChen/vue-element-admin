@@ -64,7 +64,6 @@
                     </template>
                     <template v-else>
                         <div class="recent-articles-emptyTitle">你太懒了最近都没有撸</div>
-                        <!--<img class="emptyGif" :src="emptyGif">-->
                     </template>
                 </div>
             </div>
@@ -78,7 +77,6 @@
     import MonthKpi from './monthKpi';
     import ArticlesChart from './articlesChart';
     import { getList } from 'api/article';
-    import emptyGif from 'assets/compbig.gif';
     import countTo from 'vue-count-to';
     export default {
       name: 'dashboard-editor',
@@ -107,8 +105,7 @@
                 { count: 41, week: '201705' }
             ]
           },
-          list: [],
-          emptyGif
+          list: []
         }
       },
       created() {
@@ -148,11 +145,6 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-    .emptyGif {
-        width: 100%;
-        height: 100%;
-    }
-
     .recent-articles-emptyTitle {
         font-size: 16px;
         color: #95A5A6;
