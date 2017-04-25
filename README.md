@@ -40,7 +40,7 @@
     npm install
 
     # 本地开发 开启服务
-    npm run build
+    npm run dev
 ```
 浏览器访问 http://localhost:9527
 
