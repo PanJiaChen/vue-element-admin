@@ -135,4 +135,9 @@
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/excel.png)
 
-等等很多，尽请期待！
+
+## [更多demo](http://panjiachen.github.io/vue-element-admin)
+
+
+###占坑
+一系列的配套文章即将来袭~
