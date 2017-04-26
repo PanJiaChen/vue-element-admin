@@ -10,7 +10,6 @@ var config = require('../config');
 var webpackConfig = require('./webpack.prod.conf');
 
 console.log(process.env.NODE_ENV)
-console.log(process.env.npm_config_preview)
 
 var spinner = ora('building for ' + process.env.NODE_ENV + '...')
 spinner.start()
