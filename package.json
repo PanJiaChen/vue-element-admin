@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "A Vue.js admin",
   "author": "Pan <panfree23@gmail.com>",
+  "license": "MIT",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
