@@ -1,24 +1,29 @@
 <template>
   <div class='tinymce-container editor-container'>
     <textarea class='tinymce-textarea' :id="id"></textarea>
+    <!--业务需求可删除-->
     <div class="editor-custom-btn-container">
       <editorSlide v-if="customButton.indexOf('editorSlide')>=0" color="#3A71A8" class="editor-upload-btn" @successCBK="slideSuccessCBK"></editorSlide>
       <editorAudio v-if="customButton.indexOf('editorAudio')>=0" color="#30B08F" class="editor-upload-btn" @successCBK="aduioSuccessCBK"></editorAudio>
       <editorVideo v-if="customButton.indexOf('editorVideo')>=0" color="#E65D6E" class="editor-upload-btn" @successCBK="videoSuccessCBK"></editorVideo>
        <editorImage v-if="customButton.indexOf('editorImage')>=0" color="#20a0ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+     <!--业务需求可删除-->
     </div>
   </div>
 </template>
 
 <script>
+    // tinymce 在最外层目录static下 ，由index.html直接引入，挂载在window下。不通过impot，不打包
+    // 业务需求可删除
     import editorAudio from './components/editorAudio';
     import editorVideo from './components/editorVideo';
     import editorSlide from './components/editorSlide';
     import editorImage from './components/editorImage';
-    import { getToken, upload } from 'api/qiniu';
+    import { getToken, upload } from 'api/qiniu'; // 七牛
+    // 业务需求可删除
     export default {
       name: 'tinymce',
-      components: { editorImage, editorAudio, editorSlide, editorVideo },
+      components: { editorImage, editorAudio, editorSlide, editorVideo }, // 业务需求可删除
       props: {
         id: {
           type: String,
@@ -100,6 +105,7 @@
               this.$emit('input', editor.getContent({ format: 'raw' }));
             });
           },
+          // 整合七牛上传
           // images_dataimg_filter(img) {
           //   setTimeout(() => {
           //     const $image = $(img);
@@ -149,7 +155,7 @@
               }
             });
             editor.addButton('p', {
-              title: '正文', // tooltip text seen on mouseover
+              title: '正文',
               text: '正文',
               onclick() {
                 editor.execCommand('mceToggleFormat', false, 'p');
@@ -167,6 +173,7 @@
         });
       },
       methods: {
+        /* 业务代码可删除 start*/
         imageSuccessCBK(arr) {
           console.log(arr)
           const _this = this;
@@ -212,6 +219,7 @@
           node.className = 'wscnph editor-placeholder';
           tinymce.get(this.id).insertContent(node.outerHTML)
         }
+        /* 业务代码可删除 end*/
       },
       destroyed() {
         tinymce.get(this.id).destroy();

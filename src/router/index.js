@@ -5,7 +5,6 @@ import Router from 'vue-router';
 import Layout from '../views/layout/Layout';
 
 // dashboard
-// import dashboard from '../views/dashboard/index';
 const dashboard = resolve => require(['../views/dashboard/index'], resolve);
 
 /* error page*/

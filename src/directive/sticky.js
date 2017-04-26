@@ -11,14 +11,12 @@
 
         elStyle.position = '-webkit-sticky';
         elStyle.position = 'sticky';
-
-                // if the browser support css sticky（Currently Safari, Firefox and Chrome Canary）
-                // if (~elStyle.position.indexOf('sticky')) {
-                //     elStyle.top = `${stickyTop}px`;
-                //     elStyle.zIndex = zIndex;
-                //     return
-                // }
-
+        // if the browser support css sticky（Currently Safari, Firefox and Chrome Canary）
+        // if (~elStyle.position.indexOf('sticky')) {
+        //     elStyle.top = `${stickyTop}px`;
+        //     elStyle.zIndex = zIndex;
+        //     return
+        // }
         const elHeight = el.getBoundingClientRect().height;
         const elWidth = el.getBoundingClientRect().width;
         elStyle.cssText = `top: ${stickyTop}px; z-index: ${zIndex}`;

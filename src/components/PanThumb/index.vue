@@ -2,7 +2,7 @@
     <div class="pan-item" :style="{zIndex:zIndex,height:height,width:width}">
         <div class="pan-info">
             <div class="pan-info-roles-container">
-                <slot>pan</slot>
+                <slot></slot>
             </div>
         </div>
         <img class="pan-thumb" :src="image">

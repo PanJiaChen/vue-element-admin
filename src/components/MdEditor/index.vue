@@ -1,5 +1,5 @@
 <template>
-  <div class='simplemde-container'>
+  <div class='simplemde-container' :style="{height:height+'px',zIndex:zIndex}">
     <textarea :id='id'>
     </textarea>
   </div>
@@ -24,11 +24,16 @@ export default {
       type: String,
       default: ''
     },
+    height: {
+      type: Number,
+      default: 150
+    },
+    zIndex: {
+      type: Number,
+      default: 10
+    },
     toolbar: {
       type: Array
-      // default() {
-      //   return ['bold', '|', 'link']
-      // }
     }
   },
   data() {
@@ -58,7 +63,6 @@ export default {
     if (this.value) {
       this.simplemde.value(this.value);
     }
-
     this.simplemde.codemirror.on('change', () => {
       if (this.hasChange) {
         this.hasChange = true
@@ -74,7 +78,7 @@ export default {
 
 <style>
   .simplemde-container .CodeMirror {
-    height: 150px;
+    /*height: 150px;*/
     min-height: 150px;
   }
   .simplemde-container .CodeMirror-scroll{
@@ -102,7 +106,6 @@ export default {
     font-weight: bold;
     color: #E61E1E;
   }
-
 </style>
 
 
