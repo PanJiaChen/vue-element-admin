@@ -64,12 +64,13 @@ const user = {
   actions: {
     // 邮箱登录
     LoginByEmail({ commit }, userInfo) {
+      const email = userInfo.email.trim();
       return new Promise((resolve, reject) => {
-        loginByEmail(userInfo.email, userInfo.password).then(response => {
+        loginByEmail(email, userInfo.password).then(response => {
           const data = response.data;
           Cookies.set('X-Ivanka-Token', response.data.token);
           commit('SET_TOKEN', data.token);
-          commit('SET_EMAIL', userInfo.email);
+          commit('SET_EMAIL', email);
           resolve();
         }).catch(error => {
           reject(error);

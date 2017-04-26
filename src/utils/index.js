@@ -1,7 +1,6 @@
 /**
  * Created by jiachenpan on 16/11/18.
  */
-
  import showdown from 'showdown' // markdown转化
  const converter = new showdown.Converter();
 
@@ -61,8 +60,6 @@
  }
 
 // 格式化时间
-
-
  export function getQueryObject(url) {
    url = url == null ? window.location.href : url;
    const search = url.substring(url.lastIndexOf('?') + 1);
@@ -77,8 +74,6 @@
    });
    return obj;
  }
-
-
 
 
 /**
@@ -149,7 +144,6 @@
    if (duration <= 0) return;
    const difference = to - element.scrollTop;
    const perTick = difference / duration * 10;
-
    setTimeout(() => {
      console.log(new Date())
      element.scrollTop = element.scrollTop + perTick;
@@ -162,7 +156,6 @@
    if (!element || !className) {
      return;
    }
-
    let classString = element.className;
    const nameIndex = classString.indexOf(className);
    if (nameIndex === -1) {
