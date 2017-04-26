@@ -81,7 +81,7 @@
             top: 0;
             bottom: 0;
             left: 0;
-            z-index: 1001;
+            z-index: 2;
             overflow-x: hidden;
             transition: all .28s ease-out;
             @include scrollBar;
