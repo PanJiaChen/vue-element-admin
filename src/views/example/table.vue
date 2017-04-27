@@ -17,9 +17,10 @@
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
       <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
+      <el-checkbox class="filter-item" @change='tableKey=tableKey+1'  v-model="showAuditor">显示审核人</el-checkbox>
     </div>
 
-    <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+    <el-table  :key='tableKey' :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="序号" width="65">
         <template scope="scope">
@@ -43,6 +44,12 @@
       <el-table-column width="110px" align="center" label="作者">
         <template scope="scope">
           <span>{{scope.row.author}}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column width="110px" v-if='showAuditor' align="center" label="审核人">
+        <template scope="scope">
+          <span style='color:red;'>{{scope.row.auditor}}</span>
         </template>
       </el-table-column>
 
@@ -188,7 +195,9 @@
             create: '创建'
           },
           dialogPvVisible: false,
-          pvData: []
+          pvData: [],
+          showAuditor: false,
+          tableKey: 0
         }
       },
       created() {
