@@ -9,6 +9,7 @@ for (let i = 0; i < count; i++) {
     id: '@increment',
     timestamp: +Mock.Random.date('T'),
     author: '@cname',
+    auditor: '@cname',
     title: '@ctitle(10, 20)',
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
