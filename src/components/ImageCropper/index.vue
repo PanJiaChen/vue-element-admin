@@ -694,7 +694,7 @@
                 // 上传成功
                 function(resData) {
                     that.loading = 2;
-                    that.$emit('crop-upload-success', url);
+                    that.$emit('crop-upload-success', resData);
                 },
                 // 上传失败
                 function(sts) {
