@@ -19,7 +19,7 @@
     import editorVideo from './components/editorVideo';
     import editorSlide from './components/editorSlide';
     import editorImage from './components/editorImage';
-    import { getToken, upload } from 'api/qiniu'; // 七牛
+    // import { getToken, upload } from 'api/qiniu'; // 七牛
     // 业务需求可删除
     export default {
       name: 'tinymce',

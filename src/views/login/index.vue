@@ -35,7 +35,7 @@
 <script>
     import { mapGetters } from 'vuex';
     import { isWscnEmail } from 'utils/validate';
-    import { getQueryObject } from 'utils';
+    // import { getQueryObject } from 'utils';
     import socialSign from './socialsignin';
 
     export default {

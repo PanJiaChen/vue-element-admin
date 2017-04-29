@@ -63,11 +63,6 @@
           return this.active ? 'col-resize' : ''
         }
       },
-      mounted() {
-        const element = this.$el;
-        const elementOffset = element.getBoundingClientRect();
-//            this.height = elementOffset.height+'px';
-      },
       methods: {
         onClick() {
           if (!this.hasMoved) {

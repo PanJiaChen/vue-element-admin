@@ -6,7 +6,7 @@
 <script>
     import Dropzone from 'dropzone';
     import 'dropzone/dist/dropzone.css';
-    import { getToken } from 'api/qiniu';
+    // import { getToken } from 'api/qiniu';
 
     Dropzone.autoDiscover = false;
 
@@ -69,6 +69,7 @@
           },
           sending: (file, xhr, formData) => {
              /* 七牛*/
+            console.log(file, xhr, formData)
             // formData.append('token', file.token);
             // formData.append('key', file.key);
             vm.initOnce = false;

@@ -94,26 +94,26 @@
       },
       methods: {
         setPWD() {
-          this.loading = true;
-          const _this = this;
-          this.$refs.resetForm.validate(valid => {
-            if (valid) {
-              const data = {
-                email: this.resetForm.email,
-                code: this.resetForm.code,
-                new_password: this.resetForm.checkPass
-              };
-              // restPWD(data).then(() => {
-              //   this.$message.success('密码设置成功,五秒后调整到登录页');
-              //   setTimeout(() => {
-              //     _this.$router.push({ path: '/login' })
-              //   }, 5 * 1000)
-              // });
-            } else {
-              this.$message.error('error submit!!');
-            }
-            this.loading = false;
-          });
+          // this.loading = true;
+          // const _this = this;
+          // this.$refs.resetForm.validate(valid => {
+          //   if (valid) {
+          //     const data = {
+          //       email: this.resetForm.email,
+          //       code: this.resetForm.code,
+          //       new_password: this.resetForm.checkPass
+          //     };
+          //     restPWD(data).then(() => {
+          //       this.$message.success('密码设置成功,五秒后调整到登录页');
+          //       setTimeout(() => {
+          //         _this.$router.push({ path: '/login' })
+          //       }, 5 * 1000)
+          //     });
+          //   } else {
+          //     this.$message.error('error submit!!');
+          //   }
+          //   this.loading = false;
+          // });
         },
         togglePasswordType() {
           if (this.passwordType === 'text') {

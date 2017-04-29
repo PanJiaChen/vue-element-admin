@@ -54,66 +54,57 @@ const Theme = resolve => require(['../views/theme/index'], resolve);
 const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
 const Table = resolve => require(['../views/example/table'], resolve);
 const Form1 = resolve => require(['../views/example/form1'], resolve);
-const Form2 = resolve => require(['../views/example/form2'], resolve);
+// const Form2 = resolve => require(['../views/example/form2'], resolve);
 
 /* permission */
 const Permission = resolve => require(['../views/permission/index'], resolve);
-
-/* admin*/
-// const AdminCreateUser = resolve => require(['../views/admin/createUser'], resolve);
-// const QuicklyCreateUser = resolve => require(['../views/admin/quicklycreate'], resolve);
-// const UserProfile = resolve => require(['../views/admin/profile'], resolve);
-// const UsersList = resolve => require(['../views/admin/usersList'], resolve);
-
-
 
 
 Vue.use(Router);
 
 export default new Router({
-    // mode: 'history', //后端支持可开
-    scrollBehavior: () => ({ y: 0 }),
-    routes: [
+  // mode: 'history', //后端支持可开
+  scrollBehavior: () => ({ y: 0 }),
+  routes: [
         { path: '/login', component: Login, hidden: true },
         { path: '/authredirect', component: authRedirect, hidden: true },
         { path: '/sendpwd', component: sendPWD, hidden: true },
         { path: '/reset', component: reset, hidden: true },
         { path: '/404', component: Err404, hidden: true },
         { path: '/401', component: Err401, hidden: true }, {
-            path: '/',
-            component: Layout,
-            redirect: '/dashboard',
-            name: '首页',
-            hidden: true,
-            children: [{ path: 'dashboard', component: dashboard }]
+          path: '/',
+          component: Layout,
+          redirect: '/dashboard',
+          name: '首页',
+          hidden: true,
+          children: [{ path: 'dashboard', component: dashboard }]
         }, {
-            path: '/introduction',
-            component: Layout,
-            redirect: '/introduction/index',
-            name: '简述',
-            icon: 'xinrenzhinan',
-            noDropdown: true,
-            children: [
+          path: '/introduction',
+          component: Layout,
+          redirect: '/introduction/index',
+          icon: 'xinrenzhinan',
+          noDropdown: true,
+          children: [
                 { path: 'index', component: Introduction, name: '简述' }
-            ]
+          ]
         }, {
-            path: '/permission',
-            component: Layout,
-            redirect: '/permission/index',
-            name: '权限测试',
-            icon: 'quanxian',
-            meta: { role: ['admin'] },
-            noDropdown: true,
-            children: [
+          path: '/permission',
+          component: Layout,
+          redirect: '/permission/index',
+          name: '权限测试',
+          icon: 'quanxian',
+          meta: { role: ['admin'] },
+          noDropdown: true,
+          children: [
                 { path: 'index', component: Permission, name: '权限测试页', meta: { role: ['admin'] } }
-            ]
+          ]
         }, {
-            path: '/components',
-            component: Layout,
-            redirect: '/components/index',
-            name: '组件',
-            icon: 'zujian',
-            children: [
+          path: '/components',
+          component: Layout,
+          redirect: '/components/index',
+          name: '组件',
+          icon: 'zujian',
+          children: [
                 { path: 'index', component: componentsIndex, name: '介绍 ' },
                 { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
                 { path: 'markdown', component: Markdown, name: 'Markdown' },
@@ -125,72 +116,72 @@ export default new Router({
                 { path: 'sticky', component: Sticky, name: 'Sticky' },
                 { path: 'countto', component: CountTo, name: 'CountTo' },
                 { path: 'mixin', component: Mixin, name: '小组件' }
-            ]
+          ]
         }, {
-            path: '/charts',
-            component: Layout,
-            redirect: '/charts/index',
-            name: '图表',
-            icon: 'tubiaoleixingzhengchang',
-            children: [
+          path: '/charts',
+          component: Layout,
+          redirect: '/charts/index',
+          name: '图表',
+          icon: 'tubiaoleixingzhengchang',
+          children: [
                 { path: 'index', component: chartIndex, name: '介绍' },
                 { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
                 { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
                 { path: 'line', component: LineMarker, name: '折线图' },
                 { path: 'mixchart', component: MixChart, name: '混合图表' }
-            ]
+          ]
         }, {
-            path: '/errorpage',
-            component: Layout,
-            redirect: 'noredirect',
-            name: '错误页面',
-            icon: '404',
-            children: [
+          path: '/errorpage',
+          component: Layout,
+          redirect: 'noredirect',
+          name: '错误页面',
+          icon: '404',
+          children: [
                 { path: '401', component: Err401, name: '401' },
                 { path: '404', component: Err404, name: '404' }
-            ]
+          ]
         }, {
-            path: '/errlog',
-            component: Layout,
-            redirect: 'noredirect',
-            name: 'errlog',
-            icon: 'bug',
-            noDropdown: true,
-            children: [
+          path: '/errlog',
+          component: Layout,
+          redirect: 'noredirect',
+          name: 'errlog',
+          icon: 'bug',
+          noDropdown: true,
+          children: [
                 { path: 'log', component: ErrorLog, name: '错误日志' }
-            ]
+          ]
         }, {
-            path: '/excel',
-            component: Layout,
-            redirect: 'noredirect',
-            name: 'excel',
-            icon: 'EXCEL',
-            noDropdown: true,
-            children: [
+          path: '/excel',
+          component: Layout,
+          redirect: 'noredirect',
+          name: 'excel',
+          icon: 'EXCEL',
+          noDropdown: true,
+          children: [
                 { path: 'download', component: ExcelDownload, name: '导出excel' }
-            ]
+          ]
         }, {
-            path: '/theme',
-            component: Layout,
-            redirect: 'noredirect',
-            name: 'theme',
-            icon: 'theme',
-            noDropdown: true,
-            children: [
+          path: '/theme',
+          component: Layout,
+          redirect: 'noredirect',
+          name: 'theme',
+          icon: 'theme',
+          noDropdown: true,
+          children: [
                 { path: 'index', component: Theme, name: '换肤' }
-            ]
+          ]
         }, {
-            path: '/example',
-            component: Layout,
-            redirect: 'noredirect',
-            name: '综合实例',
-            icon: 'zonghe',
-            children: [
+          path: '/example',
+          component: Layout,
+          redirect: 'noredirect',
+          name: '综合实例',
+          icon: 'zonghe',
+          children: [
                 { path: 'dynamictable', component: DynamicTable, name: '动态table' },
                 { path: 'table', component: Table, name: '综合table' },
                 { path: 'form1', component: Form1, name: '综合form1' }
                 // { path: 'form2', component: Form2, name: '综合form2' }
-            ]
+          ]
         },
         // {
         //   path: '/admin',
@@ -206,5 +197,5 @@ export default new Router({
         //   ]
         // },
         { path: '*', redirect: '/404', hidden: true }
-    ]
+  ]
 });

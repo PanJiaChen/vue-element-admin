@@ -54,7 +54,7 @@
     "eslint-friendly-formatter": "2.0.7",
     "eslint-import-resolver-webpack": "0.8.1",
     "eslint-loader": "1.6.3",
-    "eslint-plugin-html": "2.0.0",
+    "eslint-plugin-html": "2.0.1",
     "eslint-plugin-import": "2.2.0",
     "eventsource-polyfill": "0.9.6",
     "express": "4.14.1",
