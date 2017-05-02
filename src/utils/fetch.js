@@ -7,7 +7,7 @@ export default function _fetch(options) {
   return new Promise((resolve, reject) => {
     const instance = axios.create({
       baseURL: process.env.BASE_API,
-            // timeout: 2000,
+      // timeout: 2000,
       headers: { 'X-Ivanka-Token': store.getters.token }
     });
     instance(options)
@@ -20,15 +20,14 @@ export default function _fetch(options) {
                   type: 'error',
                   duration: 5 * 1000
                 });
-                    // 50014:Token 过期了 50012:其他客户端登录了 50008:非法的token
+                // 50014:Token 过期了 50012:其他客户端登录了 50008:非法的token
                 if (res.code === 50008 || res.code === 50014 || res.code === 50012) {
                   Message({
                     message: res.message,
                     type: 'error',
                     duration: 5 * 1000
                   });
-                        // router.push({path: '/'})
-                        // TODO
+                  // 登出
                   store.dispatch('FedLogOut').then(() => {
                     router.push({ path: '/login' })
                   });

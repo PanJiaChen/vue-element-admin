@@ -38,7 +38,7 @@
 
     # 安装依赖
     npm install
-    
+
     # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
     npm install --registry=https://registry.npm.taobao.org
 
@@ -61,7 +61,7 @@
 ├── build                      // 构建相关  
 ├── config                     // 配置相关
 ├── src                        // 源代码
-│   ├── api                    // 所以请求
+│   ├── api                    // 所有请求
 │   ├── assets                 // 主题 字体等静态资源
 │   ├── components             // 全局公用组件
 │   ├── directive              // 全局指令
