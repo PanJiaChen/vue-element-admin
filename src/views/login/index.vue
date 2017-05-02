@@ -125,7 +125,7 @@
     }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoprd>
+<style rel="stylesheet/scss" lang="scss">
     @import "src/styles/mixin.scss";
     .tips{
       font-size: 14px;
