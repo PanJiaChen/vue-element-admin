@@ -69,6 +69,7 @@
                 }
                 &:hover {
                     transform: translate(0, 0);
+                     z-index: 1001;
                     .sidebar-container {
                         transform: translate(0, 0);
                     }
