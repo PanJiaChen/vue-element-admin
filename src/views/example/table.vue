@@ -14,6 +14,11 @@
         </el-option>
       </el-select>
 
+      <el-select @change='handleFilter' style="width: 120px" class="filter-item" v-model="listQuery.sort" placeholder="排序">
+        <el-option v-for="item in sortOptions" :key="item.key" :label="item.label" :value="item.key">
+        </el-option>
+      </el-select>
+
       <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
       <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
@@ -174,7 +179,8 @@
             limit: 20,
             importance: undefined,
             title: undefined,
-            type: undefined
+            type: undefined,
+            sort: '+id'
           },
           temp: {
             id: undefined,
@@ -187,6 +193,7 @@
           },
           importanceOptions: [1, 2, 3],
           calendarTypeOptions,
+          sortOptions: [{ label: '按ID升序列', key: '+id' }, { label: '按ID降序', key: '-id' }],
           statusOptions: ['published', 'draft', 'deleted'],
           dialogFormVisible: false,
           dialogStatus: '',
