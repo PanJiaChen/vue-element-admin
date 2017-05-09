@@ -28,6 +28,8 @@
 - 错误日志
 - 导出excel
 - table example
+- 动态table example
+- 拖拽table example
 - form example
 - 多环境发布
 - dashboard
