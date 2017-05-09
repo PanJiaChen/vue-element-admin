@@ -54,6 +54,7 @@ const Theme = resolve => require(['../views/theme/index'], resolve);
 const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
 const Table = resolve => require(['../views/example/table'], resolve);
 const DragTable = resolve => require(['../views/example/dragTable'], resolve);
+const InlineEditTable = resolve => require(['../views/example/inlineEditTable'], resolve);
 const Form1 = resolve => require(['../views/example/form1'], resolve);
 // const Form2 = resolve => require(['../views/example/form2'], resolve);
 
@@ -180,6 +181,7 @@ export default new Router({
           children: [
                 { path: 'dynamictable', component: DynamicTable, name: '动态table' },
                 { path: 'dragtable', component: DragTable, name: '拖拽table' },
+                { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
                 { path: 'table', component: Table, name: '综合table' },
                 { path: 'form1', component: Form1, name: '综合form1' }
                 // { path: 'form2', component: Form2, name: '综合form2' }
