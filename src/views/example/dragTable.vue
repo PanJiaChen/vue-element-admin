@@ -53,7 +53,7 @@
 
     </el-table>
 
-    <div class='show-d'>默认顺序{{olderList}}</div>
+    <div class='show-d'>默认顺序  &nbsp;  {{ olderList}}</div>
     <div class='show-d'>拖拽后顺序{{newList}}</div>
 
   </div>
@@ -112,7 +112,7 @@
           // handle: '.drag-handler',
             onEnd: evt => {
               const tempIndex = this.newList.splice(evt.oldIndex, 1)[0];
-              this.newList.splice(evt.newIndex, 1, tempIndex);
+              this.newList.splice(evt.newIndex, 0, tempIndex);
             }
           });
         }
