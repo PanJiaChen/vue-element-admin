@@ -29,14 +29,13 @@ rm(path.join(config.build.assetsRoot, config.build.assetsSubDirectory), err => {
             }) + '\n\n')
 
         console.log(chalk.cyan('  Build complete.\n'))
-        console.log('> Listening at ' +  'http://localhost:9528' + '\n')
         if(process.env.npm_config_preview){
             server.start({
                 port: 9528,
                 directory: './dist',
                 file: '/index.html'
             });
-            opn('http://kushnerpreview.wallstreetcn.com/')
+            console.log('> Listening at ' +  'http://localhost:9528' + '\n')
         }
     })
 })
