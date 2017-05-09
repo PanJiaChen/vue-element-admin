@@ -124,7 +124,6 @@
 .drag-handler{
   width: 30px;
   height: 30px;
-  display: block;
 }
 .show-d{
   margin-top: 15px;
