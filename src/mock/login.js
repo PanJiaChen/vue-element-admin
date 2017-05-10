@@ -25,7 +25,7 @@ const userMap = {
 
 export default {
   loginByEmail: config => {
-    const { email } = config.params;
+    const { email } = JSON.parse(config.data);
     return new Promise((resolve, reject) => {
       if (userMap[email.split('@')[0]]) {
         setTimeout(() => {

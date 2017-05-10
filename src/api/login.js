@@ -8,7 +8,7 @@ export function loginByEmail(email, password) {
   return fetch({
     url: '/login/loginbyemail',
     method: 'post',
-    params: data
+    data
   });
 }
 
