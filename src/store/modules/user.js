@@ -87,6 +87,7 @@ const user = {
           commit('SET_ROLES', data.role);
           commit('SET_NAME', data.name);
           commit('SET_AVATAR', data.avatar);
+          commit('SET_UID', data.uid);
           commit('SET_INTRODUCTION', data.introduction);
           resolve(response);
         }).catch(error => {

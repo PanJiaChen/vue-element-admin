@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      if (to.meta && to.meta.role) {
+      if (to.meta && to.meta.role && store.getters.uid) {
         if (hasPermission(store.getters.roles, to.meta.role)) {
           next();
         } else {
