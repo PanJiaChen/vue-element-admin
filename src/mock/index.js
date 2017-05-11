@@ -22,5 +22,6 @@ mock.onGet('/article_table/pv').reply(article_tableAPI.getPv);
 // 搜索相关
 mock.onGet('/search/user').reply(remoteSearchAPI.searchUser);
 
+mock.onAny().passThrough();
 
 export default mock;
