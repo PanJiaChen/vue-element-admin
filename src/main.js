@@ -62,7 +62,8 @@ router.beforeEach((to, from, next) => {
     if (whiteList.indexOf(to.path) !== -1) {
       next()
     } else {
-      next('/login')
+      next('/login');
+      NProgress.done(); // 在hash模式下 改变手动改变hash 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     }
   }
 });
