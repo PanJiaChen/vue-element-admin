@@ -15,8 +15,6 @@
     import store from 'store';
     import router from 'router';
     import permission from 'store/permission';
-    // import { Loading } from 'element-ui';
-    // let loadingInstance;
     export default {
       name: 'layout',
       components: {
@@ -35,17 +33,13 @@
           next();
           return
         }
-
-        // loadingInstance = Loading.service({ fullscreen: true, text: '玩命加载中' });
         store.dispatch('GetInfo').then(() => {
           permission.init({
             roles: store.getters.roles,
             router: router.options.routes
           });
-        //   loadingInstance.close();
           next();
         }).catch(err => {
-        //   loadingInstance.close();
           console.log(err);
         });
       }
