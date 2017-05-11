@@ -31,7 +31,7 @@
     "vue": "2.2.6",
     "vue-count-to": "1.0.5",
     "vue-multiselect": "2.0.0-beta.14",
-    "vue-router": "2.3.0",
+    "vue-router": "2.5.3",
     "vuedraggable": "2.8.4",
     "vuex": "2.2.1",
     "xlsx": "0.8.1"
