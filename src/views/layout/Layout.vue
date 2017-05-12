@@ -54,7 +54,6 @@
         height: 100%;
         width: 100%;
         &.hideSidebar {
-            padding-left: 40px;
             .sidebar-wrapper {
                 transform: translate(-140px, 0);
                 .sidebar-container {
@@ -62,14 +61,13 @@
                 }
                 &:hover {
                     transform: translate(0, 0);
-                     z-index: 1001;
                     .sidebar-container {
                         transform: translate(0, 0);
                     }
                 }
             }
             .main-container{
-                padding-left: 0px;
+                margin-left: 40px;
             }
         }
         .sidebar-wrapper {
@@ -78,7 +76,7 @@
             top: 0;
             bottom: 0;
             left: 0;
-            z-index: 2;
+            z-index: 1001;
             overflow-x: hidden;
             transition: all .28s ease-out;
             @include scrollBar;
@@ -87,10 +85,9 @@
             transition: all .28s ease-out;
         }
         .main-container {
-            width: 100%;
             min-height: 100%;
             transition: all .28s ease-out;
-            padding-left: 180px;
+            margin-left: 180px;
         }
     }
 </style>

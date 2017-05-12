@@ -1,5 +1,5 @@
 <template>
-    <el-menu mode="vertical" theme="dark" :default-active="$route.path">
+    <el-menu :unique-opened='true' mode="vertical" theme="dark" :default-active="$route.path">
         <template v-for="item in permissionRoutes" v-if="!item.hidden">
             <el-submenu :index="item.name" v-if="!item.noDropdown">
                 <template slot="title">
