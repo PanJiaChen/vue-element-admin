@@ -53,7 +53,6 @@
         position: relative;
         height: 100%;
         width: 100%;
-        padding-left: 180px;
         &.hideSidebar {
             padding-left: 40px;
             .sidebar-wrapper {
@@ -68,6 +67,9 @@
                         transform: translate(0, 0);
                     }
                 }
+            }
+            .main-container{
+                padding-left: 0px;
             }
         }
         .sidebar-wrapper {
@@ -88,6 +90,7 @@
             width: 100%;
             min-height: 100%;
             transition: all .28s ease-out;
+            padding-left: 180px;
         }
     }
 </style>
