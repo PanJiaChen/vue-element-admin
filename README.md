@@ -1,4 +1,7 @@
+# vue-element-admin #
 [线上地址](http://panjiachen.github.io/vue-element-admin)
+
+[English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
 
 ## 前言
 > 这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios.由于是个人项目，所以数据请求都是用了mockjs代替。注意：在次项目基础上改造开发时请移除mock文件，不然所有请求都将会被代理掉！注意！
