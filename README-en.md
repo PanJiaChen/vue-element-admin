@@ -77,7 +77,7 @@ npm run build:prod
 
 ## Directory structure
 
-```shell
+```
 ├── build                      // build 
 ├── config                     // config
 ├── src                        // source code
