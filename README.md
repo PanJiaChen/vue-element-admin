@@ -12,6 +12,9 @@
 
  - [手摸手，带你用 vue 撸后台 系列一](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
  - [ 手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
+ - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+ 
+ **如有问题请先看上述问题和Wiki,不能满足，欢迎issue和pr~**
 
 ## 功能
 - 登录/注销
@@ -48,8 +51,7 @@
 
     # 安装依赖
     npm install
-
-    # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
+    //or # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
     npm install --registry=https://registry.npm.taobao.org
 
     # 本地开发 开启服务
