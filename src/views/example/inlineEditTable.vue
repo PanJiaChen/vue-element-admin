@@ -59,7 +59,6 @@
       data() {
         return {
           list: null,
-          total: null,
           listLoading: true,
           listQuery: {
             page: 1,
@@ -84,11 +83,10 @@
         getList() {
           this.listLoading = true;
           fetchList(this.listQuery).then(response => {
-            this.list = response.items.map(v => {
+            this.list = response.data.items.map(v => {
               v.edit = false;
               return v
             });
-            this.total = response.total;
             this.listLoading = false;
           })
         }

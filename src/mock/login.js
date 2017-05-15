@@ -1,3 +1,5 @@
+import { param2Obj } from 'utils';
+
 const userMap = {
   admin: {
     role: ['admin'],
@@ -28,36 +30,17 @@ const userMap = {
 
 export default {
   loginByEmail: config => {
-    const { email } = JSON.parse(config.data);
-    return new Promise((resolve, reject) => {
-      if (userMap[email.split('@')[0]]) {
-        setTimeout(() => {
-          resolve([200, {
-            data: userMap[email.split('@')[0]]
-          }]);
-        }, 500);
-      } else {
-        reject('账号不正确')
-      }
-    })
+    console.log(config)
+    const { email } = JSON.parse(config.body);
+    return userMap[email.split('@')[0]];
   },
   getInfo: config => {
-    const { token } = config.params;
-    return new Promise((resolve, reject) => {
-      if (userMap[token]) {
-        setTimeout(() => {
-          resolve([200, {
-            data: userMap[token]
-          }]);
-        }, 100);
-      } else {
-        reject('获取失败')
-      }
-    })
+    const { token } = param2Obj(config.url);
+    if (userMap[token]) {
+      return userMap[token];
+    } else {
+      return Promise.reject('a');
+    }
   },
-  logout: () => new Promise(resolve => {
-    setTimeout(() => {
-      resolve([200, { data: 'success' }]);
-    }, 100);
-  })
+  logout: () => 'success'
 };

@@ -1,5 +1,5 @@
 import Mock from 'mockjs';
-
+import { param2Obj } from 'utils';
 
 const List = [];
 const count = 100;
@@ -21,9 +21,9 @@ for (let i = 0; i < count; i++) {
 
 export default {
   getList: config => {
-    const { importance, type, title, page, limit, sort } = config.params;
+    const { importance, type, title, page, limit, sort } = param2Obj(config.url);
     let mockList = List.filter(item => {
-      if (importance && item.importance !== importance) return false;
+      if (importance && item.importance !== +importance) return false;
       if (type && item.type !== type) return false;
       if (title && item.title.indexOf(title) < 0) return false;
       return true;
@@ -33,21 +33,12 @@ export default {
     }
 
     const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1));
-
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve([200, {
-          total: mockList.length,
-          items: pageList
-        }]);
-      }, 100);
-    })
+    return {
+      total: mockList.length,
+      items: pageList
+    }
   },
-  getPv: () => new Promise(resolve => {
-    setTimeout(() => {
-      resolve([200, {
-        pvData: [{ key: 'PC网站', pv: 1024 }, { key: 'mobile网站', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
-      }]);
-    }, 100);
+  getPv: () => ({
+    pvData: [{ key: 'PC网站', pv: 1024 }, { key: 'mobile网站', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
   })
 };

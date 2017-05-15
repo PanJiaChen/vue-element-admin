@@ -1,4 +1,4 @@
-import { fetch } from 'utils/fetch';
+import fetch from 'utils/fetch';
 
 export function loginByEmail(email, password) {
   const data = {
@@ -18,7 +18,6 @@ export function logout() {
     method: 'post'
   });
 }
-
 
 export function getInfo(token) {
   return fetch({
