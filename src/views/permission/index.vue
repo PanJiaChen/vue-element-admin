@@ -24,7 +24,7 @@
       watch: {
         role(val) {
           this.$store.commit('SET_ROLES', [val]);
-          window.location.reload()
+          this.$router.push({ path: '/permission/index?' + +new Date() });
         }
       }
     }

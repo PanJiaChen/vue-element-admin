@@ -96,8 +96,8 @@
         getList() {
           this.listLoading = true;
           fetchList(this.listQuery).then(response => {
-            this.list = response.items;
-            this.total = response.total;
+            this.list = response.data.items;
+            this.total = response.data.total;
             this.listLoading = false;
             this.olderList = this.list.map(v => v.id);
             this.newList = this.olderList.slice();
@@ -124,6 +124,7 @@
 .drag-handler{
   width: 30px;
   height: 30px;
+  cursor: pointer;
 }
 .show-d{
   margin-top: 15px;

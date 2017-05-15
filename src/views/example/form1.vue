@@ -237,9 +237,9 @@
         },
         getRemoteUserList(query) {
           userSearch(query).then(response => {
-            if (!response.items) return;
+            if (!response.data.items) return;
             console.log(response)
-            this.userLIstOptions = response.items.map(v => ({
+            this.userLIstOptions = response.data.items.map(v => ({
               key: v.name
             }));
           })
