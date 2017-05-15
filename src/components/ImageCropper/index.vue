@@ -105,6 +105,7 @@
 <script>
     /* eslint-disable */
     import {effectRipple, data2blob} from './utils';
+    import fetch from 'utils/fetch';
     import langBag from './lang';
     const mimes = {
         'jpg': 'image/jpeg',
@@ -659,7 +660,8 @@
                 })
             }
             // 监听进度回调
-            const uploadProgress = function(event) {
+            function uploadProgress (event) {
+                console.log(event)
                 if (event.lengthComputable) {
                     that.progress = 100 * Math.round(event.loaded) / event.total;
                 }
@@ -669,43 +671,21 @@
             that.loading = 1;
             that.setStep(3);
             that.$emit('crop-success', createImgUrl, field, ki);
-            new Promise(function(resolve, reject) {
-                let client = new XMLHttpRequest();
-                client.open('POST', url, true);
-                client.onreadystatechange = function() {
-                    if (this.readyState !== 4) {
-                        return;
-                    }
-                    if (this.status === 200) {
-                        resolve(JSON.parse(this.responseText));
-                    } else {
-                        reject(this.status);
-                    }
-                };
-                client.upload.addEventListener("progress", uploadProgress, false); //监听进度
-                // 设置header
-                if (typeof headers == 'object' && headers) {
-                    Object.keys(headers).forEach((k) => {
-                        client.setRequestHeader(k, headers[k]);
-                    })
-                }
-                client.send(fmData);
-            }).then(
-                // 上传成功
-                function(resData) {
-                    that.loading = 2;
-                    that.$emit('crop-upload-success', resData);
-                },
-                // 上传失败
-                function(sts) {
-                    if (that.value) {
+            fetch({
+                url,
+                method: 'post',
+                data: fmData
+            }).then(resData=>{
+                that.loading = 2;
+                that.$emit('crop-upload-success', resData.data);
+            }).catch(err=>{
+                if (that.value) {
                         that.loading = 3;
                         that.hasError = true;
                         that.errorMsg = lang.fail;
-                        that.$emit('crop-upload-fail', sts, field, ki);
+                        that.$emit('crop-upload-fail', err, field, ki);
                     }
-                }
-            );
+            });
             }
         }
     }
