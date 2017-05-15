@@ -21,10 +21,7 @@ service.interceptors.request.use(config => {
 })
 
 service.interceptors.response.use(
-  response => {
-    console.log(response)
-    return response;
-  },
+  response => response,
   error => {
     console.log('err' + error);// for debug
     const code = error.response.data;

@@ -52,13 +52,13 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
     } else {
       if (to.meta && to.meta.role) { // 判断即将进入的页面是否需要权限
-        if (store.getters.uid) { // 判断当前用户是否已拉去玩info信息
+        if (store.getters.uid) { // 判断当前用户是否已拉取完info信息
           if (hasPermission(store.getters.roles, to.meta.role)) { // 判断权限
             next(); // 有权限
           } else {
-            next('/401'); // 无权限
+            next({ path: '/401', query: { noGoBack: true } }); // 无权限
           }
-        } else { // 未拉去info信息
+        } else { // 未拉取info信息
           store.dispatch('GetInfo').then(() => { // 拉取info
             permission.init({ // 初始化权限
               roles: store.getters.roles,
@@ -67,7 +67,7 @@ router.beforeEach((to, from, next) => {
             if (hasPermission(store.getters.roles, to.meta.role)) { // 判断权限
               next();// 有权限
             } else {
-              next('/401');// 无权限
+              next({ path: '/401', query: { noGoBack: true } }); // 无权限
             }
           }).catch(err => {
             console.log(err);
