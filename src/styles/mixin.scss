@@ -37,19 +37,22 @@
   $transparent-border-style: $width solid transparent;
   height: 0;
   width: 0;
-  @if $direction == up {
+  @if $direction==up {
     border-bottom: $color-border-style;
     border-left: $transparent-border-style;
     border-right: $transparent-border-style;
-  } @else if $direction == right {
+  }
+  @else if $direction==right {
     border-left: $color-border-style;
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;
-  } @else if $direction == down {
+  }
+  @else if $direction==down {
     border-top: $color-border-style;
     border-left: $transparent-border-style;
     border-right: $transparent-border-style;
-  } @else if $direction == left {
+  }
+  @else if $direction==left {
     border-right: $color-border-style;
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;

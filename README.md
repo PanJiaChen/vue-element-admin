@@ -3,6 +3,8 @@
 
 [English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
 
+[wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+
 ## 前言
 > 这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios.由于是个人项目，所以数据请求都是用了mockjs代替。注意：在次项目基础上改造开发时请移除mock文件，不然所有请求都将会被代理掉！注意！
 
@@ -10,10 +12,11 @@
 
 相应需求，开了一个qq群 591724180 方便大家交流
 
+ - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
  - [手摸手，带你用 vue 撸后台 系列一](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
  - [ 手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
- - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
- 
+
+
  **如有问题请先看上述问题和Wiki,不能满足，欢迎issue和pr~**
 
 ## 功能

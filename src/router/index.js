@@ -64,11 +64,11 @@ const Permission = resolve => require(['../views/permission/index'], resolve);
 Vue.use(Router);
 
  /**
-  * icon :the icon show in the sidebar
-  * hidden: if hiddenLtrue will not show in the sidebar
-  * redirect :if redirect:noredirect will not redirct in the levelbar
+  * icon : the icon show in the sidebar
+  * hidden : if hidden:true will not show in the sidebar
+  * redirect : if redirect:noredirect will not redirct in the levelbar
   * noDropdown : if noDropdown:true will not has submenu
-  * meta: { role: ['admin'] }  will control the page role
+  * meta : { role: ['admin'] }  will control the page role
   */
 export default new Router({
   // mode: 'history', //后端支持可开

@@ -1,8 +1,6 @@
 /**
  * Created by jiachenpan on 16/11/18.
  */
- import showdown from 'showdown' // markdown转化
- const converter = new showdown.Converter();
 
  export function parseTime(time, cFormat) {
    if (arguments.length === 0) {
@@ -214,6 +212,3 @@
    }
  }
 
- export function showdownMD(md) {
-   return converter.makeHtml(md)
- }

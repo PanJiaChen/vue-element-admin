@@ -321,8 +321,8 @@
         },
         handleFetchPv(pv) {
           fetchPv(pv).then(response => {
-            this.pvData = response.pvData
-            this.dialogPvVisible = true
+            this.pvData = response.data.pvData;
+            this.dialogPvVisible = true;
           })
         },
         handleDownload() {
