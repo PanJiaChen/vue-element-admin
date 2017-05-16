@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
       next({ path: '/' });
     } else {
       if (to.meta && to.meta.role) { // 判断即将进入的页面是否需要权限
-        if (store.getters.uid) { // 判断当前用户是否已拉取完info信息
+        if (store.getters.roles.length !== 0) { // 判断当前用户是否已拉取完info信息
           if (hasPermission(store.getters.roles, to.meta.role)) { // 判断权限
             next(); // 有权限
           } else {
@@ -70,7 +70,20 @@ router.beforeEach((to, from, next) => {
           });
         }
       } else { // 页面不需要权限 直接进入
-        next();
+        console.log(store.getters.roles)
+        if (store.getters.roles.length !== 0) {
+          next();
+        } else {
+          store.dispatch('GetInfo').then(() => {
+            permission.init({
+              roles: store.getters.roles,
+              router: router.options.routes
+            });
+            next();
+          }).catch(err => {
+            console.log(err);
+          });
+        }
       }
     }
   } else {

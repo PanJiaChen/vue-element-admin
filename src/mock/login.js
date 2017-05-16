@@ -30,7 +30,6 @@ const userMap = {
 
 export default {
   loginByEmail: config => {
-    console.log(config)
     const { email } = JSON.parse(config.body);
     return userMap[email.split('@')[0]];
   },

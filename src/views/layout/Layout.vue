@@ -12,9 +12,7 @@
 
 <script>
     import { Navbar, Sidebar, AppMain } from 'views/layout';
-    import store from 'store';
-    import router from 'router';
-    import permission from 'store/permission';
+
     export default {
       name: 'layout',
       components: {
@@ -26,22 +24,6 @@
         sidebar() {
           return this.$store.state.app.sidebar;
         }
-      },
-      beforeRouteEnter: (to, from, next) => {
-        const roles = store.getters.roles;
-        if (roles.length !== 0) {
-          next();
-          return
-        }
-        store.dispatch('GetInfo').then(() => {
-          permission.init({
-            roles: store.getters.roles,
-            router: router.options.routes
-          });
-          next();
-        }).catch(err => {
-          console.log(err);
-        });
       }
     }
 </script>
