@@ -91,12 +91,12 @@
     </el-table>
 
     <div v-show="!listLoading" class="pagination-container">
-      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]"
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page" :page-sizes="[10,20,30, 50]"
         :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
-    <el-dialog :title="textMap[dialogStatus]" v-model="dialogFormVisible">
+    <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form class="small-space" :model="temp" label-position="left" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="类型">
           <el-select class="filter-item" v-model="temp.type" placeholder="请选择">
@@ -137,7 +137,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="阅读数统计" v-model="dialogPvVisible" size="small">
+    <el-dialog title="阅读数统计" :visible.sync="dialogPvVisible" size="small">
        <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
           <el-table-column prop="key" label="渠道"> </el-table-column>
           <el-table-column  prop="pv" label="pv"> </el-table-column>
