@@ -6,31 +6,27 @@ import router from './router';
 import store from './store';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-default/index.css';
-import 'assets/custom-theme/index.css'; // https://github.com/PanJiaChen/custom-element-theme
-import NProgress from 'nprogress';
-import 'nprogress/nprogress.css';
-import 'normalize.css/normalize.css';
-import 'styles/index.scss';
-import 'components/Icon-svg/index';
-import 'assets/iconfont/iconfont';
-import * as filters from './filters';
-import Multiselect from 'vue-multiselect';
-import Sticky from 'components/Sticky';
-import 'vue-multiselect/dist/vue-multiselect.min.css';
-import vueWaves from './directive/waves';
-import vueSticky from './directive/sticky';
-import errLog from 'store/errLog';
-import './mock/index.js';  // 使用api请求时请将此行注释，不然将被mock拦截!!
-// import './styles/mixin.scss';
-import permission from 'store/permission';
+import 'assets/custom-theme/index.css'; // 换肤版本element-ui css https://github.com/PanJiaChen/custom-element-theme
+import NProgress from 'nprogress'; // Progress 进度条
+import 'nprogress/nprogress.css';// Progress 进度条 样式
+import 'normalize.css/normalize.css';// normalize.css 样式格式化
+import 'styles/index.scss'; // 全局自定义的css样式
+import 'components/Icon-svg/index'; // 封装的svg组件
+import 'assets/iconfont/iconfont'; // iconfont 具体图标见https://github.com/PanJiaChen/vue-element-admin/wiki
+import * as filters from './filters'; // 全局vue filter
+import Multiselect from 'vue-multiselect';// 使用的一个多选框组件，element-ui的select不能满足所有需求
+import 'vue-multiselect/dist/vue-multiselect.min.css';// 多选框组件css
+import Sticky from 'components/Sticky'; // 粘性header组件
+import vueWaves from './directive/waves';// 水波纹指令
+import errLog from 'store/errLog';// error log组件
+import './mock/index.js';  // 该项目所有请求使用mockjs模拟
+import permission from 'store/permission'; // 权限控制
 
 // register globally
 Vue.component('multiselect', Multiselect);
 Vue.component('Sticky', Sticky);
 Vue.use(ElementUI);
 Vue.use(vueWaves);
-Vue.use(vueSticky);
-
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
