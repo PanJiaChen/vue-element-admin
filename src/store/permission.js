@@ -3,8 +3,7 @@ const permission = {
     permissionRoutes: []
   },
   init(data) {
-    const roles = data.roles;
-    const router = data.router;
+    const { roles, router } = data;
     const permissionRoutes = router.filter(v => {
       if (roles.indexOf('admin') >= 0) return true;
       if (this.hasPermission(roles, v)) {
@@ -22,10 +21,10 @@ const permission = {
       }
       return false;
     });
-    this.permissionRoutes = permissionRoutes;
+    this.state.permissionRoutes = permissionRoutes;
   },
   get() {
-    return this.permissionRoutes
+    return this.state.permissionRoutes
   },
   hasPermission(roles, route) {
     if (route.meta && route.meta.role) {
