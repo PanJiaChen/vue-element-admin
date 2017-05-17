@@ -47,8 +47,8 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完info信息
-        store.dispatch('GetInfo').then(res => { // 拉取info
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
+        store.dispatch('GetInfo').then(res => { // 拉取user_info
           const roles = res.data.role;
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
