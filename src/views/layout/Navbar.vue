@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex';
     import Levelbar from './Levelbar';
     import Hamburger from 'components/Hamburger';
     import ErrLog from 'components/ErrLog';
@@ -56,7 +56,7 @@
         },
         logout() {
           this.$store.dispatch('LogOut').then(() => {
-            this.$router.push({ path: '/login' })
+            location.reload();// 为了重新实例化vue-router对象 避免bug
           });
         }
       }
