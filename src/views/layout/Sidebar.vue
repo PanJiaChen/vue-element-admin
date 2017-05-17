@@ -1,6 +1,6 @@
 <template>
     <el-menu :unique-opened='true' mode="vertical" theme="dark" :default-active="$route.path">
-        <template v-for="item in permissionRoutes" v-if="!item.hidden">
+        <template v-for="item in permission_routers" v-if="!item.hidden">
             <el-submenu :index="item.name" v-if="!item.noDropdown">
                 <template slot="title">
                     <wscn-icon-svg :icon-class="item.icon||'wenzhang1'" /> {{item.name}}
@@ -21,13 +21,14 @@
 </template>
 
 <script>
-    import permissionRoutes from 'store/permission';
+    import { mapGetters } from 'vuex';
+
     export default {
       name: 'Sidebar',
-      data() {
-        return {
-          permissionRoutes: permissionRoutes.get()
-        }
+      computed: {
+        ...mapGetters([
+          'permission_routers'
+        ])
       }
     }
 </script>

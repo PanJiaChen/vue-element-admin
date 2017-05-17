@@ -20,7 +20,6 @@ import Sticky from 'components/Sticky'; // 粘性header组件
 import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 import './mock/index.js';  // 该项目所有请求使用mockjs模拟
-import permission from 'store/permission'; // 权限控制
 
 // register globally
 Vue.component('multiselect', Multiselect);
@@ -36,6 +35,7 @@ Object.keys(filters).forEach(key => {
 // permissiom judge
 function hasPermission(roles, permissionRoles) {
   if (roles.indexOf('admin') >= 0) return true; // admin权限 直接通过
+  if (!permissionRoles) return true;
   return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
 
@@ -47,42 +47,24 @@ router.beforeEach((to, from, next) => {
     if (to.path === '/login') {
       next({ path: '/' });
     } else {
-      if (to.meta && to.meta.role) { // 判断即将进入的页面是否需要权限
-        if (store.getters.roles.length !== 0) { // 判断当前用户是否已拉取完info信息
-          if (hasPermission(store.getters.roles, to.meta.role)) { // 判断权限
-            next(); // 有权限
-          } else {
-            next({ path: '/401', query: { noGoBack: true } }); // 无权限
-          }
-        } else { // 未拉取info信息
-          store.dispatch('GetInfo').then(() => { // 拉取info
-            permission.init({ // 初始化权限
-              roles: store.getters.roles,
-              router: router.options.routes
-            });
-            if (hasPermission(store.getters.roles, to.meta.role)) { // 判断权限
-              next();// 有权限
-            } else {
-              next({ path: '/401', query: { noGoBack: true } }); // 无权限
-            }
-          }).catch(err => {
-            console.log(err);
-          });
-        }
-      } else { // 页面不需要权限 直接进入
-        if (store.getters.roles.length !== 0) {
-          next();
+      if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完info信息
+        store.dispatch('GetInfo').then(res => { // 拉取info
+          const roles = res.data.role;
+          store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
+            router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
+            next(to); // hack方法 确保addRoutes已完成
+          })
+        }).catch(err => {
+          console.log(err);
+        });
+      } else {
+        // 没有动态改变权限的需求可直接next() 删除下方权限判断 ↓
+        if (hasPermission(store.getters.roles, to.meta.role)) {
+          next();//
         } else {
-          store.dispatch('GetInfo').then(() => {
-            permission.init({
-              roles: store.getters.roles,
-              router: router.options.routes
-            });
-            next();
-          }).catch(err => {
-            console.log(err);
-          });
+          next({ path: '/401', query: { noGoBack: true } });
         }
+        // 可删 ↑
       }
     }
   } else {
@@ -94,6 +76,7 @@ router.beforeEach((to, from, next) => {
     }
   }
 });
+
 
 router.afterEach(() => {
   NProgress.done(); // 结束Progress

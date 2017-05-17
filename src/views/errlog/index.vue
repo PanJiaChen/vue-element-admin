@@ -28,4 +28,8 @@
       }
     };
 </script>
-
+<style scoped>
+.errPage-container{
+  padding: 30px;
+}
+</style>
