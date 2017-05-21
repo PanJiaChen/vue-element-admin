@@ -9,7 +9,7 @@ const user = {
     code: '',
     uid: undefined,
     auth_type: '',
-    token: Cookies.get('X-Ivanka-Token'),
+    token: Cookies.get('Admin-Token'),
     name: '',
     avatar: '',
     introduction: '',
@@ -68,7 +68,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByEmail(email, userInfo.password).then(response => {
           const data = response.data;
-          Cookies.set('X-Ivanka-Token', response.data.token);
+          Cookies.set('Admin-Token', response.data.token);
           commit('SET_TOKEN', data.token);
           commit('SET_EMAIL', email);
           resolve();
@@ -102,7 +102,7 @@ const user = {
         commit('SET_CODE', code);
         loginByThirdparty(state.status, state.email, state.code, state.auth_type).then(response => {
           commit('SET_TOKEN', response.data.token);
-          Cookies.set('X-Ivanka-Token', response.data.token);
+          Cookies.set('Admin-Token', response.data.token);
           resolve();
         }).catch(error => {
           reject(error);
@@ -117,7 +117,7 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '');
           commit('SET_ROLES', []);
-          Cookies.remove('X-Ivanka-Token');
+          Cookies.remove('Admin-Token');
           resolve();
         }).catch(error => {
           reject(error);
@@ -129,7 +129,7 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '');
-        Cookies.remove('X-Ivanka-Token');
+        Cookies.remove('Admin-Token');
         resolve();
       });
     }
