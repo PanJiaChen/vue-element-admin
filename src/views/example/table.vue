@@ -152,7 +152,7 @@
 
 <script>
     import { fetchList, fetchPv } from 'api/article_table';
-    import { parseTime, objectMerge } from 'utils';
+    import { parseTime } from 'utils';
 
     const calendarTypeOptions = [
       { key: 'FD', display_name: '经济数据' },
@@ -265,7 +265,7 @@
           this.dialogFormVisible = true;
         },
         handleUpdate(row) {
-          objectMerge(this.temp, row)
+          this.temp = Object.assign({}, row);
           this.dialogStatus = 'update';
           this.dialogFormVisible = true;
         },
@@ -296,7 +296,8 @@
           this.temp.timestamp = +this.temp.timestamp;
           for (const v of this.list) {
             if (v.id === this.temp.id) {
-              objectMerge(v, this.temp);
+              const index = this.list.indexOf(v);
+              this.list.splice(index, 1, this.temp);
               break;
             }
           }
