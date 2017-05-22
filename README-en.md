@@ -9,7 +9,7 @@ More tutorials incoming. Including articles on:
 - How to build structure of a backend dashboard project from scratch
 - How to make a complete user system (e.g. permission authentication, two-factor authentication)
 - How to package components (e.g. rich text)
-- How to integrate with [qiniu](https://www.qiniu.com/)
+- How to integrate with [Qiniu](https://www.qiniu.com/)
 - Other development experience on backend
 
 Join the group on QQ 591724180.
@@ -60,7 +60,7 @@ git clone https://github.com/PanJiaChen/vue-element-admin.git
 # Install dependencies
 npm install
 
-# Not recommended for cnpm due to unknown bugs, use taobao mirror instead
+# Or (not recommended for cnpm due to unknown bugs, use taobao mirror instead)
 npm install --registry=https://registry.npm.taobao.org
 
 # Run local dev server
@@ -148,7 +148,7 @@ Only status of user and app configuration is managed by Vuex. Other data are man
 
 ![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/errorlog.gif)
 
-#### Rich text (integrated with qiniu, watermark and customization)
+#### Rich text (integrated with Qiniu, watermark and customization)
 
 ![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/editor.gif)
 
