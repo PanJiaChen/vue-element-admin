@@ -41,7 +41,7 @@
         margin-right: 10px;
     }
     .hideSidebar .title-link{
-        display: inline-block;
-        padding-left: 10px;
+        display: block;
+        text-indent: 10px;
     }
 </style>
