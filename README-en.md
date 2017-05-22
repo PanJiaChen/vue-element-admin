@@ -1,8 +1,10 @@
 ## Intro
 
-> In the past half year, I have been building a backend for management dashboard using Vue. Though the backend has contained greater than 70 pages and over 10 permissions, it still takes insignificant effort to maintain the project. So I decide to make it open source so as to share my development experience and progress on backend. The tech stack is mainly [Vue.js](https://github.com/vuejs/vue)+[Element](https://github.com/ElemeFE/element)+[axios](https://github.com/mzabriskie/axios). Since it's a personal project, all the data requests are generated with [Mock.js](https://github.com/nuysoft/Mock). **Notes:** if anyone wants to modify or develop based on this project, please remove mock files, otherwise all the requests will be passed through proxy!
+> In the past half year, I have been building a backend for management dashboard using Vue. Though the backend has contained greater than 70 pages and over 10 permissions, it still takes insignificant effort to maintain the project. So I decide to make it open source so as to share my development experience and progress on backend. The tech stack is mainly [Vue.js](https://github.com/vuejs/vue)+[Element](https://github.com/ElemeFE/element)+[axios](https://github.com/mzabriskie/axios). Since it's a personal project, all data requests are simulated with [Mock.js](https://github.com/nuysoft/Mock). **Note:** if anyone wants to modify or develop based on this project, please remove the mock files.
 
 **Live demo:** http://panjiachen.github.io/vue-element-admin
+
+**Note: element-ui@1.3.3 is used in the project, so vue 2.3.0+ is required.**
 
 More tutorials incoming. Including articles on:
 
