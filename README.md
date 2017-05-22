@@ -15,7 +15,8 @@
 相应需求，开了一个qq群 591724180 方便大家交流
 
  - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
- - [手摸手，带你用 vue 撸后台 系列一](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+ - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+ - [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
  - [ 手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
 
@@ -123,10 +124,14 @@
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/leftmenu.gif)
 
-#### 拖拽排序
+#### table拖拽排序
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/order.gif)
 
+
+#### 动态table
+
+![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/dynamictable.gif)
 
 
 #### 上传裁剪头像
@@ -134,10 +139,10 @@
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/uploadAvatar.gif)
 
 
-
 #### 错误统计
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/errorlog.gif)
+
 
 #### 富文本(整合七牛 打水印等个性化功能)
 
@@ -151,6 +156,7 @@
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/echarts.gif)
 
+
 #### 导出excel
 
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/excel.png)
@@ -158,6 +164,3 @@
 
 ## [更多demo](http://panjiachen.github.io/vue-element-admin)
 
-
-###占坑
-一系列的配套文章即将来袭~

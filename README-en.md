@@ -18,6 +18,7 @@ Join the group on QQ 591724180.
 
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 - [Step by step instructions on playing with backend using Vue - Part 1](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
+- [Step by step instructions on playing with backend using Vue - Part 2](https://juejin.im/post/591aa14f570c35006961acac)
 - [Step by step instructions on packaging a Vue component](https://segmentfault.com/a/1190000009090836)
 
 **Please read the Wiki and articles above before creating any issue. Feel free to contribute by making a pull request.**
@@ -129,6 +130,15 @@ Only status of user and app configuration is managed by Vuex. Other data are man
 #### Drag & drop sorting
 
 ![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/order.gif)
+
+#### Drag & drop sorting
+
+![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/order.gif)
+
+
+#### dynamic table
+
+![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/dynamictable.gif)
 
 #### Uploading cropped avatar
 
