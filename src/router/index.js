@@ -1,64 +1,64 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 
-/* layout*/
+/* layout */
 import Layout from '../views/layout/Layout';
 
-// dashboard
-const dashboard = resolve => require(['../views/dashboard/index'], resolve);
-
-/* error page*/
-const Err404 = resolve => require(['../views/error/404'], resolve);
-const Err401 = resolve => require(['../views/error/401'], resolve);
-
-/* login*/
+/* login */
 import Login from '../views/login/';
-import authRedirect from '../views/login/authredirect';
-import sendPWD from '../views/login/sendpwd';
-import reset from '../views/login/reset';
+const authRedirect = () => import('../views/login/authredirect');
+const sendPWD = () => import('../views/login/sendpwd');
+const reset = () => import('../views/login/reset');
 
-/* Introduction*/
-const Introduction = resolve => require(['../views/introduction/index'], resolve);
+/* dashboard */
+const dashboard = () => import('../views/dashboard/index');
 
-/* components*/
-const componentsIndex = resolve => require(['../views/components/index'], resolve);
-const Tinymce = resolve => require(['../views/components/tinymce'], resolve);
-const Markdown = resolve => require(['../views/components/markdown'], resolve);
-const JsonEditor = resolve => require(['../views/components/jsoneditor'], resolve);
-const DndList = resolve => require(['../views/components/dndlist'], resolve);
-const AvatarUpload = resolve => require(['../views/components/avatarUpload'], resolve);
-const Dropzone = resolve => require(['../views/components/dropzone'], resolve);
-const Sticky = resolve => require(['../views/components/sticky'], resolve);
-const SplitPane = resolve => require(['../views/components/splitpane'], resolve);
-const CountTo = resolve => require(['../views/components/countTo'], resolve);
-const Mixin = resolve => require(['../views/components/mixin'], resolve);
+/* Introduction */
+const Introduction = () => import('../views/introduction/index');
+
+/* components */
+const componentsIndex = () => import('../views/components/index');
+const Tinymce = () => import('../views/components/tinymce');
+const Markdown = () => import('../views/components/markdown');
+const JsonEditor = () => import('../views/components/jsoneditor');
+const DndList = () => import('../views/components/dndlist');
+const AvatarUpload = () => import('../views/components/avatarUpload');
+const Dropzone = () => import('../views/components/dropzone');
+const Sticky = () => import('../views/components/sticky');
+const SplitPane = () => import('../views/components/splitpane');
+const CountTo = () => import('../views/components/countTo');
+const Mixin = () => import('../views/components/mixin');
 
 
-/* charts*/
-const chartIndex = resolve => require(['../views/charts/index'], resolve);
-const KeyboardChart = resolve => require(['../views/charts/keyboard'], resolve);
-const KeyboardChart2 = resolve => require(['../views/charts/keyboard2'], resolve);
-const LineMarker = resolve => require(['../views/charts/line'], resolve);
-const MixChart = resolve => require(['../views/charts/mixchart'], resolve);
+/* charts */
+const chartIndex = () => import('../views/charts/index');
+const KeyboardChart = () => import('../views/charts/keyboard');
+const KeyboardChart2 = () => import('../views/charts/keyboard2');
+const LineMarker = () => import('../views/charts/line');
+const MixChart = () => import('../views/charts/mixchart');
 
-/* error log*/
-const ErrorLog = resolve => require(['../views/errlog/index'], resolve);
+/* error page */
+const Err404 = () => import('../views/error/404');
+const Err401 = () => import('../views/error/401');
 
-/* excel*/
-const ExcelDownload = resolve => require(['../views/excel/index'], resolve);
+/* error log */
+const ErrorLog = () => import('../views/errlog/index');
 
-/* theme*/
-const Theme = resolve => require(['../views/theme/index'], resolve);
+/* excel */
+const ExcelDownload = () => import('../views/excel/index');
+
+/* theme  */
+const Theme = () => import('../views/theme/index');
 
 /* example*/
-const DynamicTable = resolve => require(['../views/example/dynamictable'], resolve);
-const Table = resolve => require(['../views/example/table'], resolve);
-const DragTable = resolve => require(['../views/example/dragTable'], resolve);
-const InlineEditTable = resolve => require(['../views/example/inlineEditTable'], resolve);
-const Form1 = resolve => require(['../views/example/form1'], resolve);
+const DynamicTable = () => import('../views/example/dynamictable');
+const Table = () => import('../views/example/table');
+const DragTable = () => import('../views/example/dragTable');
+const InlineEditTable = () => import('../views/example/inlineEditTable');
+const Form1 = () => import('../views/example/form1');
 
 /* permission */
-const Permission = resolve => require(['../views/permission/index'], resolve);
+const Permission = () => import('../views/permission/index');
 
 
 Vue.use(Router);
@@ -69,7 +69,7 @@ Vue.use(Router);
   * redirect : if redirect:noredirect will not redirct in the levelbar
   * noDropdown : if noDropdown:true will not has submenu
   * meta : { role: ['admin'] }  will control the page role
-  */
+  **/
 
 export const constantRouterMap = [
     { path: '/login', component: Login, hidden: true },
@@ -120,17 +120,17 @@ export const asyncRouterMap = [
     name: '组件',
     icon: 'zujian',
     children: [
-                { path: 'index', component: componentsIndex, name: '介绍 ' },
-                { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
-                { path: 'markdown', component: Markdown, name: 'Markdown' },
-                { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
-                { path: 'dndlist', component: DndList, name: '列表拖拽' },
-                { path: 'splitpane', component: SplitPane, name: 'SplitPane' },
-                { path: 'avatarupload', component: AvatarUpload, name: '头像上传' },
-                { path: 'dropzone', component: Dropzone, name: 'Dropzone' },
-                { path: 'sticky', component: Sticky, name: 'Sticky' },
-                { path: 'countto', component: CountTo, name: 'CountTo' },
-                { path: 'mixin', component: Mixin, name: '小组件' }
+      { path: 'index', component: componentsIndex, name: '介绍 ' },
+      { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
+      { path: 'markdown', component: Markdown, name: 'Markdown' },
+      { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
+      { path: 'dndlist', component: DndList, name: '列表拖拽' },
+      { path: 'splitpane', component: SplitPane, name: 'SplitPane' },
+      { path: 'avatarupload', component: AvatarUpload, name: '头像上传' },
+      { path: 'dropzone', component: Dropzone, name: 'Dropzone' },
+      { path: 'sticky', component: Sticky, name: 'Sticky' },
+      { path: 'countto', component: CountTo, name: 'CountTo' },
+      { path: 'mixin', component: Mixin, name: '小组件' }
     ]
   },
   {
@@ -140,11 +140,11 @@ export const asyncRouterMap = [
     name: '图表',
     icon: 'tubiaoleixingzhengchang',
     children: [
-                { path: 'index', component: chartIndex, name: '介绍' },
-                { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
-                { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
-                { path: 'line', component: LineMarker, name: '折线图' },
-                { path: 'mixchart', component: MixChart, name: '混合图表' }
+      { path: 'index', component: chartIndex, name: '介绍' },
+      { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
+      { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
+      { path: 'line', component: LineMarker, name: '折线图' },
+      { path: 'mixchart', component: MixChart, name: '混合图表' }
     ]
   },
   {
@@ -154,8 +154,8 @@ export const asyncRouterMap = [
     name: '错误页面',
     icon: '404',
     children: [
-                { path: '401', component: Err401, name: '401' },
-                { path: '404', component: Err404, name: '404' }
+      { path: '401', component: Err401, name: '401' },
+      { path: '404', component: Err404, name: '404' }
     ]
   },
   {
@@ -192,11 +192,11 @@ export const asyncRouterMap = [
     name: '综合实例',
     icon: 'zonghe',
     children: [
-                { path: 'dynamictable', component: DynamicTable, name: '动态table' },
-                { path: 'dragtable', component: DragTable, name: '拖拽table' },
-                { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
-                { path: 'table', component: Table, name: '综合table' },
-                { path: 'form1', component: Form1, name: '综合form1' }
+      { path: 'dynamictable', component: DynamicTable, name: '动态table' },
+      { path: 'dragtable', component: DragTable, name: '拖拽table' },
+      { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
+      { path: 'table', component: Table, name: '综合table' },
+      { path: 'form1', component: Form1, name: '综合form1' }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
