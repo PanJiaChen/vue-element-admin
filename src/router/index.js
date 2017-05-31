@@ -196,6 +196,7 @@ export const asyncRouterMap = [
       {
         path: '/table',
         component: TableLayout,
+        redirect: '/table/table',
         name: 'table',
         children: [
           { path: 'dynamictable', component: DynamicTable, name: '动态table' },
