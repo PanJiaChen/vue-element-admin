@@ -51,10 +51,11 @@ const ExcelDownload = () => import('../views/excel/index');
 const Theme = () => import('../views/theme/index');
 
 /* example*/
-const DynamicTable = () => import('../views/example/dynamictable');
-const Table = () => import('../views/example/table');
-const DragTable = () => import('../views/example/dragTable');
-const InlineEditTable = () => import('../views/example/inlineEditTable');
+const TableLayout = () => import('../views/example/table/index');
+const DynamicTable = () => import('../views/example/table/dynamictable');
+const Table = () => import('../views/example/table/table');
+const DragTable = () => import('../views/example/table/dragTable');
+const InlineEditTable = () => import('../views/example/table/inlineEditTable');
 const Form1 = () => import('../views/example/form1');
 
 /* permission */
@@ -192,10 +193,17 @@ export const asyncRouterMap = [
     name: '综合实例',
     icon: 'zonghe',
     children: [
-      { path: 'dynamictable', component: DynamicTable, name: '动态table' },
-      { path: 'dragtable', component: DragTable, name: '拖拽table' },
-      { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
-      { path: 'table', component: Table, name: '综合table' },
+      {
+        path: '/table',
+        component: TableLayout,
+        name: 'table',
+        children: [
+          { path: 'dynamictable', component: DynamicTable, name: '动态table' },
+          { path: 'dragtable', component: DragTable, name: '拖拽table' },
+          { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
+          { path: 'table', component: Table, name: '综合table' }
+        ]
+      },
       { path: 'form1', component: Form1, name: '综合form1' }
     ]
   },
