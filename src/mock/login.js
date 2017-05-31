@@ -5,7 +5,7 @@ const userMap = {
     role: ['admin'],
     token: 'admin',
     introduction: '我是超级管理员',
-    avatar: 'https://wdl.wallstreetcn.com/48a3e1e0-ea2c-4a4e-9928-247645e3428b',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: '超级管理员小潘',
     uid: '001'
   },
@@ -13,7 +13,7 @@ const userMap = {
     role: ['editor'],
     token: 'editor',
     introduction: '我是编辑',
-    avatar: 'https://wdl.wallstreetcn.com/48a3e1e0-ea2c-4a4e-9928-247645e3428b',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: '普通编辑小张',
     uid: '002'
 
@@ -22,7 +22,7 @@ const userMap = {
     role: ['develop'],
     token: 'develop',
     introduction: '我是开发',
-    avatar: 'https://wdl.wallstreetcn.com/48a3e1e0-ea2c-4a4e-9928-247645e3428b',
+    avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: '工程师小王',
     uid: '003'
   }
