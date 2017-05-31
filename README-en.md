@@ -50,7 +50,7 @@ Join the group on QQ 591724180.
 - Multi-environments distribution
 - Dashboard
 - Two-factor authentication
-- Collapsing sidebar
+- Collapsing sidebar (support nested routes)
 - Mock data
 
 ## Development
