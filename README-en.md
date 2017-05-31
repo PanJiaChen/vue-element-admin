@@ -111,6 +111,9 @@ npm run build:prod
 └── package.json               // package.json
 ```
 
+## Changelog
+Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
+
 ## State Management
 
 Only status of user and app configuration is managed by Vuex. Other data are managed by their own business pages.
