@@ -6,9 +6,9 @@
 
 <script>
     import { mapGetters } from 'vuex';
-    import  SidebarItem from './SidebarItem';
+    import SidebarItem from './SidebarItem';
     export default {
-      components:{SidebarItem},
+      components: { SidebarItem },
       computed: {
         ...mapGetters([
           'permission_routers'
