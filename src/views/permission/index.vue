@@ -23,8 +23,9 @@
       },
       watch: {
         role(val) {
-          this.$store.commit('SET_ROLES', [val]);
-          this.$router.push({ path: '/permission/index?' + +new Date() });
+          this.$store.dispatch('ChangeRole', val).then(() => {
+            this.$router.push({ path: '/permission/index?' + +new Date() });
+          })
         }
       }
     }

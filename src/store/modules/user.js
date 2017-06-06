@@ -132,6 +132,16 @@ const user = {
         Cookies.remove('Admin-Token');
         resolve();
       });
+    },
+
+    // 动态修改权限
+    ChangeRole({ commit }, role) {
+      return new Promise(resolve => {
+        commit('SET_ROLES', [role]);
+        commit('SET_TOKEN', role);
+        Cookies.set('Admin-Token', role);
+        resolve();
+      })
     }
   }
 };
