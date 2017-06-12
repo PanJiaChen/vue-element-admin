@@ -56,7 +56,8 @@ const DynamicTable = () => import('../views/example/table/dynamictable');
 const Table = () => import('../views/example/table/table');
 const DragTable = () => import('../views/example/table/dragTable');
 const InlineEditTable = () => import('../views/example/table/inlineEditTable');
-const Form1 = () => import('../views/example/form1');
+
+const Form = () => import('../views/example/form');
 
 /* permission */
 const Permission = () => import('../views/permission/index');
@@ -205,7 +206,8 @@ export const asyncRouterMap = [
           { path: 'table', component: Table, name: '综合table' }
         ]
       },
-      { path: 'form1', component: Form1, name: '综合form1' }
+      { path: 'form/edit', component: Form, name: '编辑form', meta: { isEdit: true } },
+      { path: 'form/create', component: Form, name: '创建form' }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }

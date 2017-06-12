@@ -7,6 +7,9 @@
           <div style="display:inline-block">
 
             <el-dropdown trigger="click">
+              <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create'}">
+                <el-button type="info">创建form</el-button>
+              </router-link>
               <el-button>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
               <el-dropdown-menu class="no-padding no-hover" slot="dropdown">
                 <el-dropdown-item>
@@ -185,10 +188,16 @@
       computed: {
         contentShortLength() {
           return this.postForm.content_short.length
+        },
+        isEdit() {
+          return this.$route.meta.isEdit // 根据meta判断
+          // return this.$route.path.indexOf('edit') !== -1 // 根据路由判断
         }
       },
       created() {
-        this.fetchData();
+        if (this.isEdit) {
+          this.fetchData();
+        }
       },
       methods: {
         fetchData() {
