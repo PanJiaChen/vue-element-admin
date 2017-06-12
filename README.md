@@ -21,6 +21,8 @@
 
  **如有问题请先看上述文章和Wiki,若不能满足，欢迎issue和pr~**
  
+ **该项目并不是一个脚手架，更倾向于是一个集成解决方案方案**
+ 
  **该项目不支持低版本游览器，有需求请自行添加polyfill[详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
  
 
