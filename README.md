@@ -19,8 +19,10 @@
  - [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
  - [ 手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
-
- **如有问题请先看上述问题和Wiki,不能满足，欢迎issue和pr~**
+ **如有问题请先看上述文章和Wiki,若不能满足，欢迎issue和pr~**
+ 
+ **该项目不支持低版本游览器，有需求请自行添加polyfill[详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
+ 
 
 ## 功能
 - 登录/注销
