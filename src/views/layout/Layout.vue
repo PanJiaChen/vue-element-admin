@@ -54,17 +54,22 @@
         }
         .sidebar-wrapper {
             width: 180px;
+            height: 100%;
+            overflow: hidden;
             position: fixed;
             top: 0;
             bottom: 0;
             left: 0;
             z-index: 1001;
-            overflow-x: hidden;
             transition: all .28s ease-out;
             @include scrollBar;
         }
         .sidebar-container {
             transition: all .28s ease-out;
+            height: 100%;
+            width: 195px;
+            overflow-x: hidden;
+            overflow-y: scroll;
         }
         .main-container {
             min-height: 100%;
