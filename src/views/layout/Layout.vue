@@ -59,12 +59,17 @@
             bottom: 0;
             left: 0;
             z-index: 1001;
-            overflow-x: hidden;
+            overflow: hidden;
             transition: all .28s ease-out;
-            @include scrollBar;
         }
         .sidebar-container {
             transition: all .28s ease-out;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: -17px;
+            overflow-y: scroll;
         }
         .main-container {
             min-height: 100%;
