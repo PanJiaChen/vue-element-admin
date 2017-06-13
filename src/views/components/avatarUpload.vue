@@ -9,9 +9,11 @@
     <el-button type="primary" icon="upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imagecropperShow=true">修改头像
     </el-button>
 
-    <ImageCropper :width="300" :height="300" url="https://httpbin.org/post"  @crop-upload-success="cropSuccess" :key="imagecropperKey" v-show="imagecropperShow" />
+    <ImageCropper :width="300" :height="300" url="https://httpbin.org/post" @close='close' @crop-upload-success="cropSuccess"
+      :key="imagecropperKey" v-show="imagecropperShow" />
   </div>
 </template>
+
 <script>
     import ImageCropper from 'components/ImageCropper';
     import PanThumb from 'components/PanThumb';
@@ -29,6 +31,9 @@
           this.imagecropperShow = false;
           this.imagecropperKey = this.imagecropperKey + 1;
           this.image = resData.files.avatar;
+        },
+        close() {
+          this.imagecropperShow = false;
         }
       }
     };
