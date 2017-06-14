@@ -34,6 +34,7 @@
       }
     }
 </script>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
     .wscn-icon {
         margin-right: 10px;

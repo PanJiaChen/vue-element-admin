@@ -4,7 +4,7 @@
     <el-row>
       <el-col :span="12">
         <h1 class="text-jumbo text-ginormous">Oops!</h1>
-         gif来源<a href='https://zh.airbnb.com/' target='_blank'>airbnb</a> 页面
+        gif来源<a href='https://zh.airbnb.com/' target='_blank'>airbnb</a> 页面
         <h2>你没有权限去该页面</h2>
         <h6>如有不满请联系你领导</h6>
         <ul class="list-unstyled">
@@ -26,9 +26,9 @@
     </el-dialog>
   </div>
 </template>
+
 <script>
     import errGif from 'assets/401.gif';
-
     export default {
       data() {
         return {
@@ -50,38 +50,38 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-    .errPage-container {
-        width: 800px;
-        margin: 100px auto;
-        .pan-back-btn {
-            background: #008489;
-            color: #fff;
-        }
-        .pan-gif {
-            margin: 0 auto;
-            display: block;
-        }
-        .pan-img{
-            display: block;
-            margin: 0 auto;
-        }
-        .text-jumbo {
-            font-size: 60px;
-            font-weight: 700;
-            color: #484848;
-        }
-        .list-unstyled {
-            font-size: 14px;
-            li {
-                padding-bottom: 5px;
-            }
-            a {
-                color: #008489;
-                text-decoration: none;
-                &:hover {
-                    text-decoration: underline;
-                }
-            }
-        }
+  .errPage-container {
+    width: 800px;
+    margin: 100px auto;
+    .pan-back-btn {
+      background: #008489;
+      color: #fff;
     }
+    .pan-gif {
+      margin: 0 auto;
+      display: block;
+    }
+    .pan-img {
+      display: block;
+      margin: 0 auto;
+    }
+    .text-jumbo {
+      font-size: 60px;
+      font-weight: 700;
+      color: #484848;
+    }
+    .list-unstyled {
+      font-size: 14px;
+      li {
+        padding-bottom: 5px;
+      }
+      a {
+        color: #008489;
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 </style>

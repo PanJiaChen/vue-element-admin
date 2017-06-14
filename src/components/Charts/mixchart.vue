@@ -51,7 +51,6 @@
             backgroundColor: '#344b58',
             title: {
               text: '统计',
-              subtext: 'from http://gallery.echartsjs.com',
               x: '4%',
               textStyle: {
                 color: '#fff',

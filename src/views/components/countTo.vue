@@ -1,8 +1,8 @@
 <template>
   <div class="components-container">
-    <code>countTo 组件 <a href='https://github.com/PanJiaChen/vue-countTo' target='_blank'>线上地址</a></code>
+    <code> <a href='https://github.com/PanJiaChen/vue-countTo' target='_blank'>countTo component</a></code>
 
-  <count-to ref='example' class='example' :start-val='_startVal' :end-val='_endVal' :duration='_duration' :decimals='_decimals'
+    <count-to ref='example' class='example' :start-val='_startVal' :end-val='_endVal' :duration='_duration' :decimals='_decimals'
       :separator='_separator' :prefix='_prefix' :suffix='_suffix' :autoplay='false' />
     <div style='margin-left: 25%;margin-top: 40px;'>
       <label class="label" for="startValInput">startVal:  <input type="number" v-model.number='setStartVal' name='startValInput' /></label>
@@ -20,9 +20,9 @@
             :separator=&#x27;{{_separator}}&#x27; :prefix=&#x27;{{_prefix}}&#x27; :suffix=&#x27;{{_suffix}}&#x27; :autoplay=false&gt;</code>
   </div>
 </template>
+
 <script>
      import countTo from 'vue-count-to';
-
      export default {
        components: { countTo },
        data() {

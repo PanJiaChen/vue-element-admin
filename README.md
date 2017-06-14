@@ -8,11 +8,9 @@
 **注意：该项目目前使用element-ui@1.3.3版本,所以最低兼容 Vue 2.3.0**
 
 ## 前言
-> 这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios.由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在次项目基础上改造开发时请移除mock文件。
+> 这半年来一直在用vue写管理后台，目前后台已经有百来个个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios由webpack2打包.由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在次项目基础上改造开发时请移除mock文件。
 
-后续会出一系列的教程配套文章，如如何从零构建后台项目框架，如何做完整的用户系统（如权限验证，二次登录等），如何二次开发组件（如富文本），如何整合七牛等等文章，各种后台开发经验等等。莫急~~
-
-相应需求，开了一个qq群 591724180 方便大家交流
+写了一个系列的教程配套文章，如何从零构建后一个完整的后台项目:
 
  - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
  - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
@@ -20,12 +18,14 @@
  - [手摸手，带你用 vue 撸后台 系列三 (实战篇)](https://juejin.im/post/593121aa0ce4630057f70d35)
  - [手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
+ 相应需求，开了一个qq群 591724180 方便大家交流
+
  **如有问题请先看上述文章和Wiki,若不能满足，欢迎issue和pr~**
- 
+
  **该项目并不是一个脚手架，更倾向于是一个集成解决方案方案**
- 
+
  **该项目不支持低版本游览器，有需求请自行添加polyfill[详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
- 
+
 
 ## 功能
 - 登录/注销
@@ -47,6 +47,7 @@
 - table example
 - 动态table example
 - 拖拽table example
+- 内联编辑table example
 - form example
 - 多环境发布
 - dashboard

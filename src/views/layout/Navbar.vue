@@ -6,15 +6,15 @@
         <el-dropdown class="avatar-container" trigger="click">
             <div class="avatar-wrapper">
                 <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-                <i class="el-icon-caret-bottom"/>
+                <i class="el-icon-caret-bottom" />
             </div>
             <el-dropdown-menu class="user-dropdown" slot="dropdown">
-                <router-link  class='inlineBlock' to="/">
+                <router-link class='inlineBlock' to="/">
                     <el-dropdown-item>
                         首页
                     </el-dropdown-item>
                 </router-link>
-                <router-link  class='inlineBlock' to="/admin/profile">
+                <router-link class='inlineBlock' to="/admin/profile">
                     <el-dropdown-item>
                         设置
                     </el-dropdown-item>
@@ -62,6 +62,7 @@
       }
     }
 </script>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
     .navbar {
         height: 50px;

@@ -32,6 +32,7 @@
     </el-table>
   </div>
 </template>
+
 <script>
 import { getList } from 'api/article';
 export default {
