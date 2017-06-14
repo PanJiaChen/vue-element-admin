@@ -1,29 +1,13 @@
 <template>
   <div class='tinymce-container editor-container'>
     <textarea class='tinymce-textarea' :id="id"></textarea>
-    <!--业务需求可删除-->
-    <div class="editor-custom-btn-container">
-      <editorSlide v-if="customButton.indexOf('editorSlide')>=0" color="#3A71A8" class="editor-upload-btn" @successCBK="slideSuccessCBK"></editorSlide>
-      <editorAudio v-if="customButton.indexOf('editorAudio')>=0" color="#30B08F" class="editor-upload-btn" @successCBK="aduioSuccessCBK"></editorAudio>
-      <editorVideo v-if="customButton.indexOf('editorVideo')>=0" color="#E65D6E" class="editor-upload-btn" @successCBK="videoSuccessCBK"></editorVideo>
-       <editorImage v-if="customButton.indexOf('editorImage')>=0" color="#20a0ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
-     <!--业务需求可删除-->
-    </div>
   </div>
 </template>
 
 <script>
-    // tinymce 在最外层目录static下 ，由index.html直接引入，挂载在window下。不通过impot，不打包
-    // 业务需求可删除
-    import editorAudio from './components/editorAudio';
-    import editorVideo from './components/editorVideo';
-    import editorSlide from './components/editorSlide';
-    import editorImage from './components/editorImage';
     // import { getToken, upload } from 'api/qiniu'; // 七牛
-    // 业务需求可删除
     export default {
       name: 'tinymce',
-      components: { editorImage, editorAudio, editorSlide, editorVideo }, // 业务需求可删除
       props: {
         id: {
           type: String,
@@ -32,13 +16,6 @@
         value: {
           type: String,
           default: ''
-        },
-        customButton: {
-          type: Array,
-          required: false,
-          default() {
-            return ['editorAudio', 'editorImage']
-          }
         },
         toolbar: {
           type: Array,
@@ -92,15 +69,12 @@
           imagetools_toolbar: 'watermark',
           default_link_target: '_blank',
           link_title: false,
-          textcolor_map: [
-            '1482f0', '1482f0',
-            '4595e6', '4595e6'],
           init_instance_callback: editor => {
             if (_this.value) {
               editor.setContent(_this.value)
             }
             _this.hasInit = true;
-            editor.on('Change', () => {
+            editor.on('NodeChange Change KeyUp', () => {
               this.hasChange = true;
               this.$emit('input', editor.getContent({ format: 'raw' }));
             });
