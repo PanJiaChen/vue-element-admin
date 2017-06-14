@@ -146,55 +146,6 @@
           }
         });
       },
-      methods: {
-        /* 业务代码可删除 start*/
-        imageSuccessCBK(arr) {
-          console.log(arr)
-          const _this = this;
-          arr.forEach(v => {
-            const node = document.createElement('img');
-            node.setAttribute('src', v);
-            node.onload = function() {
-              $(this).addClass('wscnph');
-              $(this).attr('data-wscntype', 'image');
-              $(this).attr('data-wscnh', this.height);
-              $(this).attr('data-wscnw', this.width);
-              tinymce.get(_this.id).insertContent(node.outerHTML)
-            }
-          })
-        },
-        slideSuccessCBK(arr) {
-          const node = document.createElement('img');
-          node.setAttribute('data-wscntype', 'slide');
-          node.setAttribute('data-uri', arr.toString());
-          node.setAttribute('data-wscnh', '190');
-          node.setAttribute('data-wscnw', '200');
-          node.setAttribute('src', ' https://wdl.wallstreetcn.com/6410b47d-a54c-4826-9bc1-c3e5df31280c');
-          node.className = 'wscnph editor-placeholder';
-          tinymce.get(this.id).insertContent(node.outerHTML)
-        },
-        videoSuccessCBK(form) {
-          const node = document.createElement('img');
-          node.setAttribute('data-wscntype', 'video');
-          node.setAttribute('data-uri', form.url);
-          node.setAttribute('data-cover-img-uri', form.image);
-          node.setAttribute('data-title', form.title);
-          node.setAttribute('src', 'https://wdl.wallstreetcn.com/07aeb3e7-f4ca-4207-befb-c987b3dc7011');
-          node.className = 'wscnph editor-placeholder';
-          tinymce.get(this.id).insertContent(node.outerHTML)
-        },
-        aduioSuccessCBK(form) {
-          const node = document.createElement('img');
-          node.setAttribute('data-wscntype', 'audio');
-          node.setAttribute('data-uri', form.url);
-          node.setAttribute('data-title', form.title);
-          node.setAttribute('data-text', form.text);
-          node.setAttribute('src', 'https://wdl.wallstreetcn.com/2ed0c8c8-fb82-499d-b81c-3fd1de114eae');
-          node.className = 'wscnph editor-placeholder';
-          tinymce.get(this.id).insertContent(node.outerHTML)
-        }
-        /* 业务代码可删除 end*/
-      },
       destroyed() {
         tinymce.get(this.id).destroy();
       }
@@ -214,7 +165,6 @@
 .editor-custom-btn-container {
   position: absolute;
   right: 15px;
-  /*z-index: 2005;*/
   top: 18px;
 }
 
