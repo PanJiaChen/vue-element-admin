@@ -58,6 +58,7 @@ const DragTable = () => import('../views/example/table/dragTable');
 const InlineEditTable = () => import('../views/example/table/inlineEditTable');
 
 const Form = () => import('../views/example/form');
+const Tab = () => import('../views/example/tab/index');
 
 /* permission */
 const Permission = () => import('../views/permission/index');
@@ -198,7 +199,7 @@ export const asyncRouterMap = [
         path: '/table',
         component: TableLayout,
         redirect: '/table/table',
-        name: 'table',
+        name: 'Table',
         children: [
           { path: 'dynamictable', component: DynamicTable, name: '动态table' },
           { path: 'dragtable', component: DragTable, name: '拖拽table' },
@@ -206,8 +207,10 @@ export const asyncRouterMap = [
           { path: 'table', component: Table, name: '综合table' }
         ]
       },
-      { path: 'form/edit', component: Form, name: '编辑form', meta: { isEdit: true } },
-      { path: 'form/create', component: Form, name: '创建form' }
+      { path: 'form/edit', component: Form, name: '编辑Form', meta: { isEdit: true } },
+      { path: 'form/create', component: Form, name: '创建Form' },
+
+      { path: 'tab/index', component: Tab, name: 'Tab' }
     ]
   },
   { path: '*', redirect: '/404', hidden: true }
