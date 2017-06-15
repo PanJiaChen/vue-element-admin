@@ -154,10 +154,10 @@
     import { parseTime } from 'utils';
 
     const calendarTypeOptions = [
-      { key: 'FD', display_name: '经济数据' },
-      { key: 'FE', display_name: '财经大事' },
-      { key: 'BI', display_name: '国债发行' },
-      { key: 'VN', display_name: '假期报告' }
+      { key: 'CN', display_name: '中国' },
+      { key: 'US', display_name: '美国' },
+      { key: 'JP', display_name: '日本' },
+      { key: 'EU', display_name: '欧元区' }
     ];
 
     // arr to obj
