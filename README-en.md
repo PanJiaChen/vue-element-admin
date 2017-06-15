@@ -52,6 +52,9 @@ Join the group on QQ 591724180.
 - Two-factor authentication
 - Collapsing sidebar (support nested routes)
 - Mock data
+- cache tabs example
+- screenfull
+- markdown2html
 
 ## Development
 

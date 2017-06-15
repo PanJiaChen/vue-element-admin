@@ -54,6 +54,9 @@
 - 二次登录
 - 动态侧边栏（支持多级路由）
 - mock数据
+- cache tabs example
+- screenfull
+- markdown2html
 
 
 ## 开发
