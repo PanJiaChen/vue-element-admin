@@ -2,7 +2,8 @@
     <el-menu class="navbar" mode="horizontal">
         <Hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></Hamburger>
         <levelbar></levelbar>
-        <ErrLog v-if="log.length>0" class="errLog-container" :logsList="log"></ErrLog>
+        <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
+
         <el-dropdown class="avatar-container" trigger="click">
             <div class="avatar-wrapper">
                 <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
@@ -29,14 +30,14 @@
     import { mapGetters } from 'vuex';
     import Levelbar from './Levelbar';
     import Hamburger from 'components/Hamburger';
-    import ErrLog from 'components/ErrLog';
+    import ErrorLog from 'components/ErrLog';
     import errLogStore from 'store/errLog';
 
     export default {
       components: {
         Levelbar,
         Hamburger,
-        ErrLog
+        ErrorLog
       },
       data() {
         return {
