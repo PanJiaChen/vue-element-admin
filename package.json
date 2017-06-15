@@ -38,6 +38,7 @@
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
+    "babel-core": "6.25.0",
     "babel-eslint": "7.2.3",
     "babel-loader": "7.0.0",
     "babel-plugin-transform-runtime": "6.23.0",
