@@ -196,9 +196,9 @@ export const asyncRouterMap = [
     icon: 'zonghe',
     children: [
       {
-        path: '/table',
+        path: '/example/table',
         component: TableLayout,
-        redirect: '/table/table',
+        redirect: '/example/table/table',
         name: 'Table',
         children: [
           { path: 'dynamictable', component: DynamicTable, name: '动态table' },
