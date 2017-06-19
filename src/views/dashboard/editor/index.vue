@@ -40,8 +40,8 @@
             <router-link class="pan-btn light-blue-btn" to="/charts/index">图表</router-link>
             <router-link class="pan-btn red-btn" to="/errorpage/404">错误页面</router-link>
             <router-link class="pan-btn pink-btn" to="/excel/download">导出excel</router-link>
-            <router-link class="pan-btn green-btn" to="/example/table">table</router-link>
-            <router-link class="pan-btn tiffany-btn" to="/example/form1">form</router-link>
+            <router-link class="pan-btn green-btn" to="/example/table/table">Table</router-link>
+            <router-link class="pan-btn tiffany-btn" to="/example/form/edit">Form</router-link>
         </div>
 
         <div class="clearfix main-dashboard-container">
