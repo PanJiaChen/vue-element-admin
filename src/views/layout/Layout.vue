@@ -68,7 +68,7 @@
             top: 0;
             bottom: 0;
             left: 0;
-            right: -17px;
+            width: 100%;
             overflow-y: scroll;
         }
         .main-container {
