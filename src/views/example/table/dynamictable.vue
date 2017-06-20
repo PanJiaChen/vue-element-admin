@@ -1,38 +1,19 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
-      <el-checkbox-group v-model="formThead">
-        <el-checkbox label="apple">apple</el-checkbox>
-        <el-checkbox label="banana">banana</el-checkbox>
-        <el-checkbox label="orange">orange</el-checkbox>
-      </el-checkbox-group>
-    </div>
-    <el-table :data="tableData" style="width: 100%">
-      <el-table-column prop="name" label="名称" width="180">
-      </el-table-column>
-      <el-table-column :key='fruit' v-for='(fruit,index) in formThead' :label="fruit">
-        <template scope="scope">
-          {{scope.row.list[index].value}}
-        </template>
-      </el-table-column>
-    </el-table>
+    <div style='margin:0 0 5px 20px'>固定表头 按照表头顺序排序</div>
+    <fixed-thead/>
+
+    <div style='margin:30px 0 5px 20px'>不固定表头 按照点击顺序排序</div>
+    <unfixed-thead/>
   </div>
 </template>
 
 <script>
+  import fixedThead from './dynamictable/fixedThead'
+  import unfixedThead from './dynamictable/unfixedThead'
+
   export default {
-    data() {
-      return {
-        tableData: [{
-          name: '水果',
-          list: [{ name: 'apple', value: 10 }, { name: 'banana', value: 20 }, { name: 'orange', value: 20 }]
-        }, {
-          name: '水果2',
-          list: [{ name: 'apple2', value: 12 }, { name: 'banana2', value: 22 }, { name: 'orange', value: 20 }]
-        }],
-        formThead: ['apple', 'banana']
-      }
-    }
+    components: { fixedThead, unfixedThead }
   };
 </script>
 
