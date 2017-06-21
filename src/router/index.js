@@ -1,67 +1,70 @@
 import Vue from 'vue';
 import Router from 'vue-router';
+const _import = require('./_import_' + process.env.NODE_ENV);
+// in development env not use Lazy Loading,because Lazy Loading large page will cause webpack hot update too slow
+// so only in production use Lazy Loading
 
 /* layout */
 import Layout from '../views/layout/Layout';
 
 /* login */
-import Login from '../views/login/';
-const authRedirect = () => import('../views/login/authredirect');
-const sendPWD = () => import('../views/login/sendpwd');
-const reset = () => import('../views/login/reset');
+const Login = _import('login/index');
+const authRedirect = _import('login/authredirect');
+const sendPWD = _import('login/sendpwd');
+const reset = _import('login/reset');
 
 /* dashboard */
-const dashboard = () => import('../views/dashboard/index');
+const dashboard = _import('dashboard/index');
 
 /* Introduction */
-const Introduction = () => import('../views/introduction/index');
+const Introduction = _import('introduction/index');
 
 /* components */
-const componentsIndex = () => import('../views/components/index');
-const Tinymce = () => import('../views/components/tinymce');
-const Markdown = () => import('../views/components/markdown');
-const JsonEditor = () => import('../views/components/jsoneditor');
-const DndList = () => import('../views/components/dndlist');
-const AvatarUpload = () => import('../views/components/avatarUpload');
-const Dropzone = () => import('../views/components/dropzone');
-const Sticky = () => import('../views/components/sticky');
-const SplitPane = () => import('../views/components/splitpane');
-const CountTo = () => import('../views/components/countTo');
-const Mixin = () => import('../views/components/mixin');
+const componentsIndex = _import('components/index');
+const Tinymce = _import('components/tinymce');
+const Markdown = _import('components/markdown');
+const JsonEditor = _import('components/jsoneditor');
+const DndList = _import('components/dndlist');
+const AvatarUpload = _import('components/avatarUpload');
+const Dropzone = _import('components/dropzone');
+const Sticky = _import('components/sticky');
+const SplitPane = _import('components/splitpane');
+const CountTo = _import('components/countTo');
+const Mixin = _import('components/mixin');
 
 
 /* charts */
-const chartIndex = () => import('../views/charts/index');
-const KeyboardChart = () => import('../views/charts/keyboard');
-const KeyboardChart2 = () => import('../views/charts/keyboard2');
-const LineMarker = () => import('../views/charts/line');
-const MixChart = () => import('../views/charts/mixchart');
+const chartIndex = _import('charts/index');
+const KeyboardChart = _import('charts/keyboard');
+const KeyboardChart2 = _import('charts/keyboard2');
+const LineMarker = _import('charts/line');
+const MixChart = _import('charts/mixchart');
 
 /* error page */
-const Err404 = () => import('../views/error/404');
-const Err401 = () => import('../views/error/401');
+const Err404 = _import('error/404');
+const Err401 = _import('error/401');
 
 /* error log */
-const ErrorLog = () => import('../views/errlog/index');
+const ErrorLog = _import('errlog/index');
 
 /* excel */
-const ExcelDownload = () => import('../views/excel/index');
+const ExcelDownload = _import('excel/index');
 
 /* theme  */
-const Theme = () => import('../views/theme/index');
+const Theme = _import('theme/index');
 
 /* example*/
-const TableLayout = () => import('../views/example/table/index');
-const DynamicTable = () => import('../views/example/table/dynamictable');
-const Table = () => import('../views/example/table/table');
-const DragTable = () => import('../views/example/table/dragTable');
-const InlineEditTable = () => import('../views/example/table/inlineEditTable');
+const TableLayout = _import('example/table/index');
+const DynamicTable = _import('example/table/dynamictable');
+const Table = _import('example/table/table');
+const DragTable = _import('example/table/dragTable');
+const InlineEditTable = _import('example/table/inlineEditTable');
 
-const Form = () => import('../views/example/form');
-const Tab = () => import('../views/example/tab/index');
+const Form = _import('example/form');
+const Tab = _import('example/tab/index');
 
 /* permission */
-const Permission = () => import('../views/permission/index');
+const Permission = _import('permission/index');
 
 
 Vue.use(Router);
