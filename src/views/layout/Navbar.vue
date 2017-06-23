@@ -2,12 +2,13 @@
     <el-menu class="navbar" mode="horizontal">
         <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
         <levelbar></levelbar>
+        <tabs-view></tabs-view>
         <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
         <screenfull class='screenfull'></screenfull>
         <el-dropdown class="avatar-container" trigger="click">
             <div class="avatar-wrapper">
                 <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-                <i class="el-icon-caret-bottom" />
+                <i class="el-icon-caret-bottom"></i>
             </div>
             <el-dropdown-menu class="user-dropdown" slot="dropdown">
                 <router-link class='inlineBlock' to="/">
@@ -29,6 +30,7 @@
 <script>
     import { mapGetters } from 'vuex';
     import Levelbar from './Levelbar';
+    import TabsView from './TabsView';
     import Hamburger from 'components/Hamburger';
     import Screenfull from 'components/Screenfull';
     import ErrorLog from 'components/ErrLog';
@@ -37,6 +39,7 @@
     export default {
       components: {
         Levelbar,
+        TabsView,
         Hamburger,
         ErrorLog,
         Screenfull
