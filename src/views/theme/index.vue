@@ -50,7 +50,7 @@ import { toggleClass } from 'utils';
 export default {
   data() {
     return {
-      theme: '',
+      theme: false,
       tags: [
           { name: '标签一', type: '' },
           { name: '标签二', type: 'gray' },
@@ -68,9 +68,6 @@ export default {
       toggleClass(document.body, 'custom-theme')
         //   this.$store.dispatch('setTheme', value);
     }
-  },
-  methods: {
-
   }
 };
 </script>
