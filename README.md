@@ -57,6 +57,7 @@
 - cache tabs example
 - screenfull
 - markdown2html
+- views-tab
 
 
 ## 开发

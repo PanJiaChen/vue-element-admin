@@ -55,6 +55,7 @@ Join the group on QQ 591724180.
 - cache tabs example
 - screenfull
 - markdown2html
+- views-tab
 
 ## Development
 
