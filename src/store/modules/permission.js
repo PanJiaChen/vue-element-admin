@@ -8,6 +8,26 @@ function hasPermission(roles, route) {
   }
 }
 
+/**
+ * 递归过滤异步路由表，返回符合用户角色权限的路由表
+ * @param asyncRouterMap
+ * @param roles
+ * @returns {Array.<T>|*}
+ */
+function filterAsyncRouter(asyncRouterMap, roles) {
+    let accessedRouters = asyncRouterMap.filter(route => {
+        if(hasPermission(roles, route)) {
+            if(route.children && route.children.length) {
+                route.children = filterAsyncRouter(route.children, roles)
+            }
+            return true
+        }
+        return false
+    })
+    return accessedRouters
+}
+
+
 const permission = {
   state: {
     routers: constantRouterMap,
@@ -25,23 +45,12 @@ const permission = {
     GenerateRoutes({ commit }, data) {
       return new Promise(resolve => {
         const { roles } = data;
-        const accessedRouters = asyncRouterMap.filter(v => {
-          if (roles.indexOf('admin') >= 0) return true;
-          if (hasPermission(roles, v)) {
-            if (v.children && v.children.length > 0) {
-              v.children = v.children.filter(child => {
-                if (hasPermission(roles, child)) {
-                  return child
-                }
-                return false;
-              });
-              return v
-            } else {
-              return v
-            }
-          }
-          return false;
-        });
+        let accessedRouters
+        if (roles.indexOf('admin') >= 0) {
+          accessedRouters = asyncRouterMap
+        } else {
+          accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+        }
         commit('SET_ROUTERS', accessedRouters);
         resolve();
       })
