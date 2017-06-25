@@ -8,8 +8,8 @@ module.exports = {
         index: path.resolve(__dirname, '../dist/index.html'),
         assetsRoot: path.resolve(__dirname, '../dist'),
         assetsSubDirectory: '',
-        assetsPublicPath: './', //生产环境assetsPublicPath: '/'
-        staticPath:'./', //生产环境 staticPath:''
+        assetsPublicPath: process.env.NODE_ENV === 'production' ? '/' : './', //生产环境assetsPublicPath: '/'
+        staticPath:process.env.NODE_ENV === 'production' ? '/' : './', //生产环境 staticPath:''
         productionSourceMap: true,
         // Gzip off by default as many popular static hosts such as
         // Surge or Netlify already gzip all static assets for you.
