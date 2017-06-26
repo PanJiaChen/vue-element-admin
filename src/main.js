@@ -27,6 +27,8 @@ Vue.component('Sticky', Sticky);
 Vue.use(ElementUI);
 Vue.use(vueWaves);
 
+Vue.config.productionTip = false;
+
 // register global utility filters.
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
@@ -112,9 +114,11 @@ if (process.env === 'production') {
 // })(console.error);
 
 new Vue({
+  el: '#app',
   router,
   store,
-  render: h => h(App)
-}).$mount('#app');
+  template: '<App/>',
+  components: { App }
+})
 
 
