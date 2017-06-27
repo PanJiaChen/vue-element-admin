@@ -35,14 +35,7 @@
             });
             return false;
           }
-
-          if (this.isFullscreen) {
-            screenfull.exit();
-            this.isFullscreen = false;
-          } else {
-            screenfull.request();
-            this.isFullscreen = true;
-          }
+          screenfull.toggle();
         }
       }
     }
