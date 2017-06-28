@@ -132,6 +132,10 @@ Only status of user and app configuration is managed by Vuex. Other data are man
 
 ![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/theme.gif)
 
+#### tabs
+
+![tabs](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/tabs.gif)<br />
+
 #### Collapsing sidebar
 
 ![](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/leftmenu.gif)

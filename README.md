@@ -131,6 +131,10 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ![真正的动态换肤](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/theme.gif)<br />
 
+#### tabs
+
+![tabs](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/tabs.gif)<br />
+
 
 
 #### 可收起侧边栏
