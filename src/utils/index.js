@@ -110,7 +110,11 @@
 
  export function param2Obj(url) {
    const search = url.split('?')[1];
-   return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+   if (search !== undefined) {
+     return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}');
+   }
+   return {};
+   
  }
 
  export function html2Text(val) {
