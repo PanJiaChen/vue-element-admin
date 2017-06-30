@@ -1,6 +1,6 @@
 @import './btn.scss';
 @import './element-ui.scss';
-@import "./mixin.scss";
+@import './mixin.scss';
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -107,7 +107,6 @@ code {
 .pagination-container {
   margin-top: 30px;
 }
-
 
 .editor-container .CodeMirror {
   height: 100%!important;
