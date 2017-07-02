@@ -1,5 +1,6 @@
 <template>
     <div class="dashboard-editor-container">
+
         <a href="https://github.com/PanJiaChen/vue-element-admin" target="_blank" class="github-corner" aria-label="View source on Github">
             <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#4AB7BD; color:#fff; position: absolute; top: 50px; border: 0; right: 0;"
                 aria-hidden="true">
@@ -10,55 +11,47 @@
                     fill="currentColor" class="octo-body"></path>
             </svg>
         </a>
-        <div class="btn-group">
-            <el-row>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
-                </el-col>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
-                </el-col>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn pink-btn" to="/excel/download">Export Excel</router-link>
-                </el-col>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn green-btn" to="/example/table/table">Table</router-link>
-                </el-col>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn tiffany-btn" to="/example/form/edit">Form</router-link>
-                </el-col>
-                <el-col :span="4" class='text-center'>
-                    <router-link class="pan-btn yellow-btn" to="/example/form/edit">Theme</router-link>
-                </el-col>
-            </el-row>
 
-        </div>
+        <el-row class="btn-group">
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
+            </el-col>
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
+            </el-col>
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn pink-btn" to="/excel/download">Excel</router-link>
+            </el-col>
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn green-btn" to="/example/table/table">Table</router-link>
+            </el-col>
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn tiffany-btn" to="/example/form/edit">Form</router-link>
+            </el-col>
+            <el-col :span="4" class='text-center'>
+                <router-link class="pan-btn yellow-btn" to="/example/form/edit">Theme</router-link>
+            </el-col>
+        </el-row>
+
         <el-row>
             <el-col :span="6">
-
                 <el-card class="box-card">
-                    <div slot="header" class="clearfix">
-                        <pan-thumb style="float: left" :image="avatar"> 你的权限:
+                    <div slot="header" class="box-card-header">
+                        <pan-thumb class="panThumb" :image="avatar"> 你的权限:
                             <span class="pan-info-roles" v-for="item in roles">{{item}}</span>
                         </pan-thumb>
                     </div>
                     <span class="display_name">{{name}}</span>
-                    <div class="info-item" :to="'/article/wscnlist?uid='+uid">
+                    <div class="info-item">
                         <countTo class="info-item-num" :startVal='0' :endVal='statisticsData.article_count' :duration='3400'></countTo>
                         <span class="info-item-text">文章</span>
                         <wscn-icon-svg icon-class="a" class="dashboard-editor-icon" />
                     </div>
-                    <div class="info-item" style="cursor: auto">
+                    <div class="info-item">
                         <countTo class="info-item-num" :startVal='0' :endVal='statisticsData.pageviews_count' :duration='3600'></countTo>
                         <span class="info-item-text">浏览量</span>
                         <wscn-icon-svg icon-class="b" class="dashboard-editor-icon" />
                     </div>
-                    <div class="info-item" :to="'/comment/commentslist?res_author_id='+uid">
-                        <countTo class="info-item-num" ref='countTo3' :startVal='0' :endVal='statisticsData.comment_count' :duration='3800'></countTo>
-                        <span class="info-item-text">评论</span>
-                        <wscn-icon-svg icon-class="c" class="dashboard-editor-icon" />
-                    </div>
-
                 </el-card>
 
             </el-col>
@@ -113,76 +106,59 @@
     import pieChart from './pieChart';
     import barChart from './barChart';
     import lineChart from './lineChart';
-    import { getList } from 'api/article';
     import countTo from 'vue-count-to';
     export default {
       name: 'dashboard-editor',
       components: { PanThumb, countTo, pieChart, lineChart, barChart },
       data() {
         return {
-          chart: null,
           statisticsData: {
             article_count: 1024,
             comment_count: 102400,
             latest_article: [],
             month_article_count: 28,
-            pageviews_count: 1024,
-            week_article: [
-               { count: 30, week: '201716' },
-                { count: 26, week: '201715' },
-                { count: 31, week: '201714' },
-                { count: 28, week: '201713' },
-                { count: 40, week: '201712' },
-                { count: 41, week: '201711' },
-                { count: 50, week: '201710' },
-                { count: 42, week: '201709' },
-                { count: 36, week: '201708' },
-                { count: 32, week: '201707' },
-                { count: 40, week: '201706' },
-                { count: 41, week: '201705' }
-            ]
-          },
-          list: []
+            pageviews_count: 1024
+          }
         }
-      },
-      created() {
-        this.fetchData();
       },
       computed: {
         ...mapGetters([
           'name',
           'avatar',
-          'email',
-          'uid',
-          'introduction',
           'roles'
-        ]),
-        recentArticles() {
-          return this.list.slice(0, 7)
-        }
-      },
-      methods: {
-        fetchData() {
-          getList(this.listQuery).then(response => {
-            this.list = response.data;
-          })
-        }
-      },
-      filters: {
-        statusFilter(status) {
-          const statusMap = {
-            published: '已发布',
-            draft: '草稿中',
-            deleted: '已删除'
-          };
-          return statusMap[status];
-        }
+        ])
       }
     }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.dashboard-editor-container{
+.dashboard-editor-container {
     margin: 30px;
+    .btn-group {
+        margin-bottom: 60px;
+    }
+    .box-card-header {
+        position: relative;
+        height: 160px;
+    }
+    .panThumb {
+        z-index: 100;
+        height: 150px;
+        width: 150px;
+        position: absolute;
+        left: 0px;
+        right: 0px;
+        margin: auto;
+    }
+    .display_name{
+        font-size: 30px;
+    }
+    .info-item{
+        display: inline-block;
+        margin-top: 10px;
+        &:last-of-type{
+            margin-left: 15px;
+        }
+    }
 }
 </style>
