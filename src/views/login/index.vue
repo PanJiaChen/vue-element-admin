@@ -73,11 +73,6 @@
           showDialog: false
         }
       },
-      computed: {
-        ...mapGetters([
-          'auth_type'
-        ])
-      },
       methods: {
         handleLogin() {
           this.$refs.loginForm.validate(valid => {

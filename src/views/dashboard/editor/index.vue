@@ -53,8 +53,8 @@
                         <wscn-icon-svg icon-class="b" class="dashboard-editor-icon" />
                     </div>
                 </el-card>
-
             </el-col>
+
             <el-col :span="8">
                 <pie-chart></pie-chart>
             </el-col>
@@ -62,54 +62,31 @@
             <el-col :span="10">
                 <bar-chart></bar-chart>
             </el-col>
-
         </el-row>
-        <el-row>
+
+        <el-row :gutter="20">
             <el-col :span="16">
                 <line-chart></line-chart>
             </el-col>
+            <el-col :span="8">
+                <todo-list></todo-list>
+            </el-col>
         </el-row>
 
-        <div class="info-container">
-
-            <div class="info-wrapper">
-
-            </div>
-        </div>
-
-        <!--<div class="clearfix main-dashboard-container">
-
-            <div class="recent-articles-container">
-                <div class="recent-articles-title">最近撸了</div>
-                <div class="recent-articles-wrapper">
-                    <template v-if="recentArticles.length!=0">
-                        <div class="recent-articles-item" v-for="item in  recentArticles">
-                            <span class="recent-articles-status">{{item.status | statusFilter}}</span>
-                             <span class="recent-articles-content" :to="'/article/edit/'+item.id">
-                                {{item.title}}
-                            </span>
-                            <span class="recent-articles-time">{{item.author}}</span>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <div class="recent-articles-emptyTitle">你太懒了最近都没有撸</div>
-                    </template>
-                </div>
-            </div>
-        </div>-->
     </div>
 </template>
 
 <script>
     import { mapGetters } from 'vuex';
-    import PanThumb from 'components/PanThumb';
+    import panThumb from 'components/PanThumb';
     import pieChart from './pieChart';
     import barChart from './barChart';
     import lineChart from './lineChart';
     import countTo from 'vue-count-to';
+    import todoList from 'components/TodoList';
     export default {
       name: 'dashboard-editor',
-      components: { PanThumb, countTo, pieChart, lineChart, barChart },
+      components: { panThumb, countTo, pieChart, lineChart, barChart, todoList },
       data() {
         return {
           statisticsData: {
