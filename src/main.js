@@ -83,11 +83,6 @@ router.afterEach(() => {
   NProgress.done(); // 结束Progress
 });
 
-// window.onunhandledrejection = e => {
-//     console.log('unhandled', e.reason, e.promise);
-//     e.preventDefault()
-// };
-
 // 生产环境错误日志
 if (process.env === 'production') {
   Vue.config.errorHandler = function(err, vm) {
@@ -99,18 +94,6 @@ if (process.env === 'production') {
     })
   };
 }
-
-// window.onerror = function (msg, url, lineNo, columnNo, error) {
-//     console.log('window')
-// };
-//
-// console.error = (function (origin) {
-//     return function (errorlog) {
-//         // handler();//基于业务的日志记录及数据报错
-//         console.log('console'+errorlog)
-//         origin.call(console, errorlog);
-//     }
-// })(console.error);
 
 new Vue({
   el: '#app',
