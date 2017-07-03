@@ -21,9 +21,6 @@
             </el-form-item>
             <div class='tips'>admin账号为:admin@wallstreetcn.com 密码随便填</div>
             <div class='tips'>editor账号:editor@wallstreetcn.com 密码随便填</div>
-            <router-link to="/sendpwd" class="forget-pwd">
-                忘记密码?(或首次登录)
-            </router-link>
         </el-form>
         <el-dialog title="第三方验证" :visible.sync="showDialog">
             邮箱登录成功,请选择第三方验证
@@ -33,9 +30,7 @@
 </template>
 
 <script>
-    import { mapGetters } from 'vuex';
     import { isWscnEmail } from 'utils/validate';
-    // import { getQueryObject } from 'utils';
     import socialSign from './socialsignin';
 
     export default {
