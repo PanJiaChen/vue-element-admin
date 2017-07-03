@@ -65,10 +65,10 @@
         </el-row>
 
         <el-row :gutter="20">
-            <el-col :span="16">
+            <el-col :span="15">
                 <line-chart></line-chart>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="9">
                 <todo-list></todo-list>
             </el-col>
         </el-row>
@@ -129,10 +129,12 @@
     }
     .display_name{
         font-size: 30px;
+        display: block;
     }
     .info-item{
         display: inline-block;
         margin-top: 10px;
+        font-size: 14px;
         &:last-of-type{
             margin-left: 15px;
         }
