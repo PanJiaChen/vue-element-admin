@@ -20,8 +20,15 @@
           this.$store.dispatch('delVisitedViews', view)
           $event.preventDefault()
         },
+        generateRoute() {
+          if (this.$route.matched[this.$route.matched.length - 1].name) {
+            return this.$route.matched[this.$route.matched.length - 1]
+          }
+          this.$route.matched[0].path = '/'
+          return this.$route.matched[0]
+        },
         addViewTabs() {
-          this.$store.dispatch('addVisitedViews', this.$route.matched[this.$route.matched.length - 1])
+          this.$store.dispatch('addVisitedViews', this.generateRoute())
         }
       },
       watch: {
