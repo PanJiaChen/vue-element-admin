@@ -14,7 +14,7 @@
       </el-table-column>
       <el-table-column :key='fruit' v-for='(fruit,index) in formThead' :label="fruit">
         <template scope="scope">
-          {{scope.row.list[index].value}}
+          {{scope.row[fruit]}}
         </template>
       </el-table-column>
     </el-table>
@@ -28,20 +28,16 @@
       return {
         tableData: [
           {
-            name: 'fruit1',
-            list: [
-                { name: 'apple1', value: 10 },
-                { name: 'banana1', value: 20 },
-                { name: 'orange1', value: 20 }
-            ]
+            name: 'fruit-1',
+            apple: 'apple-10',
+            banana: 'banana-10',
+            orange: 'orange-10'
           },
           {
-            name: 'fruit2',
-            list: [
-                { name: 'apple2', value: 12 },
-                { name: 'banana2', value: 22 },
-                { name: 'orange2', value: 20 }
-            ]
+            name: 'fruit-2',
+            apple: 'apple-20',
+            banana: 'banana-20',
+            orange: 'orange-20'
           }
         ],
         formThead: ['apple', 'banana']
