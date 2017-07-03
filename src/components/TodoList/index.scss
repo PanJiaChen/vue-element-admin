@@ -246,7 +246,7 @@
 		list-style: none;
 		position: absolute;
 		right: 0;
-		left: 0;
+		left: -20px;
 	}
 	.filters li {
 		display: inline;
@@ -254,6 +254,7 @@
 	.filters li a {
 		color: inherit;
 		margin: 3px;
+		font-size: 12px;
 		padding: 3px 7px;
 		text-decoration: none;
 		border: 1px solid transparent;

@@ -4,6 +4,8 @@
 <script>
   import echarts from 'echarts';
   require('echarts/theme/macarons'); // echarts 主题
+  import { debounce } from 'utils';
+
 
   export default {
     props: {
@@ -18,6 +20,10 @@
       height: {
         type: String,
         default: '300px'
+      },
+      autoResize: {
+        type: Boolean,
+        default: true
       }
     },
     data() {
@@ -27,10 +33,19 @@
     },
     mounted() {
       this.initChart();
+      if (this.autoResize) {
+        this.__resizeHanlder = debounce(() => {
+          this.chart.resize()
+        }, 100)
+        window.addEventListener('resize', this.__resizeHanlder)
+      }
     },
     beforeDestroy() {
       if (!this.chart) {
         return
+      }
+      if (this.autoResize) {
+        window.removeEventListener('resize', this.__resizeHanlder)
       }
       this.chart.dispose();
       this.chart = null;
@@ -41,12 +56,12 @@
 
         this.chart.setOption({
           xAxis: {
-            data: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             boundaryGap: false
           },
           grid: {
-            left: 0,
-            right: 0,
+            left: 10,
+            right: 10,
             bottom: 20,
             containLabel: true
           },
@@ -59,7 +74,7 @@
           },
           yAxis: {},
           series: [{
-            name: 'vistor',
+            name: 'visitors',
             itemStyle: {
               normal: {
                 areaStyle: {}
@@ -70,7 +85,7 @@
             data: [100, 120, 161, 134, 105, 160, 165]
           },
           {
-            name: 'buyer',
+            name: 'buyers',
             smooth: true,
             type: 'line',
             itemStyle: {
