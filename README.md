@@ -5,6 +5,8 @@
 
 [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
+**本项目的定位是后台集成方案，不适合当基础模板来开发，模板建议使用 [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)**
+
 **注意：该项目目前使用element-ui@1.3.3版本,所以最低兼容 Vue 2.3.0**
 
 ## 前言
