@@ -1,6 +1,7 @@
 <template>
-    <div :class="className" :id="id" :style="{height:height,width:width}"></div>
+  <div :class="className" :id="id" :style="{height:height,width:width}"></div>
 </template>
+
 <script>
    import echarts from 'echarts';
 

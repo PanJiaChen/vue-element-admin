@@ -12,7 +12,7 @@
           <li><a target='_blank' href="https://juejin.im/post/593121aa0ce4630057f70d35">手摸手，带你用 vue 撸后台 系列三 (实战篇)</a></li>
           <li><a target='_blank' href="https://segmentfault.com/a/1190000009090836">手摸手，带你封装一个vue component</a></li>
         </ul>
-    </code>
+      </code>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Sticky className="sub-navbar">
+    <sticky className="sub-navbar">
       <el-dropdown trigger="click">
         <el-button>
           平台<i class="el-icon-caret-bottom el-icon--right"></i>
@@ -32,7 +32,7 @@
 
       <el-button style="margin-left: 10px;" type="success">发布
       </el-button>
-    </Sticky>
+    </sticky>
 
     <div class="components-container">
       <code>Sticky header 当页面滚动到预设的位置会吸附在顶部</code>
@@ -90,33 +90,34 @@
       <div>我是占位</div>
     </div>
   </div>
-
 </template>
-<script>
-    import Sticky from 'components/Sticky';
 
-    export default {
-      components: { Sticky },
-      data() {
-        return {
-          time: '',
-          url: '',
-          platforms: ['a-platform'],
-          platformsOptions: [
+
+<script>
+  import Sticky from 'components/Sticky';
+
+  export default {
+    components: { Sticky },
+    data() {
+      return {
+        time: '',
+        url: '',
+        platforms: ['a-platform'],
+        platformsOptions: [
             { key: 'a-platform', name: '平台A' },
             { key: 'b-platform', name: '平台B' },
             { key: 'c-platform', name: '平台C' }
-          ],
-          pickerOptions: {
-            disabledDate(time) {
-              return time.getTime() > Date.now();
-            }
+        ],
+        pickerOptions: {
+          disabledDate(time) {
+            return time.getTime() > Date.now();
           }
         }
       }
-
-    };
+    }
+  };
 </script>
+
 <style scoped>
   .time-container {
     display: inline-block;

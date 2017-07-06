@@ -7,10 +7,11 @@
 </template>
 
 <script>
-    import keyboardChart from 'components/Charts/keyboard';
-    export default {
-      components: { keyboardChart }
-    };
+  import keyboardChart from 'components/Charts/keyboard';
+
+  export default {
+    components: { keyboardChart }
+  };
 </script>
 
 <style scoped>

@@ -24,7 +24,6 @@ export function parseTime(time, cFormat) {
     time = +time * 1000
   }
 
-
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}';
   let date;
   if (typeof time == 'object') {
@@ -75,8 +74,6 @@ export function formatTime(time, option) {
   }
 }
 
-
-
 /* 数字 格式化*/
 export function nFormatter(num, digits) {
   const si = [
@@ -95,13 +92,11 @@ export function nFormatter(num, digits) {
   return num.toString();
 }
 
-
 export function html2Text(val) {
   const div = document.createElement('div');
   div.innerHTML = val;
   return div.textContent || div.innerText;
 }
-
 
 export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','));

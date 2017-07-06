@@ -23,7 +23,7 @@
 
       <el-table-column width="100px" label="重要性">
         <template scope="scope">
-          <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n" ></icon-svg>
+          <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n"></icon-svg>
         </template>
       </el-table-column>
 
@@ -52,44 +52,44 @@
 </template>
 
 <script>
-    import { fetchList } from 'api/article_table';
+  import { fetchList } from 'api/article_table';
 
-    export default {
-      name: 'inline_edit-table_demo',
-      data() {
-        return {
-          list: null,
-          listLoading: true,
-          listQuery: {
-            page: 1,
-            limit: 10
-          }
-        }
-      },
-      created() {
-        this.getList();
-      },
-      filters: {
-        statusFilter(status) {
-          const statusMap = {
-            published: 'success',
-            draft: 'gray',
-            deleted: 'danger'
-          };
-          return statusMap[status]
-        }
-      },
-      methods: {
-        getList() {
-          this.listLoading = true;
-          fetchList(this.listQuery).then(response => {
-            this.list = response.data.items.map(v => {
-              v.edit = false;
-              return v
-            });
-            this.listLoading = false;
-          })
+  export default {
+    name: 'inline_edit-table_demo',
+    data() {
+      return {
+        list: null,
+        listLoading: true,
+        listQuery: {
+          page: 1,
+          limit: 10
         }
       }
+    },
+    created() {
+      this.getList();
+    },
+    filters: {
+      statusFilter(status) {
+        const statusMap = {
+          published: 'success',
+          draft: 'gray',
+          deleted: 'danger'
+        };
+        return statusMap[status]
+      }
+    },
+    methods: {
+      getList() {
+        this.listLoading = true;
+        fetchList(this.listQuery).then(response => {
+          this.list = response.data.items.map(v => {
+            v.edit = false;
+            return v
+          });
+          this.listLoading = false;
+        })
+      }
     }
+  }
 </script>

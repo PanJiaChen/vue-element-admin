@@ -1,6 +1,6 @@
 <template>
   <div class="errPage-container">
-    <err-code/>
+    <err-code></err-code>
 
     <h3>请点击右上角bug小图表</h3>
     <code>
@@ -11,19 +11,15 @@
 </template>
 
 <script>
-    import errCode from './errcode';
-    export default {
-      components: { errCode },
-      methods: {
-        back() {
-          this.$router.go(-1)
-        }
-      }
-    };
+  import errCode from './errcode';
+
+  export default {
+    components: { errCode }
+  };
 </script>
 
 <style scoped>
-.errPage-container{
-  padding: 30px;
-}
+  .errPage-container {
+    padding: 30px;
+  }
 </style>

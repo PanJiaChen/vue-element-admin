@@ -29,7 +29,6 @@ const SplitPane = _import('components/splitpane');
 const CountTo = _import('components/countTo');
 const Mixin = _import('components/mixin');
 
-
 /* charts */
 const chartIndex = _import('charts/index');
 const KeyboardChart = _import('charts/keyboard');
@@ -62,7 +61,6 @@ const Tab = _import('example/tab/index');
 
 /* permission */
 const Permission = _import('permission/index');
-
 
 Vue.use(Router);
 

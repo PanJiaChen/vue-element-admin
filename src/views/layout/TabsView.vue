@@ -5,48 +5,47 @@
         {{tag.name}}
       </el-tag>
     </router-link>
-    </div>
+  </div>
 </template>
 
 <script>
-    export default {
-      computed: {
-        visitedViews() {
-          return this.$store.state.app.visitedViews.slice(-6)
-        }
+  export default {
+    computed: {
+      visitedViews() {
+        return this.$store.state.app.visitedViews.slice(-6)
+      }
+    },
+    methods: {
+      closeViewTabs(view, $event) {
+        this.$store.dispatch('delVisitedViews', view)
+        $event.preventDefault()
       },
-      methods: {
-        closeViewTabs(view, $event) {
-          this.$store.dispatch('delVisitedViews', view)
-          $event.preventDefault()
-        },
-        generateRoute() {
-          if (this.$route.matched[this.$route.matched.length - 1].name) {
-            return this.$route.matched[this.$route.matched.length - 1]
-          }
-          this.$route.matched[0].path = '/'
-          return this.$route.matched[0]
-        },
-        addViewTabs() {
-          this.$store.dispatch('addVisitedViews', this.generateRoute())
+      generateRoute() {
+        if (this.$route.matched[this.$route.matched.length - 1].name) {
+          return this.$route.matched[this.$route.matched.length - 1]
         }
+        this.$route.matched[0].path = '/'
+        return this.$route.matched[0]
       },
-      watch: {
-        $route() {
-          this.addViewTabs()
-        }
+      addViewTabs() {
+        this.$store.dispatch('addVisitedViews', this.generateRoute())
+      }
+    },
+    watch: {
+      $route() {
+        this.addViewTabs()
       }
     }
+  }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .tabs-view-container{
+  .tabs-view-container {
     display: inline-block;
     vertical-align: top;
     margin-left: 10px;
-    .tabs-view{
+    .tabs-view {
       margin-left: 10px;
     }
   }
-
 </style>

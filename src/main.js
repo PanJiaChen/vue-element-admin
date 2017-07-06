@@ -20,15 +20,12 @@ import vueWaves from './directive/waves';// 水波纹指令
 import errLog from 'store/errLog';// error log组件
 import './mock/index.js';  // 该项目所有请求使用mockjs模拟
 
-
 // register globally
 Vue.component('multiselect', Multiselect);
 Vue.component('Sticky', Sticky);
 Vue.component('icon-svg', IconSvg)
 Vue.use(ElementUI);
 Vue.use(vueWaves);
-
-Vue.config.productionTip = false;
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
@@ -78,10 +75,11 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-
 router.afterEach(() => {
   NProgress.done(); // 结束Progress
 });
+
+Vue.config.productionTip = false;
 
 // 生产环境错误日志
 if (process.env === 'production') {
