@@ -8,7 +8,7 @@
 			</router-link>
 			<el-submenu :index="item.name" v-if="!item.noDropdown&&!item.hidden">
 				<template slot="title">
-					<icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg> {{item.name}}
+					<icon-svg v-if='item.icon' :icon-class="item.icon"></icon-svg>{{item.name}}
 				</template>
 				<template v-for="child in item.children" v-if='!child.hidden'>
 					<sidebar-item class='menu-indent' v-if='child.children&&child.children.length>0' :routes='[child]'> </sidebar-item>
@@ -36,7 +36,7 @@
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 	.svg-icon {
-		margin-right: 10px;
+		margin-right: 15px;
 	}
 
 	.hideSidebar .menu-indent {
