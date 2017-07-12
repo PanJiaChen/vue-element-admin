@@ -34,7 +34,7 @@ const chartIndex = _import('charts/index');
 const KeyboardChart = _import('charts/keyboard');
 const KeyboardChart2 = _import('charts/keyboard2');
 const LineMarker = _import('charts/line');
-const MixChart = _import('charts/mixchart');
+const MixChart = _import('charts/mixChart');
 
 /* error page */
 const Err404 = _import('error/404');
