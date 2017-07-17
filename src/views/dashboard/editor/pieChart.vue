@@ -67,7 +67,9 @@
                 { value: 100, name: 'gold' },
                 { value: 59, name: 'forecastsx' },
                 { value: 49, name: 'markets' }
-              ]
+              ],
+              animationEasing: 'cubicInOut',
+              animationDuration: 2600
             }
           ]
         })

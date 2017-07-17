@@ -90,7 +90,9 @@
             },
             smooth: true,
             type: 'line',
-            data: [100, 120, 161, 134, 105, 160, 165]
+            data: [100, 120, 161, 134, 105, 160, 165],
+            animationDuration: 2600,
+            animationEasing: 'cubicInOut'
           },
           {
             name: 'buyers',
@@ -107,7 +109,9 @@
                 }
               }
             },
-            data: [120, 82, 91, 154, 162, 140, 130]
+            data: [120, 82, 91, 154, 162, 140, 130],
+            animationDuration: 2000,
+            animationEasing: 'quadraticOut'
           }]
         })
       }

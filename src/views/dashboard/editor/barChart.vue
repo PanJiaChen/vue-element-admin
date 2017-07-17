@@ -5,7 +5,7 @@
 <script>
   import echarts from 'echarts';
   require('echarts/theme/macarons'); // echarts 主题
-
+  const animationDuration = 3000;
   export default {
     props: {
       className: {
@@ -68,19 +68,22 @@
             type: 'bar',
             stack: 'vistors',
             barWidth: '60%',
-            data: [79, 52, 200, 334, 390, 330, 220]
+            data: [79, 52, 200, 334, 390, 330, 220],
+            animationDuration
           }, {
             name: 'pageB',
             type: 'bar',
             stack: 'vistors',
             barWidth: '60%',
-            data: [80, 52, 200, 334, 390, 330, 220]
+            data: [80, 52, 200, 334, 390, 330, 220],
+            animationDuration
           }, {
             name: 'pageC',
             type: 'bar',
             stack: 'vistors',
             barWidth: '60%',
-            data: [30, 52, 200, 334, 390, 330, 220]
+            data: [30, 52, 200, 334, 390, 330, 220],
+            animationDuration
           }]
         })
       }
