@@ -1,0 +1,143 @@
+<template>
+  <div class="components-container">
+    <code>页面滚动到指定位置会在右下角出现返回顶部按钮</code>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <div>我是占位</div>
+    <back-to-top id="back-to-top-t" :visibilityHeight="300" :backPosition="50"></back-to-top>
+  </div>
+</template>
+<script>
+import BackToTop from 'components/BackToTop';
+export default {
+  components: { BackToTop }
+
+}
+</script>
+<style scoped>
+  #back-to-top-t{
+    right: 100px;
+    bottom: 100px;
+  }
+</style>

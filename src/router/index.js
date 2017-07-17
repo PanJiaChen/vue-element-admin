@@ -28,6 +28,7 @@ const Sticky = _import('components/sticky');
 const SplitPane = _import('components/splitpane');
 const CountTo = _import('components/countTo');
 const Mixin = _import('components/mixin');
+const BackToTop = _import('components/backToTop')
 
 /* charts */
 const chartIndex = _import('charts/index');
@@ -129,7 +130,8 @@ export const asyncRouterMap = [
       { path: 'dropzone', component: Dropzone, name: 'Dropzone' },
       { path: 'sticky', component: Sticky, name: 'Sticky' },
       { path: 'countto', component: CountTo, name: 'CountTo' },
-      { path: 'mixin', component: Mixin, name: '小组件' }
+      { path: 'mixin', component: Mixin, name: '小组件' },
+      { path: 'backtotop', component: BackToTop, name: '返回顶部' }
     ]
   },
   {
