@@ -43,7 +43,7 @@
     "babel-eslint": "7.2.3",
     "babel-loader": "7.0.0",
     "babel-plugin-transform-runtime": "6.23.0",
-     "babel-preset-env": "1.5.2",
+    "babel-preset-env": "1.5.2",
     "babel-preset-stage-2": "6.24.1",
     "babel-register": "6.24.1",
     "chalk": "1.1.3",
