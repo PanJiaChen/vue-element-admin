@@ -5,7 +5,9 @@
 
 [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-**本项目的定位是后台集成方案，不适合当基础模板来开发，模板建议使用 [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)**
+**本项目的定位是后台集成方案，不适合当基础模板来开发，模板建议使用 [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template) ， 桌面端 [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)**
+
+
 
 **注意：该项目目前使用element-ui@1.3.3版本，所以最低兼容 Vue 2.3.0**
 
@@ -24,7 +26,7 @@
 
  相应需求，开了一个qq群 `591724180` 方便大家交流
 
- **如有问题请先看上述文章和Wiki，若不能满足，欢迎issue和pr~**
+ **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr ~**
 
  **该项目并不是一个脚手架，更倾向于是一个集成解决方案**
 
@@ -183,4 +185,8 @@ Detailed changes for each release are documented in the [release notes](https://
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/excel.png)
 
 
-## [更多demo](http://panjiachen.github.io/vue-element-admin)
+## [查看更多demo](http://panjiachen.github.io/vue-element-admin)
+
+## License
+
+MIT
