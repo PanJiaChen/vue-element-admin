@@ -1,12 +1,12 @@
 import { loginByEmail, logout, getInfo } from 'api/login';
-import Cookies from 'js-cookie';
+import { getToken, setToken, removeToken } from 'utils/auth';
 
 const user = {
   state: {
     user: '',
     status: '',
     code: '',
-    token: Cookies.get('Admin-Token'),
+    token: getToken(),
     name: '',
     avatar: '',
     introduction: '',
@@ -56,7 +56,7 @@ const user = {
       return new Promise((resolve, reject) => {
         loginByEmail(email, userInfo.password).then(response => {
           const data = response.data;
-          Cookies.set('Admin-Token', response.data.token);
+          setToken(response.data.token);
           commit('SET_TOKEN', data.token);
           resolve();
         }).catch(error => {
@@ -87,7 +87,7 @@ const user = {
         commit('SET_CODE', code);
         loginByThirdparty(state.status, state.email, state.code).then(response => {
           commit('SET_TOKEN', response.data.token);
-          Cookies.set('Admin-Token', response.data.token);
+          setToken(response.data.token);
           resolve();
         }).catch(error => {
           reject(error);
@@ -101,7 +101,7 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '');
           commit('SET_ROLES', []);
-          Cookies.remove('Admin-Token');
+          removeToken();
           resolve();
         }).catch(error => {
           reject(error);
@@ -113,7 +113,7 @@ const user = {
     FedLogOut({ commit }) {
       return new Promise(resolve => {
         commit('SET_TOKEN', '');
-        Cookies.remove('Admin-Token');
+        removeToken();
         resolve();
       });
     },
@@ -123,7 +123,7 @@ const user = {
       return new Promise(resolve => {
         commit('SET_ROLES', [role]);
         commit('SET_TOKEN', role);
-        Cookies.set('Admin-Token', role);
+        setToken(role);
         resolve();
       })
     }
