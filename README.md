@@ -132,6 +132,7 @@ Detailed changes for each release are documented in the [release notes](https://
 #### 两步验证登录 支持微信和qq
 
 ![两步验证 here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/2login.gif)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FPanJiaChen%2Fvue-element-admin.svg?type=shield)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FPanJiaChen%2Fvue-element-admin?ref=badge_shield)
 
 #### 真正的动态换肤
 
@@ -190,3 +191,6 @@ Detailed changes for each release are documented in the [release notes](https://
 ## License
 
 MIT
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FPanJiaChen%2Fvue-element-admin.svg?type=large)](https://app.fossa.io/projects/git%2Bhttps%3A%2F%2Fgithub.com%2FPanJiaChen%2Fvue-element-admin?ref=badge_large)
