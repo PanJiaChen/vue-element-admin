@@ -1,8 +1,6 @@
 <template>
 	<div class="app-wrapper" :class="{hideSidebar:!sidebar.opened}">
-		<div class="sidebar-wrapper">
-			<sidebar class="sidebar-container"></sidebar>
-		</div>
+		<sidebar class="sidebar-container"></sidebar>
 		<div class="main-container">
 			<navbar></navbar>
 			<app-main></app-main>
@@ -36,40 +34,36 @@
 		height: 100%;
 		width: 100%;
 		&.hideSidebar {
-			.sidebar-wrapper {
-				transform: translate(-140px, 0);
-				.sidebar-container {
-					transform: translate(132px, 0);
-				}
-				&:hover {
-					transform: translate(0, 0);
-					.sidebar-container {
-						transform: translate(0, 0);
-					}
-				}
+			.sidebar-container{
+				width:56px;
 			}
 			.main-container {
-				margin-left: 40px;
+				margin-left: 56px;
 			}
+			// .sidebar-wrapper {
+			// 	transform: translate(-140px, 0);
+			// 	.sidebar-container {
+			// 		transform: translate(132px, 0);
+			// 	}
+			// 	&:hover {
+			// 		transform: translate(0, 0);
+			// 		.sidebar-container {
+			// 			transform: translate(0, 0);
+			// 		}
+			// 	}
+			// }
+
 		}
-		.sidebar-wrapper {
+		.sidebar-container {
+			transition: all .28s ease-out;
 			width: 180px;
+			height: 1000px;
 			position: fixed;
 			top: 0;
 			bottom: 0;
 			left: 0;
 			z-index: 1001;
-			overflow: hidden;
-			transition: all .28s ease-out;
-		}
-		.sidebar-container {
-			transition: all .28s ease-out;
-			position: absolute;
-			top: 0;
-			bottom: 0;
-			left: 0;
-			right: -17px;
-			overflow-y: scroll;
+			background: red;
 		}
 		.main-container {
 			min-height: 100%;
