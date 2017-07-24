@@ -77,8 +77,7 @@
               this.loading = false;
               this.$router.push({ path: '/' });
                 // this.showDialog = true;
-            }).catch(err => {
-              this.$message.error(err);
+            }).catch(() => {
               this.loading = false;
             });
           } else {
