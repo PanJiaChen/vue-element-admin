@@ -142,8 +142,10 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'excel',
     icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'download', component: _import('excel/index'), name: '导出excel' }]
+    children: [
+      { path: 'download', component: _import('excel/index'), name: '导出excel' },
+      { path: 'download2', component: _import('excel/selectExcel'), name: '选择导出excel' }
+    ]
   },
   {
     path: '/theme',
