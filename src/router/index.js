@@ -46,12 +46,12 @@ const ErrorLog = _import('errlog/index');
 
 /* excel */
 const ExcelDownload = _import('excel/index');
-const SelectExcelDownload = _import('excel/excel2');
+const SelectExcelDownload = _import('excel/selectExcel');
 
 /* theme  */
 const Theme = _import('theme/index');
 
-/* example*/
+/* example */
 const TableLayout = _import('example/table/index');
 const DynamicTable = _import('example/table/dynamictable');
 const Table = _import('example/table/table');
