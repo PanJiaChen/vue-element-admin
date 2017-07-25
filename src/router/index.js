@@ -46,6 +46,7 @@ const ErrorLog = _import('errlog/index');
 
 /* excel */
 const ExcelDownload = _import('excel/index');
+const SelectExcelDownload = _import('excel/excel2');
 
 /* theme  */
 const Theme = _import('theme/index');
@@ -174,8 +175,10 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'excel',
     icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'download', component: ExcelDownload, name: '导出excel' }]
+    children: [
+      { path: 'download', component: ExcelDownload, name: '导出excel' },
+      { path: 'download2', component: SelectExcelDownload, name: '选择导出excel' }
+    ]
   },
   {
     path: '/theme',
