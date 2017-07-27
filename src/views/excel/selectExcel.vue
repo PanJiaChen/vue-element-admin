@@ -66,15 +66,22 @@
         this.multipleSelection = val;
       },
       handleDownload() {
-        require.ensure([], () => {
-          const { export_json_to_excel } = require('vendor/Export2Excel');
-          const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间'];
-          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time'];
-          const list = this.multipleSelection;
-          const data = this.formatJson(filterVal, list);
-          export_json_to_excel(tHeader, data, '列表excel');
-          this.$refs.multipleTable.clearSelection();
-        })
+        if (this.multipleSelection.length) {
+          require.ensure([], () => {
+            const { export_json_to_excel } = require('vendor/Export2Excel');
+            const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间'];
+            const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time'];
+            const list = this.multipleSelection;
+            const data = this.formatJson(filterVal, list);
+            export_json_to_excel(tHeader, data, '列表excel');
+            this.$refs.multipleTable.clearSelection();
+          })
+        } else {
+          this.$message({
+          message: '请选择一条或多条记录导出',
+          type: 'warning'
+          });
+        }
       },
       formatJson(filterVal, jsonData) {
         return jsonData.map(v => filterVal.map(j => v[j]))
