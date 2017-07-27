@@ -35,7 +35,9 @@
       this.initChart();
       if (this.autoResize) {
         this.__resizeHanlder = debounce(() => {
-          this.chart.resize()
+          if (this.chart) {
+            this.chart.resize()
+          }
         }, 100)
         window.addEventListener('resize', this.__resizeHanlder)
       }

@@ -52,7 +52,7 @@
           legend: {
             x: 'center',
             y: 'bottom',
-            data: ['industries', 'technology', 'gold', 'forex', 'forecasts', 'markets']
+            data: ['industries', 'technology', 'forex', 'gold', 'forecasts', 'markets']
           },
           calculable: true,
           series: [
@@ -65,7 +65,7 @@
                 { value: 240, name: 'technology' },
                 { value: 149, name: 'forex' },
                 { value: 100, name: 'gold' },
-                { value: 59, name: 'forecastsx' },
+                { value: 59, name: 'forecasts' },
                 { value: 49, name: 'markets' }
               ],
               animationEasing: 'cubicInOut',
