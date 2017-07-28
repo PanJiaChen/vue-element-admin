@@ -47,7 +47,7 @@
 - Sticky
 - CountTo
 - echarts图表
-- 401，401错误页面
+- 401，404错误页面
 - 错误日志
 - 导出excel
 - table example
