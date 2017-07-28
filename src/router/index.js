@@ -102,6 +102,7 @@ export const asyncRouterMap = [
         component: _import('example/table/index'),
         redirect: '/example/table/table',
         name: 'Table',
+        icon: 'table',
         children: [
           { path: 'dynamictable', component: _import('example/table/dynamictable'), name: '动态table' },
           { path: 'dragtable', component: _import('example/table/dragTable'), name: '拖拽table' },
@@ -109,10 +110,10 @@ export const asyncRouterMap = [
           { path: 'table', component: _import('example/table/table'), name: '综合table' }
         ]
       },
-      { path: 'form/edit', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true } },
-      { path: 'form/create', component: _import('example/form'), name: '创建Form' },
+      { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true } },
+      { path: 'form/create', icon: 'yinhangqia', component: _import('example/form'), name: '创建Form' },
 
-      { path: 'tab/index', component: _import('example/tab/index'), name: 'Tab' }
+      { path: 'tab/index', icon: 'mobankuangjia', component: _import('example/tab/index'), name: 'Tab' }
     ]
   },
   {
