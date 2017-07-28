@@ -35,35 +35,25 @@
 		width: 100%;
 		&.hideSidebar {
 			.sidebar-container{
-				width:56px;
+				width:36px;
 			}
 			.main-container {
-				margin-left: 56px;
+				margin-left: 36px;
 			}
-			// .sidebar-wrapper {
-			// 	transform: translate(-140px, 0);
-			// 	.sidebar-container {
-			// 		transform: translate(132px, 0);
-			// 	}
-			// 	&:hover {
-			// 		transform: translate(0, 0);
-			// 		.sidebar-container {
-			// 			transform: translate(0, 0);
-			// 		}
-			// 	}
-			// }
-
 		}
 		.sidebar-container {
 			transition: all .28s ease-out;
 			width: 180px;
-			height: 1000px;
+			height: 100%;
 			position: fixed;
 			top: 0;
 			bottom: 0;
 			left: 0;
 			z-index: 1001;
 			background: red;
+			// overflow-y: auto;
+			&::-webkit-scrollbar {display:none}
+
 		}
 		.main-container {
 			min-height: 100%;
