@@ -42,7 +42,7 @@
 			}
 		}
 		.sidebar-container {
-			transition: all .28s ease-out;
+			transition: width 0.28s ease-out;
 			width: 180px;
 			height: 100%;
 			position: fixed;
@@ -54,7 +54,7 @@
 		}
 		.main-container {
 			min-height: 100%;
-			transition: all .28s ease-out;
+			transition: margin-left 0.28s ease-out;
 			margin-left: 180px;
 		}
 	}
