@@ -11,6 +11,11 @@
   margin-right: 0;
 }
 
+.hideSidebar .el-submenu>.el-submenu__title,
+.hideSidebar .submenu-title-noDropdown {
+  padding-left: 10px!important;
+}
+
 .hideSidebar .submenu-title-noDropdown span,
 .hideSidebar .el-submenu>.el-submenu__title span {
   height: 0;
@@ -22,6 +27,7 @@
 
 .hideSidebar .nest-menu .el-submenu__title {
   text-align: initial!important;
+  padding-left: 20px!important;
   span {
     height: auto;
     width: auto;
@@ -69,4 +75,3 @@
 .el-submenu .el-menu-item {
   min-width: 180px!important;
 }
-
