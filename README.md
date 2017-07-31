@@ -1,4 +1,11 @@
 # vue-element-admin #
+
+[![vue](https://img.shields.io/badge/vue-2.4.2-brightgreen.svg)](https://github.com/vuejs/vue)
+[![element-ui](https://img.shields.io/badge/element--ui-1.4.1-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
+
+
 [线上地址](http://panjiachen.github.io/vue-element-admin)
 
 [English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
@@ -9,7 +16,7 @@
 
 
 
-**注意：该项目目前使用element-ui@1.3.3版本，所以最低兼容 Vue 2.3.0**
+**注意：该项目目前使用element-ui@1.4.1版本，所以最低兼容 Vue 2.3.0**
 
 ## 前言
 > 这半年来一直在用vue写管理后台，目前后台已经有百来个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios由webpack2打包。由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在此项目基础上改造开发时请移除mock文件。
