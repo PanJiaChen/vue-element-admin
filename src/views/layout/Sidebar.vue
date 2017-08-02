@@ -1,10 +1,9 @@
 <template>
-<div>
-	<el-menu mode="vertical" theme="dark" :default-active="$route.path" :collapse="isCollapse">
-		 <sidebar-item :routes='permission_routers'></sidebar-item>
-	</el-menu>
-  </div>
+    <el-menu mode="vertical" theme="dark" unique-opened :default-active="$route.path" :collapse="isCollapse">
+      <sidebar-item :routes='permission_routers'></sidebar-item>
+    </el-menu>
 </template>
+
 
 <script>
   import { mapGetters } from 'vuex';
@@ -22,9 +21,3 @@
     }
   }
 </script>
-
-<style rel="stylesheet/scss" lang="scss" scoped>
-	.el-menu {
-			min-height: 100%;
-	}
-</style>

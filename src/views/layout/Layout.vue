@@ -50,7 +50,8 @@
 			bottom: 0;
 			left: 0;
 			z-index: 1001;
-			background: red;
+			overflow-y: auto;
+ 			&::-webkit-scrollbar {display:none}
 		}
 		.main-container {
 			min-height: 100%;
