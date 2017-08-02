@@ -36,6 +36,7 @@
 		&.hideSidebar {
 			.sidebar-container{
 				width:36px;
+				overflow: inherit;
 			}
 			.main-container {
 				margin-left: 36px;
