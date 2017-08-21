@@ -35,9 +35,6 @@ module.exports = {
       'static': path.resolve(__dirname, '../static')
     }
   },
-  externals: {
-    jquery: 'jQuery'
-  },
   module: {
     rules: [
       // {

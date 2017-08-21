@@ -105,7 +105,6 @@ npm run build:prod
 │   ├── App.vue                // entry view
 │   └── main.js                // entry for loading components, initialization
 ├── static                     // third-party libraries not packed with Webpack
-│   ├── jquery
 │   └── Tinymce                // rich text
 ├── .babelrc                   // babel-loader config
 ├── eslintrc.js                // eslint config

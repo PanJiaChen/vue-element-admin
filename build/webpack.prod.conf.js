@@ -106,11 +106,7 @@ var webpackConfig = merge(baseWebpackConfig, {
       from: path.resolve(__dirname, '../static'),
       to: config.build.assetsSubDirectory,
       ignore: ['.*']
-    }]),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      'jQuery': 'jquery'
-    })
+    }])
   ]
 })
 if (config.build.bundleAnalyzerReport) {

@@ -19,7 +19,6 @@
     "echarts": "3.6.2",
     "element-ui": "1.4.2",
     "file-saver": "1.3.3",
-    "jquery": "3.1.1",
     "js-cookie": "2.1.4",
     "jsonlint": "1.6.2",
     "mockjs": "1.0.1-beta3",
