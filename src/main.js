@@ -1,10 +1,9 @@
 import Vue from 'vue'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
-import 'normalize.css/normalize.css'// normalize.css 样式格式化
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
 import '@/assets/iconfont/iconfont' // iconfont 具体图标见https://github.com/PanJiaChen/vue-element-admin/wiki
 import IconSvg from '@/components/Icon-svg'// svg组件
 import * as filters from '@/filters' // 全局filter
