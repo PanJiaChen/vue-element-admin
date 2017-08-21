@@ -10,7 +10,7 @@
   import SimpleMDE from 'simplemde';
 
   export default {
-    name: 'Sticky',
+    name: 'simplemde-md',
     props: {
       value: String,
       id: {

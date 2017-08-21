@@ -2,7 +2,7 @@
   <div class="createPost-container">
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
-      <Sticky :className="'sub-navbar '+postForm.status">
+      <sticky :className="'sub-navbar '+postForm.status">
         <template v-if="fetchSuccess">
           <div style="display:inline-block">
 
@@ -57,7 +57,7 @@
           <el-tag>发送异常错误,刷新页面,或者联系程序员</el-tag>
         </template>
 
-      </Sticky>
+      </sticky>
 
       <div class="createPost-main-container">
         <el-row>
@@ -107,7 +107,7 @@
         </el-form-item>
 
         <div class="editor-container">
-          <Tinymce :height=400 ref="editor" v-model="postForm.content"></Tinymce>
+          <tinymce :height=400 ref="editor" v-model="postForm.content"></tinymce>
         </div>
 
         <div style="margin-bottom: 20px;">
@@ -122,14 +122,17 @@
 <script>
   import Tinymce from 'components/Tinymce'
   import Upload from 'components/Upload/singleImage3'
-  import MDinput from 'components/MDinput';
-  import { validateURL } from 'utils/validate';
-  import { getArticle } from 'api/article';
-  import { userSearch } from 'api/remoteSearch';
+  import MDinput from 'components/MDinput'
+  import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，element-ui的select不能满足所有需求
+  import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
+  import Sticky from 'components/Sticky' // 粘性header组件
+  import { validateURL } from 'utils/validate'
+  import { getArticle } from 'api/article'
+  import { userSearch } from 'api/remoteSearch'
 
   export default {
     name: 'articleDetail',
-    components: { Tinymce, MDinput, Upload },
+    components: { Tinymce, MDinput, Upload, Multiselect, Sticky },
     data() {
       const validateRequire = (rule, value, callback) => {
         if (value === '') {
