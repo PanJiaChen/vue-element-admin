@@ -23,10 +23,13 @@
 
       <div class='tips'>账号:admin 密码随便填</div>
       <div class='tips'>账号:editor  密码随便填</div>
+
+      <el-button class='thirdPart-button' type="primary" @click='showDialog=true'>打开第三方登录</el-button>
     </el-form>
 
     <el-dialog title="第三方验证" :visible.sync="showDialog">
-      邮箱登录成功,请选择第三方验证
+      本地不能模拟，请结合自己业务进行模拟！！！<br/><br/><br/>
+      邮箱登录成功,请选择第三方验证<br/>
       <social-sign />
     </el-dialog>
 
@@ -124,16 +127,14 @@
 
 <style rel="stylesheet/scss" lang="scss">
   @import "src/styles/mixin.scss";
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-  }
+  $bg:#2d3a4b;
+  $dark_gray:#889aa4;
+  $light_gray:#eee;
 
   .login-container {
     @include relative;
     height: 100vh;
-    background-color: #2d3a4b;
+    background-color: $bg;
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
@@ -144,7 +145,7 @@
       -webkit-appearance: none;
       border-radius: 0px;
       padding: 12px 5px 12px 15px;
-      color: #eeeeee;
+      color: $light_gray;
       height: 47px;
     }
     .el-input {
@@ -152,20 +153,25 @@
       height: 47px;
       width: 85%;
     }
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+    }
     .svg-container {
       padding: 6px 5px 6px 15px;
-      color: #889aa4;
+      color: $dark_gray;
       vertical-align: middle;
       width: 30px;
       display: inline-block;
-      &_login{
-        font-size:20px;
+      &_login {
+        font-size: 20px;
       }
     }
     .title {
       font-size: 26px;
       font-weight: 400;
-      color: #eeeeee;
+      color: $light_gray;
       margin: 0px auto 40px auto;
       text-align: center;
       font-weight: bold;
@@ -184,13 +190,18 @@
       border-radius: 5px;
       color: #454545;
     }
-    .show-pwd{
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: #889aa4;
-    cursor: pointer;
+    .show-pwd {
+      position: absolute;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+    }
+    .thirdPart-button{
+      position: absolute;
+      right: 35px;
+      bottom: 28px;
     }
   }
 </style>
