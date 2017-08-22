@@ -4,6 +4,10 @@ import articleAPI from './article'
 import article_tableAPI from './article_table'
 import remoteSearchAPI from './remoteSearch'
 
+Mock.setup({
+  timeout: '350-600'
+})
+
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
 Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
