@@ -28,7 +28,7 @@
 
     <el-table-column width="80px" label="重要性">
       <template scope="scope">
-        <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n"></icon-svg>
+        <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" :key="n"></icon-svg>
       </template>
     </el-table-column>
 
@@ -51,7 +51,6 @@
 import { fetchList } from 'api/article_table'
 
 export default {
-  name: 'articleDetail',
   props: {
     type: {
       type: String,
@@ -61,7 +60,6 @@ export default {
   data() {
     return {
       list: null,
-      total: null,
       listQuery: {
         page: 1,
         limit: 5,
@@ -86,10 +84,8 @@ export default {
   methods: {
     getList() {
       this.$emit('create') // for test
-
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
-        this.total = response.data.total
       })
     }
   }
