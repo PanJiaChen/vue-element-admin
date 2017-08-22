@@ -28,45 +28,45 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import Levelbar from './Levelbar';
-  import TabsView from './TabsView';
-  import Hamburger from 'components/Hamburger';
-  import Screenfull from 'components/Screenfull';
-  import ErrorLog from 'components/ErrLog';
-  import errLogStore from 'store/errLog';
+import { mapGetters } from 'vuex'
+import Levelbar from './Levelbar'
+import TabsView from './TabsView'
+import Hamburger from 'components/Hamburger'
+import Screenfull from 'components/Screenfull'
+import ErrorLog from 'components/ErrLog'
+import errLogStore from 'store/errLog'
 
-  export default {
-    components: {
-      Levelbar,
-      TabsView,
-      Hamburger,
-      ErrorLog,
-      Screenfull
+export default {
+  components: {
+    Levelbar,
+    TabsView,
+    Hamburger,
+    ErrorLog,
+    Screenfull
+  },
+  data() {
+    return {
+      log: errLogStore.state.errLog
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'sidebar',
+      'name',
+      'avatar'
+    ])
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('ToggleSideBar')
     },
-    data() {
-      return {
-        log: errLogStore.state.errLog
-      }
-    },
-    computed: {
-      ...mapGetters([
-        'sidebar',
-        'name',
-        'avatar'
-      ])
-    },
-    methods: {
-      toggleSideBar() {
-        this.$store.dispatch('ToggleSideBar')
-      },
-      logout() {
-        this.$store.dispatch('LogOut').then(() => {
-          location.reload();// 为了重新实例化vue-router对象 避免bug
-        });
-      }
+    logout() {
+      this.$store.dispatch('LogOut').then(() => {
+        location.reload()// 为了重新实例化vue-router对象 避免bug
+      })
     }
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

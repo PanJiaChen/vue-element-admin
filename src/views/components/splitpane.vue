@@ -23,16 +23,16 @@
 </template>
 
 <script>
-  import splitPane from 'components/SplitPane'
+import splitPane from 'components/SplitPane'
 
-  export default {
-    components: { splitPane },
-    methods: {
-      resize() {
-        console.log('resize')
-      }
+export default {
+  components: { splitPane },
+  methods: {
+    resize() {
+      console.log('resize')
     }
-  };
+  }
+}
 </script>
 
 <style  scoped>

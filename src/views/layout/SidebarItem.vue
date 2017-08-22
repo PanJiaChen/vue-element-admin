@@ -31,13 +31,13 @@
 </template>
 
 <script>
-  export default {
-    name: 'SidebarItem',
-    props: {
-      routes: {
-        type: Array
-      }
+export default {
+  name: 'SidebarItem',
+  props: {
+    routes: {
+      type: Array
     }
   }
+}
 </script>
 

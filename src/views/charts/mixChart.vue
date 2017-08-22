@@ -7,11 +7,11 @@
 </template>
 
 <script>
-  import mixChart from 'components/Charts/mixChart';
+import mixChart from 'components/Charts/mixChart'
 
-  export default {
-    components: { mixChart }
-  };
+export default {
+  components: { mixChart }
+}
 </script>
 
 <style scoped>

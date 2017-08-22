@@ -75,35 +75,36 @@
 </template>
 
 <script>
-	import { mapGetters } from 'vuex';
-	import panThumb from 'components/PanThumb';
-	import pieChart from './pieChart';
-	import barChart from './barChart';
-	import lineChart from './lineChart';
-	import countTo from 'vue-count-to';
-	import todoList from 'components/TodoList';
-	export default {
-	  name: 'dashboard-editor',
-	  components: { panThumb, countTo, pieChart, lineChart, barChart, todoList },
-	  data() {
+import { mapGetters } from 'vuex'
+import panThumb from 'components/PanThumb'
+import pieChart from './pieChart'
+import barChart from './barChart'
+import lineChart from './lineChart'
+import countTo from 'vue-count-to'
+import todoList from 'components/TodoList'
+
+export default {
+  name: 'dashboard-editor',
+  components: { panThumb, countTo, pieChart, lineChart, barChart, todoList },
+  data() {
     return {
-	      statisticsData: {
-	        article_count: 1024,
-	        comment_count: 102400,
-	        latest_article: [],
-	        month_article_count: 28,
-	        pageviews_count: 1024
+      statisticsData: {
+        article_count: 1024,
+        comment_count: 102400,
+        latest_article: [],
+        month_article_count: 28,
+        pageviews_count: 1024
       }
     }
   },
-	  computed: {
-	    ...mapGetters([
-	      'name',
-	      'avatar',
-	      'roles'
+  computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'roles'
     ])
   }
-	}
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

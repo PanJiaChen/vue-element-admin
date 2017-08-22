@@ -5,31 +5,31 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex';
-  import EditorDashboard from './editor/index';
-  import DefaultDashboard from './default/index';
+import { mapGetters } from 'vuex'
+import EditorDashboard from './editor/index'
+import DefaultDashboard from './default/index'
 
-  export default {
-    name: 'dashboard',
-    components: { EditorDashboard, DefaultDashboard },
-    data() {
-      return {
-        currentRole: 'EditorDashboard'
-      }
-    },
-    computed: {
-      ...mapGetters([
-        'name',
-        'avatar',
-        'introduction',
-        'roles'
-      ])
-    },
-    created() {
-      if (this.roles.indexOf('admin') >= 0) {
-        return;
-      }
-      this.currentRole = 'DefaultDashboard';
+export default {
+  name: 'dashboard',
+  components: { EditorDashboard, DefaultDashboard },
+  data() {
+    return {
+      currentRole: 'EditorDashboard'
     }
+  },
+  computed: {
+    ...mapGetters([
+      'name',
+      'avatar',
+      'introduction',
+      'roles'
+    ])
+  },
+  created() {
+    if (this.roles.indexOf('admin') >= 0) {
+      return
+    }
+    this.currentRole = 'DefaultDashboard'
   }
+}
 </script>

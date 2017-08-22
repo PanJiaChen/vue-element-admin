@@ -9,21 +9,21 @@
 </template>
 
 <script>
-  import { Navbar, Sidebar, AppMain } from 'views/layout';
+import { Navbar, Sidebar, AppMain } from 'views/layout'
 
-  export default {
-    name: 'layout',
-    components: {
-      Navbar,
-      Sidebar,
-      AppMain
-    },
-    computed: {
-      sidebar() {
-        return this.$store.state.app.sidebar;
-      }
+export default {
+  name: 'layout',
+  components: {
+    Navbar,
+    Sidebar,
+    AppMain
+  },
+  computed: {
+    sidebar() {
+      return this.$store.state.app.sidebar
     }
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

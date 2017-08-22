@@ -10,21 +10,21 @@
 </template>
 
 <script>
-  import Dropzone from 'components/Dropzone';
+import Dropzone from 'components/Dropzone'
 
-  export default {
-    components: { Dropzone },
-    methods: {
-      dropzoneS(file) {
-        console.log(file)
-        this.$message({ message: '上传成功', type: 'success' });
-      },
-      dropzoneR(file) {
-        console.log(file)
-        this.$message({ message: '删除成功', type: 'success' });
-      }
+export default {
+  components: { Dropzone },
+  methods: {
+    dropzoneS(file) {
+      console.log(file)
+      this.$message({ message: '上传成功', type: 'success' })
+    },
+    dropzoneR(file) {
+      console.log(file)
+      this.$message({ message: '删除成功', type: 'success' })
     }
-  };
+  }
+}
 </script>
 
 

@@ -37,67 +37,67 @@
 </template>
 
 <script>
-  import { isvalidUsername } from 'utils/validate'
-  import socialSign from './socialsignin'
+import { isvalidUsername } from 'utils/validate'
+import socialSign from './socialsignin'
 
-  export default {
-    components: { socialSign },
-    name: 'login',
-    data() {
-      const validateUsername = (rule, value, callback) => {
-        if (!isvalidUsername(value)) {
-          callback(new Error('请输入正确的用户名'))
-        } else {
-          callback()
-        }
+export default {
+  components: { socialSign },
+  name: 'login',
+  data() {
+    const validateUsername = (rule, value, callback) => {
+      if (!isvalidUsername(value)) {
+        callback(new Error('请输入正确的用户名'))
+      } else {
+        callback()
       }
-      const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
-          callback(new Error('密码不能小于6位'))
-        } else {
-          callback()
-        }
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (value.length < 6) {
+        callback(new Error('密码不能小于6位'))
+      } else {
+        callback()
       }
-      return {
-        loginForm: {
-          username: 'admin',
-          password: '1111111'
-        },
-        loginRules: {
-          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
-        },
-        pwdType: 'password',
-        loading: false,
-        showDialog: false
+    }
+    return {
+      loginForm: {
+        username: 'admin',
+        password: '1111111'
+      },
+      loginRules: {
+        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+      },
+      pwdType: 'password',
+      loading: false,
+      showDialog: false
+    }
+  },
+  methods: {
+    showPwd() {
+      if (this.pwdType === 'password') {
+        this.pwdType = ''
+      } else {
+        this.pwdType = 'password'
       }
     },
-    methods: {
-      showPwd() {
-        if (this.pwdType === 'password') {
-          this.pwdType = ''
-        } else {
-          this.pwdType = 'password'
-        }
-      },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
-              this.loading = false
-              this.$router.push({ path: '/' })
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+            this.loading = false
+            this.$router.push({ path: '/' })
                 // this.showDialog = true
-            }).catch(() => {
-              this.loading = false
-            })
-          } else {
-            console.log('error submit!!')
-            return false
-          }
-        })
-      },
-      afterQRScan() {
+          }).catch(() => {
+            this.loading = false
+          })
+        } else {
+          console.log('error submit!!')
+          return false
+        }
+      })
+    },
+    afterQRScan() {
           // const hash = window.location.hash.slice(1)
           // const hashObj = getQueryObject(hash)
           // const originUrl = window.location.origin
@@ -114,15 +114,15 @@
           //     this.$router.push({ path: '/' })
           //   })
           // }
-      }
-    },
-    created() {
-        // window.addEventListener('hashchange', this.afterQRScan)
-    },
-    destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan)
     }
+  },
+  created() {
+        // window.addEventListener('hashchange', this.afterQRScan)
+  },
+  destroyed() {
+        // window.removeEventListener('hashchange', this.afterQRScan)
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss">

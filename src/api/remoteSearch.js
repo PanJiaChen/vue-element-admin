@@ -1,9 +1,9 @@
-import fetch from 'utils/fetch';
+import fetch from 'utils/fetch'
 
-export function userSearch(name) {
+export function userSearch (name) {
   return fetch({
     url: '/search/user',
     method: 'get',
     params: { name }
-  });
+  })
 }

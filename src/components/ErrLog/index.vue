@@ -30,19 +30,19 @@
 </template>
 
 <script>
-  export default {
-    name: 'errLog',
-    props: {
-      logsList: {
-        type: Array
-      }
-    },
-    data() {
-      return {
-        dialogTableVisible: false
-      }
+export default {
+  name: 'errLog',
+  props: {
+    logsList: {
+      type: Array
+    }
+  },
+  data() {
+    return {
+      dialogTableVisible: false
     }
   }
+}
 </script>
 
 <style scoped>

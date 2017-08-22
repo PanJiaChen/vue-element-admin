@@ -9,37 +9,37 @@
 </template>
 
 <script>
-  export default {
-    computed: {
-      visitedViews() {
-        return this.$store.state.app.visitedViews.slice(-6)
-      }
+export default {
+  computed: {
+    visitedViews() {
+      return this.$store.state.app.visitedViews.slice(-6)
+    }
+  },
+  methods: {
+    closeViewTabs(view, $event) {
+      this.$store.dispatch('delVisitedViews', view)
+      $event.preventDefault()
     },
-    methods: {
-      closeViewTabs(view, $event) {
-        this.$store.dispatch('delVisitedViews', view)
-        $event.preventDefault()
-      },
-      generateRoute() {
-        if (this.$route.matched[this.$route.matched.length - 1].name) {
-          return this.$route.matched[this.$route.matched.length - 1]
-        }
-        this.$route.matched[0].path = '/'
-        return this.$route.matched[0]
-      },
-      addViewTabs() {
-        this.$store.dispatch('addVisitedViews', this.generateRoute())
-      },
-      isActive(path) {
-        return path === this.$route.path
+    generateRoute() {
+      if (this.$route.matched[this.$route.matched.length - 1].name) {
+        return this.$route.matched[this.$route.matched.length - 1]
       }
+      this.$route.matched[0].path = '/'
+      return this.$route.matched[0]
     },
-    watch: {
-      $route() {
-        this.addViewTabs()
-      }
+    addViewTabs() {
+      this.$store.dispatch('addVisitedViews', this.generateRoute())
+    },
+    isActive(path) {
+      return path === this.$route.path
+    }
+  },
+  watch: {
+    $route() {
+      this.addViewTabs()
     }
   }
+}
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

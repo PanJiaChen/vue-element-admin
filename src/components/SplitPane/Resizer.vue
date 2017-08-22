@@ -3,26 +3,26 @@
 </template>
 
 <script>
-  export default {
-    props: {
-      split: {
-        validator(value) {
-          return ['vertical', 'horizontal'].indexOf(value) >= 0
-        },
-        required: true
+export default {
+  props: {
+    split: {
+      validator(value) {
+        return ['vertical', 'horizontal'].indexOf(value) >= 0
       },
-      onMouseDown: {
-        type: Function,
-        required: true
-      }
+      required: true
     },
-    data() {
-      const classes = ['Resizer', this.split, 'className'];
-      return {
-        classes: classes.join(' ')
-      }
+    onMouseDown: {
+      type: Function,
+      required: true
+    }
+  },
+  data() {
+    const classes = ['Resizer', this.split, 'className']
+    return {
+      classes: classes.join(' ')
     }
   }
+}
 </script>
 
 <style scoped>

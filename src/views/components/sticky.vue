@@ -94,28 +94,28 @@
 
 
 <script>
-  import Sticky from 'components/Sticky';
+import Sticky from 'components/Sticky'
 
-  export default {
-    components: { Sticky },
-    data() {
-      return {
-        time: '',
-        url: '',
-        platforms: ['a-platform'],
-        platformsOptions: [
+export default {
+  components: { Sticky },
+  data() {
+    return {
+      time: '',
+      url: '',
+      platforms: ['a-platform'],
+      platformsOptions: [
             { key: 'a-platform', name: '平台A' },
             { key: 'b-platform', name: '平台B' },
             { key: 'c-platform', name: '平台C' }
-        ],
-        pickerOptions: {
-          disabledDate(time) {
-            return time.getTime() > Date.now();
-          }
+      ],
+      pickerOptions: {
+        disabledDate(time) {
+          return time.getTime() > Date.now()
         }
       }
     }
-  };
+  }
+}
 </script>
 
 <style scoped>

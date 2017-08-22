@@ -5,16 +5,16 @@
 </template>
 
 <script>
-	export default {
-	  name: 'Pane',
-	  data() {
-	    const classes = ['Pane', this.$parent.split, 'className'];
+export default {
+  name: 'Pane',
+  data() {
+    const classes = ['Pane', this.$parent.split, 'className']
     return {
-	      classes: classes.join(' '),
-	      percent: 50
+      classes: classes.join(' '),
+      percent: 50
     }
   }
-	}
+}
 </script>
 
 <style scoped>
