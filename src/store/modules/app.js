@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'
 
 const app = {
   state: {
@@ -12,11 +12,11 @@ const app = {
   mutations: {
     TOGGLE_SIDEBAR: state => {
       if (state.sidebar.opened) {
-        Cookies.set('sidebarStatus', 1);
+        Cookies.set('sidebarStatus', 1)
       } else {
-        Cookies.set('sidebarStatus', 0);
+        Cookies.set('sidebarStatus', 0)
       }
-      state.sidebar.opened = !state.sidebar.opened;
+      state.sidebar.opened = !state.sidebar.opened
     },
     ADD_VISITED_VIEWS: (state, view) => {
       if (state.visitedViews.some(v => v.path === view.path)) return
@@ -44,6 +44,6 @@ const app = {
       commit('DEL_VISITED_VIEWS', view)
     }
   }
-};
+}
 
-export default app;
+export default app

@@ -1,12 +1,12 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-const _import = require('./_import_' + process.env.NODE_ENV);
+import Vue from 'vue'
+import Router from 'vue-router'
+const _import = require('./_import_' + process.env.NODE_ENV)
 // in development env not use Lazy Loading,because Lazy Loading large page will cause webpack hot update too slow.so only in production use Lazy Loading
 
-Vue.use(Router);
+Vue.use(Router)
 
 /* layout */
-import Layout from '../views/layout/Layout';
+import Layout from '../views/layout/Layout'
 
 /**
 * icon : the icon show in the sidebar
@@ -42,7 +42,7 @@ export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
-});
+})
 
 export const asyncRouterMap = [
   {
@@ -53,7 +53,7 @@ export const asyncRouterMap = [
     icon: 'quanxian',
     meta: { role: ['admin'] },
     noDropdown: true,
-    children: [{ path: 'index', component: _import('permission/index'), name: '权限测试页', meta: { role: ['admin'] } }]
+    children: [{ path: 'index', component: _import('permission/index'), name: '权限测试页', meta: { role: ['admin'] }}]
   },
   {
     path: '/components',
@@ -110,7 +110,7 @@ export const asyncRouterMap = [
           { path: 'table', component: _import('example/table/table'), name: '综合table' }
         ]
       },
-      { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true } },
+      { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
       { path: 'form/create', icon: 'yinhangqia', component: _import('example/form'), name: '创建Form' },
 
       { path: 'tab/index', icon: 'mobankuangjia', component: _import('example/tab/index'), name: 'Tab' }
@@ -158,4 +158,4 @@ export const asyncRouterMap = [
   },
 
   { path: '*', redirect: '/404', hidden: true }
-];
+]

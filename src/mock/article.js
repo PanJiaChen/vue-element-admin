@@ -1,9 +1,7 @@
-import Mock from 'mockjs';
+import Mock from 'mockjs'
 
-
-const List = [];
-const count = 20;
-
+const List = []
+const count = 20
 
 for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
@@ -13,7 +11,7 @@ for (let i = 0; i < count; i++) {
     author: '@cname',
     display_time: '@datetime',
     pageviews: '@integer(300, 5000)'
-  }));
+  }))
 }
 
 export default {
@@ -34,4 +32,4 @@ export default {
     tags: [],
     title: ''
   })
-};
+}

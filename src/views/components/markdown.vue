@@ -10,24 +10,24 @@
 </template>
 
 <script>
-  import MdEditor from 'components/MdEditor';
-  export default {
-    components: { MdEditor },
-    data() {
-      return {
-        content: '## Simplemde',
-        html: ''
-      }
-    },
-    methods: {
-      markdown2Html() {
-        import('showdown').then(showdown => {
-          const converter = new showdown.Converter();
-          this.html = converter.makeHtml(this.content)
-        })
-      }
+import MdEditor from 'components/MdEditor'
+export default {
+  components: { MdEditor },
+  data() {
+    return {
+      content: '## Simplemde',
+      html: ''
     }
-  };
+  },
+  methods: {
+    markdown2Html() {
+      import('showdown').then(showdown => {
+        const converter = new showdown.Converter()
+        this.html = converter.makeHtml(this.content)
+      })
+    }
+  }
+}
 </script>
 
 

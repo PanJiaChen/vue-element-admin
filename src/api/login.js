@@ -1,6 +1,6 @@
 import fetch from 'utils/fetch'
 
-export function loginByUsername(username, password) {
+export function loginByUsername (username, password) {
   const data = {
     username,
     password
@@ -12,14 +12,14 @@ export function loginByUsername(username, password) {
   })
 }
 
-export function logout() {
+export function logout () {
   return fetch({
     url: '/login/logout',
     method: 'post'
   })
 }
 
-export function getInfo(token) {
+export function getInfo (token) {
   return fetch({
     url: '/user/info',
     method: 'get',

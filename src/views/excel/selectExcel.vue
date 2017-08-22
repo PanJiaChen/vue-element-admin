@@ -41,51 +41,51 @@
 
 
 <script>
-  import { getList } from 'api/article';
+import { getList } from 'api/article'
 
-  export default {
-    data() {
-      return {
-        list: null,
-        listLoading: true,
-        multipleSelection: []
-      }
-    },
-    created() {
-      this.fetchData();
-    },
-    methods: {
-      fetchData() {
-        this.listLoading = true;
-        getList(this.listQuery).then(response => {
-          this.list = response.data;
-          this.listLoading = false;
-        })
-      },
-      handleSelectionChange(val) {
-        this.multipleSelection = val;
-      },
-      handleDownload() {
-        if (this.multipleSelection.length) {
-          require.ensure([], () => {
-            const { export_json_to_excel } = require('vendor/Export2Excel');
-            const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间'];
-            const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time'];
-            const list = this.multipleSelection;
-            const data = this.formatJson(filterVal, list);
-            export_json_to_excel(tHeader, data, '列表excel');
-            this.$refs.multipleTable.clearSelection();
-          })
-        } else {
-          this.$message({
-            message: '请选择一条或多条记录导出',
-            type: 'warning'
-          });
-        }
-      },
-      formatJson(filterVal, jsonData) {
-        return jsonData.map(v => filterVal.map(j => v[j]))
-      }
+export default {
+  data() {
+    return {
+      list: null,
+      listLoading: true,
+      multipleSelection: []
     }
-  };
+  },
+  created() {
+    this.fetchData()
+  },
+  methods: {
+    fetchData() {
+      this.listLoading = true
+      getList(this.listQuery).then(response => {
+        this.list = response.data
+        this.listLoading = false
+      })
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+    },
+    handleDownload() {
+      if (this.multipleSelection.length) {
+        require.ensure([], () => {
+          const { export_json_to_excel } = require('vendor/Export2Excel')
+          const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
+          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
+          const list = this.multipleSelection
+          const data = this.formatJson(filterVal, list)
+          export_json_to_excel(tHeader, data, '列表excel')
+          this.$refs.multipleTable.clearSelection()
+        })
+      } else {
+        this.$message({
+          message: '请选择一条或多条记录导出',
+          type: 'warning'
+        })
+      }
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    }
+  }
+}
 </script>

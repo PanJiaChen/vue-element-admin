@@ -48,51 +48,51 @@
 </template>
 
 <script>
-  import { fetchList } from 'api/article_table';
+import { fetchList } from 'api/article_table'
 
-  export default {
-    name: 'articleDetail',
-    props: {
-      type: {
-        type: String,
-        default: 'CN'
-      }
-    },
-    data() {
-      return {
-        list: null,
-        total: null,
-        listQuery: {
-          page: 1,
-          limit: 5,
-          type: this.type,
-          sort: '+id'
-        }
-      }
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        };
-        return statusMap[status]
-      }
-    },
-    created() {
-      this.getList();
-    },
-    methods: {
-      getList() {
-        this.$emit('create'); // for test
-
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-        })
+export default {
+  name: 'articleDetail',
+  props: {
+    type: {
+      type: String,
+      default: 'CN'
+    }
+  },
+  data() {
+    return {
+      list: null,
+      total: null,
+      listQuery: {
+        page: 1,
+        limit: 5,
+        type: this.type,
+        sort: '+id'
       }
     }
+  },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
+      }
+      return statusMap[status]
+    }
+  },
+  created() {
+    this.getList()
+  },
+  methods: {
+    getList() {
+      this.$emit('create') // for test
+
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.total = response.data.total
+      })
+    }
   }
+}
 </script>
 

@@ -43,51 +43,50 @@
   </div>
 </template>
 
-
 <script>
-  import { toggleClass } from 'utils';
-  import '@/assets/custom-theme/index.css'; // 换肤版本element-ui css
+import { toggleClass } from 'utils'
+import '@/assets/custom-theme/index.css' // 换肤版本element-ui css
 
-  export default {
-    data() {
-      return {
-        theme: false,
-        tags: [{
-          name: '标签一',
-          type: ''
-        },
-        {
-          name: '标签二',
-          type: 'gray'
-        },
-        {
-          name: '标签三',
-          type: 'primary'
-        },
-        {
-          name: '标签四',
-          type: 'success'
-        },
-        {
-          name: '标签五',
-          type: 'warning'
-        },
-        {
-          name: '标签六',
-          type: 'danger'
-        }
-        ],
-        inputVisible: false,
-        inputValue: ''
+export default {
+  data() {
+    return {
+      theme: false,
+      tags: [{
+        name: '标签一',
+        type: ''
+      },
+      {
+        name: '标签二',
+        type: 'gray'
+      },
+      {
+        name: '标签三',
+        type: 'primary'
+      },
+      {
+        name: '标签四',
+        type: 'success'
+      },
+      {
+        name: '标签五',
+        type: 'warning'
+      },
+      {
+        name: '标签六',
+        type: 'danger'
       }
-    },
-    watch: {
-      theme() {
-        toggleClass(document.body, 'custom-theme')
-        //   this.$store.dispatch('setTheme', value);
-      }
+      ],
+      inputVisible: false,
+      inputValue: ''
     }
-  };
+  },
+  watch: {
+    theme() {
+      toggleClass(document.body, 'custom-theme')
+        //   this.$store.dispatch('setTheme', value);
+    }
+  }
+}
 </script>
 
 <style scoped>

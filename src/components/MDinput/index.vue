@@ -1,40 +1,40 @@
 <template>
-	<div class="material-input__component" :class="computedClasses">
-		<input v-if="type === 'email'" type="email" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
-		  :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
-		  @blur="handleFocus(false)" @input="handleModelInput">
-		<input v-if="type === 'url'" type="url" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
-		  :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
-		  @blur="handleFocus(false)" @input="handleModelInput">
-		<input v-if="type === 'number'" type="number" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
-		  :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :max="max" :min="min" :minlength="minlength" :maxlength="maxlength"
-		  :required="required" @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
-		<input v-if="type === 'password'" type="password" class="material-input" :name="name" :id="id" :placeholder="placeholder"
-		  v-model="valueCopy" :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :max="max" :min="min" :required="required"
-		  @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
-		<input v-if="type === 'tel'" type="tel" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
-		  :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
-		  @blur="handleFocus(false)" @input="handleModelInput">
-		<input v-if="type === 'text'" type="text" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
-		  :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :minlength="minlength" :maxlength="maxlength" :required="required"
-		  @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
+  <div class="material-input__component" :class="computedClasses">
+    <input v-if="type === 'email'" type="email" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
+      :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
+      @blur="handleFocus(false)" @input="handleModelInput">
+    <input v-if="type === 'url'" type="url" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
+      :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
+      @blur="handleFocus(false)" @input="handleModelInput">
+    <input v-if="type === 'number'" type="number" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
+      :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :max="max" :min="min" :minlength="minlength" :maxlength="maxlength"
+      :required="required" @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
+    <input v-if="type === 'password'" type="password" class="material-input" :name="name" :id="id" :placeholder="placeholder"
+      v-model="valueCopy" :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :max="max" :min="min" :required="required"
+      @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
+    <input v-if="type === 'tel'" type="tel" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
+      :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :required="required" @focus="handleFocus(true)"
+      @blur="handleFocus(false)" @input="handleModelInput">
+    <input v-if="type === 'text'" type="text" class="material-input" :name="name" :id="id" :placeholder="placeholder" v-model="valueCopy"
+      :readonly="readonly" :disabled="disabled" :autocomplete="autocomplete" :minlength="minlength" :maxlength="maxlength"
+      :required="required" @focus="handleFocus(true)" @blur="handleFocus(false)" @input="handleModelInput">
 
-		<span class="material-input-bar"></span>
+    <span class="material-input-bar"></span>
 
-		<label class="material-label">
+    <label class="material-label">
             <slot></slot>
         </label>
-		<div v-if="errorMessages" class="material-errors">
-			<div v-for="error in computedErrors" class="material-error" :key='error'>
-				{{ error }}
-			</div>
-		</div>
-	</div>
+    <div v-if="errorMessages" class="material-errors">
+      <div v-for="error in computedErrors" class="material-error" :key='error'>
+        {{ error }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
 	// source:https://github.com/wemake-services/vue-material-input/blob/master/src/components/MaterialInput.vue
-	export default {
+export default {
   name: 'material-input',
   computed: {
     computedErrors() {

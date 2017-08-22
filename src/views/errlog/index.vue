@@ -11,11 +11,11 @@
 </template>
 
 <script>
-  import errCode from './errcode';
+import errCode from './errcode'
 
-  export default {
-    components: { errCode }
-  };
+export default {
+  components: { errCode }
+}
 </script>
 
 <style scoped>

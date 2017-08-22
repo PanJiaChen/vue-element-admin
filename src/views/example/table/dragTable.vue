@@ -60,64 +60,64 @@
 </template>
 
 <script>
-  import { fetchList } from 'api/article_table';
-  import Sortable from 'sortablejs'
+import { fetchList } from 'api/article_table'
+import Sortable from 'sortablejs'
 
-  export default {
-    name: 'drag-table_demo',
-    data() {
-      return {
-        list: null,
-        total: null,
-        listLoading: true,
-        listQuery: {
-          page: 1,
-          limit: 10
-        },
-        sortable: null,
-        olderList: [],
-        newList: []
-      }
-    },
-    created() {
-      this.getList();
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        };
-        return statusMap[status]
-      }
-    },
-    methods: {
-      getList() {
-        this.listLoading = true;
-        fetchList(this.listQuery).then(response => {
-          this.list = response.data.items;
-          this.total = response.data.total;
-          this.listLoading = false;
-          this.olderList = this.list.map(v => v.id);
-          this.newList = this.olderList.slice();
-          this.$nextTick(() => {
-            this.setSort()
-          })
-        })
+export default {
+  name: 'drag-table_demo',
+  data() {
+    return {
+      list: null,
+      total: null,
+      listLoading: true,
+      listQuery: {
+        page: 1,
+        limit: 10
       },
-      setSort() {
-        const el = document.querySelectorAll('.el-table__body-wrapper > table > tbody')[0];
-        this.sortable = Sortable.create(el, {
-          // handle: '.drag-handler',
-          onEnd: evt => {
-            const tempIndex = this.newList.splice(evt.oldIndex, 1)[0];
-            this.newList.splice(evt.newIndex, 0, tempIndex);
-          }
-        });
+      sortable: null,
+      olderList: [],
+      newList: []
+    }
+  },
+  created() {
+    this.getList()
+  },
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        published: 'success',
+        draft: 'gray',
+        deleted: 'danger'
       }
+      return statusMap[status]
+    }
+  },
+  methods: {
+    getList() {
+      this.listLoading = true
+      fetchList(this.listQuery).then(response => {
+        this.list = response.data.items
+        this.total = response.data.total
+        this.listLoading = false
+        this.olderList = this.list.map(v => v.id)
+        this.newList = this.olderList.slice()
+        this.$nextTick(() => {
+          this.setSort()
+        })
+      })
+    },
+    setSort() {
+      const el = document.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
+      this.sortable = Sortable.create(el, {
+          // handle: '.drag-handler',
+        onEnd: evt => {
+          const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
+          this.newList.splice(evt.newIndex, 0, tempIndex)
+        }
+      })
     }
   }
+}
 </script>
 
 <style >

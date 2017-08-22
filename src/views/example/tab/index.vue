@@ -12,29 +12,29 @@
 </template>
 
 <script>
-  import tabPane from './components/tabPane'
+import tabPane from './components/tabPane'
 
-  export default {
-    name: 'tabDemo',
-    components: { tabPane },
-    data() {
-      return {
-        tabMapOptions: [
+export default {
+  name: 'tabDemo',
+  components: { tabPane },
+  data() {
+    return {
+      tabMapOptions: [
           { label: '中国', key: 'CN' },
           { label: '美国', key: 'US' },
           { label: '日本', key: 'JP' },
           { label: '欧元区', key: 'EU' }
-        ],
-        activeName: 'CN',
-        createdTimes: 0
-      }
-    },
-    methods: {
-      showCreatedTimes() {
-        this.createdTimes = this.createdTimes + 1;
-      }
+      ],
+      activeName: 'CN',
+      createdTimes: 0
+    }
+  },
+  methods: {
+    showCreatedTimes() {
+      this.createdTimes = this.createdTimes + 1
     }
   }
+}
 </script>
 
 <style scoped>

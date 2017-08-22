@@ -52,11 +52,11 @@ const permission = {
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         }
-        commit('SET_ROUTERS', accessedRouters);
-        resolve();
+        commit('SET_ROUTERS', accessedRouters)
+        resolve()
       })
     }
   }
-};
+}
 
-export default permission;
+export default permission
