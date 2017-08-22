@@ -1,4 +1,4 @@
-import { loginByEmail, logout, getInfo } from 'api/login';
+import { loginByUsername, logout, getInfo } from 'api/login';
 import { getToken, setToken, removeToken } from 'utils/auth';
 
 const user = {
@@ -50,11 +50,11 @@ const user = {
   },
 
   actions: {
-    // 邮箱登录
-    LoginByEmail({ commit }, userInfo) {
-      const email = userInfo.email.trim();
+    // 用户名登录
+    LoginByUsername({ commit }, userInfo) {
+      const username = userInfo.username.trim();
       return new Promise((resolve, reject) => {
-        loginByEmail(email, userInfo.password).then(response => {
+        loginByUsername(username, userInfo.password).then(response => {
           const data = response.data;
           setToken(response.data.token);
           commit('SET_TOKEN', data.token);

@@ -1,115 +1,123 @@
 <template>
   <div class="login-container">
-    <el-form autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left" label-width="0px"
-      class="card-box login-form">
+    <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">系统登录</h3>
-      <el-form-item prop="email">
-        <span class="svg-container"><icon-svg icon-class="jiedianyoujian"></icon-svg></span>
-        <el-input name="email" type="text" v-model="loginForm.email" autoComplete="on" placeholder="邮箱"></el-input>
+
+      <el-form-item prop="username">
+        <span class="svg-container svg-container_login">
+          <icon-svg icon-class="yonghuming" />
+        </span>
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="邮箱" />
       </el-form-item>
+
       <el-form-item prop="password">
-        <span class="svg-container"><icon-svg icon-class="mima"></icon-svg></span>
-        <el-input name="password" type="password" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="密码"></el-input>
+        <span class="svg-container">
+          <icon-svg icon-class="mima" />
+        </span>
+        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+          placeholder="密码" />
+        <span class='show-pwd' @click='showPwd'><icon-svg icon-class="yanjing" /></span>
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
-          登录
-        </el-button>
-      </el-form-item>
-      <div class='tips'>admin账号为:admin@wallstreetcn.com 密码随便填</div>
-      <div class='tips'>editor账号:editor@wallstreetcn.com 密码随便填</div>
+
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+
+      <div class='tips'>账号:admin 密码随便填</div>
+      <div class='tips'>账号:editor  密码随便填</div>
     </el-form>
 
     <el-dialog title="第三方验证" :visible.sync="showDialog">
       邮箱登录成功,请选择第三方验证
-      <social-sign></social-sign>
+      <social-sign />
     </el-dialog>
 
   </div>
 </template>
 
 <script>
-  import { isWscnEmail } from 'utils/validate';
-  import socialSign from './socialsignin';
+  import { isvalidUsername } from 'utils/validate'
+  import socialSign from './socialsignin'
 
   export default {
     components: { socialSign },
     name: 'login',
     data() {
-      const validateEmail = (rule, value, callback) => {
-        if (!isWscnEmail(value)) {
-          callback(new Error('请输入正确的合法邮箱'));
+      const validateUsername = (rule, value, callback) => {
+        if (!isvalidUsername(value)) {
+          callback(new Error('请输入正确的用户名'))
         } else {
-          callback();
+          callback()
         }
-      };
-      const validatePass = (rule, value, callback) => {
+      }
+      const validatePassword = (rule, value, callback) => {
         if (value.length < 6) {
-          callback(new Error('密码不能小于6位'));
+          callback(new Error('密码不能小于6位'))
         } else {
-          callback();
+          callback()
         }
-      };
+      }
       return {
         loginForm: {
-          email: 'admin@wallstreetcn.com',
-          password: ''
+          username: 'admin',
+          password: '1111111'
         },
         loginRules: {
-          email: [
-                { required: true, trigger: 'blur', validator: validateEmail }
-          ],
-          password: [
-                { required: true, trigger: 'blur', validator: validatePass }
-          ]
+          username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+          password: [{ required: true, trigger: 'blur', validator: validatePassword }]
         },
+        pwdType: 'password',
         loading: false,
         showDialog: false
       }
     },
     methods: {
+      showPwd() {
+        if (this.pwdType === 'password') {
+          this.pwdType = ''
+        } else {
+          this.pwdType = 'password'
+        }
+      },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           if (valid) {
-            this.loading = true;
-            this.$store.dispatch('LoginByEmail', this.loginForm).then(() => {
-              this.loading = false;
-              this.$router.push({ path: '/' });
-                // this.showDialog = true;
+            this.loading = true
+            this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
+              this.loading = false
+              this.$router.push({ path: '/' })
+                // this.showDialog = true
             }).catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
           } else {
-            console.log('error submit!!');
-            return false;
+            console.log('error submit!!')
+            return false
           }
-        });
+        })
       },
       afterQRScan() {
-          // const hash = window.location.hash.slice(1);
-          // const hashObj = getQueryObject(hash);
-          // const originUrl = window.location.origin;
-          // history.replaceState({}, '', originUrl);
+          // const hash = window.location.hash.slice(1)
+          // const hashObj = getQueryObject(hash)
+          // const originUrl = window.location.origin
+          // history.replaceState({}, '', originUrl)
           // const codeMap = {
           //   wechat: 'code',
           //   tencent: 'code'
-          // };
-          // const codeName = hashObj[codeMap[this.auth_type]];
+          // }
+          // const codeName = hashObj[codeMap[this.auth_type]]
           // if (!codeName) {
-          //   alert('第三方登录失败');
+          //   alert('第三方登录失败')
           // } else {
           //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-          //     this.$router.push({ path: '/' });
-          //   });
+          //     this.$router.push({ path: '/' })
+          //   })
           // }
       }
     },
     created() {
-        // window.addEventListener('hashchange', this.afterQRScan);
+        // window.addEventListener('hashchange', this.afterQRScan)
     },
     destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan);
+        // window.removeEventListener('hashchange', this.afterQRScan)
     }
   }
 </script>
@@ -119,7 +127,7 @@
   .tips {
     font-size: 14px;
     color: #fff;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
   }
 
   .login-container {
@@ -147,6 +155,12 @@
     .svg-container {
       padding: 6px 5px 6px 15px;
       color: #889aa4;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+      &_login{
+        font-size:20px;
+      }
     }
     .title {
       font-size: 26px;
@@ -170,8 +184,13 @@
       border-radius: 5px;
       color: #454545;
     }
-    .forget-pwd {
-      color: #fff;
+    .show-pwd{
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: #889aa4;
+    cursor: pointer;
     }
   }
 </style>
