@@ -78,8 +78,8 @@
           })
         } else {
           this.$message({
-          message: '请选择一条或多条记录导出',
-          type: 'warning'
+            message: '请选择一条或多条记录导出',
+            type: 'warning'
           });
         }
       },

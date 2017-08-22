@@ -34,7 +34,7 @@ export default {
     if (userMap[token]) {
       return userMap[token];
     } else {
-      return Promise.reject('a');
+      return Promise.reject('error');
     }
   },
   logout: () => 'success'

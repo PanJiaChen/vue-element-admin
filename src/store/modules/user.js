@@ -40,12 +40,6 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles;
-    },
-    LOGIN_SUCCESS: () => {
-      console.log('login success')
-    },
-    LOGOUT_USER: state => {
-      state.user = '';
     }
   },
 
