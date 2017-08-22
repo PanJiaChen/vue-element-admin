@@ -12,7 +12,7 @@ function hasPermission(roles, permissionRoles) {
 }
 
 // register global progress.
-const whiteList = ['/login', '/authredirect', '/reset', '/sendpwd']// 不重定向白名单
+const whiteList = ['/login', '/authredirect']// 不重定向白名单
 router.beforeEach((to, from, next) => {
   NProgress.start() // 开启Progress
   if (getToken()) { // 判断是否有token
