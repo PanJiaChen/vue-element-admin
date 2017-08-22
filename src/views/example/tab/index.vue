@@ -20,10 +20,10 @@ export default {
   data() {
     return {
       tabMapOptions: [
-          { label: '中国', key: 'CN' },
-          { label: '美国', key: 'US' },
-          { label: '日本', key: 'JP' },
-          { label: '欧元区', key: 'EU' }
+        { label: '中国', key: 'CN' },
+        { label: '美国', key: 'US' },
+        { label: '日本', key: 'JP' },
+        { label: '欧元区', key: 'EU' }
       ],
       activeName: 'CN',
       createdTimes: 0

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button style='margin-bottom:20px;float:right' type="primary" icon="document" @click="handleDownload">导出excel</el-button>
+    <el-button style='margin-bottom:20px;' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">导出excel</el-button>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label='ID' width="95">
         <template scope="scope">
@@ -12,7 +12,6 @@
           {{scope.row.title}}
         </template>
       </el-table-column>
-
       <el-table-column label="作者" width="110">
         <template scope="scope">
           <span>{{scope.row.author}}</span>
@@ -40,7 +39,8 @@ export default {
   data() {
     return {
       list: null,
-      listLoading: true
+      listLoading: true,
+      downloadLoading: false
     }
   },
   created() {
@@ -49,21 +49,21 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
+      getList().then(response => {
         this.list = response.data
         this.listLoading = false
       })
     },
     handleDownload() {
+      this.downloadLoading = true
       require.ensure([], () => {
-        const {
-            export_json_to_excel
-          } = require('vendor/Export2Excel')
+        const { export_json_to_excel } = require('vendor/Export2Excel')
         const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
         export_json_to_excel(tHeader, data, '列表excel')
+        this.downloadLoading = false
       })
     },
     formatJson(filterVal, jsonData) {

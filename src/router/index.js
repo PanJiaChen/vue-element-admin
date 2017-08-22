@@ -18,8 +18,8 @@ import Layout from '../views/layout/Layout'
 export const constantRouterMap = [
     { path: '/login', component: _import('login/index'), hidden: true },
     { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
-    { path: '/404', component: _import('error/404'), hidden: true },
-    { path: '/401', component: _import('error/401'), hidden: true },
+    { path: '/404', component: _import('errorPage/404'), hidden: true },
+    { path: '/401', component: _import('errorPage/401'), hidden: true },
   {
     path: '/',
     component: Layout,
@@ -117,14 +117,14 @@ export const asyncRouterMap = [
     ]
   },
   {
-    path: '/errorpage',
+    path: '/error',
     component: Layout,
     redirect: 'noredirect',
     name: '错误页面',
     icon: '404',
     children: [
-      { path: '401', component: _import('error/401'), name: '401' },
-      { path: '404', component: _import('error/404'), name: '404' }
+      { path: '401', component: _import('errorPage/401'), name: '401' },
+      { path: '404', component: _import('errorPage/404'), name: '404' }
     ]
   },
   {
@@ -139,12 +139,12 @@ export const asyncRouterMap = [
   {
     path: '/excel',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: '/excel/download',
     name: 'excel',
     icon: 'EXCEL',
     children: [
       { path: 'download', component: _import('excel/index'), name: '导出excel' },
-      { path: 'download2', component: _import('excel/selectExcel'), name: '选择导出excel' }
+      { path: 'download2', component: _import('excel/selectExcel'), name: '导出已选择项' }
     ]
   },
   {

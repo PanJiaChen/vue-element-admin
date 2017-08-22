@@ -20,7 +20,6 @@
         <img :src="errGif" width="313" height="428" alt="Girl has dropped her ice cream.">
       </el-col>
     </el-row>
-
     <el-dialog title="随便看" :visible.sync="dialogVisible" size="large">
       <img class="pan-img" :src="ewizardClap">
     </el-dialog>
