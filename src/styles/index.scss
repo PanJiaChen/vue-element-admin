@@ -2,7 +2,6 @@
 @import './btn.scss';
 @import './element-ui.scss';
 @import './sidebar.scss';
-
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
@@ -98,15 +97,16 @@ code {
   opacity: 0;
 }
 
-
 //main-container全局样式
 .app-container {
   padding: 20px;
 }
+
 .components-container {
   margin: 30px 50px;
   position: relative;
 }
+
 .pagination-container {
   margin-top: 30px;
 }
@@ -115,9 +115,10 @@ code {
   height: 100%!important;
 }
 
-.text-center{
+.text-center {
   text-align: center
 }
+
 .svg-icon {
   width: 1em;
   height: 1em;
@@ -216,7 +217,6 @@ code {
   }
 }
 
-
 //refine vue-multiselect plugin
 .multiselect {
   line-height: 16px;
@@ -227,8 +227,9 @@ code {
 }
 
 //refine simplemde
-.simplemde-container{
-  .editor-toolbar.fullscreen,.CodeMirror-fullscreen{
+.simplemde-container {
+  .editor-toolbar.fullscreen,
+  .CodeMirror-fullscreen {
     z-index: 1003;
   }
 }

@@ -5,28 +5,26 @@ $pink: #E65D6E;
 $green: #30B08F;
 $tiffany: #4AB7BD;
 $yellow:#FEC171;
-
 $panGreen: #30B08F;
 
 @mixin colorBtn($color) {
   background: $color;
   &:hover {
     color: $color;
-    &:before, &:after {
+    &:before,
+    &:after {
       background: $color;
     }
   }
 }
 
-
 .blue-btn {
   @include colorBtn($blue)
 }
 
-.light-blue-btn{
+.light-blue-btn {
   @include colorBtn($light-blue)
 }
-
 
 .red-btn {
   @include colorBtn($red)
@@ -40,11 +38,9 @@ $panGreen: #30B08F;
   @include colorBtn($green)
 }
 
-
 .tiffany-btn {
   @include colorBtn($tiffany)
 }
-
 
 .yellow-btn {
   @include colorBtn($yellow)
@@ -63,12 +59,14 @@ $panGreen: #30B08F;
   display: inline-block;
   &:hover {
     background: #fff;
-    &:before, &:after {
+    &:before,
+    &:after {
       width: 100%;
       transition: 600ms ease all;
     }
   }
-  &:before, &:after {
+  &:before,
+  &:after {
     content: '';
     position: absolute;
     top: 0;
@@ -85,19 +83,20 @@ $panGreen: #30B08F;
   }
 }
 
-.custom-button{
-    display: inline-block;
-    line-height: 1;
-    white-space: nowrap;
-    cursor: pointer;
-    background: #fff;
-    color: #fff;
-    -webkit-appearance: none;
-    text-align: center;
-    box-sizing: border-box;
-    outline: 0;
-    margin: 0;
-    padding: 10px 15px;
-    font-size: 14px;
-    border-radius: 4px;
+.custom-button {
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  color: #fff;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 4px;
 }
+

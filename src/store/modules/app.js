@@ -5,8 +5,6 @@ const app = {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
     },
-    theme: 'default',
-    livenewsChannels: Cookies.get('livenewsChannels') || '[]',
     visitedViews: []
   },
   mutations: {

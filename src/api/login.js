@@ -19,7 +19,7 @@ export function logout() {
   })
 }
 
-export function getInfo(token) {
+export function getUserInfo(token) {
   return fetch({
     url: '/user/info',
     method: 'get',
