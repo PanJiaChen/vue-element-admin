@@ -94,7 +94,7 @@
 
 
 <script>
-import Sticky from 'components/Sticky'
+import Sticky from '@/components/Sticky'
 
 export default {
   components: { Sticky },

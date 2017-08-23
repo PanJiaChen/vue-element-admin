@@ -32,6 +32,7 @@
     "vue-count-to": "1.0.5",
     "vue-multiselect": "2.0.2",
     "vue-router": "2.7.0",
+    "vue-splitpane": "^1.0.0",
     "vuedraggable": "2.14.1",
     "vuex": "2.3.1",
     "xlsx": "^0.10.8"
