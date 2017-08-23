@@ -1,7 +1,7 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-      <mix-chart id='apple' height='100%' width='100%'></mix-chart>
+      <mix-chart height='100%' width='100%'></mix-chart>
     </div>
   </div>
 </template>

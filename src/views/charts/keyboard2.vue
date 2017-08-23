@@ -1,7 +1,7 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-      <keyboard-chart2 id='apple' height='100%' width='100%'></keyboard-chart2>
+      <keyboard-chart2 height='100%' width='100%'></keyboard-chart2>
     </div>
   </div>
 </template>
