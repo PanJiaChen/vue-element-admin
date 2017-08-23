@@ -52,11 +52,9 @@ export default {
       height: this.height,
       body_class: 'panel-body ',
       object_resizing: false,
-          //  language: 'zh_CN',
-          //  language_url: '/static/tinymce/langs/zh_CN.js',
       toolbar: this.toolbar,
       menubar: this.menubar,
-      plugins: 'advlist,autolink,code,paste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools,watermark',
+      plugins: 'advlist,autolink,code,paste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools',
       end_container_on_empty_block: true,
       powerpaste_word_import: 'clean',
       code_dialog_height: 450,
@@ -159,15 +157,5 @@ export default {
 .tinymce-textarea {
   visibility: hidden;
   z-index: -1;
-}
-
-.editor-custom-btn-container {
-  position: absolute;
-  right: 15px;
-  top: 18px;
-}
-
-.editor-upload-btn {
-  display: inline-block;
 }
 </style>

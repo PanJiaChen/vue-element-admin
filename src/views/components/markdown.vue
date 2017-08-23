@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MdEditor from 'components/MdEditor'
+import MdEditor from '@/components/MarkdownEditor'
 export default {
   components: { MdEditor },
   data() {

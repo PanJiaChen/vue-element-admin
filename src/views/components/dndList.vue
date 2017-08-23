@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import DndList from 'components/twoDndList'
+import DndList from '@/components/twoDndList'
 import { getList } from 'api/article'
 
 export default {
@@ -28,7 +28,6 @@ export default {
       getList(this.listQuery).then(response => {
         this.list1 = response.data.splice(0, 5)
         this.list2 = response.data
-        console.log(this.list1, this.list2)
       })
     }
   }
