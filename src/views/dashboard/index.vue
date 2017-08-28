@@ -23,7 +23,6 @@ export default {
     ])
   },
   created() {
-    console.log(this.roles)
     if (this.roles.indexOf('admin') >= 0) {
       return
     }

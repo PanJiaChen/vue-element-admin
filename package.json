@@ -76,7 +76,7 @@
     "semver": "5.3.0",
     "style-loader": "0.17.0",
     "url-loader": "0.5.8",
-    "vue-loader": "12.2.1",
+    "vue-loader": "13.0.4",
     "vue-style-loader": "3.0.1",
     "vue-template-compiler": "2.4.2",
     "webpack": "2.6.1",
