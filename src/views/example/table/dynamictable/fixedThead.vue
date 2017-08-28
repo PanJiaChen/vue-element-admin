@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-checkbox-group v-model="checkboxVal"	>
+      <el-checkbox-group v-model="checkboxVal">
         <el-checkbox label="apple">apple</el-checkbox>
         <el-checkbox label="banana">banana</el-checkbox>
         <el-checkbox label="orange">orange</el-checkbox>

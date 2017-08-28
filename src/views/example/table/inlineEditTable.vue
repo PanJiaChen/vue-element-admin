@@ -42,8 +42,7 @@
 
       <el-table-column align="center" label="编辑" width="120">
         <template scope="scope">
-          <el-button v-show='!scope.row.edit' type="primary" @click='scope.row.edit=true' size="small" icon="edit">编辑</el-button>
-          <el-button v-show='scope.row.edit' type="success" @click='scope.row.edit=false' size="small" icon="check">完成</el-button>
+          <el-button :type="scope.row.edit?'success':'primary'" @click='scope.row.edit=!scope.row.edit' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
         </template>
       </el-table-column>
 
@@ -52,7 +51,7 @@
 </template>
 
 <script>
-import { fetchList } from 'api/article_table'
+import { fetchList } from '@/api/article'
 
 export default {
   name: 'inline_edit-table_demo',
@@ -66,9 +65,6 @@ export default {
       }
     }
   },
-  created() {
-    this.getList()
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -78,6 +74,9 @@ export default {
       }
       return statusMap[status]
     }
+  },
+  created() {
+    this.getList()
   },
   methods: {
     getList() {

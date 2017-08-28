@@ -4,7 +4,7 @@ import 'element-ui/lib/theme-default/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
-import '@/assets/iconfont/iconfont' // iconfont 具体图标见https://github.com/PanJiaChen/vue-element-admin/wiki
+import '@/assets/iconfont/iconfont' // iconfont 具体图标见wiki
 import IconSvg from '@/components/Icon-svg'// svg组件
 import * as filters from '@/filters' // 全局filter
 import '@/errorLog'// error log

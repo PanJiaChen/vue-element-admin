@@ -47,20 +47,20 @@
 
       <el-table-column align="center" label="拖拽" width="95">
         <template scope="scope">
-          <icon-svg class='drag-handler' icon-class="tuozhuai" ></icon-svg>
+          <icon-svg class='drag-handler' icon-class="tuozhuai"></icon-svg>
         </template>
       </el-table-column>
 
     </el-table>
 
-    <div class='show-d'>默认顺序  &nbsp;  {{ olderList}}</div>
+    <div class='show-d'>默认顺序 &nbsp; {{ olderList}}</div>
     <div class='show-d'>拖拽后顺序{{newList}}</div>
 
   </div>
 </template>
 
 <script>
-import { fetchList } from 'api/article_table'
+import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
 
 export default {
@@ -79,9 +79,6 @@ export default {
       newList: []
     }
   },
-  created() {
-    this.getList()
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -91,6 +88,9 @@ export default {
       }
       return statusMap[status]
     }
+  },
+  created() {
+    this.getList()
   },
   methods: {
     getList() {
@@ -109,7 +109,6 @@ export default {
     setSort() {
       const el = document.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = Sortable.create(el, {
-          // handle: '.drag-handler',
         onEnd: evt => {
           const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
           this.newList.splice(evt.newIndex, 0, tempIndex)
@@ -120,7 +119,7 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 .drag-handler{
   width: 30px;
   height: 30px;

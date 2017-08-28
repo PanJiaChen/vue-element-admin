@@ -8,6 +8,7 @@
 
 <script>
 import screenfull from 'screenfull'
+
 export default {
   name: 'hamburger',
   props: {

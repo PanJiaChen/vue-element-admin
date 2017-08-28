@@ -24,7 +24,7 @@
 <script>
 import MdInput from '@/components/MDinput'
 import PanThumb from '@/components/PanThumb'
-import waves from '@/directive/waves.js'// 水波纹指令
+import waves from '@/directive/waves.js' // 水波纹指令
 
 export default {
   components: { MdInput, PanThumb },

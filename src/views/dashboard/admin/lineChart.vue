@@ -5,7 +5,7 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts 主题
-import { debounce } from 'utils'
+import { debounce } from '@/utils'
 
 export default {
   props: {
@@ -42,7 +42,7 @@ export default {
       window.addEventListener('resize', this.__resizeHanlder)
     }
 
-      // 监听侧边栏的变化
+    // 监听侧边栏的变化
     const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
     sidebarElm.addEventListener('transitionend', this.__resizeHanlder)
   },

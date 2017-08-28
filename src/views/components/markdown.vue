@@ -11,6 +11,7 @@
 
 <script>
 import MdEditor from '@/components/MarkdownEditor'
+
 export default {
   components: { MdEditor },
   data() {

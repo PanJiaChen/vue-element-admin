@@ -1,4 +1,4 @@
-import { param2Obj } from 'utils'
+import { param2Obj } from '@/utils'
 
 const userMap = {
   admin: {

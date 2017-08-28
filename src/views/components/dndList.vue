@@ -9,7 +9,7 @@
 
 <script>
 import DndList from '@/components/twoDndList'
-import { getList } from 'api/article'
+import { fetchList } from '@/api/article'
 
 export default {
   components: { DndList },
@@ -20,14 +20,14 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+    this.getData()
   },
   methods: {
-    fetchData() {
+    getData() {
       this.listLoading = true
-      getList(this.listQuery).then(response => {
-        this.list1 = response.data.splice(0, 5)
-        this.list2 = response.data
+      fetchList().then(response => {
+        this.list1 = response.data.items.splice(0, 5)
+        this.list2 = response.data.items
       })
     }
   }

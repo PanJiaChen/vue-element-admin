@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import keyboardChart2 from 'components/Charts/keyboard2'
+import keyboardChart2 from '@/components/Charts/keyboard2'
 
 export default {
   components: { keyboardChart2 }
