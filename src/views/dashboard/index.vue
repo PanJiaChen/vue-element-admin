@@ -1,35 +1,33 @@
 <template>
   <div class="dashboard-container">
-    <component v-bind:is="currentRole"> </component>
+    <component :is="currentRole"></component>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import EditorDashboard from './editor/index'
-import DefaultDashboard from './default/index'
+import adminDashboard from './admin/index'
+import editorDashboard from './editor/index'
 
 export default {
   name: 'dashboard',
-  components: { EditorDashboard, DefaultDashboard },
+  components: { adminDashboard, editorDashboard },
   data() {
     return {
-      currentRole: 'EditorDashboard'
+      currentRole: 'adminDashboard'
     }
   },
   computed: {
     ...mapGetters([
-      'name',
-      'avatar',
-      'introduction',
       'roles'
     ])
   },
   created() {
+    console.log(this.roles)
     if (this.roles.indexOf('admin') >= 0) {
       return
     }
-    this.currentRole = 'DefaultDashboard'
+    this.currentRole = 'editorDashboard'
   }
 }
 </script>

@@ -1,7 +1,8 @@
 <template>
   <el-table :data="list" border fit highlight-current-row style="width: 100%">
 
-    <el-table-column align="center" label="序号" width="65">
+    <el-table-column align="center" label="序号" width="65"  v-loading="loading"
+    element-loading-text="请给我点时间！">
       <template scope="scope">
         <span>{{scope.row.id}}</span>
       </template>
@@ -15,7 +16,7 @@
 
     <el-table-column min-width="300px" label="标题">
       <template scope="scope">
-        <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
+        <span>{{scope.row.title}}</span>
         <el-tag>{{scope.row.type}}</el-tag>
       </template>
     </el-table-column>
@@ -48,7 +49,7 @@
 </template>
 
 <script>
-import { fetchList } from 'api/article_table'
+import { fetchList } from '@/api/article'
 
 export default {
   props: {
@@ -65,7 +66,8 @@ export default {
         limit: 5,
         type: this.type,
         sort: '+id'
-      }
+      },
+      loading: false
     }
   },
   filters: {
@@ -83,9 +85,11 @@ export default {
   },
   methods: {
     getList() {
+      this.loading = true
       this.$emit('create') // for test
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
+        this.loading = false
       })
     }
   }

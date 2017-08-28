@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import { isvalidUsername } from 'utils/validate'
+import { isvalidUsername } from '@/utils/validate'
 import socialSign from './socialsignin'
 
 export default {

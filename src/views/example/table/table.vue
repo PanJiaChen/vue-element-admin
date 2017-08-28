@@ -25,7 +25,7 @@
       <el-checkbox class="filter-item" @change='tableKey=tableKey+1' v-model="showAuditor">显示审核人</el-checkbox>
     </div>
 
-    <el-table :key='tableKey' :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+    <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="序号" width="65">
         <template scope="scope">
@@ -150,9 +150,9 @@
 </template>
 
 <script>
-import { fetchList, fetchPv } from 'api/article_table'
+import { fetchList, fetchPv } from '@/api/article'
 import waves from '@/directive/waves.js'// 水波纹指令
-import { parseTime } from 'utils'
+import { parseTime } from '@/utils'
 
 const calendarTypeOptions = [
       { key: 'CN', display_name: '中国' },
@@ -161,7 +161,7 @@ const calendarTypeOptions = [
       { key: 'EU', display_name: '欧元区' }
 ]
 
-  // arr to obj
+// arr to obj
 const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
   acc[cur.key] = cur.display_name
   return acc
@@ -210,9 +210,6 @@ export default {
       tableKey: 0
     }
   },
-  created() {
-    this.getList()
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -225,6 +222,9 @@ export default {
     typeFilter(type) {
       return calendarTypeKeyValue[type]
     }
+  },
+  created() {
+    this.getList()
   },
   methods: {
     getList() {

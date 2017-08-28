@@ -33,6 +33,7 @@
 
 <script>
 import Todo from './Todo.vue'
+
 const STORAGE_KEY = 'todos'
 const filters = {
   all: todos => todos,

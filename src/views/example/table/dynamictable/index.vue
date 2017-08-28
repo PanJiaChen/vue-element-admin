@@ -9,8 +9,8 @@
 </template>
 
 <script>
-import fixedThead from './dynamictable/fixedThead'
-import unfixedThead from './dynamictable/unfixedThead'
+import fixedThead from './fixedThead'
+import unfixedThead from './unfixedThead'
 
 export default {
   components: { fixedThead, unfixedThead }

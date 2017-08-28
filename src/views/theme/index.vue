@@ -44,7 +44,7 @@
 
 
 <script>
-import { toggleClass } from 'utils'
+import { toggleClass } from '@/utils'
 import '@/assets/custom-theme/index.css' // 换肤版本element-ui css
 
 export default {

@@ -120,15 +120,15 @@
 </template>
 
 <script>
-import Tinymce from 'components/Tinymce'
-import Upload from 'components/Upload/singleImage3'
-import MDinput from 'components/MDinput'
+import Tinymce from '@/components/Tinymce'
+import Upload from '@/components/Upload/singleImage3'
+import MDinput from '@/components/MDinput'
 import Multiselect from 'vue-multiselect'// 使用的一个多选框组件，element-ui的select不能满足所有需求
 import 'vue-multiselect/dist/vue-multiselect.min.css'// 多选框组件css
-import Sticky from 'components/Sticky' // 粘性header组件
-import { validateURL } from 'utils/validate'
-import { getArticle } from 'api/article'
-import { userSearch } from 'api/remoteSearch'
+import Sticky from '@/components/Sticky' // 粘性header组件
+import { validateURL } from '@/utils/validate'
+import { fetchArticle } from '@/api/article'
+import { userSearch } from '@/api/remoteSearch'
 
 export default {
   name: 'articleDetail',
@@ -204,7 +204,7 @@ export default {
   },
   methods: {
     fetchData() {
-      getArticle().then(response => {
+      fetchArticle().then(response => {
         this.postForm = response.data
       }).catch(err => {
         this.fetchSuccess = false
@@ -259,6 +259,7 @@ export default {
   }
 }
 </script>
+
 <style rel="stylesheet/scss" lang="scss" scoped>
   @import "src/styles/mixin.scss";
   .title-prompt{
