@@ -56,6 +56,13 @@ export const asyncRouterMap = [
     children: [{ path: 'index', component: _import('permission/index'), name: '权限测试页', meta: { role: ['admin'] }}]
   },
   {
+    path: '/icon',
+    component: Layout,
+    icon: 'icons',
+    noDropdown: true,
+    children: [{ path: 'index', component: _import('svg-icons/index'), name: 'icons' }]
+  },
+  {
     path: '/components',
     component: Layout,
     redirect: '/components/index',
