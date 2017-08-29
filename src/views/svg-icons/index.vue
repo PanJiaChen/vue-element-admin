@@ -2,7 +2,12 @@
   <div class="icons-container">
     <div class="icons-wrapper">
       <div v-for='item of iconsMap' :key='item' class='icon-item'>
-        <icon-svg :icon-class="item" />
+        <el-tooltip placement="top" effect="light">
+          <div slot="content">
+            {{`&lt;icon-svg :icon-class=&quot;${item}&quot; /&gt;`}}
+          </div>
+          <icon-svg :icon-class="item" />
+        </el-tooltip>
         <span>{{item}}</span>
       </div>
     </div>
@@ -42,6 +47,7 @@ export default {
     float: left;
     font-size: 40px;
     color: #666;
+    cursor: pointer;
   }
   span {
     display: block;
