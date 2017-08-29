@@ -81,7 +81,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/charts/index',
     name: '图表',
-    icon: 'tubiaoleixingzhengchang',
+    icon: 'tubiao',
     children: [
       { path: 'index', component: _import('charts/index'), name: '介绍' },
       { path: 'keyboard', component: _import('charts/keyboard'), name: '键盘图表' },
@@ -110,9 +110,9 @@ export const asyncRouterMap = [
           { path: 'table', component: _import('example/table/table'), name: '综合table' }
         ]
       },
-      { path: 'form/edit', icon: 'ziliaoshouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
-      { path: 'form/create', icon: 'yinhangqia', component: _import('example/form'), name: '创建Form' },
-      { path: 'tab/index', icon: 'mobankuangjia', component: _import('example/tab/index'), name: 'Tab' }
+      { path: 'form/edit', icon: 'shouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
+      { path: 'form/create', icon: 'from', component: _import('example/form'), name: '创建Form' },
+      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'Tab' }
     ]
   },
   {
