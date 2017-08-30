@@ -1,12 +1,18 @@
 <template>
   <div class='tinymce-container editor-container'>
     <textarea class='tinymce-textarea' :id="id"></textarea>
+    <div class="editor-custom-btn-container">
+     <editorImage  color="#20a0ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+      </div>
   </div>
 </template>
 
 <script>
+import editorImage from './components/editorImage'
+
 export default {
   name: 'tinymce',
+  components: { editorImage },
   props: {
     id: {
       type: String,
@@ -143,6 +149,14 @@ export default {
       }
     })
   },
+  methods: {
+    imageSuccessCBK(arr) {
+      const _this = this
+      arr.forEach(v => {
+        window.tinymce.get(_this.id).insertContent(`<img class="wscnph" src="${v.url}" >`)
+      })
+    }
+  },
   destroyed() {
     window.tinymce.get(this.id).destroy()
   }
@@ -153,9 +167,17 @@ export default {
 .tinymce-container {
   position: relative
 }
-
 .tinymce-textarea {
   visibility: hidden;
   z-index: -1;
+}
+.editor-custom-btn-container {
+  position: absolute;
+  right: 15px;
+  /*z-index: 2005;*/
+  top: 18px;
+}
+.editor-upload-btn {
+  display: inline-block;
 }
 </style>
