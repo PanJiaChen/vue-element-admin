@@ -1,6 +1,6 @@
 <template>
   <div class='tinymce-container editor-container'>
-    <textarea class='tinymce-textarea' :id="id"></textarea>
+    <textarea class='tinymce-textarea' :id="tinymceId"></textarea>
     <div class="editor-custom-btn-container">
      <editorImage  color="#20a0ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
       </div>
@@ -15,8 +15,7 @@ export default {
   components: { editorImage },
   props: {
     id: {
-      type: String,
-      default: 'tinymceEditor'
+      type: String
     },
     value: {
       type: String,
@@ -29,12 +28,6 @@ export default {
         return ['removeformat undo redo |  bullist numlist | outdent indent | forecolor | fullscreen code', 'bold italic blockquote | h2 p  media link | alignleft aligncenter alignright']
       }
     },
-    data() {
-      return {
-        hasChange: false,
-        hasInit: false
-      }
-    },
     menubar: {
       default: ''
     },
@@ -42,6 +35,13 @@ export default {
       type: Number,
       required: false,
       default: 360
+    }
+  },
+  data() {
+    return {
+      hasChange: false,
+      hasInit: false,
+      tinymceId: this.id || 'vue-tinymce-' + +new Date()
     }
   },
   watch: {
@@ -54,7 +54,7 @@ export default {
   mounted() {
     const _this = this
     window.tinymce.init({
-      selector: `#${this.id}`,
+      selector: `#${this.tinymceId}`,
       height: this.height,
       body_class: 'panel-body ',
       object_resizing: false,
@@ -153,12 +153,12 @@ export default {
     imageSuccessCBK(arr) {
       const _this = this
       arr.forEach(v => {
-        window.tinymce.get(_this.id).insertContent(`<img class="wscnph" src="${v.url}" >`)
+        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
     }
   },
   destroyed() {
-    window.tinymce.get(this.id).destroy()
+    window.tinymce.get(this.tinymceId).destroy()
   }
 }
 </script>
