@@ -19,7 +19,12 @@ export default {
     closeViewTabs(view, $event) {
       this.$store.dispatch('delVisitedViews', view).then((views) => {
         if (this.isActive(view.path)) {
-          this.$router.push(views.pop().path)
+          const latestView = views.slice(-1)[0]
+          if (latestView) {
+            this.$router.push(latestView.path)
+          } else {
+            this.$router.push('/')
+          }
         }
       })
       $event.preventDefault()
