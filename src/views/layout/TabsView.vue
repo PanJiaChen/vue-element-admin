@@ -17,7 +17,11 @@ export default {
   },
   methods: {
     closeViewTabs(view, $event) {
-      this.$store.dispatch('delVisitedViews', view)
+      this.$store.dispatch('delVisitedViews', view).then((views) => {
+        if (this.isActive(view.path)) {
+          this.$router.push(views.pop().path)
+        }
+      })
       $event.preventDefault()
     },
     generateRoute() {
