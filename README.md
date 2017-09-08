@@ -32,6 +32,7 @@
  - [手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
  相应需求，开了一个qq群 `591724180` 方便大家交流
+ 
  或者可以加入该圈子 `https://jianshiapp.com/circles/1209` 讨论问题
 
  **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr ~**
