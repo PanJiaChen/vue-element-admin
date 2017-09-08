@@ -129,6 +129,10 @@
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
+## Donate
+If you find Element useful, you can buy us a cup of coffee 
+![donate](https://panjiachen.github.io/donate/donate.png)
+
 ## 状态管理
 后台只有user和app配置相关状态使用vuex存在全局，其它数据都由每个业务页面自己管理。
 
