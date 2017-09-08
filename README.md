@@ -33,7 +33,7 @@
 
  相应需求，开了一个qq群 `591724180` 方便大家交流
  
- 或者可以加入该圈子 `https://jianshiapp.com/circles/1209` 讨论问题
+ 或者可以加入该 **[圈子](https://jianshiapp.com/circles/1209)** 讨论问题
 
  **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr ~**
 
@@ -132,7 +132,7 @@
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
 ## Donate
-If you find Element useful, you can buy us a cup of coffee 
+If you find this project useful, you can buy me a cup of coffee 
 ![donate](https://panjiachen.github.io/donate/donate.png)
 
 ## 状态管理
