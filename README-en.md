@@ -33,6 +33,7 @@
 - 401, 404 error page
 - Error log
 - Exporting to Excel
+- Upload Excel
 - Table example
 - Interactive table example
 - Drag & drop table example

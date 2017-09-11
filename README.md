@@ -63,6 +63,7 @@
 - 401，404错误页面
 - 错误日志
 - 导出excel
+- 前端可视化excel
 - table example
 - 动态table example
 - 拖拽table example
