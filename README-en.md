@@ -1,29 +1,19 @@
+[![vue](https://img.shields.io/badge/vue-2.4.2-brightgreen.svg)](https://github.com/vuejs/vue)
+[![element-ui](https://img.shields.io/badge/element--ui-1.4.2-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
+
 ## Intro
 
 > In the past half year, I have been building a backend for management dashboard using Vue. Though the backend has contained greater than 70 pages and over 10 permissions, it still takes insignificant effort to maintain the project. So I decide to make it open source so as to share my development experience and progress on backend. The tech stack is mainly [Vue.js](https://github.com/vuejs/vue)+[Element](https://github.com/ElemeFE/element)+[axios](https://github.com/mzabriskie/axios). Since it's a personal project, all data requests are simulated with [Mock.js](https://github.com/nuysoft/Mock). **Note:** if anyone wants to modify or develop based on this project, please remove the mock files.
 
 **Live demo:** http://panjiachen.github.io/vue-element-admin
 
-**Note: element-ui@1.3.3 is used in the project, so vue 2.3.0+ is required.**
+**Note: element-ui@1.4.2 is used in the project, so vue 2.3.0+ is required.**
 
-More tutorials incoming. Including articles on:
-
-- How to build structure of a backend dashboard project from scratch
-- How to make a complete user system (e.g. permission authentication, two-factor authentication)
-- How to package components (e.g. rich text)
-- How to integrate with [Qiniu](https://www.qiniu.com/)
-- Other development experience on backend
-
-Join the group on QQ 591724180.
-
-**Tutorials:**
-
-- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
-- [Step by step instructions on playing with backend using Vue Part 1 - Fundamentals](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
-- [Step by step instructions on playing with backend using Vue Part 2 - Login permission](https://juejin.im/post/591aa14f570c35006961acac)
-- [Step by step instructions on packaging a Vue component](https://segmentfault.com/a/1190000009090836)
-
-**Please read the Wiki and articles above before creating any issue. Feel free to contribute by making a pull request.**
+ - vueAdmin-template: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
+ - electron-vue-admin: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+ - Donate:[donate](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md#donate)
 
 ## Features
 
@@ -117,6 +107,10 @@ npm run build:prod
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
+## Donate
+If you find this project useful, you can buy me a cup of coffee
+![donate](https://panjiachen.github.io/donate/donation.png)
+
 ## State Management
 
 Only status of user and app configuration is managed by Vuex. Other data are managed by their own business pages.
@@ -174,3 +168,7 @@ Only status of user and app configuration is managed by Vuex. Other data are man
 #### More
 
 http://panjiachen.github.io/vue-element-admin
+
+## License
+
+MIT

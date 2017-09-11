@@ -1,7 +1,7 @@
 # vue-element-admin #
 
 [![vue](https://img.shields.io/badge/vue-2.4.2-brightgreen.svg)](https://github.com/vuejs/vue)
-[![element-ui](https://img.shields.io/badge/element--ui-1.4.1-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![element-ui](https://img.shields.io/badge/element--ui-1.4.2-brightgreen.svg)](https://github.com/ElemeFE/element)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
 
@@ -12,11 +12,15 @@
 
 [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-**本项目的定位是后台集成方案，不适合当基础模板来开发，模板建议使用 [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template) ， 桌面端 [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)**
+[donate](https://github.com/PanJiaChen/vue-element-admin#donate)
+
+**本项目的定位是后台集成方案，不适合当基础模板来开发。**
+ - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
+ - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
 
 
-**注意：该项目目前使用element-ui@1.4.1版本，所以最低兼容 Vue 2.3.0**
+**注意：该项目目前使用element-ui@1.4.2版本，所以最低兼容 Vue 2.3.0**
 
 ## 前言
 > 这半年来一直在用vue写管理后台，目前后台已经有百来个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios由webpack2打包。由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在此项目基础上改造开发时请移除mock文件。
@@ -32,14 +36,14 @@
  - [手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
  相应需求，开了一个qq群 `591724180` 方便大家交流
- 
+
  或者可以加入该 **[圈子](https://jianshiapp.com/circles/1209)** 讨论问题
 
- **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr ~**
+ **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr**
 
  **该项目并不是一个脚手架，更倾向于是一个集成解决方案**
 
- **该项目不支持低版本游览器，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
+ **该项目不支持低版本游览器(如ie)，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
 
 ## 功能
@@ -132,8 +136,8 @@
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
 ## Donate
-If you find this project useful, you can buy me a cup of coffee 
-![donate](https://panjiachen.github.io/donate/donate.png)
+If you find this project useful, you can buy me a cup of coffee
+![donate](https://panjiachen.github.io/donate/donation.png)
 
 ## 状态管理
 后台只有user和app配置相关状态使用vuex存在全局，其它数据都由每个业务页面自己管理。
