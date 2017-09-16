@@ -1,9 +1,11 @@
 <template>
   <div class="components-container">
     <div class='component-item'>
-      <md-input name="name" v-model="title" required :maxlength="100">
-        标题
-      </md-input>
+      <el-form :model="demo" :rules="demoRules">
+      <el-form-item prop="title">
+        <md-input icon="search" name="title" placeholder="输入标题" v-model="demo.title">标题</md-input>
+      </el-form-item>
+      </el-form>
       <code class='code-part'>Material Design 的input</code>
     </div>
 
@@ -22,18 +24,33 @@
 </template>
 
 <script>
-import MdInput from '@/components/MDinput'
 import PanThumb from '@/components/PanThumb'
+import MdInput from '@/components/MDinput'
 import waves from '@/directive/waves.js' // 水波纹指令
 
 export default {
-  components: { MdInput, PanThumb },
+  components: {
+    PanThumb,
+    MdInput
+  },
   directives: {
     waves
   },
   data() {
+    const validate = (rule, value, callback) => {
+      if (value.length !== 6) {
+        callback(new Error('请输入六个字符'))
+      } else {
+        callback()
+      }
+    }
     return {
-      title: ''
+      demo: {
+        title: ''
+      },
+      demoRules: {
+        title: [{ required: true, trigger: 'change', validator: validate }]
+      }
     }
   }
 }
