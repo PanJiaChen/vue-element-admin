@@ -98,7 +98,6 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
-    margin: 30px;
     .btn-group {
         margin-bottom: 60px;
     }
