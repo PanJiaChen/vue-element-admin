@@ -286,9 +286,6 @@
           background: transparent;
         }
       }
-      /*.material-errors {
-                color: $color-red;
-            }*/
     }
   }
 </style>
