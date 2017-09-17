@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-container">
+  <div class="nav-container">
     <el-menu class="navbar" mode="horizontal">
       <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
       <levelbar></levelbar>
@@ -72,7 +72,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .tab-container {
+  .nav-container {
       position:fixed;
       top:0;
       z-index:102;
@@ -105,7 +105,7 @@ export default {
       }
       .errLog-container {
         display: inline-block;
-        position: absolute;
+        position: fixed;
         right: 150px;
       }
       .screenfull {
