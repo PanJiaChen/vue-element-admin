@@ -1,5 +1,5 @@
 <template>
-	<section class="app-main" style="min-height: 100%">
+	<section class="app-main" style="min-height: 100%;margin-top:50px;">
 		<transition name="fade" mode="out-in">
 			<router-view :key="key"></router-view>
 		</transition>

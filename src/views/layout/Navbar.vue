@@ -1,30 +1,32 @@
 <template>
-	<el-menu class="navbar" mode="horizontal">
-		<hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
-		<levelbar></levelbar>
-		<tabs-view></tabs-view>
-		<error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
-		<screenfull class='screenfull'></screenfull>
-		<el-dropdown class="avatar-container" trigger="click">
-			<div class="avatar-wrapper">
-				<img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-				<i class="el-icon-caret-bottom"></i>
-			</div>
-			<el-dropdown-menu class="user-dropdown" slot="dropdown">
-				<router-link class='inlineBlock' to="/">
-					<el-dropdown-item>
-						首页
-					</el-dropdown-item>
-				</router-link>
-				<a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">
-					<el-dropdown-item>
-						项目地址
-					</el-dropdown-item>
-				</a>
-				<el-dropdown-item divided><span @click="logout" style="display:block;">退出登录</span></el-dropdown-item>
-			</el-dropdown-menu>
-		</el-dropdown>
-	</el-menu>
+  <div class="nav-container">
+    <el-menu class="navbar" mode="horizontal">
+      <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+      <levelbar></levelbar>
+      <tabs-view></tabs-view>
+      <error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
+      <screenfull class='screenfull'></screenfull>
+      <el-dropdown class="avatar-container" trigger="click">
+        <div class="avatar-wrapper">
+          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+          <i class="el-icon-caret-bottom"></i>
+        </div>
+        <el-dropdown-menu class="user-dropdown" slot="dropdown">
+          <router-link class='inlineBlock' to="/">
+            <el-dropdown-item>
+              首页
+            </el-dropdown-item>
+          </router-link>
+          <a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">
+            <el-dropdown-item>
+              项目地址
+            </el-dropdown-item>
+          </a>
+          <el-dropdown-item divided><span @click="logout" style="display:block;">退出登录</span></el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+    </el-menu>
+  </div>
 </template>
 
 <script>
@@ -70,50 +72,72 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-	.navbar {
-			height: 50px;
-			line-height: 50px;
-			border-radius: 0px !important;
-			.hamburger-container {
-					line-height: 58px;
-					height: 50px;
-					float: left;
-					padding: 0 10px;
-			}
-			.errLog-container {
-					display: inline-block;
-					position: absolute;
-					right: 150px;
-			}
-			.screenfull {
-					position: absolute;
-					right: 90px;
-					top: 16px;
-					color: red;
-			}
-			.avatar-container {
-					height: 50px;
-					display: inline-block;
-					position: absolute;
-					right: 35px;
-					.avatar-wrapper {
-							cursor: pointer;
-							margin-top: 5px;
-							position: relative;
-							.user-avatar {
-									width: 40px;
-									height: 40px;
-									border-radius: 10px;
-							}
-							.el-icon-caret-bottom {
-									position: absolute;
-									right: -20px;
-									top: 25px;
-									font-size: 12px;
-							}
-					}
-			}
-	}
+  .nav-container {
+      position:fixed;
+      top:0;
+      z-index:102;
+      width:100%;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      &::before{
+        content:'';
+        display: block;
+        width:100%;
+        z-index:-1;
+        filter:blur(10px);
+        background: rgba(238,241,246,0.8);
+        height:50px;
+        position:fixed;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+      }
+    .navbar {
+      height: 50px;
+      line-height: 50px;
+      border-radius: 0px !important;
+      background-color: rgba(238,241,246,0.8);
+      .hamburger-container {
+        line-height: 58px;
+        height: 50px;
+        float: left;
+        padding: 0 10px;
+      }
+      .errLog-container {
+        display: inline-block;
+        position: fixed;
+        right: 150px;
+      }
+      .screenfull {
+        position: fixed;
+        right: 90px;
+        top: 16px;
+        color: red;
+      }
+      .avatar-container {
+        height: 50px;
+        display: inline-block;
+        position: fixed;
+        right: 35px;
+        .avatar-wrapper {
+          cursor: pointer;
+          margin-top: 5px;
+          position: relative;
+          .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+          }
+          .el-icon-caret-bottom {
+            position: absolute;
+            right: -20px;
+            top: 25px;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
 </style>
 
 

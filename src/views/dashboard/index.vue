@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-container">
+  <div class="dashboard-container" style="padding:20px;">
     <component :is="currentRole"></component>
   </div>
 </template>
