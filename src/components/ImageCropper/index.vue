@@ -328,6 +328,7 @@
             // 关闭控件
             off() {
                 this.show = false;
+                this.$emit('close');
             },
             // 设置步骤
             setStep(step) {

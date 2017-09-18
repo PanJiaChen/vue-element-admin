@@ -37,5 +37,5 @@ const langBag = {
       lowestPx: 'The lowest pixel in the image: '
     }
   }
-};
-export default langBag;
+}
+export default langBag

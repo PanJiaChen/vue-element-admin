@@ -1,26 +1,50 @@
 # vue-element-admin #
+
+[![vue](https://img.shields.io/badge/vue-2.4.2-brightgreen.svg)](https://github.com/vuejs/vue)
+[![element-ui](https://img.shields.io/badge/element--ui-1.4.2-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+[![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
+
+
 [线上地址](http://panjiachen.github.io/vue-element-admin)
 
 [English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
 
 [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-**注意：该项目目前使用element-ui@1.3.3版本,所以最低兼容 Vue 2.3.0**
+[donate](https://github.com/PanJiaChen/vue-element-admin#donate)
+
+**本项目的定位是后台集成方案，不适合当基础模板来开发。**
+ - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
+ - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+
+
+
+**注意：该项目目前使用element-ui@1.4.2版本，所以最低兼容 Vue 2.3.0**
 
 ## 前言
-> 这半年来一直在用vue写管理后台，目前后台已经有七十多个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios.由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在次项目基础上改造开发时请移除mock文件。
+> 这半年来一直在用vue写管理后台，目前后台已经有百来个页面，十几种权限，但维护成本依然很低，所以准备开源分享一下后台开发的经验和成果。目前的技术栈主要的采用vue+element+axios由webpack2打包。由于是个人项目，所以数据请求都是用了mockjs模拟。注意：在此项目基础上改造开发时请移除mock文件。
 
-后续会出一系列的教程配套文章，如如何从零构建后台项目框架，如何做完整的用户系统（如权限验证，二次登录等），如何二次开发组件（如富文本），如何整合七牛等等文章，各种后台开发经验等等。莫急~~
 
-相应需求，开了一个qq群 591724180 方便大家交流
+写了一个系列的教程配套文章，如何从零构建后一个完整的后台项目:
 
  - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
  - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
  - [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
- - [ 手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
+ - [手摸手，带你用 vue 撸后台 系列三 (实战篇)](https://juejin.im/post/593121aa0ce4630057f70d35)
+ - [手摸手，带你用vue撸后台 系列四(vueAdmin 一个极简的后台基础模板)](https://juejin.im/post/595b4d776fb9a06bbe7dba56)
+ - [手摸手，带你封装一个vue component](https://segmentfault.com/a/1190000009090836)
 
+ 相应需求，开了一个qq群 `591724180` 方便大家交流
 
- **如有问题请先看上述问题和Wiki,不能满足，欢迎issue和pr~**
+ 或者可以加入该 **[圈子](https://jianshiapp.com/circles/1209)** 讨论问题
+
+ **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr**
+
+ **该项目并不是一个脚手架，更倾向于是一个集成解决方案**
+
+ **该项目不支持低版本游览器(如ie)，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
+
 
 ## 功能
 - 登录/注销
@@ -36,18 +60,24 @@
 - Sticky
 - CountTo
 - echarts图表
-- 401，401错误页面
+- 401，404错误页面
 - 错误日志
 - 导出excel
+- 前端可视化excel
 - table example
 - 动态table example
 - 拖拽table example
+- 内联编辑table example
 - form example
 - 多环境发布
 - dashboard
 - 二次登录
 - 动态侧边栏（支持多级路由）
 - mock数据
+- cache tabs example
+- screenfull
+- markdown2html
+- views-tab
 
 
 ## 开发
@@ -93,7 +123,6 @@
 │   ├── App.vue                // 入口页面
 │   └── main.js                // 入口 加载组件 初始化等
 ├── static                     // 第三方不打包资源
-│   ├── jquery
 │   └── Tinymce                // 富文本
 ├── .babelrc                   // babel-loader 配置
 ├── eslintrc.js                // eslint 配置项
@@ -106,6 +135,10 @@
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
+
+## Donate
+If you find this project useful, you can buy me a cup of coffee
+![donate](https://panjiachen.github.io/donate/donation.png)
 
 ## 状态管理
 后台只有user和app配置相关状态使用vuex存在全局，其它数据都由每个业务页面自己管理。
@@ -120,6 +153,10 @@ Detailed changes for each release are documented in the [release notes](https://
 #### 真正的动态换肤
 
 ![真正的动态换肤](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/theme.gif)<br />
+
+#### tabs
+
+![tabs](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/tabs.gif)<br />
 
 
 
@@ -165,5 +202,8 @@ Detailed changes for each release are documented in the [release notes](https://
 ![enter image description here](https://github.com/PanJiaChen/vue-element-admin/blob/master/gifs/excel.png)
 
 
-## [更多demo](http://panjiachen.github.io/vue-element-admin)
+## [查看更多demo](http://panjiachen.github.io/vue-element-admin)
 
+## License
+
+MIT
