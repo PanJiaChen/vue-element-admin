@@ -32,7 +32,7 @@ export const constantRouterMap = [
     path: '/introduction',
     component: Layout,
     redirect: '/introduction/index',
-    icon: 'xinrenzhinan',
+    icon: 'people',
     noDropdown: true,
     children: [{ path: 'index', component: _import('introduction/index'), name: '简述' }]
   }
@@ -50,7 +50,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/permission/index',
     name: '权限测试',
-    icon: 'quanxian',
+    icon: 'lock',
     meta: { role: ['admin'] },
     noDropdown: true,
     children: [{ path: 'index', component: _import('permission/index'), name: '权限测试页', meta: { role: ['admin'] }}]
@@ -58,7 +58,7 @@ export const asyncRouterMap = [
   {
     path: '/icon',
     component: Layout,
-    icon: 'icons',
+    icon: 'icon',
     noDropdown: true,
     children: [{ path: 'index', component: _import('svg-icons/index'), name: 'icons' }]
   },
@@ -67,7 +67,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/components/index',
     name: '组件',
-    icon: 'zujian',
+    icon: 'component',
     children: [
       { path: 'index', component: _import('components/index'), name: '介绍 ' },
       { path: 'tinymce', component: _import('components/tinymce'), name: '富文本编辑器' },
@@ -88,7 +88,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/charts/index',
     name: '图表',
-    icon: 'tubiao',
+    icon: 'chart',
     children: [
       { path: 'index', component: _import('charts/index'), name: '介绍' },
       { path: 'keyboard', component: _import('charts/keyboard'), name: '键盘图表' },
@@ -102,7 +102,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: 'noredirect',
     name: '综合实例',
-    icon: 'zonghe',
+    icon: 'example',
     children: [
       {
         path: '/example/table',
@@ -117,8 +117,8 @@ export const asyncRouterMap = [
           { path: 'table', component: _import('example/table/table'), name: '综合table' }
         ]
       },
-      { path: 'form/edit', icon: 'shouce', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
-      { path: 'form/create', icon: 'from', component: _import('example/form'), name: '创建Form' },
+      { path: 'form/edit', icon: 'form', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
+      { path: 'form/create', icon: 'form', component: _import('example/form'), name: '创建Form' },
       { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'Tab' }
     ]
   },
@@ -147,7 +147,7 @@ export const asyncRouterMap = [
     component: Layout,
     redirect: '/excel/download',
     name: 'excel',
-    icon: 'EXCEL',
+    icon: 'excel',
     children: [
       { path: 'download', component: _import('excel/index'), name: '导出excel' },
       { path: 'download2', component: _import('excel/selectExcel'), name: '导出已选择项' },
