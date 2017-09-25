@@ -35,7 +35,8 @@
     "vue-splitpane": "^1.0.0",
     "vuedraggable": "2.14.1",
     "vuex": "2.3.1",
-    "xlsx": "^0.10.8"
+    "xlsx": "^0.10.8",
+    "jszip": "^3.1.4"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
