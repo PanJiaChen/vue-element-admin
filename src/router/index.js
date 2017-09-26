@@ -155,6 +155,17 @@ export const asyncRouterMap = [
     ]
   },
   {
+    path: '/zip',
+    component: Layout,
+    redirect: '/zip/download',
+    name: 'zip',
+    icon: 'zip',
+    children: [
+      { path: 'download', component: _import('zip/index'), name: '导出zip' },
+      { path: 'download2', component: _import('zip/select'), name: '导出已选择项' }
+    ]
+  },
+  {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
