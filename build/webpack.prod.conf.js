@@ -95,6 +95,14 @@ var webpackConfig = merge(baseWebpackConfig, {
         return context && (context.indexOf('echarts') >= 0 || context.indexOf('zrender') >= 0);
       }
     }),
+    // split xlsx into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'xlsx',
+      minChunks(module) {
+        var context = module.context;
+        return context && (context.indexOf('xlsx') >= 0);
+      }
+    }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({

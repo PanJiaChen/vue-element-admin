@@ -1,7 +1,8 @@
 /* eslint-disable */
 require('script-loader!file-saver');
 require('script-loader!vendor/Blob');
-require('script-loader!xlsx/dist/xlsx.core.min');
+import XLSX from 'xlsx'
+
 function generateArray(table) {
     var out = [];
     var rows = table.querySelectorAll('tr');
@@ -93,7 +94,6 @@ function s2ab(s) {
 
 export function export_table_to_excel(id) {
     var theTable = document.getElementById(id);
-    console.log('a')
     var oo = generateArray(theTable);
     var ranges = oo[1];
 
@@ -117,9 +117,6 @@ export function export_table_to_excel(id) {
     saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), "test.xlsx")
 }
 
-function formatJson(jsonData) {
-    console.log(jsonData)
-}
 export function export_json_to_excel(th, jsonData, defaultTitle) {
 
     /* original data */
