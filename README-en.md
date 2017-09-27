@@ -32,8 +32,9 @@
 - ECharts
 - 401, 404 error page
 - Error log
-- Exporting to Excel
+- Export Excel
 - Upload Excel
+- Export Zip
 - Table example
 - Interactive table example
 - Drag & drop table example
@@ -47,6 +48,7 @@
 - screenfull
 - markdown2html
 - views-tab
+- clipboard
 
 ## Development
 

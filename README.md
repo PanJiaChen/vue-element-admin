@@ -63,6 +63,7 @@
 - 401，404错误页面
 - 错误日志
 - 导出excel
+- zip
 - 前端可视化excel
 - table example
 - 动态table example
@@ -78,6 +79,7 @@
 - screenfull
 - markdown2html
 - views-tab
+- clipboard
 
 
 ## 开发
