@@ -149,8 +149,8 @@ export const asyncRouterMap = [
     name: 'excel',
     icon: 'excel',
     children: [
-      { path: 'download', component: _import('excel/index'), name: '导出excel' },
-      { path: 'download2', component: _import('excel/selectExcel'), name: '导出已选择项' },
+      { path: 'download', component: _import('excel/index'), name: 'export excel' },
+      { path: 'download2', component: _import('excel/selectExcel'), name: 'export selected' },
       { path: 'upload', component: _import('excel/uploadExcel'), name: 'upload excel' }
     ]
   },
@@ -161,8 +161,7 @@ export const asyncRouterMap = [
     name: 'zip',
     icon: 'zip',
     children: [
-      { path: 'download', component: _import('zip/index'), name: '导出zip' },
-      { path: 'download2', component: _import('zip/select'), name: '导出已选择项' }
+      { path: 'download', component: _import('zip/index'), name: 'export zip' }
     ]
   },
   {
