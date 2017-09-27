@@ -174,6 +174,14 @@ export const asyncRouterMap = [
     noDropdown: true,
     children: [{ path: 'index', component: _import('theme/index'), name: '换肤' }]
   },
+  {
+    path: '/clipboard',
+    component: Layout,
+    redirect: 'noredirect',
+    icon: 'clipboard',
+    noDropdown: true,
+    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboard' }]
+  },
 
   { path: '*', redirect: '/404', hidden: true }
 ]
