@@ -7,9 +7,9 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "build:prod": "cross-env NODE_ENV=production node build/build.js",
-    "build:sit": "cross-env NODE_ENV=sit node build/build.js",
-    "build:sit-preview": "cross-env NODE_ENV=sit npm_config_preview=true  npm_config_report=true node build/build.js",
+    "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
+    "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
+    "build:sit-preview": "cross-env NODE_ENV=sit env_config=sit npm_config_preview=true  npm_config_report=true node build/build.js",
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
