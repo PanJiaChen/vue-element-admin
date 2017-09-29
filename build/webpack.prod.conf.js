@@ -9,7 +9,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-var env = process.env.NODE_ENV === 'production' ? config.build.prodEnv : config.build.sitEnv
+var env = config.build[process.env.config_env+'Env']
 
 function resolveApp(relativePath) {
   return path.resolve(relativePath);
@@ -117,9 +117,11 @@ var webpackConfig = merge(baseWebpackConfig, {
     }])
   ]
 })
+
 if (config.build.bundleAnalyzerReport) {
   var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
+
 module.exports = webpackConfig
 
