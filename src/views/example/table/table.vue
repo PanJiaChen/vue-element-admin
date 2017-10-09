@@ -60,7 +60,7 @@
 
       <el-table-column width="80px" label="重要性">
         <template scope="scope">
-          <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n"></icon-svg>
+          <icon-svg v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></icon-svg>
         </template>
       </el-table-column>
 
@@ -151,7 +151,7 @@
 
 <script>
 import { fetchList, fetchPv } from '@/api/article'
-import waves from '@/directive/waves.js'// 水波纹指令
+import waves from '@/directive/waves/index.js' // 水波纹指令
 import { parseTime } from '@/utils'
 
 const calendarTypeOptions = [

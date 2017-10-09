@@ -23,7 +23,7 @@
 
       <el-table-column width="100px" label="重要性">
         <template scope="scope">
-          <icon-svg v-for="n in +scope.row.importance" icon-class="wujiaoxing" class="meta-item__icon" :key="n"></icon-svg>
+          <icon-svg v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></icon-svg>
         </template>
       </el-table-column>
 
