@@ -128,8 +128,12 @@ export function export_json_to_excel(th, jsonData, defaultTitle) {
 
     /*设置worksheet每列的最大宽度*/
     const colWidth = data.map(row => row.map(val => {
-      /*判断是否为中文*/
-      if (val.toString().charCodeAt(0) > 255) {
+      /*先判断是否为null/undefined*/
+      if (val == null) {
+        return {'wch': 10};
+      }
+      /*再判断是否为中文*/
+      else if (val.toString().charCodeAt(0) > 255) {
         return {'wch': val.toString().length * 2};
       } else {
         return {'wch': val.toString().length};
