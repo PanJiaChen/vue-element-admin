@@ -100,7 +100,6 @@ export function export_table_to_excel(id) {
     /* original data */
     var data = oo[0];
     var ws_name = "SheetJS";
-    console.log(data);
 
     var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
 
@@ -127,6 +126,25 @@ export function export_json_to_excel(th, jsonData, defaultTitle) {
 
     var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
 
+    /*设置worksheet每列的最大宽度*/
+    const colWidth = data.map(row => row.map(val => {
+      /*判断是否为中文*/
+      if (val.toString().charCodeAt(0) > 255) {
+        return {'wch': val.toString().length * 2};
+      } else {
+        return {'wch': val.toString().length};
+      }
+    }))
+    /*以第一行为初始值*/
+    let result = colWidth[0];
+    for (let i = 1; i < colWidth.length; i++) {
+      for (let j = 0; j < colWidth[i].length; j++) {
+        if (result[j]['wch'] < colWidth[i][j]['wch']) {
+          result[j]['wch'] = colWidth[i][j]['wch'];
+        }
+      }
+    }
+    ws['!cols'] = result;
 
     /* add worksheet to workbook */
     wb.SheetNames.push(ws_name);
