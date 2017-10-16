@@ -25,7 +25,7 @@
       <el-table-column align="center" prop="created_at" label="发布时间" width="220">
         <template scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{scope.row.display_time}}</span>
+          <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -34,6 +34,7 @@
 
 <script>
 import { fetchList } from '@/api/article'
+import { parseTime } from 'utils'
 
 export default {
   data() {
@@ -67,7 +68,13 @@ export default {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      return jsonData.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
