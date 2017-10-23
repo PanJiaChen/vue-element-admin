@@ -2,7 +2,6 @@
 	<el-menu class="navbar" mode="horizontal">
 		<hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
 		<levelbar></levelbar>
-		<tabs-view></tabs-view>
 		<error-log v-if="log.length>0" class="errLog-container" :logsList="log"></error-log>
 		<screenfull class='screenfull'></screenfull>
 		<el-dropdown class="avatar-container" trigger="click">
@@ -30,7 +29,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import Levelbar from './Levelbar'
-import TabsView from './TabsView'
 import Hamburger from 'components/Hamburger'
 import Screenfull from 'components/Screenfull'
 import ErrorLog from 'components/ErrLog'
@@ -39,7 +37,6 @@ import errLogStore from 'store/errLog'
 export default {
   components: {
     Levelbar,
-    TabsView,
     Hamburger,
     ErrorLog,
     Screenfull
