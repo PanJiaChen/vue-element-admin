@@ -18,7 +18,7 @@ router.beforeEach((to, from, next) => {
   if (getToken()) { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })
-      NProgress.done()
+      NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     } else {
       if (store.getters.roles.length === 0) { // 判断当前用户是否已拉取完user_info信息
         store.dispatch('GetUserInfo').then(res => { // 拉取user_info
@@ -38,7 +38,7 @@ router.beforeEach((to, from, next) => {
           next()//
         } else {
           next({ path: '/401', query: { noGoBack: true }})
-          NProgress.done()
+          NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
         }
         // 可删 ↑
       }
@@ -48,7 +48,7 @@ router.beforeEach((to, from, next) => {
       next()
     } else {
       next('/login') // 否则全部重定向到登录页
-      NProgress.done() // 在hash模式下 改变手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
+      NProgress.done() // router在hash模式下 手动改变hash 重定向回来 不会触发afterEach 暂时hack方案 ps：history模式下无问题，可删除该行！
     }
   }
 })
