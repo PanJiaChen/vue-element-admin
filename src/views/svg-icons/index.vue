@@ -6,7 +6,7 @@
           <div slot="content">
             {{generateIconCode(item)}}
           </div>
-          <icon-svg :icon-class="item" />
+          <svg-icon :icon-class="item" />
         </el-tooltip>
         <span>{{item}}</span>
       </div>
@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     generateIconCode(symbol) {
-      return `<icon-svg :icon-class="${symbol}" />`
+      return `<svg-icon :icon-class="${symbol}" />`
     },
     handleClipboard(text, event) {
       clipboard(text, event)

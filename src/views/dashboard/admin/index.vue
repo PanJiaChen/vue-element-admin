@@ -34,12 +34,12 @@
           <div class="info-item">
             <count-to class="info-item-num" :startVal='0' :endVal='statisticsData.article_count' :duration='3400'></count-to>
             <span class="info-item-text">文章</span>
-            <icon-svg icon-class="trendChart1" class="dashboard-editor-icon"></icon-svg>
+            <svg-icon icon-class="trendChart1" class="dashboard-editor-icon"></svg-icon>
           </div>
           <div class="info-item">
             <count-to class="info-item-num" :startVal='0' :endVal='statisticsData.pageviews_count' :duration='3600'></count-to>
             <span class="info-item-text">浏览量</span>
-            <icon-svg icon-class="trendChart2" class="dashboard-editor-icon"></icon-svg>
+            <svg-icon icon-class="trendChart2" class="dashboard-editor-icon"></svg-icon>
           </div>
         </el-card>
       </el-col>

@@ -29,7 +29,7 @@
 
       <el-table-column width="80px" label="重要性">
         <template scope="scope">
-          <icon-svg v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></icon-svg>
+          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
         </template>
       </el-table-column>
 
@@ -47,7 +47,7 @@
 
       <el-table-column align="center" label="拖拽" width="95">
         <template scope="scope">
-          <icon-svg class='drag-handler' icon-class="drag"></icon-svg>
+          <svg-icon class='drag-handler' icon-class="drag"></svg-icon>
         </template>
       </el-table-column>
 
