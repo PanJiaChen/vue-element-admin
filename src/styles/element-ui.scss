@@ -1,22 +1,4 @@
  //覆盖一些element-ui样式
- .block-checkbox {
-   display: block;
- }
-
- .operation-container {
-   .cell {
-     padding: 10px !important;
-   }
-   .el-button {
-     &:nth-child(3) {
-       margin-top: 10px;
-       margin-left: 0px;
-     }
-     &:nth-child(4) {
-       margin-top: 10px;
-     }
-   }
- }
 
  .el-upload {
    input[type="file"] {

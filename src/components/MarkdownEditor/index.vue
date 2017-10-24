@@ -79,7 +79,6 @@ export default {
 
 <style>
 .simplemde-container .CodeMirror {
-  /*height: 150px;*/
   min-height: 150px;
 }
 
@@ -108,6 +107,11 @@ export default {
   padding: 0 2px;
   font-weight: bold;
   color: #E61E1E;
+}
+
+.simplemde-container .editor-toolbar.fullscreen,
+.simplemde-container .CodeMirror-fullscreen {
+  z-index: 1003;
 }
 </style>
 
