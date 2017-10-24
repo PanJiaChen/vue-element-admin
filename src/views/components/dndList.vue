@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import DndList from '@/components/twoDndList'
+import DndList from '@/components/DndList'
 import { fetchList } from '@/api/article'
 
 export default {

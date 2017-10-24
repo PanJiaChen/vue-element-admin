@@ -1,6 +1,6 @@
 <template>
-  <div class="twoDndList">
-    <div class="twoDndList-list" :style="{width:width1}">
+  <div class="dndList">
+    <div class="dndList-list" :style="{width:width1}">
       <h3>{{list1Title}}</h3>
       <draggable :list="list1" class="dragArea" :options="{group:'article'}">
         <div class="list-complete-item" v-for="element in list1" :key='element.id'>
@@ -13,7 +13,7 @@
         </div>
       </draggable>
     </div>
-    <div class="twoDndList-list" :style="{width:width2}">
+    <div class="dndList-list" :style="{width:width2}">
       <h3>{{list2Title}}</h3>
       <draggable :list="filterList2" class="dragArea" :options="{group:'article'}">
         <div class="list-complete-item" v-for="element in filterList2" :key='element.id'>
@@ -28,7 +28,7 @@
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'twoDndList',
+  name: 'DndList',
   components: { draggable },
   computed: {
     filterList2() {
@@ -97,7 +97,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.twoDndList {
+.dndList {
   background: #fff;
   padding-bottom: 40px;
   &:after {
@@ -105,7 +105,7 @@ export default {
     display: table;
     clear: both;
   }
-  .twoDndList-list {
+  .dndList-list {
     float: left;
     padding-bottom: 30px;
     &:first-of-type {
