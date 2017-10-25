@@ -71,6 +71,11 @@ export default {
       }
     }
   },
+  watch: {
+    value(newValue) {
+      this.currentValue = newValue
+    }
+  },
   data() {
     return {
       currentValue: this.value,

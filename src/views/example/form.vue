@@ -4,27 +4,28 @@
 
       <sticky :className="'sub-navbar '+postForm.status">
         <template v-if="fetchSuccess">
-          <div style="display:inline-block">
 
-            <el-dropdown trigger="click">
-              <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create'}">
-                <el-button type="info">创建form</el-button>
-              </router-link>
-              <el-button>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}<i class="el-icon-caret-bottom el-icon--right"></i></el-button>
-              <el-dropdown-menu class="no-padding no-hover" slot="dropdown">
-                <el-dropdown-item>
-                  <el-radio-group style="padding: 10px;" v-model="postForm.comment_disabled">
-                    <el-radio :label="true">关闭评论</el-radio>
-                    <el-radio :label="false">打开评论</el-radio>
-                  </el-radio-group>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </el-dropdown>
-          </div>
+          <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create'}">
+            <el-button type="info">创建form</el-button>
+          </router-link>
 
           <el-dropdown trigger="click">
-            <el-button>
-              平台<i class="el-icon-caret-bottom el-icon--right"></i>
+            <el-button>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
+              <i class="el-icon-caret-bottom el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu class="no-padding" slot="dropdown">
+              <el-dropdown-item>
+                <el-radio-group style="padding: 10px;" v-model="postForm.comment_disabled">
+                  <el-radio :label="true">关闭评论</el-radio>
+                  <el-radio :label="false">打开评论</el-radio>
+                </el-radio-group>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
+          <el-dropdown trigger="click">
+            <el-button>平台
+              <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>
             <el-dropdown-menu class="no-border" slot="dropdown">
               <el-checkbox-group v-model="postForm.platforms" style="padding: 5px 15px;">
@@ -37,7 +38,8 @@
 
           <el-dropdown trigger="click">
             <el-button>
-              外链<i class="el-icon-caret-bottom el-icon--right"></i>
+              外链
+              <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>
             <el-dropdown-menu class="no-padding no-border" style="width:300px" slot="dropdown">
               <el-form-item label-width="0px" style="margin-bottom: 0px" prop="source_uri">
@@ -130,6 +132,19 @@ import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 
+const defaultForm = {
+  title: '', // 文章题目
+  content: '', // 文章内容
+  content_short: '', // 文章摘要
+  source_uri: '', // 文章外链
+  image_uri: '', // 文章图片
+  source_name: '', // 文章外部作者
+  display_time: undefined, // 前台展示时间
+  id: undefined,
+  platforms: ['a-platform'],
+  comment_disabled: false
+}
+
 export default {
   name: 'articleDetail',
   components: { Tinymce, MDinput, Upload, Multiselect, Sticky },
@@ -161,24 +176,14 @@ export default {
       }
     }
     return {
-      postForm: {
-        title: '', // 文章题目
-        content: '', // 文章内容
-        content_short: '', // 文章摘要
-        source_uri: '', // 文章外链
-        image_uri: '', // 文章图片
-        source_name: '', // 文章外部作者
-        display_time: undefined, // 前台展示时间
-        id: undefined,
-        platforms: ['a-platform']
-      },
+      postForm: Object.assign({}, defaultForm),
       fetchSuccess: true,
       loading: false,
       userLIstOptions: [],
       platformsOptions: [
-            { key: 'a-platform', name: 'a-platform' },
-            { key: 'b-platform', name: 'b-platform' },
-            { key: 'c-platform', name: 'c-platform' }
+        { key: 'a-platform', name: 'a-platform' },
+        { key: 'b-platform', name: 'b-platform' },
+        { key: 'c-platform', name: 'c-platform' }
       ],
       rules: {
         image_uri: [{ validator: validateRequire }],
@@ -200,6 +205,16 @@ export default {
   created() {
     if (this.isEdit) {
       this.fetchData()
+    }
+  },
+  watch: {
+    // 如果路由有变化，会再次执行该方法
+    '$route'(to, from) {
+      if (this.isEdit) {
+        this.fetchData()
+      } else {
+        this.postForm = defaultForm
+      }
     }
   },
   methods: {
