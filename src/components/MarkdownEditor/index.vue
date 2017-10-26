@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import 'font-awesome/css/font-awesome.min.css'
 import 'simplemde/dist/simplemde.min.css'
 import SimpleMDE from 'simplemde'
 
@@ -52,6 +53,7 @@ export default {
   mounted() {
     this.simplemde = new SimpleMDE({
       element: document.getElementById(this.id),
+      autoDownloadFontAwesome: false,
       autofocus: this.autofocus,
       toolbar: this.toolbar,
       spellChecker: false,
