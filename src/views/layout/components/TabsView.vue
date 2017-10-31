@@ -1,14 +1,19 @@
 <template>
-  <div class='tabs-view-container'>
-    <router-link class="tabs-view-item"  :class="isActive(tag.path)?'active':''"  v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path">
-        {{tag.name}}
-        <span class='el-icon-close' @click='closeViewTabs(tag,$event)'></span>
+  <scroll-pane class='tabs-view-container'>
+    <router-link class="tabs-view-item" :class="isActive(tag.path)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path"
+      :key="tag.path">
+      {{tag.name}}
+      <span class='el-icon-close' @click='closeViewTabs(tag,$event)'></span>
     </router-link>
-  </div>
+  </scroll-pane>
 </template>
 
+
 <script>
+import ScrollPane from '@/components/ScrollPane'
+
 export default {
+  components: { ScrollPane },
   computed: {
     visitedViews() {
       return this.$store.state.app.visitedViews
@@ -44,6 +49,7 @@ export default {
     isActive(path) {
       return path === this.$route.path
     }
+
   },
   watch: {
     $route() {
@@ -57,25 +63,25 @@ export default {
 .tabs-view-container {
   background: #fff;
   height: 34px;
-  line-height: 34px;
   border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .12), 0 0 6px 0 rgba(0, 0, 0, .04);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tabs-view-item {
     display: inline-block;
     position: relative;
-    height: 32px;
-    line-height: 32px;
+    height: 26px;
+    line-height: 26px;
     border: 1px solid #d8dce5;
     color: #495060;
     background: #fff;
-    padding: 0 12px;
+    padding: 0 8px;
     font-size: 12px;
-    margin-left: 10px;
+    margin-left: 5px;
+    margin-top: 4px;
     &:first-of-type {
-      margin-left: 0px;
+      margin-left: 15px;
     }
     &.active {
-      border-bottom: 0px;
+      background-color: #eef1f6;
       &::before {
         content: '';
         background: #20a0ff;
