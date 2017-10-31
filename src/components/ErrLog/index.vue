@@ -12,14 +12,14 @@
 		<el-dialog title="bug日志" :visible.sync="dialogTableVisible">
 			<el-table :data="logsList">
 				<el-table-column label="message">
-					<template scope="scope">
+					<template slot-scope="scope">
 						<div>msg:{{ scope.row.err.message }}</div>
 						<br/>
 						<div>url: {{scope.row.url}}</div>
 					</template>
 				</el-table-column>
 				<el-table-column label="stack">
-					<template scope="scope">
+					<template slot-scope="scope">
 						{{ scope.row.err.stack}}
 					</template>
 				</el-table-column>

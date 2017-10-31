@@ -3,44 +3,44 @@
 
     <el-table-column align="center" label="序号" width="65"  v-loading="loading"
     element-loading-text="请给我点时间！">
-      <template scope="scope">
+      <template slot-scope="scope">
         <span>{{scope.row.id}}</span>
       </template>
     </el-table-column>
 
     <el-table-column width="180px" align="center" label="时间">
-      <template scope="scope">
+      <template slot-scope="scope">
         <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
       </template>
     </el-table-column>
 
     <el-table-column min-width="300px" label="标题">
-      <template scope="scope">
+      <template slot-scope="scope">
         <span>{{scope.row.title}}</span>
         <el-tag>{{scope.row.type}}</el-tag>
       </template>
     </el-table-column>
 
     <el-table-column width="110px" align="center" label="作者">
-      <template scope="scope">
+      <template slot-scope="scope">
         <span>{{scope.row.author}}</span>
       </template>
     </el-table-column>
 
     <el-table-column width="80px" label="重要性">
-      <template scope="scope">
+      <template slot-scope="scope">
         <svg-icon v-for="n in +scope.row.importance" icon-class="star" :key="n"></svg-icon>
       </template>
     </el-table-column>
 
     <el-table-column align="center" label="阅读数" width="95">
-      <template scope="scope">
+      <template slot-scope="scope">
         <span>{{scope.row.pageviews}}</span>
       </template>
     </el-table-column>
 
     <el-table-column class-name="status-col" label="状态" width="90">
-      <template scope="scope">
+      <template slot-scope="scope">
         <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
       </template>
     </el-table-column>

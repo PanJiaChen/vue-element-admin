@@ -12,7 +12,7 @@
     <el-table :data="tableData" :key='key' style="width: 100%">
       <el-table-column prop="name" label="fruitName" width="180"></el-table-column>
       <el-table-column :key='fruit' v-for='(fruit,index) in formThead' :label="fruit">
-        <template scope="scope">
+        <template slot-scope="scope">
           {{scope.row[fruit]}}
         </template>
       </el-table-column>

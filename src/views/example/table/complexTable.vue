@@ -28,56 +28,56 @@
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="序号" width="65">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="时间">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
 
       <el-table-column min-width="300px" label="标题">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
           <el-tag>{{scope.row.type | typeFilter}}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column width="110px" align="center" label="作者">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.author}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="110px" v-if='showAuditor' align="center" label="审核人">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span style='color:red;'>{{scope.row.auditor}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="80px" label="重要性">
-        <template scope="scope">
+        <template slot-scope="scope">
           <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="阅读数" width="95">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span class="link-type" @click='handleFetchPv(scope.row.pageviews)'>{{scope.row.pageviews}}</span>
         </template>
       </el-table-column>
 
       <el-table-column class-name="status-col" label="状态" width="90">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="150">
-        <template scope="scope">
+        <template slot-scope="scope">
           <el-button v-if="scope.row.status!='published'" size="small" type="success" @click="handleModifyStatus(scope.row,'published')">发布
           </el-button>
           <el-button v-if="scope.row.status!='draft'" size="small" @click="handleModifyStatus(scope.row,'draft')">草稿
