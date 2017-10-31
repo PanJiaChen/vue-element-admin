@@ -104,9 +104,9 @@ export default {
       url: '',
       platforms: ['a-platform'],
       platformsOptions: [
-            { key: 'a-platform', name: '平台A' },
-            { key: 'b-platform', name: '平台B' },
-            { key: 'c-platform', name: '平台C' }
+        { key: 'a-platform', name: '平台A' },
+        { key: 'b-platform', name: '平台B' },
+        { key: 'c-platform', name: '平台C' }
       ],
       pickerOptions: {
         disabledDate(time) {

@@ -87,7 +87,7 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-                // this.showDialog = true
+            // this.showDialog = true
           }).catch(() => {
             this.loading = false
           })
@@ -98,29 +98,29 @@ export default {
       })
     },
     afterQRScan() {
-          // const hash = window.location.hash.slice(1)
-          // const hashObj = getQueryObject(hash)
-          // const originUrl = window.location.origin
-          // history.replaceState({}, '', originUrl)
-          // const codeMap = {
-          //   wechat: 'code',
-          //   tencent: 'code'
-          // }
-          // const codeName = hashObj[codeMap[this.auth_type]]
-          // if (!codeName) {
-          //   alert('第三方登录失败')
-          // } else {
-          //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-          //     this.$router.push({ path: '/' })
-          //   })
-          // }
+      // const hash = window.location.hash.slice(1)
+      // const hashObj = getQueryObject(hash)
+      // const originUrl = window.location.origin
+      // history.replaceState({}, '', originUrl)
+      // const codeMap = {
+      //   wechat: 'code',
+      //   tencent: 'code'
+      // }
+      // const codeName = hashObj[codeMap[this.auth_type]]
+      // if (!codeName) {
+      //   alert('第三方登录失败')
+      // } else {
+      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+      //     this.$router.push({ path: '/' })
+      //   })
+      // }
     }
   },
   created() {
-        // window.addEventListener('hashchange', this.afterQRScan)
+    // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan)
+    // window.removeEventListener('hashchange', this.afterQRScan)
   }
 }
 </script>

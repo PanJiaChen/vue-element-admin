@@ -61,12 +61,12 @@ export default {
             type: 'pie',
             roseType: 'radius',
             data: [
-                { value: 320, name: 'industries' },
-                { value: 240, name: 'technology' },
-                { value: 149, name: 'forex' },
-                { value: 100, name: 'gold' },
-                { value: 59, name: 'forecasts' },
-                { value: 49, name: 'markets' }
+              { value: 320, name: 'industries' },
+              { value: 240, name: 'technology' },
+              { value: 149, name: 'forex' },
+              { value: 100, name: 'gold' },
+              { value: 59, name: 'forecasts' },
+              { value: 49, name: 'markets' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

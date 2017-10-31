@@ -155,10 +155,10 @@ import waves from '@/directive/waves/index.js' // 水波纹指令
 import { parseTime } from '@/utils'
 
 const calendarTypeOptions = [
-      { key: 'CN', display_name: '中国' },
-      { key: 'US', display_name: '美国' },
-      { key: 'JP', display_name: '日本' },
-      { key: 'EU', display_name: '欧元区' }
+  { key: 'CN', display_name: '中国' },
+  { key: 'US', display_name: '美国' },
+  { key: 'JP', display_name: '日本' },
+  { key: 'EU', display_name: '欧元区' }
 ]
 
 // arr to obj
