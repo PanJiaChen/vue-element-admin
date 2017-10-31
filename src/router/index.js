@@ -9,11 +9,14 @@ Vue.use(Router)
 import Layout from '../views/layout/Layout'
 
 /**
-* icon : the icon show in the sidebar
-* hidden : if `hidden:true` will not show in the sidebar
-* title : the name show in submenu and levelbar
-* redirect : if `redirect:noredirect` will no redirct in the levelbar
-* meta : { role: ['admin'] }  will control the page role
+* hidden: true          if `hidden:true` will not show in the sidebar(default is false)
+* redirect: noredirect  if `redirect:noredirect` will no redirct in the levelbar
+* meta : {
+    role: ['admin']     will control the page role
+    title: 'title'      the name show in submenu and levelbar
+    icon: 'svg-name'    the icon show in the sidebar,
+    noCache: true    if fasle ,the page will no be cached(default is false)
+  }
 **/
 
 export const constantRouterMap = [
@@ -119,9 +122,9 @@ export const asyncRouterMap = [
     },
     children: [
       { path: 'index', component: _import('charts/index'), name: 'chartsIndex', meta: { title: '介绍' }},
-      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboard', meta: { title: '键盘图表' }},
-      { path: 'keyboard2', component: _import('charts/keyboard2'), name: 'keyboard2', meta: { title: '键盘图表2' }},
-      { path: 'line', component: _import('charts/line'), name: 'line', meta: { title: '折线图' }},
+      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: '键盘图表' }},
+      { path: 'keyboard2', component: _import('charts/keyboard2'), name: 'keyboardChart2', meta: { title: '键盘图表2' }},
+      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: '折线图' }},
       { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: '混合图表' }}
     ]
   },
@@ -149,12 +152,25 @@ export const asyncRouterMap = [
           { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: '动态table' }},
           { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: '拖拽table' }},
           { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'table内编辑' }},
-          { path: 'table', component: _import('example/table/table'), name: 'tableDemo', meta: { title: '综合table' }}
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: '综合table' }}
         ]
       },
-      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'Tab' }},
-      { path: 'form/edit', icon: 'form', component: _import('example/form'), name: 'formEdit', meta: { title: '编辑Form', isEdit: true }},
-      { path: 'form/create', icon: 'form', component: _import('example/form'), name: 'FormCreate', meta: { title: '创建Form' }}
+      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'Tab' }}
+    ]
+  },
+
+  {
+    path: '/form',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'form',
+    meta: {
+      title: '表单',
+      icon: 'form'
+    },
+    children: [
+      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: '创建表单', icon: 'table' }},
+      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: '编辑表单', icon: 'table' }}
     ]
   },
 
@@ -168,8 +184,8 @@ export const asyncRouterMap = [
       icon: '404'
     },
     children: [
-      { path: '401', component: _import('errorPage/401'), name: '401', meta: { title: '401' }},
-      { path: '404', component: _import('errorPage/404'), name: '404', meta: { title: '404' }}
+      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: '401', noCache: true }},
+      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: '404', noCache: true }}
     ]
   },
 
@@ -177,7 +193,7 @@ export const asyncRouterMap = [
     path: '/error-log',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'log', component: _import('errlog/index'), name: 'errorLog', meta: { title: '错误日志', icon: 'bug' }}]
+    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: '错误日志', icon: 'bug' }}]
   },
 
   {
@@ -190,9 +206,9 @@ export const asyncRouterMap = [
       icon: 'excel'
     },
     children: [
-      { path: 'export-excel', component: _import('excel/index'), name: 'exportExcel', meta: { title: 'export excel' }},
-      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'export selected' }},
-      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'upload excel' }}
+      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'export excel', noCache: true }},
+      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'export selected', noCache: true }},
+      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'upload excel', noCache: true }}
     ]
   },
 
@@ -214,7 +230,7 @@ export const asyncRouterMap = [
     path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboard', meta: { title: 'clipboard', icon: 'clipboard' }}]
+    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboard', icon: 'clipboard' }}]
   },
 
   { path: '*', redirect: '/404', hidden: true }

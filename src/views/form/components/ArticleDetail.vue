@@ -148,6 +148,12 @@ const defaultForm = {
 export default {
   name: 'articleDetail',
   components: { Tinymce, MDinput, Upload, Multiselect, Sticky },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     const validateRequire = (rule, value, callback) => {
       if (value === '') {
@@ -196,25 +202,13 @@ export default {
   computed: {
     contentShortLength() {
       return this.postForm.content_short.length
-    },
-    isEdit() {
-      return this.$route.meta.isEdit // 根据meta判断
-          // return this.$route.path.indexOf('edit') !== -1 // 根据路由判断
     }
   },
   created() {
     if (this.isEdit) {
       this.fetchData()
-    }
-  },
-  watch: {
-    // 如果路由有变化，会再次执行该方法
-    '$route'(to, from) {
-      if (this.isEdit) {
-        this.fetchData()
-      } else {
-        this.postForm = defaultForm
-      }
+    } else {
+      this.postForm = Object.assign({}, defaultForm)
     }
   },
   methods: {

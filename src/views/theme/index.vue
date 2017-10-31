@@ -48,6 +48,7 @@ import { toggleClass } from '@/utils'
 import '@/assets/custom-theme/index.css' // 换肤版本element-ui css
 
 export default {
+  name: 'theme',
   data() {
     return {
       theme: false,

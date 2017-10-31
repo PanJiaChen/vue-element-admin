@@ -14,6 +14,7 @@
 import errCode from './errcode'
 
 export default {
+  name: 'errorLog',
   components: { errCode }
 }
 </script>

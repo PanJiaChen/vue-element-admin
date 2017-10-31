@@ -37,6 +37,7 @@ import { fetchList } from '@/api/article'
 import { parseTime } from 'utils'
 
 export default {
+  name: 'exportExcel',
   data() {
     return {
       list: null,

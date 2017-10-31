@@ -38,6 +38,7 @@
 import { fetchList } from '@/api/article'
 
 export default {
+  name: 'selectExcel',
   data() {
     return {
       list: null,

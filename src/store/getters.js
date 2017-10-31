@@ -1,6 +1,7 @@
 const getters = {
   sidebar: state => state.app.sidebar,
   visitedViews: state => state.app.visitedViews,
+  cachedViews: state => state.app.cachedViews,
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.name,
