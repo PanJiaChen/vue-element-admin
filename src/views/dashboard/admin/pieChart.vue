@@ -5,6 +5,7 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts 主题
+import { debounce } from '@/utils'
 
 export default {
   props: {
@@ -28,11 +29,18 @@ export default {
   },
   mounted() {
     this.initChart()
+    this.__resizeHanlder = debounce(() => {
+      if (this.chart) {
+        this.chart.resize()
+      }
+    }, 100)
+    window.addEventListener('resize', this.__resizeHanlder)
   },
   beforeDestroy() {
     if (!this.chart) {
       return
     }
+    window.removeEventListener('resize', this.__resizeHanlder)
     this.chart.dispose()
     this.chart = null
   },
@@ -60,6 +68,7 @@ export default {
             name: 'WEEKLY WRITE ARTICLES',
             type: 'pie',
             roseType: 'radius',
+            radius: [10, 90],
             data: [
               { value: 320, name: 'industries' },
               { value: 240, name: 'technology' },
