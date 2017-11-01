@@ -6,6 +6,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin')
+var dependencies = require('../package.json').dependencies
 
 // add hot-reload related code to entry chunks
 Object.keys(baseWebpackConfig.entry).forEach(function (name) {
@@ -27,7 +28,8 @@ module.exports = merge(baseWebpackConfig, {
   cache: true,
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
+      'process.env': config.dev.env,
+      'DEPENDENCIES': JSON.stringify(dependencies)
     }),
     // https://github.com/glenjamin/webpack-hot-middleware#installation--usage
     new webpack.HotModuleReplacementPlugin(),

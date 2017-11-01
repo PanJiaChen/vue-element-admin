@@ -12,13 +12,21 @@
     </el-card>
 
     <div class="block">
-      <span class="demonstration">Button: </span>
-      <span class="wrapper">
+        <el-button type="primary">成功按钮</el-button>
         <el-button type="success">成功按钮</el-button>
         <el-button type="warning">警告按钮</el-button>
         <el-button type="danger">危险按钮</el-button>
         <el-button type="info">信息按钮</el-button>
-      </span>
+    </div>
+
+    <div class="block">
+      <el-button type="primary" icon="el-icon-edit"></el-button>
+      <el-button type="primary" icon="el-icon-share"></el-button>
+      <el-button type="primary" icon="el-icon-delete"></el-button>
+      <el-button type="primary" icon="el-icon-search">Search</el-button>
+      <el-button type="primary">Upload
+        <i class="el-icon-upload el-icon-right"></i>
+      </el-button>
     </div>
 
     <div class="block">
@@ -28,14 +36,15 @@
     </div>
 
     <div class="block">
-      <el-alert class='alert-item' title="成功提示的文案" type="success">
-      </el-alert>
-      <el-alert class='alert-item' title="消息提示的文案" type="info">
-      </el-alert>
-      <el-alert class='alert-item' title="警告提示的文案" type="warning">
-      </el-alert>
-      <el-alert class='alert-item' title="错误提示的文案" type="error">
-      </el-alert>
+      <el-radio-group v-model="radio">
+        <el-radio :label="3">Option A</el-radio>
+        <el-radio :label="6">Option B</el-radio>
+        <el-radio :label="9">Option C</el-radio>
+      </el-radio-group>
+    </div>
+
+    <div class="block">
+      <el-slider v-model="slideValue"></el-slider>
     </div>
 
   </div>
@@ -56,7 +65,9 @@ export default {
         { name: 'Tag Three', type: 'success' },
         { name: 'Tag Four', type: 'warning' },
         { name: 'Tag Five', type: 'danger' }
-      ]
+      ],
+      slideValue: 50,
+      radio: 3
     }
   },
   watch: {
@@ -68,20 +79,16 @@ export default {
 </script>
 
 <style scoped>
-  .box-card{
-    width: 400px;
-    margin: 20px auto;
-  }
-  .block{
-    padding: 30px 24px;
-  }
-  .alert-item{
-    margin-bottom: 10px;
-  }
-  .tag-item{
-    margin-right: 15px;
-  }
-  .link-title{
-    margin-left:35px;
-  }
+.box-card {
+  width: 400px;
+  margin: 20px auto;
+}
+
+.block {
+  padding: 30px 24px;
+}
+
+.tag-item {
+  margin-right: 15px;
+}
 </style>
