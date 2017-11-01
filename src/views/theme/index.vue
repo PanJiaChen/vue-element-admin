@@ -7,8 +7,7 @@
       </div>
       <div class="box-item">
         <span class="field-label">换肤:</span>
-        <el-switch v-model="theme" on-text="" off-text="">
-        </el-switch>
+        <el-switch v-model="theme"></el-switch>
       </div>
     </el-card>
 
@@ -19,7 +18,7 @@
         <el-button type="warning">警告按钮</el-button>
         <el-button type="danger">危险按钮</el-button>
         <el-button type="info">信息按钮</el-button>
-       </span>
+      </span>
     </div>
 
     <div class="block">
@@ -42,7 +41,6 @@
   </div>
 </template>
 
-
 <script>
 import { toggleClass } from '@/utils'
 // import '@/assets/custom-theme/index.css' // 换肤版本element-ui css
@@ -53,12 +51,11 @@ export default {
     return {
       theme: false,
       tags: [
-        { name: '标签一', type: '' },
-        { name: '标签二', type: 'gray' },
-        { name: '标签三', type: 'primary' },
-        { name: '标签四', type: 'success' },
-        { name: '标签五', type: 'warning' },
-        { name: '标签六', type: 'danger' }
+        { name: 'Tag One', type: '' },
+        { name: 'Tag Two', type: 'info' },
+        { name: 'Tag Three', type: 'success' },
+        { name: 'Tag Four', type: 'warning' },
+        { name: 'Tag Five', type: 'danger' }
       ]
     }
   },

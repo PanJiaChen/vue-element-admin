@@ -136,7 +136,7 @@
       </div>
     </el-dialog>
 
-    <el-dialog title="阅读数统计" :visible.sync="dialogPvVisible" size="small">
+    <el-dialog title="阅读数统计" :visible.sync="dialogPvVisible">
       <el-table :data="pvData" border fit highlight-current-row style="width: 100%">
         <el-table-column prop="key" label="渠道"> </el-table-column>
         <el-table-column prop="pv" label="pv"> </el-table-column>
@@ -214,7 +214,7 @@ export default {
     statusFilter(status) {
       const statusMap = {
         published: 'success',
-        draft: 'gray',
+        draft: 'info',
         deleted: 'danger'
       }
       return statusMap[status]
