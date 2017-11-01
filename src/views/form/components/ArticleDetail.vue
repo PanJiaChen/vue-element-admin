@@ -5,7 +5,7 @@
       <sticky :className="'sub-navbar '+postForm.status">
         <template v-if="fetchSuccess">
 
-          <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create'}">
+          <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create-form'}">
             <el-button type="info">创建form</el-button>
           </router-link>
 

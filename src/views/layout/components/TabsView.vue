@@ -1,8 +1,7 @@
 <template>
   <scroll-pane class='tabs-view-container'>
-    <router-link class="tabs-view-item" :class="isActive(tag.path)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path"
-      :key="tag.path">
-      {{tag.name}}
+    <router-link class="tabs-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path">
+      {{tag.title}}
       <span class='el-icon-close' @click='closeViewTabs(tag,$event)'></span>
     </router-link>
   </scroll-pane>
@@ -20,7 +19,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch('addVisitedViews', this.generateRoute())
+    this.addViewTabs()
   },
   methods: {
     closeViewTabs(view, $event) {
@@ -37,17 +36,20 @@ export default {
       $event.preventDefault()
     },
     generateRoute() {
-      if (this.$route.matched[this.$route.matched.length - 1].name) {
-        return this.$route.matched[this.$route.matched.length - 1]
+      if (this.$route.name) {
+        return this.$route
       }
-      this.$route.matched[0].path = '/'
-      return this.$route.matched[0]
+      return false
     },
     addViewTabs() {
-      this.$store.dispatch('addVisitedViews', this.generateRoute())
+      const route = this.generateRoute()
+      if (!route) {
+        return false
+      }
+      this.$store.dispatch('addVisitedViews', route)
     },
-    isActive(path) {
-      return path === this.$route.path
+    isActive(route) {
+      return route.path === this.$route.path || route.name === this.$route.name
     }
 
   },

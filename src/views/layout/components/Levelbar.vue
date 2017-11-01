@@ -20,6 +20,10 @@ export default {
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched.filter(item => item.name)
+      if (matched.length === 0) {
+        this.levelList = [{ path: '/', meta: { title: '首页' }}]
+        return
+      }
       const first = matched[0]
       if (first && (first.name !== '首页' || first.path !== '')) {
         matched = [{ path: '/', meta: { title: '首页' }}].concat(matched)
