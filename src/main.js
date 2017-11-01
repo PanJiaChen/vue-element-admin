@@ -1,6 +1,6 @@
 import Vue from 'vue'
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import Element from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
 import App from './App'
 import router from './router'
 import store from './store'
@@ -10,7 +10,7 @@ import './errorLog'// error log
 import './permission' // 权限
 import './mock' // 该项目所有请求使用mockjs模拟
 
-Vue.use(ElementUI)
+Vue.use(Element)
 
 // register global utility filters.
 Object.keys(filters).forEach(key => {
