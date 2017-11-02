@@ -8,26 +8,24 @@
 // 侧边栏
 .hideSidebar {
   .sidebar-container {
-    width: 36px!important; // overflow: inherit;
+    width: 36px!important;
+    overflow: inherit;
   }
   .main-container {
     margin-left: 36px;
   }
 }
 
-// .horizontal-collapse-transition{
-//   transition: width 0.28s!important;
-// }
 .sidebar-container {
-  // transition: width 0.28s ease-out;
-  transition: width 0.28s!important;
+  transition: width 0.28s;
   width: 180px!important;
   height: 100%;
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 1001; // overflow-y: auto;
+  z-index: 1001;
+  overflow-y: auto;
   &::-webkit-scrollbar {
     display: none
   }
