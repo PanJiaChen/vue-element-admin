@@ -4,10 +4,13 @@
 	color: #4d4d4d;
 	min-width: 230px;
 	max-width: 550px;
-	margin: 40PX auto 0;
+	margin: 40px auto 0;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-weight: 300;
+	background: #fff;
+	z-index: 1;
+	position: relative;
 	button {
 		margin: 0;
 		padding: 0;

@@ -1,4 +1,38 @@
+// 主体区域
+.main-container {
+  min-height: 100%;
+  transition: margin-left 0.28s;
+  margin-left: 180px;
+}
+
 // 侧边栏
+.hideSidebar {
+  .sidebar-container {
+    width: 36px!important; // overflow: inherit;
+  }
+  .main-container {
+    margin-left: 36px;
+  }
+}
+
+// .horizontal-collapse-transition{
+//   transition: width 0.28s!important;
+// }
+.sidebar-container {
+  // transition: width 0.28s ease-out;
+  transition: width 0.28s!important;
+  width: 180px!important;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1001; // overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none
+  }
+}
+
 .sidebar-container>.el-menu {
   width: 100%!important;
   min-height: 100%;
@@ -66,7 +100,7 @@
       text-align: left;
       text-indent: 20px;
       top: 0px;
-      background-color: #1f2d3d;
+      background-color: #2B2C2D!important;
       opacity: 1;
     }
   }
@@ -74,4 +108,8 @@
 
 .el-submenu .el-menu-item {
   min-width: 180px!important;
+  background-color: #2B2C2D!important;
+  &:hover {
+    background-color: rgb(67, 74, 80)!important;
+  }
 }
