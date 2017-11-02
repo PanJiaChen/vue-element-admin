@@ -26,15 +26,14 @@ export const constantRouterMap = [
   { path: '/401', component: _import('errorPage/401'), hidden: true },
 
   {
-    path: '/',
+    path: '',
     component: Layout,
-    redirect: '/dashboard',
-    hidden: true,
+    redirect: 'dashboard',
     children: [{
       path: 'dashboard',
       component: _import('dashboard/index'),
       name: 'dashboard',
-      meta: { title: '首页' }
+      meta: { title: '首页', icon: 'dashboard' }
     }]
   },
 

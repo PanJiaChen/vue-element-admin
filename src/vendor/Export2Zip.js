@@ -4,8 +4,8 @@ import JSZip from 'jszip'
 
 export function export_txt_to_zip(th, jsonData, txtName, zipName) {
   const zip = new JSZip()
-  const txt_name = txtName || '文本'
-  const zip_name = zipName || '压缩包'
+  const txt_name = txtName || 'file'
+  const zip_name = zipName || 'file'
   const data = jsonData
   let txtData = `${th}\r\n`
   data.forEach((row) => {

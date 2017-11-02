@@ -54,7 +54,6 @@ export default {
         })
       styles.forEach(style => {
         const { innerText } = style
-        console.log(style)
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })

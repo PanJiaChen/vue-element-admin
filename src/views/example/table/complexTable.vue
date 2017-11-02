@@ -19,10 +19,10 @@
         </el-option>
       </el-select>
 
-      <el-button class="filter-item" type="primary" v-waves icon="search" @click="handleFilter">搜索</el-button>
-      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="edit">添加</el-button>
-      <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
-      <el-checkbox class="filter-item" @change='tableKey=tableKey+1' v-model="showAuditor">显示审核人</el-checkbox>
+      <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">添加</el-button>
+      <el-button class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-checkbox class="filter-item" style='margin-left:15px;' @change='tableKey=tableKey+1' v-model="showAuditor">显示审核人</el-checkbox>
     </div>
 
     <el-table :key='tableKey' :data="list" v-loading="listLoading" element-loading-text="给我一点时间" border fit highlight-current-row style="width: 100%">
@@ -39,7 +39,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="标题">
+      <el-table-column min-width="150px" label="标题">
         <template slot-scope="scope">
           <span class="link-type" @click="handleUpdate(scope.row)">{{scope.row.title}}</span>
           <el-tag>{{scope.row.type | typeFilter}}</el-tag>
@@ -70,7 +70,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="状态" width="90">
+      <el-table-column class-name="status-col" label="状态" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
         </template>
@@ -121,7 +121,7 @@
         </el-form-item>
 
         <el-form-item label="重要性">
-          <el-rate style="margin-top:8px;" v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']"></el-rate>
+          <el-rate style="margin-top:8px;" v-model="temp.importance" :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :max='3'></el-rate>
         </el-form-item>
 
         <el-form-item label="点评">

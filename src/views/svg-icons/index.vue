@@ -1,18 +1,21 @@
 <template>
   <div class="icons-container">
     <div class="icons-wrapper">
-      <div v-for='item of iconsMap' :key='item' class='icon-item' @click='handleClipboard(generateIconCode(item),$event)'>
-        <el-tooltip placement="top" effect="light">
+      <div v-for='item of iconsMap' :key='item' @click='handleClipboard(generateIconCode(item),$event)'>
+        <el-tooltip placement="top">
           <div slot="content">
             {{generateIconCode(item)}}
           </div>
-          <svg-icon :icon-class="item" />
+          <div class='icon-item'>
+            <svg-icon :icon-class="item" />
+            <span>{{item}}</span>
+          </div>
         </el-tooltip>
-        <span>{{item}}</span>
       </div>
     </div>
   </div>
 </template>
+
 
 <script>
 import icons from './generateIconsView'
@@ -50,12 +53,12 @@ export default {
   }
   .icon-item {
     margin: 20px;
-    height: 137px;
+    height: 110px;
     text-align: center;
-    width: 120px;
+    width: 110px;
     float: left;
-    font-size: 40px;
-    color: #666;
+    font-size: 30px;
+    color: #24292e;
     cursor: pointer;
   }
   span {

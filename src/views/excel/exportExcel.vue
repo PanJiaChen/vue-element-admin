@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <el-input style='width:240px;' placeholder="请输入文件名(默认excel-list)" prefix-icon="el-icon-document" v-model="filename"></el-input>
     <el-button style='margin-bottom:20px;' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">导出excel</el-button>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label='ID' width="95">
@@ -42,7 +43,8 @@ export default {
     return {
       list: null,
       listLoading: true,
-      downloadLoading: false
+      downloadLoading: false,
+      filename: ''
     }
   },
   created() {
@@ -64,7 +66,7 @@ export default {
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
-        export_json_to_excel(tHeader, data, '列表excel')
+        export_json_to_excel(tHeader, data, this.filename)
         this.downloadLoading = false
       })
     },

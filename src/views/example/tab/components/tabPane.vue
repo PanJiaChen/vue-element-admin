@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="list" border fit highlight-current-row style="width: 100%">
+  <el-table :data="list"border fit highlight-current-row style="width: 100%">
 
     <el-table-column align="center" label="序号" width="65"  v-loading="loading"
     element-loading-text="请给我点时间！">
@@ -39,7 +39,7 @@
       </template>
     </el-table-column>
 
-    <el-table-column class-name="status-col" label="状态" width="90">
+    <el-table-column class-name="status-col" label="状态" width="110">
       <template slot-scope="scope">
         <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
       </template>
