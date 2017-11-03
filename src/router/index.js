@@ -33,7 +33,7 @@ export const constantRouterMap = [
       path: 'dashboard',
       component: _import('dashboard/index'),
       name: 'dashboard',
-      meta: { title: '首页', icon: 'dashboard' }
+      meta: { title: 'dashboard', icon: 'dashboard' }
     }]
   },
 
@@ -45,7 +45,7 @@ export const constantRouterMap = [
       path: 'index',
       component: _import('introduction/index'),
       name: 'introduction',
-      meta: { title: '简述', icon: 'people' }
+      meta: { title: 'introduction', icon: 'people' }
     }]
   }
 ]
@@ -67,7 +67,7 @@ export const asyncRouterMap = [
       component: _import('permission/index'),
       name: 'permission',
       meta: {
-        title: '权限测试页',
+        title: 'permission',
         icon: 'lock',
         role: ['admin']
       }
@@ -81,7 +81,7 @@ export const asyncRouterMap = [
       path: 'index',
       component: _import('svg-icons/index'),
       name: 'icons',
-      meta: { title: '图标', icon: 'icon' }
+      meta: { title: 'icons', icon: 'icon' }
     }]
   },
 
@@ -91,22 +91,22 @@ export const asyncRouterMap = [
     redirect: '/components/index',
     name: 'components',
     meta: {
-      title: '组件',
+      title: 'components',
       icon: 'component'
     },
     children: [
-      { path: 'index', component: _import('components/index'), name: 'componentIndex', meta: { title: '介绍' }},
-      { path: 'tinymce', component: _import('components/tinymce'), name: 'tinymce', meta: { title: '富文本编辑器' }},
-      { path: 'markdown', component: _import('components/markdown'), name: 'markdown', meta: { title: 'Markdown' }},
-      { path: 'json-editor', component: _import('components/jsonEditor'), name: 'jsonEditor', meta: { title: 'JSON编辑器' }},
-      { path: 'dnd-list', component: _import('components/dndList'), name: 'dndList', meta: { title: '列表拖拽' }},
-      { path: 'splitpane', component: _import('components/splitpane'), name: 'splitpane', meta: { title: 'SplitPane' }},
-      { path: 'avatar-upload', component: _import('components/avatarUpload'), name: 'avatar-upload', meta: { title: '头像上传' }},
-      { path: 'dropzone', component: _import('components/dropzone'), name: 'dropzone', meta: { title: 'Dropzone' }},
-      { path: 'sticky', component: _import('components/sticky'), name: 'sticky', meta: { title: 'Sticky' }},
-      { path: 'count-to', component: _import('components/countTo'), name: 'count-to', meta: { title: 'CountTo' }},
-      { path: 'mixin', component: _import('components/mixin'), name: 'componentMixin', meta: { title: '小组件' }},
-      { path: 'back-to-top', component: _import('components/backToTop'), name: 'backToTop', meta: { title: '返回顶部' }}
+      { path: 'index', component: _import('components/index'), name: 'componentIndex', meta: { title: 'componentIndex' }},
+      { path: 'tinymce', component: _import('components/tinymce'), name: 'tinymce', meta: { title: 'tinymce' }},
+      { path: 'markdown', component: _import('components/markdown'), name: 'markdown', meta: { title: 'markdown' }},
+      { path: 'json-editor', component: _import('components/jsonEditor'), name: 'jsonEditor', meta: { title: 'jsonEditor' }},
+      { path: 'dnd-list', component: _import('components/dndList'), name: 'dndList', meta: { title: 'dndList' }},
+      { path: 'splitpane', component: _import('components/splitpane'), name: 'splitpane', meta: { title: 'splitPane' }},
+      { path: 'avatar-upload', component: _import('components/avatarUpload'), name: 'avatarUpload', meta: { title: 'avatarUpload' }},
+      { path: 'dropzone', component: _import('components/dropzone'), name: 'dropzone', meta: { title: 'dropzone' }},
+      { path: 'sticky', component: _import('components/sticky'), name: 'sticky', meta: { title: 'sticky' }},
+      { path: 'count-to', component: _import('components/countTo'), name: 'countTo', meta: { title: 'countTo' }},
+      { path: 'mixin', component: _import('components/mixin'), name: 'componentMixin', meta: { title: 'componentMixin' }},
+      { path: 'back-to-top', component: _import('components/backToTop'), name: 'backToTop', meta: { title: 'backToTop' }}
     ]
   },
 
@@ -116,15 +116,15 @@ export const asyncRouterMap = [
     redirect: '/charts/index',
     name: 'charts',
     meta: {
-      title: '图表',
+      title: 'charts',
       icon: 'chart'
     },
     children: [
-      { path: 'index', component: _import('charts/index'), name: 'chartsIndex', meta: { title: '介绍' }},
-      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: '键盘图表' }},
-      { path: 'keyboard2', component: _import('charts/keyboard2'), name: 'keyboardChart2', meta: { title: '键盘图表2' }},
-      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: '折线图' }},
-      { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: '混合图表' }}
+      { path: 'index', component: _import('charts/index'), name: 'chartsIndex', meta: { title: 'chartsIndex' }},
+      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart' }},
+      { path: 'keyboard2', component: _import('charts/keyboard2'), name: 'keyboardChart2', meta: { title: 'keyboardChart2' }},
+      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: 'lineChart' }},
+      { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart' }}
     ]
   },
 
@@ -134,7 +134,7 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'example',
     meta: {
-      title: '综合实例',
+      title: 'example',
       icon: 'example'
     },
     children: [
@@ -148,13 +148,13 @@ export const asyncRouterMap = [
           icon: 'table'
         },
         children: [
-          { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: '动态table' }},
-          { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: '拖拽table' }},
-          { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'table内编辑' }},
-          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: '综合table' }}
+          { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+          { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+          { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTabl' }}
         ]
       },
-      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'Tab' }}
+      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
     ]
   },
 
@@ -164,12 +164,12 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'form',
     meta: {
-      title: '表单',
+      title: 'form',
       icon: 'form'
     },
     children: [
-      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: '创建表单', icon: 'table' }},
-      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: '编辑表单', icon: 'table' }}
+      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: 'createForm', icon: 'table' }},
+      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: 'editForm', icon: 'table' }}
     ]
   },
 
@@ -179,12 +179,12 @@ export const asyncRouterMap = [
     redirect: 'noredirect',
     name: 'errorPages',
     meta: {
-      title: '错误页面',
+      title: 'errorPages',
       icon: '404'
     },
     children: [
-      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: '401', noCache: true }},
-      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: '404', noCache: true }}
+      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
+      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
     ]
   },
 
@@ -192,7 +192,7 @@ export const asyncRouterMap = [
     path: '/error-log',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: '错误日志', icon: 'bug' }}]
+    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: 'errorLog', icon: 'bug' }}]
   },
 
   {
@@ -205,9 +205,9 @@ export const asyncRouterMap = [
       icon: 'excel'
     },
     children: [
-      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'export excel', noCache: true }},
-      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'export selected', noCache: true }},
-      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'upload excel', noCache: true }}
+      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'exportExcel', noCache: true }},
+      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'selectExcel', noCache: true }},
+      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'uploadExcel', noCache: true }}
     ]
   },
 
@@ -215,21 +215,27 @@ export const asyncRouterMap = [
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
-    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'zip', icon: 'zip' }}]
+    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip', icon: 'zip' }}]
   },
 
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'index', component: _import('theme/index'), name: 'theme', meta: { title: '换肤', icon: 'theme' }}]
+    children: [{ path: 'index', component: _import('theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
   },
 
   {
     path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
-    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboard', icon: 'clipboard' }}]
+    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboardDemo', icon: 'clipboard' }}]
+  },
+
+  {
+    path: '/i18n',
+    component: Layout,
+    children: [{ path: 'index', component: _import('i18n/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
   },
 
   { path: '*', redirect: '/404', hidden: true }

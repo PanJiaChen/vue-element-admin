@@ -12,6 +12,14 @@
         <screenfull class="screenfull right-menu-item"></screenfull>
       </el-tooltip>
 
+      <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
+        <svg-icon class-name='right-menu-item international-icon' icon-class="language" />
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="zh" :disabled="language==='zh'">中文</el-dropdown-item>
+          <el-dropdown-item command="en" :disabled="language==='en'">English</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <el-tooltip effect="dark" content="换肤" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
       </el-tooltip>
@@ -21,8 +29,8 @@
           <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
           <i class="el-icon-caret-bottom"></i>
         </div>
-        <el-dropdown-menu class="user-dropdown" slot="dropdown">
-          <router-link class="inlineBlock" to="/">
+        <el-dropdown-menu slot="dropdown">
+          <router-link to="/">
             <el-dropdown-item>
               首页
             </el-dropdown-item>
@@ -40,10 +48,6 @@
     </div>
   </el-menu>
 </template>
-
-
-
-
 
 <script>
 import { mapGetters } from 'vuex'
@@ -71,12 +75,21 @@ export default {
     ...mapGetters([
       'sidebar',
       'name',
-      'avatar'
+      'avatar',
+      'language'
     ])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
+    },
+    handleSetLanguage(lang) {
+      this.$i18n.locale = lang
+      this.$store.dispatch('setLanguage', lang)
+      this.$message({
+        message: 'switch language success',
+        type: 'success'
+      })
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
@@ -114,6 +127,14 @@ export default {
     }
     .screenfull {
       height: 20px;
+    }
+    .international{
+      vertical-align: top;
+      .international-icon{
+        font-size: 20px;
+        cursor: pointer;
+        vertical-align: -5px;
+      }
     }
     .theme-switch {
       vertical-align: 15px;
