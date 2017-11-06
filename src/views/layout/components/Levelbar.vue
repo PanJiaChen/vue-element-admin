@@ -1,8 +1,8 @@
 <template>
   <el-breadcrumb class="app-levelbar" separator="/">
     <el-breadcrumb-item v-for="(item,index)  in levelList" :key="item.path" v-if='item.meta.title'>
-      <span v-if='item.redirect==="noredirect"||index==levelList.length-1' class="no-redirect">{{item.meta.title}}</span>
-      <router-link v-else :to="item.redirect||item.path">{{item.meta.title}}</router-link>
+      <span v-if='item.redirect==="noredirect"||index==levelList.length-1' class="no-redirect">{{generateTitle(item.meta.title)}}</span>
+      <router-link v-else :to="item.redirect||item.path">{{generateTitle(item.meta.title)}}</router-link>
     </el-breadcrumb-item>
   </el-breadcrumb>
 </template>
@@ -26,9 +26,12 @@ export default {
       }
       const first = matched[0]
       if (first && first.name !== 'dashboard') {
-        matched = [{ path: '/', meta: { title: '首页' }}].concat(matched)
+        matched = [{ path: '/', meta: { title: 'dashboard' }}].concat(matched)
       }
       this.levelList = matched
+    },
+    generateTitle(title) {
+      return this.$t('route.' + title)
     }
   },
   watch: {

@@ -28,7 +28,7 @@ export default {
     dynamicTable: '动态table',
     dragTable: '拖拽table',
     inlineEditTable: 'table内编辑',
-    complexTabl: '综合table',
+    complexTable: '综合table',
     tab: 'Tab',
     form: '表单',
     createForm: '创建表单',

@@ -1,12 +1,11 @@
 <template>
   <scroll-pane class='tabs-view-container'>
-    <router-link class="tabs-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path" :key="tag.path">
-      {{tag.title}}
+    <router-link class="tabs-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
+      {{$t('route.'+tag.title)}}
       <span class='el-icon-close' @click='closeViewTabs(tag,$event)'></span>
     </router-link>
   </scroll-pane>
 </template>
-
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
