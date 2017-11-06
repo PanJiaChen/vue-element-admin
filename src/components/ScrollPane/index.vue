@@ -21,7 +21,6 @@ export default {
       const $containerWidth = $container.offsetWidth
       const $wrapper = this.$refs.scrollWrapper
       const $wrapperWidth = $wrapper.offsetWidth
-      console.log($containerWidth, $wrapperWidth)
       if (e.wheelDelta > 0) {
         this.left = Math.min(0, this.left + e.wheelDelta)
       } else {

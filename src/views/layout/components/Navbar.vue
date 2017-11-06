@@ -2,7 +2,7 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
 
-    <levelbar></levelbar>
+    <levelbar class="levelbar-container"></levelbar>
 
     <div class="right-menu">
 
@@ -110,6 +110,9 @@ export default {
     height: 50px;
     float: left;
     padding: 0 10px;
+  }
+  .levelbar-container{
+    float: left;
   }
   .errLog-container {
     display: inline-block;

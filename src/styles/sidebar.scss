@@ -14,10 +14,6 @@
     bottom: 0;
     left: 0;
     z-index: 1001;
-    overflow-y: auto;
-    &::-webkit-scrollbar {
-      display: none
-    }
     a {
       display: inline-block;
       width: 100%;
@@ -27,12 +23,13 @@
     }
     .el-menu {
       border: none;
+      width: 100%;
     }
   }
   .hideSidebar {
-    .sidebar-container {
+    .sidebar-container,.sidebar-container .el-menu {
       width: 36px!important;
-      overflow: inherit;
+      // overflow: inherit;
     }
     .main-container {
       margin-left: 36px;
