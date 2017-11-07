@@ -105,7 +105,7 @@
 <script>
     /* eslint-disable */
     import {effectRipple, data2blob} from './utils';
-    import fetch from 'utils/fetch';
+    import request from 'utils/request';
     import langBag from './lang';
     const mimes = {
         'jpg': 'image/jpeg',
@@ -672,7 +672,7 @@
             that.loading = 1;
             that.setStep(3);
             that.$emit('crop-success', createImgUrl, field, ki);
-            fetch({
+            request({
                 url,
                 method: 'post',
                 data: fmData

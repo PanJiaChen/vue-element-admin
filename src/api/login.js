@@ -1,11 +1,11 @@
-import fetch from '@/utils/fetch'
+import request from '@/utils/request'
 
 export function loginByUsername(username, password) {
   const data = {
     username,
     password
   }
-  return fetch({
+  return request({
     url: '/login/login',
     method: 'post',
     data
@@ -13,14 +13,14 @@ export function loginByUsername(username, password) {
 }
 
 export function logout() {
-  return fetch({
+  return request({
     url: '/login/logout',
     method: 'post'
   })
 }
 
 export function getUserInfo(token) {
-  return fetch({
+  return request({
     url: '/user/info',
     method: 'get',
     params: { token }
