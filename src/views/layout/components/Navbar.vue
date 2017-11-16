@@ -2,7 +2,7 @@
   <el-menu class="navbar" mode="horizontal">
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
 
-    <levelbar class="levelbar-container"></levelbar>
+    <breadcrumb class="breadcrumb-container"></breadcrumb>
 
     <div class="right-menu">
 
@@ -53,7 +53,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Levelbar from './Levelbar'
+import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ThemePicker from '@/components/ThemePicker'
 import Screenfull from '@/components/Screenfull'
@@ -62,7 +62,7 @@ import errLogStore from 'store/errLog'
 
 export default {
   components: {
-    Levelbar,
+    Breadcrumb,
     Hamburger,
     ThemePicker,
     ErrorLog,
@@ -113,7 +113,7 @@ export default {
     float: left;
     padding: 0 10px;
   }
-  .levelbar-container{
+  .breadcrumb-container{
     float: left;
   }
   .errLog-container {
