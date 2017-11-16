@@ -119,6 +119,7 @@ export const asyncRouterMap = [
       },
       { path: 'form/edit', icon: 'form', component: _import('example/form'), name: '编辑Form', meta: { isEdit: true }},
       { path: 'form/create', icon: 'form', component: _import('example/form'), name: '创建Form' },
+      { path: 'form/validate', icon: 'form', component: _import('example/validation'), name: '验证Form' },
       { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'Tab' }
     ]
   },
