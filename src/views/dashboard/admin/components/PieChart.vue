@@ -49,10 +49,6 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
-        title: {
-          text: 'WEEKLY WRITE ARTICLES',
-          x: 'center'
-        },
         tooltip: {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
@@ -68,7 +64,8 @@ export default {
             name: 'WEEKLY WRITE ARTICLES',
             type: 'pie',
             roseType: 'radius',
-            radius: [10, 90],
+            radius: [15, 95],
+            center: ['50%', '38%'],
             data: [
               { value: 320, name: 'industries' },
               { value: 240, name: 'technology' },

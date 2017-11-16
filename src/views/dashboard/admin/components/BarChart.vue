@@ -57,8 +57,9 @@ export default {
           }
         },
         grid: {
-          left: '3%',
-          right: '4%',
+          top: 10,
+          left: '2%',
+          right: '2%',
           bottom: '3%',
           containLabel: true
         },
@@ -70,7 +71,10 @@ export default {
           }
         }],
         yAxis: [{
-          type: 'value'
+          type: 'value',
+          axisTick: {
+            show: false
+          }
         }],
         series: [{
           name: 'pageA',

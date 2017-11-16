@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     generateIconCode(symbol) {
-      return `<svg-icon :icon-class="${symbol}" />`
+      return `<svg-icon icon-class="${symbol}" />`
     },
     handleClipboard(text, event) {
       clipboard(text, event)

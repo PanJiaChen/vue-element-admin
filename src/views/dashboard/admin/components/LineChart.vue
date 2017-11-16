@@ -24,6 +24,9 @@ export default {
     autoResize: {
       type: Boolean,
       default: true
+    },
+    chartData: {
+      type: Object
     }
   },
   data() {
@@ -60,62 +63,87 @@ export default {
     this.chart.dispose()
     this.chart = null
   },
+  watch: {
+    chartData: {
+      deep: true,
+      handler(val) {
+        this.setOptions(val)
+      }
+    }
+  },
   methods: {
-    initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-
+    setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
           data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-          boundaryGap: false
+          boundaryGap: false,
+          axisTick: {
+            show: false
+          }
         },
         grid: {
           left: 10,
           right: 10,
           bottom: 20,
+          top: 30,
           containLabel: true
         },
-
         tooltip: {
           trigger: 'axis',
           axisPointer: {
             type: 'cross'
+          },
+          padding: [5, 10]
+        },
+        yAxis: {
+          axisTick: {
+            show: false
           }
         },
-        yAxis: {},
-        series: [{
-          name: 'visitors',
-          itemStyle: {
-            normal: {
-              areaStyle: {}
-            }
-          },
-          smooth: true,
-          type: 'line',
-          data: [100, 120, 161, 134, 105, 160, 165],
-          animationDuration: 2600,
-          animationEasing: 'cubicInOut'
+        legend: {
+          data: ['expected', 'actual']
         },
-        {
-          name: 'buyers',
-          smooth: true,
-          type: 'line',
-          itemStyle: {
+        series: [{
+          name: 'expected', itemStyle: {
             normal: {
-              color: 'rgba(2, 197, 233, 0.2)',
+              color: '#FF005A',
               lineStyle: {
-                color: 'rgba(2, 197, 233, 0.2)'
-              },
-              areaStyle: {
-                color: 'rgba(99,194,255, 0.6)'
+                color: '#FF005A',
+                width: 2
               }
             }
           },
-          data: [120, 82, 91, 154, 162, 140, 130],
-          animationDuration: 2000,
+          smooth: true,
+          type: 'line',
+          data: expectedData,
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
+        },
+        {
+          name: 'actual',
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#3888fa',
+              lineStyle: {
+                color: '#3888fa',
+                width: 2
+              },
+              areaStyle: {
+                color: '#f3f8ff'
+              }
+            }
+          },
+          data: actualData,
+          animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]
       })
+    },
+    initChart() {
+      this.chart = echarts.init(this.$el, 'macarons')
+      this.setOptions(this.chartData)
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner></github-corner>
-    <el-row class="btn-group">
+    <!-- <el-row class="btn-group">
       <el-col :span="4" class='text-center'>
         <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
       </el-col>
@@ -20,112 +20,238 @@
       <el-col :span="4" class='text-center'>
         <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
       </el-col>
-    </el-row>
-
-    <el-row>
+    </el-row> -->
+    <el-row class="panel-group" :gutter="40">
       <el-col :span="6">
-        <el-card class="box-card">
-          <div slot="header" class="box-card-header">
-            <pan-thumb class="panThumb" :image="avatar"> 你的权限:
-              <span class="pan-info-roles" :key='item' v-for="item in roles">{{item}}</span>
-            </pan-thumb>
+        <div class='card-panel no-margin-left' @click="handleSetLineChartData('newVisitis')">
+          <div class="card-panel-icon-wrapper icon-people">
+            <svg-icon icon-class="peoples" class-name="card-panel-icon" />
           </div>
-          <span class="display_name">{{name}}</span>
-          <div class="info-item">
-            <count-to class="info-item-num" :startVal='0' :endVal='statisticsData.article_count' :duration='3400'></count-to>
-            <span class="info-item-text">文章</span>
-            <svg-icon icon-class="trendChart1" class="dashboard-editor-icon"></svg-icon>
+          <div class='card-panel-description'>
+            <div class='card-panel-text'>New Visits</div>
+            <count-to class="card-panel-num" :startVal='0' :endVal='102400' :duration='3600'></count-to>
           </div>
-          <div class="info-item">
-            <count-to class="info-item-num" :startVal='0' :endVal='statisticsData.pageviews_count' :duration='3600'></count-to>
-            <span class="info-item-text">浏览量</span>
-            <svg-icon icon-class="trendChart2" class="dashboard-editor-icon"></svg-icon>
-          </div>
-        </el-card>
+        </div>
       </el-col>
-
-      <el-col :span="8">
-        <pie-chart></pie-chart>
+      <el-col :span="6">
+        <div class='card-panel' @click="handleSetLineChartData('messages')">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon icon-class="message" class-name="card-panel-icon" />
+          </div>
+          <div class='card-panel-description'>
+            <div class='card-panel-text'>Messages</div>
+            <count-to class="card-panel-num" :startVal='0' :endVal='81212' :duration='3600'></count-to>
+          </div>
+        </div>
       </el-col>
-
-      <el-col :span="10">
-        <bar-chart></bar-chart>
+      <el-col :span="6">
+        <div class='card-panel' @click="handleSetLineChartData('purchases')">
+          <div class="card-panel-icon-wrapper icon-money">
+            <svg-icon icon-class="money" class-name="card-panel-icon" />
+          </div>
+          <div class='card-panel-description'>
+            <div class='card-panel-text'>Purchases</div>
+            <count-to class="card-panel-num" :startVal='0' :endVal='9280' :duration='3600'></count-to>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class='card-panel  no-margin-right' @click="handleSetLineChartData('shoppings')">
+          <div class="card-panel-icon-wrapper icon-shoppingCard">
+            <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
+          </div>
+          <div class='card-panel-description'>
+            <div class='card-panel-text'>Shoppings</div>
+            <count-to class="card-panel-num" :startVal='0' :endVal='1299' :duration='3600'></count-to>
+          </div>
+        </div>
       </el-col>
     </el-row>
 
-    <el-row :gutter="20">
-      <el-col :span="15">
-        <line-chart></line-chart>
+    <el-row style="margin-top:30px;background:#fff;padding:15px 15px 0;">
+      <line-chart :chart-data='lineChartData'></line-chart>
+    </el-row>
+
+    <el-row style="margin-top:30px;">
+      <el-col :span="8">
+        <div class="chart-wrapper no-margin-left">
+          <raddar-chart></raddar-chart>
+        </div>
       </el-col>
-      <el-col :span="9">
-        <todo-list></todo-list>
+      <el-col :span="8">
+        <div class="chart-wrapper">
+          <pie-chart></pie-chart>
+        </div>
       </el-col>
+      <el-col :span="8">
+        <div class="chart-wrapper no-margin-right">
+          <bar-chart></bar-chart>
+        </div>
+      </el-col>
+    </el-row>
+
+    <el-row style="margin-top:30px;">
+      <el-col :span="12" style="padding-right:8px;">
+        <transaction-table></transaction-table>
+      </el-col>
+      <el-col :span="6">
+        <todo-list style="margin:0 8px;"></todo-list>
+      </el-col>
+      <el-col :span="6">
+        <box-card></box-card>
+      </el-col>
+
     </el-row>
 
   </div>
 </template>
 
+
+
+
 <script>
-import { mapGetters } from 'vuex'
-import countTo from 'vue-count-to'
-import panThumb from '@/components/PanThumb'
-import todoList from '@/components/TodoList'
+import CountTo from 'vue-count-to'
 import GithubCorner from '@/components/GithubCorner'
-import pieChart from './pieChart'
-import barChart from './barChart'
-import lineChart from './lineChart'
+import LineChart from './components/LineChart'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
+import TransactionTable from './components/TransactionTable'
+import TodoList from './components/TodoList'
+import BoxCard from './components/BoxCard'
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 101, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
 
 export default {
   name: 'dashboard-admin',
-  components: { countTo, panThumb, todoList, GithubCorner, pieChart, lineChart, barChart },
+  components: {
+    CountTo,
+    GithubCorner,
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart,
+    TransactionTable,
+    TodoList,
+    BoxCard
+  },
   data() {
     return {
-      statisticsData: {
-        article_count: 1024,
-        pageviews_count: 1024
-      }
+      lineChartData: lineChartData.newVisitis
     }
   },
-  computed: {
-    ...mapGetters([
-      'name',
-      'avatar',
-      'roles'
-    ])
+  methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
+    }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
-    margin: 30px;
-    .btn-group {
-        margin-bottom: 60px;
+  padding: 30px;
+  background-color: rgb(240, 242, 245);
+  .no-margin-left {
+    margin-left: 0!important;
+  }
+  .no-margin-right {
+    margin-right: 0!important;
+  }
+  .panel-group {
+    margin-top: 20px;
+  }
+  .card-panel {
+    // margin: 0 25px;
+    height: 108px;
+    cursor: pointer;
+    font-size: 12px;
+    position: relative;
+    overflow: hidden;
+    color: #666;
+    background: #fff;
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+    border-color: rgba(0, 0, 0, .05);
+    &:hover {
+      .card-panel-icon-wrapper {
+        color: #fff;
+      }
+      .icon-people {
+        background: #36a3f7;
+      }
+      .icon-message {
+        background: #f4516c;
+      }
+      .icon-money {
+        background: #716aca;
+      }
+      .icon-shoppingCard {
+        background: #34bfa3
+      }
     }
-    .box-card-header {
-        position: relative;
-        height: 160px;
+    .icon-people {
+      color: #36a3f7;
     }
-    .panThumb {
-        z-index: 100;
-        height: 150px;
-        width: 150px;
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        margin: auto;
+    .icon-message {
+      color: #f4516c;
     }
-    .display_name{
-        font-size: 30px;
-        display: block;
+    .icon-money {
+      color: #716aca;
     }
-    .info-item{
-        display: inline-block;
-        margin-top: 10px;
-        font-size: 14px;
-        &:last-of-type{
-            margin-left: 15px;
-        }
+    .icon-shoppingCard {
+      color: #34bfa3
     }
+    .card-panel-icon-wrapper {
+      float: left;
+      margin: 14px 0 0 14px;
+      padding: 16px;
+      transition: all 0.38s ease-out;
+      border-radius: 6px;
+    }
+    .card-panel-icon {
+      float: left;
+      font-size: 48px;
+    }
+    .card-panel-description {
+      float: right;
+      font-weight: bold;
+      margin: 26px;
+      margin-left: 0px;
+      .card-panel-text {
+        line-height: 18px;
+        color: rgba(0, 0, 0, 0.45);
+        font-size: 16px;
+        margin-bottom: 12px;
+      }
+      .card-panel-num {
+        font-size: 20px;
+      }
+    }
+  }
+  .chart-wrapper {
+    background: #fff;
+    margin: 0 15px;
+    padding: 15px 15px 0;
+  }
+  .btn-group {
+    margin-bottom: 60px;
+  }
 }
 </style>

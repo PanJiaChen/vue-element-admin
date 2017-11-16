@@ -4,7 +4,7 @@
 	color: #4d4d4d;
 	min-width: 230px;
 	max-width: 550px;
-	margin: 40px auto 0;
+	margin: 0 auto ;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	font-weight: 300;
@@ -84,7 +84,7 @@
 		-moz-osx-font-smoothing: grayscale;
 	}
 	.new-todo {
-		padding: 16px 16px 16px 60px;
+		padding: 10px 16px 16px 60px;
 		border: none;
 		background: rgba(0, 0, 0, 0.003);
 		box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);

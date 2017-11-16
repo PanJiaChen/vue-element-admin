@@ -2,7 +2,7 @@
   <section class="todoapp">
     <!-- header -->
     <header class="header">
-      <input class="new-todo" autofocus autocomplete="off" placeholder="TODO LIST?" @keyup.enter="addTodo">
+      <input class="new-todo" autocomplete="off" placeholder="Todo List" @keyup.enter="addTodo">
     </header>
     <!-- main section -->
     <section class="main" v-show="todos.length">
@@ -24,9 +24,9 @@
           <a :class="{ selected: visibility === key }" @click.prevent="visibility = key">{{ key | capitalize }}</a>
         </li>
       </ul>
-      <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
+      <!-- <button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">
         Clear completed
-      </button>
+      </button> -->
     </footer>
   </section>
 </template>
@@ -43,7 +43,12 @@ const filters = {
 const defalutList = [
   { text: 'star this repository', done: false },
   { text: 'fork this repository', done: false },
-  { text: 'follow author', done: false }
+  { text: 'follow author', done: false },
+  { text: 'vue-element-admin', done: true },
+  { text: 'vue', done: true },
+  { text: 'element-ui', done: true },
+  { text: 'axios', done: true },
+  { text: 'webpack', done: true }
 ]
 export default {
   components: { Todo },
@@ -51,7 +56,8 @@ export default {
     return {
       visibility: 'all',
       filters,
-      todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
+      // todos: JSON.parse(window.localStorage.getItem(STORAGE_KEY)) || defalutList
+      todos: defalutList
     }
   },
   computed: {
