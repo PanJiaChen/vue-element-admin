@@ -30,13 +30,16 @@ export default {
       $event.preventDefault()
     },
     generateRoute() {
-      if (this.$route.matched[this.$route.matched.length - 1].name) {
-        return this.$route.matched[this.$route.matched.length - 1]
+      if (this.$route.name) {
+        return this.$route
       }
-      this.$route.matched[0].path = '/'
-      return this.$route.matched[0]
+      return false
     },
     addViewTabs() {
+      const route = this.generateRoute()
+      if (!route) {
+        return false
+      }
       this.$store.dispatch('addVisitedViews', this.generateRoute())
     },
     isActive(path) {

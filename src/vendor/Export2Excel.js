@@ -1,7 +1,8 @@
 /* eslint-disable */
 require('script-loader!file-saver');
 require('script-loader!vendor/Blob');
-require('script-loader!xlsx/dist/xlsx.core.min');
+import XLSX from 'xlsx'
+
 function generateArray(table) {
     var out = [];
     var rows = table.querySelectorAll('tr');
@@ -93,14 +94,12 @@ function s2ab(s) {
 
 export function export_table_to_excel(id) {
     var theTable = document.getElementById(id);
-    console.log('a')
     var oo = generateArray(theTable);
     var ranges = oo[1];
 
     /* original data */
     var data = oo[0];
     var ws_name = "SheetJS";
-    console.log(data);
 
     var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
 
@@ -117,9 +116,6 @@ export function export_table_to_excel(id) {
     saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), "test.xlsx")
 }
 
-function formatJson(jsonData) {
-    console.log(jsonData)
-}
 export function export_json_to_excel(th, jsonData, defaultTitle) {
 
     /* original data */
@@ -130,6 +126,29 @@ export function export_json_to_excel(th, jsonData, defaultTitle) {
 
     var wb = new Workbook(), ws = sheet_from_array_of_arrays(data);
 
+    /*设置worksheet每列的最大宽度*/
+    const colWidth = data.map(row => row.map(val => {
+      /*先判断是否为null/undefined*/
+      if (val == null) {
+        return {'wch': 10};
+      }
+      /*再判断是否为中文*/
+      else if (val.toString().charCodeAt(0) > 255) {
+        return {'wch': val.toString().length * 2};
+      } else {
+        return {'wch': val.toString().length};
+      }
+    }))
+    /*以第一行为初始值*/
+    let result = colWidth[0];
+    for (let i = 1; i < colWidth.length; i++) {
+      for (let j = 0; j < colWidth[i].length; j++) {
+        if (result[j]['wch'] < colWidth[i][j]['wch']) {
+          result[j]['wch'] = colWidth[i][j]['wch'];
+        }
+      }
+    }
+    ws['!cols'] = result;
 
     /* add worksheet to workbook */
     wb.SheetNames.push(ws_name);

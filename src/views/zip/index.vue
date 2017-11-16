@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button style='margin-bottom:20px;' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">导出excel</el-button>
+    <el-button style='margin-bottom:20px;' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">导出zip</el-button>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label='ID' width="95">
         <template scope="scope">
@@ -25,7 +25,7 @@
       <el-table-column align="center" prop="created_at" label="发布时间" width="220">
         <template scope="scope">
           <i class="el-icon-time"></i>
-          <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
+          <span>{{scope.row.display_time}}</span>
         </template>
       </el-table-column>
     </el-table>
@@ -34,7 +34,6 @@
 
 <script>
 import { fetchList } from '@/api/article'
-import { parseTime } from 'utils'
 
 export default {
   data() {
@@ -58,23 +57,17 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       require.ensure([], () => {
-        const { export_json_to_excel } = require('vendor/Export2Excel')
+        const { export_txt_to_zip } = require('vendor/Export2Zip')
         const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
-        export_json_to_excel(tHeader, data, '列表excel')
+        export_txt_to_zip(tHeader, data, '列表文本', '压缩文本')
         this.downloadLoading = false
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
-        }
-      }))
+      return jsonData.map(v => filterVal.map(j => v[j]))
     }
   }
 }
