@@ -21,7 +21,6 @@ export default {
     charts: 'Charts',
     chartsIndex: 'Introduction',
     keyboardChart: 'Keyboard Chart',
-    keyboardChart2: 'Keyboard Chart2',
     lineChart: 'Line chart',
     mixChart: 'Mix Chart',
     example: 'Example',

@@ -21,7 +21,6 @@ export default {
     charts: '图表',
     chartsIndex: '介绍',
     keyboardChart: '键盘图表',
-    keyboardChart2: '键盘图表2',
     lineChart: '折线图',
     mixChart: '混合图表',
     example: '综合实例',
