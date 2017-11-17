@@ -127,7 +127,9 @@ export default {
       })
     },
     destroyTinymce() {
-      window.tinymce.get(this.tinymceId).destroy()
+      if (window.tinymce.get(this.tinymceId)) {
+        window.tinymce.get(this.tinymceId).destroy()
+      }
     },
     setContent(value) {
       window.tinymce.get(this.tinymceId).setContent(value)
