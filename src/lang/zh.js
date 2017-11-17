@@ -19,7 +19,6 @@ export default {
     componentMixin: '小组件',
     backToTop: '返回顶部',
     charts: '图表',
-    chartsIndex: '介绍',
     keyboardChart: '键盘图表',
     lineChart: '折线图',
     mixChart: '混合图表',

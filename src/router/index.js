@@ -116,7 +116,6 @@ export const asyncRouterMap = [
       icon: 'chart'
     },
     children: [
-      { path: 'index', component: _import('charts/index'), name: 'chartsIndex', meta: { title: 'chartsIndex' }},
       { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
       { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
       { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}

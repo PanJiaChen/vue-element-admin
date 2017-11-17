@@ -19,7 +19,6 @@ export default {
     componentMixin: 'Mixin',
     backToTop: 'BackToTop',
     charts: 'Charts',
-    chartsIndex: 'Introduction',
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Line chart',
     mixChart: 'Mix Chart',
