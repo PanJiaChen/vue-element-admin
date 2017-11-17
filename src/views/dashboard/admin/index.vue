@@ -2,7 +2,7 @@
   <div class="dashboard-editor-container">
     <github-corner></github-corner>
 
-    <panel-group></panel-group>
+    <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
 
     <el-row style="margin-top:30px;background:#fff;padding:15px 15px 0;">
       <line-chart :chart-data="lineChartData"></line-chart>
