@@ -95,18 +95,17 @@ export const asyncRouterMap = [
       icon: 'component'
     },
     children: [
-      { path: 'index', component: _import('components/index'), name: 'componentIndex', meta: { title: 'componentIndex' }},
-      { path: 'tinymce', component: _import('components/tinymce'), name: 'tinymce', meta: { title: 'tinymce' }},
-      { path: 'markdown', component: _import('components/markdown'), name: 'markdown', meta: { title: 'markdown' }},
-      { path: 'json-editor', component: _import('components/jsonEditor'), name: 'jsonEditor', meta: { title: 'jsonEditor' }},
-      { path: 'dnd-list', component: _import('components/dndList'), name: 'dndList', meta: { title: 'dndList' }},
-      { path: 'splitpane', component: _import('components/splitpane'), name: 'splitpane', meta: { title: 'splitPane' }},
-      { path: 'avatar-upload', component: _import('components/avatarUpload'), name: 'avatarUpload', meta: { title: 'avatarUpload' }},
-      { path: 'dropzone', component: _import('components/dropzone'), name: 'dropzone', meta: { title: 'dropzone' }},
-      { path: 'sticky', component: _import('components/sticky'), name: 'sticky', meta: { title: 'sticky' }},
-      { path: 'count-to', component: _import('components/countTo'), name: 'countTo', meta: { title: 'countTo' }},
-      { path: 'mixin', component: _import('components/mixin'), name: 'componentMixin', meta: { title: 'componentMixin' }},
-      { path: 'back-to-top', component: _import('components/backToTop'), name: 'backToTop', meta: { title: 'backToTop' }}
+      { path: 'tinymce', component: _import('components-demo/tinymce'), name: 'tinymce', meta: { title: 'tinymce' }},
+      { path: 'markdown', component: _import('components-demo/markdown'), name: 'markdown', meta: { title: 'markdown' }},
+      { path: 'json-editor', component: _import('components-demo/jsonEditor'), name: 'jsonEditor', meta: { title: 'jsonEditor' }},
+      { path: 'dnd-list', component: _import('components-demo/dndList'), name: 'dndList', meta: { title: 'dndList' }},
+      { path: 'splitpane', component: _import('components-demo/splitpane'), name: 'splitpane', meta: { title: 'splitPane' }},
+      { path: 'avatar-upload', component: _import('components-demo/avatarUpload'), name: 'avatarUpload', meta: { title: 'avatarUpload' }},
+      { path: 'dropzone', component: _import('components-demo/dropzone'), name: 'dropzone', meta: { title: 'dropzone' }},
+      { path: 'sticky', component: _import('components-demo/sticky'), name: 'sticky', meta: { title: 'sticky' }},
+      { path: 'count-to', component: _import('components-demo/countTo'), name: 'countTo', meta: { title: 'countTo' }},
+      { path: 'mixin', component: _import('components-demo/mixin'), name: 'componentMixin', meta: { title: 'componentMixin' }},
+      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop', meta: { title: 'backToTop' }}
     ]
   },
 
@@ -235,7 +234,7 @@ export const asyncRouterMap = [
   {
     path: '/i18n',
     component: Layout,
-    children: [{ path: 'index', component: _import('i18n/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+    children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
   },
 
   { path: '*', redirect: '/404', hidden: true }

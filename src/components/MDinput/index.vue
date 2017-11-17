@@ -164,6 +164,7 @@ export default {
       .material-input__icon {
         position: absolute;
         left: 0;
+        line-height: $font-size-base;
         color: $color-blue;
         top: $spacer;
         width: $index-has-icon;

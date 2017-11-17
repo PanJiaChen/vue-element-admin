@@ -58,8 +58,8 @@ export default {
           }
         },
         radar: {
-          radius: '70%',
-          center: ['50%', '44%'],
+          radius: '66%',
+          center: ['50%', '42%'],
           splitNumber: 8,
           splitArea: {
             areaStyle: {
@@ -81,8 +81,8 @@ export default {
           ]
         },
         legend: {
-          left: 0,
-          bottom: 0,
+          left: 'center',
+          bottom: '10',
           data: ['Allocated Budget', 'Expected Spending', 'Actual Spending']
         },
         series: [{

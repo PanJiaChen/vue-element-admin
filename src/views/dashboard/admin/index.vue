@@ -1,29 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner></github-corner>
-    <!-- <el-row class="btn-group">
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn pink-btn" to="/excel/download">Excel</router-link>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn green-btn" to="/example/table/complex-table">Table</router-link>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn tiffany-btn" to="/form/edit-form">Form</router-link>
-      </el-col>
-      <el-col :span="4" class='text-center'>
-        <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
-      </el-col>
-    </el-row> -->
+
     <el-row class="panel-group" :gutter="40">
       <el-col :span="6">
-        <div class='card-panel no-margin-left' @click="handleSetLineChartData('newVisitis')">
+        <div class='card-panel' @click="handleSetLineChartData('newVisitis')">
           <div class="card-panel-icon-wrapper icon-people">
             <svg-icon icon-class="peoples" class-name="card-panel-icon" />
           </div>
@@ -56,7 +37,7 @@
         </div>
       </el-col>
       <el-col :span="6">
-        <div class='card-panel  no-margin-right' @click="handleSetLineChartData('shoppings')">
+        <div class='card-panel' @click="handleSetLineChartData('shoppings')">
           <div class="card-panel-icon-wrapper icon-shoppingCard">
             <svg-icon icon-class="shoppingCard" class-name="card-panel-icon" />
           </div>
@@ -72,9 +53,9 @@
       <line-chart :chart-data='lineChartData'></line-chart>
     </el-row>
 
-    <el-row style="margin-top:30px;">
+    <el-row style="margin-top:30px;" :gutter="30">
       <el-col :span="8">
-        <div class="chart-wrapper no-margin-left">
+        <div class="chart-wrapper">
           <raddar-chart></raddar-chart>
         </div>
       </el-col>
@@ -84,7 +65,7 @@
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="chart-wrapper no-margin-right">
+        <div class="chart-wrapper">
           <bar-chart></bar-chart>
         </div>
       </el-col>
@@ -100,14 +81,10 @@
       <el-col :span="6">
         <box-card></box-card>
       </el-col>
-
     </el-row>
 
   </div>
 </template>
-
-
-
 
 <script>
 import CountTo from 'vue-count-to'
@@ -169,17 +146,10 @@ export default {
 .dashboard-editor-container {
   padding: 30px;
   background-color: rgb(240, 242, 245);
-  .no-margin-left {
-    margin-left: 0!important;
-  }
-  .no-margin-right {
-    margin-right: 0!important;
-  }
   .panel-group {
     margin-top: 20px;
   }
   .card-panel {
-    // margin: 0 25px;
     height: 108px;
     cursor: pointer;
     font-size: 12px;
@@ -247,11 +217,7 @@ export default {
   }
   .chart-wrapper {
     background: #fff;
-    margin: 0 15px;
     padding: 15px 15px 0;
-  }
-  .btn-group {
-    margin-bottom: 60px;
   }
 }
 </style>

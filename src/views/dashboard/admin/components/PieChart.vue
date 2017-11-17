@@ -54,9 +54,9 @@ export default {
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
-          x: 'center',
-          y: 'bottom',
-          data: ['industries', 'technology', 'forex', 'gold', 'forecasts', 'markets']
+          left: 'center',
+          bottom: '10',
+          data: ['industries', 'technology', 'forex', 'gold', 'forecasts']
         },
         calculable: true,
         series: [
@@ -71,8 +71,7 @@ export default {
               { value: 240, name: 'technology' },
               { value: 149, name: 'forex' },
               { value: 100, name: 'gold' },
-              { value: 59, name: 'forecasts' },
-              { value: 49, name: 'markets' }
+              { value: 59, name: 'forecasts' }
             ],
             animationEasing: 'cubicInOut',
             animationDuration: 2600

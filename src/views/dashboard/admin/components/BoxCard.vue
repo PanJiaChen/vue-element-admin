@@ -6,7 +6,7 @@
     <div style="position:relative;">
       <pan-thumb class="panThumb" :image="avatar"></pan-thumb>
       <mallki className='mallki-text' text='vue-element-admin'></mallki>
-      <div class='progress-item'>
+      <div style="padding-top:35px;" class='progress-item'>
         <span>Vue</span>
         <el-progress :percentage="70"></el-progress>
       </div>
@@ -17,6 +17,10 @@
       <div class='progress-item'>
         <span>Css</span>
         <el-progress :percentage="12"></el-progress>
+      </div>
+       <div class='progress-item'>
+        <span>ESlint</span>
+        <el-progress :percentage="100" status="success"></el-progress>
       </div>
     </div>
   </el-card>
@@ -53,13 +57,7 @@ export default {
       }
       return statusMap[status]
     }
-  },
-  created() {
-
-  },
-  methods: {
   }
-
 }
 </script>
 
@@ -86,7 +84,7 @@ export default {
 }
 .mallki-text {
   position: absolute;
-  top: -10px;
+  top: 0px;
   right: 0px;
   font-size: 20px;
   font-weight: bold;
@@ -102,6 +100,9 @@ export default {
   background-color: #fff;
   margin: auto;
   box-shadow: none!important;
+  /deep/ .pan-info{
+    box-shadow: none!important;
+  }
 }
 .progress-item {
   margin-bottom: 10px;
