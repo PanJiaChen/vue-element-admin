@@ -8,6 +8,7 @@ require('echarts/theme/macarons') // echarts 主题
 import { debounce } from '@/utils'
 
 const animationDuration = 6000
+
 export default {
   props: {
     className: {

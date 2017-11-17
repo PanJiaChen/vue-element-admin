@@ -138,6 +138,7 @@
 import BackToTop from '@/components/BackToTop'
 
 export default {
+  name: 'backToTop-demo',
   components: { BackToTop },
   data() {
     return {

@@ -83,7 +83,7 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('ToggleSideBar')
+      this.$store.dispatch('toggleSideBar')
     },
     handleSetLanguage(lang) {
       this.$i18n.locale = lang

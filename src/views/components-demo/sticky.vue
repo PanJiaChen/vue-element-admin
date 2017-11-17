@@ -97,6 +97,7 @@
 import Sticky from '@/components/Sticky'
 
 export default {
+  name: 'sticky-demo',
   components: { Sticky },
   data() {
     return {

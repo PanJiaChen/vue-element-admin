@@ -1,6 +1,6 @@
 <template>
-  <div class='simplemde-container' :style="{height:height+'px',zIndex:zIndex}">
-    <textarea :id='id'>
+  <div class="simplemde-container" :style="{height:height+'px',zIndex:zIndex}">
+    <textarea :id="id">
     </textarea>
   </div>
 </template>
@@ -15,8 +15,7 @@ export default {
   props: {
     value: String,
     id: {
-      type: String,
-      default: 'markdown-editor'
+      type: String
     },
     autofocus: {
       type: Boolean,
@@ -52,7 +51,7 @@ export default {
   },
   mounted() {
     this.simplemde = new SimpleMDE({
-      element: document.getElementById(this.id),
+      element: document.getElementById(this.id || 'markdown-editor-' + +new Date()),
       autoDownloadFontAwesome: false,
       autofocus: this.autofocus,
       toolbar: this.toolbar,

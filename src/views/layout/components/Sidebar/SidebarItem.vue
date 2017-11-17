@@ -9,7 +9,7 @@
         </el-menu-item>
       </router-link>
 
-      <el-submenu v-if="!item.hidden&&item.children&&item.children.length>1" :index="item.name" :key='item.name'>
+      <el-submenu v-if="!item.hidden&&item.children&&item.children.length>1" :index="item.name||item.path" :key='item.name'>
         <template slot="title">
           <svg-icon v-if='item.meta&&item.meta.icon' :icon-class="item.meta.icon"></svg-icon>
           <span v-if='item.meta&&item.meta.title'>{{generateTitle(item.meta.title)}}</span>

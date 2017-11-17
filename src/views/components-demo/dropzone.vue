@@ -1,7 +1,7 @@
 <template>
   <div class="components-container">
     <code>
-      基于<a class='link-type' href='https://github.com/rowanwins/vue-dropzone'> dropzone </a>封装 ,
+      基于<a class="link-type" href="https://github.com/rowanwins/vue-dropzone"> dropzone </a>封装 ,
       由于我司业务有特殊需求，而且要传七牛 所以没用第三方 选择了自己封装
     </code>
     <div class="editor-container">
@@ -14,6 +14,7 @@
 import Dropzone from '@/components/Dropzone'
 
 export default {
+  name: 'dropzone-demo',
   components: { Dropzone },
   methods: {
     dropzoneS(file) {

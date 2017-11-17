@@ -7,11 +7,11 @@
       <github-corner></github-corner>
       <div class="info-container">
         <span class="display_name">{{name}}</span>
-        <span style='font-size:20px;padding-top:20px;display:inline-block;'>普通编辑dashboard</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">普通编辑dashboard</span>
       </div>
     </div>
     <div>
-      <img class='emptyGif' :src="emptyGif">
+      <img class="emptyGif" :src="emptyGif">
     </div>
   </div>
 </template>

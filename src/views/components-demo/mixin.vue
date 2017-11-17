@@ -1,22 +1,22 @@
 <template>
   <div class="components-container">
     <el-row>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
       </el-col>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
       </el-col>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn pink-btn" to="/excel/download">Excel</router-link>
       </el-col>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn green-btn" to="/example/table/complex-table">Table</router-link>
       </el-col>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn tiffany-btn" to="/form/edit-form">Form</router-link>
       </el-col>
-      <el-col :span="4" class='text-center'>
+      <el-col :span="4" class="text-center">
         <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
       </el-col>
     </el-row>
@@ -43,7 +43,7 @@
             <span>图片hover效果</span>
           </div>
           <div class="component-item">
-            <pan-thumb width='100px' height='100px' image='https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191'>
+            <pan-thumb width="100px" height="100px" image="https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191">
               vue-element-admin
             </pan-thumb>
           </div>
@@ -67,7 +67,7 @@
             <span>hover text</span>
           </div>
           <div class="component-item">
-            <mallki className='mallki-text' text='vue-element-admin'></mallki>
+            <mallki className="mallki-text" text="vue-element-admin"></mallki>
           </div>
         </el-card>
       </el-col>
@@ -83,6 +83,7 @@ import waves from '@/directive/waves/index.js' // 水波纹指令
 import Mallki from '@/components/TextHoverEffect/Mallki'
 
 export default {
+  name: 'componentMixin-demo',
   components: {
     PanThumb,
     MdInput,
