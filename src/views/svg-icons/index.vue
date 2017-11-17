@@ -22,6 +22,7 @@ import icons from './generateIconsView'
 import clipboard from '@/utils/clipboard' // use clipboard directly
 
 export default {
+  name: 'icons',
   data() {
     return {
       iconsMap: []

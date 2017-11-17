@@ -93,7 +93,7 @@ export default {
   z-index: 100;
   height: 70px!important;
   width: 70px!important;
-  position: absolute;
+  position: absolute!important;
   top: -45px;
   left: 0px;
   border: 5px solid #ffffff;

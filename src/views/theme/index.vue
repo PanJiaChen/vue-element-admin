@@ -3,7 +3,7 @@
     <el-card class="box-card">
       <div slot="header">
         <span style="line-height: 36px;">偏好设置</span>
-        <a class='link-type link-title' target="_blank" href='https://segmentfault.com/a/1190000009762198#articleHeader2'>动态换肤的教程</a>
+        <a class='link-type link-title' target="_blank" href='https://panjiachen.github.io/vue-element-admin-site/#/theme'>换肤文档</a>
       </div>
       <div class="box-item">
         <span class="field-label">换肤:</span>

@@ -7,7 +7,7 @@ import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts 主题
 import { debounce } from '@/utils'
 
-const animationDuration = 3000
+const animationDuration = 6000
 export default {
   props: {
     className: {
