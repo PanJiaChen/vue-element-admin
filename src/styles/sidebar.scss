@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 #app {
   // 主体区域
   .main-container {
@@ -61,7 +63,7 @@
           text-align: left;
           text-indent: 20px;
           top: 0px;
-          background-color: #2B2C2D!important;
+          background-color: $subMenuBg!important;
           opacity: 1;
         }
       }
@@ -89,9 +91,12 @@
   .nest-menu .el-submenu>.el-submenu__title,
   .el-submenu .el-menu-item {
     min-width: 180px!important;
-    background-color: #2B2C2D!important;
+    background-color: $subMenuBg!important;
     &:hover {
-      background-color: rgb(67, 74, 80)!important;
+      background-color: $menuHover!important;
     }
+  }
+  .el-menu--collapse .el-menu .el-submenu{
+    min-width: 180px!important;
   }
 }
