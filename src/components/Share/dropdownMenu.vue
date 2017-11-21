@@ -1,7 +1,7 @@
 <template>
-  <div class="share-dropdown-menu" @click.native="click" :class="{active:isActive}">
+  <div class="share-dropdown-menu" :class="{active:isActive}">
     <div class="share-dropdown-menu-wrapper">
-      <span class="share-dropdown-menu-title">{{title}}</span>
+      <span class="share-dropdown-menu-title" @click.self="clickTitle">{{title}}</span>
       <div class="share-dropdown-menu-item" v-for="(item,index) of items" :key='index'>
         <a v-if="item.href" :href="item.href" target="_blank">{{item.title}}</a>
         <span v-else>{{item.title}}</span>
@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    click() {
+    clickTitle() {
       this.isActive = !this.isActive
     }
   }
@@ -43,7 +43,6 @@ $t: .1s;
   &-title {
     width: 100%;
     display: block;
-    vertical-align: middle;
     cursor: pointer;
     background: black;
     color: white;
