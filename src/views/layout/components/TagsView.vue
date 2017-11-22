@@ -82,10 +82,12 @@ export default {
       margin-left: 15px;
     }
     &.active {
-      background-color: #eef1f6;
+      background-color: #42b983;
+      color: #fff;
+      border-color: #42b983;
       &::before {
         content: '';
-        background: #20a0ff;
+        background: #fff;
         display: inline-block;
         width: 8px;
         height: 8px;
@@ -94,14 +96,8 @@ export default {
         margin-right: 2px;
       }
     }
-    &:hover {
-      // border-color: #20a0ff;
-      //  color: #20a0ff;
-    }
   }
 }
-
-
 </style>
 
 <style rel="stylesheet/scss" lang="scss">
