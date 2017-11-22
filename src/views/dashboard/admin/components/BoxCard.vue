@@ -19,7 +19,7 @@
         <el-progress :percentage="12"></el-progress>
       </div>
        <div class='progress-item'>
-        <span>ESlint</span>
+        <span>ESLint</span>
         <el-progress :percentage="100" status="success"></el-progress>
       </div>
     </div>

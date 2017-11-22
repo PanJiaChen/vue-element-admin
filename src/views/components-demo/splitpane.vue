@@ -1,25 +1,26 @@
 <template>
-	<div class="components-container">
-		<code>splitPane 如果你用过<a href="http://codepen.io/" target="_blank"> codepen</a>,<a href="https://jsfiddle.net/" target="_blank"> jsfiddle </a>就不会陌生了
+  <div class="components-container">
+    <code>splitPane 如果你用过
+      <a href="http://codepen.io/" target="_blank"> codepen</a>,
+      <a href="https://jsfiddle.net/" target="_blank"> jsfiddle </a>就不会陌生了
       <a href="https://github.com/PanJiaChen/vue-split-pane" target='_blank'>项目地址</a>
-      </code>
-		<split-pane v-on:resize="resize" split="vertical">
-			<template slot="paneL">
-				<div class="left-container"></div>
-			</template>
-			<template slot="paneR">
-				<split-pane split="horizontal">
-					<template slot="paneL">
-						<div class="top-container"></div>
-					</template>
-					<template slot="paneR">
-						<div class="bottom-container">
-						</div>
-					</template>
-				</split-pane>
-			</template>
-		</split-pane>
-	</div>
+    </code>
+    <split-pane v-on:resize="resize" split="vertical">
+      <template slot="paneL">
+        <div class="left-container"></div>
+      </template>
+      <template slot="paneR">
+        <split-pane split="horizontal">
+          <template slot="paneL">
+            <div class="top-container"></div>
+          </template>
+          <template slot="paneR">
+            <div class="bottom-container"></div>
+          </template>
+        </split-pane>
+      </template>
+    </split-pane>
+  </div>
 </template>
 
 <script>
