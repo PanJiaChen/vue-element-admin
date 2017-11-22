@@ -3,14 +3,14 @@
 		<sidebar class="sidebar-container"></sidebar>
 		<div class="main-container">
 			<navbar></navbar>
-			<tabs-view></tabs-view>
+			<tags-view></tags-view>
 			<app-main></app-main>
 		</div>
 	</div>
 </template>
 
 <script>
-import { Navbar, Sidebar, AppMain, TabsView } from 'views/layout/components'
+import { Navbar, Sidebar, AppMain, TagsView } from 'views/layout/components'
 
 export default {
   name: 'layout',
@@ -18,7 +18,7 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TabsView
+    TagsView
   },
   computed: {
     sidebar() {

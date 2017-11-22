@@ -1,8 +1,8 @@
 <template>
-  <scroll-pane class='tabs-view-container'>
-    <router-link class="tabs-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
+  <scroll-pane class='tags-view-container'>
+    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
       {{$t('route.'+tag.title)}}
-      <span class='el-icon-close' @click='closeViewTabs(tag,$event)'></span>
+      <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
     </router-link>
   </scroll-pane>
 </template>
@@ -18,10 +18,10 @@ export default {
     }
   },
   mounted() {
-    this.addViewTabs()
+    this.addViewTags()
   },
   methods: {
-    closeViewTabs(view, $event) {
+    closeViewTags(view, $event) {
       this.$store.dispatch('delVisitedViews', view).then((views) => {
         if (this.isActive(view.path)) {
           const latestView = views.slice(-1)[0]
@@ -40,7 +40,7 @@ export default {
       }
       return false
     },
-    addViewTabs() {
+    addViewTags() {
       const route = this.generateRoute()
       if (!route) {
         return false
@@ -54,19 +54,19 @@ export default {
   },
   watch: {
     $route() {
-      this.addViewTabs()
+      this.addViewTags()
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.tabs-view-container {
+.tags-view-container {
   background: #fff;
   height: 34px;
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .tabs-view-item {
+  .tags-view-item {
     display: inline-block;
     position: relative;
     height: 26px;
@@ -105,8 +105,8 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss">
-.tabs-view-container {
-  .tabs-view-item {
+.tags-view-container {
+  .tags-view-item {
     .el-icon-close {
       width: 16px;
       height: 16px;
