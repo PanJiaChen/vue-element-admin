@@ -22,13 +22,9 @@ export default {
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched.filter(item => item.name)
-      if (matched.length === 0) {
-        this.levelList = [{ path: '/', meta: { title: '首页' }}]
-        return
-      }
       const first = matched[0]
       if (first && first.name !== 'dashboard') {
-        matched = [{ path: '/', meta: { title: 'dashboard' }}].concat(matched)
+        matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
       }
       this.levelList = matched
     },

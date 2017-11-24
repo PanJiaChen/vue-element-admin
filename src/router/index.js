@@ -87,6 +87,7 @@ export const asyncRouterMap = [
   {
     path: '/components',
     component: Layout,
+    redirect: 'noredirect',
     name: 'component-demo',
     meta: {
       title: 'components',
@@ -110,7 +111,7 @@ export const asyncRouterMap = [
   {
     path: '/charts',
     component: Layout,
-    redirect: '/charts/index',
+    redirect: 'noredirect',
     name: 'charts',
     meta: {
       title: 'charts',
@@ -126,7 +127,7 @@ export const asyncRouterMap = [
   {
     path: '/example',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: '/example/table/complex-table',
     name: 'example',
     meta: {
       title: 'example',
@@ -136,7 +137,7 @@ export const asyncRouterMap = [
       {
         path: '/example/table',
         component: _import('example/table/index'),
-        redirect: '/example/table/table',
+        redirect: '/example/table/complex-table',
         name: 'Table',
         meta: {
           title: 'Table',
@@ -193,7 +194,7 @@ export const asyncRouterMap = [
   {
     path: '/excel',
     component: Layout,
-    redirect: '/excel/download',
+    redirect: '/excel/export-excel',
     name: 'excel',
     meta: {
       title: 'excel',
