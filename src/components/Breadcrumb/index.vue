@@ -19,6 +19,11 @@ export default {
       levelList: null
     }
   },
+  watch: {
+    $route() {
+      this.getBreadcrumb()
+    }
+  },
   methods: {
     getBreadcrumb() {
       let matched = this.$route.matched.filter(item => item.name)
@@ -30,11 +35,6 @@ export default {
     },
     generateTitle(title) {
       return this.$t('route.' + title)
-    }
-  },
-  watch: {
-    $route() {
-      this.getBreadcrumb()
     }
   }
 }

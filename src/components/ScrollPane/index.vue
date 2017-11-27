@@ -1,6 +1,6 @@
 <template>
-  <div class='scroll-container' ref='scrollContainer' @mousewheel="handleScroll">
-    <div class='scroll-wrapper' ref='scrollWrapper' :style="{left: left + 'px'}">
+  <div class="scroll-container" ref="scrollContainer" @mousewheel="handleScroll">
+    <div class="scroll-wrapper" ref="scrollWrapper" :style="{left: left + 'px'}">
       <slot></slot>
     </div>
   </div>
