@@ -40,6 +40,7 @@ $t: .1s;
 .share-dropdown-menu {
   width: 250px;
   position: relative;
+  z-index: 1;
   &-title {
     width: 100%;
     display: block;
