@@ -92,7 +92,6 @@
         </el-card>
       </el-col>
     </el-row>
-     <dropdown-menu style="margin:0 auto;" title='系列文章' :items='articleList'></dropdown-menu>
 
   </div>
 </template>
