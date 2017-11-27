@@ -23,7 +23,7 @@ export default {
   methods: {
     closeViewTags(view, $event) {
       this.$store.dispatch('delVisitedViews', view).then((views) => {
-        if (this.isActive(view.path)) {
+        if (this.isActive(view)) {
           const latestView = views.slice(-1)[0]
           if (latestView) {
             this.$router.push(latestView.path)
