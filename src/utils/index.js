@@ -268,5 +268,7 @@ export function deepClone(source) {
 
 // get dependencies verison from package.json by webpack.DefinePlugin
 export function getVersion(name) {
-  return DEPENDENCIES[name] // eslint-disable-line
+  import('../../package').then(p => {
+    return p.dependencies[name]
+  })
 }

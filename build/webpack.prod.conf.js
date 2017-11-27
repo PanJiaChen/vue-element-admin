@@ -8,7 +8,6 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var dependencies = require('../package.json').dependencies
 
 var env = config.build[process.env.env_config+'Env']
 
@@ -34,8 +33,7 @@ var webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env,
-      'DEPENDENCIES': JSON.stringify(dependencies)
+      'process.env': env
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
