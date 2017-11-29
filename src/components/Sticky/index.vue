@@ -33,8 +33,17 @@ export default {
       height: undefined,
       child: null,
       stickyHeight: 0
-
     }
+  },
+  mounted() {
+    this.height = this.$el.getBoundingClientRect().height
+    window.addEventListener('scroll', this.handleScroll)
+  },
+  activated() {
+    this.handleScroll()
+  },
+  destroyed() {
+    window.removeEventListener('scroll', this.handleScroll)
   },
   methods: {
     sticky() {
@@ -62,13 +71,6 @@ export default {
       }
       this.reset()
     }
-  },
-  mounted() {
-    this.height = this.$el.getBoundingClientRect().height
-    window.addEventListener('scroll', this.handleScroll)
-  },
-  destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
   }
 }
 </script>
