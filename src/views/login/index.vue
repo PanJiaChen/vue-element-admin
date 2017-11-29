@@ -5,26 +5,26 @@
 
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <icon-svg icon-class="user" />
+          <svg-icon icon-class="user" />
         </span>
         <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="邮箱" />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
-          <icon-svg icon-class="password" />
+          <svg-icon icon-class="password" />
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
           placeholder="密码" />
-        <span class='show-pwd' @click='showPwd'><icon-svg icon-class="eye" /></span>
+        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
       </el-form-item>
 
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
 
-      <div class='tips'>账号:admin 密码随便填</div>
-      <div class='tips'>账号:editor  密码随便填</div>
+      <div class="tips">账号:admin 密码随便填</div>
+      <div class="tips">账号:editor  密码随便填</div>
 
-      <el-button class='thirdparty-button' type="primary" @click='showDialog=true'>打开第三方登录</el-button>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">打开第三方登录</el-button>
     </el-form>
 
     <el-dialog title="第三方验证" :visible.sync="showDialog">
@@ -87,7 +87,7 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-                // this.showDialog = true
+            // this.showDialog = true
           }).catch(() => {
             this.loading = false
           })
@@ -98,29 +98,29 @@ export default {
       })
     },
     afterQRScan() {
-          // const hash = window.location.hash.slice(1)
-          // const hashObj = getQueryObject(hash)
-          // const originUrl = window.location.origin
-          // history.replaceState({}, '', originUrl)
-          // const codeMap = {
-          //   wechat: 'code',
-          //   tencent: 'code'
-          // }
-          // const codeName = hashObj[codeMap[this.auth_type]]
-          // if (!codeName) {
-          //   alert('第三方登录失败')
-          // } else {
-          //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-          //     this.$router.push({ path: '/' })
-          //   })
-          // }
+      // const hash = window.location.hash.slice(1)
+      // const hashObj = getQueryObject(hash)
+      // const originUrl = window.location.origin
+      // history.replaceState({}, '', originUrl)
+      // const codeMap = {
+      //   wechat: 'code',
+      //   tencent: 'code'
+      // }
+      // const codeName = hashObj[codeMap[this.auth_type]]
+      // if (!codeName) {
+      //   alert('第三方登录失败')
+      // } else {
+      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
+      //     this.$router.push({ path: '/' })
+      //   })
+      // }
     }
   },
   created() {
-        // window.addEventListener('hashchange', this.afterQRScan)
+    // window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-        // window.removeEventListener('hashchange', this.afterQRScan)
+    // window.removeEventListener('hashchange', this.afterQRScan)
   }
 }
 </script>
@@ -197,6 +197,7 @@ export default {
       font-size: 16px;
       color: $dark_gray;
       cursor: pointer;
+      user-select:none;
     }
     .thirdparty-button{
       position: absolute;

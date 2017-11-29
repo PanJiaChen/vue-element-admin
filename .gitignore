@@ -1,7 +1,6 @@
 .DS_Store
 node_modules/
 dist/
-static/ckeditor
 gifs/
 npm-debug.log
 test/unit/coverage

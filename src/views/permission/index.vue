@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <div style='margin-bottom:15px;'>你的权限： {{roles}}</div>
+    <div style="margin-bottom:15px;">你的权限： {{roles}}</div>
     切换权限：
     <el-radio-group v-model="role">
       <el-radio-button label="editor"></el-radio-button>
@@ -12,6 +12,7 @@
 import { mapGetters } from 'vuex'
 
 export default{
+  name: 'permission',
   data() {
     return {
       role: ''

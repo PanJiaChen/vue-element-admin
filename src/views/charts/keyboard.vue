@@ -1,16 +1,17 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-      <keyboard-chart height='100%' width='100%'></keyboard-chart>
+      <chart height='100%' width='100%'></chart>
     </div>
   </div>
 </template>
 
 <script>
-import keyboardChart from '@/components/Charts/keyboard'
+import Chart from '@/components/Charts/keyboard'
 
 export default {
-  components: { keyboardChart }
+  name: 'keyboardChart',
+  components: { Chart }
 }
 </script>
 

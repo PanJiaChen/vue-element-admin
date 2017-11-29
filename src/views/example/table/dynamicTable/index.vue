@@ -13,6 +13,7 @@ import fixedThead from './fixedThead'
 import unfixedThead from './unfixedThead'
 
 export default {
+  name: 'dynamicTable',
   components: { fixedThead, unfixedThead }
 }
 </script>

@@ -4,50 +4,50 @@
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="序号" width="65">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="时间">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
 
       <el-table-column min-width="300px" label="标题">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.title}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="110px" align="center" label="作者">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.author}}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="80px" label="重要性">
-        <template scope="scope">
-          <icon-svg v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></icon-svg>
+        <template slot-scope="scope">
+          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="阅读数" width="95">
-        <template scope="scope">
+        <template slot-scope="scope">
           <span>{{scope.row.pageviews}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="状态" width="90">
-        <template scope="scope">
+      <el-table-column class-name="status-col" label="状态" width="110">
+        <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="拖拽" width="95">
-        <template scope="scope">
-          <icon-svg class='drag-handler' icon-class="drag"></icon-svg>
+        <template slot-scope="scope">
+          <svg-icon class='drag-handler' icon-class="drag"></svg-icon>
         </template>
       </el-table-column>
 
@@ -64,7 +64,7 @@ import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
 
 export default {
-  name: 'drag-table_demo',
+  name: 'dragTable',
   data() {
     return {
       list: null,
@@ -83,7 +83,7 @@ export default {
     statusFilter(status) {
       const statusMap = {
         published: 'success',
-        draft: 'gray',
+        draft: 'info',
         deleted: 'danger'
       }
       return statusMap[status]

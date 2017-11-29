@@ -1,6 +1,6 @@
 <template>
-  <div class='json-editor'>
-    <textarea ref='textarea'></textarea>
+  <div class="json-editor">
+    <textarea ref="textarea"></textarea>
   </div>
 </template>
 
@@ -57,7 +57,6 @@ export default {
 .CodeMirror {
   height: 100%;
 }
-
 .json-editor .cm-s-rubyblue span.cm-string {
   color: #F08047;
 }

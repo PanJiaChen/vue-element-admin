@@ -1,11 +1,12 @@
 <template>
-  <div class='simplemde-container' :style="{height:height+'px',zIndex:zIndex}">
-    <textarea :id='id'>
+  <div class="simplemde-container" :style="{height:height+'px',zIndex:zIndex}">
+    <textarea :id="id">
     </textarea>
   </div>
 </template>
 
 <script>
+import 'font-awesome/css/font-awesome.min.css'
 import 'simplemde/dist/simplemde.min.css'
 import SimpleMDE from 'simplemde'
 
@@ -14,8 +15,7 @@ export default {
   props: {
     value: String,
     id: {
-      type: String,
-      default: 'markdown-editor'
+      type: String
     },
     autofocus: {
       type: Boolean,
@@ -51,7 +51,8 @@ export default {
   },
   mounted() {
     this.simplemde = new SimpleMDE({
-      element: document.getElementById(this.id),
+      element: document.getElementById(this.id || 'markdown-editor-' + +new Date()),
+      autoDownloadFontAwesome: false,
       autofocus: this.autofocus,
       toolbar: this.toolbar,
       spellChecker: false,
@@ -79,7 +80,6 @@ export default {
 
 <style>
 .simplemde-container .CodeMirror {
-  /*height: 150px;*/
   min-height: 150px;
 }
 
@@ -108,6 +108,11 @@ export default {
   padding: 0 2px;
   font-weight: bold;
   color: #E61E1E;
+}
+
+.simplemde-container .editor-toolbar.fullscreen,
+.simplemde-container .CodeMirror-fullscreen {
+  z-index: 1003;
 }
 </style>
 

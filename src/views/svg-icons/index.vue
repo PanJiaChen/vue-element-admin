@@ -1,14 +1,19 @@
 <template>
   <div class="icons-container">
+    <p class="warn-content">
+      <a href="https://panjiachen.github.io/vue-element-admin-site/#/icon" target="_blank">添加和使用方式</a>
+    </p>
     <div class="icons-wrapper">
-      <div v-for='item of iconsMap' :key='item' class='icon-item' @click='handleClipboard(generateIconCode(item),$event)'>
-        <el-tooltip placement="top" effect="light">
+      <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
+        <el-tooltip placement="top">
           <div slot="content">
             {{generateIconCode(item)}}
           </div>
-          <icon-svg :icon-class="item" />
+          <div class="icon-item">
+            <svg-icon :icon-class="item" />
+            <span>{{item}}</span>
+          </div>
         </el-tooltip>
-        <span>{{item}}</span>
       </div>
     </div>
   </div>
@@ -16,9 +21,10 @@
 
 <script>
 import icons from './generateIconsView'
-import clipboard from '@/utils/clipboard' // use clipboard directly
+import clipboard from '@/utils/clipboard'
 
 export default {
+  name: 'icons',
   data() {
     return {
       iconsMap: []
@@ -32,7 +38,7 @@ export default {
   },
   methods: {
     generateIconCode(symbol) {
-      return `<icon-svg :icon-class="${symbol}" />`
+      return `<svg-icon icon-class="${symbol}" />`
     },
     handleClipboard(text, event) {
       clipboard(text, event)
@@ -43,19 +49,19 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .icons-container {
-  margin: 40px 20px 0;
+  margin: 10px 20px 0;
   overflow: hidden;
   .icons-wrapper {
     margin: 0 auto;
   }
   .icon-item {
     margin: 20px;
-    height: 137px;
+    height: 110px;
     text-align: center;
-    width: 120px;
+    width: 110px;
     float: left;
-    font-size: 40px;
-    color: #666;
+    font-size: 30px;
+    color: #24292e;
     cursor: pointer;
   }
   span {

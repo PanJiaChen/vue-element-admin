@@ -71,6 +71,11 @@ export default {
       }
     }
   },
+  watch: {
+    value(newValue) {
+      this.currentValue = newValue
+    }
+  },
   data() {
     return {
       currentValue: this.value,
@@ -159,6 +164,7 @@ export default {
       .material-input__icon {
         position: absolute;
         left: 0;
+        line-height: $font-size-base;
         color: $color-blue;
         top: $spacer;
         width: $index-has-icon;

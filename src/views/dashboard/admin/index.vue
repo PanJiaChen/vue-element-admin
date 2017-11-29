@@ -1,131 +1,109 @@
 <template>
-	<div class="dashboard-editor-container">
-		<github></github>
-		<el-row class="btn-group">
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
-			</el-col>
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
-			</el-col>
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn pink-btn" to="/excel/download">Excel</router-link>
-			</el-col>
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn green-btn" to="/example/table/table">Table</router-link>
-			</el-col>
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn tiffany-btn" to="/example/form/edit">Form</router-link>
-			</el-col>
-			<el-col :span="4" class='text-center'>
-				<router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
-			</el-col>
-		</el-row>
+  <div class="dashboard-editor-container">
+    <github-corner></github-corner>
 
-		<el-row>
-			<el-col :span="6">
-				<el-card class="box-card">
-					<div slot="header" class="box-card-header">
-						<pan-thumb class="panThumb" :image="avatar"> 你的权限:
-							<span class="pan-info-roles" :key='item' v-for="item in roles">{{item}}</span>
-						</pan-thumb>
-					</div>
-					<span class="display_name">{{name}}</span>
-					<div class="info-item">
-						<count-to class="info-item-num" :startVal='0' :endVal='statisticsData.article_count' :duration='3400'></count-to>
-						<span class="info-item-text">文章</span>
-						<icon-svg icon-class="trendChart1" class="dashboard-editor-icon"></icon-svg>
-					</div>
-					<div class="info-item">
-						<count-to class="info-item-num" :startVal='0' :endVal='statisticsData.pageviews_count' :duration='3600'></count-to>
-						<span class="info-item-text">浏览量</span>
-						<icon-svg icon-class="trendChart2" class="dashboard-editor-icon"></icon-svg>
-					</div>
-				</el-card>
-			</el-col>
+    <panel-group @handleSetLineChartData="handleSetLineChartData"></panel-group>
 
-			<el-col :span="8">
-				<pie-chart></pie-chart>
-			</el-col>
+    <el-row style="margin-top:30px;background:#fff;padding:15px 15px 0;">
+      <line-chart :chart-data="lineChartData"></line-chart>
+    </el-row>
 
-			<el-col :span="10">
-				<bar-chart></bar-chart>
-			</el-col>
-		</el-row>
+    <el-row style="margin-top:30px;" :gutter="30">
+      <el-col :span="8">
+        <div class="chart-wrapper">
+          <raddar-chart></raddar-chart>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="chart-wrapper">
+          <pie-chart></pie-chart>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="chart-wrapper">
+          <bar-chart></bar-chart>
+        </div>
+      </el-col>
+    </el-row>
 
-		<el-row :gutter="20">
-			<el-col :span="15">
-				<line-chart></line-chart>
-			</el-col>
-			<el-col :span="9">
-				<todo-list></todo-list>
-			</el-col>
-		</el-row>
+    <el-row style="margin-top:30px;">
+      <el-col :span="12" style="padding-right:8px;">
+        <transaction-table></transaction-table>
+      </el-col>
+      <el-col :span="6">
+        <todo-list style="margin:0 8px;"></todo-list>
+      </el-col>
+      <el-col :span="6">
+        <box-card></box-card>
+      </el-col>
+    </el-row>
 
-	</div>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import countTo from 'vue-count-to'
-import panThumb from '@/components/PanThumb'
-import todoList from '@/components/TodoList'
-import Github from '@/components/Github'
-import pieChart from './pieChart'
-import barChart from './barChart'
-import lineChart from './lineChart'
+import GithubCorner from '@/components/GithubCorner'
+import PanelGroup from './components/PanelGroup'
+import LineChart from './components/LineChart'
+import RaddarChart from './components/RaddarChart'
+import PieChart from './components/PieChart'
+import BarChart from './components/BarChart'
+import TransactionTable from './components/TransactionTable'
+import TodoList from './components/TodoList'
+import BoxCard from './components/BoxCard'
+
+const lineChartData = {
+  newVisitis: {
+    expectedData: [100, 120, 161, 134, 105, 160, 165],
+    actualData: [120, 82, 91, 154, 162, 140, 145]
+  },
+  messages: {
+    expectedData: [200, 192, 120, 144, 160, 130, 140],
+    actualData: [180, 160, 151, 106, 145, 150, 130]
+  },
+  purchases: {
+    expectedData: [80, 100, 121, 104, 105, 90, 100],
+    actualData: [120, 90, 100, 138, 142, 130, 130]
+  },
+  shoppings: {
+    expectedData: [130, 140, 141, 142, 145, 150, 160],
+    actualData: [120, 82, 91, 154, 162, 140, 130]
+  }
+}
 
 export default {
   name: 'dashboard-admin',
-  components: { countTo, panThumb, todoList, Github, pieChart, lineChart, barChart },
+  components: {
+    GithubCorner,
+    PanelGroup,
+    LineChart,
+    RaddarChart,
+    PieChart,
+    BarChart,
+    TransactionTable,
+    TodoList,
+    BoxCard
+  },
   data() {
     return {
-      statisticsData: {
-        article_count: 1024,
-        pageviews_count: 1024
-      }
+      lineChartData: lineChartData.newVisitis
     }
   },
-  computed: {
-    ...mapGetters([
-      'name',
-      'avatar',
-      'roles'
-    ])
+  methods: {
+    handleSetLineChartData(type) {
+      this.lineChartData = lineChartData[type]
+    }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .dashboard-editor-container {
-    margin: 30px;
-    .btn-group {
-        margin-bottom: 60px;
-    }
-    .box-card-header {
-        position: relative;
-        height: 160px;
-    }
-    .panThumb {
-        z-index: 100;
-        height: 150px;
-        width: 150px;
-        position: absolute;
-        left: 0px;
-        right: 0px;
-        margin: auto;
-    }
-    .display_name{
-        font-size: 30px;
-        display: block;
-    }
-    .info-item{
-        display: inline-block;
-        margin-top: 10px;
-        font-size: 14px;
-        &:last-of-type{
-            margin-left: 15px;
-        }
-    }
+  padding: 30px;
+  background-color: rgb(240, 242, 245);
+  .chart-wrapper {
+    background: #fff;
+    padding: 15px 15px 0;
+  }
 }
 </style>

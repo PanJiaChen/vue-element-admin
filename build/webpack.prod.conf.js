@@ -19,7 +19,8 @@ var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true
+      extract: true,
+      usePostCSS: true
     })
   },
   devtool: config.build.productionSourceMap ? '#source-map' : false,
@@ -38,7 +39,8 @@ var webpackConfig = merge(baseWebpackConfig, {
       compress: {
         warnings: false
       },
-      sourceMap: true
+      sourceMap: true,
+      parallel: true
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -73,10 +75,12 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // cache Module Identifiers
     new webpack.HashedModuleIdsPlugin(),
+    // enable scope hoisting
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
-      minChunks: function (module, count) {
+      minChunks: function (module) {
         // any required modules inside node_modules are extracted to vendor
         return (
           module.resource &&
@@ -86,6 +90,12 @@ var webpackConfig = merge(baseWebpackConfig, {
           ) === 0
         )
       }
+    }),
+    // extract webpack runtime and module manifest to its own file in order to
+    // prevent vendor hash from being updated whenever app bundle is updated
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'manifest',
+      minChunks: Infinity
     }),
     // split echarts into its own file
     new webpack.optimize.CommonsChunkPlugin({
@@ -103,12 +113,16 @@ var webpackConfig = merge(baseWebpackConfig, {
         return context && (context.indexOf('xlsx') >= 0);
       }
     }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
     new webpack.optimize.CommonsChunkPlugin({
-      name: 'manifest',
-      chunks: ['vendor']
+      name: 'app',
+      async: 'vendor-async',
+      children: true,
+      minChunks: 3
     }),
+
     // copy custom static assets
     new CopyWebpackPlugin([{
       from: path.resolve(__dirname, '../static'),

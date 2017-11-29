@@ -1,16 +1,17 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-      <mix-chart height='100%' width='100%'></mix-chart>
+      <chart height='100%' width='100%'></chart>
     </div>
   </div>
 </template>
 
 <script>
-import mixChart from '@/components/Charts/mixChart'
+import Chart from '@/components/Charts/mixChart'
 
 export default {
-  components: { mixChart }
+  name: 'mixChart',
+  components: { Chart }
 }
 </script>
 
