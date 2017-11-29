@@ -9,11 +9,11 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
 
-A magical vue admin.
+**A magical vue admin.**
 
 - [线上地址](http://panjiachen.github.io/vue-element-admin)
 
-- [文档地址](https://panjiachen.github.io/vue-element-admin-site/#/)
+- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
 
 - [English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
 
@@ -45,7 +45,7 @@ A magical vue admin.
 
  或者可以加入该 **[圈子](https://jianshiapp.com/circles/1209)** 讨论问题
 
- **如有问题请先看上述文章和Wiki，若不能满足，欢迎 issue 和 pr**
+ **如有问题请先看上述使用文档和文章，若不能满足，欢迎 issue 和 pr**
 
  **本项目并不是一个脚手架，更倾向于是一个集成解决方案**
 
@@ -96,7 +96,8 @@ A magical vue admin.
 
     # 安装依赖
     npm install
-    //or # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
+    
+    //or # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
     npm install --registry=https://registry.npm.taobao.org
 
     # 本地开发 开启服务
@@ -112,6 +113,8 @@ A magical vue admin.
     # 构建生成环境
     npm run build:prod
 ```
+
+更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
 
 ## 目录结构
 ```shell
@@ -148,9 +151,6 @@ A magical vue admin.
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
-
-## 状态管理
-后台只有user和app配置相关状态使用vuex存在全局，其它数据都由每个业务页面自己管理。
 
 ## [查看更多demo](http://panjiachen.github.io/vue-element-admin)
 ![](https://wpimg.wallstcn.com/1bc334a6-32a8-4f29-a037-ac3f5ce32588.png)
