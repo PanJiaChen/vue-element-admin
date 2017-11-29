@@ -1,5 +1,5 @@
 <template>
-  <el-card class="box-card" style="margin-left:8px;">
+  <el-card class="box-card-component" style="margin-left:8px;">
     <div slot="header" class="box-card-header">
       <img src='https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png'>
     </div>
@@ -62,7 +62,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" >
-.box-card {
+.box-card-component{
   .el-card__header {
     padding: 0px!important;
   }
