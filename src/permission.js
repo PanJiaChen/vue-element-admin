@@ -3,6 +3,7 @@ import store from './store'
 import NProgress from 'nprogress' // Progress 进度条
 import 'nprogress/nprogress.css'// Progress 进度条样式
 import { getToken } from '@/utils/auth' // 验权
+import { Message } from 'element-ui'
 
 // permissiom judge
 function hasPermission(roles, permissionRoles) {
@@ -29,6 +30,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
+            Message.error('验证失败,请重新登录')
             next({ path: '/login' })
           })
         })
