@@ -43,6 +43,7 @@ export default {
 .scroll-container {
   white-space: nowrap;
   position: relative;
+  overflow: hidden;
   .scroll-wrapper {
     position: absolute;
   }

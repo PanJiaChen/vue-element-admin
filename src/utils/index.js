@@ -266,9 +266,8 @@ export function deepClone(source) {
   return targetObj
 }
 
-// get dependencies verison from package.json by webpack.DefinePlugin
+// get dependencies verison from package.json
 export function getVersion(name) {
-  import('../../package').then(p => {
-    return p.dependencies[name]
-  })
+  const p = require('../../package')
+  return p.dependencies[name]
 }
