@@ -1,20 +1,35 @@
 <template>
   <scroll-pane class='tags-view-container'>
-    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
+    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
       {{$t('route.'+tag.title)}}
       <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
     </router-link>
+    <ul class='contextmenu' v-show="open" :style="{left:left+'px',top:top+'px'}">
+      <li @click="closePage(0,$event)">关闭</li>
+      <li @click="closePage(1,$event)">关闭其他</li>
+      <li @click="closePage(2,$event)">关闭所有</li>
+    </ul>
   </scroll-pane>
 </template>
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
+import Clickoutside from 'element-ui/src/utils/clickoutside'
 
 export default {
   components: { ScrollPane },
+  directives: { Clickoutside },
   computed: {
     visitedViews() {
       return this.$store.state.app.visitedViews
+    }
+  },
+  data() {
+    return {
+      open: false,
+      top: 0,
+      left: 0,
+      isSelect: {}
     }
   },
   mounted() {
@@ -34,6 +49,20 @@ export default {
       })
       $event.preventDefault()
     },
+    closePage(flag, $event) {
+      if (flag === 0) {
+        this.closeViewTags(this.isSelect, $event)
+      } else if (flag === 1) {
+        this.$router.push(this.isSelect.path)
+        this.$store.dispatch('delOtherViews', this.isSelect)
+        $event.preventDefault()
+      } else {
+        this.$router.push('/')
+        this.$store.dispatch('delAllViews')
+        $event.preventDefault()
+      }
+      this.open = false
+    },
     generateRoute() {
       if (this.$route.name) {
         return this.$route
@@ -49,8 +78,16 @@ export default {
     },
     isActive(route) {
       return route.path === this.$route.path || route.name === this.$route.name
+    },
+    openMenu(tag, e) {
+      this.open = true
+      this.isSelect = tag
+      this.left = e.clientX - document.querySelector('.main-container').offsetLeft
+      this.top = e.clientY - document.querySelector('.tags-view-container').offsetTop
+    },
+    closeMenu() {
+      this.open = false
     }
-
   },
   watch: {
     $route() {
@@ -66,6 +103,25 @@ export default {
   height: 34px;
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  .contextmenu{
+    margin: 0;
+    background: #fff;
+    z-index: 99999;
+    position:absolute;
+    list-style-type: none;
+    padding-left: 0;
+    border: 1px solid rgba(0,0,0,0.4);
+    font-size: 0.8rem;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .5);
+    li{
+      margin: 0;
+      padding: 0.2rem 1.5rem 0.3rem 0.8rem;
+      &:hover{
+        background: #eee;
+        cursor: default;
+      }
+    }
+  }
   .tags-view-item {
     display: inline-block;
     position: relative;

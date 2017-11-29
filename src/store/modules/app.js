@@ -47,6 +47,25 @@ const app = {
           break
         }
       }
+    },
+    DEL_OTHER_VIEWS: (state, view) => {
+      for (const [i, v] of state.visitedViews.entries()) {
+        if (v.path === view.path) {
+          state.visitedViews = [].concat(state.visitedViews.slice(i, i + 1))
+          break
+        }
+      }
+      for (const i of state.cachedViews) {
+        if (i === view.name) {
+          const index = state.cachedViews.indexOf(i)
+          state.cachedViews = [].concat(state.cachedViews.slice(index, i + 1))
+          break
+        }
+      }
+    },
+    DEL_ALL_VIEWS: (state) => {
+      state.visitedViews = []
+      state.cachedViews = []
     }
   },
   actions: {
@@ -62,6 +81,18 @@ const app = {
     delVisitedViews({ commit, state }, view) {
       return new Promise((resolve) => {
         commit('DEL_VISITED_VIEWS', view)
+        resolve([...state.visitedViews])
+      })
+    },
+    delOtherViews({ commit, state }, view) {
+      return new Promise((resolve) => {
+        commit('DEL_OTHER_VIEWS', view)
+        resolve([...state.visitedViews])
+      })
+    },
+    delAllViews({ commit, state }) {
+      return new Promise((resolve) => {
+        commit('DEL_ALL_VIEWS')
         resolve([...state.visitedViews])
       })
     }
