@@ -7,6 +7,7 @@
 
 <script>
 import { getVersion } from '@/utils/index.js'
+
 const version = getVersion('element-ui') // element-ui version from package.json
 const ORIGINAL_THEME = '#409EFF' // default color
 
