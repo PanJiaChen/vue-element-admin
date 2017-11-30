@@ -4,9 +4,9 @@ import articleAPI from './article'
 import remoteSearchAPI from './remoteSearch'
 import transactionAPI from './transaction'
 
-Mock.setup({
-  timeout: '350-600'
-})
+// Mock.setup({
+//   timeout: '350-600'
+// })
 
 // 登录相关
 Mock.mock(/\/login\/login/, 'post', loginAPI.loginByUsername)
