@@ -60,5 +60,11 @@ export default {
     status: 'published',
     tags: [],
     title: 'vue-element-admin'
+  }),
+  createArticle: () => ({
+    data: 'success'
+  }),
+  updateArticle: () => ({
+    data: 'success'
   })
 }
