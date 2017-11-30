@@ -133,6 +133,7 @@ import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 
 const defaultForm = {
+  status: 'draft',
   title: '', // 文章题目
   content: '', // 文章内容
   content_short: '', // 文章摘要
