@@ -20,7 +20,7 @@
           <el-date-picker v-model="date" type="date" :placeholder="$t('i18nView.datePlaceholder')"></el-date-picker>
         </div>
         <div class="block">
-          <el-pagination :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next"
+          <el-pagination background :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next"
             :total="400">
           </el-pagination>
         </div>
