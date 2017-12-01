@@ -1,100 +1,51 @@
-import Vue from 'vue';
-import Router from 'vue-router';
+import Vue from 'vue'
+import Router from 'vue-router'
+const _import = require('./_import_' + process.env.NODE_ENV)
+// in development-env not use lazy-loading, because lazy-loading too many pages will cause webpack hot update too slow. so only in production use lazy-loading;
+// detail: https://panjiachen.github.io/vue-element-admin-site/#/lazy-loading
 
-/* layout */
-import Layout from '../views/layout/Layout';
+Vue.use(Router)
 
-/* login */
-import Login from '../views/login/';
-const authRedirect = () => import('../views/login/authredirect');
-const sendPWD = () => import('../views/login/sendpwd');
-const reset = () => import('../views/login/reset');
+/* Layout */
+import Layout from '../views/layout/Layout'
 
-/* dashboard */
-const dashboard = () => import('../views/dashboard/index');
-
-/* Introduction */
-const Introduction = () => import('../views/introduction/index');
-
-/* components */
-const componentsIndex = () => import('../views/components/index');
-const Tinymce = () => import('../views/components/tinymce');
-const Markdown = () => import('../views/components/markdown');
-const JsonEditor = () => import('../views/components/jsoneditor');
-const DndList = () => import('../views/components/dndlist');
-const AvatarUpload = () => import('../views/components/avatarUpload');
-const Dropzone = () => import('../views/components/dropzone');
-const Sticky = () => import('../views/components/sticky');
-const SplitPane = () => import('../views/components/splitpane');
-const CountTo = () => import('../views/components/countTo');
-const Mixin = () => import('../views/components/mixin');
-
-
-/* charts */
-const chartIndex = () => import('../views/charts/index');
-const KeyboardChart = () => import('../views/charts/keyboard');
-const KeyboardChart2 = () => import('../views/charts/keyboard2');
-const LineMarker = () => import('../views/charts/line');
-const MixChart = () => import('../views/charts/mixchart');
-
-/* error page */
-const Err404 = () => import('../views/error/404');
-const Err401 = () => import('../views/error/401');
-
-/* error log */
-const ErrorLog = () => import('../views/errlog/index');
-
-/* excel */
-const ExcelDownload = () => import('../views/excel/index');
-
-/* theme  */
-const Theme = () => import('../views/theme/index');
-
-/* example*/
-const TableLayout = () => import('../views/example/table/index');
-const DynamicTable = () => import('../views/example/table/dynamictable');
-const Table = () => import('../views/example/table/table');
-const DragTable = () => import('../views/example/table/dragTable');
-const InlineEditTable = () => import('../views/example/table/inlineEditTable');
-
-const Form = () => import('../views/example/form');
-
-/* permission */
-const Permission = () => import('../views/permission/index');
-
-
-Vue.use(Router);
-
- /**
-  * icon : the icon show in the sidebar
-  * hidden : if hidden:true will not show in the sidebar
-  * redirect : if redirect:noredirect will not redirct in the levelbar
-  * noDropdown : if noDropdown:true will not has submenu
-  * meta : { role: ['admin'] }  will control the page role
-  **/
-
+/**
+* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+* redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
+* name:'router-name'             the name is used by <keep-alive> (must set!!!)
+* meta : {
+    role: ['admin','editor']     will control the page role (you can set multiple roles)
+    title: 'title'               the name show in submenu and breadcrumb (recommend set)
+    icon: 'svg-name'             the icon show in the sidebar,
+    noCache: true                if fasle ,the page will no be cached(default is false)
+  }
+**/
 export const constantRouterMap = [
-    { path: '/login', component: Login, hidden: true },
-    { path: '/authredirect', component: authRedirect, hidden: true },
-    { path: '/sendpwd', component: sendPWD, hidden: true },
-    { path: '/reset', component: reset, hidden: true },
-    { path: '/404', component: Err404, hidden: true },
-    { path: '/401', component: Err401, hidden: true },
+  { path: '/login', component: _import('login/index'), hidden: true },
+  { path: '/authredirect', component: _import('login/authredirect'), hidden: true },
+  { path: '/404', component: _import('errorPage/404'), hidden: true },
+  { path: '/401', component: _import('errorPage/401'), hidden: true },
   {
-    path: '/',
+    path: '',
     component: Layout,
-    redirect: '/dashboard',
-    name: '首页',
-    hidden: true,
-    children: [{ path: 'dashboard', component: dashboard }]
+    redirect: 'dashboard',
+    children: [{
+      path: 'dashboard',
+      component: _import('dashboard/index'),
+      name: 'dashboard',
+      meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+    }]
   },
   {
-    path: '/introduction',
+    path: '/documentation',
     component: Layout,
-    redirect: '/introduction/index',
-    icon: 'xinrenzhinan',
-    noDropdown: true,
-    children: [{ path: 'index', component: Introduction, name: '简述' }]
+    redirect: '/documentation/index',
+    children: [{
+      path: 'index',
+      component: _import('documentation/index'),
+      name: 'documentation',
+      meta: { title: 'documentation', icon: 'documentation', noCache: true }
+    }]
   }
 ]
 
@@ -102,113 +53,186 @@ export default new Router({
   // mode: 'history', //后端支持可开
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
-});
+})
 
 export const asyncRouterMap = [
   {
     path: '/permission',
     component: Layout,
     redirect: '/permission/index',
-    name: '权限测试',
-    icon: 'quanxian',
     meta: { role: ['admin'] },
-    noDropdown: true,
-    children: [{ path: 'index', component: Permission, name: '权限测试页', meta: { role: ['admin'] } }]
+    children: [{
+      path: 'index',
+      component: _import('permission/index'),
+      name: 'permission',
+      meta: {
+        title: 'permission',
+        icon: 'lock',
+        role: ['admin']
+      }
+    }]
   },
+
+  {
+    path: '/icon',
+    component: Layout,
+    children: [{
+      path: 'index',
+      component: _import('svg-icons/index'),
+      name: 'icons',
+      meta: { title: 'icons', icon: 'icon', noCache: true }
+    }]
+  },
+
   {
     path: '/components',
     component: Layout,
-    redirect: '/components/index',
-    name: '组件',
-    icon: 'zujian',
+    redirect: 'noredirect',
+    name: 'component-demo',
+    meta: {
+      title: 'components',
+      icon: 'component'
+    },
     children: [
-      { path: 'index', component: componentsIndex, name: '介绍 ' },
-      { path: 'tinymce', component: Tinymce, name: '富文本编辑器' },
-      { path: 'markdown', component: Markdown, name: 'Markdown' },
-      { path: 'jsoneditor', component: JsonEditor, name: 'JSON编辑器' },
-      { path: 'dndlist', component: DndList, name: '列表拖拽' },
-      { path: 'splitpane', component: SplitPane, name: 'SplitPane' },
-      { path: 'avatarupload', component: AvatarUpload, name: '头像上传' },
-      { path: 'dropzone', component: Dropzone, name: 'Dropzone' },
-      { path: 'sticky', component: Sticky, name: 'Sticky' },
-      { path: 'countto', component: CountTo, name: 'CountTo' },
-      { path: 'mixin', component: Mixin, name: '小组件' }
+      { path: 'tinymce', component: _import('components-demo/tinymce'), name: 'tinymce-demo', meta: { title: 'tinymce' }},
+      { path: 'markdown', component: _import('components-demo/markdown'), name: 'markdown-demo', meta: { title: 'markdown' }},
+      { path: 'json-editor', component: _import('components-demo/jsonEditor'), name: 'jsonEditor-demo', meta: { title: 'jsonEditor' }},
+      { path: 'dnd-list', component: _import('components-demo/dndList'), name: 'dndList-demo', meta: { title: 'dndList' }},
+      { path: 'splitpane', component: _import('components-demo/splitpane'), name: 'splitpane-demo', meta: { title: 'splitPane' }},
+      { path: 'avatar-upload', component: _import('components-demo/avatarUpload'), name: 'avatarUpload-demo', meta: { title: 'avatarUpload' }},
+      { path: 'dropzone', component: _import('components-demo/dropzone'), name: 'dropzone-demo', meta: { title: 'dropzone' }},
+      { path: 'sticky', component: _import('components-demo/sticky'), name: 'sticky-demo', meta: { title: 'sticky' }},
+      { path: 'count-to', component: _import('components-demo/countTo'), name: 'countTo-demo', meta: { title: 'countTo' }},
+      { path: 'mixin', component: _import('components-demo/mixin'), name: 'componentMixin-demo', meta: { title: 'componentMixin' }},
+      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop-demo', meta: { title: 'backToTop' }}
     ]
   },
+
   {
     path: '/charts',
     component: Layout,
-    redirect: '/charts/index',
-    name: '图表',
-    icon: 'tubiaoleixingzhengchang',
+    redirect: 'noredirect',
+    name: 'charts',
+    meta: {
+      title: 'charts',
+      icon: 'chart'
+    },
     children: [
-      { path: 'index', component: chartIndex, name: '介绍' },
-      { path: 'keyboard', component: KeyboardChart, name: '键盘图表' },
-      { path: 'keyboard2', component: KeyboardChart2, name: '键盘图表2' },
-      { path: 'line', component: LineMarker, name: '折线图' },
-      { path: 'mixchart', component: MixChart, name: '混合图表' }
+      { path: 'keyboard', component: _import('charts/keyboard'), name: 'keyboardChart', meta: { title: 'keyboardChart', noCache: true }},
+      { path: 'line', component: _import('charts/line'), name: 'lineChart', meta: { title: 'lineChart', noCache: true }},
+      { path: 'mixchart', component: _import('charts/mixChart'), name: 'mixChart', meta: { title: 'mixChart', noCache: true }}
     ]
   },
+
   {
-    path: '/errorpage',
+    path: '/example',
     component: Layout,
-    redirect: 'noredirect',
-    name: '错误页面',
-    icon: '404',
+    redirect: '/example/table/complex-table',
+    name: 'example',
+    meta: {
+      title: 'example',
+      icon: 'example'
+    },
     children: [
-      { path: '401', component: Err401, name: '401' },
-      { path: '404', component: Err404, name: '404' }
+      {
+        path: '/example/table',
+        component: _import('example/table/index'),
+        redirect: '/example/table/complex-table',
+        name: 'Table',
+        meta: {
+          title: 'Table',
+          icon: 'table'
+        },
+        children: [
+          { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
+          { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
+          { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
+        ]
+      },
+      { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}
     ]
   },
+
   {
-    path: '/errlog',
+    path: '/form',
     component: Layout,
     redirect: 'noredirect',
-    name: 'errlog',
-    icon: 'bug',
-    noDropdown: true,
-    children: [{ path: 'log', component: ErrorLog, name: '错误日志' }]
+    name: 'form',
+    meta: {
+      title: 'form',
+      icon: 'form'
+    },
+    children: [
+      { path: 'create-form', component: _import('form/create'), name: 'createForm', meta: { title: 'createForm', icon: 'table' }},
+      { path: 'edit-form', component: _import('form/edit'), name: 'editForm', meta: { title: 'editForm', icon: 'table' }}
+    ]
   },
+
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noredirect',
+    name: 'errorPages',
+    meta: {
+      title: 'errorPages',
+      icon: '404'
+    },
+    children: [
+      { path: '401', component: _import('errorPage/401'), name: 'page401', meta: { title: 'page401', noCache: true }},
+      { path: '404', component: _import('errorPage/404'), name: 'page404', meta: { title: 'page404', noCache: true }}
+    ]
+  },
+
+  {
+    path: '/error-log',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [{ path: 'log', component: _import('errorLog/index'), name: 'errorLog', meta: { title: 'errorLog', icon: 'bug' }}]
+  },
+
   {
     path: '/excel',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: '/excel/export-excel',
     name: 'excel',
-    icon: 'EXCEL',
-    noDropdown: true,
-    children: [{ path: 'download', component: ExcelDownload, name: '导出excel' }]
+    meta: {
+      title: 'excel',
+      icon: 'excel'
+    },
+    children: [
+      { path: 'export-excel', component: _import('excel/exportExcel'), name: 'exportExcel', meta: { title: 'exportExcel' }},
+      { path: 'export-selected-excel', component: _import('excel/selectExcel'), name: 'selectExcel', meta: { title: 'selectExcel' }},
+      { path: 'upload-excel', component: _import('excel/uploadExcel'), name: 'uploadExcel', meta: { title: 'uploadExcel' }}
+    ]
   },
+
+  {
+    path: '/zip',
+    component: Layout,
+    redirect: '/zip/download',
+    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip', icon: 'zip' }}]
+  },
+
   {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
-    name: 'theme',
-    icon: 'theme',
-    noDropdown: true,
-    children: [{ path: 'index', component: Theme, name: '换肤' }]
+    children: [{ path: 'index', component: _import('theme/index'), name: 'theme', meta: { title: 'theme', icon: 'theme' }}]
   },
+
   {
-    path: '/example',
+    path: '/clipboard',
     component: Layout,
     redirect: 'noredirect',
-    name: '综合实例',
-    icon: 'zonghe',
-    children: [
-      {
-        path: '/table',
-        component: TableLayout,
-        redirect: '/table/table',
-        name: 'table',
-        children: [
-          { path: 'dynamictable', component: DynamicTable, name: '动态table' },
-          { path: 'dragtable', component: DragTable, name: '拖拽table' },
-          { path: 'inline_edit_table', component: InlineEditTable, name: 'table内编辑' },
-          { path: 'table', component: Table, name: '综合table' }
-        ]
-      },
-      { path: 'form/edit', component: Form, name: '编辑form', meta: { isEdit: true } },
-      { path: 'form/create', component: Form, name: '创建form' }
-    ]
+    children: [{ path: 'index', component: _import('clipboard/index'), name: 'clipboardDemo', meta: { title: 'clipboardDemo', icon: 'clipboard' }}]
   },
+
+  {
+    path: '/i18n',
+    component: Layout,
+    children: [{ path: 'index', component: _import('i18n-demo/index'), name: 'i18n', meta: { title: 'i18n', icon: 'international' }}]
+  },
+
   { path: '*', redirect: '/404', hidden: true }
-];
+]

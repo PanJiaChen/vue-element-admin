@@ -1,16 +1,18 @@
 <template>
   <div class="components-container" style='height:100vh'>
     <div class='chart-container'>
-      <lineMarker height='100%' width='100%' />
+      <chart height='100%' width='100%'></chart>
     </div>
   </div>
 </template>
 
 <script>
-    import lineMarker from 'components/Charts/lineMarker';
-    export default {
-      components: { lineMarker }
-    };
+import Chart from '@/components/Charts/lineMarker'
+
+export default {
+  name: 'lineChart',
+  components: { Chart }
+}
 </script>
 
 <style scoped>
