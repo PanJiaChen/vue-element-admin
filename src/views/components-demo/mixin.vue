@@ -86,7 +86,7 @@
           <div slot="header" class="clearfix">
             <span>Share</span>
           </div>
-          <div class="component-item" style="height:360px;">
+          <div class="component-item" style="height:420px;">
             <dropdown-menu style="margin:0 auto;" title='系列文章' :items='articleList'></dropdown-menu>
           </div>
         </el-card>
@@ -134,7 +134,8 @@ export default {
         { title: '登录权限篇', href: 'https://segmentfault.com/a/1190000009506097' },
         { title: '实战篇', href: 'https://segmentfault.com/a/1190000009762198' },
         { title: 'vueAdmin-template 篇', href: 'https://segmentfault.com/a/1190000010043013' },
-        { title: '自行封装 component', href: 'https://segmentfault.com/a/1190000009090836' }
+        { title: '自行封装 component', href: 'https://segmentfault.com/a/1190000009090836' },
+        { title: '优雅的使用 icon', href: 'https://segmentfault.com/a/https://segmentfault.com/a/1190000012213278' }
       ]
     }
   }
