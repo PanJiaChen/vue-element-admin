@@ -1,24 +1,45 @@
 <template>
-  <scroll-pane class='tags-view-container'>
-    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
+  <div class="tag-container">
+  <scroll-pane class='tags-view-container' ref="pane">
+    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)" v-Clickoutside="closeMenu">
       {{$t('route.'+tag.title)}}
       <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
     </router-link>
   </scroll-pane>
+    <ul class='contextmenu' v-show="open" :style="{left:left+'px',top:top+'px'}">
+      <li @click="closePage(0,$event)">关闭</li>
+      <li @click="closePage(1,$event)">关闭其他</li>
+      <li @click="closePage(2,$event)">关闭所有</li>
+    </ul>
+  </div>
 </template>
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
+import Clickoutside from 'element-ui/src/utils/clickoutside'
 
 export default {
   components: { ScrollPane },
+  directives: { Clickoutside },
   computed: {
     visitedViews() {
       return this.$store.state.app.visitedViews
     }
   },
+  data() {
+    return {
+      open: false,
+      isOverflow: false,
+      top: 0,
+      left: 0,
+      isSelect: {}
+    }
+  },
   mounted() {
     this.addViewTags()
+  },
+  updated() {
+    this.$nextTick(this.$refs.pane.calcSize())
   },
   methods: {
     closeViewTags(view, $event) {
@@ -33,6 +54,20 @@ export default {
         }
       })
       $event.preventDefault()
+    },
+    closePage(flag, $event) {
+      if (flag === 0) {
+        this.closeViewTags(this.isSelect, $event)
+      } else if (flag === 1) {
+        this.$router.push(this.isSelect.path)
+        this.$store.dispatch('delOtherViews', this.isSelect)
+        $event.preventDefault()
+      } else {
+        this.$router.push('/')
+        this.$store.dispatch('delAllViews')
+        $event.preventDefault()
+      }
+      this.open = false
     },
     generateRoute() {
       if (this.$route.name) {
@@ -49,8 +84,16 @@ export default {
     },
     isActive(route) {
       return route.path === this.$route.path || route.name === this.$route.name
+    },
+    openMenu(tag, e) {
+      this.open = true
+      this.isSelect = tag
+      this.left = e.clientX
+      this.top = e.clientY
+    },
+    closeMenu() {
+      this.open = false
     }
-
   },
   watch: {
     $route() {
@@ -61,43 +104,64 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.tags-view-container {
-  background: #fff;
-  height: 34px;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .tags-view-item {
-    display: inline-block;
-    position: relative;
-    height: 26px;
-    line-height: 26px;
-    border: 1px solid #d8dce5;
-    color: #495060;
-    background: #fff;
-    padding: 0 8px;
-    font-size: 12px;
-    margin-left: 5px;
-    margin-top: 4px;
-    &:first-of-type {
-      margin-left: 15px;
+  .tag-container {
+    .contextmenu {
+      margin: 0;
+      background: #fff;
+      z-index: 99999;
+      position: absolute;
+      list-style-type: none;
+      padding-left: 0;
+      border: 1px solid rgba(0, 0, 0, 0.4);
+      font-size: 0.8rem;
+      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .5);
+      li {
+        margin: 0;
+        padding: 0.2rem 1.5rem 0.3rem 0.8rem;
+        &:hover {
+          background: #eee;
+          cursor: default;
+        }
+      }
     }
-    &.active {
-      background-color: #42b983;
-      color: #fff;
-      border-color: #42b983;
-      &::before {
-        content: '';
-        background: #fff;
+    .tags-view-container {
+      background: #fff;
+      height: 34px;
+      border-bottom: 1px solid #d8dce5;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+      .tags-view-item {
         display: inline-block;
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
         position: relative;
-        margin-right: 2px;
+        height: 26px;
+        line-height: 26px;
+        border: 1px solid #d8dce5;
+        color: #495060;
+        background: #fff;
+        padding: 0 8px;
+        font-size: 12px;
+        margin-left: 5px;
+        margin-top: 4px;
+        &:first-of-type {
+          margin-left: 15px;
+        }
+        &.active {
+          background-color: #42b983;
+          color: #fff;
+          border-color: #42b983;
+          &::before {
+            content: '';
+            background: #fff;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 2px;
+          }
+        }
       }
     }
   }
-}
 </style>
 
 <style rel="stylesheet/scss" lang="scss">
@@ -123,4 +187,5 @@ export default {
     }
   }
 }
+
 </style>
