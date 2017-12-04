@@ -69,43 +69,50 @@ export default {
 }
 </style>
 <style rel="stylesheet/scss" lang="scss" scoped>
-.box-card-header {
-  position: relative;
-  height: 220px;
-  img {
-    width: 100%;
-    height: 100%;
-    transition: all 0.2s linear;
-    &:hover {
-      transform: scale(1.1, 1.1);
-      filter: contrast(130%);
+.box-card-component {
+  .box-card-header {
+    position: relative;
+    height: 220px;
+    img {
+      width: 100%;
+      height: 100%;
+      transition: all 0.2s linear;
+      &:hover {
+        transform: scale(1.1, 1.1);
+        filter: contrast(130%);
+      }
     }
   }
-}
-.mallki-text {
-  position: absolute;
-  top: 0px;
-  right: 0px;
-  font-size: 20px;
-  font-weight: bold;
-}
-.panThumb {
-  z-index: 100;
-  height: 70px!important;
-  width: 70px!important;
-  position: absolute!important;
-  top: -45px;
-  left: 0px;
-  border: 5px solid #ffffff;
-  background-color: #fff;
-  margin: auto;
-  box-shadow: none!important;
-  /deep/ .pan-info{
-    box-shadow: none!important;
+  .mallki-text {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 20px;
+    font-weight: bold;
   }
-}
-.progress-item {
-  margin-bottom: 10px;
-  font-size: 14px;
+  .panThumb {
+    z-index: 100;
+    height: 70px!important;
+    width: 70px!important;
+    position: absolute!important;
+    top: -45px;
+    left: 0px;
+    border: 5px solid #ffffff;
+    background-color: #fff;
+    margin: auto;
+    box-shadow: none!important;
+    /deep/ .pan-info {
+      box-shadow: none!important;
+    }
+  }
+  .progress-item {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+  @media only screen and (max-width: 1510px){
+    .mallki-text{
+      display: none;
+    }
+  }
 }
 </style>
