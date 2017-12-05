@@ -1,6 +1,6 @@
 <template>
-  <scroll-pane class='tags-view-container'>
-    <router-link class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
+  <scroll-pane class='tags-view-container' ref='scrollPane'>
+    <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
       {{$t('route.'+tag.title)}}
       <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
     </router-link>
@@ -49,12 +49,24 @@ export default {
     },
     isActive(route) {
       return route.path === this.$route.path || route.name === this.$route.name
+    },
+    moveToCurrentTag() {
+      const tags = this.$refs.tag
+      this.$nextTick(() => {
+        for (const tag of tags) {
+          if (tag.to === this.$route.path) {
+            this.$refs.scrollPane.moveToTarget(tag.$el)
+            break
+          }
+        }
+      })
     }
 
   },
   watch: {
     $route() {
       this.addViewTags()
+      this.moveToCurrentTag()
     }
   }
 }

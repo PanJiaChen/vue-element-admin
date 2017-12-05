@@ -7,6 +7,8 @@
 </template>
 
 <script>
+const padding = 15 // tag's padding
+
 export default {
   name: 'scrollPane',
   data() {
@@ -21,18 +23,36 @@ export default {
       const $containerWidth = $container.offsetWidth
       const $wrapper = this.$refs.scrollWrapper
       const $wrapperWidth = $wrapper.offsetWidth
+
       if (e.wheelDelta > 0) {
         this.left = Math.min(0, this.left + e.wheelDelta)
       } else {
-        if ($containerWidth - 100 < $wrapperWidth) {
-          if (this.left < -($wrapperWidth - $containerWidth + 100)) {
+        if ($containerWidth - padding < $wrapperWidth) {
+          if (this.left < -($wrapperWidth - $containerWidth + padding)) {
             this.left = this.left
           } else {
-            this.left = Math.max(this.left + e.wheelDelta, $containerWidth - $wrapperWidth - 100)
+            this.left = Math.max(this.left + e.wheelDelta, $containerWidth - $wrapperWidth - padding)
           }
         } else {
           this.left = 0
         }
+      }
+    },
+    moveToTarget($target) {
+      const $container = this.$refs.scrollContainer
+      const $containerWidth = $container.offsetWidth
+      const $targetLeft = $target.offsetLeft
+      const $targetWidth = $target.offsetWidth
+
+      if ($targetLeft < -this.left) {
+        // tag in the left
+        this.left = -$targetLeft + padding
+      } else if ($targetLeft + padding > -this.left && $targetLeft + $targetWidth < -this.left + $containerWidth - padding) {
+        // tag in the current view
+        // eslint-disable-line
+      } else {
+        // tag in the right
+        this.left = -($targetLeft - ($containerWidth - $targetWidth) + padding)
       }
     }
   }
