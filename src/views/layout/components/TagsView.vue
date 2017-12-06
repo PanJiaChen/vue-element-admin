@@ -1,7 +1,7 @@
 <template>
   <scroll-pane class='tags-view-container' ref='scrollPane'>
     <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)" :to="tag.path":key="tag.path">
-      {{$t('route.'+tag.title)}}
+      {{generateTitle(tag.title)}}
       <span class='el-icon-close' @click='closeViewTags(tag,$event)'></span>
     </router-link>
   </scroll-pane>
@@ -9,6 +9,7 @@
 
 <script>
 import ScrollPane from '@/components/ScrollPane'
+import { generateTitle } from '@/utils/i18n'
 
 export default {
   components: { ScrollPane },
@@ -21,6 +22,7 @@ export default {
     this.addViewTags()
   },
   methods: {
+    generateTitle,
     closeViewTags(view, $event) {
       this.$store.dispatch('delVisitedViews', view).then((views) => {
         if (this.isActive(view)) {
@@ -61,7 +63,6 @@ export default {
         }
       })
     }
-
   },
   watch: {
     $route() {

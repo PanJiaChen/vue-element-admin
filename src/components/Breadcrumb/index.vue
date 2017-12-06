@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import { generateTitle } from '@/utils/i18n'
+
 export default {
   created() {
     this.getBreadcrumb()
@@ -25,6 +27,7 @@ export default {
     }
   },
   methods: {
+    generateTitle,
     getBreadcrumb() {
       let matched = this.$route.matched.filter(item => item.name)
       const first = matched[0]
@@ -32,9 +35,6 @@ export default {
         matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
       }
       this.levelList = matched
-    },
-    generateTitle(title) {
-      return this.$t('route.' + title)
     }
   }
 }

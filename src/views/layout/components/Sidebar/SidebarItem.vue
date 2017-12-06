@@ -32,6 +32,8 @@
 </template>
 
 <script>
+import { generateTitle } from '@/utils/i18n'
+
 export default {
   name: 'SidebarItem',
   props: {
@@ -40,9 +42,7 @@ export default {
     }
   },
   methods: {
-    generateTitle(title) {
-      return this.$t('route.' + title)
-    }
+    generateTitle
   }
 }
 </script>
