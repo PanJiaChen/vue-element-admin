@@ -26,7 +26,7 @@ router.beforeEach((to, from, next) => {
           const roles = res.data.role
           store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
             router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
-            next({ ...to }) // hack方法 确保addRoutes已完成
+            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成 ,replace: true so the navigation will not leave a history record
           })
         }).catch(() => {
           store.dispatch('FedLogOut').then(() => {
