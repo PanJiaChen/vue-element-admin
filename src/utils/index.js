@@ -265,9 +265,3 @@ export function deepClone(source) {
   }
   return targetObj
 }
-
-// get dependencies verison from package.json
-export function getVersion(name) {
-  const p = require('../../package')
-  return p.dependencies[name]
-}
