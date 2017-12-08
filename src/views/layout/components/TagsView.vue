@@ -15,7 +15,7 @@ export default {
   components: { ScrollPane },
   computed: {
     visitedViews() {
-      return this.$store.state.app.visitedViews
+      return this.$store.state.tagsView.visitedViews
     }
   },
   mounted() {

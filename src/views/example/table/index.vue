@@ -11,7 +11,7 @@ export default {
   name: 'TableMain',
   computed: {
     cachedViews() {
-      return this.$store.state.app.cachedViews
+      return this.$store.state.tagsView.cachedViews
     }
   }
 }
