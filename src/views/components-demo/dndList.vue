@@ -14,7 +14,7 @@ import DndList from '@/components/DndList'
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'dnd-list-demo',
+  name: 'dndList-demo',
   components: { DndList },
   data() {
     return {
