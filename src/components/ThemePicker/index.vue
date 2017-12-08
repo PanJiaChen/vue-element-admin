@@ -6,9 +6,8 @@
 </template>
 
 <script>
-import { getVersion } from '@/utils/index.js'
 
-const version = getVersion('element-ui') // element-ui version from package.json
+const version = require('element-ui/package.json').version // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
 
 export default {
