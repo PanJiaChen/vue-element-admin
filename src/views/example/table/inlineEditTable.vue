@@ -35,14 +35,18 @@
 
       <el-table-column min-width="300px" label="标题">
         <template slot-scope="scope">
-          <el-input v-show="scope.row.edit" size="small" v-model="scope.row.title"></el-input>
-          <span v-show="!scope.row.edit">{{ scope.row.title }}</span>
+          <template v-if="scope.row.edit">
+            <el-input class="edit-input" size="small" v-model="scope.row.title"></el-input>
+            <el-button class='cancel-btn' size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">cancel</el-button>
+          </template>
+          <span v-else>{{ scope.row.title }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="编辑" width="120">
         <template slot-scope="scope">
-          <el-button :type="scope.row.edit?'success':'primary'" @click='scope.row.edit=!scope.row.edit' size="small" icon="edit">{{scope.row.edit?'完成':'编辑'}}</el-button>
+          <el-button v-if="scope.row.edit" type="success" @click="confirmEdit(scope.row)" size="small" icon="el-icon-circle-check-outline">完成</el-button>
+          <el-button v-else type="primary" @click='scope.row.edit=!scope.row.edit' size="small" icon="el-icon-edit">编辑</el-button>
         </template>
       </el-table-column>
 
@@ -84,12 +88,40 @@ export default {
       fetchList(this.listQuery).then(response => {
         const items = response.data.items
         this.list = items.map(v => {
-          this.$set(v, 'edit', false)
+          this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+          v.originalTitle = v.title //  will be used when user click the cancel botton
           return v
         })
         this.listLoading = false
+      })
+    },
+    cancelEdit(row) {
+      row.title = row.originalTitle
+      row.edit = false
+      this.$message({
+        message: 'The title has been restored to the original value',
+        type: 'warning'
+      })
+    },
+    confirmEdit(row) {
+      row.edit = false
+      row.originalTitle = row.title
+      this.$message({
+        message: 'The title has been edited',
+        type: 'success'
       })
     }
   }
 }
 </script>
+
+<style scoped>
+.edit-input {
+  padding-right: 100px;
+}
+.cancel-btn {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+}
+</style>
