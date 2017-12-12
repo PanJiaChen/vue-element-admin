@@ -23,7 +23,6 @@
     data() {
       return {
         visible: false,
-        isOverflow: false,
         top: 0,
         left: 0,
         isSelect: {}
