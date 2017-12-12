@@ -1,5 +1,5 @@
 <template>
-  <div class="scroll-container" ref="scrollContainer" @mousewheel="handleScroll">
+  <div class="scroll-container" ref="scrollContainer" @wheel.prevent="handleScroll">
     <div class="scroll-wrapper" ref="scrollWrapper" :style="{left: left + 'px'}">
       <slot></slot>
     </div>
@@ -18,20 +18,20 @@ export default {
   },
   methods: {
     handleScroll(e) {
-      e.preventDefault()
+      const eventDelta = e.wheelDelta || -e.deltaY * 3
       const $container = this.$refs.scrollContainer
       const $containerWidth = $container.offsetWidth
       const $wrapper = this.$refs.scrollWrapper
       const $wrapperWidth = $wrapper.offsetWidth
 
-      if (e.wheelDelta > 0) {
-        this.left = Math.min(0, this.left + e.wheelDelta)
+      if (eventDelta > 0) {
+        this.left = Math.min(0, this.left + eventDelta)
       } else {
         if ($containerWidth - padding < $wrapperWidth) {
           if (this.left < -($wrapperWidth - $containerWidth + padding)) {
             this.left = this.left
           } else {
-            this.left = Math.max(this.left + e.wheelDelta, $containerWidth - $wrapperWidth - padding)
+            this.left = Math.max(this.left + eventDelta, $containerWidth - $wrapperWidth - padding)
           }
         } else {
           this.left = 0
@@ -64,6 +64,7 @@ export default {
   white-space: nowrap;
   position: relative;
   overflow: hidden;
+  width: 100%;
   .scroll-wrapper {
     position: absolute;
   }
