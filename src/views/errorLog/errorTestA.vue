@@ -5,3 +5,9 @@
     <!--error code-->
   </div>
 </template>
+
+<script>
+export default {
+  name: 'errorTestA'
+}
+</script>

@@ -57,8 +57,8 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ThemePicker from '@/components/ThemePicker'
 import Screenfull from '@/components/Screenfull'
-import ErrorLog from '@/components/ErrLog'
-import errLogStore from 'store/errLog'
+import ErrorLog from '@/components/ErrorLog'
+import errLogStore from '@/store/errorLog'
 
 export default {
   components: {
