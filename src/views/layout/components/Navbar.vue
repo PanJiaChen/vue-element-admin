@@ -5,8 +5,7 @@
     <breadcrumb class="breadcrumb-container"></breadcrumb>
 
     <div class="right-menu">
-
-      <error-log v-if="log.length>0" class="errLog-container right-menu-item" :logsList="log"></error-log>
+      <error-log v-if="errorLogs.length>0" class="errLog-container right-menu-item" :logsList="errorLogs"></error-log>
 
       <el-tooltip effect="dark" content="全屏" placement="bottom">
         <screenfull class="screenfull right-menu-item"></screenfull>
@@ -58,7 +57,6 @@ import Hamburger from '@/components/Hamburger'
 import ThemePicker from '@/components/ThemePicker'
 import Screenfull from '@/components/Screenfull'
 import ErrorLog from '@/components/ErrorLog'
-import errLogStore from '@/store/errorLog'
 
 export default {
   components: {
@@ -68,17 +66,13 @@ export default {
     ErrorLog,
     Screenfull
   },
-  data() {
-    return {
-      log: errLogStore.state.errLog
-    }
-  },
   computed: {
     ...mapGetters([
       'sidebar',
       'name',
       'avatar',
-      'language'
+      'language',
+      'errorLogs'
     ])
   },
   methods: {
