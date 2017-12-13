@@ -30,17 +30,17 @@ const tagsView = {
         }
       }
     },
-    DEL_OTHER_VIEWS: (state, view) => {
+    DEL_OTHERS_VIEWS: (state, view) => {
       for (const [i, v] of state.visitedViews.entries()) {
         if (v.path === view.path) {
-          state.visitedViews = [].concat(state.visitedViews.slice(i, i + 1))
+          state.visitedViews = state.visitedViews.slice(i, i + 1)
           break
         }
       }
       for (const i of state.cachedViews) {
         if (i === view.name) {
           const index = state.cachedViews.indexOf(i)
-          state.cachedViews = [].concat(state.cachedViews.slice(index, i + 1))
+          state.cachedViews = state.cachedViews.slice(index, i + 1)
           break
         }
       }
@@ -60,9 +60,9 @@ const tagsView = {
         resolve([...state.visitedViews])
       })
     },
-    delOtherViews({ commit, state }, view) {
+    delOthersViews({ commit, state }, view) {
       return new Promise((resolve) => {
-        commit('DEL_OTHER_VIEWS', view)
+        commit('DEL_OTHERS_VIEWS', view)
         resolve([...state.visitedViews])
       })
     },
