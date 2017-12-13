@@ -7,9 +7,9 @@
       </router-link>
     </scroll-pane>
     <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-      <li @click="closePage(0,$event)">关闭</li>
-      <li @click="closePage(1,$event)">关闭其他</li>
-      <li @click="closePage(2,$event)">关闭所有</li>
+      <li @click="closeViewTags(selectedTag, $event)">关闭</li>
+      <li @click="closeOtherTags">关闭其他</li>
+      <li @click="closeAllTags">关闭所有</li>
     </ul>
   </div>
 </template>
@@ -25,7 +25,7 @@
         visible: false,
         top: 0,
         left: 0,
-        isSelect: {}
+        selectedTag: {}
       }
     },
     computed: {
@@ -51,18 +51,13 @@
         })
         $event.preventDefault()
       },
-      closePage(flag, $event) {
-        if (flag === 0) {
-          this.closeViewTags(this.isSelect, $event)
-        } else if (flag === 1) {
-          this.$router.push(this.isSelect.path)
-          this.$store.dispatch('delOtherViews', this.isSelect)
-          $event.preventDefault()
-        } else {
-          this.$store.dispatch('delAllViews')
-          this.$router.push('/')
-          $event.preventDefault()
-        }
+      closeOtherTags() {
+        this.$router.push(this.selectedTag.path)
+        this.$store.dispatch('delOtherViews', this.selectedTag)
+      },
+      closeAllTags() {
+        this.$store.dispatch('delAllViews')
+        this.$router.push('/')
       },
       generateRoute() {
         if (this.$route.name) {
@@ -93,9 +88,12 @@
       },
       openMenu(tag, e) {
         this.visible = true
-        this.isSelect = tag
+        this.selectedTag = tag
         this.left = e.clientX
         this.top = e.clientY
+      },
+      closeMenu() {
+        this.visible = false
       }
     },
     watch: {
@@ -105,11 +103,9 @@
       },
       visible(v) {
         if (v) {
-          window.addEventListener('click', () => {
-            this.visible = false
-          }, false)
+          window.addEventListener('click', this.closeMenu, false)
         } else {
-          window.removeEventListener('click')
+          window.removeEventListener('click', this.closeMenu, false)
         }
       }
     }
