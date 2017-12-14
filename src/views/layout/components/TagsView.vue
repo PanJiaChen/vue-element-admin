@@ -92,7 +92,9 @@ export default {
     },
     closeOthersTags() {
       this.$router.push(this.selectedTag.path)
-      this.$store.dispatch('delOthersViews', this.selectedTag)
+      this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
+        this.moveToCurrentTag()
+      })
     },
     closeAllTags() {
       this.$store.dispatch('delAllViews')
