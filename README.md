@@ -27,7 +27,7 @@
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
 
-**注意：该项目目前使用element-ui@2.0.5版本，所以最低兼容 Vue 2.5.0**
+**注意：该项目目前使用element-ui@2.0.0+版本，所以最低兼容 Vue 2.5.0**
 
 楼主这里有一份调查[问卷](https://www.wjx.cn/m/16866569.aspx) 有空请填写一下，以表对本项目的支持~ps:不是给这个调查问卷网站做广告，所以填完问卷不用点上面抽奖有的没的那些东西
 
