@@ -105,7 +105,7 @@
 <script>
     /* eslint-disable */
     import {effectRipple, data2blob} from './utils';
-    import request from 'utils/request';
+    import request from '@/utils/request';
     import langBag from './lang';
     const mimes = {
         'jpg': 'image/jpeg',

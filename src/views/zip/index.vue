@@ -60,7 +60,7 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       require.ensure([], () => {
-        const { export_txt_to_zip } = require('vendor/Export2Zip')
+        const { export_txt_to_zip } = require('@/vendor/Export2Zip')
         const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list

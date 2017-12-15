@@ -35,7 +35,7 @@
 
 <script>
 import { fetchList } from '@/api/article'
-import { parseTime } from 'utils'
+import { parseTime } from '@/utils'
 
 export default {
   name: 'exportExcel',
@@ -61,7 +61,7 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       require.ensure([], () => {
-        const { export_json_to_excel } = require('vendor/Export2Excel')
+        const { export_json_to_excel } = require('@/vendor/Export2Excel')
         const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
