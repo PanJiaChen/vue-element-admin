@@ -60,7 +60,6 @@
     "eslint-friendly-formatter": "3.0.0",
     "eslint-loader": "1.9.0",
     "eslint-plugin-html": "4.0.1",
-    "eventsource-polyfill": "0.9.6",
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
     "friendly-errors-webpack-plugin": "1.6.1",
