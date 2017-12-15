@@ -4,8 +4,8 @@
 
 # vue-element-admin
 
-[![vue](https://img.shields.io/badge/vue-2.5.9-brightgreen.svg)](https://github.com/vuejs/vue)
-[![element-ui](https://img.shields.io/badge/element--ui-2.0.7-brightgreen.svg)](https://github.com/ElemeFE/element)
+[![vue](https://img.shields.io/badge/vue-2.5.10-brightgreen.svg)](https://github.com/vuejs/vue)
+[![element-ui](https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg)](https://github.com/ElemeFE/element)
 [![Build Status](https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master)](https://travis-ci.org/PanJiaChen/vue-element-admin)
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 [![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
@@ -26,10 +26,7 @@
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-
-**注意：该项目目前使用element-ui@2.0.0+版本，所以最低兼容 Vue 2.5.0**
-
-楼主这里有一份调查[问卷](https://www.wjx.cn/m/16866569.aspx) 有空请填写一下，以表对本项目的支持~ps:不是给这个调查问卷网站做广告，所以填完问卷不用点上面抽奖有的没的那些东西
+**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0**
 
 ## 前序准备
 
@@ -43,9 +40,9 @@
  - [手摸手，带你封装一个 vue component](https://segmentfault.com/a/1190000009090836)
  - [手摸手，带你优雅的使用 icon](https://juejin.im/post/59bb864b5188257e7a427c09)
 
- 相应需求，开了一个qq群 `591724180` 方便大家交流
+ 响应需求，开了一个qq群 `591724180` 方便大家交流
 
- 或者可以加入该 **[圈子](https://jianshiapp.com/circles/1209)** 讨论问题
+ 或者加入该群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西
 
  **如有问题请先看上述使用文档和文章，若不能满足，欢迎 issue 和 pr**
 
@@ -53,6 +50,9 @@
 
  **该项目不支持低版本游览器(如ie)，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
+ <p align="center">
+  <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
+</p>
 
 ## 功能
 - 登录/注销
@@ -88,35 +88,46 @@
 - Dropzone
 - Sticky
 - CountTo
-- Markdown2html
-
+- Markdown to html
 
 ## 开发
 ```bash
-    # 克隆项目
-    git clone https://github.com/PanJiaChen/vue-element-admin.git
+	# 克隆项目
+	git clone https://github.com/PanJiaChen/vue-element-admin.git
 
-    # 安装依赖
-    npm install
-    
-    //or # 建议不要用cnpm  安装有各种诡异的bug 可以通过如下操作解决npm速度慢的问题
-    npm install --registry=https://registry.npm.taobao.org
+	# 安装依赖
+	npm install
+	   
+	# 建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
+	npm install --registry=https://registry.npm.taobao.org
 
-    # 本地开发 开启服务
-    npm run dev
+	# 启动服务
+	npm run dev
 ```
 浏览器访问 http://localhost:9527
 
 ## 发布
 ```bash
-    # 发布测试环境 带webpack ananalyzer
-    npm run build:sit-preview
+	# 构建测试环境
+	npm run build:sit
 
-    # 构建生成环境
-    npm run build:prod
+	# 构建生成环境
+	npm run build:prod
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
+## 其它
+```bash
+	# --report to build with bundle size analytics
+	npm run build:prod --report
+
+	# --preview to start a server in local to preview
+	npm run build:prod --preview
+
+	# lint code
+	npm run lint
+```
+
+更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/deploy)
 
 ## 目录结构
 ```shell
@@ -124,26 +135,27 @@
 ├── config                     // 配置相关
 ├── src                        // 源代码
 │   ├── api                    // 所有请求
-│   ├── assets                 // 主题 字体等静态资源
+│   ├── assets                 // 主题 图片等静态资源
 │   ├── components             // 全局公用组件
 │   ├── directive              // 全局指令
 │   ├── filtres                // 全局 filter
-│   ├── icons                  // 项目所有 svg icons
-│   ├── lang                   // 国际化 language
+│   ├── icons                  // 项目svg icons
+│   ├── lang                   // 国际化 lang
 │   ├── mock                   // 项目mock 模拟数据
 │   ├── router                 // 路由
-│   ├── store                  // 全局 store管理
+│   ├── store                  // 全局 store
 │   ├── styles                 // 全局样式
 │   ├── utils                  // 全局公用方法
 │   ├── vendor                 // 公用vendor
-│   ├── views                   // view
+│   ├── views                  // views
 │   ├── App.vue                // 入口页面
-│   ├── main.js                // 入口 加载组件 初始化等
+│   ├── main.js                // 入口js 初始化 加载组件等
 │   └── permission.js          // 权限管理
 ├── static                     // 第三方不打包资源
 │   └── Tinymce                // 富文本
 ├── .babelrc                   // babel-loader 配置
-├── eslintrc.js                // eslint 配置项
+├── .eslintrc.js               // eslint 配置项
+├── .postcssrc.js              // postcss 配置项
 ├── .gitignore                 // git 忽略项
 ├── favicon.ico                // favicon图标
 ├── index.html                 // html模板
@@ -154,8 +166,8 @@
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
-## [查看更多demo](http://panjiachen.github.io/vue-element-admin)
-![](https://wpimg.wallstcn.com/1bc334a6-32a8-4f29-a037-ac3f5ce32588.png)
+## Online Demo
+[查看更多demo](http://panjiachen.github.io/vue-element-admin)
 
 ## Donate
 If you find this project useful, you can buy me a cup of coffee

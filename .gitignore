@@ -2,9 +2,20 @@
 node_modules/
 dist/
 gifs/
-npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 test/unit/coverage
 test/e2e/reports
 selenium-debug.log
+
+# Editor directories and files
 .idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
 package-lock.json

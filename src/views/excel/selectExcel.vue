@@ -67,7 +67,7 @@ export default {
       if (this.multipleSelection.length) {
         this.downloadLoading = true
         require.ensure([], () => {
-          const { export_json_to_excel } = require('vendor/Export2Excel')
+          const { export_json_to_excel } = require('@/vendor/Export2Excel')
           const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
           const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
           const list = this.multipleSelection
