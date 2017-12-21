@@ -66,16 +66,15 @@ export default {
     handleDownload() {
       if (this.multipleSelection.length) {
         this.downloadLoading = true
-        require.ensure([], () => {
-          const { export_json_to_excel } = require('@/vendor/Export2Excel')
-          const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
-          const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
-          const list = this.multipleSelection
-          const data = this.formatJson(filterVal, list)
-          export_json_to_excel(tHeader, data, this.filename)
-          this.$refs.multipleTable.clearSelection()
-          this.downloadLoading = false
-        })
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
+        const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
+        const list = this.multipleSelection
+        const data = this.formatJson(filterVal, list)
+        excel.export_json_to_excel(tHeader, data, this.filename)
+        this.$refs.multipleTable.clearSelection()
+        this.downloadLoading = false
+      })
       } else {
         this.$message({
           message: '请至少选择一条记录',

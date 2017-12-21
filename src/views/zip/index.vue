@@ -59,13 +59,12 @@ export default {
     },
     handleDownload() {
       this.downloadLoading = true
-      require.ensure([], () => {
-        const { export_txt_to_zip } = require('@/vendor/Export2Zip')
+      import('@/vendor/Export2Zip').then(zip => {
         const tHeader = ['序号', '文章标题', '作者', '阅读数', '发布时间']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
-        export_txt_to_zip(tHeader, data, this.filename, this.filename)
+        zip.export_txt_to_zip(tHeader, data, this.filename, this.filename)
         this.downloadLoading = false
       })
     },

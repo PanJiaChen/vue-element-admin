@@ -17,7 +17,7 @@
       </el-select>
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">搜索</el-button>
       <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">添加</el-button>
-      <el-button class="filter-item" type="primary" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
+      <el-button class="filter-item" type="primary" :loading="downloadLoading" v-waves icon="el-icon-download" @click="handleDownload">导出</el-button>
       <el-checkbox class="filter-item" style='margin-left:15px;' @change='tableKey=tableKey+1' v-model="showAuditor">显示审核人</el-checkbox>
     </div>
 
@@ -196,7 +196,8 @@ export default {
         type: [{ required: true, message: 'type is required', trigger: 'change' }],
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
-      }
+      },
+      downloadLoading: false
     }
   },
   filters: {
@@ -330,12 +331,13 @@ export default {
       })
     },
     handleDownload() {
-      require.ensure([], () => {
-        const { export_json_to_excel } = require('@/vendor/Export2Excel')
+      this.downloadLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
         const tHeader = ['时间', '地区', '类型', '标题', '重要性']
         const filterVal = ['timestamp', 'province', 'type', 'title', 'importance']
         const data = this.formatJson(filterVal, this.list)
-        export_json_to_excel(tHeader, data, 'table数据')
+        excel.export_json_to_excel(tHeader, data, 'table数据')
+        this.downloadLoading = false
       })
     },
     formatJson(filterVal, jsonData) {
