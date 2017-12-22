@@ -1,7 +1,7 @@
 <template>
   <div class="app-container calendar-list-container">
-
-    <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+    <!-- Note that row-key is necessary to get a correct row order. -->
+    <el-table :data="list" row-key="id"  v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="序号" width="65">
         <template slot-scope="scope">
@@ -27,9 +27,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="80px" label="重要性">
+      <el-table-column width="100px" label="重要性">
         <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="meta-item__icon" :key="n"></svg-icon>
+          <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="icon-star" :key="n"></svg-icon>
         </template>
       </el-table-column>
 
@@ -45,7 +45,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="拖拽" width="95">
+      <el-table-column align="center" label="拖拽" width="80">
         <template slot-scope="scope">
           <svg-icon class='drag-handler' icon-class="drag"></svg-icon>
         </template>
@@ -53,7 +53,7 @@
 
     </el-table>
 
-    <div class='show-d'>默认顺序 &nbsp; {{ olderList}}</div>
+    <div class='show-d'>默认顺序 &nbsp; {{ oldList}}</div>
     <div class='show-d'>拖拽后顺序{{newList}}</div>
 
   </div>
@@ -75,7 +75,7 @@ export default {
         limit: 10
       },
       sortable: null,
-      olderList: [],
+      oldList: [],
       newList: []
     }
   },
@@ -99,8 +99,8 @@ export default {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false
-        this.olderList = this.list.map(v => v.id)
-        this.newList = this.olderList.slice()
+        this.oldList = this.list.map(v => v.id)
+        this.newList = this.oldList.slice()
         this.$nextTick(() => {
           this.setSort()
         })
@@ -109,7 +109,12 @@ export default {
     setSort() {
       const el = document.querySelectorAll('.el-table__body-wrapper > table > tbody')[0]
       this.sortable = Sortable.create(el, {
+        ghostClass: 'sortable-ghost', // Class name for the drop placeholder,
         onEnd: evt => {
+          const targetRow = this.list.splice(evt.oldIndex, 1)[0]
+          this.list.splice(evt.newIndex, 0, targetRow)
+
+          // for show the changes, you can delete in you code
           const tempIndex = this.newList.splice(evt.oldIndex, 1)[0]
           this.newList.splice(evt.newIndex, 0, tempIndex)
         }
@@ -119,10 +124,21 @@ export default {
 }
 </script>
 
+<style>
+.sortable-ghost{
+  opacity: .8;
+  color: #fff!important;
+  background: #42b983!important;
+}
+</style>
+
 <style scoped>
+.icon-star{
+  margin-right:2px;
+}
 .drag-handler{
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   cursor: pointer;
 }
 .show-d{
