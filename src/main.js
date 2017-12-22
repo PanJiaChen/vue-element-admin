@@ -20,6 +20,7 @@ import './mock' // simulation data generator
 import * as filters from './filters' // global filter
 
 Vue.use(Element, {
+  size: 'medium',
   i18n: (key, value) => i18n.t(key, value)
 })
 

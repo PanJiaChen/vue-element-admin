@@ -10,7 +10,7 @@
           </router-link>
 
           <el-dropdown trigger="click">
-            <el-button>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
+            <el-button plain>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
               <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>
             <el-dropdown-menu class="no-padding" slot="dropdown">
@@ -24,7 +24,7 @@
           </el-dropdown>
 
           <el-dropdown trigger="click">
-            <el-button>平台
+            <el-button plain>平台
               <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>
             <el-dropdown-menu class="no-border" slot="dropdown">
@@ -37,7 +37,7 @@
           </el-dropdown>
 
           <el-dropdown trigger="click">
-            <el-button>
+            <el-button plain>
               外链
               <i class="el-icon-caret-bottom el-icon--right"></i>
             </el-button>

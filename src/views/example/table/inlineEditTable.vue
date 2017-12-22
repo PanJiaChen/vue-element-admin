@@ -122,6 +122,6 @@ export default {
 .cancel-btn {
   position: absolute;
   right: 15px;
-  top: 13px;
+  top: 10px;
 }
 </style>
