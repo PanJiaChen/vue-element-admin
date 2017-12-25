@@ -7,7 +7,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">New Visits</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="3600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="102400" :duration="2600"></count-to>
         </div>
       </div>
     </el-col>
@@ -18,7 +18,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Messages</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="4000"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="81212" :duration="3000"></count-to>
         </div>
       </div>
     </el-col>
@@ -29,7 +29,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Purchases</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="9280" :duration="4000"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="9280" :duration="3200"></count-to>
         </div>
       </div>
     </el-col>
@@ -40,7 +40,7 @@
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">Shoppings</div>
-          <count-to class="card-panel-num" :startVal="0" :endVal="13600" :duration="4600"></count-to>
+          <count-to class="card-panel-num" :startVal="0" :endVal="13600" :duration="3600"></count-to>
         </div>
       </div>
     </el-col>

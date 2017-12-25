@@ -45,6 +45,13 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: 'I18n'
   },
+  navbar: {
+    logOut: 'Log Out',
+    dashboard: 'Dashboard',
+    github: 'Github',
+    screenfull: 'screenfull',
+    theme: 'theme'
+  },
   login: {
     title: 'Login Form',
     logIn: 'Log in',
@@ -52,6 +59,14 @@ export default {
     password: 'Password',
     any: 'any',
     thirdparty: 'Or connect with',
-    thirdpartyTips: 'Local can not be simulated, please combine their own business simulation! ! !'
+    thirdpartyTips: 'Can not be simulated on local, so please combine you own business simulation! ! !'
+  },
+  documentation: {
+    documentation: 'Documentation',
+    github: 'Github Repository'
+  },
+  permission: {
+    permissions: 'Your permissions',
+    switchPermissions: 'Switch permissions'
   }
 }

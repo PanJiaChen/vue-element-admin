@@ -45,6 +45,13 @@ export default {
     clipboardDemo: 'clipboard',
     i18n: '国际化'
   },
+  navbar: {
+    logOut: '退出登录',
+    dashboard: '首页',
+    github: '项目地址',
+    screenfull: '全屏',
+    theme: '换肤'
+  },
   login: {
     title: '系统登录',
     logIn: '登录',
@@ -53,5 +60,13 @@ export default {
     any: '随便填',
     thirdparty: '第三方登录',
     thirdpartyTips: '本地不能模拟，请结合自己业务进行模拟！！！'
+  },
+  documentation: {
+    documentation: '文档',
+    github: 'Github 地址'
+  },
+  permission: {
+    permissions: '你的权限',
+    switchPermissions: '切换权限'
   }
 }

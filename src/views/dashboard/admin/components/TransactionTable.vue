@@ -44,7 +44,7 @@ export default {
       fetchList().then(response => {
         this.list = response.data.items.slice(0, 7)
       })
-    } }
-
+    }
+  }
 }
 </script>
