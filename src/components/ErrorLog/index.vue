@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="errorLogs.length>0">
     <el-badge :is-dot="true" style="line-height: 30px;" @click.native="dialogTableVisible=true">
       <el-button size="small" type="danger" class="bug-btn">
         <svg t="1492682037685" class="bug-svg" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1863"
@@ -11,7 +11,7 @@
     </el-badge>
 
     <el-dialog title="Error Log" :visible.sync="dialogTableVisible" width="80%">
-      <el-table :data="logsList" border>
+      <el-table :data="errorLogs" border>
         <el-table-column label="Message">
           <template slot-scope="scope">
             <div>
@@ -44,14 +44,14 @@
 <script>
 export default {
   name: 'errorLog',
-  props: {
-    logsList: {
-      type: Array
-    }
-  },
   data() {
     return {
       dialogTableVisible: false
+    }
+  },
+  computed: {
+    errorLogs() {
+      return this.$store.getters.errorLogs
     }
   }
 }
