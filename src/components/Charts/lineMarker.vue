@@ -46,13 +46,14 @@ export default {
       this.chart.setOption({
         backgroundColor: '#394056',
         title: {
-          text: '请求数',
+          top: 20,
+          text: 'Requests',
           textStyle: {
             fontWeight: 'normal',
             fontSize: 16,
             color: '#F1F1F3'
           },
-          left: '6%'
+          left: '1%'
         },
         tooltip: {
           trigger: 'axis',
@@ -63,11 +64,12 @@ export default {
           }
         },
         legend: {
+          top: 20,
           icon: 'rect',
           itemWidth: 14,
           itemHeight: 5,
           itemGap: 13,
-          data: ['移动', '电信', '联通'],
+          data: ['CMCC', 'CTCC', 'CUCC'],
           right: '4%',
           textStyle: {
             fontSize: 12,
@@ -75,9 +77,10 @@ export default {
           }
         },
         grid: {
+          top: 100,
           left: '3%',
           right: '4%',
-          bottom: '3%',
+          bottom: '2%',
           containLabel: true
         },
         xAxis: [{
@@ -92,7 +95,7 @@ export default {
         }],
         yAxis: [{
           type: 'value',
-          name: '单位（%）',
+          name: '(%)',
           axisTick: {
             show: false
           },
@@ -114,7 +117,7 @@ export default {
           }
         }],
         series: [{
-          name: '移动',
+          name: 'CMCC',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -148,7 +151,7 @@ export default {
           },
           data: [220, 182, 191, 134, 150, 120, 110, 125, 145, 122, 165, 122]
         }, {
-          name: '电信',
+          name: 'CTCC',
           type: 'line',
           smooth: true,
           symbol: 'circle',
@@ -182,7 +185,7 @@ export default {
           },
           data: [120, 110, 125, 145, 122, 165, 122, 220, 182, 191, 134, 150]
         }, {
-          name: '联通',
+          name: 'CUCC',
           type: 'line',
           smooth: true,
           symbol: 'circle',

@@ -20,7 +20,7 @@ export default {
     backToTop: 'BackToTop',
     charts: 'Charts',
     keyboardChart: 'Keyboard Chart',
-    lineChart: 'Line chart',
+    lineChart: 'Line Chart',
     mixChart: 'Mix Chart',
     example: 'Example',
     Table: 'Table',
