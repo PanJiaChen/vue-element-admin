@@ -5,21 +5,13 @@
     <breadcrumb class="breadcrumb-container"></breadcrumb>
 
     <div class="right-menu">
-      <error-log v-if="errorLogs.length>0" class="errLog-container right-menu-item" :logsList="errorLogs"></error-log>
+      <error-log class="errLog-container right-menu-item"></error-log>
 
       <el-tooltip effect="dark" content="全屏" placement="bottom">
         <screenfull class="screenfull right-menu-item"></screenfull>
       </el-tooltip>
 
-      <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
-        <div>
-          <svg-icon class-name='right-menu-item international-icon' icon-class="language" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="zh" :disabled="language==='zh'">中文</el-dropdown-item>
-          <el-dropdown-item command="en" :disabled="language==='en'">English</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <lang-select class="international right-menu-item"></lang-select>
 
       <el-tooltip effect="dark" content="换肤" placement="bottom">
         <theme-picker class="theme-switch right-menu-item"></theme-picker>
@@ -54,38 +46,30 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ThemePicker from '@/components/ThemePicker'
-import Screenfull from '@/components/Screenfull'
 import ErrorLog from '@/components/ErrorLog'
+import Screenfull from '@/components/Screenfull'
+import LangSelect from '@/components/LangSelect'
+import ThemePicker from '@/components/ThemePicker'
 
 export default {
   components: {
     Breadcrumb,
     Hamburger,
-    ThemePicker,
     ErrorLog,
-    Screenfull
+    Screenfull,
+    LangSelect,
+    ThemePicker
   },
   computed: {
     ...mapGetters([
       'sidebar',
       'name',
-      'avatar',
-      'language',
-      'errorLogs'
+      'avatar'
     ])
   },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
-    },
-    handleSetLanguage(lang) {
-      this.$i18n.locale = lang
-      this.$store.dispatch('setLanguage', lang)
-      this.$message({
-        message: 'switch language success',
-        type: 'success'
-      })
     },
     logout() {
       this.$store.dispatch('LogOut').then(() => {
@@ -129,11 +113,6 @@ export default {
     }
     .international{
       vertical-align: top;
-      .international-icon{
-        font-size: 20px;
-        cursor: pointer;
-        vertical-align: -5px;
-      }
     }
     .theme-switch {
       vertical-align: 15px;

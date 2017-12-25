@@ -2,6 +2,15 @@
   <div class="login-container">
     <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <h3 class="title">系统登录</h3>
+      <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
+        <div>
+          <svg-icon class-name='right-menu-item international-icon' icon-class="language" />
+        </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item command="zh" :disabled="language==='zh'">中文</el-dropdown-item>
+          <el-dropdown-item command="en" :disabled="language==='en'">English</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
 
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
