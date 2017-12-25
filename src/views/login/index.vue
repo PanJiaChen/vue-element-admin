@@ -1,22 +1,15 @@
 <template>
   <div class="login-container">
-    <el-form class="card-box login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">系统登录</h3>
-      <el-dropdown trigger="click" class='international' @command="handleSetLanguage">
-        <div>
-          <svg-icon class-name='right-menu-item international-icon' icon-class="language" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item command="zh" :disabled="language==='zh'">中文</el-dropdown-item>
-          <el-dropdown-item command="en" :disabled="language==='en'">English</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-
+    <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
+      <div class="title-container">
+        <h3 class="title">{{ translateKey('title')}}</h3>
+        <lang-select class="set-language"></lang-select>
+      </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="邮箱" />
+        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" placeholder="username" />
       </el-form-item>
 
       <el-form-item prop="password">
@@ -24,21 +17,31 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="密码" />
-        <span class="show-pwd" @click="showPwd"><svg-icon icon-class="eye" /></span>
+          placeholder="password" />
+        <span class="show-pwd" @click="showPwd">
+          <svg-icon icon-class="eye" />
+        </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{translateKey('logIn')}}</el-button>
 
-      <div class="tips">账号:admin 密码随便填</div>
-      <div class="tips">账号:editor  密码随便填</div>
+      <div class="tips">
+        <span>{{translateKey('username')}} : admin</span>
+        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
+      </div>
+      <div class="tips">
+        <span>{{translateKey('username')}} : editor </span>
+        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
+      </div>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">打开第三方登录</el-button>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{translateKey('thirdparty')}}</el-button>
     </el-form>
 
-    <el-dialog title="第三方验证" :visible.sync="showDialog">
-      本地不能模拟，请结合自己业务进行模拟！！！<br/><br/><br/>
-      邮箱登录成功,请选择第三方验证<br/>
+    <el-dialog :title="translateKey('thirdparty')" :visible.sync="showDialog">
+      {{translateKey('thirdpartyTips')}}
+      <br/>
+      <br/>
+      <br/>
       <social-sign />
     </el-dialog>
 
@@ -47,22 +50,23 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
+import LangSelect from '@/components/LangSelect'
 import socialSign from './socialsignin'
 
 export default {
-  components: { socialSign },
+  components: { LangSelect, socialSign },
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
-        callback(new Error('请输入正确的用户名'))
+        callback(new Error('Please enter the correct user name'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('密码不能小于6位'))
+        callback(new Error('The password can not be less than 6 digits'))
       } else {
         callback()
       }
@@ -82,6 +86,9 @@ export default {
     }
   },
   methods: {
+    translateKey(key) {
+      return this.$t('login.' + key)
+    },
     showPwd() {
       if (this.pwdType === 'password') {
         this.pwdType = ''
@@ -135,19 +142,15 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss">
-  @import "src/styles/mixin.scss";
-  $bg:#2d3a4b;
-  $dark_gray:#889aa4;
-  $light_gray:#eee;
+$bg:#2d3a4b;
+$light_gray:#eee;
 
-  .login-container {
-    @include relative;
-    height: 100vh;
-    background-color: $bg;
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
-      -webkit-text-fill-color: #fff !important;
-    }
+/* reset element-ui css */
+.login-container {
+  .el-input {
+    display: inline-block;
+    height: 47px;
+    width: 85%;
     input {
       background: transparent;
       border: 0px;
@@ -156,27 +159,62 @@ export default {
       padding: 12px 5px 12px 15px;
       color: $light_gray;
       height: 47px;
-    }
-    .el-input {
-      display: inline-block;
-      height: 47px;
-      width: 85%;
-    }
-    .tips {
-      font-size: 14px;
-      color: #fff;
-      margin-bottom: 10px;
-    }
-    .svg-container {
-      padding: 6px 5px 6px 15px;
-      color: $dark_gray;
-      vertical-align: middle;
-      width: 30px;
-      display: inline-block;
-      &_login {
-        font-size: 20px;
+      &:-webkit-autofill {
+        -webkit-box-shadow: 0 0 0px 1000px $bg inset !important;
+        -webkit-text-fill-color: #fff !important;
       }
     }
+  }
+  .el-form-item {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    color: #454545;
+  }
+}
+
+</style>
+
+<style rel="stylesheet/scss" lang="scss" scoped>
+@import "src/styles/mixin.scss";
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
+
+.login-container {
+  @include relative;
+  height: 100vh;
+  background-color: $bg;
+  .login-form {
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: 520px;
+    padding: 35px 35px 15px 35px;
+    margin: 120px auto;
+  }
+  .tips {
+    font-size: 14px;
+    color: #fff;
+    margin-bottom: 10px;
+    span {
+      &:first-of-type {
+        margin-right: 16px;
+      }
+    }
+  }
+  .svg-container {
+    padding: 6px 5px 6px 15px;
+    color: $dark_gray;
+    vertical-align: middle;
+    width: 30px;
+    display: inline-block;
+    &_login {
+      font-size: 20px;
+    }
+  }
+  .title-container {
+    position: relative;
     .title {
       font-size: 26px;
       font-weight: 400;
@@ -185,33 +223,26 @@ export default {
       text-align: center;
       font-weight: bold;
     }
-    .login-form {
+    .set-language {
+      color: #fff;
       position: absolute;
-      left: 0;
-      right: 0;
-      width: 400px;
-      padding: 35px 35px 15px 35px;
-      margin: 120px auto;
-    }
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
-    }
-    .show-pwd {
-      position: absolute;
-      right: 10px;
-      top: 7px;
-      font-size: 16px;
-      color: $dark_gray;
-      cursor: pointer;
-      user-select:none;
-    }
-    .thirdparty-button{
-      position: absolute;
-      right: 35px;
-      bottom: 28px;
+      top: 5px;
+      right: 0px;
     }
   }
+  .show-pwd {
+    position: absolute;
+    right: 10px;
+    top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
+    user-select: none;
+  }
+  .thirdparty-button {
+    position: absolute;
+    right: 35px;
+    bottom: 28px;
+  }
+}
 </style>

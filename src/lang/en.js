@@ -44,5 +44,14 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n'
+  },
+  login: {
+    title: 'Login Form',
+    logIn: 'Log in',
+    username: 'Username',
+    password: 'Password',
+    any: 'any',
+    thirdparty: 'Or connect with',
+    thirdpartyTips: 'Local can not be simulated, please combine their own business simulation! ! !'
   }
 }
