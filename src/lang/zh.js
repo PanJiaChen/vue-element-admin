@@ -69,6 +69,17 @@ export default {
     permissions: '你的权限',
     switchPermissions: '切换权限'
   },
+  table: {
+    dynamicTips1: '固定表头, 按照表头顺序排序',
+    dynamicTips2: '不固定表头, 按照点击顺序排序',
+    dragTips1: '默认顺序',
+    dragTips2: '拖拽后顺序'
+  },
+  errorLog: {
+    tips: '请点击右上角bug小图标',
+    description: '现在的管理后台基本都是spa的形式了，它增强了用户体验，但同时也会增加页面出问题的可能性，可能一个小小的疏忽就导致整个页面的死锁。好在 Vue 官网提供了一个方法来捕获处理异常，你可以在其中进行错误处理或者异常上报。',
+    documentation: '文档介绍'
+  },
   excel: {
     export: '导出',
     selectedExport: '导出已选择项',
@@ -77,5 +88,9 @@ export default {
   zip: {
     export: '导出',
     placeholder: '请输入文件名(默认file)'
+  },
+  theme: {
+    change: '换肤',
+    documentation: '换肤文档'
   }
 }

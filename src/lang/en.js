@@ -69,6 +69,17 @@ export default {
     permissions: 'Your permissions',
     switchPermissions: 'Switch permissions'
   },
+  table: {
+    dynamicTips1: 'Fixed header, sorted by header order',
+    dynamicTips2: 'Not fixed header, sorted by click order',
+    dragTips1: 'The default order',
+    dragTips2: 'The Drag after order'
+  },
+  errorLog: {
+    tips: 'Please click the bug icon in the upper right corner',
+    description: 'Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.',
+    documentation: 'Document introduction'
+  },
   excel: {
     export: 'Export',
     selectedExport: 'Export selected items',
@@ -77,5 +88,9 @@ export default {
   zip: {
     export: 'Export',
     placeholder: 'Please enter the file name(default file)'
+  },
+  theme: {
+    change: 'Theme change',
+    documentation: 'Theme documentation'
   }
 }
