@@ -68,5 +68,14 @@ export default {
   permission: {
     permissions: 'Your permissions',
     switchPermissions: 'Switch permissions'
+  },
+  excel: {
+    export: 'Export',
+    selectedExport: 'Export selected items',
+    placeholder: 'Please enter the file name(default excel-list)'
+  },
+  zip: {
+    export: 'Export',
+    placeholder: 'Please enter the file name(default file)'
   }
 }

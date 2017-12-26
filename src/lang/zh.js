@@ -68,5 +68,14 @@ export default {
   permission: {
     permissions: '你的权限',
     switchPermissions: '切换权限'
+  },
+  excel: {
+    export: '导出',
+    selectedExport: '导出已选择项',
+    placeholder: '请输入文件名(默认excel-list)'
+  },
+  zip: {
+    export: '导出',
+    placeholder: '请输入文件名(默认file)'
   }
 }

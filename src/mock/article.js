@@ -8,9 +8,9 @@ for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     id: '@increment',
     timestamp: +Mock.Random.date('T'),
-    author: '@cname',
-    auditor: '@cname',
-    title: '@ctitle(10, 20)',
+    author: '@first',
+    auditor: '@name',
+    title: '@title(10, 20)',
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
     'type|1': ['CN', 'US', 'JP', 'EU'],
