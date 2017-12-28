@@ -66,8 +66,8 @@ export default {
     github: 'Github Repository'
   },
   permission: {
-    permissions: 'Your permissions',
-    switchPermissions: 'Switch permissions'
+    roles: 'Your roles',
+    switchRoles: 'Switch roles'
   },
   components: {
     documentation: 'Documentation',

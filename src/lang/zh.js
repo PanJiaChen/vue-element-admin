@@ -66,8 +66,8 @@ export default {
     github: 'Github 地址'
   },
   permission: {
-    permissions: '你的权限',
-    switchPermissions: '切换权限'
+    roles: '你的权限',
+    switchRoles: '切换权限'
   },
   components: {
     documentation: '文档',
