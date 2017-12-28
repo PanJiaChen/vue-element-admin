@@ -1,7 +1,7 @@
 <template>
   <el-table :data="list" border fit highlight-current-row style="width: 100%">
 
-    <el-table-column align="center" label="Id" width="65"  v-loading="loading"
+    <el-table-column align="center" label="ID" width="65"  v-loading="loading"
     element-loading-text="请给我点时间！">
       <template slot-scope="scope">
         <span>{{scope.row.id}}</span>

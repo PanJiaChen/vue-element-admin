@@ -3,7 +3,7 @@
 
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column align="center" label="Id" width="80">
+      <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
@@ -43,7 +43,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Operating" width="120">
+      <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
           <el-button v-if="scope.row.edit" type="success" @click="confirmEdit(scope.row)" size="small" icon="el-icon-circle-check-outline">Ok</el-button>
           <el-button v-else type="primary" @click='scope.row.edit=!scope.row.edit' size="small" icon="el-icon-edit">Edit</el-button>
