@@ -149,4 +149,4 @@ If you find this project useful, you can buy author a glass of juice :tropical_d
 
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 
-Copyright (c) 2017-presen PanJiaChen
+Copyright (c) 2017-present PanJiaChen
