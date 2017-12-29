@@ -2,7 +2,7 @@
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
       <div class="title-container">
-        <h3 class="title">{{ translateKey('title')}}</h3>
+        <h3 class="title">{{$t('login.title')}}</h3>
         <lang-select class="set-language"></lang-select>
       </div>
       <el-form-item prop="username">
@@ -16,29 +16,28 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="pwdType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
-          placeholder="password" />
+        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on" placeholder="password" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{translateKey('logIn')}}</el-button>
+      <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{$t('login.logIn')}}</el-button>
 
       <div class="tips">
-        <span>{{translateKey('username')}} : admin</span>
-        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
+        <span>{{$t('login.username')}} : admin</span>
+        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
       </div>
       <div class="tips">
-        <span>{{translateKey('username')}} : editor </span>
-        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
+        <span style="margin-right:18px;">{{$t('login.username')}} : editor</span>
+        <span>{{$t('login.password')}} : {{$t('login.any')}}</span>
       </div>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{translateKey('thirdparty')}}</el-button>
+      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>
     </el-form>
 
-    <el-dialog :title="translateKey('thirdparty')" :visible.sync="showDialog">
-      {{translateKey('thirdpartyTips')}}
+    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
+      {{$t('login.thirdpartyTips')}}
       <br/>
       <br/>
       <br/>
@@ -51,10 +50,10 @@
 <script>
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
-import socialSign from './socialsignin'
+import SocialSign from './socialsignin'
 
 export default {
-  components: { LangSelect, socialSign },
+  components: { LangSelect, SocialSign },
   name: 'login',
   data() {
     const validateUsername = (rule, value, callback) => {
@@ -80,20 +79,17 @@ export default {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
-      pwdType: 'password',
+      passwordType: 'password',
       loading: false,
       showDialog: false
     }
   },
   methods: {
-    translateKey(key) {
-      return this.$t('login.' + key)
-    },
     showPwd() {
-      if (this.pwdType === 'password') {
-        this.pwdType = ''
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.pwdType = 'password'
+        this.passwordType = 'password'
       }
     },
     handleLogin() {
@@ -103,7 +99,6 @@ export default {
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
             this.$router.push({ path: '/' })
-            // this.showDialog = true
           }).catch(() => {
             this.loading = false
           })
@@ -172,7 +167,6 @@ $light_gray:#eee;
     color: #454545;
   }
 }
-
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>

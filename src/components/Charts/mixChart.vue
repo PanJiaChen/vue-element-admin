@@ -46,15 +46,16 @@ export default {
       const xData = (function() {
         const data = []
         for (let i = 1; i < 13; i++) {
-          data.push(i + '月份')
+          data.push(i + 'month')
         }
         return data
       }())
       this.chart.setOption({
         backgroundColor: '#344b58',
         title: {
-          text: '统计',
-          x: '4%',
+          text: 'statistics',
+          x: '20',
+          top: '20',
           textStyle: {
             color: '#fff',
             fontSize: '22'
@@ -81,12 +82,12 @@ export default {
           }
         },
         legend: {
-          x: '15%',
+          x: '5%',
           top: '10%',
           textStyle: {
             color: '#90979c'
           },
-          data: ['女', '男', '平均']
+          data: ['female', 'male', 'average']
         },
         calculable: true,
         xAxis: [{
@@ -158,9 +159,9 @@ export default {
           end: 35
         }],
         series: [{
-          name: '女',
+          name: 'female',
           type: 'bar',
-          stack: '总量',
+          stack: 'total',
           barMaxWidth: 35,
           barGap: '10%',
           itemStyle: {
@@ -195,9 +196,9 @@ export default {
         },
 
         {
-          name: '男',
+          name: 'male',
           type: 'bar',
-          stack: '总量',
+          stack: 'total',
           itemStyle: {
             normal: {
               color: 'rgba(0,191,183,1)',
@@ -226,9 +227,9 @@ export default {
             220
           ]
         }, {
-          name: '平均',
+          name: 'average',
           type: 'line',
-          stack: '总量',
+          stack: 'total',
           symbolSize: 10,
           symbol: 'circle',
           itemStyle: {

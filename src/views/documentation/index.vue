@@ -1,16 +1,15 @@
 <template>
   <div class="app-container documentation-container">
-    <a class="document-btn" target='_blank' href="https://panjiachen.github.io/vue-element-admin-site/#/">文档</a>
-    <a class="document-btn" target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">Github 地址</a>
+    <a class="document-btn" target='_blank' href="https://panjiachen.github.io/vue-element-admin-site/#/">{{$t('documentation.documentation')}}</a>
+    <a class="document-btn" target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">{{$t('documentation.github')}}</a>
     <dropdown-menu style="float:left;margin-left:50px;" title='系列文章' :items='articleList'></dropdown-menu>
   </div>
 </template>
-
 <script>
 import DropdownMenu from '@/components/Share/dropdownMenu'
 
 export default {
-  name: 'clipboardDemo',
+  name: 'documentation',
   components: { DropdownMenu },
   data() {
     return {

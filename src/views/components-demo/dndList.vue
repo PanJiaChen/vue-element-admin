@@ -4,7 +4,7 @@
       <a href="https://github.com/SortableJS/Vue.Draggable" target="_blank">Vue.Draggable</a>
     </code>
     <div class="editor-container">
-      <dnd-list :list1="list1" :list2="list2" list1Title="头条列表" list2Title="文章池"></dnd-list>
+      <dnd-list :list1="list1" :list2="list2" list1Title="List" list2Title="Article pool"></dnd-list>
     </div>
   </div>
 </template>

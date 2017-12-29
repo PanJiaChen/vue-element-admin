@@ -7,7 +7,6 @@
 		</el-upload>
 		<div class="image-preview image-app-preview">
 			<div class="image-preview-wrapper" v-show="imageUrl.length>1">
-				<div class='app-fake-conver'>&nbsp&nbsp全球 付费节目单 最热 经济</div>
 				<img :src="imageUrl">
 				<div class="image-preview-action">
 					<i @click="rmImage" class="el-icon-delete"></i>

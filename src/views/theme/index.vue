@@ -2,21 +2,23 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <span style="line-height: 36px;">偏好设置</span>
-        <a class='link-type link-title' target="_blank" href='https://panjiachen.github.io/vue-element-admin-site/#/theme'>换肤文档</a>
+        <a class='link-type link-title' target="_blank" href='https://panjiachen.github.io/vue-element-admin-site/#/theme'>
+        {{$t('theme.documentation')}}
+        </a>
       </div>
       <div class="box-item">
-        <span class="field-label">换肤:</span>
+        <span class="field-label">{{$t('theme.change')}} : </span>
         <el-switch v-model="theme"></el-switch>
+        <code style="margin-top:15px;">{{$t('theme.tips')}}</code>
       </div>
     </el-card>
 
     <div class="block">
-        <el-button type="primary">成功按钮</el-button>
-        <el-button type="success">成功按钮</el-button>
-        <el-button type="warning">警告按钮</el-button>
-        <el-button type="danger">危险按钮</el-button>
-        <el-button type="info">信息按钮</el-button>
+      <el-button type="primary">Primary</el-button>
+      <el-button type="success">Success</el-button>
+      <el-button type="info">Info</el-button>
+      <el-button type="warning">Warning</el-button>
+      <el-button type="danger">Danger</el-button>
     </div>
 
     <div class="block">
@@ -24,7 +26,8 @@
       <el-button type="primary" icon="el-icon-share"></el-button>
       <el-button type="primary" icon="el-icon-delete"></el-button>
       <el-button type="primary" icon="el-icon-search">Search</el-button>
-      <el-button type="primary">Upload
+      <el-button type="primary">
+        Upload
         <i class="el-icon-upload el-icon-right"></i>
       </el-button>
     </div>
@@ -52,7 +55,7 @@
 
 <script>
 import { toggleClass } from '@/utils'
-import '@/assets/custom-theme/index.css' // 换肤版本element-ui css
+import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
 
 export default {
   name: 'theme',
@@ -79,6 +82,9 @@ export default {
 </script>
 
 <style scoped>
+.field-label{
+  vertical-align: middle;
+}
 .box-card {
   width: 400px;
   margin: 20px auto;

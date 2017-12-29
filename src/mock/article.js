@@ -8,9 +8,9 @@ for (let i = 0; i < count; i++) {
   List.push(Mock.mock({
     id: '@increment',
     timestamp: +Mock.Random.date('T'),
-    author: '@cname',
-    auditor: '@cname',
-    title: '@ctitle(10, 20)',
+    author: '@first',
+    reviewer: '@first',
+    title: '@title(5, 10)',
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
     'type|1': ['CN', 'US', 'JP', 'EU'],
@@ -43,7 +43,7 @@ export default {
     }
   },
   getPv: () => ({
-    pvData: [{ key: 'PC网站', pv: 1024 }, { key: 'mobile网站', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
+    pvData: [{ key: 'PC', pv: 1024 }, { key: 'mobile', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
   }),
   getArticle: () => ({
     id: 120000000001,

@@ -2,177 +2,151 @@
   <img width="320" src="https://wpimg.wallstcn.com/ecc53a42-d79b-42e2-8852-5126b810a4c8.svg">
 </p>
 
-# vue-element-admin
+<p align="center">
+	<a href="https://github.com/vuejs/vue">
+		<img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
+	</a>
+	<a href="https://github.com/ElemeFE/element">
+		<img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
+	</a>
+	<a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
+		<img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
+	</a>
+	<a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
+		<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+	</a>
+	<a href="https://github.com/PanJiaChen/vue-element-admin/releases">
+		<img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
+	</a>
+</p>
 
-[![vue](https://img.shields.io/badge/vue-2.5.10-brightgreen.svg)](https://github.com/vuejs/vue)
-[![element-ui](https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg)](https://github.com/ElemeFE/element)
-[![Build Status](https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master)](https://travis-ci.org/PanJiaChen/vue-element-admin)
-[![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
-[![GitHub release](https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg)]()
+English | [简体中文](./README.zh-CN.md)
 
-**A magical vue admin.**
+## Introduction
 
-- [线上地址](http://panjiachen.github.io/vue-element-admin)
+`vue-element-admin` is a production-ready solution for admin interfaces. Based on [Vue.js](https://github.com/vuejs/vue) and use the UI Toolkit -- [element](https://github.com/ElemeFE/element). `vue-element-admin` is a magical vue admin, it based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
 
-- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
+- [Preview](http://panjiachen.github.io/vue-element-admin)
 
-- [English Document](https://github.com/PanJiaChen/vue-element-admin/blob/master/README-en.md)
+- [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/)
 
 - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
 
-**本项目的定位是后台集成方案，不适合当基础模板来开发。**
- - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
- - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+**vue-element-admin is a admin interfaces integration solution, which is not suitable for secondary development as a base template.**
 
-**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0**
+ - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
+ - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-## 前序准备
+**Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0**
 
-你的本地环境需要安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。我们的技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 和 [element-ui](https://github.com/ElemeFE/element)，提前了解和学习这些知识会对使用本项目有很大的帮助。
+## Preparation
 
-同时配套一个系列的教程文章，如何从零构建后一个完整的后台项目，建议大家先看完这些文章再来实践本项目
- - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
- - [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
- - [手摸手，带你用 vue 撸后台 系列三 (实战篇)](https://juejin.im/post/593121aa0ce4630057f70d35)
- - [手摸手，带你用 vue 撸后台 系列四(vueAdmin 一个极简的后台基础模板)](https://juejin.im/post/595b4d776fb9a06bbe7dba56)
- - [手摸手，带你封装一个 vue component](https://segmentfault.com/a/1190000009090836)
- - [手摸手，带你优雅的使用 icon](https://juejin.im/post/59bb864b5188257e7a427c09)
+You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 和 [element-ui](https://github.com/ElemeFE/element). All data requests for this project are simulated using [Mock.js](https://github.com/nuysoft/Mock). It would be helpful if you have pre-existing knowledge on those.
 
- 响应需求，开了一个qq群 `591724180` 方便大家交流
+ **This project is not a scaffolding and is more of an integrated solution.**
 
- 或者加入该群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西
-
- **如有问题请先看上述使用文档和文章，若不能满足，欢迎 issue 和 pr**
-
- **本项目并不是一个脚手架，更倾向于是一个集成解决方案**
-
- **该项目不支持低版本游览器(如ie)，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
+ **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
 
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
-## 功能
-- 登录/注销
-- 权限验证
-- 多环境发布
-- 动态侧边栏（支持多级路由）
-- 动态面包屑
-- 国际化多语言
-- 多种动态换肤
-- 快捷导航(标签页 支持右键操作)
-- 富文本编辑器
-- Markdown编辑器
-- JSON编辑器
-- Screenfull全屏
-- 列表拖拽
-- Svg Sprite 图标
+## Features
+```
+- Login / Logout
+- Permission authentication
+- Multi-environment build
+- Dynamic sidebar (supports multi-level routing)
+- Dynamic breadcrumb
+- I18n
+- Customizable theme
+- Tags-view(Tab page Support right-click operation)
+- Rich text editor
+- Markdown editor
+- JSON editor
+- Screenfull
+- Drag and drop list
+- Svg Sprite
 - Dashboard
-- 本地mock数据
-- Echarts 图表
-- Clipboard(剪贴复制)
-- 401/404错误页面
-- 错误日志
-- 导出excel
-- 导出zip
-- 前端可视化excel
+- Mock data
+- Echarts
+- Clipboard
+- 401/404 error page
+- Error log
+- Export excel
+- Export zip
+- Front-end visualization excel
 - Table example
-- 动态table example
-- 拖拽table example
-- 内联编辑table example
+- Dynamictable example
+- Drag and drop table example
+- Inline edit table example
 - Form example
-- 二步登录
+- Two-step login
 - SplitPane
 - Dropzone
 - Sticky
 - CountTo
 - Markdown to html
+```
 
-## 开发
+## Getting started
+
 ```bash
-	# 克隆项目
-	git clone https://github.com/PanJiaChen/vue-element-admin.git
+# clone the projice
+git clone https://github.com/PanJiaChen/vue-element-admin.git
 
-	# 安装依赖
-	npm install
-	   
-	# 建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
-	npm install --registry=https://registry.npm.taobao.org
+# install dependency
+npm install
 
-	# 启动服务
-	npm run dev
+# develop
+npm run dev
 ```
-浏览器访问 http://localhost:9527
 
-## 发布
+This will automatically open http://localhost:9527.
+
+## Build
 ```bash
-	# 构建测试环境
-	npm run build:sit
+# build for test environment
+npm run build:sit
 
-	# 构建生成环境
-	npm run build:prod
+# build for production environment
+npm run build:prod
 ```
 
-## 其它
+## Advanced
 ```bash
-	# --report to build with bundle size analytics
-	npm run build:prod --report
+# --report to build with bundle size analytics
+npm run build:prod --report
 
-	# --preview to start a server in local to preview
-	npm run build:prod --preview
+# --preview to start a server in local to preview
+npm run build:prod --preview
 
-	# lint code
-	npm run lint
+# lint code
+npm run lint
+
+# auto fix
+npm run lint -- --fix
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/deploy)
-
-## 目录结构
-```shell
-├── build                      // 构建相关  
-├── config                     // 配置相关
-├── src                        // 源代码
-│   ├── api                    // 所有请求
-│   ├── assets                 // 主题 图片等静态资源
-│   ├── components             // 全局公用组件
-│   ├── directive              // 全局指令
-│   ├── filtres                // 全局 filter
-│   ├── icons                  // 项目svg icons
-│   ├── lang                   // 国际化 lang
-│   ├── mock                   // 项目mock 模拟数据
-│   ├── router                 // 路由
-│   ├── store                  // 全局 store
-│   ├── styles                 // 全局样式
-│   ├── utils                  // 全局公用方法
-│   ├── vendor                 // 公用vendor
-│   ├── views                  // views
-│   ├── App.vue                // 入口页面
-│   ├── main.js                // 入口js 初始化 加载组件等
-│   └── permission.js          // 权限管理
-├── static                     // 第三方不打包资源
-│   └── Tinymce                // 富文本
-├── .babelrc                   // babel-loader 配置
-├── .eslintrc.js               // eslint 配置项
-├── .postcssrc.js              // postcss 配置项
-├── .gitignore                 // git 忽略项
-├── favicon.ico                // favicon图标
-├── index.html                 // html模板
-└── package.json               // package.json
-
-```
+Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/deploy) for more information
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
 ## Online Demo
-[查看更多demo](http://panjiachen.github.io/vue-element-admin)
+[Preview](http://panjiachen.github.io/vue-element-admin)
 
 ## Donate
-If you find this project useful, you can buy me a cup of coffee
-![donate](https://panjiachen.github.io/donate/donation.png)
+If you find this project useful, you can buy author a glass of juice :tropical_drink:
+
+![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
+
+[Paypal Me](https://www.paypal.me/panfree23)
 
 ## License
 
-MIT
+[MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+
+Copyright (c) 2017-presen PanJiaChen

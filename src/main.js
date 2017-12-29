@@ -15,12 +15,12 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog'// error log
 import './permission' // permission control
-import './mock' // simulation data generator
+import './mock' // simulation data
 
-import * as filters from './filters' // global filter
+import * as filters from './filters' // global filters
 
 Vue.use(Element, {
-  size: 'medium',
+  size: 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 

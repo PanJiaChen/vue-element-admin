@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
-    <div style="margin-bottom:15px;">你的权限： {{roles}}</div>
-    切换权限：
+    <div style="margin-bottom:15px;">{{$t('permission.roles')}}： {{roles}}</div>
+    {{$t('permission.switchRoles')}}：
     <el-radio-group v-model="role">
       <el-radio-button label="editor"></el-radio-button>
     </el-radio-group>
