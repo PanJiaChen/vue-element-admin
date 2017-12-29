@@ -1,5 +1,5 @@
 <template>
- <!-- $t is vue-i18n global function to translate lang (lang in @/lang)  -->
+ <!-- $t is vue-i18n global function to translate lang -->
   <div class="app-container">
     <el-input style='width:340px;' :placeholder="$t('excel.placeholder')" prefix-icon="el-icon-document" v-model="filename"></el-input>
     <el-button style='margin-bottom:20px;' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">{{$t('excel.export')}} excel</el-button>

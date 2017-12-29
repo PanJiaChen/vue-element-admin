@@ -2,11 +2,11 @@
   <div class="app-container">
     <el-tabs v-model="activeName">
       <el-tab-pane label="use clipboard  directly" name="directly">
-        <el-input v-model="inputData" placeholder="请输入内容" style='width:400px;'></el-input>
+        <el-input v-model="inputData" placeholder="Please input" style='width:400px;'></el-input>
         <el-button type="primary" icon="document" @click='handleCopy(inputData,$event)'>copy</el-button>
       </el-tab-pane>
       <el-tab-pane label="use clipboard by v-directive" name="v-directive">
-        <el-input v-model="inputData" placeholder="请输入内容" style='width:400px;'></el-input>
+        <el-input v-model="inputData" placeholder="Please input" style='width:400px;'></el-input>
         <el-button type="primary" icon="document" v-clipboard:copy='inputData' v-clipboard:success='clipboardSuccess'>copy</el-button>
       </el-tab-pane>
     </el-tabs>

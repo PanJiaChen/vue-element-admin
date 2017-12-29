@@ -71,18 +71,18 @@ export default {
   },
   components: {
     documentation: 'Documentation',
-    tinymceTips: 'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the final trade-off is the selection of Tinymce.See documentation for more detailed rich text editor comparisons and introductions',
-    dropzoneTips: 'Because my business has special needs, and has to upload to qiniu, So instead of a third party, I chose encapsulate it by myself. It is very simple, you can see the specific code in @/components/Dropzone.',
+    tinymceTips: 'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the finally chose Tinymce. See documentation for more detailed rich text editor comparisons and introductions.',
+    dropzoneTips: 'Because my business has special needs, and has to upload images to qiniu, so instead of a third party, I chose encapsulate it by myself. It is very simple, you can see the detail code in @/components/Dropzone.',
     stickyTips: 'when the page is scrolled to the preset position will be sticky on the top.',
     backToTopTips1: 'When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner',
     backToTopTips2: 'You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally',
-    imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself,and if you are going to use it, it is better to use official version.'
+    imageUploadTips: 'Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.'
   },
   table: {
     dynamicTips1: 'Fixed header, sorted by header order',
     dynamicTips2: 'Not fixed header, sorted by click order',
     dragTips1: 'The default order',
-    dragTips2: 'The Drag after order',
+    dragTips2: 'The after dragging order',
     title: 'Title',
     importance: 'Imp',
     type: 'Type',
@@ -120,6 +120,7 @@ export default {
   },
   theme: {
     change: 'Theme change',
-    documentation: 'Theme documentation'
+    documentation: 'Theme documentation',
+    tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
   }
 }
