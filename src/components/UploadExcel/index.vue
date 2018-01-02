@@ -1,7 +1,10 @@
 <template>
   <div>
-    <el-button :loading="loading" type="primary" @click="handleUpload">select excel file</el-button>
     <input id="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
+    <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
+      Drop excel file here or
+      <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
+    </div>
   </div>
 </template>
 
@@ -22,16 +25,35 @@ export default {
     generateDate({ header, results }) {
       this.excelData.header = header
       this.excelData.results = results
-      this.loading = false
       this.$emit('on-selected-file', this.excelData)
+    },
+    handleDrop(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      const files = e.dataTransfer.files
+      if (files.length !== 1) {
+        this.$message.error('Only support uploading one file!')
+        return
+      }
+      const itemFile = files[0] // only use files[0]
+      this.readerData(itemFile)
+      e.stopPropagation()
+      e.preventDefault()
+    },
+    handleDragover(e) {
+      e.stopPropagation()
+      e.preventDefault()
+      e.dataTransfer.dropEffect = 'copy'
     },
     handleUpload() {
       document.getElementById('excel-upload-input').click()
     },
     handkeFileChange(e) {
-      this.loading = true
       const files = e.target.files
       const itemFile = files[0] // only use files[0]
+      this.readerData(itemFile)
+    },
+    readerData(itemFile) {
       const reader = new FileReader()
       reader.onload = e => {
         const data = e.target.result
@@ -74,5 +96,17 @@ export default {
 #excel-upload-input{
   display: none;
   z-index: -9999;
+}
+#drop{
+  border: 2px dashed #bbb;
+  width: 600px;
+  height: 160px;
+  line-height: 160px;
+  margin: 0 auto;
+  font-size: 24px;
+  border-radius: 5px;
+  text-align: center;
+  color: #bbb;
+  position: relative;
 }
 </style>
