@@ -39,7 +39,7 @@
     "vue-splitpane": "1.0.2",
     "vuedraggable": "2.15.0",
     "vuex": "3.0.1",
-    "xlsx": "^0.11.7"
+    "xlsx": "^0.11.16"
   },
   "devDependencies": {
     "autoprefixer": "7.2.3",
@@ -71,6 +71,7 @@
     "portfinder": "1.0.13",
     "postcss-import": "11.0.0",
     "postcss-loader": "2.0.9",
+    "postcss-url": "7.3.0",
     "pushstate-server": "3.0.1",
     "rimraf": "2.6.2",
     "sass-loader": "6.0.6",
