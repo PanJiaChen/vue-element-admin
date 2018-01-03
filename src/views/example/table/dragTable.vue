@@ -3,43 +3,43 @@
     <!-- Note that row-key is necessary to get a correct row order. -->
     <el-table :data="list" row-key="id"  v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column align="center" label="ID" width="65">
+      <el-table-column align="center" :label="$t('table.id')" width="65">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="180px" align="center" label="Date">
+      <el-table-column width="180px" align="center" :label="$t('table.date')">
         <template slot-scope="scope">
           <span>{{scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="Title">
+      <el-table-column min-width="300px" :label="$t('table.title')">
         <template slot-scope="scope">
           <span>{{scope.row.title}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="110px" align="center" label="Author">
+      <el-table-column width="110px" align="center" :label="$t('table.author')">
         <template slot-scope="scope">
           <span>{{scope.row.author}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="100px" label="Importance">
+      <el-table-column width="100px" :label="$t('table.importance')">
         <template slot-scope="scope">
           <svg-icon v-for="n in +scope.row.importance" icon-class="star" class="icon-star" :key="n"></svg-icon>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Readings" width="95">
+      <el-table-column align="center" :label="$t('table.readings')" width="95">
         <template slot-scope="scope">
           <span>{{scope.row.pageviews}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column class-name="status-col" label="Status" width="110">
+      <el-table-column class-name="status-col" :label="$t('table.status')" width="110">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{scope.row.status}}</el-tag>
         </template>

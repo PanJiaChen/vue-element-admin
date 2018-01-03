@@ -25,12 +25,28 @@ export default {
       tableDate: 'tableDate',
       tableName: 'tableName',
       tableAddress: 'tableAddress',
-      default: 'default:',
+      default: 'default',
       primary: 'primary',
       success: 'success',
       info: 'info',
       warning: 'warning',
       danger: 'danger'
+    }
+  },
+  vi: {
+    i18nView: {
+      title: 'Đổi Ngôn Ngữ',
+      note: 'Hiện tại chỉ dịch với i18n cho trang, sidebar và levelbar. Xin hãy chờ đợi ...',
+      datePlaceholder: 'Chọn ngày',
+      tableDate: 'Ngày giờ',
+      tableName: 'Tên',
+      tableAddress: 'Địa chỉ',
+      default: 'mặc định',
+      primary: 'chính',
+      success: 'thành công',
+      info: 'thông tin',
+      warning: 'cảnh báo',
+      danger: 'nguy hiểm'
     }
   }
 }
