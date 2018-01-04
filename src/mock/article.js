@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
     title: '@title(5, 10)',
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',
-    'type|1': ['CN', 'US', 'JP', 'EU'],
+    'type|1': ['CN', 'US', 'JP', 'VI', 'EU'],
     'status|1': ['published', 'draft', 'deleted'],
     display_time: '@datetime',
     pageviews: '@integer(300, 5000)'
