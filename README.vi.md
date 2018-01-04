@@ -20,7 +20,7 @@
 	</a>
 </p>
 
-English | [简体中文](./README.zh-CN.md) | [Tiếng việt](./README.vi.md)
+Tiếng việt | [English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ## Giới thiệu
 
