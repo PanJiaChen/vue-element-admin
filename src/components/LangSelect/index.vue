@@ -34,7 +34,7 @@ export default {
 .international-icon {
   font-size: 20px;
   cursor: pointer;
-  vertical-align: -5px;
+  vertical-align: -5px!important;
 }
 </style>
 
