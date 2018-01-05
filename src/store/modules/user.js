@@ -67,7 +67,7 @@ const user = {
             reject('error')
           }
           const data = response.data
-          commit('SET_ROLES', data.role)
+          commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)
@@ -116,13 +116,13 @@ const user = {
     },
 
     // 动态修改权限
-    ChangeRole({ commit }, role) {
+    ChangeRoles({ commit }, role) {
       return new Promise(resolve => {
         commit('SET_TOKEN', role)
         setToken(role)
         getUserInfo(role).then(response => {
           const data = response.data
-          commit('SET_ROLES', data.role)
+          commit('SET_ROLES', data.roles)
           commit('SET_NAME', data.name)
           commit('SET_AVATAR', data.avatar)
           commit('SET_INTRODUCTION', data.introduction)

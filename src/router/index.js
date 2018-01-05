@@ -18,7 +18,7 @@ import Layout from '../views/layout/Layout'
 * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
-    role: ['admin','editor']     will control the page role (you can set multiple roles)
+    roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
     noCache: true                if fasle ,the page will no be cached(default is false)
@@ -54,7 +54,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', //后端支持可开
+  // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
@@ -64,7 +64,7 @@ export const asyncRouterMap = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/index',
-    meta: { role: ['admin'] },
+    meta: { roles: ['admin'] }, // you can set roles in root nav
     children: [{
       path: 'index',
       component: _import('permission/index'),
@@ -72,7 +72,7 @@ export const asyncRouterMap = [
       meta: {
         title: 'permission',
         icon: 'lock',
-        role: ['admin']
+        roles: ['admin'] // or you can only set roles in sub nav
       }
     }]
   },
