@@ -25,7 +25,7 @@ const tagsView = {
       for (const i of state.cachedViews) {
         if (i === view.name) {
           const index = state.cachedViews.indexOf(i)
-          state.cachedViews.splice(index, index + 1)
+          state.cachedViews.splice(index, 1)
           break
         }
       }
