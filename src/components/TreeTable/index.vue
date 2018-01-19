@@ -32,7 +32,10 @@
 export default {
     name: 'tree-table',
     props: {
-      data: [Object, Array],
+      data: {
+        type: [Array, Object],
+        required: true
+      },
       columns: {
         type: Array,
         required: true
@@ -47,9 +50,11 @@ export default {
     computed: {
       // 格式化数据源
       formatData: function() {
+        if (!Array.isArray(this.data)) {
+          this.data = [this.data]
+        }
         const func = this.evalFunc || treeToArray
         const args = this.evalArgs ? Array.concat([this.data], this.evalArgs) : [this.data, this.expandAll]
-        console.log(args)
         return func.apply(null, args)
       }
     },
