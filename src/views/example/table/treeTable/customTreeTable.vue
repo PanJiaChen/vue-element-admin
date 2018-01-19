@@ -141,7 +141,6 @@ export default {
   },
   methods: {
     message(row) {
-      console.log(row)
       this.$message.info(row.event)
     }
   }
