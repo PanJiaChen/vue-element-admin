@@ -28,6 +28,8 @@ export default {
     dragTable: 'Drag Table',
     inlineEditTable: 'Inline Edit',
     complexTable: 'Complex Table',
+    treeTable: 'treeTable',
+    customTreeTable: 'Custom TreeTable',
     tab: 'Tab',
     form: 'Form',
     createForm: 'Create Form',
