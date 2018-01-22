@@ -1,3 +1,5 @@
+## 写在前面
+此组件仅提供一个创建TreeTable的解决方案
 ##prop说明
 ###data 
   必输
@@ -28,14 +30,14 @@
       }]
     }
   ```
-###columns
-  必输
   
+###columns
   列属性,要求是一个数组
   
   1. text: 显示在表头
   2. value: 对应data的key，treeTable将显示相应的value
   3. width: 每列的宽度，为一个数字
+  如果你想要每个字段都有自定义的样式或者嵌套其他组件，columns可不提供，直接像在el-table一样写即可，如果没有自定义内容，提供columns将更加的便捷方便
   ```javascript
   [{
     value:string,
@@ -47,8 +49,10 @@
     width:number
   }]
   ```
+  
 ### expandAll
   是否默认全部展开，boolean值，默认为false
+
 ### evalFunc
   解析函数，function，非必须
   
@@ -64,3 +68,6 @@
   如你的解析函数需要的参数为`(this.data,1,2,3,4)`，那么你只需要将`[1,2,3,4]`赋值给`evalArgs`就可以了
  ## slot
  请参考`customTreeTable`
+ 
+ ## 其他
+  如果有其他的需求，请参考[el-table](http://element-cn.eleme.io/#/en-US/component/table)的api自行修改index.vue

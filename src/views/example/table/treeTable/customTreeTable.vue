@@ -1,7 +1,6 @@
 <template>
-    <tree-table :data="data" :columns="columns" :evalFunc="func" :evalArgs="args">
-      <template slot="extend">
-        <el-table-column label="时间线" width="500" >
+    <tree-table :data="data" :evalFunc="func" :evalArgs="args">
+        <el-table-column label="时间线">
           <template slot-scope="scope">
             <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
               <div class="processContainer">
@@ -19,7 +18,6 @@
             <el-button type="text" @click="message(scope.row)">点击</el-button>
           </template>
         </el-table-column>
-      </template>
     </tree-table>
 </template>
 
@@ -54,13 +52,7 @@ export default {
           value: 'comment'
         }
       ],
-      data: [
-        {
-          id: 0,
-          event: '事件0',
-          timeLine: 50,
-          comment: '无'
-        },
+      data:
         {
           id: 1,
           event: '事件1',
@@ -134,8 +126,7 @@ export default {
               ]
             }
           ]
-        }
-      ],
+        },
       args: [null, null, true, 'timeLine']
     }
   },
