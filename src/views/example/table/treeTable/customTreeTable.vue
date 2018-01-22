@@ -1,23 +1,29 @@
 <template>
     <tree-table :data="data" :evalFunc="func" :evalArgs="args">
-        <el-table-column label="时间线">
-          <template slot-scope="scope">
-            <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
-              <div class="processContainer">
-                <div class="process" :style= "{ width:scope.row._width * 500+'px',
-                background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
-                marginLeft:scope.row._marginLeft * 500+'px' }">
-                  <span style="display:inline-block"></span>
-                </div>
+      <el-table-column label="事件">
+        <template slot-scope="scope">
+          <span style="color:sandybrown">{{scope.row.event}}</span>
+          <el-tag>{{scope.row.timeLine+'ms'}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="时间线">
+        <template slot-scope="scope">
+          <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
+            <div class="processContainer">
+              <div class="process" :style= "{ width:scope.row._width * 500+'px',
+              background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
+              marginLeft:scope.row._marginLeft * 500+'px' }">
+                <span style="display:inline-block"></span>
               </div>
-            </el-tooltip>
-          </template>
-        </el-table-column>
-        <el-table-column label="操作" width="200">
-          <template slot-scope="scope">
-            <el-button type="text" @click="message(scope.row)">点击</el-button>
-          </template>
-        </el-table-column>
+            </div>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="200">
+        <template slot-scope="scope">
+          <el-button type="text" @click="message(scope.row)">点击</el-button>
+        </template>
+      </el-table-column>
     </tree-table>
 </template>
 
@@ -34,24 +40,6 @@ export default {
   data() {
     return {
       func: treeToArray,
-      columns: [
-        {
-          text: '事件',
-          value: 'event'
-        },
-        {
-          text: 'ID',
-          value: 'id'
-        },
-        {
-          text: '时间线',
-          value: 'timeLine'
-        },
-        {
-          text: '备注',
-          value: 'comment'
-        }
-      ],
       data:
         {
           id: 1,
