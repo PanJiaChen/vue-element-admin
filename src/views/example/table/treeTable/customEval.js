@@ -4,7 +4,8 @@
 */
 'use strict'
 import Vue from 'vue'
-export default function treeToArray(data, parent, level, expandedAll, item, marLTemp = []) {
+export default function treeToArray(data, parent, level, expandedAll, item) {
+  const marLTemp = []
   let tmp = []
   Array.from(data).forEach(function(record) {
     if (record._expanded === undefined) {
