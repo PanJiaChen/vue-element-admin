@@ -28,7 +28,7 @@ export default {
     dragTable: '拖拽table',
     inlineEditTable: 'table内编辑',
     complexTable: '综合table',
-    treeTable: '树表',
+    treeTable: '树形表格',
     customTreeTable: '自定义树表',
     tab: 'Tab',
     form: '表单',

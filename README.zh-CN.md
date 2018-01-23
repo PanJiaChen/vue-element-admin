@@ -91,6 +91,7 @@
 - 导出excel
 - 导出zip
 - 前端可视化excel
+- 树形table
 - Table example
 - 动态table example
 - 拖拽table example

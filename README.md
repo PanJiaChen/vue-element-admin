@@ -78,6 +78,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Export excel
 - Export zip
 - Front-end visualization excel
+- Tree Table
 - Table example
 - Dynamictable example
 - Drag and drop table example
