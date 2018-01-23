@@ -151,9 +151,9 @@ export const asyncRouterMap = [
           { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
           { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
           { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
-          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }},
-          { path: 'treeTable', component: _import('example/table/treeTable/treeTable'), name: 'treeTable', meta: { title: 'treeTable' }},
-          { path: 'customTreeTable', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTable', meta: { title: 'customTreeTable' }}
+          { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTable', meta: { title: 'treeTable' }},
+          { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTable', meta: { title: 'customTreeTable' }},
+          { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
         ]
       },
       { path: 'tab/index', icon: 'tab', component: _import('example/tab/index'), name: 'tab', meta: { title: 'tab' }}

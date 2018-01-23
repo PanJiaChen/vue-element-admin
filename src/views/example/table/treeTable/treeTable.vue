@@ -1,14 +1,14 @@
 <template>
-    <tree-table :data="data" :columns="columns">
-    </tree-table>
+  <tree-table :data="data" :columns="columns"></tree-table>
 </template>
 
 <script>
-	/**
-	 Auth: Lei.j1ang
-	 Created: 2018/1/19-14:54
-	 */
-	import treeTable from '@/components/TreeTable'
+/**
+  Auth: Lei.j1ang
+  Created: 2018/1/19-14:54
+*/
+import treeTable from '@/components/TreeTable'
+
 export default {
   name: 'tree',
   components: { treeTable },
