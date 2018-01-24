@@ -60,7 +60,7 @@
 #### expandAll
   是否默认全部展开，boolean值，默认为false
 
-####evalFunc
+#### evalFunc
   解析函数，function，非必须
 
   如果不提供，将使用默认的[evalFunc](./eval.js)
@@ -81,7 +81,7 @@
  ## slot
  这是一个自定义列的插槽。
  
- 默认情况下，treeTable只有一行行展示数据的功能。但是一般情况下，我们会要给行加上一个操作按钮或者根据当行数据展示不同的样式，那么我们就是要自定义列了。请参考[customTreeTable](https://github.com/PanJiaChen/vue-element-admin/blob/master/src/views/example/table/treeTable/customTreeTable.vue)，[实例效果](http://panjiachen.github.io/vue-element-admin/#/example/table/custom-tree-table)
+ 默认情况下，treeTable只有一行行展示数据的功能。但是一般情况下，我们会要给行加上一个操作按钮或者根据当行数据展示不同的样式，这时我们就需要自定义列了。请参考[customTreeTable](https://github.com/PanJiaChen/vue-element-admin/blob/master/src/views/example/table/treeTable/customTreeTable.vue)，[实例效果](http://panjiachen.github.io/vue-element-admin/#/example/table/custom-tree-table)
  
  `slot`和`columns属性`可同时存在,columns里面的数据列会在slot自定义列的左边展示
 
