@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  name: 'TableMain',
+  name: 'Table',
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
