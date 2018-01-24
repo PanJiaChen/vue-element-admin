@@ -33,7 +33,6 @@ import treeToArray from './eval'
 export default {
   name: 'treeTable',
   props: {
-    a: 1,
     data: {
       type: [Array, Object],
       required: true
