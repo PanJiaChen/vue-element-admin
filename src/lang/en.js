@@ -42,7 +42,8 @@ export default {
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
     uploadExcel: 'Upload Excel',
-    exportZip: 'Zip',
+    zip: 'Zip',
+    exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n'
