@@ -5,7 +5,7 @@
       <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
     </el-tag>
 
-    <tree-table :data="data" :evalFunc="func" :evalArgs="args" border>
+    <tree-table :data="data" :evalFunc="func" :evalArgs="args" :expandAll="expandAll" border>
       <el-table-column label="事件">
         <template slot-scope="scope">
           <span style="color:sandybrown">{{scope.row.event}}</span>
@@ -48,6 +48,7 @@ export default {
   data() {
     return {
       func: treeToArray,
+      expandAll: false,
       data:
         {
           id: 1,
@@ -123,7 +124,7 @@ export default {
             }
           ]
         },
-      args: [null, null, true, 'timeLine']
+      args: [null, null, 'timeLine']
     }
   },
   methods: {
