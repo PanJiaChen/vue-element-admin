@@ -58,7 +58,7 @@ export default {
         tmp = this.data
       }
       const func = this.evalFunc || treeToArray
-      const args = this.evalArgs ? Array.concat([tmp], this.evalArgs) : [tmp, this.expandAll]
+      const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll]
       return func.apply(null, args)
     }
   },
@@ -66,7 +66,7 @@ export default {
     showRow: function(row) {
       const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true)
       row.row._show = show
-      return show ? '' : 'display:none;'
+      return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
     },
     // 切换下级是否展开
     toggleExpanded: function(trIndex) {
@@ -80,6 +80,16 @@ export default {
   }
 }
 </script>
+<style rel="stylesheet/css">
+  @keyframes treeTableShow {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+  @-webkit-keyframes treeTableShow {
+    from {opacity: 0;}
+    to {opacity: 1;}
+  }
+</style>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
   $color-blue: #2196F3;

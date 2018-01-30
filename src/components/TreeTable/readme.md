@@ -70,11 +70,11 @@
 #### evalArgs
   解析函数的参数，是一个数组
 
-  **请注意，自定义的解析函数参数第一个为this.data，你不需要在evalArgs填写。** *this.data为需要解析的数据*
+  **请注意，自定义的解析函数参数第一个为this.data，第二个参数为， this.expandAll,你不需要在evalArgs填写。一定记住，这两个参数是强制性的，并且位置不可颠倒** *this.data为需要解析的数据，this.expandAll为是否默认展开*
 
-  如你的解析函数需要的参数为`(this.data,1,2,3,4)`，那么你只需要将`[1,2,3,4]`赋值给`evalArgs`就可以了
+  如你的解析函数需要的参数为`(this.data, this.expandAll,1,2,3,4)`，那么你只需要将`[1,2,3,4]`赋值给`evalArgs`就可以了
   
-  如果你的解析函数参数只有一个`(this.data)`,那么就可以不用填写evalArgs了
+  如果你的解析函数参数只有`(this.data, this.expandAll)`,那么就可以不用填写evalArgs了
   
   具体可参考[*customEval.js*](https://github.com/PanJiaChen/vue-element-admin/blob/master/src/views/example/table/treeTable/customEval.js)的函数参数和[customTreeTable](https://github.com/PanJiaChen/vue-element-admin/blob/master/src/views/example/table/treeTable/customTreeTable.vue)的`evalArgs`属性值
 
