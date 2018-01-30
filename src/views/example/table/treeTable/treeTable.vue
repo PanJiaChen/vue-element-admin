@@ -18,7 +18,7 @@
 import treeTable from '@/components/TreeTable'
 
 export default {
-  name: 'tree',
+  name: 'treeTableDemo',
   components: { treeTable },
   data() {
     return {

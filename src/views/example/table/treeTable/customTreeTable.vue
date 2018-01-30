@@ -43,7 +43,7 @@ import treeTable from '@/components/TreeTable'
 import treeToArray from './customEval'
 
 export default {
-  name: 'tree',
+  name: 'customTreeTableDemo',
   components: { treeTable },
   data() {
     return {
