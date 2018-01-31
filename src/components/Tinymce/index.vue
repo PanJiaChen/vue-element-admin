@@ -8,6 +8,17 @@
 </template>
 
 <script>
+// Import Tinymce
+import tinymce from 'tinymce/tinymce'
+
+// A theme is also required
+import 'tinymce/themes/modern/theme'
+
+// Any plugins you want to use has to be imported
+import plugins from './plugins'
+
+import toolbar from './toolbar'
+
 import editorImage from './components/editorImage'
 
 export default {
@@ -25,11 +36,11 @@ export default {
       type: Array,
       required: false,
       default() {
-        return ['removeformat undo redo |  bullist numlist | outdent indent | forecolor | fullscreen code', 'bold italic blockquote | h2 p  media link | alignleft aligncenter alignright']
+        return []
       }
     },
     menubar: {
-      default: ''
+      default: 'file edit insert view format table help'
     },
     height: {
       type: Number,
@@ -47,7 +58,7 @@ export default {
   watch: {
     value(val) {
       if (!this.hasChange && this.hasInit) {
-        this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val))
+        this.$nextTick(() => tinymce.get(this.tinymceId).setContent(val))
       }
     }
   },
@@ -63,14 +74,15 @@ export default {
   methods: {
     initTinymce() {
       const _this = this
-      window.tinymce.init({
+      tinymce.init({
         selector: `#${this.tinymceId}`,
+        // language: 'zh_CN',
         height: this.height,
+        toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
+        menubar: this.menubar,
+        plugins: plugins,
         body_class: 'panel-body ',
         object_resizing: false,
-        toolbar: this.toolbar,
-        menubar: this.menubar,
-        plugins: 'advlist,autolink,code,paste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools',
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
@@ -127,20 +139,20 @@ export default {
       })
     },
     destroyTinymce() {
-      if (window.tinymce.get(this.tinymceId)) {
-        window.tinymce.get(this.tinymceId).destroy()
+      if (tinymce.get(this.tinymceId)) {
+        tinymce.get(this.tinymceId).destroy()
       }
     },
     setContent(value) {
-      window.tinymce.get(this.tinymceId).setContent(value)
+      tinymce.get(this.tinymceId).setContent(value)
     },
     getContent() {
-      window.tinymce.get(this.tinymceId).getContent()
+      tinymce.get(this.tinymceId).getContent()
     },
     imageSuccessCBK(arr) {
       const _this = this
       arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
+        tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
     }
   },
