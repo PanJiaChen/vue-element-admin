@@ -128,6 +128,14 @@ const webpackConfig = merge(baseWebpackConfig, {
         return context && (context.indexOf('xlsx') >= 0);
       }
     }),
+    // split tinymce into its own file
+    new webpack.optimize.CommonsChunkPlugin({
+      async: 'tinymce',
+      minChunks(module) {
+        var context = module.context;
+        return context && (context.indexOf('tinymce') >= 0);
+      }
+    }),
      // split codemirror into its own file
      new webpack.optimize.CommonsChunkPlugin({
       async: 'codemirror',

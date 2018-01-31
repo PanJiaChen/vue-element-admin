@@ -11,6 +11,8 @@
 // Import Tinymce
 import tinymce from 'tinymce/tinymce'
 
+tinymce.baseURL = 'static/tinymce'
+
 // A theme is also required
 import 'tinymce/themes/modern/theme'
 
