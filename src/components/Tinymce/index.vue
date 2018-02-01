@@ -2,13 +2,15 @@
   <div class="tinymce-container editor-container">
     <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
     <div class="editor-custom-btn-container">
-     <editorImage  color="#20a0ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
-      </div>
+      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+    </div>
   </div>
 </template>
 
 <script>
 import editorImage from './components/editorImage'
+import plugins from './plugins'
+import toolbar from './toolbar'
 
 export default {
   name: 'tinymce',
@@ -25,11 +27,11 @@ export default {
       type: Array,
       required: false,
       default() {
-        return ['removeformat undo redo |  bullist numlist | outdent indent | forecolor | fullscreen code', 'bold italic blockquote | h2 p  media link | alignleft aligncenter alignright']
+        return []
       }
     },
     menubar: {
-      default: ''
+      default: 'file edit insert view format table'
     },
     height: {
       type: Number,
@@ -68,17 +70,16 @@ export default {
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
-        toolbar: this.toolbar,
+        toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
         menubar: this.menubar,
-        plugins: 'advlist,autolink,code,paste,textcolor, colorpicker,fullscreen,link,lists,media,wordcount, imagetools',
+        plugins: plugins,
         end_container_on_empty_block: true,
         powerpaste_word_import: 'clean',
         code_dialog_height: 450,
         code_dialog_width: 1000,
         advlist_bullet_styles: 'square',
         advlist_number_styles: 'default',
-        imagetools_cors_hosts: ['wpimg.wallstcn.com', 'wallstreetcn.com'],
-        imagetools_toolbar: 'watermark',
+        imagetools_cors_hosts: ['www.tinymce.com', 'codepen.io'],
         default_link_target: '_blank',
         link_title: false,
         init_instance_callback: editor => {
@@ -160,9 +161,9 @@ export default {
 }
 .editor-custom-btn-container {
   position: absolute;
-  right: 15px;
+  right: 4px;
+  top: 4px;
   /*z-index: 2005;*/
-  top: 18px;
 }
 .editor-upload-btn {
   display: inline-block;
