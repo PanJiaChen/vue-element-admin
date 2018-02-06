@@ -95,7 +95,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 ## Getting started
 
 ```bash
-# clone the projice
+# clone the project
 git clone https://github.com/PanJiaChen/vue-element-admin.git
 
 # install dependency
