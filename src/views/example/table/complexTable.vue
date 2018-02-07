@@ -230,10 +230,16 @@ export default {
       this.getList()
     },
     handleSizeChange(val) {
+      if (this.listQuery.limit === val) {
+        return
+      }
       this.listQuery.limit = val
       this.getList()
     },
     handleCurrentChange(val) {
+      if (this.listQuery.page === val) {
+        return
+      }
       this.listQuery.page = val
       this.getList()
     },
