@@ -24,7 +24,7 @@ import Layout from '../views/layout/Layout'
     roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
-    noCache: true                if fasle ,the page will no be cached(default is false)
+    noCache: true                if true ,the page will no be cached(default is false)
   }
 **/
 export const constantRouterMap = [
