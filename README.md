@@ -146,6 +146,8 @@ If you find this project useful, you can buy author a glass of juice :tropical_d
 
 [Paypal Me](https://www.paypal.me/panfree23)
 
+[Buy me a coffee](https://www.buymeacoffee.com/Pan)
+
 ## License
 
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
