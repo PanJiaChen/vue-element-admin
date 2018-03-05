@@ -28,11 +28,11 @@
 
 - [在线访问](http://panjiachen.github.io/vue-element-admin)
 
-- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
+- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
 
 - [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
+- [donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
 
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
@@ -145,7 +145,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/deploy)
+更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/deploy)
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
