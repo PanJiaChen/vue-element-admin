@@ -89,7 +89,7 @@ export default {
           _this.hasInit = true
           editor.on('NodeChange Change KeyUp SetContent', () => {
             this.hasChange = true
-            this.$emit('input', editor.getContent({ format: 'raw' }))
+            this.$emit('input', editor.getContent())
           })
         }
         // 整合七牛上传
