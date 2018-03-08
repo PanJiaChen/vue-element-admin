@@ -11,7 +11,7 @@
             {{generateIconCode(item)}}
           </div>
           <div class="icon-item">
-            <svg-icon :icon-class="item" />
+            <svg-icon class-name="disabled" :icon-class="item" />
             <span>{{item}}</span>
           </div>
         </el-tooltip>
@@ -69,6 +69,9 @@ export default {
     display: block;
     font-size: 24px;
     margin-top: 10px;
+  }
+  .disabled{
+    pointer-events: none;
   }
 }
 </style>
