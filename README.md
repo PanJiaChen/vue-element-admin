@@ -30,16 +30,16 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/)
 
-- [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
+- [Donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
 
 **vue-element-admin is a admin interfaces integration solution, which is not suitable for secondary development as a base template.**
 
  - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0**
+**Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0+**
 
 ## Preparation
 

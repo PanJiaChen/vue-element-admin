@@ -30,15 +30,15 @@
 
 - [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
 
-- [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
+- [Donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
 
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0**
+**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0+**
 
 ## 前序准备
 
