@@ -4,8 +4,10 @@
 
 <script>
 import echarts from 'echarts'
+import resize from './mixins/resize'
 
 export default {
+  mixins: [resize],
   props: {
     className: {
       type: String,
