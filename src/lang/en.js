@@ -125,5 +125,10 @@ export default {
     change: 'Theme change',
     documentation: 'Theme documentation',
     tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
+  },
+  tagsView: {
+    close: 'Close',
+    closeOthers: 'Close Others',
+    closeAll: 'Close All'
   }
 }
