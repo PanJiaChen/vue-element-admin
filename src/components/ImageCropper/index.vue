@@ -395,6 +395,7 @@ export default {
     off() {
       setTimeout(() => {
         this.$emit('input', false)
+        this.$emit('close')
         if (this.step == 3 && this.loading == 2) {
           this.setStep(1)
         }
