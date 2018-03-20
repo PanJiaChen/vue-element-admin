@@ -1,4 +1,4 @@
-import { asyncRouterMap, constantRouterMap } from 'src/router'
+import { asyncRouterMap, constantRouterMap } from '@/router'
 
 /**
  * 通过meta.role判断是否与当前用户权限匹配
@@ -6,8 +6,8 @@ import { asyncRouterMap, constantRouterMap } from 'src/router'
  * @param route
  */
 function hasPermission(roles, route) {
-  if (route.meta && route.meta.role) {
-    return roles.some(role => route.meta.role.indexOf(role) >= 0)
+  if (route.meta && route.meta.roles) {
+    return roles.some(role => route.meta.roles.indexOf(role) >= 0)
   } else {
     return true
   }
@@ -52,11 +52,11 @@ const permission = {
         } else {
           accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
         }
-        commit('SET_ROUTERS', accessedRouters);
-        resolve();
+        commit('SET_ROUTERS', accessedRouters)
+        resolve()
       })
     }
   }
-};
+}
 
-export default permission;
+export default permission
