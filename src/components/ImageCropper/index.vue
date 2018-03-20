@@ -1,104 +1,104 @@
 <template>
 <div class="vue-image-crop-upload" v-show="value">
-	<div class="vicp-wrap">
-		<div class="vicp-close" @click="off">
-			<i class="vicp-icon4"></i>
-		</div>
+  <div class="vicp-wrap">
+    <div class="vicp-close" @click="off">
+      <i class="vicp-icon4"></i>
+    </div>
 
-		<div class="vicp-step1" v-show="step == 1">
-			<div class="vicp-drop-area" @dragleave="preventDefault" @dragover="preventDefault" @dragenter="preventDefault" @click="handleClick" @drop="handleChange">
-				<i class="vicp-icon1" v-show="loading != 1">
-				<i class="vicp-icon1-arrow"></i>
-				<i class="vicp-icon1-body"></i>
-				<i class="vicp-icon1-bottom"></i>
-				</i>
-				<span class="vicp-hint" v-show="loading !== 1">{{ lang.hint }}</span>
-				<span class="vicp-no-supported-hint" v-show="!isSupported">{{ lang.noSupported }}</span>
-				<input type="file" v-show="false" v-if="step == 1" @change="handleChange" ref="fileinput">
-			</div>
-			<div class="vicp-error" v-show="hasError">
-				<i class="vicp-icon2"></i> {{ errorMsg }}
-			</div>
-			<div class="vicp-operate">
-				<a @click="off" @mousedown="ripple">{{ lang.btn.off }}</a>
-			</div>
-		</div>
+    <div class="vicp-step1" v-show="step == 1">
+      <div class="vicp-drop-area" @dragleave="preventDefault" @dragover="preventDefault" @dragenter="preventDefault" @click="handleClick" @drop="handleChange">
+        <i class="vicp-icon1" v-show="loading != 1">
+        <i class="vicp-icon1-arrow"></i>
+        <i class="vicp-icon1-body"></i>
+        <i class="vicp-icon1-bottom"></i>
+        </i>
+        <span class="vicp-hint" v-show="loading !== 1">{{ lang.hint }}</span>
+        <span class="vicp-no-supported-hint" v-show="!isSupported">{{ lang.noSupported }}</span>
+        <input type="file" v-show="false" v-if="step == 1" @change="handleChange" ref="fileinput">
+      </div>
+      <div class="vicp-error" v-show="hasError">
+        <i class="vicp-icon2"></i> {{ errorMsg }}
+      </div>
+      <div class="vicp-operate">
+        <a @click="off" @mousedown="ripple">{{ lang.btn.off }}</a>
+      </div>
+    </div>
 
-		<div class="vicp-step2" v-if="step == 2">
-			<div class="vicp-crop">
-				<div class="vicp-crop-left" v-show="true">
-					<div class="vicp-img-container">
-						<img :src="sourceImgUrl" :style="sourceImgStyle" class="vicp-img" draggable="false"
-							@drag="preventDefault"
-							@dragstart="preventDefault"
-							@dragend="preventDefault"
-							@dragleave="preventDefault"
-							@dragover="preventDefault"
-							@dragenter="preventDefault"
-							@drop="preventDefault"
-							@touchstart="imgStartMove"
-							@touchmove="imgMove"
-							@touchend="createImg"
-							@touchcancel="createImg"
-							@mousedown="imgStartMove"
-							@mousemove="imgMove"
-							@mouseup="createImg"
-							@mouseout="createImg"
-							ref="img">
-						<div class="vicp-img-shade vicp-img-shade-1" :style="sourceImgShadeStyle"></div>
-						<div class="vicp-img-shade vicp-img-shade-2" :style="sourceImgShadeStyle"></div>
-					</div>
+    <div class="vicp-step2" v-if="step == 2">
+      <div class="vicp-crop">
+        <div class="vicp-crop-left" v-show="true">
+          <div class="vicp-img-container">
+            <img :src="sourceImgUrl" :style="sourceImgStyle" class="vicp-img" draggable="false"
+              @drag="preventDefault"
+              @dragstart="preventDefault"
+              @dragend="preventDefault"
+              @dragleave="preventDefault"
+              @dragover="preventDefault"
+              @dragenter="preventDefault"
+              @drop="preventDefault"
+              @touchstart="imgStartMove"
+              @touchmove="imgMove"
+              @touchend="createImg"
+              @touchcancel="createImg"
+              @mousedown="imgStartMove"
+              @mousemove="imgMove"
+              @mouseup="createImg"
+              @mouseout="createImg"
+              ref="img">
+            <div class="vicp-img-shade vicp-img-shade-1" :style="sourceImgShadeStyle"></div>
+            <div class="vicp-img-shade vicp-img-shade-2" :style="sourceImgShadeStyle"></div>
+          </div>
 
-					<div class="vicp-range">
-						<input type="range" :value="scale.range" step="1" min="0" max="100" @input="zoomChange">
-						<i @mousedown="startZoomSub" @mouseout="endZoomSub" @mouseup="endZoomSub" class="vicp-icon5"></i>
-						<i @mousedown="startZoomAdd" @mouseout="endZoomAdd" @mouseup="endZoomAdd" class="vicp-icon6"></i>
-					</div>
+          <div class="vicp-range">
+            <input type="range" :value="scale.range" step="1" min="0" max="100" @input="zoomChange">
+            <i @mousedown="startZoomSub" @mouseout="endZoomSub" @mouseup="endZoomSub" class="vicp-icon5"></i>
+            <i @mousedown="startZoomAdd" @mouseout="endZoomAdd" @mouseup="endZoomAdd" class="vicp-icon6"></i>
+          </div>
 
-					<div class="vicp-rotate" v-if="!noRotate">
+          <div class="vicp-rotate" v-if="!noRotate">
                         <i @mousedown="startRotateLeft" @mouseout="endRotate" @mouseup="endRotate">↺</i>
                         <i @mousedown="startRotateRight" @mouseout="endRotate" @mouseup="endRotate">↻</i>
                     </div>
-				</div>
-				<div class="vicp-crop-right" v-show="true">
-					<div class="vicp-preview">
-						<div class="vicp-preview-item" v-if="!noSquare">
-							<img :src="createImgUrl" :style="previewStyle">
-							<span>{{ lang.preview }}</span>
-						</div>
-						<div class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
-							<img :src="createImgUrl" :style="previewStyle">
-							<span>{{ lang.preview }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="vicp-operate">
-				<a @click="setStep(1)" @mousedown="ripple">{{ lang.btn.back }}</a>
-				<a class="vicp-operate-btn" @click="prepareUpload" @mousedown="ripple">{{ lang.btn.save }}</a>
-			</div>
-		</div>
+        </div>
+        <div class="vicp-crop-right" v-show="true">
+          <div class="vicp-preview">
+            <div class="vicp-preview-item" v-if="!noSquare">
+              <img :src="createImgUrl" :style="previewStyle">
+              <span>{{ lang.preview }}</span>
+            </div>
+            <div class="vicp-preview-item vicp-preview-item-circle" v-if="!noCircle">
+              <img :src="createImgUrl" :style="previewStyle">
+              <span>{{ lang.preview }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="vicp-operate">
+        <a @click="setStep(1)" @mousedown="ripple">{{ lang.btn.back }}</a>
+        <a class="vicp-operate-btn" @click="prepareUpload" @mousedown="ripple">{{ lang.btn.save }}</a>
+      </div>
+    </div>
 
-		<div class="vicp-step3" v-if="step == 3">
-			<div class="vicp-upload">
-				<span class="vicp-loading" v-show="loading === 1">{{ lang.loading }}</span>
-				<div class="vicp-progress-wrap">
-					<span class="vicp-progress" v-show="loading === 1" :style="progressStyle"></span>
-				</div>
-				<div class="vicp-error" v-show="hasError">
-					<i class="vicp-icon2"></i> {{ errorMsg }}
-				</div>
-				<div class="vicp-success" v-show="loading === 2">
-					<i class="vicp-icon3"></i> {{ lang.success }}
-				</div>
-			</div>
-			<div class="vicp-operate">
-				<a @click="setStep(2)" @mousedown="ripple">{{ lang.btn.back }}</a>
-				<a @click="off" @mousedown="ripple">{{ lang.btn.close }}</a>
-			</div>
-		</div>
-		<canvas v-show="false" :width="width" :height="height" ref="canvas"></canvas>
-	</div>
+    <div class="vicp-step3" v-if="step == 3">
+      <div class="vicp-upload">
+        <span class="vicp-loading" v-show="loading === 1">{{ lang.loading }}</span>
+        <div class="vicp-progress-wrap">
+          <span class="vicp-progress" v-show="loading === 1" :style="progressStyle"></span>
+        </div>
+        <div class="vicp-error" v-show="hasError">
+          <i class="vicp-icon2"></i> {{ errorMsg }}
+        </div>
+        <div class="vicp-success" v-show="loading === 2">
+          <i class="vicp-icon3"></i> {{ lang.success }}
+        </div>
+      </div>
+      <div class="vicp-operate">
+        <a @click="setStep(2)" @mousedown="ripple">{{ lang.btn.back }}</a>
+        <a @click="off" @mousedown="ripple">{{ lang.btn.close }}</a>
+      </div>
+    </div>
+    <canvas v-show="false" :width="width" :height="height" ref="canvas"></canvas>
+  </div>
 </div>
 </template>
 
@@ -409,7 +409,7 @@ export default {
       }, 200)
     },
     /* 图片选择区域函数绑定
-		 ---------------------------------------------------------------*/
+     ---------------------------------------------------------------*/
     preventDefault(e) {
       e.preventDefault()
       return false
@@ -589,7 +589,7 @@ export default {
       scale.x = rX
       scale.y = rY
     },
-		 // 按钮按下开始向右旋转
+     // 按钮按下开始向右旋转
     startRotateRight(e) {
       let that = this,
         {
@@ -737,7 +737,7 @@ export default {
         }
       }, 300)
     },
-		 // 生成需求图片
+     // 生成需求图片
     createImg(e) {
       let that = this,
         {
@@ -1132,9 +1132,9 @@ export default {
                     appearance: none;
             cursor: pointer;
             /* 滑块
-							 ---------------------------------------------------------------*/
+               ---------------------------------------------------------------*/
             /* 轨道
-							 ---------------------------------------------------------------*/ }
+               ---------------------------------------------------------------*/ }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]:focus {
               outline: none; }
             .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type=range]::-webkit-slider-thumb {
