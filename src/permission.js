@@ -17,9 +17,9 @@ function hasPermission(roles, permissionRoles) {
 const whiteList = ['/login', '/authredirect']// no redirect whitelist
 
 router.beforeEach((to, from, next) => {
-  NProgress.start() // start progress bar
-  if (getToken()) { // determine if there has token
-    /* has token*/
+  NProgress.start() // 开启Progress
+  const token = getToken()
+  if (typeof (token) === 'undefined') { // 判断是否有token
     if (to.path === '/login') {
       next({ path: '/' })
       NProgress.done() // if current page is dashboard will not trigger	afterEach hook, so manually handle it
