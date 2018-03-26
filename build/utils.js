@@ -99,3 +99,7 @@ exports.createNotifierCallback = () => {
     })
   }
 }
+
+exports.resolve = (dir) => {
+  return path.join(__dirname, '..', dir)
+}
