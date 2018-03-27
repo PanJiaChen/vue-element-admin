@@ -131,16 +131,14 @@ export function objectMerge(target, source) {
   if (Array.isArray(source)) {
     return source.slice()
   }
-  for (const property in source) {
-    if (source.hasOwnProperty(property)) {
-      const sourceProperty = source[property]
-      if (typeof sourceProperty === 'object') {
-        target[property] = objectMerge(target[property], sourceProperty)
-        continue
-      }
+  Object.keys(source).forEach((property) => {
+    const sourceProperty = source[property]
+    if (typeof sourceProperty === 'object') {
+      target[property] = objectMerge(target[property], sourceProperty)
+    } else {
       target[property] = sourceProperty
     }
-  }
+  })
   return target
 }
 
@@ -253,15 +251,13 @@ export function deepClone(source) {
     throw new Error('error arguments', 'shallowClone')
   }
   const targetObj = source.constructor === Array ? [] : {}
-  for (const keys in source) {
-    if (source.hasOwnProperty(keys)) {
-      if (source[keys] && typeof source[keys] === 'object') {
-        targetObj[keys] = source[keys].constructor === Array ? [] : {}
-        targetObj[keys] = deepClone(source[keys])
-      } else {
-        targetObj[keys] = source[keys]
-      }
+  Object.keys(source).forEach((keys) => {
+    if (source[keys] && typeof source[keys] === 'object') {
+      targetObj[keys] = source[keys].constructor === Array ? [] : {}
+      targetObj[keys] = deepClone(source[keys])
+    } else {
+      targetObj[keys] = source[keys]
     }
-  }
+  })
   return targetObj
 }
