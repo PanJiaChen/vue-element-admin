@@ -65,7 +65,7 @@ export default {
   },
 
   methods: {
-    updateStyle(style, oldCluster, newCluster) {      
+    updateStyle(style, oldCluster, newCluster) {
       let colorOverrides = [] // only capture color overides
       oldCluster.forEach((color, index) => {
         let value = newCluster[index]
