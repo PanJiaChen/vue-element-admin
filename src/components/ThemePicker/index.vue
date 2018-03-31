@@ -65,12 +65,18 @@ export default {
   },
 
   methods: {
-    updateStyle(style, oldCluster, newCluster) {
-      let newStyle = style
+    updateStyle(style, oldCluster, newCluster) {      
+      let colorOverrides = [] // only capture color overides
       oldCluster.forEach((color, index) => {
-        newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
+        let value = newCluster[index]
+        let repl = new RegExp(`(^|})([^{]+{[^{}]+)${color}\\b([^}]*)(?=})`, 'gi')
+        let nestRepl = new RegExp(color, 'ig') // for greed matching before the 'color'
+        let v
+        while ((v = repl.exec(data))) {
+          colorOverrides.push(v[2].replace(nestRepl, value) + value + v[3] + '}') // '}' not captured in the regexp repl to reserve it as locator-boundary
+        }
       })
-      return newStyle
+      return colorOverrides.join('')
     },
 
     getCSSString(url, callback, variable) {
