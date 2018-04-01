@@ -72,7 +72,7 @@ export default {
         let repl = new RegExp(`(^|})([^{]+{[^{}]+)${color}\\b([^}]*)(?=})`, 'gi')
         let nestRepl = new RegExp(color, 'ig') // for greed matching before the 'color'
         let v
-        while ((v = repl.exec(data))) {
+        while ((v = repl.exec(style))) {
           colorOverrides.push(v[2].replace(nestRepl, value) + value + v[3] + '}') // '}' not captured in the regexp repl to reserve it as locator-boundary
         }
       })
