@@ -71,7 +71,7 @@ export default {
         const value = newCluster[index]
         const color_plain = color.replace(/([()])/g,'\\$1')
         const repl = new RegExp(`(^|})([^{]+{[^{}]+)${color_plain}\\b([^}]*)(?=})`, 'gi')
-        const nestRepl = new RegExp(color, 'ig') // for greed matching before the 'color'
+        const nestRepl = new RegExp(color_plain, 'ig') // for greed matching before the 'color'
         let v
         while ((v = repl.exec(style))) {
           colorOverrides.push(v[2].replace(nestRepl, value) + value + v[3] + '}') // '}' not captured in the regexp repl to reserve it as locator-boundary
