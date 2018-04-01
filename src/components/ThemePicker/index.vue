@@ -69,7 +69,7 @@ export default {
       const colorOverrides = [] // only capture color overides
       oldCluster.forEach((color, index) => {
         const value = newCluster[index]
-        const color_plain = color.replace(/([()])/g,'\\$1')
+        const color_plain = color.replace(/([()])/g, '\\$1')
         const repl = new RegExp(`(^|})([^{]+{[^{}]+)${color_plain}\\b([^}]*)(?=})`, 'gi')
         const nestRepl = new RegExp(color_plain, 'ig') // for greed matching before the 'color'
         let v
