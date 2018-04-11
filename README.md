@@ -41,7 +41,7 @@ English | [简体中文](./README.zh-CN.md)
 
 **Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0+**
 
-## Preparation
+## Preparations
 
 You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 和 [element-ui](https://github.com/ElemeFE/element). All data requests for this project are simulated using [Mock.js](https://github.com/nuysoft/Mock). It would be helpful if you have pre-existing knowledge on those.
 
