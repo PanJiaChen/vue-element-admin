@@ -18,6 +18,7 @@ export default {
     countTo: 'CountTo',
     componentMixin: 'Mixin',
     backToTop: 'BackToTop',
+    dragDialog: 'Drag Dialog',
     charts: 'Charts',
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Line Chart',
