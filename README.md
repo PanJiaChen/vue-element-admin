@@ -86,6 +86,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Form example
 - Two-step login
 - SplitPane
+- Drag Dialog
 - Dropzone
 - Sticky
 - CountTo
