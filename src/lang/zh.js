@@ -18,6 +18,7 @@ export default {
     countTo: 'CountTo',
     componentMixin: '小组件',
     backToTop: '返回顶部',
+    dragDialog: '拖拽 Dialog',
     charts: '图表',
     keyboardChart: '键盘图表',
     lineChart: '折线图',
