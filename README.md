@@ -30,6 +30,8 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/)
 
+- [Gitter](https://gitter.im/vue-element-admin/discuss)
+
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)

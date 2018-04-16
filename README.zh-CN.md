@@ -30,6 +30,8 @@
 
 - [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
 
+- [Gitter讨论组](https://gitter.im/vue-element-admin/discuss)
+
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
