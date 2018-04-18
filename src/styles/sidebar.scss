@@ -7,6 +7,9 @@
   }
   // 侧边栏
   .sidebar-container {
+    .horizontal-collapse-transition {
+      transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
+    }
     transition: width .28s;
     width: 180px !important;
     height: 100%;

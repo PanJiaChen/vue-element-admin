@@ -2,7 +2,6 @@
   <scroll-bar>
     <el-menu
       mode="vertical"
-      :collapse-transition="false"
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
