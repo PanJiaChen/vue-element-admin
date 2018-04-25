@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.3.0-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -30,6 +30,8 @@
 
 - [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
 
+- [Gitter讨论组](https://gitter.im/vue-element-admin/discuss)
+
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
@@ -38,7 +40,7 @@
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0+**
+**注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
 
 ## 前序准备
 
@@ -52,7 +54,6 @@
  - [手摸手，带你封装一个 vue component](https://segmentfault.com/a/1190000009090836)
  - [手摸手，带你优雅的使用 icon](https://juejin.im/post/59bb864b5188257e7a427c09)
 
- 响应需求，开了一个qq群 `591724180` 方便大家交流
 
  或者加入该群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西
 
@@ -99,6 +100,7 @@
 - Form example
 - 二步登录
 - SplitPane
+- 拖拽 Dialog
 - Dropzone
 - Sticky
 - CountTo

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input id="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
+    <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
     <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
       <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
@@ -51,7 +51,9 @@ export default {
     handkeFileChange(e) {
       const files = e.target.files
       const itemFile = files[0] // only use files[0]
+      if (!itemFile) return
       this.readerData(itemFile)
+      this.$refs['excel-upload-input'].value = null // fix can't select the same excel
     },
     readerData(itemFile) {
       const reader = new FileReader()

@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.3.0-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -30,6 +30,8 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/)
 
+- [Gitter](https://gitter.im/vue-element-admin/discuss)
+
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
@@ -39,7 +41,7 @@ English | [简体中文](./README.zh-CN.md)
  - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0+**
+**Note: This project uses element-ui@2.3.0+ version, so the minimum compatible vue@2.5.0+**
 
 ## Preparation
 
@@ -86,6 +88,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Form example
 - Two-step login
 - SplitPane
+- Drag Dialog
 - Dropzone
 - Sticky
 - CountTo
