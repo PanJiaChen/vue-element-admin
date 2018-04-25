@@ -37,7 +37,7 @@
     "vue-multiselect": "2.0.8",
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
-    "vuedraggable": "2.15.0",
+    "vuedraggable": "^2.16.0",
     "vuex": "3.0.1",
     "xlsx": "^0.11.16"
   },
