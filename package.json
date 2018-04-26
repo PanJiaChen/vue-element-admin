@@ -4,13 +4,26 @@
   "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint"
+  },
+  "keywords": [
+    "vue",
+    "element-ui",
+    "admin",
+    "management-system",
+    "admin-template"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
   },
   "dependencies": {
     "axios": "0.17.1",
