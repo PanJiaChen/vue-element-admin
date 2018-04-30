@@ -4,6 +4,7 @@ export default{
     const dragDom = el.querySelector('.el-dialog')
     dialogHeaderEl.style.cssText += ';cursor:move;'
     dragDom.style.cssText += ';top:0px;'
+
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
     function getStyle(dom, attr) {
       if (dom.currentStyle) {
@@ -17,6 +18,18 @@ export default{
       // 鼠标按下，计算当前元素距离可视区的距离
       const disX = e.clientX - dialogHeaderEl.offsetLeft
       const disY = e.clientY - dialogHeaderEl.offsetTop
+
+      const dragDomWidth = dragDom.offsetWidth
+      const dragDomheight = dragDom.offsetHeight
+
+      const screenWidth = document.body.clientWidth
+      const screenHeight = document.body.clientHeight
+
+      const minDragDomLeft = dragDom.offsetLeft
+      const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
+
+      const minDragDomTop = dragDom.offsetTop
+      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight
 
       // 获取到的值带px 正则匹配替换
       let styL = getStyle(dragDom, 'left')
@@ -32,14 +45,24 @@ export default{
 
       document.onmousemove = function(e) {
         // 通过事件委托，计算移动的距离
-        const l = e.clientX - disX
-        const t = e.clientY - disY
+        let left = e.clientX - disX
+        let top = e.clientY - disY
+
+        // 边界处理
+        if (-(left) > minDragDomLeft) {
+          left = -minDragDomLeft
+        } else if (left > maxDragDomLeft) {
+          left = maxDragDomLeft
+        }
+
+        if (-(top) > minDragDomTop) {
+          top = -minDragDomTop
+        } else if (top > maxDragDomTop) {
+          top = maxDragDomTop
+        }
 
         // 移动当前元素
-        dragDom.style.cssText += `;left:${l + styL}px;top:${t + styT}px;`
-
-        // 将此时的位置传出去
-        // binding.value({x:e.pageX,y:e.pageY})
+        dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`
       }
 
       document.onmouseup = function(e) {
