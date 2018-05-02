@@ -63,7 +63,7 @@
     }
   }
   .sidebar-container .nest-menu .el-submenu > .el-submenu__title,
-  .sidebar-container .nest-menu .el-submenu .el-menu-item {
+  .sidebar-container .el-submenu .el-menu-item {
     min-width: 180px !important;
     background-color: $subMenuBg !important;
     &:hover {
