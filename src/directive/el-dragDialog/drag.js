@@ -6,13 +6,13 @@ export default{
     dragDom.style.cssText += ';top:0px;'
 
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
-    function getStyle(dom, attr) {
-      if (dom.currentStyle) {
-        return dom.currentStyle[attr]
+    const getStyle = (function() {
+      if (window.document.currentStyle) {
+        return (dom, attr) => dom.currentStyle[attr]
       } else {
-        return getComputedStyle(dom, false)[attr]
+        return (dom, attr) => getComputedStyle(dom, false)[attr]
       }
-    }
+    })()
 
     dialogHeaderEl.onmousedown = (e) => {
       // 鼠标按下，计算当前元素距离可视区的距离
