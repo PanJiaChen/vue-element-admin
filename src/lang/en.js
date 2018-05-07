@@ -19,6 +19,7 @@ export default {
     componentMixin: 'Mixin',
     backToTop: 'BackToTop',
     dragDialog: 'Drag Dialog',
+    dragKanban: 'Drag Kanban',
     charts: 'Charts',
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Line Chart',

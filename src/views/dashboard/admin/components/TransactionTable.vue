@@ -1,6 +1,6 @@
 <template>
   <el-table :data="list" style="width: 100%;padding-top: 15px;">
-    <el-table-column label="Order_No" show-overflow-tooltip>
+    <el-table-column label="Order_No" min-width="200">
       <template slot-scope="scope">
         {{scope.row.order_no}}
       </template>
@@ -42,7 +42,7 @@ export default {
   methods: {
     fetchData() {
       fetchList().then(response => {
-        this.list = response.data.items.slice(0, 7)
+        this.list = response.data.items.slice(0, 8)
       })
     }
   }
