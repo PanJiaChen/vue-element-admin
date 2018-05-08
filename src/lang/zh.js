@@ -4,6 +4,8 @@ export default {
     introduction: '简述',
     documentation: '文档',
     permission: '权限测试页',
+    pagePermission: '页面权限',
+    directivePermission: '指令权限',
     icons: '图标',
     components: '组件',
     componentIndex: '介绍',
