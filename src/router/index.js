@@ -166,7 +166,7 @@ export const asyncRouterMap = [
   {
     path: '/example',
     component: Layout,
-    redirect: '/example/table/complex-table',
+    redirect: '/example/list',
     name: 'example',
     meta: {
       title: 'example',
@@ -174,7 +174,7 @@ export const asyncRouterMap = [
     },
     children: [
       { path: 'create', component: _import('example/create'), name: 'createArticle', meta: { title: 'createArticle', icon: 'edit' }},
-      { path: 'edit/:id(\\d+)', component: _import('example/edit'), name: 'editArticle', meta: { title: 'editArticle' }, hidden: true },
+      { path: 'edit/:id(\\d+)', component: _import('example/edit'), name: 'editArticle', meta: { title: 'editArticle', noCache: true }, hidden: true },
       { path: 'list', component: _import('example/list'), name: 'articleList', meta: { title: 'articleList', icon: 'list' }}
     ]
   },

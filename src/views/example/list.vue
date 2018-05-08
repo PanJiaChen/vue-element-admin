@@ -1,8 +1,7 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
-
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
@@ -35,22 +34,28 @@
 
       <el-table-column min-width="300px" label="Title">
         <template slot-scope="scope">
-          <template v-if="scope.row.edit">
-            <el-input class="edit-input" size="small" v-model="scope.row.title"></el-input>
-            <el-button class='cancel-btn' size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">cancel</el-button>
-          </template>
-          <span v-else>{{ scope.row.title }}</span>
+
+          <router-link class="link-type" :to="'/example/edit/'+scope.row.id">
+            <span>{{ scope.row.title }}</span>
+          </router-link>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.edit" type="success" @click="confirmEdit(scope.row)" size="small" icon="el-icon-circle-check-outline">Ok</el-button>
-          <el-button v-else type="primary" @click='scope.row.edit=!scope.row.edit' size="small" icon="el-icon-edit">Edit</el-button>
+          <router-link :to="'/example/edit/'+scope.row.id">
+            <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
+          </router-link>
         </template>
       </el-table-column>
-
     </el-table>
+
+    <div class="pagination-container">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page"
+        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      </el-pagination>
+    </div>
+
   </div>
 </template>
 
@@ -58,10 +63,11 @@
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'inlineEditTable',
+  name: 'articleList',
   data() {
     return {
       list: null,
+      total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
@@ -86,32 +92,18 @@ export default {
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
-        const items = response.data.items
-        this.list = items.map(v => {
-          this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-
-          v.originalTitle = v.title //  will be used when user click the cancel botton
-
-          return v
-        })
+        this.list = response.data.items
+        this.total = response.data.total
         this.listLoading = false
       })
     },
-    cancelEdit(row) {
-      row.title = row.originalTitle
-      row.edit = false
-      this.$message({
-        message: 'The title has been restored to the original value',
-        type: 'warning'
-      })
+    handleSizeChange(val) {
+      this.listQuery.limit = val
+      this.getList()
     },
-    confirmEdit(row) {
-      row.edit = false
-      row.originalTitle = row.title
-      this.$message({
-        message: 'The title has been edited',
-        type: 'success'
-      })
+    handleCurrentChange(val) {
+      this.listQuery.page = val
+      this.getList()
     }
   }
 }

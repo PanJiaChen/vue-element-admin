@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
 
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
