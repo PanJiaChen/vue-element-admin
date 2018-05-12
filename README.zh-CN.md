@@ -3,21 +3,21 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/vuejs/vue">
-		<img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
-	</a>
-	<a href="https://github.com/ElemeFE/element">
-		<img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
-	</a>
-	<a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-		<img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
-	</a>
-	<a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
-		<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
-	</a>
-	<a href="https://github.com/PanJiaChen/vue-element-admin/releases">
-		<img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
-	</a>
+  <a href="https://github.com/vuejs/vue">
+    <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
+  </a>
+  <a href="https://github.com/ElemeFE/element">
+    <img src="https://img.shields.io/badge/element--ui-2.3.0-brightgreen.svg" alt="element-ui">
+  </a>
+  <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
+    <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
+  </a>
+  <a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+  </a>
+  <a href="https://github.com/PanJiaChen/vue-element-admin/releases">
+    <img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
+  </a>
 </p>
 
 简体中文 | [English](./README.md)
@@ -28,17 +28,19 @@
 
 - [在线访问](http://panjiachen.github.io/vue-element-admin)
 
-- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/)
+- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
 
-- [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+- [Gitter讨论组](https://gitter.im/vue-element-admin/discuss)
 
-- [donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+
+- [Donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
 
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**注意：该项目使用 element-ui@2.0.0+ 版本，所以最低兼容 vue@2.5.0**
+**注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
 
 ## 前序准备
 
@@ -52,7 +54,6 @@
  - [手摸手，带你封装一个 vue component](https://segmentfault.com/a/1190000009090836)
  - [手摸手，带你优雅的使用 icon](https://juejin.im/post/59bb864b5188257e7a427c09)
 
- 响应需求，开了一个qq群 `591724180` 方便大家交流
 
  或者加入该群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西
 
@@ -91,6 +92,7 @@
 - 导出excel
 - 导出zip
 - 前端可视化excel
+- 树形table
 - Table example
 - 动态table example
 - 拖拽table example
@@ -98,6 +100,7 @@
 - Form example
 - 二步登录
 - SplitPane
+- 拖拽 Dialog
 - Dropzone
 - Sticky
 - CountTo
@@ -144,7 +147,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/deploy)
+更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/deploy)
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).

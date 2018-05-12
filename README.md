@@ -3,21 +3,21 @@
 </p>
 
 <p align="center">
-	<a href="https://github.com/vuejs/vue">
-		<img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
-	</a>
-	<a href="https://github.com/ElemeFE/element">
-		<img src="https://img.shields.io/badge/element--ui-2.0.8-brightgreen.svg" alt="element-ui">
-	</a>
-	<a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-		<img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
-	</a>
-	<a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
-		<img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
-	</a>
-	<a href="https://github.com/PanJiaChen/vue-element-admin/releases">
-		<img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
-	</a>
+  <a href="https://github.com/vuejs/vue">
+    <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
+  </a>
+  <a href="https://github.com/ElemeFE/element">
+    <img src="https://img.shields.io/badge/element--ui-2.3.0-brightgreen.svg" alt="element-ui">
+  </a>
+  <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
+    <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
+  </a>
+  <a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
+    <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+  </a>
+  <a href="https://github.com/PanJiaChen/vue-element-admin/releases">
+    <img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
+  </a>
 </p>
 
 English | [简体中文](./README.zh-CN.md)
@@ -30,16 +30,18 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Documentation](https://panjiachen.github.io/vue-element-admin-site/#/)
 
-- [wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+- [Gitter](https://gitter.im/vue-element-admin/discuss)
 
-- [donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+
+- [Donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
 
 **vue-element-admin is a admin interfaces integration solution, which is not suitable for secondary development as a base template.**
 
  - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**Note: This project uses element-ui@2.0.0+ version, so the minimum compatible vue@2.5.0**
+**Note: This project uses element-ui@2.3.0+ version, so the minimum compatible vue@2.5.0+**
 
 ## Preparation
 
@@ -78,6 +80,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Export excel
 - Export zip
 - Front-end visualization excel
+- Tree Table
 - Table example
 - Dynamictable example
 - Drag and drop table example
@@ -85,6 +88,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Form example
 - Two-step login
 - SplitPane
+- Drag Dialog
 - Dropzone
 - Sticky
 - CountTo
@@ -94,7 +98,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 ## Getting started
 
 ```bash
-# clone the projice
+# clone the project
 git clone https://github.com/PanJiaChen/vue-element-admin.git
 
 # install dependency
@@ -144,6 +148,8 @@ If you find this project useful, you can buy author a glass of juice :tropical_d
 ![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
 
 [Paypal Me](https://www.paypal.me/panfree23)
+
+[Buy me a coffee](https://www.buymeacoffee.com/Pan)
 
 ## License
 

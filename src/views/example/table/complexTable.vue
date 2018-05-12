@@ -79,8 +79,7 @@
     </el-table>
 
     <div class="pagination-container">
-      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page.sync="listQuery.page"
-        :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
+      <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="listQuery.page" :page-sizes="[10,20,30, 50]" :page-size="listQuery.limit" layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
 
@@ -336,7 +335,11 @@ export default {
         const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
         const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
         const data = this.formatJson(filterVal, this.list)
-        excel.export_json_to_excel(tHeader, data, 'table-list')
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'table-list'
+        })
         this.downloadLoading = false
       })
     },

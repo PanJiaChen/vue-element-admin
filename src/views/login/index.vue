@@ -36,7 +36,7 @@
       <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{$t('login.thirdparty')}}</el-button>
     </el-form>
 
-    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog">
+    <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{$t('login.thirdpartyTips')}}
       <br/>
       <br/>
@@ -170,14 +170,14 @@ $light_gray:#eee;
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "src/styles/mixin.scss";
 $bg:#2d3a4b;
 $dark_gray:#889aa4;
 $light_gray:#eee;
 
 .login-container {
-  @include relative;
-  height: 100vh;
+  position: fixed;
+  height: 100%;
+  width: 100%;
   background-color: $bg;
   .login-form {
     position: absolute;

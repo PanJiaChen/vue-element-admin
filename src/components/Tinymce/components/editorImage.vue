@@ -1,8 +1,8 @@
 <template>
   <div class="upload-container">
-    <el-button icon='upload' :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
+    <el-button icon='el-icon-upload' size="mini" :style="{background:color,borderColor:color}" @click=" dialogVisible=true" type="primary">上传图片
     </el-button>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog append-to-body :visible.sync="dialogVisible">
       <el-upload class="editor-slide-upload" action="https://httpbin.org/post" :multiple="true" :file-list="fileList" :show-file-list="true"
         list-type="picture-card" :on-remove="handleRemove" :on-success="handleSuccess" :before-upload="beforeUpload">
         <el-button size="small" type="primary">点击上传</el-button>
@@ -21,7 +21,7 @@ export default {
   props: {
     color: {
       type: String,
-      default: '#20a0ff'
+      default: '#1890ff'
     }
   },
   data() {
@@ -87,9 +87,9 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-    .upload-container {
-        .editor-slide-upload {
-            margin-bottom: 20px;
-        }
-    }
+.upload-container {
+  .editor-slide-upload {
+    margin-bottom: 20px;
+  }
+}
 </style>

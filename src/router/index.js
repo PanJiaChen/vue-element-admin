@@ -15,13 +15,16 @@ import Layout from '../views/layout/Layout'
 
 /**
 * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+*                                if not set alwaysShow, only more than one route under the children
+*                                it will becomes nested mode, otherwise not show the root menu
 * redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
     roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
-    noCache: true                if fasle ,the page will no be cached(default is false)
+    noCache: true                if true ,the page will no be cached(default is false)
   }
 **/
 export const constantRouterMap = [
@@ -64,15 +67,27 @@ export const asyncRouterMap = [
     path: '/permission',
     component: Layout,
     redirect: '/permission/index',
-    meta: { roles: ['admin'] }, // you can set roles in root nav
+    alwaysShow: true, // will always show the root menu
+    meta: {
+      title: 'permission',
+      icon: 'lock',
+      roles: ['admin', 'editor'] // you can set roles in root nav
+    },
     children: [{
-      path: 'index',
-      component: _import('permission/index'),
-      name: 'permission',
+      path: 'page',
+      component: _import('permission/page'),
+      name: 'pagePermission',
       meta: {
-        title: 'permission',
-        icon: 'lock',
+        title: 'pagePermission',
         roles: ['admin'] // or you can only set roles in sub nav
+      }
+    }, {
+      path: 'directive',
+      component: _import('permission/directive'),
+      name: 'directivePermission',
+      meta: {
+        title: 'directivePermission'
+        // if do not set roles, means: this page does not require permission
       }
     }]
   },
@@ -108,7 +123,9 @@ export const asyncRouterMap = [
       { path: 'sticky', component: _import('components-demo/sticky'), name: 'sticky-demo', meta: { title: 'sticky' }},
       { path: 'count-to', component: _import('components-demo/countTo'), name: 'countTo-demo', meta: { title: 'countTo' }},
       { path: 'mixin', component: _import('components-demo/mixin'), name: 'componentMixin-demo', meta: { title: 'componentMixin' }},
-      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop-demo', meta: { title: 'backToTop' }}
+      { path: 'back-to-top', component: _import('components-demo/backToTop'), name: 'backToTop-demo', meta: { title: 'backToTop' }},
+      { path: 'drag-dialog', component: _import('components-demo/dragDialog'), name: 'dragDialog-demo', meta: { title: 'dragDialog' }},
+      { path: 'drag-kanban', component: _import('components-demo/dragKanban'), name: 'dragKanban-demo', meta: { title: 'dragKanban' }}
     ]
   },
 
@@ -151,6 +168,8 @@ export const asyncRouterMap = [
           { path: 'dynamic-table', component: _import('example/table/dynamicTable/index'), name: 'dynamicTable', meta: { title: 'dynamicTable' }},
           { path: 'drag-table', component: _import('example/table/dragTable'), name: 'dragTable', meta: { title: 'dragTable' }},
           { path: 'inline-edit-table', component: _import('example/table/inlineEditTable'), name: 'inlineEditTable', meta: { title: 'inlineEditTable' }},
+          { path: 'tree-table', component: _import('example/table/treeTable/treeTable'), name: 'treeTableDemo', meta: { title: 'treeTable' }},
+          { path: 'custom-tree-table', component: _import('example/table/treeTable/customTreeTable'), name: 'customTreeTableDemo', meta: { title: 'customTreeTable' }},
           { path: 'complex-table', component: _import('example/table/complexTable'), name: 'complexTable', meta: { title: 'complexTable' }}
         ]
       },
@@ -215,7 +234,9 @@ export const asyncRouterMap = [
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
-    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip', icon: 'zip' }}]
+    alwaysShow: true,
+    meta: { title: 'zip', icon: 'zip' },
+    children: [{ path: 'download', component: _import('zip/index'), name: 'exportZip', meta: { title: 'exportZip' }}]
   },
 
   {

@@ -4,8 +4,10 @@
 
 <script>
 import echarts from 'echarts'
+import resize from './mixins/resize'
 
 export default {
+  mixins: [resize],
   props: {
     className: {
       type: String,
@@ -31,7 +33,6 @@ export default {
   },
   mounted() {
     this.initChart()
-    this.chart = null
   },
   beforeDestroy() {
     if (!this.chart) {
