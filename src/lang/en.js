@@ -3,6 +3,7 @@ export default {
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',
+    guide: 'Guide',
     permission: 'Permission',
     pagePermission: 'Page Permission',
     directivePermission: 'Directive Permission',
