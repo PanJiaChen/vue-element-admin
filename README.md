@@ -7,7 +7,7 @@
 
 `vue-element-admin` 是一个后台集成解决方案，它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。
 
-欢迎大家一起来参与开发，踊跃提交代码，交流QQ群:479413914
+欢迎大家一起来参与开发，踊跃提交代码，交流QQ群:315181914
 
 - [后台接口文档](http://user.api.it120.cc/swagger-ui.html)
 
