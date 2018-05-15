@@ -36,6 +36,12 @@
         </span>
         <el-input name="name" type="text" v-model="loginForm.name" autoComplete="off" placeholder="姓名" />
       </el-form-item>
+      <el-form-item prop="referrer">
+        <span class="svg-container svg-container_login">
+          <svg-icon icon-class="user" />
+        </span>
+        <el-input name="referrer" type="text" v-model="loginForm.referrer" autoComplete="off" placeholder="邀请码" />
+      </el-form-item>
       <el-form-item>
         <el-button type="primary" style="width:100%;" :loading="loading" @click.native.prevent="handleLogin">
           登录
@@ -83,7 +89,8 @@ export default {
         picKey:'',
         imgcode:'',
         smscode:'',
-        name:''
+        name:'',
+        referrer:''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur' }],
@@ -150,7 +157,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          register(this.loginForm.username, this.loginForm.password, this.loginForm.smscode, this.loginForm.name, '').then((res) => {
+          register(this.loginForm.username, this.loginForm.password, this.loginForm.smscode, this.loginForm.name, this.loginForm.referrer).then((res) => {
             this.loading = false
             if (res.code == 404) {
               this.changeRandom()
