@@ -4,6 +4,8 @@ export default {
     introduction: 'Introduction',
     documentation: 'Documentation',
     permission: 'Permission',
+    pagePermission: 'Page Permission',
+    directivePermission: 'Directive Permission',
     icons: 'Icons',
     components: 'Components',
     componentIndex: 'Introduction',
