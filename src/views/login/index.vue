@@ -141,8 +141,15 @@ export default {
               })
               return;
             }
-            setToken(res.data);
-            this.$router.push({ path: '/' })
+            Message({
+              message: '登录成功',
+              type: 'success',
+              duration: 1 * 1000,
+              onClose: () => {
+                setToken(res.data);
+              this.$router.push({ path: '/' })
+              }
+            })
           }).catch((err) => {
             console.log(err);
             this.loading = false
