@@ -64,6 +64,14 @@ export function resetpwd(mobile, pwd, smsCode) {
   })
 }
 
+export function checkToken() {
+  return request({
+    url: '/user/checkToken',
+    method: 'get',
+    params: { }
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/user/info',
@@ -74,7 +82,7 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/user/logout',
-    method: 'post'
+    url: '/login/exit',
+    method: 'get'
   })
 }

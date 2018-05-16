@@ -4,17 +4,17 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <span style="display:block;">当前登录: {{centeruserinfo.realName}} ( {{centeruserinfo.mobile}} )</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
-            Home
+            首页
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
-          <span @click="logout" style="display:block;">LogOut</span>
+          <span @click="logout" style="display:block;">退出</span>
         </el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
@@ -25,6 +25,10 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import { logout } from '@/api/login'
+import { info } from '@/api/centeruser'
+import { removeToken } from '@/utils/auth'
+import { Message } from 'element-ui'
 
 export default {
   components: {
@@ -37,13 +41,25 @@ export default {
       'avatar'
     ])
   },
+  data() {
+    return {
+      centeruserinfo:{}
+    }
+  },
+  mounted() {
+    info().then(res => {
+      this.centeruserinfo = res.data;
+    });
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('ToggleSideBar')
     },
     logout() {
-      this.$store.dispatch('LogOut').then(() => {
-        location.reload() // 为了重新实例化vue-router对象 避免bug
+      logout().then(() => {
+        Message.error('已成功退出')
+        removeToken()
+        location.reload();
       })
     }
   }

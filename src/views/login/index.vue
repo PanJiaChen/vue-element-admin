@@ -147,7 +147,7 @@ export default {
               duration: 1 * 1000,
               onClose: () => {
                 setToken(res.data);
-              this.$router.push({ path: '/' })
+                this.$router.push({ path: '/' })
               }
             })
           }).catch((err) => {
@@ -162,6 +162,7 @@ export default {
     },
     changeRandom() {
       this.loginForm.picKey = Math.random();
+      // (document.getElementsByClassName('random'))[0].setAttribute('src', 'http://127.0.0.1:8082/code?k=' + this.loginForm.picKey)
       (document.getElementsByClassName('random'))[0].setAttribute('src', 'http://user.api.it120.cc/code?k=' + this.loginForm.picKey)
     }
   }

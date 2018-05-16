@@ -28,14 +28,29 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
-    path: '/',
+    path: '',
     component: Layout,
     redirect: '/dashboard',
-    name: 'Dashboard',
-    hidden: true,
     children: [{
       path: 'dashboard',
-      component: () => import('@/views/dashboard/index')
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '首页', icon: 'home' }
+    }]
+  },
+
+  {
+    path: '',
+    component: Layout,
+    meta: { title: '工厂设置', icon: 'setting' },
+    children: [{
+      path: 'dashboard2',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包', icon: 'setting' }
+    },
+    {
+      path: 'dashboard3',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包', icon: 'setting' }
     }]
   },
 
