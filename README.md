@@ -9,6 +9,8 @@
 
 欢迎大家一起来参与开发，踊跃提交代码，交流QQ群:315181914
 
+- [在线演示](http://newadmin.it120.cc/)
+
 - [后台接口文档](http://user.api.it120.cc/swagger-ui.html)
 
 - [vue-element-admin 演示](http://panjiachen.github.io/vue-element-admin)

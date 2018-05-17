@@ -1,7 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
 import { Message, MessageBox } from 'element-ui'
-import store from '../store'
 import { getToken, removeToken } from '@/utils/auth'
 
 // 创建axios实例
@@ -12,9 +11,8 @@ const service = axios.create({
 
 // request拦截器
 service.interceptors.request.use(config => {
-  config.headers['X-Token'] = getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
-  //config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
-  config.data = qs.stringify(config.data);//将对象解析成URL的形式
+  config.headers['X-Token'] = getToken()
+  config.data = qs.stringify(config.data)
   return config
 }, error => {
   // Do something with request error
