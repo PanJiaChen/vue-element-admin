@@ -184,7 +184,7 @@ export default {
     },
     changeRandom() {
       this.loginForm.picKey = Math.random();
-      (document.getElementsByClassName('random'))[0].setAttribute('src', 'http://user.api.it120.cc/code?k=' + this.loginForm.picKey)
+      (document.getElementsByClassName('random'))[0].setAttribute('src', process.env.BASE_API + '/code?k=' + this.loginForm.picKey)
     }
   }
 }

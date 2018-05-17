@@ -80,7 +80,8 @@ export default {
     }
   },
   mounted() {
-    this.changeRandom();
+    this.changeRandom()
+    console.log('1233', process.env.BASE_API)
   },
   methods: {
     showPwd() {
@@ -162,8 +163,7 @@ export default {
     },
     changeRandom() {
       this.loginForm.picKey = Math.random();
-      // (document.getElementsByClassName('random'))[0].setAttribute('src', 'http://127.0.0.1:8082/code?k=' + this.loginForm.picKey)
-      (document.getElementsByClassName('random'))[0].setAttribute('src', 'http://user.api.it120.cc/code?k=' + this.loginForm.picKey)
+      (document.getElementsByClassName('random'))[0].setAttribute('src', process.env.BASE_API + '/code?k=' + this.loginForm.picKey)
     }
   }
 }
