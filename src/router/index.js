@@ -60,6 +60,26 @@ export const constantRouterMap = [
   },
 
   {
+    name: '系统设置',
+    path: '/user/apiExtDfs',
+    component: Layout,
+    redirect: '/user/apiExtDfs/list',
+    meta: { title: '系统设置', icon: 'setting' },
+    children: [{
+      name: '上传文件管理',
+      path: 'list',
+      component: () => import('@/views/apiExtDfs/list'),
+      meta: { title: '上传文件管理', icon: 'files' }
+    },
+    {
+      name: '我的资源包2',
+      path: 'dashboard3',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包2', icon: 'setting' }
+    }]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

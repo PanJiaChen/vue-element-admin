@@ -67,8 +67,7 @@ export function resetpwd(mobile, pwd, smsCode) {
 export function checkToken() {
   return request({
     url: '/user/checkToken',
-    method: 'get',
-    params: { }
+    method: 'get'
   })
 }
 
