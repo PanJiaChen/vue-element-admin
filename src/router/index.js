@@ -28,6 +28,7 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
+    name: '首页',
     path: '',
     component: Layout,
     redirect: '/dashboard',
@@ -39,18 +40,22 @@ export const constantRouterMap = [
   },
 
   {
-    path: '',
+    name: '工厂设置',
+    path: '/user/centerUserResourceBundle',
     component: Layout,
+    redirect: '/user/centerUserResourceBundle/list',
     meta: { title: '工厂设置', icon: 'setting' },
     children: [{
-      path: 'dashboard2',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '我的资源包', icon: 'setting' }
+      name: '我的资源包',
+      path: 'list',
+      component: () => import('@/views/centerUserResourceBundle/list'),
+      meta: { title: '我的资源包', icon: 'ziyuan' }
     },
     {
+      name: '我的资源包2',
       path: 'dashboard3',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '我的资源包', icon: 'setting' }
+      meta: { title: '我的资源包2', icon: 'setting' }
     }]
   },
 
