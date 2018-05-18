@@ -4,7 +4,7 @@
     <breadcrumb></breadcrumb>
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
-        <span style="display:block;">当前登录: {{centeruserinfo.realName}} ( {{centeruserinfo.mobile}} )</span>
+        <span style="display:block;">{{centerUserBase.realName}} ( {{centerUserBase.mobile}} )</span>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
@@ -38,17 +38,19 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'centerUserBase'
     ])
   },
   data() {
     return {
-      centeruserinfo:{}
+
     }
   },
   mounted() {
+    this.centerUserBase.aaa = 'ssddfssfg0000'
     info().then(res => {
-      this.centeruserinfo = res.data;
+      this.$store.commit('SET_CENTER_USER_BASE',res.data)
     });
   },
   methods: {

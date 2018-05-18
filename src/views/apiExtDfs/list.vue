@@ -15,6 +15,13 @@
       <el-date-picker type="date" placeholder="上传时间止" v-model="searchData.dateAddEnd" style="width: 200px;" class="filter-item"></el-date-picker>
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="fetchData">搜索</el-button>
     </div>
+
+    <div class="filter-container">
+      <el-alert
+        :title="'您当前是:' + (centerUserBase.vipLevel ? 'vip会员' : '免费会员') + ', ' + '可使用 ' + (centerUserBase.vipLevel ? '500' : '100') + 'MB 免费存储空间, 当前文件总数： '+ statisticsData.count +'， 占用总容量： ' + statisticsData.capacityStr"
+        type="warning">
+      </el-alert>
+    </div>
     
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
@@ -49,8 +56,14 @@
 <script>
 import { fetchDataList, statistics, delData } from '@/api/apiExtDfs'
 import { Message, MessageBox } from 'element-ui'
+import { mapGetters } from 'vuex'
 
 export default {
+  computed: {
+    ...mapGetters([
+      'centerUserBase'
+    ])
+  },
   data() {
     return {
       page:1,
