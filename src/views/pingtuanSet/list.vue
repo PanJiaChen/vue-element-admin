@@ -2,7 +2,7 @@
   <div class="app-container">
     
     <div class="filter-container">
-      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="砍价ID" v-model="searchData.id">
+      <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="拼团ID" v-model="searchData.id">
       </el-input>
       <el-input clearable @keyup.enter.native="fetchData" style="width: 200px;" class="filter-item" placeholder="商品ID" v-model="searchData.goodsId">
       </el-input>
@@ -20,17 +20,14 @@
     
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row empty-text="暂无数据" @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" width="55" row-key="id"></el-table-column>
-      <el-table-column prop="id" label="砍价ID"></el-table-column>
+      <el-table-column prop="id" label="拼团ID"></el-table-column>
       <el-table-column prop="goodsId" label="商品ID"></el-table-column>
-      <el-table-column prop="number" label="数量（份）"></el-table-column>
-      <el-table-column prop="originalPrice" label="原价"></el-table-column>
-      <el-table-column prop="minPrice" label="底价"></el-table-column>
-      <el-table-column label="砍价金额">
-        <template slot-scope="scope">
-          {{ scope.row.helpPriceMin }} - {{ scope.row.helpPriceMax }} 元
-        </template>
-      </el-table-column>
+      <el-table-column prop="numberSucccess" label="成团数量"></el-table-column>
+      <el-table-column prop="numberDoing" label="进行中"></el-table-column>
+      <el-table-column prop="numberPersion" label="几人成团"></el-table-column>
+      <el-table-column prop="timeoutHours" label="超时时间"></el-table-column>      
       <el-table-column prop="statusStr" label="状态"></el-table-column>
+      <el-table-column prop="refundTypeStr" label="退款至"></el-table-column>
       <el-table-column prop="dateAdd" label="开始时间"></el-table-column>
       <el-table-column prop="dateEnd" label="截止时间"></el-table-column>
       <el-table-column label="操作">
@@ -56,33 +53,30 @@
         <el-form-item label="商品ID" prop="goodsId" >
           <el-input v-model.number="pushData.goodsId" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="总份数" prop="number" >
-          <el-input v-model.number="pushData.number" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="已成团数量" prop="numberSucccess" >
+          <el-input v-model.number="pushData.numberSucccess" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="原价" prop="originalPrice" >
-          <el-input v-model.number="pushData.originalPrice" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="几人成团" prop="numberPersion" >
+          <el-input v-model.number="pushData.numberPersion" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
-        <el-form-item label="底价" prop="minPrice" >
-          <el-input v-model.number="pushData.minPrice" clearable @keyup.enter.native="handleCreateSave"></el-input>
-        </el-form-item>
-        <el-form-item label="砍价金额">
-          <el-col :span="6">
-            <el-form-item prop="helpPriceMin">
-              <el-input v-model.number="pushData.helpPriceMin" clearable @keyup.enter.native="handleCreateSave"></el-input>
+        <el-form-item label="超时时间">
+          <el-col :span="4">
+            <el-form-item prop="timeoutHours">
+              <el-input v-model.number="pushData.timeoutHours" clearable @keyup.enter.native="handleCreateSave"></el-input>
             </el-form-item>
           </el-col>
-          <el-col class="line" :span="2" style="text-align:center;">-</el-col>
-          <el-col :span="6">
-            <el-form-item prop="helpPriceMax">
-              <el-input v-model.number="pushData.helpPriceMax" clearable @keyup.enter.native="handleCreateSave"></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="10">&nbsp;&nbsp;&nbsp;砍价一次随机减少的金额范围</el-col>
+          <el-col :span="20">&nbsp;&nbsp;&nbsp;超过该时间（小时数）未成团的将自动退款</el-col>
         </el-form-item>
         <el-form-item label="状态" prop="status" >
           <el-select v-model="pushData.status" placeholder="请选择">
             <el-option label="正常" value="0"></el-option>
             <el-option label="禁用" value="1"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="退款方式" prop="refundType" >
+          <el-select v-model="pushData.refundType" placeholder="请选择">
+            <el-option label="用户钱包余额" value="0"></el-option>
+            <el-option label="原路退回" value="1"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="开始时间" prop="dateAddStr" >
@@ -104,7 +98,7 @@
 </template>
 
 <script>
-import { fetchDataList, info, delData, saveData } from '@/api/kanjia'
+import { fetchDataList, info, delData, saveData } from '@/api/pingtuanSet'
 import { Message, MessageBox } from 'element-ui'
 import { mapGetters } from 'vuex'
 
@@ -125,27 +119,22 @@ export default {
           { required: true, message: '不能为空'},
           { type:'integer', message: '必须为数字'}
         ],
-        number: [
+        numberSucccess: [
           { required: true, message: '不能为空'},
           { type:'integer', message: '必须为数字'}
         ],
-        originalPrice: [
+        numberPersion: [
           { required: true, message: '不能为空'},
-          { type:'number', message: '必须为数字'}
+          { type:'integer', message: '必须为数字'}
         ],
-        minPrice: [
+        timeoutHours: [
           { required: true, message: '不能为空'},
-          { type:'number', message: '必须为数字'}
-        ],
-        helpPriceMin: [
-          { required: true, message: '不能为空'},
-          { type:'number', message: '必须为数字'}
-        ],
-        helpPriceMax: [
-          { required: true, message: '不能为空'},
-          { type:'number', message: '必须为数字'}
-        ],
+          { type:'integer', message: '必须为数字'}
+        ],                
         status: [
+          { required: true, message: '不能为空'}
+        ],
+        refundType: [
           { required: true, message: '不能为空'}
         ],
         dateAddStr: [
@@ -172,12 +161,11 @@ export default {
 
         id:undefined,
         goodsId:undefined,
-        number:undefined,
-        originalPrice:undefined,
-        minPrice:undefined,
-        helpPriceMin:undefined,
-        helpPriceMax:undefined,
+        numberSucccess:0,
+        numberPersion:undefined,
+        timeoutHours:24,
         status:undefined,
+        refundType:undefined,
         dateAddStr:undefined,
         dateEndStr:undefined
       },
@@ -220,7 +208,7 @@ export default {
     },
     handleCreate(){
       this.pushData = Object.assign({}, this.pushDataTmp)
-      this.pushData.dialogTitle = '增加砍价设置'
+      this.pushData.dialogTitle = '增加拼团设置'
       this.pushData.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
@@ -235,8 +223,8 @@ export default {
             duration: 3 * 1000
           })
         } else {
-          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {status:'' + res.data.status, dateAddStr:res.data.dateAdd, dateEndStr:res.data.dateEnd})
-          this.pushData.dialogTitle = '修改砍价设置'
+          this.pushData = Object.assign({}, this.pushDataTmp, res.data, {status:'' + res.data.status, refundType:'' + res.data.refundType, dateAddStr:res.data.dateAdd, dateEndStr:res.data.dateEnd})
+          this.pushData.dialogTitle = '修改拼团设置'
           this.pushData.dialogFormVisible = true
           this.$nextTick(() => {
             this.$refs['addEditPopForm'].clearValidate()

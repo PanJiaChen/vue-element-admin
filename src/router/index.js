@@ -128,21 +128,33 @@ export const constantRouterMap = [
 
   {
     name: '营销辅助',
-    path: '/user/kanjiaSet',
+    path: '/user',
     component: Layout,
     redirect: '/user/kanjiaSet/list',
     meta: { title: '营销辅助', icon: 'yingxiao' },
     children: [{
       name: '砍价设置',
-      path: 'list',
+      path: 'kanjiaSet/list',
       component: () => import('@/views/kanjiaSet/list'),
       meta: { title: '砍价设置', icon: 'kanjia' }
     },
     {
-      name: '我的资源包2',
-      path: 'dashboard3',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '我的资源包2', icon: 'setting' }
+      name: '砍价参与用户',
+      path: 'kanjiaJoiner/list',
+      component: () => import('@/views/kanjiaJoiner/list'),
+      meta: { title: '砍价参与用户', icon: 'kanjia' }
+    },
+    {
+      name: '砍价明细',
+      path: 'kanjiaHelp/list',
+      component: () => import('@/views/kanjiaHelp/list'),
+      meta: { title: '砍价明细', icon: 'kanjia' }
+    },
+    {
+      name: '拼团设置',
+      path: 'pingtuanSet/list',
+      component: () => import('@/views/pingtuanSet/list'),
+      meta: { title: '拼团设置', icon: 'pingtuan' }
     }]
   },
 

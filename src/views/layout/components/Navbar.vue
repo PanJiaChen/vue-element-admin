@@ -53,7 +53,6 @@ export default {
     }
   },
   mounted() {
-    this.centerUserBase.aaa = 'ssddfssfg0000'
     info().then(res => {
       this.$store.commit('SET_CENTER_USER_BASE',res.data)
     });

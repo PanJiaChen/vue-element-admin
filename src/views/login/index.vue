@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">api工厂独立后台</h3>
+      <h3 class="title">api工厂独立后台(beta)</h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
@@ -81,7 +81,6 @@ export default {
   },
   mounted() {
     this.changeRandom()
-    console.log('1233', process.env.BASE_API)
   },
   methods: {
     showPwd() {
