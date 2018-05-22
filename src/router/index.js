@@ -28,6 +28,18 @@ export const constantRouterMap = [
   { path: '/404', component: () => import('@/views/404'), hidden: true },
 
   {
+    name: '修改密码',
+    path: '/editPwd',
+    hidden: true,
+    component: Layout,
+    meta: { title: '修改密码', icon: 'setting' },
+    children: [{
+      path: '',
+      component: () => import('@/views/editPwd/list')
+    }]
+  },
+
+  {
     name: '首页',
     path: '',
     component: Layout,
@@ -112,6 +124,26 @@ export const constantRouterMap = [
         meta: { title: 'Form', icon: 'form' }
       }
     ]
+  },
+
+  {
+    name: '营销辅助',
+    path: '/user/kanjiaSet',
+    component: Layout,
+    redirect: '/user/kanjiaSet/list',
+    meta: { title: '营销辅助', icon: 'yingxiao' },
+    children: [{
+      name: '砍价设置',
+      path: 'list',
+      component: () => import('@/views/kanjiaSet/list'),
+      meta: { title: '砍价设置', icon: 'kanjia' }
+    },
+    {
+      name: '我的资源包2',
+      path: 'dashboard3',
+      component: () => import('@/views/dashboard/index'),
+      meta: { title: '我的资源包2', icon: 'setting' }
+    }]
   },
 
   { path: '*', redirect: '/404', hidden: true }

@@ -36,7 +36,7 @@
       <el-table-column prop="dateAdd" label="购买时间"></el-table-column>
       <el-table-column label="操作">
         <template slot-scope="scope">
-          <el-button type="text" class='delete' @click="delData(scope.row.id)">删除</el-button>
+          <el-button type="text" class='delete' @click="delData(scope.row.id)" style="color:red">删除</el-button>
         </template>
       </el-table-column>
     </el-table>

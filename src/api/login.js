@@ -64,6 +64,17 @@ export function resetpwd(mobile, pwd, smsCode) {
   })
 }
 
+export function editPwd(oldPwd, newPwd) {
+  return request({
+    url: '/user/editPwd/save',
+    method: 'post',
+    data: {
+      oldPwd,
+      newPwd
+    }
+  })
+}
+
 export function checkToken() {
   return request({
     url: '/user/checkToken',

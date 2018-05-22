@@ -54,6 +54,22 @@ service.interceptors.response.use(
       })
       return Promise.reject('请先绑定代理商')
     }
+    if (res.code === 600) {
+      Message({
+        message: '缺少参数：' + (res.data ? res.data : ''),
+        type: 'error',
+        duration: 3 * 1000
+      })
+      return Promise.reject('缺少参数：' + (res.data ? res.data : ''))
+    }
+    if (res.code === -1) {
+      Message({
+        message: '服务器内部错误：' + (res.data ? res.data : ''),
+        type: 'error',
+        duration: 3 * 1000
+      })
+      return Promise.reject('服务器内部错误：' + (res.data ? res.data : ''))
+    }
     return response.data
   },
   error => {
