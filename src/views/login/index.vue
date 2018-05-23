@@ -71,9 +71,9 @@ export default {
         imgcode:''
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur' }],
-        password: [{ required: true, trigger: 'blur' }],
-        imgcode: [{ required: true, trigger: 'blur', validator:validateImgCode }],
+        username: [{ required: true, trigger: 'blur', message:'不能为空' }],
+        password: [{ required: true, trigger: 'blur', message:'不能为空' }],
+        imgcode: [{ required: true, trigger: 'blur', validator:validateImgCode, message:'不能为空' }],
       },
       loading: false,
       pwdType: 'password'

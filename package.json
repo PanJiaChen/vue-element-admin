@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "axios": "0.17.1",
+    "clipboard": "2.0.1",
     "element-ui": "2.3.9",
     "js-cookie": "2.2.0",
     "normalize.css": "8.0.0",

@@ -114,14 +114,15 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/form',
+    name: '视频点播',
+    path: '/user/apiExtVod',
     component: Layout,
     children: [
       {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
+        path: 'list',
+        name: '视频点播',
+        component: () => import('@/views/apiExtVod/list'),
+        meta: { title: '视频点播', icon: 'video' }
       }
     ]
   },
