@@ -155,6 +155,18 @@ export const constantRouterMap = [
       path: 'pingtuanSet/list',
       component: () => import('@/views/pingtuanSet/list'),
       meta: { title: '拼团设置', icon: 'pingtuan' }
+    },
+    {
+      name: '开团记录',
+      path: 'pingtuanOpener/list',
+      component: () => import('@/views/pingtuanOpener/list'),
+      meta: { title: '开团记录', icon: 'pingtuan' }
+    },
+    {
+      name: '拼团记录',
+      path: 'pingtuanHelp/list',
+      component: () => import('@/views/pingtuanHelp/list'),
+      meta: { title: '拼团记录', icon: 'pingtuan' }
     }]
   },
 
