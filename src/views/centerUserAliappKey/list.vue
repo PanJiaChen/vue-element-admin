@@ -111,7 +111,7 @@ export default {
       this.$nextTick(() => {
         this.$refs['addEditPopForm'].clearValidate()
       })
-    }
+    },
     handleCreateSave(){
       this.$refs['addEditPopForm'].validate((valid) => {
         if (valid) {

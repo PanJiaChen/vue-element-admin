@@ -174,12 +174,12 @@ export const constantRouterMap = [
     name: '支付宝小程序',
     path: '/user',
     component: Layout,
-    redirect: '/user/centerUserAliappKey/info',
+    redirect: '/user/centerUserAliappKey/list',
     meta: { title: '支付宝小程序', icon: 'alipaySR' },
     children: [{
       name: 'Appid配置',
-      path: 'centerUserAliappKey/info',
-      component: () => import('@/views/centerUserAliappKey/info'),
+      path: 'centerUserAliappKey/list',
+      component: () => import('@/views/centerUserAliappKey/list'),
       meta: { title: 'Appid配置', icon: 'alipaySR' }
     },
       {
