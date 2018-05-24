@@ -170,6 +170,26 @@ export const constantRouterMap = [
       meta: { title: '拼团记录', icon: 'pingtuan' }
     }]
   },
+  {
+    name: '支付宝小程序',
+    path: '/user',
+    component: Layout,
+    redirect: '/user/centerUserAliappKey/list',
+    meta: { title: '支付宝小程序', icon: 'alipaySR' },
+    children: [{
+      name: 'Appid配置',
+      path: 'centerUserAliappKey/list',
+      component: () => import('@/views/centerUserAliappKey/list'),
+      meta: { title: 'Appid配置', icon: 'alipaySR' }
+    },
+      {
+        name: '我的资源包2',
+        path: 'dashboard3',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: '我的资源包2', icon: 'setting' }
+      }]
+  },
+
 
   { path: '*', redirect: '/404', hidden: true }
 ]
