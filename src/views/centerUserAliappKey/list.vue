@@ -3,8 +3,7 @@
   <div class="app-container">
 
 <div class="filter-container">
-<h4>设置信息</h4>
-<el-button class="filter-item" style="margin-left: 10px;margin-bottom: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">设置</el-button>
+<el-button class="filter-item" style="margin-bottom: 10px;" @click="handleCreate" type="success" icon="el-icon-edit">设置</el-button>
 </div>
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" :show-header="false" border fit highlight-current-row empty-text="暂无数据">
       <el-table-column prop="name" label="name"></el-table-column>
@@ -14,10 +13,10 @@
 <el-dialog :title="pushData.dialogTitle" :visible.sync="pushData.dialogFormVisible" :close-on-click-modal="false" :close-on-press-escape="false">
       <el-form :rules="rules" ref="addEditPopForm" :model="pushData" label-position="left" label-width="100px">
         <el-form-item label="appid" prop="appid" >
-          <el-input v-model.text="pushData.appid" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
+          <el-input v-model="pushData.appid" type="text" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
         <el-form-item label="privateKey" prop="privateKey" >
-          <el-input v-model.textarea="pushData.privateKey" type="textarea " clearable @keyup.enter.native="handleCreateSave"></el-input>
+          <el-input v-model="pushData.privateKey" type="textarea" :rows="8" clearable @keyup.enter.native="handleCreateSave"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
