@@ -1,22 +1,8 @@
  //覆盖一些element-ui样式
- .block-checkbox {
-   display: block;
- }
 
- .operation-container {
-   .cell {
-     padding: 10px !important;
-   }
-   .el-button {
-     &:nth-child(3) {
-       margin-top: 10px;
-       margin-left: 0px;
-     }
-     &:nth-child(4) {
-       margin-top: 10px;
-     }
-   }
- }
+ .el-breadcrumb__inner, .el-breadcrumb__inner a{
+  font-weight: 400!important;
+}
 
  .el-upload {
    input[type="file"] {
@@ -30,15 +16,22 @@
 
  .cell {
    .el-tag {
-     margin-right: 8px;
+     margin-right: 0px;
    }
  }
 
  .small-padding {
    .cell {
-     padding-left: 8px;
-     padding-right: 8px;
+     padding-left: 5px;
+     padding-right: 5px;
    }
+ }
+
+ .fixed-width{
+  .el-button--mini{
+    padding: 7px 10px;
+    width: 60px;
+  }
  }
 
  .status-col {
@@ -51,7 +44,7 @@
    }
  }
 
- //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+ //暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
  .el-dialog {
    transform: none;
    left: 0;
@@ -80,3 +73,10 @@
      }
    }
  }
+
+//dropdown
+ .el-dropdown-menu{
+  a{
+    display: block
+  }
+}

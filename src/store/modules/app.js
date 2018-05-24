@@ -3,9 +3,11 @@ import Cookies from 'js-cookie'
 const app = {
   state: {
     sidebar: {
-      opened: !+Cookies.get('sidebarStatus')
+      opened: !+Cookies.get('sidebarStatus'),
+      withoutAnimation: false
     },
-    visitedViews: []
+    device: 'desktop',
+    language: Cookies.get('language') || 'en'
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -15,31 +17,33 @@ const app = {
         Cookies.set('sidebarStatus', 0)
       }
       state.sidebar.opened = !state.sidebar.opened
+      state.sidebar.withoutAnimation = false
     },
-    ADD_VISITED_VIEWS: (state, view) => {
-      if (state.visitedViews.some(v => v.path === view.path)) return
-      state.visitedViews.push({ name: view.name, path: view.path })
+    CLOSE_SIDEBAR: (state, withoutAnimation) => {
+      Cookies.set('sidebarStatus', 1)
+      state.sidebar.opened = false
+      state.sidebar.withoutAnimation = withoutAnimation
     },
-    DEL_VISITED_VIEWS: (state, view) => {
-      let index
-      for (const [i, v] of state.visitedViews.entries()) {
-        if (v.path === view.path) {
-          index = i
-          break
-        }
-      }
-      state.visitedViews.splice(index, 1)
+    TOGGLE_DEVICE: (state, device) => {
+      state.device = device
+    },
+    SET_LANGUAGE: (state, language) => {
+      state.language = language
+      Cookies.set('language', language)
     }
   },
   actions: {
-    ToggleSideBar: ({ commit }) => {
+    toggleSideBar({ commit }) {
       commit('TOGGLE_SIDEBAR')
     },
-    addVisitedViews: ({ commit }, view) => {
-      commit('ADD_VISITED_VIEWS', view)
+    closeSideBar({ commit }, { withoutAnimation }) {
+      commit('CLOSE_SIDEBAR', withoutAnimation)
     },
-    delVisitedViews: ({ commit }, view) => {
-      commit('DEL_VISITED_VIEWS', view)
+    toggleDevice({ commit }, device) {
+      commit('TOGGLE_DEVICE', device)
+    },
+    setLanguage({ commit }, language) {
+      commit('SET_LANGUAGE', language)
     }
   }
 }

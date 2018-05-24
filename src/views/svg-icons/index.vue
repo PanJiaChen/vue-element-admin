@@ -1,14 +1,20 @@
 <template>
   <div class="icons-container">
+    <p class="warn-content">
+      <a href="https://panjiachen.github.io/vue-element-admin-site/#/icon" target="_blank">Add and use
+      </a>
+    </p>
     <div class="icons-wrapper">
-      <div v-for='item of iconsMap' :key='item' class='icon-item'>
-        <el-tooltip placement="top" effect="light">
+      <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
+        <el-tooltip placement="top">
           <div slot="content">
-            {{`&lt;icon-svg :icon-class=&quot;${item}&quot; /&gt;`}}
+            {{generateIconCode(item)}}
           </div>
-          <icon-svg :icon-class="item" />
+          <div class="icon-item">
+            <svg-icon class-name="disabled" :icon-class="item" />
+            <span>{{item}}</span>
+          </div>
         </el-tooltip>
-        <span>{{item}}</span>
       </div>
     </div>
   </div>
@@ -16,8 +22,10 @@
 
 <script>
 import icons from './generateIconsView'
+import clipboard from '@/utils/clipboard'
 
 export default {
+  name: 'icons',
   data() {
     return {
       iconsMap: []
@@ -28,31 +36,42 @@ export default {
       return i.default.id.split('-')[1]
     })
     this.iconsMap = iconsMap
+  },
+  methods: {
+    generateIconCode(symbol) {
+      return `<svg-icon icon-class="${symbol}" />`
+    },
+    handleClipboard(text, event) {
+      clipboard(text, event)
+    }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .icons-container {
-  margin: 40px 20px 0;
+  margin: 10px 20px 0;
   overflow: hidden;
   .icons-wrapper {
     margin: 0 auto;
   }
   .icon-item {
     margin: 20px;
-    height: 137px;
+    height: 110px;
     text-align: center;
-    width: 120px;
+    width: 110px;
     float: left;
-    font-size: 40px;
-    color: #666;
+    font-size: 30px;
+    color: #24292e;
     cursor: pointer;
   }
   span {
     display: block;
     font-size: 24px;
     margin-top: 10px;
+  }
+  .disabled{
+    pointer-events: none;
   }
 }
 </style>
