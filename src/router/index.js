@@ -92,25 +92,23 @@ export const constantRouterMap = [
   },
 
   {
-    path: '/example',
+    name: '商城管理',
+    path: '/user',
     component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: 'Example', icon: 'example' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: 'Table', icon: 'table' }
-      },
-      {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: 'Tree', icon: 'tree' }
-      }
-    ]
+    redirect: '/user/apiExtDfs/list',
+    meta: { title: '商城管理', icon: 'shopping' },
+    children: [{
+      name: '上传文件管理',
+      path: 'list',
+      component: () => import('@/views/apiExtDfs/list'),
+      meta: { title: '上传文件管理', icon: 'files' }
+    },
+    {
+      name: '商品分类',
+      path: 'apiExtShopGoodsCategory/list',
+      component: () => import('@/views/apiExtShopGoodsCategory/list'),
+      meta: { title: '商品分类', icon: 'category' }
+    }]
   },
 
   {
@@ -123,13 +121,7 @@ export const constantRouterMap = [
       name: 'Appid配置',
       path: 'centerUserAliappKey/list',
       component: () => import('@/views/centerUserAliappKey/list'),
-      meta: { title: 'Appid配置', icon: 'alipaySR' }
-    },
-    {
-      name: '首页',
-      path: 'index',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: '首页', icon: 'setting' }
+      meta: { title: '支付宝小程序', icon: 'alipaySR' }
     }]
   },
 

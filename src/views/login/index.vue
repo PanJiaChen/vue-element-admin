@@ -1,7 +1,7 @@
 <template>
   <div class="login-container">
     <el-form class="login-form" autoComplete="on" :model="loginForm" :rules="loginRules" ref="loginForm" label-position="left">
-      <h3 class="title">api工厂独立后台(beta)</h3>
+      <h3 class="title">vip用户独立后台 (Beta) </h3>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
@@ -32,8 +32,11 @@
         <span style="margin-right:20px;">
           <router-link to="/register">开通新后台</router-link>
         </span>
-        <span>
+        <span style="margin-right:20px;">
           <router-link to="/resetpwd">忘记密码?</router-link>
+        </span>
+        <span>
+          <a href="https://www.it120.cc/login" target="_blank" style="color:orange;">免费用户入口</a>
         </span>
       </div>
     </el-form>
