@@ -21,6 +21,14 @@
 
 - [element-ui 文档](http://element-cn.eleme.io/#/zh-CN/component/installation)
 
+## 参与本后台开发的兄弟
+
+- [gooking](https://github.com/gooking)
+
+- [Achen JarenChen](https://github.com/JarenChen)
+
+- 期待您的加入...
+
 ## 开发
 ```bash
 # 安装依赖
