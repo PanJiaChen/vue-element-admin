@@ -3,6 +3,7 @@ export default {
     dashboard: '首页',
     introduction: '简述',
     documentation: '文档',
+    guide: '引导页',
     permission: '权限测试页',
     pagePermission: '页面权限',
     directivePermission: '指令权限',
@@ -75,6 +76,10 @@ export default {
   permission: {
     roles: '你的权限',
     switchRoles: '切换权限'
+  },
+  guide: {
+    description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
+    button: '打开引导'
   },
   components: {
     documentation: '文档',
