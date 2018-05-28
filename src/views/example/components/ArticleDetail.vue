@@ -3,9 +3,6 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
       <sticky :className="'sub-navbar '+postForm.status">
-        <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create-form'}">
-          <el-button type="info">创建form</el-button>
-        </router-link>
 
         <el-dropdown trigger="click">
           <el-button plain>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
@@ -55,6 +52,9 @@
 
       <div class="createPost-main-container">
         <el-row>
+          <p class="warn-content">
+            创建和编辑页面是不能被keep-alive缓存的，因为keep-alive目前不支持根据路由来缓存，所以目前都是基于component name来缓存的，如果你想要实现缓存的效果，可以使用localstorage等游览器缓存方案。或者不要使用keep-alive 的include，直接缓存所有页面。
+          </p>
           <el-col :span="21">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput name="name" v-model="postForm.title" required :maxlength="100">
