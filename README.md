@@ -72,6 +72,7 @@ You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) l
 - Drag and drop list
 - Svg Sprite
 - Dashboard
+- Guide Page
 - Mock data
 - Echarts
 - Clipboard

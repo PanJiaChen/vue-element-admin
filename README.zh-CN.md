@@ -84,6 +84,7 @@
 - 列表拖拽
 - Svg Sprite 图标
 - Dashboard
+- 引导页
 - 本地mock数据
 - Echarts 图表
 - Clipboard(剪贴复制)
