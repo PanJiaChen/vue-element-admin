@@ -77,6 +77,10 @@ export default {
     roles: 'Your roles',
     switchRoles: 'Switch roles'
   },
+  guide: {
+    description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
+    button: 'Show Guide'
+  },
   components: {
     documentation: 'Documentation',
     tinymceTips: 'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the finally chose Tinymce. See documentation for more detailed rich text editor comparisons and introductions.',
