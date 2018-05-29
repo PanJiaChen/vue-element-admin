@@ -6,27 +6,27 @@
     <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row @selection-change="handleSelectionChange"
       ref="multipleTable">
       <el-table-column type="selection" align="center"></el-table-column>
-      <el-table-column align="center" label='Id' width="95">
+      <el-table-column align="center" :label="$t('table.id')" width="95">
         <template slot-scope="scope">
           {{scope.$index}}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
+      <el-table-column :label="$t('table.title')">
         <template slot-scope="scope">
           {{scope.row.title}}
         </template>
       </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
+      <el-table-column :label="$t('table.author')" width="110" align="center">
         <template slot-scope="scope">
           <el-tag>{{scope.row.author}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Readings" width="115" align="center">
+      <el-table-column :label="$t('table.readings')" width="115" align="center">
         <template slot-scope="scope">
           {{scope.row.pageviews}}
         </template>
       </el-table-column>
-      <el-table-column align="center" label="PDate" width="220">
+      <el-table-column align="center" :label="$t('table.date')" width="220">
         <template slot-scope="scope">
           <i class="el-icon-time"></i>
           <span>{{scope.row.display_time}}</span>
