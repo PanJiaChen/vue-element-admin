@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
     <div class="filter-container">
       <el-input @keyup.enter.native="handleFilter" style="width: 200px;" class="filter-item" :placeholder="$t('table.title')" v-model="listQuery.title">
       </el-input>

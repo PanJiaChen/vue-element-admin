@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container calendar-list-container">
+  <div class="app-container">
     <!-- Note that row-key is necessary to get a correct row order. -->
     <el-table :data="list" row-key="id"  v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
