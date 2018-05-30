@@ -261,3 +261,7 @@ export function deepClone(source) {
   })
   return targetObj
 }
+
+export function uniqueArr(arr) {
+  return Array.from(new Set(arr))
+}

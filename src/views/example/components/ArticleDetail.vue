@@ -3,48 +3,9 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
       <sticky :className="'sub-navbar '+postForm.status">
-
-        <el-dropdown trigger="click">
-          <el-button plain>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
-            <i class="el-icon-caret-bottom el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu class="no-padding" slot="dropdown">
-            <el-dropdown-item>
-              <el-radio-group style="padding: 10px;" v-model="postForm.comment_disabled">
-                <el-radio :label="true">关闭评论</el-radio>
-                <el-radio :label="false">打开评论</el-radio>
-              </el-radio-group>
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-        <el-dropdown trigger="click">
-          <el-button plain>平台
-            <i class="el-icon-caret-bottom el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu class="no-border" slot="dropdown">
-            <el-checkbox-group v-model="postForm.platforms" style="padding: 5px 15px;">
-              <el-checkbox v-for="item in platformsOptions" :label="item.key" :key="item.key">
-                {{item.name}}
-              </el-checkbox>
-            </el-checkbox-group>
-          </el-dropdown-menu>
-        </el-dropdown>
-
-        <el-dropdown trigger="click">
-          <el-button plain>
-            外链
-            <i class="el-icon-caret-bottom el-icon--right"></i>
-          </el-button>
-          <el-dropdown-menu class="no-padding no-border" style="width:300px" slot="dropdown">
-            <el-form-item label-width="0px" style="margin-bottom: 0px" prop="source_uri">
-              <el-input placeholder="请输入内容" v-model="postForm.source_uri">
-                <template slot="prepend">填写url</template>
-              </el-input>
-            </el-form-item>
-          </el-dropdown-menu>
-        </el-dropdown>
-
+        <CommentDropdown v-model="postForm.comment_disabled" />
+        <PlatformDropdown v-model="postForm.platforms" />
+        <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
@@ -52,9 +13,9 @@
 
       <div class="createPost-main-container">
         <el-row>
-          <p class="warn-content">
-            创建和编辑页面是不能被keep-alive缓存的，因为keep-alive目前不支持根据路由来缓存，所以目前都是基于component name来缓存的，如果你想要实现缓存的效果，可以使用localstorage等游览器缓存方案。或者不要使用keep-alive 的include，直接缓存所有页面。
-          </p>
+
+          <Warning />
+
           <el-col :span="21">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput name="name" v-model="postForm.title" required :maxlength="100">
@@ -67,9 +28,16 @@
                 <el-col :span="8">
                   <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
                     <el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">
-                      <el-option v-for="item in userListOptions" :key="item" :label="item" :value="item">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">
                       </el-option>
                     </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
+                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
+                    </el-date-picker>
                   </el-form-item>
                 </el-col>
 
@@ -78,13 +46,6 @@
                     <el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"
                       :high-threshold="3">
                     </el-rate>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
-                    </el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -99,11 +60,11 @@
         </el-form-item>
 
         <div class="editor-container">
-          <tinymce :height=400 ref="editor" v-model="postForm.content"></tinymce>
+          <Tinymce :height=400 ref="editor" v-model="postForm.content" />
         </div>
 
         <div style="margin-bottom: 20px;">
-          <Upload v-model="postForm.image_uri"></Upload>
+          <Upload v-model="postForm.image_uri" />
         </div>
       </div>
     </el-form>
@@ -121,6 +82,8 @@ import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
+import Warning from './Warning'
+import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
 const defaultForm = {
   status: 'draft',
@@ -138,7 +101,7 @@ const defaultForm = {
 
 export default {
   name: 'articleDetail',
-  components: { Tinymce, MDinput, Upload, Multiselect, Sticky },
+  components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
@@ -176,11 +139,6 @@ export default {
       postForm: Object.assign({}, defaultForm),
       loading: false,
       userListOptions: [],
-      platformsOptions: [
-        { key: 'a-platform', name: 'a-platform' },
-        { key: 'b-platform', name: 'b-platform' },
-        { key: 'c-platform', name: 'c-platform' }
-      ],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
@@ -252,7 +210,6 @@ export default {
     getRemoteUserList(query) {
       userSearch(query).then(response => {
         if (!response.data.items) return
-        console.log(response)
         this.userListOptions = response.data.items.map(v => v.name)
       })
     }
@@ -261,43 +218,36 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  @import "src/styles/mixin.scss";
-  .title-prompt{
+@import "src/styles/mixin.scss";
+.createPost-container {
+  position: relative;
+  .createPost-main-container {
+    padding: 40px 45px 20px 50px;
+    .postInfo-container {
+      position: relative;
+      @include clearfix;
+      margin-bottom: 10px;
+      .postInfo-container-item {
+        float: left;
+      }
+    }
+    .editor-container {
+      min-height: 500px;
+      margin: 0 0 30px;
+      .editor-upload-btn-container {
+        text-align: right;
+        margin-right: 10px;
+        .editor-upload-btn {
+          display: inline-block;
+        }
+      }
+    }
+  }
+  .word-counter {
+    width: 40px;
     position: absolute;
-    right: 0px;
-    font-size: 12px;
-    top:10px;
-    color:#ff4949;
+    right: -10px;
+    top: 0px;
   }
-  .createPost-container {
-    position: relative;
-    .createPost-main-container {
-      padding: 40px 45px 20px 50px;
-      .postInfo-container {
-        position: relative;
-        @include clearfix;
-        margin-bottom: 10px;
-        .postInfo-container-item {
-          float: left;
-        }
-      }
-      .editor-container {
-        min-height: 500px;
-        margin: 0 0 30px;
-        .editor-upload-btn-container {
-            text-align: right;
-            margin-right: 10px;
-            .editor-upload-btn {
-                display: inline-block;
-            }
-        }
-      }
-    }
-    .word-counter {
-      width: 40px;
-      position: absolute;
-      right: -10px;
-      top: 0px;
-    }
-  }
+}
 </style>
