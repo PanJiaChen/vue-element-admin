@@ -3,98 +3,49 @@
     <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
 
       <sticky :className="'sub-navbar '+postForm.status">
-        <template v-if="fetchSuccess">
-
-          <router-link style="margin-right:15px;" v-show='isEdit' :to="{ path:'create-form'}">
-            <el-button type="info">创建form</el-button>
-          </router-link>
-
-          <el-dropdown trigger="click">
-            <el-button plain>{{!postForm.comment_disabled?'评论已打开':'评论已关闭'}}
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-padding" slot="dropdown">
-              <el-dropdown-item>
-                <el-radio-group style="padding: 10px;" v-model="postForm.comment_disabled">
-                  <el-radio :label="true">关闭评论</el-radio>
-                  <el-radio :label="false">打开评论</el-radio>
-                </el-radio-group>
-              </el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-
-          <el-dropdown trigger="click">
-            <el-button plain>平台
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-border" slot="dropdown">
-              <el-checkbox-group v-model="postForm.platforms" style="padding: 5px 15px;">
-                <el-checkbox v-for="item in platformsOptions" :label="item.key" :key="item.key">
-                  {{item.name}}
-                </el-checkbox>
-              </el-checkbox-group>
-            </el-dropdown-menu>
-          </el-dropdown>
-
-          <el-dropdown trigger="click">
-            <el-button plain>
-              外链
-              <i class="el-icon-caret-bottom el-icon--right"></i>
-            </el-button>
-            <el-dropdown-menu class="no-padding no-border" style="width:300px" slot="dropdown">
-              <el-form-item label-width="0px" style="margin-bottom: 0px" prop="source_uri">
-                <el-input placeholder="请输入内容" v-model="postForm.source_uri">
-                  <template slot="prepend">填写url</template>
-                </el-input>
-              </el-form-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-
-          <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm()">发布
-          </el-button>
-          <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
-
-        </template>
-        <template v-else>
-          <el-tag>发送异常错误,刷新页面,或者联系程序员</el-tag>
-        </template>
-
+        <CommentDropdown v-model="postForm.comment_disabled" />
+        <PlatformDropdown v-model="postForm.platforms" />
+        <SourceUrlDropdown v-model="postForm.source_uri" />
+        <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">发布
+        </el-button>
+        <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
       </sticky>
 
       <div class="createPost-main-container">
         <el-row>
+
+          <Warning />
+
           <el-col :span="21">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput name="name" v-model="postForm.title" required :maxlength="100">
                 标题
               </MDinput>
-              <span v-show="postForm.title.length>=26" class='title-prompt'>app可能会显示不全</span>
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
-                    <multiselect v-model="postForm.author" :options="userLIstOptions" @search-change="getRemoteUserList" placeholder="搜索用户" selectLabel="选择"
-                      deselectLabel="删除" track-by="key" :internalSearch="false" label="key">
-                      <span slot='noResult'>无结果</span>
-                    </multiselect>
+                    <el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">
+                      </el-option>
+                    </el-select>
                   </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-tooltip class="item" effect="dark" content="将替换作者" placement="top">
-                    <el-form-item label-width="50px" label="来源:" class="postInfo-container-item">
-                      <el-input placeholder="将替换作者" style='min-width:150px;' v-model="postForm.source_name">
-                      </el-input>
-                    </el-form-item>
-                  </el-tooltip>
                 </el-col>
 
                 <el-col :span="8">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
                     <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
                     </el-date-picker>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
+                    <el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"
+                      :high-threshold="3">
+                    </el-rate>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -109,11 +60,11 @@
         </el-form-item>
 
         <div class="editor-container">
-          <tinymce :height=400 ref="editor" v-model="postForm.content"></tinymce>
+          <Tinymce :height=400 ref="editor" v-model="postForm.content" />
         </div>
 
         <div style="margin-bottom: 20px;">
-          <Upload v-model="postForm.image_uri"></Upload>
+          <Upload v-model="postForm.image_uri" />
         </div>
       </div>
     </el-form>
@@ -131,6 +82,8 @@ import Sticky from '@/components/Sticky' // 粘性header组件
 import { validateURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
+import Warning from './Warning'
+import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
 const defaultForm = {
   status: 'draft',
@@ -139,16 +92,16 @@ const defaultForm = {
   content_short: '', // 文章摘要
   source_uri: '', // 文章外链
   image_uri: '', // 文章图片
-  source_name: '', // 文章外部作者
   display_time: undefined, // 前台展示时间
   id: undefined,
   platforms: ['a-platform'],
-  comment_disabled: false
+  comment_disabled: false,
+  importance: 0
 }
 
 export default {
   name: 'articleDetail',
-  components: { Tinymce, MDinput, Upload, Multiselect, Sticky },
+  components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
       type: Boolean,
@@ -184,14 +137,8 @@ export default {
     }
     return {
       postForm: Object.assign({}, defaultForm),
-      fetchSuccess: true,
       loading: false,
-      userLIstOptions: [],
-      platformsOptions: [
-        { key: 'a-platform', name: 'a-platform' },
-        { key: 'b-platform', name: 'b-platform' },
-        { key: 'c-platform', name: 'c-platform' }
-      ],
+      userListOptions: [],
       rules: {
         image_uri: [{ validator: validateRequire }],
         title: [{ validator: validateRequire }],
@@ -207,17 +154,20 @@ export default {
   },
   created() {
     if (this.isEdit) {
-      this.fetchData()
+      const id = this.$route.params && this.$route.params.id
+      this.fetchData(id)
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
   },
   methods: {
-    fetchData() {
-      fetchArticle().then(response => {
+    fetchData(id) {
+      fetchArticle(id).then(response => {
         this.postForm = response.data
+        // Just for test
+        this.postForm.title += `   Article Id:${this.postForm.id}`
+        this.postForm.content_short += `   Article Id:${this.postForm.id}`
       }).catch(err => {
-        this.fetchSuccess = false
         console.log(err)
       })
     },
@@ -260,10 +210,7 @@ export default {
     getRemoteUserList(query) {
       userSearch(query).then(response => {
         if (!response.data.items) return
-        console.log(response)
-        this.userLIstOptions = response.data.items.map(v => ({
-          key: v.name
-        }))
+        this.userListOptions = response.data.items.map(v => v.name)
       })
     }
   }
@@ -271,44 +218,36 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  @import "src/styles/mixin.scss";
-  .title-prompt{
+@import "src/styles/mixin.scss";
+.createPost-container {
+  position: relative;
+  .createPost-main-container {
+    padding: 40px 45px 20px 50px;
+    .postInfo-container {
+      position: relative;
+      @include clearfix;
+      margin-bottom: 10px;
+      .postInfo-container-item {
+        float: left;
+      }
+    }
+    .editor-container {
+      min-height: 500px;
+      margin: 0 0 30px;
+      .editor-upload-btn-container {
+        text-align: right;
+        margin-right: 10px;
+        .editor-upload-btn {
+          display: inline-block;
+        }
+      }
+    }
+  }
+  .word-counter {
+    width: 40px;
     position: absolute;
-    right: 0px;
-    font-size: 12px;
-    top:10px;
-    color:#ff4949;
+    right: -10px;
+    top: 0px;
   }
-  .createPost-container {
-    position: relative;
-    .createPost-main-container {
-      padding: 40px 45px 20px 50px;
-      .postInfo-container {
-        position: relative;
-        @include clearfix;
-        margin-bottom: 10px;
-        .postInfo-container-item {
-          float: left;
-        }
-      }
-      .editor-container {
-        min-height: 500px;
-        margin: 0 0 30px;
-        .editor-upload-btn-container {
-            text-align: right;
-            margin-right: 10px;
-            .editor-upload-btn {
-                display: inline-block;
-            }
-        }
-      }
-    }
-    .word-counter {
-      width: 40px;
-      position: absolute;
-      right: -10px;
-      top: 0px;
-    }
-  }
+}
 </style>
-
