@@ -5,7 +5,7 @@
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "dev": "cross-env BABEL_ENV=development webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
@@ -61,6 +61,7 @@
     "babel-eslint": "8.0.3",
     "babel-helper-vue-jsx-merge-props": "2.0.3",
     "babel-loader": "7.1.2",
+    "babel-plugin-dynamic-import-node": "^1.2.0",
     "babel-plugin-syntax-jsx": "6.18.0",
     "babel-plugin-transform-runtime": "6.23.0",
     "babel-plugin-transform-vue-jsx": "3.5.0",
