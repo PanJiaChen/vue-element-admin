@@ -29,7 +29,8 @@ export default {
       active: false,
       position: '',
       width: undefined,
-      height: undefined
+      height: undefined,
+      isSticky: false
     }
   },
   mounted() {
@@ -52,6 +53,7 @@ export default {
       this.position = 'fixed'
       this.active = true
       this.width = this.width + 'px'
+      this.isSticky = true
     },
     reset() {
       if (!this.active) {
@@ -60,6 +62,7 @@ export default {
       this.position = ''
       this.width = 'auto'
       this.active = false
+      this.isSticky = false
     },
     handleScroll() {
       this.width = this.$el.getBoundingClientRect().width
@@ -71,7 +74,9 @@ export default {
       this.reset()
     },
     handleReize() {
-      this.width = this.$el.getBoundingClientRect().width + 'px'
+      if (this.isSticky) {
+        this.width = this.$el.getBoundingClientRect().width + 'px'
+      }
     }
   }
 }
