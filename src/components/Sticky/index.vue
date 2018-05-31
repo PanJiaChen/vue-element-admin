@@ -67,7 +67,7 @@ export default {
     handleScroll() {
       this.width = this.$el.getBoundingClientRect().width
       const offsetTop = this.$el.getBoundingClientRect().top
-      if (offsetTop <= this.stickyTop) {
+      if (offsetTop < this.stickyTop) {
         this.sticky()
         return
       }
