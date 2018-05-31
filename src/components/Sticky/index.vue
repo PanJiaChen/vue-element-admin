@@ -28,22 +28,21 @@ export default {
     return {
       active: false,
       position: '',
-      currentTop: '',
       width: undefined,
-      height: undefined,
-      child: null,
-      stickyHeight: 0
+      height: undefined
     }
   },
   mounted() {
     this.height = this.$el.getBoundingClientRect().height
     window.addEventListener('scroll', this.handleScroll)
+    window.addEventListener('resize', this.handleReize)
   },
   activated() {
     this.handleScroll()
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
+    window.removeEventListener('resize', this.handleReize)
   },
   methods: {
     sticky() {
@@ -70,6 +69,9 @@ export default {
         return
       }
       this.reset()
+    },
+    handleReize() {
+      this.width = this.$el.getBoundingClientRect().width + 'px'
     }
   }
 }
