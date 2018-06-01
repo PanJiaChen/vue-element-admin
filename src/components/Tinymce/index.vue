@@ -51,7 +51,8 @@ export default {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         if (val === null) val = ''
-        this.$nextTick(() => window.tinymce.get(this.tinymceId).setContent(val||''))
+        this.$nextTick(() =>
+          window.tinymce.get(this.tinymceId).setContent(val||''))
       }
     }
   },
