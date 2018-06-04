@@ -56,13 +56,18 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
 
-    // you can set by youself according to actual condition
-    assetsPublicPath: './',
+    /**
+     * You can set by youself according to actual condition
+     * You will need to set this if you plan to deploy your site under a sub path,
+     * for example GitHub pages. If you plan to deploy your site to https://foo.github.io/bar/,
+     * then assetsPublicPath should be set to "/bar/".
+     * In most cases please use '/' !!!
+     */
+    assetsPublicPath: '/vue-element-admin/', // If you are deployed on the root path, please use '/'
 
     /**
      * Source Maps
      */
-
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
