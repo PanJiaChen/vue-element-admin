@@ -1,18 +1,13 @@
 'use strict'
-const path = require('path')
 const utils = require('./utils')
 const config = require('../config')
 const vueLoaderConfig = require('./vue-loader.conf')
-
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
 
 const createLintingRule = () => ({
   test: /\.(js|vue)$/,
   loader: 'eslint-loader',
   enforce: 'pre',
-  include: [resolve('src'), resolve('test')],
+  include: [utils.resolve('src'), utils.resolve('test')],
   options: {
     formatter: require('eslint-friendly-formatter'),
     emitWarning: !config.dev.showEslintErrorsInOverlay
@@ -20,9 +15,9 @@ const createLintingRule = () => ({
 })
 
 module.exports = {
-  context: path.resolve(__dirname, '../'),
+  context: utils.resolve(''),
   entry: {
-    app: './src/main.js'
+    app: utils.resolve('src/main.js')
   },
   output: {
     path: config.build.assetsRoot,
@@ -32,10 +27,29 @@ module.exports = {
       : config.dev.assetsPublicPath
   },
   resolve: {
+    modules: [utils.resolve('node_modules')],
     extensions: ['.js', '.vue', '.json'],
     alias: {
-      'vue$': 'vue/dist/vue.esm.js',
-      '@': resolve('src'),
+      'vue$': utils.resolve('node_modules/vue/dist/vue.esm.js'),
+
+      'vue-count-to': utils.resolve('node_modules/vue-count-to/dist/vue-count-to.min.js'),
+      'vue-hot-reload-api': utils.resolve('node_modules/vue-hot-reload-api/dist/index.js'),
+      'vue-i18n': utils.resolve('node_modules/vue-i18n/dist/vue-i18n.esm.js'),
+      'vue-loader': utils.resolve('node_modules/vue-loader/index.js'),
+      'vue-router': utils.resolve('node_modules/vue-router/dist/vue-router.esm.js'),
+      'vue-splitpane': utils.resolve('node_modules/vue-splitpane/dist/vue-split-pane.min.js'),
+      'vue-style-loader': utils.resolve('node_modules/vue-style-loader/index.js'),
+      'vue-template-compiler': utils.resolve('node_modules/vue-template-compiler/index.js'),
+      'vue-template-es2015-compiler': utils.resolve('node_modules/vue-template-es2015-compiler/index.js'),
+      'vuex': utils.resolve('node_modules/vuex/dist/vuex.esm.js'),
+      'xlsx': utils.resolve('node_modules/xlsx/xlsx.js'),
+      'screenfull': utils.resolve('node_modules/screenfull/dist/screenfull.js'),
+      'mockjs': utils.resolve('node_modules/mockjs/dist/mock-min.js'),
+      'jszip': utils.resolve('node_modules/jszip/dist/jszip.min.js'),
+      'js-cookie': utils.resolve('node_modules/js-cookie/src/js.cookie.js'),
+      'axios': utils.resolve('node_modules/axios/dist/axios.min.js'),
+
+      '@': utils.resolve('src'),
     }
   },
   module: {
@@ -49,12 +63,13 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader?cacheDirectory',
-        include: [resolve('src'), resolve('test'), resolve('node_modules/webpack-dev-server/client')]
+        include: [utils.resolve('src'), utils.resolve('test'), utils.resolve('node_modules/webpack-dev-server/client')],
+        exclude: [utils.resolve('node_modules'), utils.resolve('src/vendor')],
       },
       {
         test: /\.svg$/,
         loader: 'svg-sprite-loader',
-        include: [resolve('src/icons')],
+        include: [utils.resolve('src/icons')],
         options: {
           symbolId: 'icon-[name]'
         }
@@ -62,7 +77,7 @@ module.exports = {
       {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
-        exclude: [resolve('src/icons')],
+        exclude: [utils.resolve('src/icons')],
         options: {
           limit: 10000,
           name: utils.assetsPath('img/[name].[hash:7].[ext]')

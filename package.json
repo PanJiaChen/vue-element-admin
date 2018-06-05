@@ -53,7 +53,7 @@
     "vue-splitpane": "1.0.2",
     "vuedraggable": "^2.16.0",
     "vuex": "3.0.1",
-    "xlsx": "^0.11.16"
+    "xlsx": "0.11.16"
   },
   "devDependencies": {
     "autoprefixer": "7.2.3",
@@ -78,6 +78,7 @@
     "extract-text-webpack-plugin": "3.0.2",
     "file-loader": "1.1.5",
     "friendly-errors-webpack-plugin": "1.6.1",
+    "hard-source-webpack-plugin": "0.6.4",
     "html-webpack-plugin": "2.30.1",
     "node-notifier": "5.1.2",
     "node-sass": "^4.7.2",

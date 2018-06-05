@@ -1,5 +1,4 @@
 'use strict'
-const path = require('path')
 const utils = require('./utils')
 const webpack = require('webpack')
 const config = require('../config')
@@ -10,14 +9,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-
-function resolve (dir) {
-  return path.join(__dirname, '..', dir)
-}
+const HardSourceWebpackPlugin = require('hard-source-webpack-plugin')
 
 const env = require('../config/'+process.env.env_config+'.env')
 
 const webpackConfig = merge(baseWebpackConfig, {
+  cache: true,
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
@@ -32,6 +29,18 @@ const webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    new HardSourceWebpackPlugin({
+      cacheDirectory: utils.resolve('node_modules/.cache/hard-source/[confighash]'),
+      configHash: (webpackConfig) => {
+        return require('node-object-hash')({sort: false}).hash(webpackConfig);
+      },
+      environmentHash: {
+        root: process.cwd(),
+        directories: [],
+        files: ['package-lock.json', 'yarn.lock'],
+      },
+    }),
+
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
@@ -43,7 +52,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         }
       },
       sourceMap: config.build.productionSourceMap,
-      parallel: true
+      parallel: true,
+      cache: true,
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -67,7 +77,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       filename: config.build.index,
       template: 'index.html',
       inject: true,
-      favicon: resolve('favicon.ico'),
+      favicon: utils.resolve('favicon.ico'),
       title: 'vue-element-admin',
       path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
       minify: {
@@ -93,7 +103,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           module.resource &&
           /\.js$/.test(module.resource) &&
           module.resource.indexOf(
-            path.join(__dirname, '../node_modules')
+            utils.resolve('node_modules')
           ) === 0
         )
       }
@@ -141,7 +151,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
+        from: utils.resolve('static'),
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
