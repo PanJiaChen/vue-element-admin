@@ -3,7 +3,7 @@
     <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
     <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
-      <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
+      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
     </div>
   </div>
 </template>
@@ -52,22 +52,28 @@ export default {
       const files = e.target.files
       const itemFile = files[0] // only use files[0]
       if (!itemFile) return
-      this.readerData(itemFile)
-      this.$refs['excel-upload-input'].value = null // fix can't select the same excel
+      this.loading = true
+      this.readerData(itemFile).then(() => {
+        this.$refs['excel-upload-input'].value = null // fix can't select the same excel
+        this.loading = false
+      })
     },
     readerData(itemFile) {
-      const reader = new FileReader()
-      reader.onload = e => {
-        const data = e.target.result
-        const fixedData = this.fixdata(data)
-        const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
-        const firstSheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[firstSheetName]
-        const header = this.get_header_row(worksheet)
-        const results = XLSX.utils.sheet_to_json(worksheet)
-        this.generateDate({ header, results })
-      }
-      reader.readAsArrayBuffer(itemFile)
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = e => {
+          const data = e.target.result
+          const fixedData = this.fixdata(data)
+          const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
+          const firstSheetName = workbook.SheetNames[0]
+          const worksheet = workbook.Sheets[firstSheetName]
+          const header = this.get_header_row(worksheet)
+          const results = XLSX.utils.sheet_to_json(worksheet)
+          this.generateDate({ header, results })
+          resolve()
+        }
+        reader.readAsArrayBuffer(itemFile)
+      })
     },
     fixdata(data) {
       let o = ''
