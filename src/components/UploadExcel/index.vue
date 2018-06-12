@@ -1,9 +1,9 @@
 <template>
   <div>
-    <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
+    <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
     <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
-      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
+      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">Browse</el-button>
     </div>
   </div>
 </template>
@@ -25,11 +25,12 @@ export default {
     generateDate({ header, results }) {
       this.excelData.header = header
       this.excelData.results = results
-      this.$emit('on-selected-file', this.excelData)
+      this.$emit('success', this.excelData)
     },
     handleDrop(e) {
       e.stopPropagation()
       e.preventDefault()
+      if (this.loading) return
       const files = e.dataTransfer.files
       if (files.length !== 1) {
         this.$message.error('Only support uploading one file!')
@@ -48,17 +49,16 @@ export default {
     handleUpload() {
       document.getElementById('excel-upload-input').click()
     },
-    handkeFileChange(e) {
+    handleClick(e) {
       const files = e.target.files
       const itemFile = files[0] // only use files[0]
       if (!itemFile) return
-      this.loading = true
       this.readerData(itemFile).then(() => {
         this.$refs['excel-upload-input'].value = null // fix can't select the same excel
-        this.loading = false
       })
     },
     readerData(itemFile) {
+      this.loading = true
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
         reader.onload = e => {
@@ -70,6 +70,7 @@ export default {
           const header = this.get_header_row(worksheet)
           const results = XLSX.utils.sheet_to_json(worksheet)
           this.generateDate({ header, results })
+          this.loading = false
           resolve()
         }
         reader.readAsArrayBuffer(itemFile)
