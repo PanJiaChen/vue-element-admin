@@ -72,7 +72,7 @@ export default {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
-          if (tag.to === this.$route.path) {
+          if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag.$el)
             break
           }
@@ -84,7 +84,7 @@ export default {
         if (this.isActive(view)) {
           const latestView = views.slice(-1)[0]
           if (latestView) {
-            this.$router.push(latestView.path)
+            this.$router.push(latestView)
           } else {
             this.$router.push('/')
           }
@@ -92,7 +92,7 @@ export default {
       })
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag.path)
+      this.$router.push(this.selectedTag)
       this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
         this.moveToCurrentTag()
       })
