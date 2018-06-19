@@ -36,7 +36,7 @@ English | [简体中文](./README.zh-CN.md)
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/#/donate)
 
-**vue-element-admin is a admin interfaces integration solution, which is not suitable for secondary development as a base template.**
+**vue-element-admin is an admin interfaces integration solution, which is not suitable for secondary development as a base template.**
 
  - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
