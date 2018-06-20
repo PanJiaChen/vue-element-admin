@@ -12,6 +12,10 @@
 import XLSX from 'xlsx'
 
 export default {
+  props: {
+    beforeUpload: Function,
+    onSuccess: Function
+  },
   data() {
     return {
       loading: false,
@@ -25,7 +29,7 @@ export default {
     generateDate({ header, results }) {
       this.excelData.header = header
       this.excelData.results = results
-      this.$emit('success', this.excelData)
+      this.onSuccess && this.onSuccess(this.excelData)
     },
     handleDrop(e) {
       e.stopPropagation()
@@ -36,8 +40,8 @@ export default {
         this.$message.error('Only support uploading one file!')
         return
       }
-      const itemFile = files[0] // only use files[0]
-      this.readerData(itemFile)
+      const rawFile = files[0] // only use files[0]
+      this.upload(rawFile)
       e.stopPropagation()
       e.preventDefault()
     },
@@ -51,13 +55,23 @@ export default {
     },
     handleClick(e) {
       const files = e.target.files
-      const itemFile = files[0] // only use files[0]
-      if (!itemFile) return
-      this.readerData(itemFile).then(() => {
-        this.$refs['excel-upload-input'].value = null // fix can't select the same excel
-      })
+      const rawFile = files[0] // only use files[0]
+      if (!rawFile) return
+      this.upload(rawFile)
     },
-    readerData(itemFile) {
+    upload(rawFile) {
+      this.$refs['excel-upload-input'].value = null // fix can't select the same excel
+
+      if (!this.beforeUpload) {
+        this.readerData(rawFile)
+        return
+      }
+      const before = this.beforeUpload(rawFile)
+      if (before) {
+        this.readerData(rawFile)
+      }
+    },
+    readerData(rawFile) {
       this.loading = true
       return new Promise((resolve, reject) => {
         const reader = new FileReader()
@@ -73,7 +87,7 @@ export default {
           this.loading = false
           resolve()
         }
-        reader.readAsArrayBuffer(itemFile)
+        reader.readAsArrayBuffer(rawFile)
       })
     },
     fixdata(data) {
