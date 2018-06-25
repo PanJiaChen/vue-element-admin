@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.3.0-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.3.2-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -24,27 +24,25 @@
 
 ## 简介
 
-`vue-element-admin` 是一个后台集成解决方案，它基于 [Vue.js](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，内置了i18国际化解决方案，动态路由，权限验证等很多功能特性，相信不管你的需求是什么，本项目都能帮助到你。
+[vue-element-admin](http://panjiachen.github.io/vue-element-admin) 是一个后台集成解决方案，它基于 [vue](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，内置了i18国际化解决方案，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件，它可以帮助你快速搭建企业级中后台产品原型。相信不管你的需求是什么，本项目都能帮助到你。
 
 - [在线访问](http://panjiachen.github.io/vue-element-admin)
 
-- [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/)
+- [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
 - [Gitter讨论组](https://gitter.im/vue-element-admin/discuss)
 
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/donate)
+- [Donate](https://panjiachen.github.io/vue-element-admin-site/zh/donate/)
 
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
-**注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
-
 ## 前序准备
 
-你的本地环境需要安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。我们的技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) and [element-ui](https://github.com/ElemeFE/element)，所有的请求数据都使用[Mock.js](https://github.com/nuysoft/Mock)模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
+你需要在本地安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。本项目技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[axios](https://github.com/axios/axios) 和 [element-ui](https://github.com/ElemeFE/element)，所有的请求数据都使用[Mock.js](https://github.com/nuysoft/Mock)模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
 
 同时配套一个系列的教程文章，如何从零构建后一个完整的后台项目，建议大家先看完这些文章再来实践本项目
  - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
@@ -61,6 +59,8 @@
 
  **本项目并不是一个脚手架，更倾向于是一个集成解决方案**
 
+ **注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
+
  **该项目不支持低版本浏览器(如ie)，有需求请自行添加polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
  <p align="center">
@@ -69,42 +69,65 @@
 
 ## 功能
 ```
-- 登录/注销
+- 登录 / 注销
+
 - 权限验证
+  - 页面权限
+  - 指令权限
+  - 二步登录
+
 - 多环境发布
-- 动态侧边栏（支持多级路由）
-- 动态面包屑
-- 国际化多语言
-- 多种动态换肤
-- 快捷导航(标签页)
-- 富文本编辑器
-- Markdown编辑器
-- JSON编辑器
-- Screenfull全屏
-- 列表拖拽
-- Svg Sprite 图标
+  - dev sit stage prod
+
+- 全局功能
+  - 国际化多语言
+  - 多种动态换肤
+  - 动态侧边栏（支持多级路由嵌套）
+  - 动态面包屑
+  - 快捷导航(标签页)
+  - Svg Sprite 图标
+  - 本地mock数据
+  - Screenfull全屏
+  - 自适应收缩侧边栏
+
+- 编辑器
+  - 富文本
+  - Markdown
+  - JSON 等多格式
+
+- Excel
+  - 导出excel
+  - 导出zip
+  - 导入excel
+  - 前端可视化excel
+
+- 表格
+  - 动态表格
+  - 拖拽表格
+  - 树形表格
+  - 内联编辑
+
+- 错误页面
+  - 401
+  - 404
+
+- 組件
+  - 头像上传
+  - 返回顶部
+  - 拖拽Dialog
+  - 拖拽看板
+  - 列表拖拽
+  - SplitPane
+  - Dropzone
+  - Sticky
+  - CountTo
+
+- 综合实例
+- 错误日志
 - Dashboard
 - 引导页
-- 本地mock数据
 - Echarts 图表
 - Clipboard(剪贴复制)
-- 401/404错误页面
-- 错误日志
-- 导出excel
-- 导出zip
-- 前端可视化excel
-- 树形table
-- Table example
-- 动态table example
-- 拖拽table example
-- 内联编辑table example
-- Form example
-- 二步登录
-- SplitPane
-- 拖拽 Dialog
-- Dropzone
-- Sticky
-- CountTo
 - Markdown2html
 ```
 
@@ -148,7 +171,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/#/zh-cn/deploy)
+更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
 ## Changelog
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
