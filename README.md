@@ -24,9 +24,9 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-[vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a front-end management background integration solution based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit -- [element](https://github.com/ElemeFE/element).
+[vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a front-end management background integration solution. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element](https://github.com/ElemeFE/element).
 
-It is a magical vue admin. It based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
+It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
 
 - [Preview](http://panjiachen.github.io/vue-element-admin)
 
