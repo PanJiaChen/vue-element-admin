@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
 
-    <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
+    <el-table :data="list" v-loading="listLoading" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
@@ -89,9 +89,7 @@ export default {
         const items = response.data.items
         this.list = items.map(v => {
           this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-
           v.originalTitle = v.title //  will be used when user click the cancel botton
-
           return v
         })
         this.listLoading = false
