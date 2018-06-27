@@ -4,15 +4,7 @@
 const version = '2.0.0'
 const CACHE = version + '::PWAsite'
 const installFilesEssential = [
-  '/',
-  './manifest.json',
-  './static/css/',
-  './static/img/',
-  './static/js/',
-  './static/fonts/',
-  './static/tinymce4.7.5/',
-  './static/js/',
-  './logo.png'
+  '/'
 ]
 // const installFilesEssential = [
 //   '/',
