@@ -8,7 +8,7 @@
       "type": "image/png"
     }
   ],
-  "start_url": "/PWA/",
+  "start_url": "/vue-element-admin/",
   "display": "standalone",
   "background_color": "#2d3a4b",
   "theme_color": "#3d5165"
