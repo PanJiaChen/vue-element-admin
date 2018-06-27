@@ -147,15 +147,15 @@ const webpackConfig = merge(baseWebpackConfig, {
       },
       {
         from: path.resolve(__dirname, '../sw.js'),
-        to: config.build.assetsSubDirectory
+        to: config.build.assetsRoot
       },
       {
         from: path.resolve(__dirname, '../manifest.json'),
-        to: config.build.assetsSubDirectory
+        to: config.build.assetsRoot
       },
       {
         from: path.resolve(__dirname, '../logo.png'),
-        to: config.build.assetsSubDirectory
+        to: config.build.assetsRoot
       }
     ])
   ]
