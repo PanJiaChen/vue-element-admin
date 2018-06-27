@@ -70,6 +70,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
       path: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+      pwaPath: config.build.assetsPublicPath,
       minify: {
         removeComments: true,
         collapseWhitespace: true,
