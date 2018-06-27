@@ -152,6 +152,10 @@ const webpackConfig = merge(baseWebpackConfig, {
       {
         from: path.resolve(__dirname, '../manifest.json'),
         to: config.build.assetsSubDirectory
+      },
+      {
+        from: path.resolve(__dirname, '../logo.png'),
+        to: config.build.assetsSubDirectory
       }
     ])
   ]

@@ -3,8 +3,8 @@
   "short_name": "VEAPWA",
   "icons": [
     {
-      "src": "../favicon.ico",
-      "sizes": "128x128",
+      "src": "./logo.png",
+      "sizes": "200x200",
       "type": "image/png"
     }
   ],

@@ -4,21 +4,23 @@
 const version = '2.0.0'
 const CACHE = version + '::PWAsite'
 const offlineURL = '/offline/'
-const installFilesEssential = process.env.NODE_ENV === 'production' ? [
+const installFilesEssential = [
   '/',
-  '../static/manifest.json',
-  '../static/css/*',
-  '../static/img/*',
-  '../static/js/*',
-  '../static/fonts/*',
-  '../static/tinymce4.7.5/*',
-  '../static/js/*'
-].concat(offlineURL) : [
-  '/',
+  './static/manifest.json',
+  './static/css/*',
+  './static/img/*',
+  './static/js/*',
+  './static/fonts/*',
   './static/tinymce4.7.5/*',
-  './manifest.json',
-  './build/logo.png'
+  './static/js/*',
+  './logo.png'
 ].concat(offlineURL)
+// const installFilesEssential = [
+//   '/',
+//   './static/tinymce4.7.5/*',
+//   './manifest.json',
+//   './build/logo.png'
+// ].concat(offlineURL)
 
 // install static assets
 function installStaticFiles() {
