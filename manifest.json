@@ -1,0 +1,15 @@
+{
+  "name": "VUE-ELEMENT-ADMIN",
+  "short_name": "VEAPWA",
+  "icons": [
+    {
+      "src": "./build/logo.png",
+      "sizes": "200x200",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "http://localhost:9527",
+  "display": "standalone",
+  "background_color": "#2d3a4b",
+  "theme_color": "#3d5165"
+}
