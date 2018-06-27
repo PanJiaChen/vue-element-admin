@@ -4,12 +4,18 @@
 const version = '2.0.0'
 const CACHE = version + '::PWAsite'
 const offlineURL = '/offline/'
-const installFilesEssential = [
+const installFilesEssential = process.env.NODE_ENV === 'production' ? [
+  '/',
+  '../static/manifest.json',
+  '../static/css/*',
+  '../static/img/*',
+  '../static/js/*',
+  '../static/fonts/*',
+  '../static/tinymce4.7.5/*',
+  '../static/js/*'
+].concat(offlineURL) : [
   '/',
   './static/tinymce4.7.5/*',
-  // './dist/css/*',
-  // './dist/fonts/*',
-  // './dist/img/*',
   './manifest.json',
   './build/logo.png'
 ].concat(offlineURL)
