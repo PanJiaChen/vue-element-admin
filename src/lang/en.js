@@ -44,6 +44,7 @@ export default {
     createArticle: 'Create Article',
     editArticle: 'Edit Article',
     articleList: 'Article List',
+    pwa: 'PWA',
     errorPages: 'Error Pages',
     page401: '401',
     page404: '404',

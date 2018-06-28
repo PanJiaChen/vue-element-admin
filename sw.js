@@ -1,17 +1,11 @@
 // configuration
 `use strict`
 
-const version = '2.0.0'
+const version = '1.0.1'
 const CACHE = version + '::PWAsite'
 const installFilesEssential = [
   '/'
 ]
-// const installFilesEssential = [
-//   '/',
-//   './static/tinymce4.7.5/*',
-//   './manifest.json',
-//   './build/logo.png'
-// ].concat(offlineURL)
 
 // install static assets
 function installStaticFiles() {
@@ -56,8 +50,8 @@ self.addEventListener('activate', event => {
 })
 
 // is image URL?
-const iExt = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp']
 function isImage(url) {
+  const iExt = ['.png', '.jpg', '.jpeg', '.gif', '.webp', '.bmp']
   return iExt.reduce((ret, ext) => ret || url.endsWith(ext), false)
 }
 

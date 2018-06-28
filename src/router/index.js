@@ -248,6 +248,13 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/pwa',
+    component: Layout,
+    redirect: 'noredirect',
+    children: [{ path: 'pwa', component: () => import('@/views/pwa/index'), name: 'pwa', meta: { title: 'pwa', icon: 'bug' }}]
+  },
+
+  {
     path: '/error-log',
     component: Layout,
     redirect: 'noredirect',
