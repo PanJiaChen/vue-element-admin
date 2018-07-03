@@ -9,7 +9,14 @@
     "build:prod": "cross-env NODE_ENV=production env_config=prod node build/build.js",
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run lint"
+    "test": "npm run lint",
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "src/**/*.{js,vue}": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "keywords": [
     "vue",
@@ -81,6 +88,8 @@
     "file-loader": "1.1.5",
     "friendly-errors-webpack-plugin": "1.6.1",
     "html-webpack-plugin": "2.30.1",
+    "husky": "0.14.3",
+    "lint-staged": "7.2.0",
     "node-notifier": "5.1.2",
     "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "3.2.0",
