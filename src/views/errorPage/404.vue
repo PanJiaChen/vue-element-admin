@@ -59,7 +59,6 @@ export default {
     position: relative;
     float: left;
     width: 600px;
-    padding: 150px 0;
     overflow: hidden;
     &__parent {
       width: 100%;
@@ -171,7 +170,7 @@ export default {
     position: relative;
     float: left;
     width: 300px;
-    padding: 150px 0;
+    padding: 30px 0;
     overflow: hidden;
     &__oops {
       font-size: 32px;
