@@ -7,7 +7,7 @@
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;"></github-corner>
       <div class="info-container">
         <span class="display_name">{{name}}</span>
-        <span style="font-size:20px;padding-top:20px;display:inline-block;">editor : dashboard</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
       </div>
     </div>
     <div>
