@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main" style="min-height: 100%">
+  <section class="app-main">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key"></router-view>
@@ -21,3 +21,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.app-main {
+  position: absolute;
+  top: 84px; /* navbar + tags-view = 50 +34 */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+</style>
+

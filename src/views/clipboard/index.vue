@@ -34,7 +34,7 @@ export default {
     },
     clipboardSuccess() {
       this.$message({
-        message: '复制成功',
+        message: 'Copy successfully',
         type: 'success',
         duration: 1500
       })
