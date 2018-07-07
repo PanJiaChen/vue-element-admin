@@ -1,6 +1,5 @@
 <template>
-  <div class="menu-wrapper">
-    <template v-if="!item.hidden&&item.children">
+  <div v-if="!item.hidden&&item.children" class="menu-wrapper">
 
       <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="resolvePath(item.children[0].path)">
         <el-menu-item :index="resolvePath(item.children[0].path)" :class="{'submenu-title-noDropdown':!isNest}">
@@ -27,7 +26,6 @@
         </template>
       </el-submenu>
 
-    </template>
   </div>
 </template>
 

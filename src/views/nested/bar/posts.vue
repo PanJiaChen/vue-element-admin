@@ -1,6 +1,0 @@
-<template>
-  <div style="padding:30px;">
-    <el-alert title="Children: Posts" type="warning" :closable="false">
-    </el-alert>
-  </div>
-</template>
