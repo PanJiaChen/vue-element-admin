@@ -210,7 +210,7 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/nested/bar', // Must write the full path
+        path: 'bar',
         component: () => import('@/views/nested/bar/index'), // Parent router-view
         name: 'bar',
         meta: { title: 'bar' },
@@ -226,6 +226,26 @@ export const asyncRouterMap = [
             component: () => import('@/views/nested/bar/posts'),
             name: 'bar-posts',
             meta: { title: 'barPosts' }
+          },
+          {
+            path: 'foo',
+            component: () => import('@/views/nested/bar/foo'),
+            name: 'bar-foo',
+            meta: { title: 'Foo' },
+            children: [
+              {
+                path: 'ant',
+                component: () => import('@/views/nested/bar/foo/Ant'),
+                name: 'bar-foo-ant',
+                meta: { title: 'Ant' }
+              },
+              {
+                path: 'ant2',
+                component: () => import('@/views/nested/bar/foo/Ant2'),
+                name: 'bar-foo-ant2',
+                meta: { title: 'Ant2' }
+              }
+            ]
           }
         ]
       }
