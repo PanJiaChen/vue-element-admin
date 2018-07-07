@@ -234,7 +234,7 @@ export const asyncRouterMap = [
                 meta: { title: 'menu1-2-1' }
               },
               {
-                path: 'menu1-2-12',
+                path: 'menu1-2-2',
                 component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
                 name: 'menu1-2-2',
                 meta: { title: 'menu1-2-2' }
