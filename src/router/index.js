@@ -202,7 +202,7 @@ export const asyncRouterMap = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/bar/profile',
+    redirect: '/nested/menu1',
     name: 'nested',
     meta: {
       title: 'nested',
