@@ -24,12 +24,10 @@ export default {
 
 <style scoped>
 .app-main {
-  position: absolute;
-  top: 84px; /* navbar + tags-view = 50 +34 */
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
+  /*84 = navbar + tags-view = 50 +34 */
+  min-height: calc(100vh - 84px);
+  position: relative;
+  overflow: hidden;
 }
 </style>
 
