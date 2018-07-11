@@ -116,8 +116,9 @@ export function export_table_to_excel(id) {
     saveAs(new Blob([s2ab(wbout)], {type: "application/octet-stream"}), "test.xlsx")
 }
 
-export function export_json_to_excel({header, data, filename='excel-list', autoWidth=true}={}) {
+export function export_json_to_excel({header, data, filename, autoWidth=true}={}) {
     /* original data */
+    filename=filename||'excel-list'
     data=[...data]
     data.unshift(header);
     var ws_name = "SheetJS";
