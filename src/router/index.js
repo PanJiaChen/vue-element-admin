@@ -202,7 +202,7 @@ export const asyncRouterMap = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/bar/profile',
+    redirect: '/nested/menu1',
     name: 'nested',
     meta: {
       title: 'nested',
@@ -210,24 +210,49 @@ export const asyncRouterMap = [
     },
     children: [
       {
-        path: '/nested/bar', // Must write the full path
-        component: () => import('@/views/nested/bar/index'), // Parent router-view
-        name: 'bar',
-        meta: { title: 'bar' },
+        path: 'menu1',
+        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        name: 'menu1',
+        meta: { title: 'menu1' },
         children: [
           {
-            path: 'profile',
-            component: () => import('@/views/nested/bar/profile'),
-            name: 'bar-profile',
-            meta: { title: 'barProfile' }
+            path: 'menu1-1',
+            component: () => import('@/views/nested/menu1/menu1-1'),
+            name: 'menu1-1',
+            meta: { title: 'menu1-1' }
           },
           {
-            path: 'posts',
-            component: () => import('@/views/nested/bar/posts'),
-            name: 'bar-posts',
-            meta: { title: 'barPosts' }
+            path: 'menu1-2',
+            component: () => import('@/views/nested/menu1/menu1-2'),
+            name: 'menu1-2',
+            meta: { title: 'menu1-2' },
+            children: [
+              {
+                path: 'menu1-2-1',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+                name: 'menu1-2-1',
+                meta: { title: 'menu1-2-1' }
+              },
+              {
+                path: 'menu1-2-2',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+                name: 'menu1-2-2',
+                meta: { title: 'menu1-2-2' }
+              }
+            ]
+          },
+          {
+            path: 'menu1-3',
+            component: () => import('@/views/nested/menu1/menu1-3'),
+            name: 'menu1-3',
+            meta: { title: 'menu1-3' }
           }
         ]
+      },
+      {
+        path: 'menu2',
+        component: () => import('@/views/nested/menu2/index'),
+        meta: { title: 'menu2' }
       }
     ]
   },
