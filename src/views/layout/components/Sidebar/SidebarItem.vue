@@ -36,7 +36,8 @@ import { generateTitle } from '@/utils/i18n'
 export default {
   name: 'SidebarItem',
   props: {
-    item: { // route配置json
+    // route object
+    item: {
       type: Object,
       required: true
     },

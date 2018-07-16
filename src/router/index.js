@@ -202,7 +202,7 @@ export const asyncRouterMap = [
   {
     path: '/nested',
     component: Layout,
-    redirect: '/nested/menu1',
+    redirect: '/nested/menu1/menu1-1',
     name: 'nested',
     meta: {
       title: 'nested',
@@ -214,6 +214,7 @@ export const asyncRouterMap = [
         component: () => import('@/views/nested/menu1/index'), // Parent router-view
         name: 'menu1',
         meta: { title: 'menu1' },
+        redirect: '/nested/menu1/menu1-1',
         children: [
           {
             path: 'menu1-1',
@@ -225,6 +226,7 @@ export const asyncRouterMap = [
             path: 'menu1-2',
             component: () => import('@/views/nested/menu1/menu1-2'),
             name: 'menu1-2',
+            redirect: '/nested/menu1/menu1-2/menu1-2-1',
             meta: { title: 'menu1-2' },
             children: [
               {
@@ -251,6 +253,7 @@ export const asyncRouterMap = [
       },
       {
         path: 'menu2',
+        name: 'menu2',
         component: () => import('@/views/nested/menu2/index'),
         meta: { title: 'menu2' }
       }
