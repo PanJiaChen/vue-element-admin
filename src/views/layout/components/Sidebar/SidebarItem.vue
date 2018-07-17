@@ -1,10 +1,10 @@
 <template>
   <div v-if="!item.hidden&&item.children" class="menu-wrapper">
 
-      <router-link v-if="hasOneShowingChildren(item.children) && !item.children[0].children&&!item.alwaysShow" :to="resolvePath(item.children[0].path)">
-        <el-menu-item :index="resolvePath(item.children[0].path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <svg-icon v-if="item.children[0].meta&&item.children[0].meta.icon" :icon-class="item.children[0].meta.icon"></svg-icon>
-          <span v-if="item.children[0].meta&&item.children[0].meta.title" slot="title">{{generateTitle(item.children[0].meta.title)}}</span>
+      <router-link v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow" :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+          <svg-icon v-if="onlyOneChild.meta&&onlyOneChild.meta.icon" :icon-class="onlyOneChild.meta.icon"></svg-icon>
+          <span v-if="onlyOneChild.meta&&onlyOneChild.meta.title" slot="title">{{generateTitle(onlyOneChild.meta.title)}}</span>
         </el-menu-item>
       </router-link>
 
@@ -50,10 +50,21 @@ export default {
       default: ''
     }
   },
+  data() {
+    return {
+      onlyOneChild: null
+    }
+  },
   methods: {
-    hasOneShowingChildren(children) {
+    hasOneShowingChild(children) {
       const showingChildren = children.filter(item => {
-        return !item.hidden
+        if (item.hidden) {
+          return false
+        } else {
+          // temp set(will be used if only has one showing child )
+          this.onlyOneChild = item
+          return true
+        }
       })
       if (showingChildren.length === 1) {
         return true
