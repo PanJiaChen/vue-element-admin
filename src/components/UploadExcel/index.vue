@@ -41,6 +41,11 @@ export default {
         return
       }
       const rawFile = files[0] // only use files[0]
+
+      if (!this.isExcel(rawFile)) {
+        this.$message.error('Only supports upload .xlsx, .xls, .csv suffix files')
+        return false
+      }
       this.upload(rawFile)
       e.stopPropagation()
       e.preventDefault()
@@ -110,6 +115,9 @@ export default {
         headers.push(hdr)
       }
       return headers
+    },
+    isExcel(file) {
+      return /\.(xlsx|xls|csv)$/.test(file.name)
     }
   }
 }
