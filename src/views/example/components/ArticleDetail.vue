@@ -16,7 +16,7 @@
 
           <Warning />
 
-          <el-col :span="21">
+          <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
               <MDinput name="name" v-model="postForm.title" required :maxlength="100">
                 标题
@@ -34,14 +34,14 @@
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="8">
+                <el-col :span="10">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
                     <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
                     </el-date-picker>
                   </el-form-item>
                 </el-col>
 
-                <el-col :span="8">
+                <el-col :span="6">
                   <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
                     <el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"
                       :high-threshold="3">

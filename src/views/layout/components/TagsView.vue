@@ -104,7 +104,8 @@ export default {
     openMenu(tag, e) {
       this.visible = true
       this.selectedTag = tag
-      this.left = e.clientX
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      this.left = e.clientX - offsetLeft + 15 // 15: margin right
       this.top = e.clientY
     },
     closeMenu() {
