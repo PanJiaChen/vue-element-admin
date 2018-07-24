@@ -67,7 +67,7 @@ const webpackConfig = merge(baseWebpackConfig, {
     }),
     new ScriptExtHtmlWebpackPlugin({
       //`runtime` must same as runtimeChunk name. default is `runtime`
-      inline:/runtime\..*\.js$/
+      inline: /runtime\..*\.js$/
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
@@ -151,9 +151,22 @@ if (config.build.productionGzip) {
   )
 }
 
-if (config.build.bundleAnalyzerReport) {
+if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
   const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-  webpackConfig.plugins.push(new BundleAnalyzerPlugin())
+
+  if (config.build.bundleAnalyzerReport) {
+    webpackConfig.plugins.push(new BundleAnalyzerPlugin({
+      analyzerPort: 8080,
+      generateStatsFile: false
+    }))
+  }
+
+  if (config.build.generateAnalyzerReport) {
+    webpackConfig.plugins.push(new BundleAnalyzerPlugin({
+      analyzerMode: 'static',
+      openAnalyzer: false
+    }))
+  }
 }
 
 module.exports = webpackConfig
