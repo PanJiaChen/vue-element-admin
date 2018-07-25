@@ -82,7 +82,6 @@ const webpackConfig = merge(baseWebpackConfig, {
   optimization: {
     splitChunks: {
       chunks: 'all',
-      name: 'vendors',
       cacheGroups: {
         libs: {
           name: 'libs',
