@@ -78,7 +78,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       ignore: ['.*']
     }])
   ],
-  recordsPath: path.resolve('webpack-records.json'),
+  // recordsPath: path.resolve('webpack-records.json'),
   optimization: {
     splitChunks: {
       chunks: 'all',
