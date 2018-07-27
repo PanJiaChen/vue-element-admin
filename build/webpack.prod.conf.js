@@ -11,9 +11,17 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const crypto = require('crypto');
+
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
+}
+
+function createHash(data) {
+  const length = 8
+  const hash = crypto.createHash('md5').update(data).digest("hex")
+  return hash.slice(0, length)
 }
 
 const env = require('../config/' + process.env.env_config + '.env')
@@ -30,8 +38,8 @@ const webpackConfig = merge(baseWebpackConfig, {
   devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
-    chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+    filename: utils.assetsPath('js/[name].[chunkhash:8].js'),
+    chunkFilename: utils.assetsPath('js/[name].[chunkhash:8].js')
   },
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
@@ -68,6 +76,12 @@ const webpackConfig = merge(baseWebpackConfig, {
     new ScriptExtHtmlWebpackPlugin({
       //`runtime` must same as runtimeChunk name. default is `runtime`
       inline: /runtime\..*\.js$/
+    }),
+    new webpack.NamedChunksPlugin(chunk => {
+      if (chunk.name) {
+        return chunk.name
+      }
+      return createHash(Array.from(chunk.modulesIterable, m => m.id).join('_'))
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
