@@ -36,6 +36,8 @@
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/zh/donate/)
 
+- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
+
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
  - 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
  - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
