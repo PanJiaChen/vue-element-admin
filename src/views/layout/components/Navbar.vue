@@ -82,12 +82,12 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .navbar {
-  height: 50px;
-  line-height: 50px;
+  height: 60px;
+  line-height: 60px;
   border-radius: 0px !important;
   .hamburger-container {
-    line-height: 58px;
-    height: 50px;
+    line-height: 68px;
+    height: 60px;
     float: left;
     padding: 0 10px;
   }
@@ -118,11 +118,11 @@ export default {
       vertical-align: 15px;
     }
     .avatar-container {
-      height: 50px;
+      height: 60px;
       margin-right: 30px;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 5px;
+        margin-top: 10px;
         position: relative;
         .user-avatar {
           width: 40px;

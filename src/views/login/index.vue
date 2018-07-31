@@ -165,6 +165,10 @@ $light_gray:#eee;
       }
     }
   }
+  .el-button {
+    height: 47px;
+    font-size: 16px;
+  }
   .el-form-item {
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
@@ -188,7 +192,7 @@ $light_gray:#eee;
     position: absolute;
     left: 0;
     right: 0;
-    width: 520px;
+    width: 460px;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
@@ -242,6 +246,7 @@ $light_gray:#eee;
     position: absolute;
     right: 35px;
     bottom: 28px;
+    font-size: 14px;
   }
 }
 </style>

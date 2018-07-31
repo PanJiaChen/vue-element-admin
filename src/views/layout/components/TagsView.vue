@@ -106,6 +106,9 @@ export default {
       this.selectedTag = tag
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       this.left = e.clientX - offsetLeft + 15 // 15: margin right
+      if ((e.view.innerWidth - this.left) < (100 + offsetLeft)) {
+        this.left = e.view.innerWidth - 100 - offsetLeft
+      }
       this.top = e.clientY
     },
     closeMenu() {
@@ -119,21 +122,22 @@ export default {
 .tags-view-container {
   .tags-view-wrapper {
     background: #fff;
-    height: 34px;
+    height: 54px;
     border-bottom: 1px solid #d8dce5;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     .tags-view-item {
       display: inline-block;
       position: relative;
-      height: 26px;
-      line-height: 26px;
+      height: 40px;
+      line-height: 40px;
       border: 1px solid #d8dce5;
       color: #495060;
       background: #fff;
-      padding: 0 8px;
-      font-size: 12px;
+      padding: 0 15px;
+      font-size: 14px;
       margin-left: 5px;
-      margin-top: 4px;
+      margin-top: 16px;
+      border-radius: 4px 4px 0 0;
       &:first-of-type {
         margin-left: 15px;
       }
@@ -185,15 +189,17 @@ export default {
     .el-icon-close {
       width: 16px;
       height: 16px;
-      vertical-align: 2px;
+      font-size: 12px;
+      line-height: 16px;
+      vertical-align: middle;
       border-radius: 50%;
       text-align: center;
+      margin-left: 3px;
       transition: all .3s cubic-bezier(.645, .045, .355, 1);
       transform-origin: 100% 50%;
       &:before {
-        transform: scale(.6);
+        transform: scale(.9);
         display: inline-block;
-        vertical-align: -3px;
       }
       &:hover {
         background-color: #b4bccc;
