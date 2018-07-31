@@ -71,7 +71,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       // default sort mode uses toposort which cannot handle cyclic deps
       // in certain cases, and in webpack 4, chunk order in HTML doesn't
       // matter anyway
-      chunksSortMode: 'none'
     }),
     new ScriptExtHtmlWebpackPlugin({
       //`runtime` must same as runtimeChunk name. default is `runtime`
@@ -92,7 +91,6 @@ const webpackConfig = merge(baseWebpackConfig, {
       ignore: ['.*']
     }])
   ],
-  // recordsPath: path.resolve('webpack-records.json'),
   optimization: {
     splitChunks: {
       chunks: 'all',
