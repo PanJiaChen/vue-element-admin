@@ -111,6 +111,7 @@ const webpackConfig = merge(baseWebpackConfig, {
           test: resolve("src/components"), // 可自定义拓展你的规则
           minChunks: 3, // 最小公用次数
           priority: 5,
+          reuseExistingChunk: true
         },
       }
     },
@@ -164,7 +165,7 @@ if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
   if (config.build.generateAnalyzerReport) {
     webpackConfig.plugins.push(new BundleAnalyzerPlugin({
       analyzerMode: 'static',
-      reportFilename:'bundle-report.html',
+      reportFilename: 'bundle-report.html',
       openAnalyzer: false
     }))
   }
