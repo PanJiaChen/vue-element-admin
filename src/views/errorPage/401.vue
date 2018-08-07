@@ -57,6 +57,7 @@ export default {
     .pan-back-btn {
       background: #008489;
       color: #fff;
+      border: none!important;
     }
     .pan-gif {
       margin: 0 auto;
@@ -65,6 +66,7 @@ export default {
     .pan-img {
       display: block;
       margin: 0 auto;
+      width: 100%;
     }
     .text-jumbo {
       font-size: 60px;

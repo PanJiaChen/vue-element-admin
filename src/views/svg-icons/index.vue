@@ -1,7 +1,7 @@
 <template>
   <div class="icons-container">
     <p class="warn-content">
-      <a href="https://panjiachen.github.io/vue-element-admin-site/#/icon" target="_blank">Add and use
+      <a href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/icon.html" target="_blank">Add and use
       </a>
     </p>
     <div class="icons-wrapper">
@@ -11,7 +11,7 @@
             {{generateIconCode(item)}}
           </div>
           <div class="icon-item">
-            <svg-icon :icon-class="item" />
+            <svg-icon class-name="disabled" :icon-class="item" />
             <span>{{item}}</span>
           </div>
         </el-tooltip>
@@ -69,6 +69,9 @@ export default {
     display: block;
     font-size: 24px;
     margin-top: 10px;
+  }
+  .disabled{
+    pointer-events: none;
   }
 }
 </style>

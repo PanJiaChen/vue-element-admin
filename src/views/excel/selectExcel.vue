@@ -3,7 +3,7 @@
     <!-- $t is vue-i18n global function to translate lang -->
     <el-input style='width:340px;' :placeholder="$t('excel.placeholder')" prefix-icon="el-icon-document" v-model="filename"></el-input>
     <el-button style='margin-bottom:20px' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">{{$t('excel.selectedExport')}}</el-button>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row @selection-change="handleSelectionChange"
+    <el-table :data="list" v-loading="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row @selection-change="handleSelectionChange"
       ref="multipleTable">
       <el-table-column type="selection" align="center"></el-table-column>
       <el-table-column align="center" label='Id' width="95">
@@ -72,7 +72,11 @@ export default {
           const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
           const list = this.multipleSelection
           const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel(tHeader, data, this.filename)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: this.filename
+          })
           this.$refs.multipleTable.clearSelection()
           this.downloadLoading = false
         })

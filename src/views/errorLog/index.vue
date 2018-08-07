@@ -6,7 +6,7 @@
     <h3>{{$t('errorLog.tips')}}</h3>
     <code>
       {{$t('errorLog.description')}}
-      <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/#/error?id=%e4%bb%a3%e7%a0%81">
+      <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/error.html">
         {{$t('errorLog.documentation')}}
       </a>
     </code>

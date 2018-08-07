@@ -1,9 +1,9 @@
 <template>
   <div>
-    <input id="excel-upload-input" type="file" accept=".xlsx, .xls" class="c-hide" @change="handkeFileChange">
+    <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
     <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
-      <el-button style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">browse</el-button>
+      <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">Browse</el-button>
     </div>
   </div>
 </template>
@@ -12,6 +12,10 @@
 import XLSX from 'xlsx'
 
 export default {
+  props: {
+    beforeUpload: Function,
+    onSuccess: Function
+  },
   data() {
     return {
       loading: false,
@@ -25,18 +29,24 @@ export default {
     generateDate({ header, results }) {
       this.excelData.header = header
       this.excelData.results = results
-      this.$emit('on-selected-file', this.excelData)
+      this.onSuccess && this.onSuccess(this.excelData)
     },
     handleDrop(e) {
       e.stopPropagation()
       e.preventDefault()
+      if (this.loading) return
       const files = e.dataTransfer.files
       if (files.length !== 1) {
         this.$message.error('Only support uploading one file!')
         return
       }
-      const itemFile = files[0] // only use files[0]
-      this.readerData(itemFile)
+      const rawFile = files[0] // only use files[0]
+
+      if (!this.isExcel(rawFile)) {
+        this.$message.error('Only supports upload .xlsx, .xls, .csv suffix files')
+        return false
+      }
+      this.upload(rawFile)
       e.stopPropagation()
       e.preventDefault()
     },
@@ -48,24 +58,42 @@ export default {
     handleUpload() {
       document.getElementById('excel-upload-input').click()
     },
-    handkeFileChange(e) {
+    handleClick(e) {
       const files = e.target.files
-      const itemFile = files[0] // only use files[0]
-      this.readerData(itemFile)
+      const rawFile = files[0] // only use files[0]
+      if (!rawFile) return
+      this.upload(rawFile)
     },
-    readerData(itemFile) {
-      const reader = new FileReader()
-      reader.onload = e => {
-        const data = e.target.result
-        const fixedData = this.fixdata(data)
-        const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
-        const firstSheetName = workbook.SheetNames[0]
-        const worksheet = workbook.Sheets[firstSheetName]
-        const header = this.get_header_row(worksheet)
-        const results = XLSX.utils.sheet_to_json(worksheet)
-        this.generateDate({ header, results })
+    upload(rawFile) {
+      this.$refs['excel-upload-input'].value = null // fix can't select the same excel
+
+      if (!this.beforeUpload) {
+        this.readerData(rawFile)
+        return
       }
-      reader.readAsArrayBuffer(itemFile)
+      const before = this.beforeUpload(rawFile)
+      if (before) {
+        this.readerData(rawFile)
+      }
+    },
+    readerData(rawFile) {
+      this.loading = true
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader()
+        reader.onload = e => {
+          const data = e.target.result
+          const fixedData = this.fixdata(data)
+          const workbook = XLSX.read(btoa(fixedData), { type: 'base64' })
+          const firstSheetName = workbook.SheetNames[0]
+          const worksheet = workbook.Sheets[firstSheetName]
+          const header = this.get_header_row(worksheet)
+          const results = XLSX.utils.sheet_to_json(worksheet)
+          this.generateDate({ header, results })
+          this.loading = false
+          resolve()
+        }
+        reader.readAsArrayBuffer(rawFile)
+      })
     },
     fixdata(data) {
       let o = ''
@@ -87,6 +115,9 @@ export default {
         headers.push(hdr)
       }
       return headers
+    },
+    isExcel(file) {
+      return /\.(xlsx|xls|csv)$/.test(file.name)
     }
   }
 }

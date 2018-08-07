@@ -1,6 +1,6 @@
 <template>
   <div class="app-container documentation-container">
-    <a class="document-btn" target='_blank' href="https://panjiachen.github.io/vue-element-admin-site/#/">{{$t('documentation.documentation')}}</a>
+    <a class="document-btn" target='_blank' href="https://panjiachen.github.io/vue-element-admin-site/">{{$t('documentation.documentation')}}</a>
     <a class="document-btn" target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">{{$t('documentation.github')}}</a>
     <dropdown-menu style="float:left;margin-left:50px;" title='系列文章' :items='articleList'></dropdown-menu>
   </div>
@@ -19,7 +19,7 @@ export default {
         { title: '实战篇', href: 'https://segmentfault.com/a/1190000009762198' },
         { title: 'vueAdmin-template 篇', href: 'https://segmentfault.com/a/1190000010043013' },
         { title: '自行封装 component', href: 'https://segmentfault.com/a/1190000009090836' },
-        { title: '优雅的使用 icon', href: 'https://segmentfault.com/a/https://segmentfault.com/a/1190000012213278' }
+        { title: '优雅的使用 icon', href: 'https://segmentfault.com/a/1190000012213278' }
       ]
     }
   }

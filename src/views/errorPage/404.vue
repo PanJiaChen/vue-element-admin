@@ -1,5 +1,5 @@
 <template>
-  <div style="background:#f0f2f5;margin-top: -20px;height:100%;">
+  <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
         <img class="pic-404__parent" :src="img_404" alt="404">
@@ -14,7 +14,7 @@
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">请检查您输入的网址是否正确，请点击以下按钮返回主页或者发送错误报告</div>
-        <a href="/" class="bullshit__return-home">返回首页</a>
+        <a href="" class="bullshit__return-home">返回首页</a>
       </div>
     </div>
   </div>
@@ -34,24 +34,28 @@ export default {
   },
   computed: {
     message() {
-      return '特朗普说这个页面你不能进......'
+      return '网管说这个页面你不能进......'
     }
   }
 }
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.wscn-http404-container{
+  transform: translate(-50%,-50%);
+  position: absolute;
+  top: 40%;
+  left: 50%;
+}
 .wscn-http404 {
   position: relative;
   width: 1200px;
-  margin: 20px auto 60px;
-  padding: 0 100px;
+  padding: 0 50px;
   overflow: hidden;
   .pic-404 {
     position: relative;
     float: left;
     width: 600px;
-    padding: 150px 0;
     overflow: hidden;
     &__parent {
       width: 100%;
@@ -163,7 +167,7 @@ export default {
     position: relative;
     float: left;
     width: 300px;
-    padding: 150px 0;
+    padding: 30px 0;
     overflow: hidden;
     &__oops {
       font-size: 32px;
@@ -179,7 +183,8 @@ export default {
     &__headline {
       font-size: 20px;
       line-height: 24px;
-      color: #1482f0;
+      color: #222;
+      font-weight: bold;
       opacity: 0;
       margin-bottom: 10px;
       animation-name: slideUp;
