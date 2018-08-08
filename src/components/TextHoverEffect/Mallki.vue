@@ -23,6 +23,7 @@ export default {
 
 <style>
 /* Mallki */
+
 .link--mallki {
   font-weight: 800;
   color: #4dd9d5;
@@ -31,10 +32,10 @@ export default {
   transition: color 0.5s 0.25s;
   overflow: hidden;
   position: relative;
-display: inline-block;
-    line-height: 1;
-        outline: none;
-    text-decoration: none;
+  display: inline-block;
+  line-height: 1;
+  outline: none;
+  text-decoration: none;
 }
 
 .link--mallki:hover {
@@ -109,5 +110,4 @@ display: inline-block;
   -webkit-transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
   transition-timing-function: cubic-bezier(0.2, 1, 0.3, 1);
 }
-
 </style>
