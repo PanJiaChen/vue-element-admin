@@ -11,20 +11,16 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-const crypto = require('crypto');
-
 
 function resolve(dir) {
   return path.join(__dirname, '..', dir)
 }
 
-function createHash(data) {
-  const length = 8
-  const hash = crypto.createHash('md5').update(data).digest("hex")
-  return hash.slice(0, length)
-}
-
 const env = require('../config/' + process.env.env_config + '.env')
+
+// For NamedChunksPlugin
+const seen = new Set();
+const nameLength = 4;
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
@@ -76,11 +72,22 @@ const webpackConfig = merge(baseWebpackConfig, {
       //`runtime` must same as runtimeChunk name. default is `runtime`
       inline: /runtime\..*\.js$/
     }),
+    // keep chunk.id stable when chunk has no name
     new webpack.NamedChunksPlugin(chunk => {
       if (chunk.name) {
-        return chunk.name
+        return chunk.name;
       }
-      return createHash(Array.from(chunk.modulesIterable, m => m.id).join('_'))
+      const modules = Array.from(chunk.modulesIterable);
+      if (modules.length > 1) {
+        const hash = require("hash-sum");
+        const joinedHash = hash(modules.map(m => m.id).join("_"));
+        let len = nameLength;
+        while (seen.has(joinedHash.substr(0, len))) len++;
+        seen.add(joinedHash.substr(0, len));
+        return `chunk-${joinedHash.substr(0, len)}`;
+      } else {
+        return modules[0].id;
+      }
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
