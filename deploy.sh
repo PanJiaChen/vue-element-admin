@@ -4,7 +4,7 @@
 set -e
 
 # build
-npm run build:prod
+npm run build:prod --generate_report
 
 # navigate into the build output directory
 cd dist
