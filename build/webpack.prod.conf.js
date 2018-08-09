@@ -126,8 +126,8 @@ const webpackConfig = merge(baseWebpackConfig, {
     minimizer: [
       new UglifyJsPlugin({
         uglifyOptions: {
-          compress: {
-            warnings: false
+          mangle: {
+            safari10: true
           }
         },
         sourceMap: config.build.productionSourceMap,
