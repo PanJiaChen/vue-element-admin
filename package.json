@@ -88,7 +88,7 @@
     "hash-sum": "^1.0.2",
     "html-webpack-plugin": "^4.0.0-alpha",
     "husky": "0.14.3",
-    "lint-staged": "7.2.0",
+    "lint-staged": "7.2.2",
     "mini-css-extract-plugin": "0.4.1",
     "node-notifier": "5.2.1",
     "node-sass": "^4.7.2",
