@@ -19,8 +19,8 @@ function resolve(dir) {
 const env = require('../config/' + process.env.env_config + '.env')
 
 // For NamedChunksPlugin
-const seen = new Set();
-const nameLength = 4;
+const seen = new Set()
+const nameLength = 4
 
 const webpackConfig = merge(baseWebpackConfig, {
   mode: 'production',
@@ -63,7 +63,7 @@ const webpackConfig = merge(baseWebpackConfig, {
         removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
-      },
+      }
       // default sort mode uses toposort which cannot handle cyclic deps
       // in certain cases, and in webpack 4, chunk order in HTML doesn't
       // matter anyway
@@ -75,28 +75,30 @@ const webpackConfig = merge(baseWebpackConfig, {
     // keep chunk.id stable when chunk has no name
     new webpack.NamedChunksPlugin(chunk => {
       if (chunk.name) {
-        return chunk.name;
+        return chunk.name
       }
-      const modules = Array.from(chunk.modulesIterable);
+      const modules = Array.from(chunk.modulesIterable)
       if (modules.length > 1) {
-        const hash = require("hash-sum");
-        const joinedHash = hash(modules.map(m => m.id).join("_"));
-        let len = nameLength;
-        while (seen.has(joinedHash.substr(0, len))) len++;
-        seen.add(joinedHash.substr(0, len));
-        return `chunk-${joinedHash.substr(0, len)}`;
+        const hash = require('hash-sum')
+        const joinedHash = hash(modules.map(m => m.id).join('_'))
+        let len = nameLength
+        while (seen.has(joinedHash.substr(0, len))) len++
+        seen.add(joinedHash.substr(0, len))
+        return `chunk-${joinedHash.substr(0, len)}`
       } else {
-        return modules[0].id;
+        return modules[0].id
       }
     }),
     // keep module.id stable when vender modules does not change
     new webpack.HashedModuleIdsPlugin(),
     // copy custom static assets
-    new CopyWebpackPlugin([{
-      from: path.resolve(__dirname, '../static'),
-      to: config.build.assetsSubDirectory,
-      ignore: ['.*']
-    }])
+    new CopyWebpackPlugin([
+      {
+        from: path.resolve(__dirname, '../static'),
+        to: config.build.assetsSubDirectory,
+        ignore: ['.*']
+      }
+    ])
   ],
   optimization: {
     splitChunks: {
@@ -115,11 +117,11 @@ const webpackConfig = merge(baseWebpackConfig, {
         },
         commons: {
           name: 'chunk-comomns',
-          test: resolve("src/components"), // 可自定义拓展你的规则
+          test: resolve('src/components'), // 可自定义拓展你的规则
           minChunks: 3, // 最小公用次数
           priority: 5,
           reuseExistingChunk: true
-        },
+        }
       }
     },
     runtimeChunk: 'single',
@@ -137,7 +139,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // Compress extracted CSS. We are using this plugin so that possible
       // duplicated CSS from different components can be deduped.
       new OptimizeCSSAssetsPlugin()
-    ],
+    ]
   }
 })
 
@@ -149,9 +151,7 @@ if (config.build.productionGzip) {
       asset: '[path].gz[query]',
       algorithm: 'gzip',
       test: new RegExp(
-        '\\.(' +
-        config.build.productionGzipExtensions.join('|') +
-        ')$'
+        '\\.(' + config.build.productionGzipExtensions.join('|') + ')$'
       ),
       threshold: 10240,
       minRatio: 0.8
@@ -160,21 +160,26 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.generateAnalyzerReport || config.build.bundleAnalyzerReport) {
-  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
+    .BundleAnalyzerPlugin
 
   if (config.build.bundleAnalyzerReport) {
-    webpackConfig.plugins.push(new BundleAnalyzerPlugin({
-      analyzerPort: 8080,
-      generateStatsFile: false
-    }))
+    webpackConfig.plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerPort: 8080,
+        generateStatsFile: false
+      })
+    )
   }
 
   if (config.build.generateAnalyzerReport) {
-    webpackConfig.plugins.push(new BundleAnalyzerPlugin({
-      analyzerMode: 'static',
-      reportFilename: 'bundle-report.html',
-      openAnalyzer: false
-    }))
+    webpackConfig.plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        reportFilename: 'bundle-report.html',
+        openAnalyzer: false
+      })
+    )
   }
 }
 
