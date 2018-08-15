@@ -36,12 +36,7 @@ module.exports = {
      */
 
     // https://webpack.js.org/configuration/devtool/#development
-    devtool: '#cheap-source-map',
-
-    // If you have problems debugging vue-files in devtools,
-    // set this to false - it *may* help
-    // https://vue-loader.vuejs.org/en/options.html#cachebusting
-    cacheBusting: true,
+    devtool: 'cheap-source-map',
 
     // CSS Sourcemaps off by default because relative paths are "buggy"
     // with this option, according to the CSS-Loader README
@@ -73,7 +68,7 @@ module.exports = {
      */
     productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
-    devtool: '#source-map',
+    devtool: 'source-map',
 
     // Gzip off by default as many popular static hosts such as
     // Surge or Netlify already gzip all static assets for you.
@@ -84,8 +79,11 @@ module.exports = {
 
     // Run the build command with an extra argument to
     // View the bundle analyzer report after build finishes:
-    // `npm run build --report`
+    // `npm run build:prod --report`
     // Set to `true` or `false` to always turn it on or off
-    bundleAnalyzerReport: process.env.npm_config_report
+    bundleAnalyzerReport: process.env.npm_config_report || false,
+
+      // `npm run build:prod --generate_report`
+    generateAnalyzerReport: process.env.npm_config_generate_report || false
   }
 }
