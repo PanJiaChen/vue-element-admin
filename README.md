@@ -38,6 +38,8 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
 
+- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
+
 **This project is positioned as a background integration solution and is not suitable for secondary development as a basic template.**
 
  - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
