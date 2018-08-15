@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-import 'normalize.css/normalize.css'// A modern alternative to CSS resets
+import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -13,7 +13,7 @@ import store from './store'
 
 import i18n from './lang' // Internationalization
 import './icons' // icon
-import './errorLog'// error log
+import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
 

@@ -25,7 +25,7 @@ export function parseTime(time, cFormat) {
   }
   const time_str = format.replace(/{(y|m|d|h|i|s|a)+}/g, (result, key) => {
     let value = formatObj[key]
-    if (key === 'a') return ['一', '二', '三', '四', '五', '六', '日'][value - 1]
+    if (key === 'a') { return ['一', '二', '三', '四', '五', '六', '日'][value - 1] }
     if (result.length > 0 && value < 10) {
       value = '0' + value
     }
@@ -43,7 +43,8 @@ export function formatTime(time, option) {
 
   if (diff < 30) {
     return '刚刚'
-  } else if (diff < 3600) { // less 1 hour
+  } else if (diff < 3600) {
+    // less 1 hour
     return Math.ceil(diff / 60) + '分钟前'
   } else if (diff < 3600 * 24) {
     return Math.ceil(diff / 3600) + '小时前'
@@ -53,7 +54,17 @@ export function formatTime(time, option) {
   if (option) {
     return parseTime(time, option)
   } else {
-    return d.getMonth() + 1 + '月' + d.getDate() + '日' + d.getHours() + '时' + d.getMinutes() + '分'
+    return (
+      d.getMonth() +
+      1 +
+      '月' +
+      d.getDate() +
+      '日' +
+      d.getHours() +
+      '时' +
+      d.getMinutes() +
+      '分'
+    )
   }
 }
 
@@ -81,9 +92,11 @@ export function getQueryObject(url) {
 export function getByteLen(val) {
   let len = 0
   for (let i = 0; i < val.length; i++) {
-    if (val[i].match(/[^\x00-\xff]/ig) != null) {
+    if (val[i].match(/[^\x00-\xff]/gi) != null) {
       len += 1
-    } else { len += 0.5 }
+    } else {
+      len += 0.5
+    }
   }
   return Math.floor(len)
 }
@@ -100,11 +113,12 @@ export function cleanArray(actual) {
 
 export function param(json) {
   if (!json) return ''
-  return cleanArray(Object.keys(json).map(key => {
-    if (json[key] === undefined) return ''
-    return encodeURIComponent(key) + '=' +
-            encodeURIComponent(json[key])
-  })).join('&')
+  return cleanArray(
+    Object.keys(json).map(key => {
+      if (json[key] === undefined) return ''
+      return encodeURIComponent(key) + '=' + encodeURIComponent(json[key])
+    })
+  ).join('&')
 }
 
 export function param2Obj(url) {
@@ -112,7 +126,14 @@ export function param2Obj(url) {
   if (!search) {
     return {}
   }
-  return JSON.parse('{"' + decodeURIComponent(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g, '":"') + '"}')
+  return JSON.parse(
+    '{"' +
+      decodeURIComponent(search)
+        .replace(/"/g, '\\"')
+        .replace(/&/g, '","')
+        .replace(/=/g, '":"') +
+      '"}'
+  )
 }
 
 export function html2Text(val) {
@@ -131,7 +152,7 @@ export function objectMerge(target, source) {
   if (Array.isArray(source)) {
     return source.slice()
   }
-  Object.keys(source).forEach((property) => {
+  Object.keys(source).forEach(property => {
     const sourceProperty = source[property]
     if (typeof sourceProperty === 'object') {
       target[property] = objectMerge(target[property], sourceProperty)
@@ -145,7 +166,7 @@ export function objectMerge(target, source) {
 export function scrollTo(element, to, duration) {
   if (duration <= 0) return
   const difference = to - element.scrollTop
-  const perTick = difference / duration * 10
+  const perTick = (difference / duration) * 10
   setTimeout(() => {
     console.log(new Date())
     element.scrollTop = element.scrollTop + perTick
@@ -163,7 +184,9 @@ export function toggleClass(element, className) {
   if (nameIndex === -1) {
     classString += '' + className
   } else {
-    classString = classString.substr(0, nameIndex) + classString.substr(nameIndex + className.length)
+    classString =
+      classString.substr(0, nameIndex) +
+      classString.substr(nameIndex + className.length)
   }
   element.className = classString
 }
@@ -177,7 +200,8 @@ export const pickerOptions = [
       end.setTime(start.getTime())
       picker.$emit('pick', [start, end])
     }
-  }, {
+  },
+  {
     text: '最近一周',
     onClick(picker) {
       const end = new Date(new Date().toDateString())
@@ -185,7 +209,8 @@ export const pickerOptions = [
       start.setTime(end.getTime() - 3600 * 1000 * 24 * 7)
       picker.$emit('pick', [start, end])
     }
-  }, {
+  },
+  {
     text: '最近一个月',
     onClick(picker) {
       const end = new Date(new Date().toDateString())
@@ -193,7 +218,8 @@ export const pickerOptions = [
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 30)
       picker.$emit('pick', [start, end])
     }
-  }, {
+  },
+  {
     text: '最近三个月',
     onClick(picker) {
       const end = new Date(new Date().toDateString())
@@ -201,7 +227,8 @@ export const pickerOptions = [
       start.setTime(start.getTime() - 3600 * 1000 * 24 * 90)
       picker.$emit('pick', [start, end])
     }
-  }]
+  }
+]
 
 export function getTime(type) {
   if (type === 'start') {
@@ -256,7 +283,7 @@ export function deepClone(source) {
     throw new Error('error arguments', 'shallowClone')
   }
   const targetObj = source.constructor === Array ? [] : {}
-  Object.keys(source).forEach((keys) => {
+  Object.keys(source).forEach(keys => {
     if (source[keys] && typeof source[keys] === 'object') {
       targetObj[keys] = deepClone(source[keys])
     } else {
