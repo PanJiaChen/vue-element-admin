@@ -42,23 +42,28 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 **This project is positioned as a background integration solution and is not suitable for secondary development as a basic template.**
 
- - Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)  
- - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)
+- Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+
+**This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
+
+**Note: This project uses element-ui@2.3.0+ version, so the minimum compatible vue@2.5.0+**
+
+**Start using `webpack4` from `v3.8.0`. If you still want to continue using `webpack3`, please use this branch [webpack3](https://github.com/PanJiaChen/vue-element-admin/tree/webpack3)**
 
 ## Preparation
 
 You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](http://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
- Understanding and learning this knowledge in advance will greatly help the use of this project.
+Understanding and learning this knowledge in advance will greatly help the use of this project.
 
- **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
-
- **Note: This project uses element-ui@2.3.0+ version, so the minimum compatible vue@2.5.0+**
+---
 
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
 ## Features
+
 ```
 - Login / Logout
 
@@ -138,6 +143,7 @@ npm run dev
 This will automatically open http://localhost:9527.
 
 ## Build
+
 ```bash
 # build for test environment
 npm run build:sit
@@ -147,6 +153,7 @@ npm run build:prod
 ```
 
 ## Advanced
+
 ```bash
 # --report to build with bundle size analytics
 npm run build:prod --report
@@ -167,12 +174,15 @@ npm run lint -- --fix
 Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
 
 ## Changelog
+
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
 ## Online Demo
+
 [Preview](http://panjiachen.github.io/vue-element-admin)
 
 ## Donate
+
 If you find this project useful, you can buy author a glass of juice :tropical_drink:
 
 ![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
