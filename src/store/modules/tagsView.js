@@ -6,9 +6,11 @@ const tagsView = {
   mutations: {
     ADD_VISITED_VIEWS: (state, view) => {
       if (state.visitedViews.some(v => v.path === view.path)) return
-      state.visitedViews.push(Object.assign({}, view, {
-        title: view.meta.title || 'no-name'
-      }))
+      state.visitedViews.push(
+        Object.assign({}, view, {
+          title: view.meta.title || 'no-name'
+        })
+      )
       if (!view.meta.noCache) {
         state.cachedViews.push(view.name)
       }
@@ -38,12 +40,12 @@ const tagsView = {
       for (const i of state.cachedViews) {
         if (i === view.name) {
           const index = state.cachedViews.indexOf(i)
-          state.cachedViews = state.cachedViews.slice(index, i + 1)
+          state.cachedViews = state.cachedViews.slice(index, index + 1)
           break
         }
       }
     },
-    DEL_ALL_VIEWS: (state) => {
+    DEL_ALL_VIEWS: state => {
       state.visitedViews = []
       state.cachedViews = []
     }
@@ -53,19 +55,19 @@ const tagsView = {
       commit('ADD_VISITED_VIEWS', view)
     },
     delVisitedViews({ commit, state }, view) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('DEL_VISITED_VIEWS', view)
         resolve([...state.visitedViews])
       })
     },
     delOthersViews({ commit, state }, view) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('DEL_OTHERS_VIEWS', view)
         resolve([...state.visitedViews])
       })
     },
     delAllViews({ commit, state }) {
-      return new Promise((resolve) => {
+      return new Promise(resolve => {
         commit('DEL_ALL_VIEWS')
         resolve([...state.visitedViews])
       })

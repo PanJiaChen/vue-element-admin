@@ -23,4 +23,3 @@ export default function checkPermission(value) {
     return false
   }
 }
-
