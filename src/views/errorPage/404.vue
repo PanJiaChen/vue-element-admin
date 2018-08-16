@@ -2,10 +2,10 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img class="pic-404__parent" :src="img_404" alt="404">
-        <img class="pic-404__child left" :src="img_404_cloud" alt="404">
-        <img class="pic-404__child mid" :src="img_404_cloud" alt="404">
-        <img class="pic-404__child right" :src="img_404_cloud" alt="404">
+        <img class="pic-404__parent" src="@/assets/404_images/404.png" alt="404">
+        <img class="pic-404__child left" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" alt="404">
+        <img class="pic-404__child right" src="@/assets/404_images/404_cloud.png" alt="404">
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
@@ -21,17 +21,9 @@
 </template>
 
 <script>
-import img_404 from '@/assets/404_images/404.png'
-import img_404_cloud from '@/assets/404_images/404_cloud.png'
 
 export default {
   name: 'page404',
-  data() {
-    return {
-      img_404,
-      img_404_cloud
-    }
-  },
   computed: {
     message() {
       return '网管说这个页面你不能进......'
