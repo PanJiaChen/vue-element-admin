@@ -6,7 +6,7 @@ const chartsRouter = {
   path: '/charts',
   component: Layout,
   redirect: 'noredirect',
-  name: 'charts',
+  name: 'Charts',
   meta: {
     title: 'charts',
     icon: 'chart'
@@ -15,19 +15,19 @@ const chartsRouter = {
     {
       path: 'keyboard',
       component: () => import('@/views/charts/keyboard'),
-      name: 'keyboardChart',
+      name: 'KeyboardChart',
       meta: { title: 'keyboardChart', noCache: true }
     },
     {
       path: 'line',
       component: () => import('@/views/charts/line'),
-      name: 'lineChart',
+      name: 'LineChart',
       meta: { title: 'lineChart', noCache: true }
     },
     {
       path: 'mixchart',
       component: () => import('@/views/charts/mixChart'),
-      name: 'mixChart',
+      name: 'MixChart',
       meta: { title: 'mixChart', noCache: true }
     }
   ]
