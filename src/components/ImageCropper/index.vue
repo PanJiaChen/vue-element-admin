@@ -28,7 +28,11 @@
       <div class="vicp-crop">
         <div class="vicp-crop-left" v-show="true">
           <div class="vicp-img-container">
-            <img :src="sourceImgUrl" :style="sourceImgStyle" class="vicp-img" draggable="false"
+            <img
+:src="sourceImgUrl"
+:style="sourceImgStyle"
+class="vicp-img"
+draggable="false"
               @drag="preventDefault"
               @dragstart="preventDefault"
               @dragend="preventDefault"
@@ -103,7 +107,7 @@
 </template>
 
 <script>
- /* eslint-disable */
+/* eslint-disable */
 'use strict'
 import request from '@/utils/request'
 import language from './utils/language.js'

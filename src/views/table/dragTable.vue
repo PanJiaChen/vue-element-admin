@@ -64,7 +64,7 @@ import { fetchList } from '@/api/article'
 import Sortable from 'sortablejs'
 
 export default {
-  name: 'dragTable',
+  name: 'DragTable',
   data() {
     return {
       list: null,

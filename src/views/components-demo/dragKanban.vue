@@ -9,7 +9,7 @@
 import Kanban from '@/components/Kanban'
 
 export default {
-  name: 'dragKanban-demo',
+  name: 'DragKanbanDemo',
   components: {
     Kanban
   },

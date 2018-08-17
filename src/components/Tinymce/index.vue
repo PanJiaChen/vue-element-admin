@@ -13,7 +13,7 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 
 export default {
-  name: 'tinymce',
+  name: 'Tinymce',
   components: { editorImage },
   props: {
     id: {

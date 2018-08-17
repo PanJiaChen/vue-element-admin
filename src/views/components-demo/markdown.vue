@@ -27,7 +27,7 @@ const content = `
 `
 
 export default {
-  name: 'markdown-demo',
+  name: 'MarkdownDemo',
   components: { MarkdownEditor },
   data() {
     return {
@@ -45,5 +45,4 @@ export default {
   }
 }
 </script>
-
 

@@ -6,7 +6,7 @@
 import ArticleDetail from './components/ArticleDetail'
 
 export default {
-  name: 'editForm',
+  name: 'EditForm',
   components: { ArticleDetail }
 }
 </script>

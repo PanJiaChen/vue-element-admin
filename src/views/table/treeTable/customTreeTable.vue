@@ -16,7 +16,9 @@
         <template slot-scope="scope">
           <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
             <div class="processContainer">
-              <div class="process" :style="{ width:scope.row._width * 500+'px',
+              <div
+class="process"
+:style="{ width:scope.row._width * 500+'px',
               background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
               marginLeft:scope.row._marginLeft * 500+'px' }">
                 <span style="display:inline-block"></span>
@@ -43,7 +45,7 @@ import treeTable from '@/components/TreeTable'
 import treeToArray from './customEval'
 
 export default {
-  name: 'customTreeTableDemo',
+  name: 'CustomTreeTableDemo',
   components: { treeTable },
   data() {
     return {

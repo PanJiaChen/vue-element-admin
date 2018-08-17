@@ -38,7 +38,7 @@
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'exportZip',
+  name: 'ExportZip',
   data() {
     return {
       list: null,

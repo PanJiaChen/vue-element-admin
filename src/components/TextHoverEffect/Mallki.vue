@@ -20,7 +20,6 @@ export default {
 }
 </script>
 
-
 <style>
 /* Mallki */
 

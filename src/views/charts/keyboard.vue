@@ -8,7 +8,7 @@
 import Chart from '@/components/Charts/keyboard'
 
 export default {
-  name: 'keyboardChart',
+  name: 'KeyboardChart',
   components: { Chart }
 }
 </script>

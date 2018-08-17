@@ -58,7 +58,7 @@
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'inlineEditTable',
+  name: 'InlineEditTable',
   data() {
     return {
       list: null,

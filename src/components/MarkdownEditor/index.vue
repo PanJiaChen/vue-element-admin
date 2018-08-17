@@ -11,7 +11,7 @@ import 'simplemde/dist/simplemde.min.css'
 import SimpleMDE from 'simplemde'
 
 export default {
-  name: 'simplemde-md',
+  name: 'SimplemdeMd',
   props: {
     value: String,
     id: {

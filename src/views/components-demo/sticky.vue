@@ -92,12 +92,11 @@
   </div>
 </template>
 
-
 <script>
 import Sticky from '@/components/Sticky'
 
 export default {
-  name: 'sticky-demo',
+  name: 'StickyDemo',
   components: { Sticky },
   data() {
     return {

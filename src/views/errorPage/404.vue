@@ -23,7 +23,7 @@
 <script>
 
 export default {
-  name: 'page404',
+  name: 'Page404',
   computed: {
     message() {
       return '网管说这个页面你不能进......'

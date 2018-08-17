@@ -14,7 +14,7 @@
 import Dropzone from '@/components/Dropzone'
 
 export default {
-  name: 'dropzone-demo',
+  name: 'DropzoneDemo',
   components: { Dropzone },
   methods: {
     dropzoneS(file) {
@@ -28,5 +28,4 @@ export default {
   }
 }
 </script>
-
 

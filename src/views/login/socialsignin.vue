@@ -13,7 +13,7 @@
 import openWindow from '@/utils/openWindow'
 
 export default {
-  name: 'social-signin',
+  name: 'SocialSignin',
   methods: {
     wechatHandleClick(thirdpart) {
       this.$store.commit('SET_AUTH_TYPE', thirdpart)

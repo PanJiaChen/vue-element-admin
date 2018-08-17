@@ -20,7 +20,12 @@
           <el-date-picker v-model="date" type="date" :placeholder="$t('i18nView.datePlaceholder')"></el-date-picker>
         </div>
         <div class="block">
-          <el-pagination background :current-page="currentPage" :page-sizes="[100, 200, 300, 400]" :page-size="100" layout="total, sizes, prev, pager, next"
+          <el-pagination
+background
+:current-page="currentPage"
+:page-sizes="[100, 200, 300, 400]"
+:page-size="100"
+layout="total, sizes, prev, pager, next"
             :total="400">
           </el-pagination>
         </div>
@@ -49,7 +54,7 @@ import local from './local'
 const viewName = 'i18nView'
 
 export default {
-  name: 'i18n',
+  name: 'I18n',
   data() {
     return {
       date: '',

@@ -5,7 +5,6 @@
   </el-upload>
 </template>
 
-
 <script>
 import { getToken } from '@/api/qiniu'
 // 获取七牛token 后端通过Access Key,Secret Key,bucket等生成token

@@ -125,7 +125,7 @@
 import BackToTop from '@/components/BackToTop'
 
 export default {
-  name: 'backToTop-demo',
+  name: 'BackToTopDemo',
   components: { BackToTop },
   data() {
     return {

@@ -22,7 +22,7 @@ import PanThumb from '@/components/PanThumb'
 import GithubCorner from '@/components/GithubCorner'
 
 export default {
-  name: 'dashboard-editor',
+  name: 'DashboardEditor',
   components: { PanThumb, GithubCorner },
   data() {
     return {

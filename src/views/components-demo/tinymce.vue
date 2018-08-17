@@ -15,7 +15,7 @@
 import Tinymce from '@/components/Tinymce'
 
 export default {
-  name: 'tinymce-demo',
+  name: 'TinymceDemo',
   components: { Tinymce },
   data() {
     return {
@@ -33,5 +33,4 @@ export default {
   margin-top: 20px;
 }
 </style>
-
 

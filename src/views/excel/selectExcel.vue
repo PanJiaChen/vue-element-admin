@@ -3,7 +3,14 @@
     <!-- $t is vue-i18n global function to translate lang -->
     <el-input style='width:340px;' :placeholder="$t('excel.placeholder')" prefix-icon="el-icon-document" v-model="filename"></el-input>
     <el-button style='margin-bottom:20px' type="primary" icon="document" @click="handleDownload" :loading="downloadLoading">{{$t('excel.selectedExport')}}</el-button>
-    <el-table :data="list" v-loading="listLoading" element-loading-text="拼命加载中" border fit highlight-current-row @selection-change="handleSelectionChange"
+    <el-table
+:data="list"
+v-loading="listLoading"
+element-loading-text="拼命加载中"
+border
+fit
+highlight-current-row
+@selection-change="handleSelectionChange"
       ref="multipleTable">
       <el-table-column type="selection" align="center"></el-table-column>
       <el-table-column align="center" label='Id' width="95">
@@ -40,7 +47,7 @@
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'selectExcel',
+  name: 'SelectExcel',
   data() {
     return {
       list: null,

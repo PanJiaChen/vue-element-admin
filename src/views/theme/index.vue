@@ -58,7 +58,7 @@ import { toggleClass } from '@/utils'
 import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
 
 export default {
-  name: 'theme',
+  name: 'Theme',
   data() {
     return {
       theme: false,

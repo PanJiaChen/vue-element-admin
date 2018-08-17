@@ -21,7 +21,7 @@ import errorA from './errorTestA'
 import errorB from './errorTestB'
 
 export default {
-  name: 'errorLog',
+  name: 'ErrorLog',
   components: { errorA, errorB }
 }
 </script>

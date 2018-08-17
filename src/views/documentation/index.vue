@@ -9,7 +9,7 @@
 import DropdownMenu from '@/components/Share/dropdownMenu'
 
 export default {
-  name: 'documentation',
+  name: 'Documentation',
   components: { DropdownMenu },
   data() {
     return {

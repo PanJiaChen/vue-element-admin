@@ -14,7 +14,7 @@ import DndList from '@/components/DndList'
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'dndList-demo',
+  name: 'DndListDemo',
   components: { DndList },
   data() {
     return {
@@ -36,5 +36,4 @@ export default {
   }
 }
 </script>
-
 

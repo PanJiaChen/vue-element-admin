@@ -3,8 +3,17 @@
     <p class="warn-content">
       <a href="https://github.com/PanJiaChen/vue-countTo" target="_blank">countTo-component</a>
     </p>
-    <count-to ref="example" class="example" :start-val="_startVal" :end-val="_endVal" :duration="_duration" :decimals="_decimals"
-      :separator="_separator" :prefix="_prefix" :suffix="_suffix" :autoplay="false"></count-to>
+    <count-to
+ref="example"
+class="example"
+:start-val="_startVal"
+:end-val="_endVal"
+:duration="_duration"
+:decimals="_decimals"
+      :separator="_separator"
+:prefix="_prefix"
+:suffix="_suffix"
+:autoplay="false"></count-to>
     <div style="margin-left: 25%;margin-top: 40px;">
       <label class="label" for="startValInput">startVal:
         <input type="number" v-model.number="setStartVal" name="startValInput" />
@@ -41,7 +50,7 @@
 import countTo from 'vue-count-to'
 
 export default {
-  name: 'countTo-demo',
+  name: 'CountToDemo',
   components: { countTo },
   data() {
     return {
@@ -201,5 +210,4 @@ input {
   border-color: #E65D6E;
 }
 </style>
-
 

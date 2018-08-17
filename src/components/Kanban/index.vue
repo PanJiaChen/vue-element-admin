@@ -17,7 +17,7 @@
 import draggable from 'vuedraggable'
 
 export default {
-  name: 'dragKanban-demo',
+  name: 'DragKanbanDemo',
   components: {
     draggable
   },

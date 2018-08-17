@@ -27,7 +27,7 @@
 import splitPane from 'vue-splitpane'
 
 export default {
-  name: 'splitpane-demo',
+  name: 'SplitpaneDemo',
   components: { splitPane },
   methods: {
     resize() {

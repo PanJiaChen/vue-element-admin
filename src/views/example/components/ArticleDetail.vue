@@ -43,7 +43,12 @@
 
                 <el-col :span="6">
                   <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
-                    <el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"
+                    <el-rate
+style="margin-top:8px;"
+v-model="postForm.importance"
+:max='3'
+:colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+:low-threshold="1"
                       :high-threshold="3">
                     </el-rate>
                   </el-form-item>
@@ -100,7 +105,7 @@ const defaultForm = {
 }
 
 export default {
-  name: 'articleDetail',
+  name: 'ArticleDetail',
   components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {

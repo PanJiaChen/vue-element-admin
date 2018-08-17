@@ -15,7 +15,7 @@ import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
 
 export default {
-  name: 'guide',
+  name: 'Guide',
   data() {
     return {
       driver: null

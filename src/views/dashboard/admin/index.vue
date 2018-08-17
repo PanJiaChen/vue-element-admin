@@ -42,7 +42,6 @@
   </div>
 </template>
 
-
 <script>
 import GithubCorner from '@/components/GithubCorner'
 import PanelGroup from './components/PanelGroup'
@@ -74,7 +73,7 @@ const lineChartData = {
 }
 
 export default {
-  name: 'dashboard-admin',
+  name: 'DashboardAdmin',
   components: {
     GithubCorner,
     PanelGroup,

@@ -12,7 +12,12 @@
         <span class="svg-container svg-container_login">
           <svg-icon icon-class="user" />
         </span>
-        <el-input name="username" type="text" v-model="loginForm.username" autoComplete="on" :placeholder="$t('login.username')"
+        <el-input
+name="username"
+type="text"
+v-model="loginForm.username"
+autoComplete="on"
+:placeholder="$t('login.username')"
         />
       </el-form-item>
 
@@ -20,7 +25,12 @@
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input name="password" :type="passwordType" @keyup.enter.native="handleLogin" v-model="loginForm.password" autoComplete="on"
+        <el-input
+name="password"
+:type="passwordType"
+@keyup.enter.native="handleLogin"
+v-model="loginForm.password"
+autoComplete="on"
           :placeholder="$t('login.password')" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon icon-class="eye" />
@@ -59,7 +69,7 @@ import SocialSign from './socialsignin'
 
 export default {
   components: { LangSelect, SocialSign },
-  name: 'login',
+  name: 'Login',
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!isvalidUsername(value)) {
@@ -144,7 +154,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss">
   /* 修复input 背景不协调 和光标变色 */
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
- 
+
   $bg:#283443;
   $light_gray:#eee;
   $cursor: #fff;

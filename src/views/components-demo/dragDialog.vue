@@ -19,7 +19,7 @@
 import elDragDialog from '@/directive/el-dragDialog' // base on element-ui
 
 export default {
-  name: 'dragDialog-demo',
+  name: 'DragDialogDemo',
   directives: { elDragDialog },
   data() {
     return {
