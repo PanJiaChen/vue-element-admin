@@ -1,5 +1,5 @@
 <template>
-  <div :ref="id" :action="url" class="dropzone" :id="id">
+  <div :ref="id" :action="url" :id="id" class="dropzone">
     <input type="file" name="file">
   </div>
 </template>
@@ -12,10 +12,79 @@ import 'dropzone/dist/dropzone.css'
 Dropzone.autoDiscover = false
 
 export default {
+  props: {
+    id: {
+      type: String,
+      required: true
+    },
+    url: {
+      type: String,
+      required: true
+    },
+    clickable: {
+      type: Boolean,
+      default: true
+    },
+    defaultMsg: {
+      type: String,
+      default: '上传图片'
+    },
+    acceptedFiles: {
+      type: String,
+      default: ''
+    },
+    thumbnailHeight: {
+      type: Number,
+      default: 200
+    },
+    thumbnailWidth: {
+      type: Number,
+      default: 200
+    },
+    showRemoveLink: {
+      type: Boolean,
+      default: true
+    },
+    maxFilesize: {
+      type: Number,
+      default: 2
+    },
+    maxFiles: {
+      type: Number,
+      default: 3
+    },
+    autoProcessQueue: {
+      type: Boolean,
+      default: true
+    },
+    useCustomDropzoneOptions: {
+      type: Boolean,
+      default: false
+    },
+    defaultImg: {
+      default: '',
+      type: [String, Array]
+    },
+    couldPaste: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       dropzone: '',
       initOnce: true
+    }
+  },
+  watch: {
+    defaultImg(val) {
+      if (val.length === 0) {
+        this.initOnce = false
+        return
+      }
+      if (!this.initOnce) return
+      this.initImages(val)
+      this.initOnce = false
     }
   },
   mounted() {
@@ -95,6 +164,10 @@ export default {
       vm.$emit('dropzone-successmultiple', file, error, xhr)
     })
   },
+  destroyed() {
+    document.removeEventListener('paste', this.pasteImg)
+    this.dropzone.destroy()
+  },
   methods: {
     removeAllFiles() {
       this.dropzone.removeAllFiles(true)
@@ -128,76 +201,6 @@ export default {
       }
     }
 
-  },
-  destroyed() {
-    document.removeEventListener('paste', this.pasteImg)
-    this.dropzone.destroy()
-  },
-  watch: {
-    defaultImg(val) {
-      if (val.length === 0) {
-        this.initOnce = false
-        return
-      }
-      if (!this.initOnce) return
-      this.initImages(val)
-      this.initOnce = false
-    }
-  },
-  props: {
-    id: {
-      type: String,
-      required: true
-    },
-    url: {
-      type: String,
-      required: true
-    },
-    clickable: {
-      type: Boolean,
-      default: true
-    },
-    defaultMsg: {
-      type: String,
-      default: '上传图片'
-    },
-    acceptedFiles: {
-      type: String
-    },
-    thumbnailHeight: {
-      type: Number,
-      default: 200
-    },
-    thumbnailWidth: {
-      type: Number,
-      default: 200
-    },
-    showRemoveLink: {
-      type: Boolean,
-      default: true
-    },
-    maxFilesize: {
-      type: Number,
-      default: 2
-    },
-    maxFiles: {
-      type: Number,
-      default: 3
-    },
-    autoProcessQueue: {
-      type: Boolean,
-      default: true
-    },
-    useCustomDropzoneOptions: {
-      type: Boolean,
-      default: false
-    },
-    defaultImg: {
-      default: false
-    },
-    couldPaste: {
-      default: false
-    }
   }
 }
 </script>

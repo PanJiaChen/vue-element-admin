@@ -17,7 +17,7 @@
       </span>
     </div>
 
-    <div style="margin-top:30px;" :key="'checkPermission'+key">
+    <div :key="'checkPermission'+key" style="margin-top:30px;">
       <code>In some cases it is not suitable to use v-permission, such as element Tab component  which can only be achieved by manually setting the v-if.
         <br> e.g.
       </code>

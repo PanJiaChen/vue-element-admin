@@ -2,11 +2,11 @@
   <el-dropdown :show-timeout="100" trigger="click">
     <el-button plain>
       外链
-      <i class="el-icon-caret-bottom el-icon--right"></i>
+      <i class="el-icon-caret-bottom el-icon--right"/>
     </el-button>
-    <el-dropdown-menu class="no-padding no-border" style="width:400px" slot="dropdown">
+    <el-dropdown-menu slot="dropdown" class="no-padding no-border" style="width:400px">
       <el-form-item label-width="0px" style="margin-bottom: 0px" prop="source_uri">
-        <el-input placeholder="请输入内容" v-model="source_uri">
+        <el-input v-model="source_uri" placeholder="请输入内容">
           <template slot="prepend">填写url</template>
         </el-input>
       </el-form-item>
@@ -16,7 +16,12 @@
 
 <script>
 export default {
-  props: ['value'],
+  props: {
+    value: {
+      type: String,
+      default: ''
+    }
+  },
   computed: {
     source_uri: {
       get() {

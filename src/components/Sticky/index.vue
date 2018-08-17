@@ -21,7 +21,8 @@ export default {
       default: 1
     },
     className: {
-      type: String
+      type: String,
+      default: ''
     }
   },
   data() {

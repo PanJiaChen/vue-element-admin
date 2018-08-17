@@ -1,19 +1,19 @@
 <template>
-  <li class="todo" :class="{ completed: todo.done, editing: editing }">
+  <li :class="{ completed: todo.done, editing: editing }" class="todo">
     <div class="view">
       <input
-class="toggle"
-        type="checkbox"
         :checked="todo.done"
+        class="toggle"
+        type="checkbox"
         @change="toggleTodo( todo)">
-      <label v-text="todo.text" @dblclick="editing = true"></label>
-      <button class="destroy" @click="deleteTodo( todo )"></button>
+      <label @dblclick="editing = true" v-text="todo.text"/>
+      <button class="destroy" @click="deleteTodo( todo )"/>
     </div>
     <input
-class="edit"
-      v-show="editing"
       v-focus="editing"
+      v-show="editing"
       :value="todo.text"
+      class="edit"
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
       @blur="doneEdit">
@@ -23,12 +23,6 @@ class="edit"
 <script>
 export default {
   name: 'Todo',
-  props: ['todo'],
-  data() {
-    return {
-      editing: false
-    }
-  },
   directives: {
     focus(el, { value }, { context }) {
       if (value) {
@@ -36,6 +30,19 @@ export default {
           el.focus()
         })
       }
+    }
+  },
+  props: {
+    todo: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    }
+  },
+  data() {
+    return {
+      editing: false
     }
   },
   methods: {
