@@ -42,7 +42,7 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 **This project is positioned as a background integration solution and is not suitable for secondary development as a basic template.**
 
-- Base template recommends using: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)
+- Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
 **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**

@@ -40,7 +40,7 @@
 
 **本项目的定位是后台集成方案，不适合当基础模板来开发。**
 
-- 模板建议使用: [vueAdmin-template](https://github.com/PanJiaChen/vueAdmin-template)
+- 模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 
 群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)
