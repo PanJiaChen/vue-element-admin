@@ -4,12 +4,12 @@
 
     <label class="radio-label" style="padding-left:0;">Filename: </label>
     <el-input :placeholder="$t('excel.placeholder')" v-model="filename" style="width:340px;" prefix-icon="el-icon-document"/>
-    <label class="radio-label">Cell Auto Width: </label>
+    <label class="radio-label">Cell Auto-Width: </label>
     <el-radio-group v-model="autoWidth">
       <el-radio :label="true" border>True</el-radio>
       <el-radio :label="false" border>False</el-radio>
     </el-radio-group>
-    <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">{{ $t('excel.export') }} excel</el-button>
+    <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">{{ $t('excel.export') }} Excel</el-button>
 
     <el-table v-loading="listLoading" :data="list" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label="Id" width="95">
