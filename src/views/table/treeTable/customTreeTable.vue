@@ -5,21 +5,23 @@
       <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
     </el-tag>
 
-    <tree-table :data="data" :evalFunc="func" :evalArgs="args" :expandAll="expandAll" border>
+    <tree-table :data="data" :eval-func="func" :eval-args="args" :expand-all="expandAll" border>
       <el-table-column label="事件">
         <template slot-scope="scope">
-          <span style="color:sandybrown">{{scope.row.event}}</span>
-          <el-tag>{{scope.row.timeLine+'ms'}}</el-tag>
+          <span style="color:sandybrown">{{ scope.row.event }}</span>
+          <el-tag>{{ scope.row.timeLine+'ms' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="时间线">
         <template slot-scope="scope">
-          <el-tooltip effect="dark" :content="scope.row.timeLine+'ms'" placement="left">
+          <el-tooltip :content="scope.row.timeLine+'ms'" effect="dark" placement="left">
             <div class="processContainer">
-              <div class="process" :style="{ width:scope.row._width * 500+'px',
-              background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
-              marginLeft:scope.row._marginLeft * 500+'px' }">
-                <span style="display:inline-block"></span>
+              <div
+                :style="{ width:scope.row._width * 500+'px',
+                          background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
+                          marginLeft:scope.row._marginLeft * 500+'px' }"
+                class="process">
+                <span style="display:inline-block"/>
               </div>
             </div>
           </el-tooltip>
@@ -43,7 +45,7 @@ import treeTable from '@/components/TreeTable'
 import treeToArray from './customEval'
 
 export default {
-  name: 'customTreeTableDemo',
+  name: 'CustomTreeTableDemo',
   components: { treeTable },
   data() {
     return {

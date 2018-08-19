@@ -1,12 +1,12 @@
 <template>
-  <article-detail :is-edit='true'></article-detail>
+  <article-detail :is-edit="true"/>
 </template>
 
 <script>
 import ArticleDetail from './components/ArticleDetail'
 
 export default {
-  name: 'editForm',
+  name: 'EditForm',
   components: { ArticleDetail }
 }
 </script>
