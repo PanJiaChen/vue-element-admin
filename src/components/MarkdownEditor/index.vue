@@ -57,7 +57,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.toolbar.length)
     this.simplemde = new SimpleMDE({
       element: document.getElementById(this.id),
       autoDownloadFontAwesome: false,
