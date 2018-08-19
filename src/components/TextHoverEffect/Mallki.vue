@@ -1,8 +1,8 @@
 <template>
-  <a class="link--mallki" :class="className" href="#">
-    {{text}}
-    <span :data-letters="text"></span>
-    <span :data-letters="text"></span>
+  <a :class="className" class="link--mallki" href="#">
+    {{ text }}
+    <span :data-letters="text"/>
+    <span :data-letters="text"/>
   </a>
 </template>
 
@@ -10,7 +10,8 @@
 export default {
   props: {
     className: {
-      type: String
+      type: String,
+      default: ''
     },
     text: {
       type: String,
@@ -19,7 +20,6 @@ export default {
   }
 }
 </script>
-
 
 <style>
 /* Mallki */

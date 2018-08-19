@@ -1,10 +1,10 @@
 <template>
-  <div class="share-dropdown-menu" :class="{active:isActive}">
+  <div :class="{active:isActive}" class="share-dropdown-menu">
     <div class="share-dropdown-menu-wrapper">
-      <span class="share-dropdown-menu-title" @click.self="clickTitle">{{title}}</span>
-      <div class="share-dropdown-menu-item" v-for="(item,index) of items" :key='index'>
-        <a v-if="item.href" :href="item.href" target="_blank">{{item.title}}</a>
-        <span v-else>{{item.title}}</span>
+      <span class="share-dropdown-menu-title" @click.self="clickTitle">{{ title }}</span>
+      <div v-for="(item,index) of items" :key="index" class="share-dropdown-menu-item">
+        <a v-if="item.href" :href="item.href" target="_blank">{{ item.title }}</a>
+        <span v-else>{{ item.title }}</span>
       </div>
     </div>
   </div>
@@ -14,7 +14,10 @@
 export default {
   props: {
     items: {
-      type: Array
+      type: Array,
+      default: function() {
+        return []
+      }
     },
     title: {
       type: String,

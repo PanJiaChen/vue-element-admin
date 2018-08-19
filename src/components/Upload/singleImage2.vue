@@ -1,15 +1,21 @@
 <template>
   <div class="singleImageUpload2 upload-container">
-    <el-upload class="image-uploader" :data="dataObj" drag :multiple="false" :show-file-list="false" action="https://httpbin.org/post"
-      :on-success="handleImageSuccess">
-      <i class="el-icon-upload"></i>
+    <el-upload
+      :data="dataObj"
+      :multiple="false"
+      :show-file-list="false"
+      :on-success="handleImageSuccess"
+      class="image-uploader"
+      drag
+      action="https://httpbin.org/post">
+      <i class="el-icon-upload"/>
       <div class="el-upload__text">Drag或<em>点击上传</em></div>
     </el-upload>
     <div v-show="imageUrl.length>0" class="image-preview">
-      <div class="image-preview-wrapper" v-show="imageUrl.length>1">
+      <div v-show="imageUrl.length>1" class="image-preview-wrapper">
         <img :src="imageUrl">
         <div class="image-preview-action">
-          <i @click="rmImage" class="el-icon-delete"></i>
+          <i class="el-icon-delete" @click="rmImage"/>
         </div>
       </div>
     </div>
@@ -20,19 +26,22 @@
 import { getToken } from '@/api/qiniu'
 
 export default {
-  name: 'singleImageUpload2',
+  name: 'SingleImageUpload2',
   props: {
-    value: String
-  },
-  computed: {
-    imageUrl() {
-      return this.value
+    value: {
+      type: String,
+      default: ''
     }
   },
   data() {
     return {
       tempUrl: '',
       dataObj: { token: '', key: '' }
+    }
+  },
+  computed: {
+    imageUrl() {
+      return this.value
     }
   },
   methods: {

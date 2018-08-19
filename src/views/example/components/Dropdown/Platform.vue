@@ -1,13 +1,13 @@
 <template>
   <el-dropdown :hide-on-click="false" :show-timeout="100" trigger="click">
     <el-button plain>
-      平台({{platforms.length}})
-      <i class="el-icon-caret-bottom el-icon--right"></i>
+      平台({{ platforms.length }})
+      <i class="el-icon-caret-bottom el-icon--right"/>
     </el-button>
-    <el-dropdown-menu class="no-border" slot="dropdown">
+    <el-dropdown-menu slot="dropdown" class="no-border">
       <el-checkbox-group v-model="platforms" style="padding: 5px 15px;">
         <el-checkbox v-for="item in platformsOptions" :label="item.key" :key="item.key">
-          {{item.name}}
+          {{ item.name }}
         </el-checkbox>
       </el-checkbox-group>
     </el-dropdown-menu>
@@ -16,7 +16,13 @@
 
 <script>
 export default {
-  props: ['value'],
+  props: {
+    value: {
+      required: true,
+      default: () => [],
+      type: Array
+    }
+  },
   data() {
     return {
       platformsOptions: [

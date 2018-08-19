@@ -2,10 +2,10 @@
   <div class="components-container">
     <code>
       Based on <a class="link-type" href="https://github.com/rowanwins/vue-dropzone"> dropzone </a>.
-      {{$t('components.dropzoneTips')}}
+      {{ $t('components.dropzoneTips') }}
     </code>
     <div class="editor-container">
-      <dropzone v-on:dropzone-removedFile="dropzoneR" v-on:dropzone-success="dropzoneS" id="myVueDropzone" url="https://httpbin.org/post"></dropzone>
+      <dropzone id="myVueDropzone" url="https://httpbin.org/post" @dropzone-removedFile="dropzoneR" @dropzone-success="dropzoneS"/>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@
 import Dropzone from '@/components/Dropzone'
 
 export default {
-  name: 'dropzone-demo',
+  name: 'DropzoneDemo',
   components: { Dropzone },
   methods: {
     dropzoneS(file) {
@@ -28,5 +28,4 @@ export default {
   }
 }
 </script>
-
 

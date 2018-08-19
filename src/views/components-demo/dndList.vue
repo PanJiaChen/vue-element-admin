@@ -4,7 +4,7 @@
       <a href="https://github.com/SortableJS/Vue.Draggable" target="_blank">Vue.Draggable</a>
     </code>
     <div class="editor-container">
-      <dnd-list :list1="list1" :list2="list2" list1Title="List" list2Title="Article pool"></dnd-list>
+      <dnd-list :list1="list1" :list2="list2" list1-title="List" list2-title="Article pool"/>
     </div>
   </div>
 </template>
@@ -14,7 +14,7 @@ import DndList from '@/components/DndList'
 import { fetchList } from '@/api/article'
 
 export default {
-  name: 'dndList-demo',
+  name: 'DndListDemo',
   components: { DndList },
   data() {
     return {
@@ -36,5 +36,4 @@ export default {
   }
 }
 </script>
-
 

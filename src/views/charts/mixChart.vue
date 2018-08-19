@@ -1,6 +1,6 @@
 <template>
-  <div class='chart-container'>
-    <chart height='100%' width='100%'></chart>
+  <div class="chart-container">
+    <chart height="100%" width="100%"/>
   </div>
 </template>
 
@@ -8,7 +8,7 @@
 import Chart from '@/components/Charts/mixChart'
 
 export default {
-  name: 'mixChart',
+  name: 'MixChart',
   components: { Chart }
 }
 </script>

@@ -1,13 +1,13 @@
 <template>
   <div class="components-container">
     <code>
-      {{$t('components.tinymceTips')}}
-      <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/component/rich-editor.html"> {{$t('components.documentation')}}</a>
+      {{ $t('components.tinymceTips') }}
+      <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/component/rich-editor.html"> {{ $t('components.documentation') }}</a>
     </code>
     <div>
-      <tinymce :height="300" v-model="content"></tinymce>
+      <tinymce :height="300" v-model="content"/>
     </div>
-    <div class="editor-content" v-html="content"></div>
+    <div class="editor-content" v-html="content"/>
   </div>
 </template>
 
@@ -15,7 +15,7 @@
 import Tinymce from '@/components/Tinymce'
 
 export default {
-  name: 'tinymce-demo',
+  name: 'TinymceDemo',
   components: { Tinymce },
   data() {
     return {
@@ -33,5 +33,4 @@ export default {
   margin-top: 20px;
 }
 </style>
-
 

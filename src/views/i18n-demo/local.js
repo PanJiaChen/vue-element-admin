@@ -3,7 +3,7 @@ export default {
   zh: {
     i18nView: {
       title: '切换语言',
-      note: '目前只翻译了当前页面和侧边栏和导航，未完待续，敬请期待...',
+      note: '本项目国际化基于 vue-i18n',
       datePlaceholder: '请选择日期',
       tableDate: '日期',
       tableName: '姓名',
@@ -20,7 +20,7 @@ export default {
   en: {
     i18nView: {
       title: 'Switch Language',
-      note: 'Currently only translated the i18n page and the sidebar and levelbar, please look forword to...',
+      note: 'The internationalization of this project is based on vue-i18n',
       datePlaceholder: 'Pick a day',
       tableDate: 'tableDate',
       tableName: 'tableName',

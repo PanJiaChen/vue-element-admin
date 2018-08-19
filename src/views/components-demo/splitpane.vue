@@ -3,19 +3,19 @@
     <code><strong>SplitPane</strong> If you've used
       <a href="http://codepen.io/" target="_blank"> codepen</a>,
       <a href="https://jsfiddle.net/" target="_blank"> jsfiddle </a>will not be unfamiliar.
-      <a href="https://github.com/PanJiaChen/vue-split-pane" target='_blank'> Github repository</a>
+      <a href="https://github.com/PanJiaChen/vue-split-pane" target="_blank"> Github repository</a>
     </code>
-    <split-pane v-on:resize="resize" split="vertical">
+    <split-pane split="vertical" @resize="resize">
       <template slot="paneL">
-        <div class="left-container"></div>
+        <div class="left-container"/>
       </template>
       <template slot="paneR">
         <split-pane split="horizontal">
           <template slot="paneL">
-            <div class="top-container"></div>
+            <div class="top-container"/>
           </template>
           <template slot="paneR">
-            <div class="bottom-container"></div>
+            <div class="bottom-container"/>
           </template>
         </split-pane>
       </template>
@@ -27,7 +27,7 @@
 import splitPane from 'vue-splitpane'
 
 export default {
-  name: 'splitpane-demo',
+  name: 'SplitpaneDemo',
   components: { splitPane },
   methods: {
     resize() {

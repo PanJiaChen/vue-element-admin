@@ -1,8 +1,8 @@
 <template>
-  <div class="tinymce-container editor-container" :class="{fullscreen:fullscreen}">
-    <textarea class="tinymce-textarea" :id="tinymceId"></textarea>
+  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
+    <textarea :id="tinymceId" class="tinymce-textarea"/>
     <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"></editorImage>
+      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK"/>
     </div>
   </div>
 </template>
@@ -13,11 +13,12 @@ import plugins from './plugins'
 import toolbar from './toolbar'
 
 export default {
-  name: 'tinymce',
+  name: 'Tinymce',
   components: { editorImage },
   props: {
     id: {
-      type: String
+      type: String,
+      default: 'vue-tinymce-' + +new Date()
     },
     value: {
       type: String,
@@ -31,6 +32,7 @@ export default {
       }
     },
     menubar: {
+      type: String,
       default: 'file edit insert view format table'
     },
     height: {
@@ -43,7 +45,7 @@ export default {
     return {
       hasChange: false,
       hasInit: false,
-      tinymceId: this.id || 'vue-tinymce-' + +new Date(),
+      tinymceId: this.id,
       fullscreen: false
     }
   },
@@ -62,6 +64,9 @@ export default {
     this.initTinymce()
   },
   deactivated() {
+    this.destroyTinymce()
+  },
+  destroyed() {
     this.destroyTinymce()
   },
   methods: {
@@ -152,9 +157,6 @@ export default {
         window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
     }
-  },
-  destroyed() {
-    this.destroyTinymce()
   }
 }
 </script>
