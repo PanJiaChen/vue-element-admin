@@ -60,7 +60,7 @@ module.exports = {
      * then assetsPublicPath should be set to "/bar/".
      * In most cases please use '/' !!!
      */
-    assetsPublicPath: '/',
+    assetsPublicPath: '/vue-element-admin/', // If you are deployed on the root path, please use '/'
 
     /**
      * Source Maps
