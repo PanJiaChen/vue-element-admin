@@ -1,11 +1,19 @@
 <template>
   <div v-if="!item.hidden&&item.children" class="menu-wrapper">
 
-    <router-link v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow" :to="resolvePath(onlyOneChild.path)">
-      <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-        <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
-      </el-menu-item>
-    </router-link>
+    <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow">
+      <a v-if="isExternalLink(onlyOneChild.path)" :href="onlyOneChild.path" target="blank">
+        apple
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
+        </el-menu-item>
+      </a>
+      <router-link v-else :to="resolvePath(onlyOneChild.path)">
+        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
+          <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
+        </el-menu-item>
+      </router-link>
+    </template>
 
     <el-submenu v-else :index="item.name||item.path">
       <template slot="title">
