@@ -1,8 +1,8 @@
 <template>
   <div class="createPost-container">
-    <el-form class="form-container" :model="postForm" :rules="rules" ref="postForm">
+    <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
-      <sticky :className="'sub-navbar '+postForm.status">
+      <sticky :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
@@ -18,7 +18,7 @@
 
           <el-col :span="24">
             <el-form-item style="margin-bottom: 40px;" prop="title">
-              <MDinput name="name" v-model="postForm.title" required :maxlength="100">
+              <MDinput v-model="postForm.title" :maxlength="100" name="name" required>
                 标题
               </MDinput>
             </el-form-item>
@@ -27,25 +27,27 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="45px" label="作者:" class="postInfo-container-item">
-                    <el-select v-model="postForm.author" filterable remote placeholder="搜索用户" :remote-method="getRemoteUserList">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item">
-                      </el-option>
+                    <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable remote placeholder="搜索用户">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item"/>
                     </el-select>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="10">
                   <el-form-item label-width="80px" label="发布时间:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间">
-                    </el-date-picker>
+                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择日期时间"/>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="6">
                   <el-form-item label-width="60px" label="重要性:" class="postInfo-container-item">
-                    <el-rate style="margin-top:8px;" v-model="postForm.importance" :max='3' :colors="['#99A9BF', '#F7BA2A', '#FF9900']" :low-threshold="1"
-                      :high-threshold="3">
-                    </el-rate>
+                    <el-rate
+                      v-model="postForm.importance"
+                      :max="3"
+                      :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
+                      :low-threshold="1"
+                      :high-threshold="3"
+                      style="margin-top:8px;"/>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -54,13 +56,12 @@
         </el-row>
 
         <el-form-item style="margin-bottom: 40px;" label-width="45px" label="摘要:">
-          <el-input type="textarea" class="article-textarea" :rows="1" autosize placeholder="请输入内容" v-model="postForm.content_short">
-          </el-input>
-          <span class="word-counter" v-show="contentShortLength">{{contentShortLength}}字</span>
+          <el-input :rows="1" v-model="postForm.content_short" type="textarea" class="article-textarea" autosize placeholder="请输入内容"/>
+          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
         </el-form-item>
 
         <div class="editor-container">
-          <Tinymce :height=400 ref="editor" v-model="postForm.content" />
+          <Tinymce ref="editor" :height="400" v-model="postForm.content" />
         </div>
 
         <div style="margin-bottom: 20px;">
@@ -100,7 +101,7 @@ const defaultForm = {
 }
 
 export default {
-  name: 'articleDetail',
+  name: 'ArticleDetail',
   components: { Tinymce, MDinput, Upload, Multiselect, Sticky, Warning, CommentDropdown, PlatformDropdown, SourceUrlDropdown },
   props: {
     isEdit: {
@@ -115,7 +116,7 @@ export default {
           message: rule.field + '为必传项',
           type: 'error'
         })
-        callback(null)
+        callback(new Error(rule.field + '为必传项'))
       } else {
         callback()
       }
@@ -129,7 +130,7 @@ export default {
             message: '外链url填写不正确',
             type: 'error'
           })
-          callback(null)
+          callback(new Error('外链url填写不正确'))
         }
       } else {
         callback()

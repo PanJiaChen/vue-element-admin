@@ -5,7 +5,7 @@
       <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
     </el-tag>
 
-    <tree-table :data="data" :columns="columns" border></tree-table>
+    <tree-table :data="data" :columns="columns" border/>
 
   </div>
 </template>
@@ -18,7 +18,7 @@
 import treeTable from '@/components/TreeTable'
 
 export default {
-  name: 'treeTableDemo',
+  name: 'TreeTableDemo',
   components: { treeTable },
   data() {
     return {

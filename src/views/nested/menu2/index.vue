@@ -1,5 +1,5 @@
 <template>
   <div style="padding:30px;">
-    <el-alert title="menu 2" :closable="false" />
+    <el-alert :closable="false" title="menu 2" />
   </div>
 </template>

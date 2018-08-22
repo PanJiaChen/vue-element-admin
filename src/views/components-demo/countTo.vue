@@ -3,37 +3,46 @@
     <p class="warn-content">
       <a href="https://github.com/PanJiaChen/vue-countTo" target="_blank">countTo-component</a>
     </p>
-    <count-to ref="example" class="example" :start-val="_startVal" :end-val="_endVal" :duration="_duration" :decimals="_decimals"
-      :separator="_separator" :prefix="_prefix" :suffix="_suffix" :autoplay="false"></count-to>
+    <count-to
+      ref="example"
+      :start-val="_startVal"
+      :end-val="_endVal"
+      :duration="_duration"
+      :decimals="_decimals"
+      :separator="_separator"
+      :prefix="_prefix"
+      :suffix="_suffix"
+      :autoplay="false"
+      class="example"/>
     <div style="margin-left: 25%;margin-top: 40px;">
       <label class="label" for="startValInput">startVal:
-        <input type="number" v-model.number="setStartVal" name="startValInput" />
+        <input v-model.number="setStartVal" type="number" name="startValInput" >
       </label>
       <label class="label" for="endValInput">endVal:
-        <input type="number" v-model.number="setEndVal" name="endVaInput" />
+        <input v-model.number="setEndVal" type="number" name="endVaInput" >
       </label>
       <label class="label" for="durationInput">duration:
-        <input type="number" v-model.number="setDuration" name="durationInput" />
+        <input v-model.number="setDuration" type="number" name="durationInput" >
       </label>
       <div class="startBtn example-btn" @click="start">开始</div>
       <div class="pause-resume-btn example-btn" @click="pauseResume">暂停/恢复</div>
-      <br/>
+      <br>
       <label class="label" for="decimalsInput">decimals:
-        <input type="number" v-model.number="setDecimals" name="decimalsInput" />
+        <input v-model.number="setDecimals" type="number" name="decimalsInput" >
       </label>
       <label class="label" for="separatorInput">separator:
-        <input v-model="setSeparator" name="separatorInput" />
+        <input v-model="setSeparator" name="separatorInput" >
       </label>
       <label class="label" for="prefixInput">prefix:
-        <input v-model="setPrefix" name="prefixInput" />
+        <input v-model="setPrefix" name="prefixInput" >
       </label>
       <label class="label" for="suffixInput">suffix:
-        <input v-model="setSuffix" name="suffixInput" />
+        <input v-model="setSuffix" name="suffixInput" >
       </label>
     </div>
-    <code>&lt;count-to :start-val=&#x27;{{_startVal}}&#x27; :end-val=&#x27;{{_endVal}}&#x27; :duration=&#x27;{{_duration}}&#x27;
-      :decimals=&#x27;{{_decimals}}&#x27; :separator=&#x27;{{_separator}}&#x27; :prefix=&#x27;{{_prefix}}&#x27; :suffix=&#x27;{{_suffix}}&#x27;
-      :autoplay=false&gt;</code>
+    <code>&lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{ _endVal }}&#x27; :duration=&#x27;{{ _duration }}&#x27;
+    :decimals=&#x27;{{ _decimals }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{ _prefix }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27;
+    :autoplay=false&gt;</code>
   </div>
 </template>
 
@@ -41,7 +50,7 @@
 import countTo from 'vue-count-to'
 
 export default {
-  name: 'countTo-demo',
+  name: 'CountToDemo',
   components: { countTo },
   data() {
     return {
@@ -201,5 +210,4 @@ input {
   border-color: #E65D6E;
 }
 </style>
-
 
