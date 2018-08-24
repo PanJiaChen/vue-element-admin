@@ -45,7 +45,8 @@ export default {
   data() {
     return {
       visible: false,
-      interval: null
+      interval: null,
+      isMoving: false
     }
   },
   mounted() {
@@ -62,13 +63,16 @@ export default {
       this.visible = window.pageYOffset > this.visibilityHeight
     },
     backToTop() {
+      if (this.isMoving) return
       const start = window.pageYOffset
       let i = 0
+      this.isMoving = true
       this.interval = setInterval(() => {
         const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
         if (next <= this.backPosition) {
           window.scrollTo(0, this.backPosition)
           clearInterval(this.interval)
+          this.isMoving = false
         } else {
           window.scrollTo(0, next)
         }
