@@ -6,10 +6,10 @@
         相关文章 </a>
     </code>
     <div class="editor-container">
-      <markdown-editor id="contentEditor" ref="contentEditor" v-model="content" :height="300" :zIndex="20"></markdown-editor>
+      <markdown-editor id="contentEditor" ref="contentEditor" v-model="content" :height="300" :z-index="20"/>
     </div>
-    <el-button @click="markdown2Html" style="margin-top:80px;" type="primary" icon="el-icon-document">To HTML</el-button>
-    <div v-html="html"></div>
+    <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="markdown2Html">To HTML</el-button>
+    <div v-html="html"/>
   </div>
 </template>
 
@@ -27,7 +27,7 @@ const content = `
 `
 
 export default {
-  name: 'markdown-demo',
+  name: 'MarkdownDemo',
   components: { MarkdownEditor },
   data() {
     return {
@@ -45,5 +45,4 @@ export default {
   }
 }
 </script>
-
 

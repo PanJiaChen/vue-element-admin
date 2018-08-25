@@ -1,15 +1,15 @@
 <template>
   <div class="components-container board">
-    <Kanban :key="1" class="kanban todo" :list="list1" :options="options" header-text="Todo"/>
-    <Kanban :key="2" class="kanban working" :list="list2" :options="options" header-text="Working"/>
-    <Kanban :key="3" class="kanban done" :list="list3" :options="options" header-text="Done"/>
+    <Kanban :key="1" :list="list1" :options="options" class="kanban todo" header-text="Todo"/>
+    <Kanban :key="2" :list="list2" :options="options" class="kanban working" header-text="Working"/>
+    <Kanban :key="3" :list="list3" :options="options" class="kanban done" header-text="Done"/>
   </div>
 </template>
 <script>
 import Kanban from '@/components/Kanban'
 
 export default {
-  name: 'dragKanban-demo',
+  name: 'DragKanbanDemo',
   components: {
     Kanban
   },

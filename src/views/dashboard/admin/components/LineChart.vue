@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"></div>
+  <div :class="className" :style="{height:height,width:width}"/>
 </template>
 
 <script>
@@ -26,12 +26,21 @@ export default {
       default: true
     },
     chartData: {
-      type: Object
+      type: Object,
+      required: true
     }
   },
   data() {
     return {
       chart: null
+    }
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler(val) {
+        this.setOptions(val)
+      }
     }
   },
   mounted() {
@@ -62,14 +71,6 @@ export default {
 
     this.chart.dispose()
     this.chart = null
-  },
-  watch: {
-    chartData: {
-      deep: true,
-      handler(val) {
-        this.setOptions(val)
-      }
-    }
   },
   methods: {
     setOptions({ expectedData, actualData } = {}) {

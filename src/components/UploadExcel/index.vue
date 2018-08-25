@@ -13,8 +13,8 @@ import XLSX from 'xlsx'
 
 export default {
   props: {
-    beforeUpload: Function,
-    onSuccess: Function
+    beforeUpload: Function, // eslint-disable-line
+    onSuccess: Function// eslint-disable-line
   },
   data() {
     return {

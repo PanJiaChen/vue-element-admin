@@ -1,10 +1,10 @@
 <template>
   <div class="social-signup-container">
     <div class="sign-btn" @click="wechatHandleClick('wechat')">
-      <span class="wx-svg-container"><svg-icon icon-class="wechat" class="icon"></svg-icon></span> 微信
+      <span class="wx-svg-container"><svg-icon icon-class="wechat" class="icon"/></span> 微信
     </div>
     <div class="sign-btn" @click="tencentHandleClick('tencent')">
-      <span class="qq-svg-container"><svg-icon icon-class="qq" class="icon"></svg-icon></span> QQ
+      <span class="qq-svg-container"><svg-icon icon-class="qq" class="icon"/></span> QQ
     </div>
   </div>
 </template>
@@ -13,7 +13,7 @@
 import openWindow from '@/utils/openWindow'
 
 export default {
-  name: 'social-signin',
+  name: 'SocialSignin',
   methods: {
     wechatHandleClick(thirdpart) {
       this.$store.commit('SET_AUTH_TYPE', thirdpart)

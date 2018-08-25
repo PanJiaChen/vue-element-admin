@@ -1,7 +1,6 @@
 <template>
-  <div class="simplemde-container" :style="{height:height+'px',zIndex:zIndex}">
-    <textarea :id="id">
-    </textarea>
+  <div :style="{height:height+'px',zIndex:zIndex}" class="simplemde-container">
+    <textarea :id="id"/>
   </div>
 </template>
 
@@ -11,11 +10,16 @@ import 'simplemde/dist/simplemde.min.css'
 import SimpleMDE from 'simplemde'
 
 export default {
-  name: 'simplemde-md',
+  name: 'SimplemdeMd',
   props: {
-    value: String,
+    value: {
+      type: String,
+      default: ''
+    },
     id: {
-      type: String
+      type: String,
+      required: false,
+      default: 'markdown-editor-' + +new Date()
     },
     autofocus: {
       type: Boolean,
@@ -34,7 +38,10 @@ export default {
       default: 10
     },
     toolbar: {
-      type: Array
+      type: Array,
+      default: function() {
+        return []
+      }
     }
   },
   data() {
@@ -51,10 +58,10 @@ export default {
   },
   mounted() {
     this.simplemde = new SimpleMDE({
-      element: document.getElementById(this.id || 'markdown-editor-' + +new Date()),
+      element: document.getElementById(this.id),
       autoDownloadFontAwesome: false,
       autofocus: this.autofocus,
-      toolbar: this.toolbar,
+      toolbar: this.toolbar.length > 0 ? this.toolbar : undefined,
       spellChecker: false,
       insertTexts: {
         link: ['[', ']( )']

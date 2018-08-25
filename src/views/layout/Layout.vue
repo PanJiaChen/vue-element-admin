@@ -1,11 +1,11 @@
 <template>
-  <div class="app-wrapper" :class="classObj">
-    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"></div>
-    <sidebar class="sidebar-container"></sidebar>
+  <div :class="classObj" class="app-wrapper">
+    <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
+    <sidebar class="sidebar-container"/>
     <div class="main-container">
-      <navbar></navbar>
-      <tags-view></tags-view>
-      <app-main></app-main>
+      <navbar/>
+      <tags-view/>
+      <app-main/>
     </div>
   </div>
 </template>
@@ -15,7 +15,7 @@ import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
-  name: 'layout',
+  name: 'Layout',
   components: {
     Navbar,
     Sidebar,

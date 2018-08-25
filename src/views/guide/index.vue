@@ -1,11 +1,11 @@
 <template>
   <div class="app-container">
     <p class="warn-content">
-      {{$t('guide.description')}}
+      {{ $t('guide.description') }}
       <a href="https://github.com/kamranahmedse/driver.js" target="_blank">driver.js.
       </a>
     </p>
-    <el-button icon='el-icon-question' type="primary" @click.prevent.stop="guide">{{$t('guide.button')}}</el-button>
+    <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">{{ $t('guide.button') }}</el-button>
   </div>
 </template>
 
@@ -15,7 +15,7 @@ import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
 
 export default {
-  name: 'guide',
+  name: 'Guide',
   data() {
     return {
       driver: null

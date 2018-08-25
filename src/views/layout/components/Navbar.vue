@@ -1,40 +1,40 @@
 <template>
   <el-menu class="navbar" mode="horizontal">
-    <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
+    <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
 
-    <breadcrumb class="breadcrumb-container"></breadcrumb>
+    <breadcrumb class="breadcrumb-container"/>
 
     <div class="right-menu">
-      <error-log class="errLog-container right-menu-item"></error-log>
+      <error-log class="errLog-container right-menu-item"/>
 
-      <el-tooltip effect="dark" :content="$t('navbar.screenfull')" placement="bottom">
-        <screenfull class="screenfull right-menu-item"></screenfull>
+      <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
+        <screenfull class="screenfull right-menu-item"/>
       </el-tooltip>
 
-      <lang-select class="international right-menu-item"></lang-select>
+      <lang-select class="international right-menu-item"/>
 
-      <el-tooltip effect="dark" :content="$t('navbar.theme')" placement="bottom">
-        <theme-picker class="theme-switch right-menu-item"></theme-picker>
+      <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
+        <theme-picker class="theme-switch right-menu-item"/>
       </el-tooltip>
 
       <el-dropdown class="avatar-container right-menu-item" trigger="click">
         <div class="avatar-wrapper">
-          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
-          <i class="el-icon-caret-bottom"></i>
+          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+          <i class="el-icon-caret-bottom"/>
         </div>
         <el-dropdown-menu slot="dropdown">
           <router-link to="/">
             <el-dropdown-item>
-              {{$t('navbar.dashboard')}}
+              {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <a target='_blank' href="https://github.com/PanJiaChen/vue-element-admin/">
+          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
             <el-dropdown-item>
-              {{$t('navbar.github')}}
+              {{ $t('navbar.github') }}
             </el-dropdown-item>
           </a>
           <el-dropdown-item divided>
-            <span @click="logout" style="display:block;">{{$t('navbar.logOut')}}</span>
+            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
