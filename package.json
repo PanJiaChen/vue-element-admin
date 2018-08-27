@@ -56,7 +56,6 @@
     "vue": "2.5.17",
     "vue-count-to": "1.0.13",
     "vue-i18n": "7.3.2",
-    "vue-multiselect": "2.1.0",
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
     "vuedraggable": "^2.16.0",
