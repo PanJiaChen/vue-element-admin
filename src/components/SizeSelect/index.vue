@@ -24,11 +24,12 @@ export default {
       this.$store.dispatch('setSize', size)
       this.refreshView()
       this.$message({
-        message: 'switch size success',
+        message: 'Switch Size Success',
         type: 'success'
       })
     },
     refreshView() {
+      // In order to make the cached page re-rendered
       const visitedViews = [...this.$store.getters.visitedViews].map(i => {
         i.meta.noCache = true
         return i
@@ -42,6 +43,7 @@ export default {
       })
 
       const { path } = this.$route
+
       this.$router.replace({
         path: '/redirect' + path
       })
@@ -55,7 +57,7 @@ export default {
 .size-icon {
   font-size: 20px;
   cursor: pointer;
-  vertical-align: -5px!important;
+  vertical-align: -4px!important;
 }
 </style>
 
