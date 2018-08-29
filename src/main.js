@@ -1,5 +1,7 @@
 import Vue from 'vue'
 
+import Cookies from 'js-cookie'
+
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import Element from 'element-ui'
@@ -20,7 +22,7 @@ import './mock' // simulation data
 import * as filters from './filters' // global filters
 
 Vue.use(Element, {
-  size: 'medium', // set element-ui default size
+  size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
 })
 

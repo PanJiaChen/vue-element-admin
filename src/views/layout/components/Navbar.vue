@@ -11,6 +11,8 @@
         <screenfull class="screenfull right-menu-item"/>
       </el-tooltip>
 
+      <size-select class="international right-menu-item"/>
+
       <lang-select class="international right-menu-item"/>
 
       <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
@@ -48,6 +50,7 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import ErrorLog from '@/components/ErrorLog'
 import Screenfull from '@/components/Screenfull'
+import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
 
@@ -57,6 +60,7 @@ export default {
     Hamburger,
     ErrorLog,
     Screenfull,
+    SizeSelect,
     LangSelect,
     ThemePicker
   },
