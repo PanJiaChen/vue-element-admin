@@ -11,7 +11,9 @@
         <screenfull class="screenfull right-menu-item"/>
       </el-tooltip>
 
-      <size-select class="international right-menu-item"/>
+      <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+        <size-select class="international right-menu-item"/>
+      </el-tooltip>
 
       <lang-select class="international right-menu-item"/>
 
