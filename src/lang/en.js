@@ -60,14 +60,16 @@ export default {
     exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
-    i18n: 'I18n'
+    i18n: 'I18n',
+    externalLink: 'External Link'
   },
   navbar: {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
-    screenfull: 'screenfull',
-    theme: 'theme'
+    screenfull: 'Screenfull',
+    theme: 'Theme',
+    size: 'Global Size'
   },
   login: {
     title: 'Login Form',

@@ -32,6 +32,17 @@ import nestedRouter from './modules/nested'
 **/
 export const constantRouterMap = [
   {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
+  {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
@@ -318,6 +329,17 @@ export const asyncRouterMap = [
         component: () => import('@/views/i18n-demo/index'),
         name: 'I18n',
         meta: { title: 'i18n', icon: 'international' }
+      }
+    ]
+  },
+
+  {
+    path: 'external-link',
+    component: Layout,
+    children: [
+      {
+        path: 'https://github.com/PanJiaChen/vue-element-admin',
+        meta: { title: 'externalLink', icon: 'link' }
       }
     ]
   },
