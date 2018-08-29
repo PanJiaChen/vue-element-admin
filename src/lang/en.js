@@ -67,8 +67,9 @@ export default {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
-    screenfull: 'screenfull',
-    theme: 'theme'
+    screenfull: 'Screenfull',
+    theme: 'Theme',
+    size: 'Global Size'
   },
   login: {
     title: 'Login Form',
