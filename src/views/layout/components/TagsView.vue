@@ -88,9 +88,10 @@ export default {
     },
     refreshSelectedTag(view) {
       this.$store.dispatch('delCachedView', view).then(() => {
-        const { path } = this.$route
+        const { fullPath } = view
+
         this.$router.replace({
-          path: '/redirect' + path
+          path: '/redirect' + fullPath
         })
       })
     },
