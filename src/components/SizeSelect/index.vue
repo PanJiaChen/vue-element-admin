@@ -30,17 +30,7 @@ export default {
     },
     refreshView() {
       // In order to make the cached page re-rendered
-      const visitedViews = [...this.$store.getters.visitedViews].map(i => {
-        i.meta.noCache = true
-        return i
-      })
-
-      this.$store.dispatch('delAllViews', this.$route).then(() => {
-        console.log(visitedViews)
-        for (const i of visitedViews) {
-          this.$store.dispatch('addVisitedViews', i)
-        }
-      })
+      this.$store.dispatch('delAllCachedViews', this.$route)
 
       const { path } = this.$route
 
