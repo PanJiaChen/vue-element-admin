@@ -264,7 +264,7 @@ export const asyncRouterMap = [
       {
         path: 'export-selected-excel',
         component: () => import('@/views/excel/selectExcel'),
-        name: 'EelectExcel',
+        name: 'SelectExcel',
         meta: { title: 'selectExcel' }
       },
       {
