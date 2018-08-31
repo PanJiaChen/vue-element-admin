@@ -72,7 +72,7 @@ export default {
       if (!route) {
         return false
       }
-      this.$store.dispatch('addVisitedViews', route)
+      this.$store.dispatch('addView', route)
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
@@ -86,9 +86,9 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          const latestView = views.slice(-1)[0]
+          const latestView = visitedViews.slice(-1)[0]
           if (latestView) {
             this.$router.push(latestView)
           } else {
