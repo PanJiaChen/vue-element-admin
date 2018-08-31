@@ -17,7 +17,6 @@ export default {
   methods: {
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
-      console.log(eventDelta)
       const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
       $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
     },

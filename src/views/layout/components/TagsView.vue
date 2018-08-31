@@ -144,6 +144,9 @@ export default {
       &:first-of-type {
         margin-left: 15px;
       }
+      &:last-of-type {
+        margin-right: 15px;
+      }
       &.active {
         background-color: #42b983;
         color: #fff;
