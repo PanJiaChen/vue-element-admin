@@ -10,7 +10,7 @@
         class="tags-view-item"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
-        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+        <span v-show="!isMobile" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 
@@ -37,6 +38,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['isMobile']),
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     }
