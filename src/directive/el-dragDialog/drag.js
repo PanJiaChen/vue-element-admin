@@ -20,7 +20,7 @@ export default{
       const disY = e.clientY - dialogHeaderEl.offsetTop
 
       const dragDomWidth = dragDom.offsetWidth
-      const dragDomheight = dragDom.offsetHeight
+      const dragDomHeight = dragDom.offsetHeight
 
       const screenWidth = document.body.clientWidth
       const screenHeight = document.body.clientHeight
@@ -29,7 +29,7 @@ export default{
       const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
 
       const minDragDomTop = dragDom.offsetTop
-      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomheight
+      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
 
       // 获取到的值带px 正则匹配替换
       let styL = getStyle(dragDom, 'left')
