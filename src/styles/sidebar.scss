@@ -28,6 +28,9 @@
         height: 100%;
       }
     }
+    .el-scrollbar__bar.is-vertical{
+      right: 0px;
+    }
     .is-horizontal {
       display: none;
     }
