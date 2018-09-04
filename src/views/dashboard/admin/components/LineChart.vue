@@ -56,7 +56,7 @@ export default {
 
     // 监听侧边栏的变化
     const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    sidebarElm.addEventListener('transitionend', this.__resizeHandler)
+    sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
   },
   beforeDestroy() {
     if (!this.chart) {
@@ -67,12 +67,17 @@ export default {
     }
 
     const sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    sidebarElm.removeEventListener('transitionend', this.__resizeHandler)
+    sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
 
     this.chart.dispose()
     this.chart = null
   },
   methods: {
+    sidebarResizeHandler(e) {
+      if (e.propertyName === 'width') {
+        this.__resizeHandler()
+      }
+    },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
