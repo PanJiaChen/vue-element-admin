@@ -50,6 +50,7 @@
 
 - 模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Typescript版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
 群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)
 

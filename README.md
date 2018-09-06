@@ -50,6 +50,7 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 - Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
 **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
 
