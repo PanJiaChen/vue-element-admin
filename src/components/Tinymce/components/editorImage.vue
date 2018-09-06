@@ -49,7 +49,6 @@ export default {
         this.$message('请等待所有图片上传成功 或 出现了网络问题，请刷新页面重新上传！')
         return
       }
-      console.log(arr)
       this.$emit('successCBK', arr)
       this.listObj = {}
       this.fileList = []
