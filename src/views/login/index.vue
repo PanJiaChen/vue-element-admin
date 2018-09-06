@@ -1,62 +1,124 @@
 <template>
   <div class="login-container">
-
-    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
-
-      <div class="title-container">
-        <h3 class="title">{{ $t('login.title') }}</h3>
-        <lang-select class="set-language"/>
-      </div>
-
-      <el-form-item prop="username">
-        <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          v-model="loginForm.username"
-          :placeholder="$t('login.username')"
-          name="username"
-          type="text"
+    <el-row :gutter="10">
+      <el-col
+        :xs="{span: 20, offset: 2}"
+        :sm="{span: 14, offset: 5}"
+        :md="{span: 12, offset: 6}"
+        :lg="{span: 8, offset: 8}"
+        :xl="{span: 8, offset: 8}">
+        <el-form
+          ref="loginForm"
+          :model="loginForm"
+          :rules="loginRules"
+          class="login-form"
           auto-complete="on"
-        />
-      </el-form-item>
+          label-position="left">
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :type="passwordType"
-          v-model="loginForm.password"
-          :placeholder="$t('login.password')"
-          name="password"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin" />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon icon-class="eye" />
-        </span>
-      </el-form-item>
+          <div class="title-container">
+            <h3 class="title">{{ $t('login.title') }}</h3>
+            <lang-select class="set-language"/>
+          </div>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">{{ $t('login.logIn') }}</el-button>
+          <el-form-item prop="username">
+            <span class="svg-container svg-container_login">
+              <svg-icon icon-class="user"/>
+            </span>
+            <el-input
+              v-model="loginForm.username"
+              :placeholder="$t('login.username')"
+              name="username"
+              type="text"
+              auto-complete="on"/>
+          </el-form-item>
 
-      <div class="tips">
-        <span>{{ $t('login.username') }} : admin</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
-      <div class="tips">
-        <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
-        <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
-      </div>
+          <el-form-item prop="password">
+            <span class="svg-container">
+              <svg-icon icon-class="password"/>
+            </span>
+            <el-input
+              :type="passwordType"
+              v-model="loginForm.password"
+              :placeholder="$t('login.password')"
+              name="password"
+              auto-complete="on"/>
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon icon-class="eye"/>
+            </span>
+          </el-form-item>
 
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{ $t('login.thirdparty') }}</el-button>
-    </el-form>
+          <el-form-item prop="captchaCode">
+            <el-row>
+              <el-col :span="16">
+                <span class="svg-container">
+                  <svg-icon icon-class="chart"/>
+                </span>
+                <el-input
+                  v-model="loginForm.captchaCode"
+                  :placeholder="$t('login.captchaCode')"
+                  type="text"
+                  name="captchaCode"
+                  auto-complete="on"
+                  @keyup.enter.native="handleLogin"/>
+              </el-col>
+              <el-col
+                :span="8"
+                class="captcha_img_box">
+                <img
+                  :src="captchaCode_img_url"
+                  alt="captcha"
+                  class="captcha_img"
+                  @click="refreshCaptchaImg">
+              </el-col>
+            </el-row>
+          </el-form-item>
 
+          <el-button
+            :loading="loading"
+            type="primary"
+            style="width:100%;margin-bottom:30px;"
+            @click.native.prevent="handleLogin">{{ $t('login.logIn') }}
+          </el-button>
+
+          <el-row>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 16}"
+              :lg="{span: 14}"
+              :xl="{span: 14}">
+              <div class="tips">
+                <span>{{ $t('login.username') }} : admin</span>
+                <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
+              </div>
+              <div class="tips">
+                <span style="margin-right:18px;">{{ $t('login.username') }} : editor</span>
+                <span>{{ $t('login.password') }} : {{ $t('login.any') }}</span>
+              </div>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 8}"
+              :lg="{span: 10}"
+              :xl="{span: 10}">
+              <el-button
+                class="thirdparty-button"
+                type="primary"
+                style="width:100%;"
+                @click="showDialog=true">{{ $t('login.thirdparty') }}
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-col>
+    </el-row>
     <el-dialog :title="$t('login.thirdparty')" :visible.sync="showDialog" append-to-body>
       {{ $t('login.thirdpartyTips') }}
       <br>
       <br>
       <br>
-      <social-sign />
+      <social-sign/>
     </el-dialog>
 
   </div>
@@ -91,12 +153,18 @@ export default {
         password: '1111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        username: [
+          { required: true, trigger: 'blur', validator: validateUsername }
+        ],
+        password: [
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false
+      showDialog: false,
+      // captchaCode_img_url: process.env.BASE_API + '/adm/captcha'
+      captchaCode_img_url: 'https://www.oschina.net/action/user/captcha'
     }
   },
   created() {
@@ -106,6 +174,10 @@ export default {
     // window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
+    refreshCaptchaImg() {
+      // this.captchaCode_img_url = process.env.BASE_API + '/adm/captcha' + '?t=' + Math.random()
+      this.captchaCode_img_url = 'https://www.oschina.net/action/user/captcha' + '?t=' + Math.random()
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -155,12 +227,12 @@ export default {
   /* 修复input 背景不协调 和光标变色 */
   /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-  $bg:#283443;
-  $light_gray:#eee;
+  $bg: #283443;
+  $light_gray: #eee;
   $cursor: #fff;
 
   @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-    .login-container .el-input input{
+    .login-container .el-input input {
       color: $cursor;
       &::first-line {
         color: $light_gray;
@@ -173,7 +245,7 @@ export default {
     .el-input {
       display: inline-block;
       height: 47px;
-      width: 85%;
+      width: 80%; // 这里85%将影响部分错位 设置为80%即可
       input {
         background: transparent;
         border: 0px;
@@ -199,72 +271,71 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-$bg:#2d3a4b;
-$dark_gray:#889aa4;
-$light_gray:#eee;
+  $bg: #2d3a4b;
+  $dark_gray: #889aa4;
+  $light_gray: #eee;
 
-.login-container {
-  position: fixed;
-  height: 100%;
-  width: 100%;
-  background-color: $bg;
-  .login-form {
-    position: absolute;
-    left: 0;
-    right: 0;
-    width: 520px;
-    padding: 35px 35px 15px 35px;
-    margin: 120px auto;
+  .captcha_img {
+    width: 100%;
+    height: 49px;
+    max-height: 49px;
+    vertical-align: middle;
   }
-  .tips {
-    font-size: 14px;
-    color: #fff;
-    margin-bottom: 10px;
-    span {
-      &:first-of-type {
-        margin-right: 16px;
+
+  .login-container {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: $bg;
+    .login-form {
+      padding: 35px 35px 15px 35px;
+      margin: 120px auto;
+    }
+    .tips {
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 10px;
+      span {
+        &:first-of-type {
+          margin-right: 16px;
+        }
       }
     }
-  }
-  .svg-container {
-    padding: 6px 5px 6px 15px;
-    color: $dark_gray;
-    vertical-align: middle;
-    width: 30px;
-    display: inline-block;
-    &_login {
-      font-size: 20px;
+    .svg-container {
+      padding: 6px 5px 6px 15px;
+      color: $dark_gray;
+      vertical-align: middle;
+      width: 30px;
+      display: inline-block;
+      &_login {
+        font-size: 20px;
+      }
     }
-  }
-  .title-container {
-    position: relative;
-    .title {
-      font-size: 26px;
-      color: $light_gray;
-      margin: 0px auto 40px auto;
-      text-align: center;
-      font-weight: bold;
+    .title-container {
+      position: relative;
+      .title {
+        font-size: 26px;
+        color: $light_gray;
+        margin: 0px auto 40px auto;
+        text-align: center;
+        font-weight: bold;
+      }
+      .set-language {
+        color: #fff;
+        position: absolute;
+        top: 5px;
+        right: 0px;
+      }
     }
-    .set-language {
-      color: #fff;
+
+    .show-pwd {
       position: absolute;
-      top: 5px;
-      right: 0px;
+      right: 10px;
+      top: 7px;
+      font-size: 16px;
+      color: $dark_gray;
+      cursor: pointer;
+      user-select: none;
     }
   }
-  .show-pwd {
-    position: absolute;
-    right: 10px;
-    top: 7px;
-    font-size: 16px;
-    color: $dark_gray;
-    cursor: pointer;
-    user-select: none;
-  }
-  .thirdparty-button {
-    position: absolute;
-    right: 35px;
-    bottom: 28px;
-  }
-}
 </style>
