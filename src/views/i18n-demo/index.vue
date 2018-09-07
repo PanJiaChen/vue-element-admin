@@ -15,7 +15,7 @@
     </el-card>
 
     <el-row :gutter="20" style="margin:100px 15px 50px;">
-      <el-col :span="12">
+      <el-col :span="12" :xs="24">
         <div class="block">
           <el-date-picker v-model="date" :placeholder="$t('i18nView.datePlaceholder')" type="date"/>
         </div>
@@ -37,7 +37,7 @@
           <el-button class="item-btn" size="small" type="danger">{{ $t('i18nView.danger') }}</el-button>
         </div>
       </el-col>
-      <el-col :span="12">
+      <el-col :span="12" :xs="24">
         <el-table :data="tableData" fit highlight-current-row border style="width: 100%">
           <el-table-column :label="$t('i18nView.tableName')" prop="name" width="100" align="center"/>
           <el-table-column :label="$t('i18nView.tableDate')" prop="date" width="120" align="center"/>
@@ -103,6 +103,7 @@ export default {
 <style scoped>
 .box-card {
   width: 600px;
+  max-width: 100%;
   margin: 20px auto;
 }
 .item-btn{
