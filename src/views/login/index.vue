@@ -96,8 +96,18 @@ export default {
       },
       passwordType: 'password',
       loading: false,
-      showDialog: false
+      showDialog: false,
+      redirect: undefined
     }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
+
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
@@ -119,7 +129,7 @@ export default {
           this.loading = true
           this.$store.dispatch('LoginByUsername', this.loginForm).then(() => {
             this.loading = false
-            this.$router.push({ path: '/' })
+            this.$router.push({ path: this.redirect || '/' })
           }).catch(() => {
             this.loading = false
           })
