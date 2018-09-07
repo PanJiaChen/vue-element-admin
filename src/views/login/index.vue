@@ -213,6 +213,7 @@ $light_gray:#eee;
     left: 0;
     right: 0;
     width: 520px;
+    max-width: 100%;
     padding: 35px 35px 15px 35px;
     margin: 120px auto;
   }
