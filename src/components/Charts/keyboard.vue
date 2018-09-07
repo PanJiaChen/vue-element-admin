@@ -56,6 +56,10 @@ export default {
       this.chart.setOption(
         {
           backgroundColor: '#08263a',
+          grid: {
+            left: '5%',
+            right: '5%'
+          },
           xAxis: [{
             show: false,
             data: xAxisData

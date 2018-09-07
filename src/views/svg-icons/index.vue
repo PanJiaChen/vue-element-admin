@@ -21,21 +21,15 @@
 </template>
 
 <script>
-import icons from './generateIconsView'
+import icons from './requireIcons'
 import clipboard from '@/utils/clipboard'
 
 export default {
   name: 'Icons',
   data() {
     return {
-      iconsMap: []
+      iconsMap: icons
     }
-  },
-  mounted() {
-    const iconsMap = icons.state.iconsMap.map((i) => {
-      return i.default.id.split('-')[1]
-    })
-    this.iconsMap = iconsMap
   },
   methods: {
     generateIconCode(symbol) {

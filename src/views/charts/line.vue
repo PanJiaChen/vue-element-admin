@@ -16,9 +16,8 @@ export default {
 <style scoped>
 .chart-container{
   position: relative;
-  padding:20px;
   width: 100%;
-  height:85vh;
+  height: calc(100vh - 84px);
 }
 </style>
 

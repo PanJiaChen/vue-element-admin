@@ -12,7 +12,7 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
-/** note: submenu only apppear when children.length>=1
+/** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  **/
 
@@ -21,7 +21,7 @@ import nestedRouter from './modules/nested'
 * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
 *                                if not set alwaysShow, only more than one route under the children
 *                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirct in the breadcrumb
+* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
 * name:'router-name'             the name is used by <keep-alive> (must set!!!)
 * meta : {
     roles: ['admin','editor']     will control the page roles (you can set multiple roles)
@@ -48,7 +48,7 @@ export const constantRouterMap = [
     hidden: true
   },
   {
-    path: '/authredirect',
+    path: '/auth-redirect',
     component: () => import('@/views/login/authredirect'),
     hidden: true
   },

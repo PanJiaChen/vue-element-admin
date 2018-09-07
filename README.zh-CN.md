@@ -50,6 +50,7 @@
 
 - 模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Typescript版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
 群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)
 
@@ -140,7 +141,7 @@
 - 错误日志
 - Dashboard
 - 引导页
-- Echarts 图表
+- ECharts 图表
 - Clipboard(剪贴复制)
 - Markdown2html
 ```
@@ -154,7 +155,7 @@ git clone https://github.com/PanJiaChen/vue-element-admin.git
 # 安装依赖
 npm install
 
-# 建议不要用cnpm安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
+# 建议不要用 cnpm 安装 会有各种诡异的bug 可以通过如下操作解决 npm 下载速度慢的问题
 npm install --registry=https://registry.npm.taobao.org
 
 # 启动服务

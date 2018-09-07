@@ -75,8 +75,10 @@ export default {
           }
         },
         grid: {
+          left: '5%',
+          right: '5%',
           borderWidth: 0,
-          top: 110,
+          top: 150,
           bottom: 95,
           textStyle: {
             color: '#fff'
