@@ -20,13 +20,13 @@
           <el-date-picker v-model="date" :placeholder="$t('i18nView.datePlaceholder')" type="date"/>
         </div>
         <div class="block">
-          <el-pagination
-            :current-page="currentPage"
-            :page-sizes="[100, 200, 300, 400]"
-            :page-size="100"
-            :total="400"
-            background
-            layout="total, sizes, prev, pager, next"/>
+          <el-select v-model="value" :placeholder="$t('i18nView.selectPlaceholder')">
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"/>
+          </el-select>
         </div>
         <div class="block">
           <el-button class="item-btn" size="small">{{ $t('i18nView.default') }}</el-button>
@@ -57,7 +57,6 @@ export default {
   data() {
     return {
       date: '',
-      currentPage: 5,
       tableData: [{
         date: '2016-05-03',
         name: 'Tom',
@@ -77,7 +76,9 @@ export default {
         date: '2016-05-01',
         name: 'Tom',
         address: 'No. 189, Grove St, Los Angeles'
-      }]
+      }],
+      options: [],
+      value: ''
     }
   },
   computed: {
@@ -91,10 +92,34 @@ export default {
       }
     }
   },
+  watch: {
+    lang() {
+      this.setOptions()
+    }
+  },
   created() {
     if (!this.$i18n.getLocaleMessage('en')[viewName]) {
       this.$i18n.mergeLocaleMessage('en', local.en)
       this.$i18n.mergeLocaleMessage('zh', local.zh)
+    }
+    this.setOptions() // set default select options
+  },
+  methods: {
+    setOptions() {
+      this.options = [
+        {
+          value: '1',
+          label: this.$t('i18nView.one')
+        },
+        {
+          value: '2',
+          label: this.$t('i18nView.two')
+        },
+        {
+          value: '3',
+          label: this.$t('i18nView.three')
+        }
+      ]
     }
   }
 }
