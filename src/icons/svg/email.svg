@@ -1,15 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="128px" height="96px" viewBox="0 0 128 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
-    <title>email</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="email" fill="#000000">
-            <g id="Group">
-                <path d="M64.125,56.975 L120.1875,0.9125 C118.7375,0.325 117.15,-5.32907052e-15 115.5,-5.32907052e-15 L12.5,0 C10.9125,0 9.3875,0.3 7.9875,0.8375 L64.125,56.975 L64.125,56.975 Z" id="Shape"></path>
-                <path d="M64.125,68.2875 L1.825,5.9875 C0.6625,7.8875 0,10.1125 0,12.5 L0,83.5 C0,90.4 5.6,96 12.5,96 L115.5,96 C122.4,96 128,90.4 128,83.5 L128,12.5 C128,10.1875 127.3625,8.0125 126.2625,6.15 L64.125,68.2875 L64.125,68.2875 Z" id="Shape"></path>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="128" height="96" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M64.125 56.975L120.188.912A12.476 12.476 0 0 0 115.5 0h-103c-1.588 0-3.113.3-4.513.838l56.138 56.137z"/><path d="M64.125 68.287l-62.3-62.3A12.42 12.42 0 0 0 0 12.5v71C0 90.4 5.6 96 12.5 96h103c6.9 0 12.5-5.6 12.5-12.5v-71a12.47 12.47 0 0 0-1.737-6.35L64.125 68.287z"/></g></svg>

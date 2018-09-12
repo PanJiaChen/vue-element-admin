@@ -1,12 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
-    <title>chart</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="chart" fill="#000000">
-            <path d="M0,54.8571429 L36.5714286,54.8571429 L36.5714286,128 L0,128 L0,54.8571429 L0,54.8571429 L0,54.8571429 Z M91.4285714,27.4285714 L128,27.4285714 L128,128 L91.4285714,128 L91.4285714,27.4285714 L91.4285714,27.4285714 L91.4285714,27.4285714 Z M45.7142857,0 L82.2857143,0 L82.2857143,128 L45.7142857,128 L45.7142857,0 L45.7142857,0 L45.7142857,0 Z" id="Shape"></path>
-        </g>
-    </g>
-</svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><path d="M0 54.857h36.571V128H0V54.857zM91.429 27.43H128V128H91.429V27.429zM45.714 0h36.572v128H45.714V0z" fill-rule="evenodd"/></svg>

@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
-    <title>link</title>
-    <desc>Created with Sketch.</desc>
-    <defs></defs>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="link" fill="#000000">
-            <g id="Group">
-                <polygon id="Shape" points="115.625378 127.937096 0.0629043303 127.937096 0.0629043303 12.3746224 57.844141 12.3746224 57.844141 24.7492447 12.4375267 24.7492447 12.4375267 115.562473 103.250755 115.562473 103.250755 70.155859 115.625378 70.155859"></polygon>
-                <polygon id="Shape" points="116.425603 2.8214139 125.178586 11.5743968 68.4450675 68.3079154 59.6920846 59.5631823"></polygon>
-                <polygon id="Shape" points="127.892753 37.9818409 115.518131 37.9818409 115.518131 12.3746224 88.7064491 12.3746224 88.7064491 0 127.892753 0"></polygon>
-            </g>
-        </g>
-    </g>
-</svg>
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg"><g fill-rule="evenodd"><path d="M115.625 127.937H.063V12.375h57.781v12.374H12.438v90.813h90.813V70.156h12.374z"/><path d="M116.426 2.821l8.753 8.753-56.734 56.734-8.753-8.745z"/><path d="M127.893 37.982h-12.375V12.375H88.706V0h39.187z"/></g></svg>
