@@ -1,1 +1,15 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1503994842272" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10097" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64"><defs><style type="text/css"></style></defs><path d="M625.664 132.608V199.68h309.76v43.008h-309.76V312.32h309.76v43.008h-309.76v68.608h309.76v43.008h-309.76v68.608h309.76v43.008h-309.76v68.608h309.76v43.008h-309.76v68.096h309.76v43.008h-309.76v89.088H1024v-757.76h-398.336zM0 914.944L577.024 1024V0L0 109.056" p-id="10098"></path><path d="M229.376 660.48H139.776l118.272-187.904-112.64-180.736h92.16l65.536 119.808L370.688 291.84h89.088l-112.64 177.664L466.944 660.48H373.248l-70.144-125.44L229.376 660.48z" p-id="10099"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
+    <title>excel</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="excel" fill="#000000">
+            <g id="Group">
+                <path d="M78.208,16.576 L78.208,24.96 L116.928,24.96 L116.928,30.336 L78.208,30.336 L78.208,39.04 L116.928,39.04 L116.928,44.416 L78.208,44.416 L78.208,52.992 L116.928,52.992 L116.928,58.368 L78.208,58.368 L78.208,66.944 L116.928,66.944 L116.928,72.32 L78.208,72.32 L78.208,80.896 L116.928,80.896 L116.928,86.272 L78.208,86.272 L78.208,94.784 L116.928,94.784 L116.928,100.16 L78.208,100.16 L78.208,111.296 L128,111.296 L128,16.576 L78.208,16.576 L78.208,16.576 Z M0,114.368 L72.128,128 L72.128,0 L0,13.632 L0,114.368 Z" id="Shape"></path>
+                <polygon id="Shape" points="28.672 82.56 17.472 82.56 32.256 59.072 18.176 36.48 29.696 36.48 37.888 51.456 46.336 36.48 57.472 36.48 43.392 58.688 58.368 82.56 46.656 82.56 37.888 66.88"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>

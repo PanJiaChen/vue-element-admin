@@ -1,1 +1,15 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1503994210967" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="9120" xmlns:xlink="http://www.w3.org/1999/xlink" width="64" height="64"><defs><style type="text/css"></style></defs><path d="M513 583.8l448.5-448.5c-11.6-4.7-24.3-7.3-37.5-7.3L100 128c-12.7 0-24.9 2.4-36.1 6.7L513 583.8z" p-id="9121"></path><path d="M513 674.3 14.6 175.9C5.3 191.1 0 208.9 0 228l0 568c0 55.2 44.8 100 100 100l824 0c55.2 0 100-44.8 100-100l0-568c0-18.5-5.1-35.9-13.9-50.8L513 674.3z" p-id="9122"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="96px" viewBox="0 0 128 96" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
+    <title>email</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="email" fill="#000000">
+            <g id="Group">
+                <path d="M64.125,56.975 L120.1875,0.9125 C118.7375,0.325 117.15,-5.32907052e-15 115.5,-5.32907052e-15 L12.5,0 C10.9125,0 9.3875,0.3 7.9875,0.8375 L64.125,56.975 L64.125,56.975 Z" id="Shape"></path>
+                <path d="M64.125,68.2875 L1.825,5.9875 C0.6625,7.8875 0,10.1125 0,12.5 L0,83.5 C0,90.4 5.6,96 12.5,96 L115.5,96 C122.4,96 128,90.4 128,83.5 L128,12.5 C128,10.1875 127.3625,8.0125 126.2625,6.15 L64.125,68.2875 L64.125,68.2875 Z" id="Shape"></path>
+            </g>
+        </g>
+    </g>
+</svg>

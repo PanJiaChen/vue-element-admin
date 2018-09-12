@@ -1,2 +1,12 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1535513021233" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="13539" xmlns:xlink="http://www.w3.org/1999/xlink" width="200" height="200"><defs><style type="text/css">@font-face { font-family: rbicon; src: url("chrome-extension://dipiagiiohfljcicegpgffpbnjmgjcnf/fonts/rbicon.woff2") format("woff2"); font-weight: normal; font-style: normal; }
-</style></defs><path d="M64 512l384 0 0 128-128 0 0 384-128 0 0-384-128 0zM960 256l-251.74016 0 0 768-136.4992 0 0-768-251.74016 0 0-128 640 0z" p-id="13540"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
+    <title>size</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="size" fill="#000000">
+            <path d="M0,54.8571429 L54.7959866,54.8571429 L54.7959866,73.1428571 L36.5306577,73.1428571 L36.5306577,128 L18.2653289,128 L18.2653289,73.1428571 L0,73.1428571 L0,54.8571429 L0,54.8571429 Z M127.857302,18.2857143 L91.9345145,18.2857143 L91.9345145,128 L72.4563678,128 L72.4563678,18.2857143 L36.5335802,18.2857143 L36.5335802,0 L127.860225,0 L127.857302,18.2857143 L127.857302,18.2857143 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>

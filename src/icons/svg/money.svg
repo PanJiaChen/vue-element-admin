@@ -1,1 +1,12 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1510727546462" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1764" xmlns:xlink="http://www.w3.org/1999/xlink" width="32" height="32"><defs><style type="text/css"></style></defs><path d="M463.3 958.3V772.1H228.8v-77.5h234.5v-80.5H228.8v-83.5H420L191.5 128h113.7L469 420.6c18.2 33.4 32.4 62.4 42.7 86.9 9-19.8 24.6-50.5 46.8-92.1L713.9 128h120.8L605.5 530.6h192.9v83.5H564.9v80.5h233.5v77.5H564.9v186.2H463.3z" p-id="1765"></path></svg>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="128px" height="128px" viewBox="0 0 128 128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 40 (33762) - http://www.bohemiancoding.com/sketch -->
+    <title>money</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="money" fill="#000000">
+            <path d="M54.1217391,127.892178 L54.1217391,99.2115523 L7.51304348,99.2115523 L7.51304348,87.2741276 L54.1217391,87.2741276 L54.1217391,74.8746089 L7.51304348,74.8746089 L7.51304348,62.0129964 L45.515528,62.0129964 L0.099378882,0 L22.6981366,0 L55.2546584,45.0695548 C58.8720497,50.2141998 61.6944099,54.6811071 63.7416149,58.4548736 C65.5304348,55.4050542 68.6310559,50.6762936 73.0434783,44.2685921 L103.930435,0 L127.940373,0 L82.3850932,62.0129964 L120.725466,62.0129964 L120.725466,74.8746089 L74.315528,74.8746089 L74.315528,87.2741276 L120.725466,87.2741276 L120.725466,99.2115523 L74.315528,99.2115523 L74.315528,127.892178 L54.1217391,127.892178 L54.1217391,127.892178 Z" id="Shape"></path>
+        </g>
+    </g>
+</svg>
