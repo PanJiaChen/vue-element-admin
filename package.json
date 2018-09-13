@@ -11,7 +11,7 @@
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
     "precommit": "lint-staged",
-    "svgo": "svgo -f src/icons/svg --enable=removeUselessStrokeAndFill"
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
