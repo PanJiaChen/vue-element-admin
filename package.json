@@ -10,7 +10,8 @@
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
@@ -105,6 +106,7 @@
     "serve-static": "1.13.2",
     "shelljs": "0.8.2",
     "svg-sprite-loader": "3.8.0",
+    "svgo": "1.0.5",
     "uglifyjs-webpack-plugin": "1.2.7",
     "url-loader": "1.0.1",
     "vue-loader": "15.3.0",
