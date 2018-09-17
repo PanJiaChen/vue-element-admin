@@ -1,7 +1,7 @@
 <template>
   <div v-if="!item.hidden&&item.children" class="menu-wrapper">
 
-    <template v-if="hasOneShowingChild(item.children) && !onlyOneChild.children&&!item.alwaysShow">
+    <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <a :href="onlyOneChild.path" target="_blank" @click="clickLink(onlyOneChild.path,$event)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
@@ -15,7 +15,13 @@
       </template>
 
       <template v-for="child in item.children" v-if="!child.hidden">
-        <sidebar-item v-if="child.children&&child.children.length>0" :is-nest="true" :item="child" :key="child.path" :base-path="resolvePath(child.path)" class="nest-menu"/>
+        <sidebar-item
+          v-if="child.children&&child.children.length>0"
+          :is-nest="true"
+          :item="child"
+          :key="child.path"
+          :base-path="resolvePath(child.path)"
+          class="nest-menu" />
 
         <a v-else :href="child.path" :key="child.name" target="_blank" @click="clickLink(child.path,$event)">
           <el-menu-item :index="resolvePath(child.path)">
@@ -58,19 +64,28 @@ export default {
     }
   },
   methods: {
-    hasOneShowingChild(children) {
+    hasOneShowingChild(children, parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
           return false
         } else {
-          // temp set(will be used if only has one showing child )
+          // Temp set(will be used if only has one showing child)
           this.onlyOneChild = item
           return true
         }
       })
+
+      // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
         return true
       }
+
+      // Show parent if there are no child router to display
+      if (showingChildren.length === 0) {
+        this.onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        return true
+      }
+
       return false
     },
     resolvePath(routePath) {
