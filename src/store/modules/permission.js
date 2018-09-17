@@ -23,11 +23,12 @@ function filterAsyncRouter(routes, roles) {
 
   routes.forEach(route => {
     const tmp = { ...route }
-    if (tmp.children) {
-      tmp.children = filterAsyncRouter(tmp.children, roles)
+    if (hasPermission(roles, tmp)) {
+      if (tmp.children) {
+        tmp.children = filterAsyncRouter(tmp.children, roles)
+      }
+      res.push(tmp)
     }
-
-    hasPermission(roles, tmp) && res.push(tmp)
   })
 
   return res
