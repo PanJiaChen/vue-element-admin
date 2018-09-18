@@ -60,6 +60,15 @@ const tagsView = {
     },
     DEL_ALL_CACHED_VIEWS: state => {
       state.cachedViews = []
+    },
+
+    UPDATE_VISITED_VIEW: (state, view) => {
+      for (let v of state.visitedViews) {
+        if (v.path === view.path) {
+          v = Object.assign(v, view)
+          break
+        }
+      }
     }
 
   },
@@ -142,6 +151,10 @@ const tagsView = {
         commit('DEL_ALL_CACHED_VIEWS')
         resolve([...state.cachedViews])
       })
+    },
+
+    updateVisitedView({ commit }, view) {
+      commit('UPDATE_VISITED_VIEW', view)
     }
   }
 }

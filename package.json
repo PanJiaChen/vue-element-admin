@@ -1,6 +1,6 @@
 {
   "name": "vue-element-admin",
-  "version": "3.8.1",
+  "version": "3.9.0",
   "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
     "precommit": "lint-staged",
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "deploy": "bash deploy.sh"
   },
   "lint-staged": {
@@ -106,6 +107,7 @@
     "serve-static": "1.13.2",
     "shelljs": "0.8.2",
     "svg-sprite-loader": "3.8.0",
+    "svgo": "1.0.5",
     "uglifyjs-webpack-plugin": "1.2.7",
     "url-loader": "1.0.1",
     "vue-loader": "15.3.0",

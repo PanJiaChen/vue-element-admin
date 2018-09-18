@@ -18,7 +18,9 @@ export default {
   props: {
     id: {
       type: String,
-      default: 'vue-tinymce-' + +new Date()
+      default: function() {
+        return 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+      }
     },
     value: {
       type: String,

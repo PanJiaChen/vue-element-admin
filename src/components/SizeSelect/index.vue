@@ -32,10 +32,12 @@ export default {
       // In order to make the cached page re-rendered
       this.$store.dispatch('delAllCachedViews', this.$route)
 
-      const { path } = this.$route
+      const { fullPath } = this.$route
 
-      this.$router.replace({
-        path: '/redirect' + path
+      this.$nextTick(() => {
+        this.$router.replace({
+          path: '/redirect' + fullPath
+        })
       })
     }
   }
