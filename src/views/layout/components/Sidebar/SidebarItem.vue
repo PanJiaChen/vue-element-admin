@@ -2,11 +2,11 @@
   <div v-if="!item.hidden&&item.children" class="menu-wrapper">
 
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
-      <a :href="onlyOneChild.path" target="_blank" @click="clickLink(onlyOneChild.path,$event)">
+      <app-link :to="resolvePath(onlyOneChild.path)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
           <item v-if="onlyOneChild.meta" :icon="onlyOneChild.meta.icon||item.meta.icon" :title="generateTitle(onlyOneChild.meta.title)" />
         </el-menu-item>
-      </a>
+      </app-link>
     </template>
 
     <el-submenu v-else :index="item.name||item.path">
@@ -23,11 +23,11 @@
           :base-path="resolvePath(child.path)"
           class="nest-menu" />
 
-        <a v-else :href="child.path" :key="child.name" target="_blank" @click="clickLink(child.path,$event)">
+        <app-link v-else :to="resolvePath(child.path)" :key="child.name">
           <el-menu-item :index="resolvePath(child.path)">
             <item v-if="child.meta" :icon="child.meta.icon" :title="generateTitle(child.meta.title)" />
           </el-menu-item>
-        </a>
+        </app-link>
       </template>
     </el-submenu>
 
@@ -39,10 +39,11 @@ import path from 'path'
 import { generateTitle } from '@/utils/i18n'
 import { validateURL } from '@/utils/validate'
 import Item from './Item'
+import AppLink from './Link'
 
 export default {
   name: 'SidebarItem',
-  components: { Item },
+  components: { Item, AppLink },
   props: {
     // route object
     item: {
@@ -89,17 +90,13 @@ export default {
       return false
     },
     resolvePath(routePath) {
+      if (this.isExternalLink(routePath)) {
+        return routePath
+      }
       return path.resolve(this.basePath, routePath)
     },
     isExternalLink(routePath) {
       return validateURL(routePath)
-    },
-    clickLink(routePath, e) {
-      if (!this.isExternalLink(routePath)) {
-        e.preventDefault()
-        const path = this.resolvePath(routePath)
-        this.$router.push(path)
-      }
     },
     generateTitle
   }
