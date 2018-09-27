@@ -1,7 +1,7 @@
 <template>
   <div>
-    <input id="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
-    <div id="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
+    <input class="excel-upload-input" ref="excel-upload-input" type="file" accept=".xlsx, .xls" @change="handleClick">
+    <div class="drop" @drop="handleDrop" @dragover="handleDragover" @dragenter="handleDragover">
       Drop excel file here or
       <el-button :loading="loading" style="margin-left:16px;" size="mini" type="primary" @click="handleUpload">Browse</el-button>
     </div>
@@ -56,7 +56,10 @@ export default {
       e.dataTransfer.dropEffect = 'copy'
     },
     handleUpload() {
-      document.getElementById('excel-upload-input').click()
+      // document.getElementById('excel-upload-input').click()
+      // 改成这样的原因是避免复用改组件时，调用onSuccess时的指向错误。
+      // 因为之前代码为id取值，复用组件时会导致id重复，错误。所以去掉id取值，改为refs，样式用class解决。
+      this.$refs['excel-upload-input'].click();
     },
     handleClick(e) {
       const files = e.target.files
@@ -126,11 +129,11 @@ export default {
 </script>
 
 <style scoped>
-#excel-upload-input{
+.excel-upload-input{
   display: none;
   z-index: -9999;
 }
-#drop{
+.drop{
   border: 2px dashed #bbb;
   width: 600px;
   height: 160px;
