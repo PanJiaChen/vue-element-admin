@@ -56,9 +56,7 @@ export default {
       e.dataTransfer.dropEffect = 'copy'
     },
     handleUpload() {
-      // 改成这样的原因是避免复用改组件时，调用onSuccess时的指向错误。
-      // 因为之前代码为id取值，复用组件时会导致id重复，错误。所以去掉id取值，改为refs，样式用class解决。
-      this.$refs['excel-upload-input'].click();
+      this.$refs['excel-upload-input'].click()
     },
     handleClick(e) {
       const files = e.target.files
