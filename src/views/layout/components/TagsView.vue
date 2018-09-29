@@ -7,7 +7,9 @@
         :class="isActive(tag)?'active':''"
         :to="tag"
         :key="tag.path"
+        tag="span"
         class="tags-view-item"
+        @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
         <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
@@ -149,6 +151,7 @@ export default {
     .tags-view-item {
       display: inline-block;
       position: relative;
+      cursor: pointer;
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
