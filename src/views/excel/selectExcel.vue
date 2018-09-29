@@ -3,6 +3,9 @@
     <!-- $t is vue-i18n global function to translate lang -->
     <el-input :placeholder="$t('excel.placeholder')" v-model="filename" style="width:340px;" prefix-icon="el-icon-document"/>
     <el-button :loading="downloadLoading" style="margin-bottom:20px" type="primary" icon="document" @click="handleDownload">{{ $t('excel.selectedExport') }}</el-button>
+    <a href="https://panjiachen.github.io/vue-element-admin-site/feature/component/excel.html" target="_blank" style="margin-left:15px;">
+      <el-tag type="info">Documentation</el-tag>
+    </a>
     <el-table
       v-loading="listLoading"
       ref="multipleTable"
