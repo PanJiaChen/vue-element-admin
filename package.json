@@ -94,6 +94,7 @@
     "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "5.0.0",
     "ora": "3.0.0",
+    "path-to-regexp": "2.4.0",
     "portfinder": "1.0.13",
     "postcss-import": "11.1.0",
     "postcss-loader": "2.1.6",
