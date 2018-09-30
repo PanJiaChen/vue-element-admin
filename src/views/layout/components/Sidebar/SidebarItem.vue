@@ -9,7 +9,7 @@
       </app-link>
     </template>
 
-    <el-submenu v-else :index="item.name||item.path">
+    <el-submenu v-else ref="submenu" :index="item.name||item.path">
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta.icon" :title="generateTitle(item.meta.title)" />
       </template>
@@ -40,10 +40,12 @@ import { generateTitle } from '@/utils/i18n'
 import { validateURL } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
+import FixiOSBug from './FixiOSBug'
 
 export default {
   name: 'SidebarItem',
   components: { Item, AppLink },
+  mixins: [FixiOSBug],
   props: {
     // route object
     item: {
