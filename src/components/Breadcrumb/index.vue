@@ -1,9 +1,9 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index)  in levelList" :key="item.path" v-if='item.meta.title'>
-        <span v-if='item.redirect==="noredirect"||index==levelList.length-1' class="no-redirect">{{generateTitle(item.meta.title)}}</span>
-        <router-link v-else :to="item.redirect||item.path">{{generateTitle(item.meta.title)}}</router-link>
+      <el-breadcrumb-item v-for="(item,index) in levelList" v-if="item.meta.title" :key="item.path">
+        <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{ generateTitle(item.meta.title) }}</span>
+        <router-link v-else :to="item.redirect||item.path">{{ generateTitle(item.meta.title) }}</router-link>
       </el-breadcrumb-item>
     </transition-group>
   </el-breadcrumb>
@@ -11,11 +11,9 @@
 
 <script>
 import { generateTitle } from '@/utils/i18n'
+import pathToRegexp from 'path-to-regexp'
 
 export default {
-  created() {
-    this.getBreadcrumb()
-  },
   data() {
     return {
       levelList: null
@@ -26,12 +24,23 @@ export default {
       this.getBreadcrumb()
     }
   },
+  created() {
+    this.getBreadcrumb()
+  },
   methods: {
     generateTitle,
     getBreadcrumb() {
-      let matched = this.$route.matched.filter(item => item.name)
+      const { params } = this.$route
+      let matched = this.$route.matched.filter(item => {
+        if (item.name) {
+          // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
+          var toPath = pathToRegexp.compile(item.path)
+          item.path = toPath(params)
+          return true
+        }
+      })
       const first = matched[0]
-      if (first && first.name !== 'dashboard') {
+      if (first && first.name.trim().toLocaleLowerCase() !== 'Dashboard'.toLocaleLowerCase()) {
         matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
       }
       this.levelList = matched

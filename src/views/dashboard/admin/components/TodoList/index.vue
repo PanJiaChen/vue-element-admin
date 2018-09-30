@@ -5,16 +5,21 @@
       <input class="new-todo" autocomplete="off" placeholder="Todo List" @keyup.enter="addTodo">
     </header>
     <!-- main section -->
-    <section class="main" v-show="todos.length">
-      <input class="toggle-all" id="toggle-all" type="checkbox" :checked="allChecked" @change="toggleAll({ done: !allChecked })">
-      <label for="toggle-all"></label>
+    <section v-show="todos.length" class="main">
+      <input id="toggle-all" :checked="allChecked" class="toggle-all" type="checkbox" @change="toggleAll({ done: !allChecked })">
+      <label for="toggle-all"/>
       <ul class="todo-list">
-        <todo @toggleTodo='toggleTodo' @editTodo='editTodo' @deleteTodo='deleteTodo' v-for="(todo, index) in filteredTodos" :key="index"
-          :todo="todo"></todo>
+        <todo
+          v-for="(todo, index) in filteredTodos"
+          :key="index"
+          :todo="todo"
+          @toggleTodo="toggleTodo"
+          @editTodo="editTodo"
+          @deleteTodo="deleteTodo"/>
       </ul>
     </section>
     <!-- footer -->
-    <footer class="footer" v-show="todos.length">
+    <footer v-show="todos.length" class="footer">
       <span class="todo-count">
         <strong>{{ remaining }}</strong>
         {{ remaining | pluralize('item') }} left
@@ -52,6 +57,10 @@ const defalutList = [
 ]
 export default {
   components: { Todo },
+  filters: {
+    pluralize: (n, w) => n === 1 ? w : w + 's',
+    capitalize: s => s.charAt(0).toUpperCase() + s.slice(1)
+  },
   data() {
     return {
       visibility: 'all',
@@ -72,7 +81,7 @@ export default {
     }
   },
   methods: {
-    setLocalStorgae() {
+    setLocalStorage() {
       window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos))
     },
     addTodo(e) {
@@ -82,36 +91,32 @@ export default {
           text,
           done: false
         })
-        this.setLocalStorgae()
+        this.setLocalStorage()
       }
       e.target.value = ''
     },
     toggleTodo(val) {
       val.done = !val.done
-      this.setLocalStorgae()
+      this.setLocalStorage()
     },
     deleteTodo(todo) {
       this.todos.splice(this.todos.indexOf(todo), 1)
-      this.setLocalStorgae()
+      this.setLocalStorage()
     },
     editTodo({ todo, value }) {
       todo.text = value
-      this.setLocalStorgae()
+      this.setLocalStorage()
     },
     clearCompleted() {
       this.todos = this.todos.filter(todo => !todo.done)
-      this.setLocalStorgae()
+      this.setLocalStorage()
     },
     toggleAll({ done }) {
       this.todos.forEach(todo => {
         todo.done = done
-        this.setLocalStorgae()
+        this.setLocalStorage()
       })
     }
-  },
-  filters: {
-    pluralize: (n, w) => n === 1 ? w : w + 's',
-    capitalize: s => s.charAt(0).toUpperCase() + s.slice(1)
   }
 }
 </script>

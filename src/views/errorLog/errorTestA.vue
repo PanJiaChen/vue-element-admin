@@ -1,13 +1,13 @@
 <template>
   <div>
     <!--error code-->
-    {{a.a}}
+    {{ a.a }}
     <!--error code-->
   </div>
 </template>
 
 <script>
 export default {
-  name: 'errorTestA'
+  name: 'ErrorTestA'
 }
 </script>

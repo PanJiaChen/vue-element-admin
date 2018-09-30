@@ -3,7 +3,10 @@ export default {
     dashboard: 'Dashboard',
     introduction: 'Introduction',
     documentation: 'Documentation',
+    guide: 'Guide',
     permission: 'Permission',
+    pagePermission: 'Page Permission',
+    directivePermission: 'Directive Permission',
     icons: 'Icons',
     components: 'Components',
     componentIndex: 'Introduction',
@@ -18,11 +21,21 @@ export default {
     countTo: 'CountTo',
     componentMixin: 'Mixin',
     backToTop: 'BackToTop',
+    dragDialog: 'Drag Dialog',
+    dragKanban: 'Drag Kanban',
     charts: 'Charts',
     keyboardChart: 'Keyboard Chart',
     lineChart: 'Line Chart',
     mixChart: 'Mix Chart',
     example: 'Example',
+    nested: 'Nested Routes',
+    menu1: 'Menu 1',
+    'menu1-1': 'Menu 1-1',
+    'menu1-2': 'Menu 1-2',
+    'menu1-2-1': 'Menu 1-2-1',
+    'menu1-2-2': 'Menu 1-2-2',
+    'menu1-3': 'Menu 1-3',
+    menu2: 'Menu 2',
     Table: 'Table',
     dynamicTable: 'Dynamic Table',
     dragTable: 'Drag Table',
@@ -32,8 +45,9 @@ export default {
     customTreeTable: 'Custom TreeTable',
     tab: 'Tab',
     form: 'Form',
-    createForm: 'Create Form',
-    editForm: 'Edit Form',
+    createArticle: 'Create Article',
+    editArticle: 'Edit Article',
+    articleList: 'Article List',
     errorPages: 'Error Pages',
     page401: '401',
     page404: '404',
@@ -46,14 +60,16 @@ export default {
     exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
-    i18n: 'I18n'
+    i18n: 'I18n',
+    externalLink: 'External Link'
   },
   navbar: {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
-    screenfull: 'screenfull',
-    theme: 'theme'
+    screenfull: 'Screenfull',
+    theme: 'Theme',
+    size: 'Global Size'
   },
   login: {
     title: 'Login Form',
@@ -71,6 +87,10 @@ export default {
   permission: {
     roles: 'Your roles',
     switchRoles: 'Switch roles'
+  },
+  guide: {
+    description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
+    button: 'Show Guide'
   },
   components: {
     documentation: 'Documentation',
@@ -114,7 +134,7 @@ export default {
   },
   excel: {
     export: 'Export',
-    selectedExport: 'Export selected items',
+    selectedExport: 'Export Selected Items',
     placeholder: 'Please enter the file name(default excel-list)'
   },
   zip: {
@@ -122,8 +142,14 @@ export default {
     placeholder: 'Please enter the file name(default file)'
   },
   theme: {
-    change: 'Theme change',
+    change: 'Change Theme',
     documentation: 'Theme documentation',
     tips: 'Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.'
+  },
+  tagsView: {
+    refresh: 'Refresh',
+    close: 'Close',
+    closeOthers: 'Close Others',
+    closeAll: 'Close All'
   }
 }

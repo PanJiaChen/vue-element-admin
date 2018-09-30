@@ -1,16 +1,25 @@
 <template>
   <div class="tags-view-container">
-    <scroll-pane class='tags-view-wrapper' ref='scrollPane'>
-      <router-link ref='tag' class="tags-view-item" :class="isActive(tag)?'active':''" v-for="tag in Array.from(visitedViews)"
-        :to="tag.path" :key="tag.path" @contextmenu.prevent.native="openMenu(tag,$event)">
-        {{generateTitle(tag.title)}}
-        <span class='el-icon-close' @click.prevent.stop='closeSelectedTag(tag)'></span>
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+      <router-link
+        v-for="tag in Array.from(visitedViews)"
+        ref="tag"
+        :class="isActive(tag)?'active':''"
+        :to="tag"
+        :key="tag.path"
+        tag="span"
+        class="tags-view-item"
+        @click.middle.native="closeSelectedTag(tag)"
+        @contextmenu.prevent.native="openMenu(tag,$event)">
+        {{ generateTitle(tag.title) }}
+        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
-    <ul class='contextmenu' v-show="visible" :style="{left:left+'px',top:top+'px'}">
-      <li @click="closeSelectedTag(selectedTag)">Close</li>
-      <li @click="closeOthersTags">Close Others</li>
-      <li @click="closeAllTags">Close All</li>
+    <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
+      <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
+      <li @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
+      <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
+      <li @click="closeAllTags">{{ $t('tagsView.closeAll') }}</li>
     </ul>
   </div>
 </template>
@@ -52,39 +61,49 @@ export default {
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n
-    generateRoute() {
-      if (this.$route.name) {
-        return this.$route
-      }
-      return false
-    },
     isActive(route) {
-      return route.path === this.$route.path || route.name === this.$route.name
+      return route.path === this.$route.path
     },
     addViewTags() {
-      const route = this.generateRoute()
-      if (!route) {
-        return false
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('addView', this.$route)
       }
-      this.$store.dispatch('addVisitedViews', route)
+      return false
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
-          if (tag.to === this.$route.path) {
+          if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag.$el)
+
+            // when query is different then update
+            if (tag.to.fullPath !== this.$route.fullPath) {
+              this.$store.dispatch('updateVisitedView', this.$route)
+            }
+
             break
           }
         }
       })
     },
+    refreshSelectedTag(view) {
+      this.$store.dispatch('delCachedView', view).then(() => {
+        const { fullPath } = view
+        this.$nextTick(() => {
+          this.$router.replace({
+            path: '/redirect' + fullPath
+          })
+        })
+      })
+    },
     closeSelectedTag(view) {
-      this.$store.dispatch('delVisitedViews', view).then((views) => {
+      this.$store.dispatch('delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          const latestView = views.slice(-1)[0]
+          const latestView = visitedViews.slice(-1)[0]
           if (latestView) {
-            this.$router.push(latestView.path)
+            this.$router.push(latestView)
           } else {
             this.$router.push('/')
           }
@@ -92,7 +111,7 @@ export default {
       })
     },
     closeOthersTags() {
-      this.$router.push(this.selectedTag.path)
+      this.$router.push(this.selectedTag)
       this.$store.dispatch('delOthersViews', this.selectedTag).then(() => {
         this.moveToCurrentTag()
       })
@@ -104,7 +123,8 @@ export default {
     openMenu(tag, e) {
       this.visible = true
       this.selectedTag = tag
-      this.left = e.clientX
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      this.left = e.clientX - offsetLeft + 15 // 15: margin right
       this.top = e.clientY
     },
     closeMenu() {
@@ -116,14 +136,16 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
 .tags-view-container {
+  height: 34px;
+  width: 100%;
+  background: #fff;
+  border-bottom: 1px solid #d8dce5;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
-    background: #fff;
-    height: 34px;
-    border-bottom: 1px solid #d8dce5;
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
     .tags-view-item {
       display: inline-block;
       position: relative;
+      cursor: pointer;
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
@@ -135,6 +157,9 @@ export default {
       margin-top: 4px;
       &:first-of-type {
         margin-left: 15px;
+      }
+      &:last-of-type {
+        margin-right: 15px;
       }
       &.active {
         background-color: #42b983;
@@ -156,7 +181,7 @@ export default {
   .contextmenu {
     margin: 0;
     background: #fff;
-    z-index: 2;
+    z-index: 100;
     position: absolute;
     list-style-type: none;
     padding: 5px 0;

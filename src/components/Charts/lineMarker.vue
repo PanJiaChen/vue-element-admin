@@ -1,11 +1,13 @@
 <template>
-  <div :class="className" :id="id" :style="{height:height,width:width}"></div>
+  <div :class="className" :id="id" :style="{height:height,width:width}"/>
 </template>
 
 <script>
 import echarts from 'echarts'
+import resize from './mixins/resize'
 
 export default {
+  mixins: [resize],
   props: {
     className: {
       type: String,
@@ -78,8 +80,8 @@ export default {
         },
         grid: {
           top: 100,
-          left: '3%',
-          right: '4%',
+          left: '2%',
+          right: '2%',
           bottom: '2%',
           containLabel: true
         },
