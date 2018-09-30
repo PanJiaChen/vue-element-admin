@@ -61,21 +61,15 @@ export default {
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n
-    generateRoute() {
-      if (this.$route.name) {
-        return this.$route
-      }
-      return false
-    },
     isActive(route) {
       return route.path === this.$route.path
     },
     addViewTags() {
-      const route = this.generateRoute()
-      if (!route) {
-        return false
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('addView', this.$route)
       }
-      this.$store.dispatch('addView', route)
+      return false
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
