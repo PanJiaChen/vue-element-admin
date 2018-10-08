@@ -6,12 +6,14 @@
       <navbar/>
       <tags-view/>
       <app-main/>
+      <AD/>
     </div>
   </div>
 </template>
 
 <script>
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import AD from '@/components/AD'
 import ResizeMixin from './mixin/ResizeHandler'
 
 export default {
@@ -20,7 +22,8 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    AD
   },
   mixins: [ResizeMixin],
   computed: {
