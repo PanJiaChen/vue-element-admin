@@ -21,6 +21,13 @@ import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 
+import VueAnalytics from 'vue-analytics'
+
+Vue.use(VueAnalytics, {
+  id: 'UA-109340118-1',
+  router
+})
+
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
