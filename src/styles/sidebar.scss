@@ -47,6 +47,9 @@
       height: 100%;
       width: 100% !important;
     }
+    .is-active > .el-submenu__title{
+        color: #f4f4f5!important;
+    }
   }
   .hideSidebar {
     .sidebar-container {
