@@ -47,6 +47,6 @@ export default {
 
 <style>
 .cf-wrapper{
-  margin: 12px 0 0!important;
+  margin: 0!important;
 }
 </style>
