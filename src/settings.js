@@ -1,5 +1,4 @@
 export default {
-
   /**
    * @property {string} en | zh
    * @description User first visited, default language
@@ -16,7 +15,13 @@ export default {
    * @property {string} hash | history
    * @description vue-router mode
    */
-  routerMode: 'hash'
+  routerMode: 'hash',
+
+  /**
+   * @property {string} fade-transform | fade
+   * @description Page transition animation
+   */
+  viewsTransition: 'fade-transform'
 
   // permission: true,
   // i18n: true

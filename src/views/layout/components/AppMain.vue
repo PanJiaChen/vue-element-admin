@@ -1,6 +1,6 @@
 <template>
   <section class="app-main">
-    <transition name="fade-transform" mode="out-in">
+    <transition :name="viewsTransition" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key"/>
       </keep-alive>
@@ -14,6 +14,9 @@ export default {
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
+    },
+    viewsTransition() {
+      return this.$store.state.app.viewsTransition
     },
     key() {
       return this.$route.fullPath

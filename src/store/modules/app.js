@@ -9,7 +9,8 @@ const app = {
     },
     device: 'desktop',
     language: Cookies.get('language') || settings.language,
-    size: Cookies.get('size') || settings.size
+    size: Cookies.get('size') || settings.size,
+    viewsTransition: Cookies.get('viewsTransition') || settings.viewsTransition
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -36,6 +37,10 @@ const app = {
     SET_SIZE: (state, size) => {
       state.size = size
       Cookies.set('size', size)
+    },
+    SET_VIEWS_TRANSITION: (state, viewsTransition) => {
+      state.viewsTransition = viewsTransition
+      Cookies.set('viewsTransition', viewsTransition)
     }
   },
   actions: {
@@ -53,6 +58,9 @@ const app = {
     },
     setSize({ commit }, size) {
       commit('SET_SIZE', size)
+    },
+    setViewsTransition({ commit }, viewsTransition) {
+      commit('SET_VIEWS_TRANSITION', viewsTransition)
     }
   }
 }
