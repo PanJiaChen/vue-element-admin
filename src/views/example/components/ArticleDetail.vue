@@ -149,6 +149,9 @@ export default {
   computed: {
     contentShortLength() {
       return this.postForm.content_short.length
+    },
+    lang() {
+      return this.$store.getters.language
     }
   },
   created() {
@@ -166,9 +169,17 @@ export default {
         // Just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
         this.postForm.content_short += `   Article Id:${this.postForm.id}`
+
+        // Set tagsview title
+        this.setTagsViewTitle()
       }).catch(err => {
         console.log(err)
       })
+    },
+    setTagsViewTitle() {
+      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const route = Object.assign({}, this.$route, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('updateVisitedView', route)
     },
     submitForm() {
       this.postForm.display_time = parseInt(this.display_time / 1000)
