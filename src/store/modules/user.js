@@ -10,10 +10,7 @@ const user = {
     name: '',
     avatar: '',
     introduction: '',
-    roles: [],
-    setting: {
-      articlePlatform: []
-    }
+    roles: []
   },
 
   mutations: {
@@ -25,9 +22,6 @@ const user = {
     },
     SET_INTRODUCTION: (state, introduction) => {
       state.introduction = introduction
-    },
-    SET_SETTING: (state, setting) => {
-      state.setting = setting
     },
     SET_STATUS: (state, status) => {
       state.status = status

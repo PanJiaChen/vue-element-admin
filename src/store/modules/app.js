@@ -1,4 +1,5 @@
 import Cookies from 'js-cookie'
+import settings from '@/settings'
 
 const app = {
   state: {
@@ -7,8 +8,8 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: Cookies.get('language') || 'en',
-    size: Cookies.get('size') || 'medium'
+    language: Cookies.get('language') || settings.language,
+    size: Cookies.get('size') || settings.size
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {

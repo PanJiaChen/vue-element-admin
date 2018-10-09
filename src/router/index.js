@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
-Vue.use(Router)
+import settings from '@/settings'
 
 /* Layout */
 import Layout from '@/views/layout/Layout'
@@ -11,6 +10,8 @@ import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
+
+Vue.use(Router)
 
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -104,7 +105,7 @@ export const constantRouterMap = [
 ]
 
 export default new Router({
-  // mode: 'history', // require service support
+  mode: settings.routerMode, // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
