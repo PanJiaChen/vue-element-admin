@@ -12,7 +12,7 @@ export default {
   watch: {
     '$route.path': {
       handler: function(val, oldVal) {
-        window._codefund.serve()
+        window._codefund && window._codefund.serve()
       }
     }
   },
