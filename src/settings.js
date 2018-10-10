@@ -27,7 +27,15 @@ export default {
    * @type {boolean} true | false
    * @description Need tagsView
    */
-  tagsView: true
+  tagsView: true,
+
+  /**
+   * @type {string | array} 'production' | ['production','development']
+   * @description Need show err logs component.
+   * The default is only used in the production env
+   * If you want to use it in dev, you can pass ['production','development']
+   */
+  errorLog: 'production'
 
   // permission: true,
   // i18n: true
