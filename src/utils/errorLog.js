@@ -9,7 +9,6 @@ const { errorLog: needErrorLog } = settings
 
 function checkNeed(arg) {
   const env = process.env.NODE_ENV
-  console.log(needErrorLog)
   if (isString(needErrorLog)) {
     return env === needErrorLog
   }

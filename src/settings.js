@@ -35,7 +35,14 @@ export default {
    * The default is only used in the production env
    * If you want to use it in dev, you can pass ['production','development']
    */
-  errorLog: 'production'
+  errorLog: 'production',
+
+  /**
+   * @type {array} ['/login', '/auth-redirect']
+   * @description Set some pages, you can go in without logging in.
+   * Detail logic in permission.js
+   */
+  whiteList: ['/login', '/auth-redirect']
 
   // permission: true,
   // i18n: true
