@@ -44,8 +44,8 @@ export default {
     }
     .icon {
       color: #fff;
-      font-size: 30px;
-      margin-top: 6px;
+      font-size: 24px;
+      margin-top: 8px;
     }
     .wx-svg-container,
     .qq-svg-container {
@@ -60,7 +60,7 @@ export default {
       margin-right: 5px;
     }
     .wx-svg-container {
-      background-color: #8dc349;
+      background-color: #8ada53;
     }
     .qq-svg-container {
       background-color: #6BA2D6;

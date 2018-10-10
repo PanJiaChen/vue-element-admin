@@ -5,12 +5,14 @@
     </span>
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
-        v-for="tag in Array.from(visitedViews)"
+        v-for="tag in visitedViews"
         ref="tag"
         :class="isActive(tag)?'active':''"
-        :to="tag"
+        :to="tag.fullPath"
         :key="tag.path"
+        tag="span"
         class="tags-view-item"
+        @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
         <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
@@ -71,21 +73,15 @@ export default {
       this.$refs.scrollPane.scrollRight()
     },
     generateTitle, // generateTitle by vue-i18n
-    generateRoute() {
-      if (this.$route.name) {
-        return this.$route
-      }
-      return false
-    },
     isActive(route) {
       return route.path === this.$route.path
     },
     addViewTags() {
-      const route = this.generateRoute()
-      if (!route) {
-        return false
+      const { name } = this.$route
+      if (name) {
+        this.$store.dispatch('addView', this.$route)
       }
-      this.$store.dispatch('addView', route)
+      return false
     },
     moveToCurrentTag() {
       const tags = this.$refs.tag
@@ -93,6 +89,12 @@ export default {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag.$el)
+
+            // when query is different then update
+            if (tag.to.fullPath !== this.$route.fullPath) {
+              this.$store.dispatch('updateVisitedView', this.$route)
+            }
+
             break
           }
         }
@@ -101,9 +103,10 @@ export default {
     refreshSelectedTag(view) {
       this.$store.dispatch('delCachedView', view).then(() => {
         const { fullPath } = view
-
-        this.$router.replace({
-          path: '/redirect' + fullPath
+        this.$nextTick(() => {
+          this.$router.replace({
+            path: '/redirect' + fullPath
+          })
         })
       })
     },
@@ -164,6 +167,11 @@ export default {
     }
     .tags-view-wrapper {
       position: relative;
+      cursor: pointer;
+      height: 26px;
+      line-height: 26px;
+      border: 1px solid #d8dce5;
+      color: #495060;
       background: #fff;
       height: 34px;
       border-bottom: 1px solid #d8dce5;
