@@ -11,7 +11,8 @@ const app = {
     language: Cookies.get('language') || settings.language,
     size: Cookies.get('size') || settings.size,
     viewsTransition: Cookies.get('viewsTransition') || settings.viewsTransition,
-    needTagsView: Cookies.get('needTagsView') || settings.tagsView
+    needTagsView: Cookies.get('needTagsView') || settings.tagsView,
+    sidebarUniqueOpened: Cookies.get('sidebarUniqueOpened') || settings.sidebarUniqueOpened
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -46,6 +47,10 @@ const app = {
     SET_TAGS_VIEW: (state, needTagsView) => {
       state.needTagsView = needTagsView
       Cookies.set('needTagsView', needTagsView)
+    },
+    SET_SIDEBAR_UNIQUE_OPENED: (state, sidebarUniqueOpened) => {
+      state.sidebarUniqueOpened = sidebarUniqueOpened
+      Cookies.set('sidebarUniqueOpened', sidebarUniqueOpened)
     }
   },
   actions: {
@@ -69,6 +74,9 @@ const app = {
     },
     setTagsView({ commit }, needTagsView) {
       commit('SET_TAGS_VIEW', needTagsView)
+    },
+    setSidebarUniqueOpened({ commit }, sidebarUniqueOpened) {
+      commit('SET_SIDEBAR_UNIQUE_OPENED', sidebarUniqueOpened)
     }
   }
 }

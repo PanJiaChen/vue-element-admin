@@ -4,6 +4,7 @@
       :show-timeout="200"
       :default-active="$route.path"
       :collapse="isCollapse"
+      :unique-opened="uniqueOpened"
       mode="vertical"
       background-color="#304156"
       text-color="#bfcbd9"
@@ -27,6 +28,9 @@ export default {
     ]),
     isCollapse() {
       return !this.sidebar.opened
+    },
+    uniqueOpened() {
+      return this.$store.state.app.sidebarUniqueOpened
     }
   }
 }

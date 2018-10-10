@@ -42,7 +42,13 @@ export default {
    * @description Set some pages, you can go in without logging in.
    * Detail logic in permission.js
    */
-  whiteList: ['/login', '/auth-redirect']
+  whiteList: ['/login', '/auth-redirect'],
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether only one sub-menu can be active
+   */
+  sidebarUniqueOpened: false
 
   // permission: true,
   // i18n: true
