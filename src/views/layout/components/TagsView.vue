@@ -1,5 +1,8 @@
 <template>
   <div class="tags-view-container">
+    <span class="scroll-left-btn" @click="scrollLeft">
+      <i class="el-icon-caret-left"/>
+    </span>
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
         v-for="tag in Array.from(visitedViews)"
@@ -13,6 +16,9 @@
         <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
       </router-link>
     </scroll-pane>
+    <span class="scroll-right-btn" @click="scrollRight">
+      <i class="el-icon-caret-right"/>
+    </span>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
       <li @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
@@ -58,6 +64,12 @@ export default {
     this.addViewTags()
   },
   methods: {
+    scrollLeft() {
+      this.$refs.scrollPane.scrollLeft()
+    },
+    scrollRight() {
+      this.$refs.scrollPane.scrollRight()
+    },
     generateTitle, // generateTitle by vue-i18n
     generateRoute() {
       if (this.$route.name) {
@@ -132,70 +144,84 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-.tags-view-container {
-  height: 34px;
-  width: 100%;
-  background: #fff;
-  border-bottom: 1px solid #d8dce5;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .tags-view-wrapper {
-    .tags-view-item {
-      display: inline-block;
+  .tags-view-container {
+    position: relative;
+    .scroll-left-btn, .scroll-right-btn {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 33px;
+      height: 33px;
+      line-height: 33px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 999;
+      background-color: #fff;
+    }
+    .scroll-right-btn {
+      left: auto;
+      right: 0;
+    }
+    .tags-view-wrapper {
       position: relative;
-      height: 26px;
-      line-height: 26px;
-      border: 1px solid #d8dce5;
-      color: #495060;
       background: #fff;
-      padding: 0 8px;
+      height: 34px;
+      border-bottom: 1px solid #d8dce5;
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+      .tags-view-item {
+        display: inline-block;
+        position: relative;
+        height: 26px;
+        line-height: 26px;
+        border: 1px solid #d8dce5;
+        color: #495060;
+        background: #fff;
+        padding: 0 8px;
+        font-size: 12px;
+        margin-left: 5px;
+        margin-top: 4px;
+        &:first-of-type {
+          margin-left: 15px;
+        }
+        &.active {
+          background-color: #42b983;
+          color: #fff;
+          border-color: #42b983;
+          &::before {
+            content: '';
+            background: #fff;
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            position: relative;
+            margin-right: 2px;
+          }
+        }
+      }
+    }
+    .contextmenu {
+      margin: 0;
+      background: #fff;
+      z-index: 100;
+      position: absolute;
+      list-style-type: none;
+      padding: 5px 0;
+      border-radius: 4px;
       font-size: 12px;
-      margin-left: 5px;
-      margin-top: 4px;
-      &:first-of-type {
-        margin-left: 15px;
-      }
-      &:last-of-type {
-        margin-right: 15px;
-      }
-      &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 2px;
+      font-weight: 400;
+      color: #333;
+      box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+      li {
+        margin: 0;
+        padding: 7px 16px;
+        cursor: pointer;
+        &:hover {
+          background: #eee;
         }
       }
     }
   }
-  .contextmenu {
-    margin: 0;
-    background: #fff;
-    z-index: 100;
-    position: absolute;
-    list-style-type: none;
-    padding: 5px 0;
-    border-radius: 4px;
-    font-size: 12px;
-    font-weight: 400;
-    color: #333;
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
-    li {
-      margin: 0;
-      padding: 7px 16px;
-      cursor: pointer;
-      &:hover {
-        background: #eee;
-      }
-    }
-  }
-}
 </style>
 
 <style rel="stylesheet/scss" lang="scss">
