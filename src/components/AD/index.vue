@@ -23,8 +23,8 @@ export default {
     addFundScript() {
       if (this.$isServer) return
       const codefundId = this.isGitee()
-        ? 'c0e8a6c2-6717-402f-aea7-bfdcaaaf2329'
-        : 'c010d89c-46a8-4e3a-abf0-86b8a02874e4'
+        ? '4d3a53de-d23e-4286-94c7-e5a57ad69d26'
+        : '696d21c7-a78e-4437-b738-3967c5a57693'
       const script = window.document.createElement('script')
       const template = 'horizontal'
       script.onerror = this.loadError
