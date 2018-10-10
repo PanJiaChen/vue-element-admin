@@ -1,27 +1,33 @@
 export default {
   /**
-   * @property {string} en | zh
+   * @type {string} en | zh
    * @description User first visited, default language
    */
   language: 'en',
 
   /**
-   * @property {string} medium | small | mini
+   * @type {string} medium | small | mini
    * @description User first visited, default size
    */
   size: 'medium',
 
   /**
-   * @property {string} hash | history
+   * @type {string} hash | history
    * @description vue-router mode
    */
   routerMode: 'hash',
 
   /**
-   * @property {string} fade-transform | fade
+   * @type {string} fade-transform | fade
    * @description Page transition animation
    */
-  viewsTransition: 'fade-transform'
+  viewsTransition: 'fade-transform',
+
+  /**
+   * @type {boolean} true | false
+   * @description Need tagsView
+   */
+  tagsView: true
 
   // permission: true,
   // i18n: true

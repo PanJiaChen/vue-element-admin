@@ -90,10 +90,16 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.hasTagsView{
+  .navbar{
+    border-bottom: none;
+  }
+}
 .navbar {
   height: 50px;
   line-height: 50px;
   border-radius: 0px !important;
+  border-bottom: 1px solid #e6e6e6;
   .hamburger-container {
     line-height: 58px;
     height: 50px;

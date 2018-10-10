@@ -26,12 +26,19 @@ export default {
 </script>
 
 <style scoped>
-.app-main {
-  /*84 = navbar + tags-view = 50 +34 */
-  min-height: calc(100vh - 84px);
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
+ /* height
+  * navbar: 50
+  * tags-view: 34
+ */
+ .hasTagsView .app-main {
+   min-height: calc(100vh - 84px);
+ }
+
+ .app-main {
+   min-height: calc(100vh - 50px);
+   width: 100%;
+   position: relative;
+   overflow: hidden;
+ }
 </style>
 

@@ -2,9 +2,9 @@
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar class="sidebar-container"/>
-    <div class="main-container">
+    <div :class="{hasTagsView:needTagsView}" class="main-container">
       <navbar/>
-      <tags-view/>
+      <tags-view v-if="needTagsView"/>
       <app-main/>
     </div>
   </div>
@@ -37,6 +37,9 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
+    },
+    needTagsView() {
+      return this.$store.state.app.needTagsView
     }
   },
   methods: {
