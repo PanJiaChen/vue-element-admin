@@ -5,8 +5,8 @@
     <div class="main-container">
       <navbar/>
       <tags-view/>
-      <app-main/>
       <AD/>
+      <app-main/>
     </div>
   </div>
 </template>
