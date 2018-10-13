@@ -75,7 +75,7 @@ export default {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
+          if (tag.to === this.$route.fullPath) {
             this.$refs.scrollPane.moveToTarget(tag.$el)
 
             // when query is different then update
