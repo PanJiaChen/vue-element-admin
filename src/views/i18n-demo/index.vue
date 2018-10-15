@@ -9,7 +9,7 @@
         <el-radio-group v-model="lang" size="small">
           <el-radio label="zh" border>简体中文</el-radio>
           <el-radio label="en" border>English</el-radio>
-          <el-radio label="en" border>Español</el-radio>
+          <el-radio label="es" border>Español</el-radio>
         </el-radio-group>
         <el-tag style="margin-top:15px;display:block;" type="info">{{ $t('i18nView.note') }}</el-tag>
       </div>
