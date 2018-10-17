@@ -5,14 +5,14 @@
         v-for="tag in visitedViews"
         ref="tag"
         :class="isActive(tag)?'active':''"
-        :to="tag.fullPath"
+        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         :key="tag.path"
         tag="span"
         class="tags-view-item"
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
-        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)"/>
+        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
@@ -75,7 +75,7 @@ export default {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
-          if (tag.to === this.$route.fullPath) {
+          if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag)
 
             // when query is different then update
