@@ -50,26 +50,18 @@
       </el-table-column>
     </el-table>
 
-    <div class="pagination-container">
-      <el-pagination
-        :current-page="listQuery.page"
-        :page-sizes="[10,20,30, 50]"
-        :page-size="listQuery.limit"
-        :total="total"
-        background
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
-    </div>
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
 
   </div>
 </template>
 
 <script>
 import { fetchList } from '@/api/article'
+import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
+  components: { Pagination },
   filters: {
     statusFilter(status) {
       const statusMap = {
