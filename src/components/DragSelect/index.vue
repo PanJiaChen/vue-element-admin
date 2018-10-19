@@ -1,6 +1,6 @@
 <template>
-  <el-select v-model="selectVal" :v-bind="$attrs" multiple>
-    <el-option v-for="item in options" :label="item.label" :value="item.value" :key="item.value" />
+  <el-select v-model="selectVal" :v-bind="$attrs" class="drag-select" multiple>
+    <slot/>
   </el-select>
 </template>
 
@@ -13,31 +13,16 @@ export default {
     value: {
       type: Array,
       required: true
-    },
-    options: {
-      type: Array,
-      required: true
-    }
-  },
-  data() {
-    return {
-
     }
   },
   computed: {
     selectVal: {
       get() {
-        console.log([...this.value])
         return [...this.value]
       },
-      set() {
-
+      set(val) {
+        this.$emit('input', [...val])
       }
-    }
-  },
-  watch: {
-    value(val) {
-      console.log(val)
     }
   },
   mounted() {
@@ -54,7 +39,6 @@ export default {
           // Detail see : https://github.com/RubaXa/Sortable/issues/1012
         },
         onEnd: evt => {
-          console.log(evt)
           const targetRow = this.value.splice(evt.oldIndex, 1)[0]
           this.value.splice(evt.newIndex, 0, targetRow)
         }
@@ -64,10 +48,14 @@ export default {
 }
 </script>
 
-<style>
-.sortable-ghost{
+<style scoped>
+.drag-select >>> .sortable-ghost{
   opacity: .8;
   color: #fff!important;
   background: #42b983!important;
+}
+
+.drag-select >>> .el-tag{
+  cursor: pointer;
 }
 </style>
