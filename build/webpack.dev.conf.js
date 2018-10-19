@@ -58,8 +58,10 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       inject: true,
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
-      path: config.dev.assetsPublicPath + config.dev.assetsSubDirectory
-    })
+      templateParameters: {
+        BASE_URL: config.dev.assetsPublicPath + config.dev.assetsSubDirectory,
+      },
+    }),
   ]
 })
 

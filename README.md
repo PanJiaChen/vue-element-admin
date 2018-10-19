@@ -50,6 +50,7 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 - Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
 **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
 
@@ -128,7 +129,7 @@ Understanding and learning this knowledge in advance will greatly help the use o
 - Error Log
 - Dashboard
 - Guide Page
-- Echarts
+- ECharts
 - Clipboard
 - Markdown to html
 ```
@@ -196,6 +197,14 @@ If you find this project useful, you can buy author a glass of juice :tropical_d
 [Paypal Me](https://www.paypal.me/panfree23)
 
 [Buy me a coffee](https://www.buymeacoffee.com/Pan)
+
+## Browsers support
+
+Modern browsers and Internet Explorer 10+.
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
 ## License
 

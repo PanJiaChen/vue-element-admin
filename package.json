@@ -1,6 +1,6 @@
 {
   "name": "vue-element-admin",
-  "version": "3.8.1",
+  "version": "3.9.2",
   "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
@@ -10,7 +10,8 @@
     "build:sit": "cross-env NODE_ENV=production env_config=sit node build/build.js",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml"
   },
   "lint-staged": {
     "src/**/*.{js,vue}": [
@@ -49,14 +50,13 @@
     "mockjs": "1.0.1-beta3",
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
-    "screenfull": "3.3.2",
+    "screenfull": "3.3.3",
     "showdown": "1.8.6",
     "simplemde": "1.11.2",
     "sortablejs": "1.7.0",
     "vue": "2.5.17",
     "vue-count-to": "1.0.13",
     "vue-i18n": "7.3.2",
-    "vue-multiselect": "2.1.0",
     "vue-router": "3.0.1",
     "vue-splitpane": "1.0.2",
     "vuedraggable": "^2.16.0",
@@ -86,7 +86,7 @@
     "file-loader": "1.1.11",
     "friendly-errors-webpack-plugin": "1.7.0",
     "hash-sum": "1.0.2",
-    "html-webpack-plugin": "^4.0.0-alpha",
+    "html-webpack-plugin": "4.0.0-alpha",
     "husky": "0.14.3",
     "lint-staged": "7.2.2",
     "mini-css-extract-plugin": "0.4.1",
@@ -94,6 +94,7 @@
     "node-sass": "^4.7.2",
     "optimize-css-assets-webpack-plugin": "5.0.0",
     "ora": "3.0.0",
+    "path-to-regexp": "2.4.0",
     "portfinder": "1.0.13",
     "postcss-import": "11.1.0",
     "postcss-loader": "2.1.6",
@@ -106,6 +107,7 @@
     "serve-static": "1.13.2",
     "shelljs": "0.8.2",
     "svg-sprite-loader": "3.8.0",
+    "svgo": "1.0.5",
     "uglifyjs-webpack-plugin": "1.2.7",
     "url-loader": "1.0.1",
     "vue-loader": "15.3.0",

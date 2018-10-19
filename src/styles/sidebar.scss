@@ -28,6 +28,9 @@
         height: 100%;
       }
     }
+    .el-scrollbar__bar.is-vertical{
+      right: 0px;
+    }
     .is-horizontal {
       display: none;
     }
@@ -43,6 +46,9 @@
       border: none;
       height: 100%;
       width: 100% !important;
+    }
+    .is-active > .el-submenu__title{
+        color: #f4f4f5!important;
     }
   }
   .hideSidebar {
@@ -114,6 +120,14 @@
     .main-container,
     .sidebar-container {
       transition: none;
+    }
+  }
+}
+
+.el-menu--vertical{
+  & >.el-menu{
+    .svg-icon{
+      margin-right: 16px;
     }
   }
 }

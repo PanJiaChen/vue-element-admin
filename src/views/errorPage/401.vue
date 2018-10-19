@@ -53,6 +53,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
   .errPage-container {
     width: 800px;
+    max-width: 100%;
     margin: 100px auto;
     .pan-back-btn {
       background: #008489;

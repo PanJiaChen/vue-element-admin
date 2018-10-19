@@ -1,6 +1,5 @@
 /* eslint-disable */
 require('script-loader!file-saver');
-require('script-loader!@/vendor/Blob');
 import XLSX from 'xlsx'
 
 function generateArray(table) {
@@ -149,7 +148,8 @@ export function export_json_to_excel({
   header,
   data,
   filename,
-  autoWidth = true
+  autoWidth = true,
+  bookType=  'xlsx'
 } = {}) {
   /* original data */
   filename = filename || 'excel-list'
@@ -196,11 +196,11 @@ export function export_json_to_excel({
   wb.Sheets[ws_name] = ws;
 
   var wbout = XLSX.write(wb, {
-    bookType: 'xlsx',
+    bookType: bookType,
     bookSST: false,
     type: 'binary'
   });
   saveAs(new Blob([s2ab(wbout)], {
     type: "application/octet-stream"
-  }), filename + ".xlsx");
+  }), `${filename}.${bookType}`);
 }

@@ -1,13 +1,11 @@
 <template>
-  <div ref="scrollContainer" class="scroll-container" @wheel.prevent="handleScroll">
-    <div ref="scrollWrapper" :style="{left: left + 'px'}" class="scroll-wrapper">
-      <slot/>
-    </div>
-  </div>
+  <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.native.prevent="handleScroll">
+    <slot/>
+  </el-scrollbar>
 </template>
 
 <script>
-const padding = 15 // tag's padding
+const tagAndTagSpacing = 4 // tagAndTagSpacing
 
 export default {
   name: 'ScrollPane',
@@ -18,41 +16,58 @@ export default {
   },
   methods: {
     handleScroll(e) {
-      const eventDelta = e.wheelDelta || -e.deltaY * 3
-      const $container = this.$refs.scrollContainer
+      const eventDelta = e.wheelDelta || -e.deltaY * 40
+      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+    },
+    moveToTarget(currentTag) {
+      const $container = this.$refs.scrollContainer.$el
       const $containerWidth = $container.offsetWidth
-      const $wrapper = this.$refs.scrollWrapper
-      const $wrapperWidth = $wrapper.offsetWidth
+      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
+      const tagList = this.$parent.$refs.tag
 
-      if (eventDelta > 0) {
-        this.left = Math.min(0, this.left + eventDelta)
-      } else {
-        if ($containerWidth - padding < $wrapperWidth) {
-          if (this.left < -($wrapperWidth - $containerWidth + padding)) {
-            this.left = this.left
+      let firstTag = null
+      let lastTag = null
+      let prevTag = null
+      let nextTag = null
+
+      // find first tag and last tag
+      if (tagList.length > 0) {
+        firstTag = tagList[0]
+        lastTag = tagList[tagList.length - 1]
+      }
+
+      // find preTag and nextTag
+      for (let i = 0; i < tagList.length; i++) {
+        if (tagList[i] === currentTag) {
+          if (i === 0) {
+            nextTag = tagList[i].length > 1 && tagList[i + 1]
+          } else if (i === tagList.length - 1) {
+            prevTag = tagList[i].length > 1 && tagList[i - 1]
           } else {
-            this.left = Math.max(this.left + eventDelta, $containerWidth - $wrapperWidth - padding)
+            prevTag = tagList[i - 1]
+            nextTag = tagList[i + 1]
           }
-        } else {
-          this.left = 0
+          break
         }
       }
-    },
-    moveToTarget($target) {
-      const $container = this.$refs.scrollContainer
-      const $containerWidth = $container.offsetWidth
-      const $targetLeft = $target.offsetLeft
-      const $targetWidth = $target.offsetWidth
 
-      if ($targetLeft < -this.left) {
-        // tag in the left
-        this.left = -$targetLeft + padding
-      } else if ($targetLeft + padding > -this.left && $targetLeft + $targetWidth < -this.left + $containerWidth - padding) {
-        // tag in the current view
-        // eslint-disable-line
+      if (firstTag === currentTag) {
+        $scrollWrapper.scrollLeft = 0
+      } else if (lastTag === currentTag) {
+        $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
       } else {
-        // tag in the right
-        this.left = -($targetLeft - ($containerWidth - $targetWidth) + padding)
+        // the tag's offsetLeft after of nextTag
+        const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
+
+        // the tag's offsetLeft before of prevTag
+        const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+
+        if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
+          $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
+        } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
+          $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
+        }
       }
     }
   }
@@ -65,8 +80,13 @@ export default {
   position: relative;
   overflow: hidden;
   width: 100%;
-  .scroll-wrapper {
-    position: absolute;
+  /deep/ {
+    .el-scrollbar__bar {
+      bottom: 0px;
+    }
+    .el-scrollbar__wrap {
+      height: 49px;
+    }
   }
 }
 </style>

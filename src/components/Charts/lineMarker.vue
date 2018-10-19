@@ -80,8 +80,8 @@ export default {
         },
         grid: {
           top: 100,
-          left: '3%',
-          right: '4%',
+          left: '2%',
+          right: '2%',
           bottom: '2%',
           containLabel: true
         },
