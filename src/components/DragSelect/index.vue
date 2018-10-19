@@ -1,5 +1,5 @@
 <template>
-  <el-select v-model="selectVal" :v-bind="$attrs" class="drag-select" multiple>
+  <el-select v-model="selectVal" v-bind="$attrs" class="drag-select" multiple>
     <slot/>
   </el-select>
 </template>
