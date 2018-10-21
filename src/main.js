@@ -17,11 +17,15 @@ import i18n from './lang' // Internationalization
 import './icons' // icon
 import './errorLog' // error log
 import './permission' // permission control
-import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 
 import VueAnalytics from 'vue-analytics'
+
+import { mockXHR } from '../mock' // simulation data
+
+// mock api in github pages site build
+if (process.env.NODE_ENV === 'production') { mockXHR() }
 
 Vue.use(VueAnalytics, {
   id: 'UA-109340118-1',

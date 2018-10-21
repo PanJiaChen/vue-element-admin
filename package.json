@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vue-cli-service serve",
-    "build:prod": "vue-cli-service build ",
+    "build:prod": "vue-cli-service build",
     "build:sit": "vue-cli-service build --mode text",
     "lint": "eslint --ext .js,.vue src",
     "test": "npm run lint",
