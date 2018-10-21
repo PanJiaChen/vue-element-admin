@@ -1,5 +1,4 @@
 import Mock from 'mockjs'
-import { param2Obj } from '@/utils'
 
 const List = []
 const count = 100
@@ -29,8 +28,8 @@ for (let i = 0; i < count; i++) {
 }
 
 export default {
-  getList: config => {
-    const { importance, type, title, page = 1, limit = 20, sort } = param2Obj(config.url)
+  '/article/list': config => {
+    const { importance, type, title, page = 1, limit = 20, sort } = config.query
 
     let mockList = List.filter(item => {
       if (importance && item.importance !== +importance) return false
@@ -50,21 +49,26 @@ export default {
       items: pageList
     }
   },
-  getPv: () => ({
-    pvData: [{ key: 'PC', pv: 1024 }, { key: 'mobile', pv: 1024 }, { key: 'ios', pv: 1024 }, { key: 'android', pv: 1024 }]
-  }),
-  getArticle: (config) => {
-    const { id } = param2Obj(config.url)
+  '/article/detail': config => {
+    const { id } = config.query
     for (const article of List) {
       if (article.id === +id) {
         return article
       }
     }
   },
-  createArticle: () => ({
+  '/article/pv': {
+    pvData: [
+      { key: 'PC', pv: 1024 },
+      { key: 'mobile', pv: 1024 },
+      { key: 'ios', pv: 1024 },
+      { key: 'android', pv: 1024 }
+    ]
+  },
+  '/article/create': {
     data: 'success'
-  }),
-  updateArticle: () => ({
+  },
+  '/article/update': {
     data: 'success'
-  })
+  }
 }
