@@ -118,6 +118,7 @@ Understanding and learning this knowledge in advance will greatly help the use o
   - Avatar Upload
   - Back To Top
   - Drag Dialog
+  - Drag Select
   - Drag Kanban
   - Drag List
   - SplitPane
