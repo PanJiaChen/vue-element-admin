@@ -22,6 +22,7 @@ export default {
     componentMixin: 'Mixin',
     backToTop: 'Ir arriba',
     dragDialog: 'Drag Dialog',
+    dragSelect: 'Drag Select',
     dragKanban: 'Drag Kanban',
     charts: 'Gráficos',
     keyboardChart: 'Keyboard Chart',
