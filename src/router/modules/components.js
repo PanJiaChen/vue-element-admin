@@ -82,7 +82,7 @@ const componentsRouter = {
       path: 'drag-select',
       component: () => import('@/views/components-demo/dragSelect'),
       name: 'DragSelectDemo',
-      meta: { title: 'dragSelect', noCache: true }
+      meta: { title: 'dragSelect' }
     },
     {
       path: 'dnd-list',
