@@ -130,6 +130,7 @@
   - 头像上传
   - 返回顶部
   - 拖拽Dialog
+  - 拖拽Select
   - 拖拽看板
   - 列表拖拽
   - SplitPane
