@@ -64,6 +64,7 @@
     "xlsx": "^0.11.16"
   },
   "devDependencies": {
+    "@babel/core": "7.0.0",
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.0.5",
     "@vue/cli-plugin-eslint": "3.0.5",
