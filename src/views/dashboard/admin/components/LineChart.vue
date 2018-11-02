@@ -32,7 +32,8 @@ export default {
   },
   data() {
     return {
-      chart: null
+      chart: null,
+      sidebarElm: null
     }
   },
   watch: {

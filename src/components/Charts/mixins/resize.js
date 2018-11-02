@@ -1,6 +1,11 @@
 import { debounce } from '@/utils'
 
 export default {
+  data() {
+    return {
+      sidebarElm: null
+    }
+  },
   mounted() {
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
