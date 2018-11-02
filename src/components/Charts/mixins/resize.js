@@ -10,16 +10,12 @@ export default {
     window.addEventListener('resize', this.__resizeHandler)
 
     this.sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    if (this.sidebarElm) {
-      this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
-    }
+    this.sidebarElm && this.sidebarElm.addEventListener('transitionend', this.sidebarResizeHandler)
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.__resizeHandler)
 
-    if (this.sidebarElm) {
-      this.sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
-    }
+    this.sidebarElm && this.sidebarElm.removeEventListener('transitionend', this.sidebarResizeHandler)
   },
   methods: {
     sidebarResizeHandler(e) {
