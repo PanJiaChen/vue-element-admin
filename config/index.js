@@ -10,11 +10,12 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      '/api':{
+      '/public':{
         target: 'http://chenwenlong.site:8088',  // 接口域名
+        // target: 'http://localhost',  // 接口域名
         changeOrigin: true,  //是否跨域
         pathRewrite: {
-          '^/api': ''   //需要rewrite重写的,
+          '^/public': ''   //需要rewrite重写的,
         }
       }
     },
