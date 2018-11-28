@@ -3,8 +3,8 @@
 
     <code>Markdown is based on
       <a href="https://github.com/nhnent/tui.editor" target="_blank">tui.editor</a> ，Simply encapsulated in Vue.
-      <a target="_blank" href="https://juejin.im/post/593121aa0ce4630057f70d35#heading-15">
-        相关文章 </a>
+      <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/feature/component/markdown-editor.html">
+        Documentation </a>
     </code>
 
     <div class="editor-container">
