@@ -1,16 +1,18 @@
 <template>
-  <div :style="{height:height+'px',zIndex:zIndex}" class="simplemde-container">
-    <textarea :id="id"/>
-  </div>
+  <div :id="id"/>
 </template>
 
 <script>
-import 'font-awesome/css/font-awesome.min.css'
-import 'simplemde/dist/simplemde.min.css'
-import SimpleMDE from 'simplemde'
+// deps for editor
+import 'codemirror/lib/codemirror.css' // codemirror
+import 'tui-editor/dist/tui-editor.css' // editor ui
+import 'tui-editor/dist/tui-editor-contents.css' // editor content
+
+import Editor from 'tui-editor'
+import defaultOptions from './defaultOptions'
 
 export default {
-  name: 'SimplemdeMd',
+  name: 'MarddownEditor',
   props: {
     value: {
       type: String,
@@ -19,105 +21,98 @@ export default {
     id: {
       type: String,
       required: false,
-      default: 'markdown-editor-' + +new Date()
+      default() {
+        return 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+      }
     },
-    autofocus: {
-      type: Boolean,
-      default: false
+    options: {
+      type: Object,
+      default() {
+        return defaultOptions
+      }
     },
-    placeholder: {
+    mode: {
       type: String,
-      default: ''
+      default: 'markdown'
     },
     height: {
-      type: Number,
-      default: 150
+      type: String,
+      required: false,
+      default: '300px'
     },
-    zIndex: {
-      type: Number,
-      default: 10
-    },
-    toolbar: {
-      type: Array,
-      default: function() {
-        return []
-      }
+    language: {
+      type: String,
+      required: false,
+      default: 'en_US' // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
     }
   },
   data() {
     return {
-      simplemde: null,
-      hasChange: false
+      editor: null
+    }
+  },
+  computed: {
+    editorOptions() {
+      const options = Object.assign({}, defaultOptions, this.options)
+      options.initialEditType = this.mode
+      options.height = this.height
+      options.language = this.language
+      return options
     }
   },
   watch: {
-    value(val) {
-      if (val === this.simplemde.value() && !this.hasChange) return
-      this.simplemde.value(val)
+    value(newValue, preValue) {
+      if (newValue !== preValue && newValue !== this.editor.getValue()) {
+        this.editor.setValue(newValue)
+      }
+    },
+    language(val) {
+      this.destroyEditor()
+      this.initEditor()
+    },
+    height(newValue) {
+      this.editor.height(newValue)
+    },
+    mode(newValue) {
+      this.editor.changeMode(newValue)
     }
   },
   mounted() {
-    this.simplemde = new SimpleMDE({
-      element: document.getElementById(this.id),
-      autoDownloadFontAwesome: false,
-      autofocus: this.autofocus,
-      toolbar: this.toolbar.length > 0 ? this.toolbar : undefined,
-      spellChecker: false,
-      insertTexts: {
-        link: ['[', ']( )']
-      },
-      // hideIcons: ['guide', 'heading', 'quote', 'image', 'preview', 'side-by-side', 'fullscreen'],
-      placeholder: this.placeholder
-    })
-    if (this.value) {
-      this.simplemde.value(this.value)
-    }
-    this.simplemde.codemirror.on('change', () => {
-      if (this.hasChange) {
-        this.hasChange = true
-      }
-      this.$emit('input', this.simplemde.value())
-    })
+    this.initEditor()
   },
   destroyed() {
-    this.simplemde.toTextArea()
-    this.simplemde = null
+    this.destroyEditor()
+  },
+  methods: {
+    initEditor() {
+      this.editor = new Editor({
+        el: document.getElementById(this.id),
+        ...this.editorOptions
+      })
+      if (this.value) {
+        this.editor.setValue(this.value)
+      }
+      this.editor.on('change', () => {
+        this.$emit('input', this.editor.getValue())
+      })
+    },
+    destroyEditor() {
+      if (!this.editor) return
+      this.editor.off('change')
+      this.editor.remove()
+    },
+    setValue(value) {
+      this.editor.setValue(value)
+    },
+    getValue() {
+      return this.editor.getValue()
+    },
+    setHtml(value) {
+      this.editor.setHtml(value)
+    },
+    getHtml() {
+      return this.editor.getHtml()
+    }
   }
 }
 </script>
-
-<style scoped>
-.simplemde-container>>>.CodeMirror {
-  min-height: 150px;
-  line-height: 20px;
-}
-
-.simplemde-container>>>.CodeMirror-scroll {
-  min-height: 150px;
-}
-
-.simplemde-container>>>.CodeMirror-code {
-  padding-bottom: 40px;
-}
-
-.simplemde-container>>>.editor-statusbar {
-  display: none;
-}
-
-.simplemde-container>>>.CodeMirror .CodeMirror-code .cm-link {
-  color: #1890ff;
-}
-
-.simplemde-container>>>.CodeMirror .CodeMirror-code .cm-string.cm-url {
-  color: #2d3b4d;
-}
-
-.simplemde-container>>>.CodeMirror .CodeMirror-code .cm-formatting-link-string.cm-url {
-  padding: 0 2px;
-  color: #E61E1E;
-}
-.simplemde-container >>> .editor-toolbar.fullscreen,
-.simplemde-container >>> .CodeMirror-fullscreen {
-  z-index: 1003;
-}
-</style>
