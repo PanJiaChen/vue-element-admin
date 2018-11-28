@@ -12,7 +12,7 @@ import Editor from 'tui-editor'
 import defaultOptions from './defaultOptions'
 
 export default {
-  name: 'SimplemdeMd',
+  name: 'MarddownEditor',
   props: {
     value: {
       type: String,
@@ -46,6 +46,11 @@ export default {
       default: 'en_US' // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
     }
   },
+  data() {
+    return {
+      editor: null
+    }
+  },
   computed: {
     editorOptions() {
       const options = Object.assign({}, defaultOptions, this.options)
@@ -64,6 +69,12 @@ export default {
     language(val) {
       this.destroyEditor()
       this.initEditor()
+    },
+    height(newValue) {
+      this.editor.height(newValue)
+    },
+    mode(newValue) {
+      this.editor.changeMode(newValue)
     }
   },
   mounted() {

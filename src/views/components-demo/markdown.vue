@@ -28,7 +28,7 @@
 
     <div class="editor-container">
       <el-tag class="tag-title">I18n:</el-tag>
-      <el-alert title="You can change admin global language to see the effect" type="success"/>
+      <el-alert :closable="false" title="You can change the language of the admin system to see the effect" type="success"/>
       <markdown-editor v-model="content" :language="language" height="300px"/>
     </div>
 
