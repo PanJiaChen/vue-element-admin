@@ -23,7 +23,7 @@
         ref="markdownEditor"
         v-model="content"
         :options="{ toolbarItems: ['heading','bold','italic']}"
-        height="200px"/>
+      />
     </div>
 
     <div class="editor-container">
