@@ -1,15 +1,40 @@
 <template>
   <div class="components-container">
+
     <code>Markdown is based on
-      <a href="https://github.com/sparksuite/simplemde-markdown-editor" target="_blank">simplemde-markdown-editor</a> ，Simply encapsulated in Vue.
+      <a href="https://github.com/nhnent/tui.editor" target="_blank">tui.editor</a> ，Simply encapsulated in Vue.
       <a target="_blank" href="https://juejin.im/post/593121aa0ce4630057f70d35#heading-15">
         相关文章 </a>
     </code>
+
     <div class="editor-container">
-      <markdown-editor id="contentEditor" ref="contentEditor" v-model="content" :height="300" :z-index="20"/>
+      <el-tag class="tag-title">Basic:</el-tag>
+      <markdown-editor v-model="content" height="300px"/>
     </div>
-    <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="markdown2Html">To HTML</el-button>
+
+    <div class="editor-container">
+      <el-tag class="tag-title">Markdown Mode:</el-tag>
+      <markdown-editor ref="markdownEditor" v-model="content" :options="{hideModeSwitch:true,previewStyle:'tab'}" height="200px"/>
+    </div>
+
+    <div class="editor-container">
+      <el-tag class="tag-title">Customize Toolbar:</el-tag>
+      <markdown-editor
+        ref="markdownEditor"
+        v-model="content"
+        :options="{ toolbarItems: ['heading','bold','italic']}"
+      />
+    </div>
+
+    <div class="editor-container">
+      <el-tag class="tag-title">I18n:</el-tag>
+      <el-alert :closable="false" title="You can change the language of the admin system to see the effect" type="success"/>
+      <markdown-editor v-model="content" :language="language" height="300px"/>
+    </div>
+
+    <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="getHtml">Get HTML</el-button>
     <div v-html="html"/>
+
   </div>
 </template>
 
@@ -17,32 +42,46 @@
 import MarkdownEditor from '@/components/MarkdownEditor'
 
 const content = `
-**this is test**
+**This is test**
 
 * vue
 * element
 * webpack
 
-## Simplemde
 `
-
 export default {
   name: 'MarkdownDemo',
   components: { MarkdownEditor },
   data() {
     return {
       content: content,
-      html: ''
+      html: '',
+      languageTypeList: {
+        'en': 'en_US',
+        'zh': 'zh_CN',
+        'es': 'es_ES'
+      }
+    }
+  },
+  computed: {
+    language() {
+      return this.languageTypeList[this.$store.getters.language]
     }
   },
   methods: {
-    markdown2Html() {
-      import('showdown').then(showdown => {
-        const converter = new showdown.Converter()
-        this.html = converter.makeHtml(this.content)
-      })
+    getHtml() {
+      this.html = this.$refs.markdownEditor.getHtml()
+      console.log(this.html)
     }
   }
 }
 </script>
 
+<style scoped>
+.editor-container{
+  margin-bottom: 30px;
+}
+.tag-title{
+  margin-bottom: 5px;
+}
+</style>
