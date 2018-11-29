@@ -22,6 +22,7 @@ module.exports = {
   assetsDir: 'static',
   lintOnSave: process.env.NODE_ENV !== 'production',
   productionSourceMap: false,
+  parallel: require('os').cpus().length > 1,
   devServer: {
     port: port,
     open: true,
