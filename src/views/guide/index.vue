@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import * as Driver from 'driver.js' // import driver.js
+import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
 
