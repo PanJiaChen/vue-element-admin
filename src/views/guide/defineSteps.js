@@ -45,7 +45,8 @@ const steps = [
       title: 'Tags view',
       description: 'The history of the page you visited',
       position: 'bottom'
-    }
+    },
+    padding: 0
   }
 ]
 
