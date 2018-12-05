@@ -143,12 +143,16 @@ export default {
         title: [{ validator: validateRequire }],
         content: [{ validator: validateRequire }],
         source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
-      }
+      },
+      tempRoute: {}
     }
   },
   computed: {
     contentShortLength() {
       return this.postForm.content_short.length
+    },
+    lang() {
+      return this.$store.getters.language
     }
   },
   created() {
@@ -158,6 +162,11 @@ export default {
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
+
+    // Why need to make a copy of this.$route here?
+    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
+    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
+    this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
     fetchData(id) {
@@ -166,9 +175,17 @@ export default {
         // Just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
         this.postForm.content_short += `   Article Id:${this.postForm.id}`
+
+        // Set tagsview title
+        this.setTagsViewTitle()
       }).catch(err => {
         console.log(err)
       })
+    },
+    setTagsViewTitle() {
+      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      this.$store.dispatch('updateVisitedView', route)
     },
     submitForm() {
       this.postForm.display_time = parseInt(this.display_time / 1000)
@@ -217,7 +234,7 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-@import "src/styles/mixin.scss";
+@import "~@/styles/mixin.scss";
 .createPost-container {
   position: relative;
   .createPost-main-container {

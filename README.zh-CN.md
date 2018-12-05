@@ -81,6 +81,11 @@
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
+## Sponsors
+Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
+
+<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
+
 ## 功能
 
 ```
@@ -130,6 +135,7 @@
   - 头像上传
   - 返回顶部
   - 拖拽Dialog
+  - 拖拽Select
   - 拖拽看板
   - 列表拖拽
   - SplitPane
@@ -209,6 +215,14 @@ Detailed changes for each release are documented in the [release notes](https://
 ![donate](https://panjiachen.github.io/donate/donation.png)
 
 [Paypal Me](https://www.paypal.me/panfree23)
+
+## Browsers support
+
+Modern browsers and Internet Explorer 10+.
+
+| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
+| --------- | --------- | --------- | --------- |
+| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
 
 ## License
 
