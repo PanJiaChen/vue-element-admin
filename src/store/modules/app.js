@@ -12,7 +12,8 @@ const app = {
     size: Cookies.get('size') || settings.size,
     viewsTransition: Cookies.get('viewsTransition') || settings.viewsTransition,
     needTagsView: Cookies.get('needTagsView') || settings.tagsView,
-    sidebarUniqueOpened: Cookies.get('sidebarUniqueOpened') || settings.sidebarUniqueOpened
+    sidebarUniqueOpened: Cookies.get('sidebarUniqueOpened') || settings.sidebarUniqueOpened,
+    showSettings: settings.showSettings
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {

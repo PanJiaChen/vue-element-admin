@@ -6,13 +6,18 @@
       <navbar/>
       <tags-view v-if="needTagsView"/>
       <app-main/>
+      <side-panel v-if="showSettings">
+        apple
+      </side-panel>
     </div>
   </div>
 </template>
 
 <script>
+import SidePanel from '@/components/SidePanel'
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
@@ -20,16 +25,17 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    SidePanel
   },
   mixins: [ResizeMixin],
   computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
+    ...mapState({
+      sidebar: state => state.app.sidebar,
+      device: state => state.app.device,
+      needTagsView: state => state.app.needTagsView,
+      showSettings: state => state.app.showSettings
+    }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
@@ -37,9 +43,6 @@ export default {
         withoutAnimation: this.sidebar.withoutAnimation,
         mobile: this.device === 'mobile'
       }
-    },
-    needTagsView() {
-      return this.$store.state.app.needTagsView
     }
   },
   methods: {

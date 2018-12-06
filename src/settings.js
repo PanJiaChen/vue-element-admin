@@ -48,7 +48,13 @@ export default {
    * @type {boolean} true | false
    * @description Whether only one sub-menu can be active
    */
-  sidebarUniqueOpened: false
+  sidebarUniqueOpened: false,
+
+  /**
+   * @type {boolean} true | false
+   * @description Whether show the settings side-panel
+   */
+  showSettings: false
 
   // permission: true,
   // i18n: true
