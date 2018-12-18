@@ -334,6 +334,19 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/calendar',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/calendar/index'),
+        name: 'Calendar',
+        meta: { title: 'Calendar', icon: 'calendar' }
+      }
+    ]
+  },
+
+  {
     path: 'external-link',
     component: Layout,
     children: [
