@@ -60,13 +60,16 @@
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
         </el-form-item>
 
-        <div class="editor-container">
-          <Tinymce ref="editor" :height="400" v-model="postForm.content" />
-        </div>
-
-        <div style="margin-bottom: 20px;">
-          <Upload v-model="postForm.image_uri" />
-        </div>
+        <el-form-item prop="content">
+          <div class="editor-container">
+            <Tinymce ref="editor" :height="400" v-model="postForm.content" />
+          </div>
+        </el-form-item>
+        <el-form-item prop="image_uri">
+          <div style="margin-bottom: 20px;">
+            <Upload v-model="postForm.image_uri" />
+          </div>
+        </el-form-item>
       </div>
     </el-form>
 
