@@ -185,6 +185,7 @@ export default {
 <style scoped>
 .tinymce-container {
   position: relative;
+  line-height: normal;
 }
 .tinymce-container>>>.mce-fullscreen {
   z-index: 10000;
