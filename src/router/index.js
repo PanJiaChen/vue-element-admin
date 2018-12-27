@@ -294,6 +294,26 @@ export const asyncRouterMap = [
   },
 
   {
+    path: '/pdf',
+    component: Layout,
+    redirect: '/pdf/index',
+    meta: { title: 'PDF', icon: 'pdf' },
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/pdf/index'),
+        name: 'PDF',
+        meta: { title: 'PDF' }
+      }
+    ]
+  },
+  {
+    path: '/pdf/download',
+    component: () => import('@/views/pdf/download'),
+    hidden: true
+  },
+
+  {
     path: '/theme',
     component: Layout,
     redirect: 'noredirect',
