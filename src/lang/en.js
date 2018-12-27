@@ -142,6 +142,9 @@ export default {
     export: 'Export',
     placeholder: 'Please enter the file name(default file)'
   },
+  pdf: {
+    tips: 'Here we use window.print() to implement the feature of downloading pdf.'
+  },
   theme: {
     change: 'Change Theme',
     documentation: 'Theme documentation',
