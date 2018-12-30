@@ -1,8 +1,9 @@
 <template>
-  <div id="codefund_ad"/>
+  <div id="codefund"/>
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -12,24 +13,24 @@ export default {
   watch: {
     '$route.path': {
       handler: function(val, oldVal) {
-        window._codefund && window._codefund.serve()
+        this.getCodefund()
       }
     }
   },
   mounted() {
-    this.addFundScript()
+    this.getCodefund()
   },
   methods: {
-    addFundScript() {
+    getCodefund() {
       if (this.$isServer) return
       const codefundId = this.isGitee()
-        ? '4d3a53de-d23e-4286-94c7-e5a57ad69d26'
-        : '696d21c7-a78e-4437-b738-3967c5a57693'
-      const script = window.document.createElement('script')
+        ? '111'
+        : '96'
       const template = 'horizontal'
-      script.onerror = this.loadError
-      script.src = `https://codefund.io/scripts/${codefundId}/embed.js?template=${template}`
-      document.body.appendChild(script)
+      axios.get(`https://api.codefund.app/properties/${codefundId}/funder.html?template=${template}`)
+        .then(function(response) {
+          document.getElementById('codefund').innerHTML = response.data
+        })
     },
     isGitee() {
       const origin = window.location.origin
