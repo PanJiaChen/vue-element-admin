@@ -75,6 +75,7 @@
     "babel-preset-env": "1.7.0",
     "babel-preset-stage-2": "6.24.1",
     "chalk": "2.4.1",
+    "compression-webpack-plugin": "2.0.0",
     "copy-webpack-plugin": "4.5.2",
     "cross-env": "5.2.0",
     "css-loader": "1.0.0",
