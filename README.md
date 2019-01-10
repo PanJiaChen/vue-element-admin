@@ -92,7 +92,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Multiple dynamic themes
   - Dynamic sidebar (supports multi-level routing)
   - Dynamic breadcrumb
-  - Tags-view(Tab page Support right-click operation)
+  - Tags-view (Tab page Support right-click operation)
   - Svg Sprite
   - Mock data
   - Screenfull
