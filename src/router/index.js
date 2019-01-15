@@ -366,7 +366,7 @@ export const asyncRouterMap = [
   },
 
   {
-    path: 'external-link',
+    path: 'donate',
     component: Layout,
     children: [
       {
