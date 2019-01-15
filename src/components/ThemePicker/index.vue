@@ -18,7 +18,8 @@ export default {
     }
   },
   watch: {
-    theme(val, oldVal) {
+    theme(val) {
+      const oldVal = this.theme
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))

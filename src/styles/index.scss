@@ -22,7 +22,7 @@ html {
   box-sizing: border-box;
 }
 
-#app{
+#app {
   height: 100%;
 }
 
@@ -53,9 +53,9 @@ a:hover {
   text-decoration: none;
 }
 
-div:focus{
+div:focus {
   outline: none;
- }
+}
 
 .fr {
   float: right;
@@ -104,23 +104,26 @@ code {
   line-height: 36px;
   font-size: 15px;
   font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+
   a {
     color: #337ab7;
     cursor: pointer;
+
     &:hover {
       color: rgb(32, 160, 255);
     }
   }
 }
 
-.warn-content{
-  background: rgba(66,185,131,.1);
+.warn-content {
+  background: rgba(66, 185, 131, .1);
   border-radius: 2px;
   padding: 16px;
   padding: 1rem;
   line-height: 1.6rem;
   word-spacing: .05rem;
-  a{
+
+  a {
     color: #42b983;
     font-weight: 600;
   }
@@ -153,13 +156,16 @@ code {
   padding-right: 20px;
   transition: 600ms ease position;
   background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+
   .subtitle {
     font-size: 20px;
     color: #fff;
   }
+
   &.draft {
     background: #d0d0d0;
   }
+
   &.deleted {
     background: #d0d0d0;
   }
@@ -169,6 +175,7 @@ code {
 .link-type:focus {
   color: #337ab7;
   cursor: pointer;
+
   &:hover {
     color: rgb(32, 160, 255);
   }
@@ -176,6 +183,7 @@ code {
 
 .filter-container {
   padding-bottom: 10px;
+
   .filter-item {
     display: inline-block;
     vertical-align: middle;
