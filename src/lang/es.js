@@ -62,7 +62,8 @@ export default {
     theme: 'Tema',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
-    externalLink: 'Enlace externo'
+    externalLink: 'Enlace externo',
+    donate: 'Donate'
   },
   navbar: {
     logOut: 'Salir',
