@@ -80,6 +80,13 @@ export default {
       }
     },
     pushEle(ele) {
+      for (const item of this.list2) {
+        if (item.id === ele.id) {
+          const index = this.list2.indexOf(item)
+          this.list2.splice(index, 1)
+          break
+        }
+      }
       if (this.isNotInList1(ele)) {
         this.list1.push(ele)
       }
