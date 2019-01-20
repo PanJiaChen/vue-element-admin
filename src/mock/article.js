@@ -13,6 +13,7 @@ for (let i = 0; i < count; i++) {
     timestamp: +Mock.Random.date('T'),
     author: '@first',
     reviewer: '@first',
+    fileList: [],
     title: '@title(5, 10)',
     content_short: '我是测试数据',
     content: baseContent,

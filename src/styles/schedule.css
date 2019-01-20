@@ -1,0 +1,145 @@
+body{background-color: white;}
+.tr_btn {
+	width: 100%;
+	height: 35px;
+}
+
+.td_btn {
+	height: 35px;
+	line-height: 35px;
+	font-family: "微软雅黑";
+	font-weight: bold;
+}
+
+.tr_top {
+	width: 100%;
+	height: 25px;
+}
+
+.td_top_title {
+	width: 10%;
+	height: 25px;
+	line-height: 25px;
+	font-family: "微软雅黑";
+	font-size: 15px;;
+	font-weight: bold;
+	text-align: center;
+	float: left;
+	color:#007BFF;
+}
+
+.td_top_data {
+	width: 12%;
+	height: 25px;
+	line-height: 25px;
+	font-family: "楷体";
+	font-size: 15px;
+	font-weight: bold;
+	text-align: center;
+	float: left;
+}
+
+.td_top_data_change {
+	font-size: 17px;
+	font-family: "楷体";
+	color: white;
+	background-color: #9FCDFF;
+}
+
+.tr_week {
+	width: 100%;
+}
+
+
+.td_week_title {
+	width: 10%;
+	font-family: "微软雅黑";
+	font-weight: bold;
+	text-align: center;
+	float: left;
+}
+
+.td_week_title_content {
+	height: 40px;
+	margin-top: 2px;
+	background-color: #EBEBEB;
+	line-height: 40px;
+}
+
+
+.td_week_data {
+	width: 12%;
+	font-family: "微软雅黑";
+	font-weight: bold;
+	float: left;
+}
+
+.td_week_data_content:active {
+	color: black;
+	background-color: #9FCDFF;
+}
+
+.td_week_data_content:visited {
+	color: black;
+	
+}
+
+.td_week_data_content {
+	height: 40px;
+	padding: 2px;
+	margin-top:2px;
+	margin-left: 2px;
+	text-align: center;
+	background-color: #f0f0f0;
+	border-radius: 5px;
+	position: relative;
+	max-height: 40px;
+	overflow: hidden;
+}
+
+.td_week_data_content::after {
+	/**	content: "..."; */
+	position: absolute;
+	bottom: 0;
+
+
+	right: 0;
+	padding-left: 20px;
+	/*background: -webkit-linear-gradient(left, transparent, #fff 100%);
+	background: -o-linear-gradient(right, transparent, #fff 100%);
+	background: -moz-linear-gradient(right, transparent, #fff 100%);
+	background: linear-gradient(to right, transparent, #fff 100%);*/
+}
+
+
+.td_color{
+	background-color: white;
+	border-radius: 0;
+}
+
+.td_color::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	background: -webkit-linear-gradient(left, transparent, #fff 100%);
+	background: -o-linear-gradient(right, transparent, #fff 100%);
+	background: -moz-linear-gradient(right, transparent, #fff 100%);
+	background: linear-gradient(to right, transparent, #fff 100%);
+}
+
+.td_color:active {
+	background-color: white;
+}
+
+.td_color:visited {
+	background-color:white;
+}
+
+.show{
+	width: 100%;  
+    height: auto;  
+    word-wrap:break-word;  
+    word-break:break-all;  
+    overflow: hidden; 
+}

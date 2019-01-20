@@ -199,3 +199,47 @@ code {
 .multiselect--active {
   z-index: 1000 !important;
 }
+
+.el-table--medium td, .el-table--medium th {
+  padding: 3px 0;
+}
+
+// cell-style="padding:0"
+// 表格cell
+.el-table td{
+  padding: 0px 0;
+}
+
+// 输入框
+.el-input--medium .el-input__inner {
+  height: 30px;
+  line-height: 30px;
+}
+
+// 标准按钮
+.el-button--medium {
+  padding: 8px 10px;
+}
+
+
+#online li div span.file-title {
+  height: 18px;
+}
+
+.el-form-item {
+  margin-bottom: 14px;
+}
+
+.el-dialog__body {
+  padding: 10px 20px;
+  color: #606266;
+  font-size: 14px;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover>td{
+  background-color: #ecfffa;
+  }
+
+img {
+    max-width: 100%;
+}

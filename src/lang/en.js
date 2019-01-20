@@ -1,6 +1,8 @@
 export default {
   route: {
     dashboard: 'Dashboard',
+    UEditor: 'UEditor',
+    group: 'group',
     introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',

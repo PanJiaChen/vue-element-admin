@@ -1,16 +1,25 @@
 import request from '@/utils/request'
 
+// 获取组List信息
 export function fetchList(query) {
   return request({
-    url: '/ueditor/list',
+    url: '/grade/list',
     method: 'get',
     params: query
   })
 }
 
-export function fetchArticle(id) {
+export function getClassList(query) {
   return request({
-    url: '/ueditor/detail/' + id,
+    url: '/class/list',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchStuList(listQuery) {
+  return request({
+    url: '/stu/' + listQuery.type,
     method: 'get'
   })
 }
@@ -36,20 +45,5 @@ export function updateArticle(data) {
     url: '/article/update',
     method: 'post',
     data
-  })
-}
-
-export function saveArticle(data) {
-  return request({
-    url: '/ueditor/save',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteArticle(id) {
-  return request({
-    url: '/ueditor/del/' + id,
-    method: 'get'
   })
 }

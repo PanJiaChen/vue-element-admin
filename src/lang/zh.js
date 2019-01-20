@@ -1,6 +1,8 @@
 export default {
   route: {
     dashboard: '首页',
+    UEditor: '编辑',
+    group: '小组',
     introduction: '简述',
     documentation: '文档',
     guide: '引导页',
@@ -29,6 +31,9 @@ export default {
     lineChart: '折线图',
     mixChart: '混合图表',
     example: '综合实例',
+    notice: '公告',
+    createNotice: '创建公告',
+    noticeList: '公告列表',
     nested: '路由嵌套',
     menu1: '菜单1',
     'menu1-1': '菜单1-1',
@@ -53,6 +58,7 @@ export default {
     page401: '401',
     page404: '404',
     errorLog: '错误日志',
+    myExample: '我的例子',
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
@@ -62,7 +68,10 @@ export default {
     theme: '换肤',
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
-    externalLink: '外链'
+    externalLink: '外链',
+    laoshiguanli: '教师管理',
+    nianjiguanli: '年级管理',
+    xueshengguanli: '学生管理'
   },
   navbar: {
     logOut: '退出登录',
@@ -129,6 +138,38 @@ export default {
     cancel: '取 消',
     confirm: '确 定'
   },
+  student: {
+    name: '姓名',
+    sex: '性别',
+    birth: '出生日期',
+    number: '身份证号',
+    address: '地址',
+    enrollment_time: '入学时间',
+    dynamicTips1: '固定表头, 按照表头顺序排序',
+    dynamicTips2: '不固定表头, 按照点击顺序排序',
+    dragTips1: '默认顺序',
+    dragTips2: '拖拽后顺序',
+    title: '标题',
+    importance: '重要性',
+    type: '类型',
+    remark: '点评',
+    search: '搜索',
+    add: '添加',
+    export: '导出',
+    reviewer: '审核人',
+    id: '序号',
+    date: '时间',
+    author: '作者',
+    readings: '阅读数',
+    status: '状态',
+    actions: '操作',
+    edit: '编辑',
+    publish: '发布',
+    draft: '草稿',
+    delete: '删除',
+    cancel: '取 消',
+    confirm: '确 定'
+  },
   errorLog: {
     tips: '请点击右上角bug小图标',
     description: '现在的管理后台基本都是spa的形式了，它增强了用户体验，但同时也会增加页面出问题的可能性，可能一个小小的疏忽就导致整个页面的死锁。好在 Vue 官网提供了一个方法来捕获处理异常，你可以在其中进行错误处理或者异常上报。',
@@ -156,5 +197,34 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
-  }
+  },
+  group: {
+    name: '组 名',
+    add: '新 建 组',
+    member: '成 员',
+    delete: '删 除 组',
+    system: '系 统 组', // 系统自动生成的组。比如：老师按角色分为(语文组，数学组，小学组等); 学生分为(班级); 学生家长(班级)
+    comment: '组 描 述',
+    github: '项 目 地 址',
+    screenfull: '全 屏',
+    theme: '换 肤',
+    size: '布 局 大 小'
+  },
+  date: '日 期',
+  id: '序 号',
+  name: '姓 名',
+  createDate: '创 建 时 间',
+  comment: '描 述',
+  createUser: '创 建 者',
+  edit: '编辑',
+  create: '创建',
+  publish: '发 布',
+  draft: '草 稿',
+  delete: '删 除',
+  save: '保存',
+  cancel: '取 消',
+  confirm: '确 定',
+  detail: '详 情',
+  action: '操作',
+  export: '导出Excel'
 }

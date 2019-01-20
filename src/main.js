@@ -9,12 +9,17 @@ import 'element-ui/lib/theme-chalk/index.css'
 
 import '@/styles/index.scss' // global css
 
+import '@/styles/schedule.css' // global css
 import App from './App'
 import router from './router'
 import store from './store'
 
 import i18n from './lang' // Internationalization
 import './icons' // icon
+// 引入图片库样式
+import './assets/iconfont/iconfont.css'
+// 使用svg，需引入该js
+import './assets/iconfont/iconfont.js'
 import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
@@ -40,3 +45,4 @@ new Vue({
   i18n,
   render: h => h(App)
 })
+window.UEDITOR_HOME_URL = process.env.BASE_API + '/'

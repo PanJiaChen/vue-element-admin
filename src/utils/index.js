@@ -3,8 +3,11 @@
  */
 
 export function parseTime(time, cFormat) {
-  if (arguments.length === 0) {
+  if (arguments.length === 0 || time == null) {
     return null
+  }
+  if (typeof time === 'string') {
+    return time
   }
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
@@ -164,6 +167,17 @@ export function objectMerge(target, source) {
   return target
 }
 
+export function scrollTo(element, to, duration) {
+  if (duration <= 0) return
+  const difference = to - element.scrollTop
+  const perTick = (difference / duration) * 10
+  setTimeout(() => {
+    element.scrollTop = element.scrollTop + perTick
+    if (element.scrollTop === to) return
+    scrollTo(element, to, duration - 10)
+  }, 10)
+}
+
 export function toggleClass(element, className) {
   if (!element || !className) {
     return
@@ -288,4 +302,154 @@ export function uniqueArr(arr) {
 
 export function isExternal(path) {
   return /^(https?:|mailto:|tel:)/.test(path)
+}
+
+// 获取d当前时间多少天后的日期和对应星期
+export function getDates(days) {
+  // todate默认参数是当前日期，可以传入对应时间
+  var dateArry = []
+  for (var i = 0; i < days; i++) {
+    var dateObj = dateLater(getCurrentMonthFirst(), i)
+    dateArry.push(dateObj)
+  }
+  return dateArry
+}
+/** * 传入时间后几天 * param：传入时间：dates:"2018-04-02",later:往后多少天 */
+export function dateLater(dates, later) {
+  var dateObj = {}
+  var show_day = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+  var date = new Date(dates)
+  date.setDate(date.getDate() + later)
+  var day = date.getDay()
+  dateObj.year = date.getFullYear()
+  dateObj.month = ((date.getMonth() + 1) < 10 ? ('0' + (date.getMonth() + 1)) : date.getMonth() + 1)
+  dateObj.day = (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate())
+  dateObj.week = show_day[day]
+  return dateObj
+}
+
+// 获取当前时间
+export function getCurrentMonthFirst() {
+  var date = new Date()
+  var todate = date.getFullYear() + '-' + ((date.getMonth() + 1) < 10 ? ('0' + (date.getMonth() + 1)) : date.getMonth() + 1) + '-' + (date.getDate() < 10 ? ('0' + date.getDate()) : date.getDate())
+
+  return todate
+}
+
+export function getDays() {
+  var data = new Date()
+  var setData = ''
+  var weeks = dateLater(data, 0).week
+  switch (weeks) {
+    case '周一':
+      setData = [
+        dateLater(data, 0).day,
+        dateLater(data, 1).day,
+        dateLater(data, 2).day,
+        dateLater(data, 3).day,
+        dateLater(data, 4).day,
+        dateLater(data, 5).day,
+        dateLater(data, 6).day
+      ]
+      break
+    case '周二':
+      setData = [
+        dateLater(data, -1).day,
+        dateLater(data, 0).day,
+        dateLater(data, 1).day,
+        dateLater(data, 2).day,
+        dateLater(data, 3).day,
+        dateLater(data, 4).day,
+        dateLater(data, 5).day
+      ]
+      break
+    case '周三':
+      setData = [
+        dateLater(data, -2).day,
+        dateLater(data, -1).day,
+        dateLater(data, 0).day,
+        dateLater(data, 1).day,
+        dateLater(data, 2).day,
+        dateLater(data, 3).day,
+        dateLater(data, 4).day
+      ]
+      break
+    case '周四':
+      setData = [
+        dateLater(data, -3).day,
+        dateLater(data, -2).day,
+        dateLater(data, -1).day,
+        dateLater(data, 0).day,
+        dateLater(data, 1).day,
+        dateLater(data, 2).day,
+        dateLater(data, 3).day
+      ]
+      break
+    case '周五':
+      setData = [
+        dateLater(data, -4).day,
+        dateLater(data, -3).day,
+        dateLater(data, -2).day,
+        dateLater(data, -1).day,
+        dateLater(data, 0).day,
+        dateLater(data, 1).day,
+        dateLater(data, 2).day
+      ]
+      break
+    case '周六':
+      setData = [
+        dateLater(data, -5).day,
+        dateLater(data, -4).day,
+        dateLater(data, -3).day,
+        dateLater(data, -2).day,
+        dateLater(data, -1).day,
+        dateLater(data, 0).day,
+        dateLater(data, 1).day
+      ]
+      break
+    case '周日':
+      setData = [
+        dateLater(data, -6).day,
+        dateLater(data, -5).day,
+        dateLater(data, -4).day,
+        dateLater(data, -3).day,
+        dateLater(data, -2).day,
+        dateLater(data, -1).day,
+        dateLater(data, 0).day
+      ]
+      break
+    default:
+      break
+  }
+  if (setData !== '') {
+    return setData
+  } else {
+    return ''
+  }
+}
+
+export function getYear() {
+  var Year = new Date().getFullYear()
+  var setData = [Year - 1, Year, Year - 2, Year - 3]
+  return setData
+}
+
+export function formatMonth() {
+  var date = new Date()
+  var month = date.getMonth() + 1
+  return month
+}
+
+export function formatDay(time) {
+  var date = new Date()
+  var day = date.getDate()
+  if (time === day) return true
+  return false
+}
+
+export function getWeeks(week) {
+  var data = new Date()
+  var weeks = dateLater(data, 0).week
+  if (weeks === week) return true
+  return false
 }

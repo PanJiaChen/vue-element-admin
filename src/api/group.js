@@ -1,17 +1,19 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+// 获取组List信息
+export function fetchGroupList(query) {
   return request({
-    url: '/ueditor/list',
+    url: '/group/list',
     method: 'get',
     params: query
   })
 }
 
-export function fetchArticle(id) {
+export function fetchMemberList(id) {
   return request({
-    url: '/ueditor/detail/' + id,
-    method: 'get'
+    url: '/group/getMembers',
+    method: 'get',
+    params: { id }
   })
 }
 
@@ -33,23 +35,16 @@ export function createArticle(data) {
 
 export function updateArticle(data) {
   return request({
-    url: '/article/update',
+    url: '/group/addGroup',
     method: 'post',
     data
   })
 }
 
-export function saveArticle(data) {
+export function deleteGroup(id) {
   return request({
-    url: '/ueditor/save',
-    method: 'post',
-    data
-  })
-}
-
-export function deleteArticle(id) {
-  return request({
-    url: '/ueditor/del/' + id,
-    method: 'get'
+    url: '/group/delete',
+    method: 'get',
+    params: { id }
   })
 }
