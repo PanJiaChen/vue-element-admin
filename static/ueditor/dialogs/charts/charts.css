@@ -1,0 +1,165 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+.main {
+    width: 100%;
+    overflow: hidden;
+}
+
+.table-view {
+    height: 100%;
+    float: left;
+    margin: 20px;
+    width: 40%;
+}
+
+.table-view .table-container {
+    width: 100%;
+    margin-bottom: 50px;
+    overflow: scroll;
+}
+
+.table-view th {
+    padding: 5px 10px;
+    background-color: #F7F7F7;
+}
+
+.table-view td {
+    width: 50px;
+    text-align: center;
+    padding:0;
+}
+
+.table-container input {
+    width: 40px;
+    padding: 5px;
+    border: none;
+    outline: none;
+}
+
+.table-view caption {
+    font-size: 18px;
+    text-align: left;
+}
+
+.charts-view {
+    /*margin-left: 49%!important;*/
+    width: 50%;
+    margin-left: 49%;
+    height: 400px;
+}
+
+.charts-container {
+    border-left: 1px solid #c3c3c3;
+}
+
+.charts-format fieldset {
+    padding-left: 20px;
+    margin-bottom: 50px;
+}
+
+.charts-format legend {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.format-item-container {
+    padding: 20px;
+}
+
+.format-item-container label {
+    display: block;
+    margin: 10px 0;
+}
+
+.charts-format .data-item {
+    border: 1px solid black;
+    outline: none;
+    padding: 2px 3px;
+}
+
+/* 图表类型 */
+
+.charts-type {
+    margin-top: 50px;
+    height: 300px;
+}
+
+.scroll-view {
+    border: 1px solid #c3c3c3;
+    border-left: none;
+    border-right: none;
+    overflow: hidden;
+}
+
+.scroll-container {
+    margin: 20px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.scroll-bed {
+    width: 10000px;
+    _margin-top: 20px;
+    -webkit-transition: margin-left .5s ease;
+    -moz-transition: margin-left .5s ease;
+    transition: margin-left .5s ease;
+}
+
+.view-box {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    margin-right: 20px;
+    border: 2px solid white;
+    line-height: 0;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.view-box img {
+    border: 1px solid #cecece;
+}
+
+.view-box.selected {
+    border-color: #7274A7;
+}
+
+.button-container {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.button-container a {
+    display: inline-block;
+    width: 100px;
+    height: 25px;
+    line-height: 25px;
+    border: 1px solid #c2ccd1;
+    margin-right: 30px;
+    text-decoration: none;
+    color: black;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+
+.button-container a:HOVER {
+    background: #fcfcfc;
+}
+
+.button-container a:ACTIVE {
+    border-top-color: #c2ccd1;
+    box-shadow:inset 0 5px 4px -4px rgba(49, 49, 64, 0.1);
+}
+
+.edui-charts-not-data {
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+}

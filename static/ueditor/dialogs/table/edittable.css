@@ -1,0 +1,84 @@
+body{
+    overflow: hidden;
+    width: 540px;
+}
+.wrapper {
+    margin: 10px auto 0;
+    font-size: 12px;
+    overflow: hidden;
+    width: 520px;
+    height: 315px;
+}
+
+.clear {
+    clear: both;
+}
+
+.wrapper .left {
+    float: left;
+    margin-left: 10px;;
+}
+
+.wrapper .right {
+    float: right;
+    border-left: 2px dotted #EDEDED;
+    padding-left: 15px;
+}
+
+.section {
+    margin-bottom: 15px;
+    width: 240px;
+    overflow: hidden;
+}
+
+.section h3 {
+    font-weight: bold;
+    padding: 5px 0;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #EDEDED;
+    font-size: 12px;
+}
+
+.section ul {
+    list-style: none;
+    overflow: hidden;
+    clear: both;
+
+}
+
+.section li {
+    float: left;
+    width: 120px;;
+}
+
+.section .tone {
+    width: 80px;;
+}
+
+.section .preview {
+    width: 220px;
+}
+
+.section .preview table {
+    text-align: center;
+    vertical-align: middle;
+    color: #666;
+}
+
+.section .preview caption {
+    font-weight: bold;
+}
+
+.section .preview td {
+    border-width: 1px;
+    border-style: solid;
+    height: 22px;
+}
+
+.section .preview th {
+    border-style: solid;
+    border-color: #DDD;
+    border-width: 2px 1px 1px 1px;
+    height: 22px;
+    background-color: #F7F7F7;
+}

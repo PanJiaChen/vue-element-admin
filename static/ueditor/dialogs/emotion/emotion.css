@@ -1,0 +1,43 @@
+.jd img{
+    background:transparent url(images/jxface2.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.pp img{
+    background:transparent url(images/fface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:25px;height:25px;display:block;
+}
+.ldw img{
+    background:transparent url(images/wface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.tsj img{
+    background:transparent url(images/tface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.cat img{
+    background:transparent url(images/cface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.bb img{
+    background:transparent url(images/bface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+.youa img{
+    background:transparent url(images/yface.gif?v=1.1) no-repeat scroll left top;
+    cursor:pointer;width:35px;height:35px;display:block;
+}
+
+.smileytable td {height: 37px;}
+#tabPanel{margin-left:5px;overflow: hidden;}
+#tabContent {float:left;background:#FFFFFF;}
+#tabContent div{display: none;width:480px;overflow:hidden;}
+#tabIconReview.show{left:17px;display:block;}
+.menuFocus{background:#ACCD3C;}
+.menuDefault{background:#FFFFFF;}
+#tabIconReview{position:absolute;left:406px;left:398px \9;top:41px;z-index:65533;width:90px;height:76px;}
+img.review{width:90px;height:76px;border:2px solid #9cb945;background:#FFFFFF;background-position:center;background-repeat:no-repeat;}
+
+.wrapper .tabbody{position:relative;float:left;clear:both;padding:10px;width: 95%;}
+.tabbody table{width: 100%;}
+.tabbody td{border:1px solid #BAC498;}
+.tabbody td span{display: block;zoom:1;padding:0 4px;}

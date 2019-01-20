@@ -1,0 +1,30 @@
+.wrapper{margin: 5px 10px;}
+
+.searchBar{height:30px;padding:7px 0 3px;text-align:center;}
+.searchBtn{font-size:13px;height:24px;}
+
+.resultBar{width:460px;margin:5px auto;border: 1px solid #CCC;border-radius: 5px;box-shadow: 2px 2px 5px #D3D6DA;overflow: hidden;}
+
+.listPanel{overflow: hidden;}
+.panelon{display:block;}
+.paneloff{display:none}
+
+.page{width:220px;margin:20px auto;overflow: hidden;}
+.pageon{float:right;width:24px;line-height:24px;height:24px;margin-right: 5px;background: none;border: none;color: #000;font-weight: bold;text-align:center}
+.pageoff{float:right;width:24px;line-height:24px;height:24px;cursor:pointer;background-color: #fff;
+   border: 1px solid #E7ECF0;color: #2D64B3;margin-right: 5px;text-decoration: none;text-align:center;}
+
+.m-box{width:460px;}
+.m-m{float: left;line-height: 20px;height: 20px;}
+.m-h{height:24px;line-height:24px;padding-left: 46px;background-color:#FAFAFA;border-bottom: 1px solid #DAD8D8;font-weight: bold;font-size: 12px;color: #333;}
+.m-l{float:left;width:40px; }
+.m-t{float:left;width:140px;}
+.m-s{float:left;width:110px;}
+.m-z{float:left;width:100px;}
+.m-try-t{float: left;width: 60px;;}
+
+.m-try{float:left;width:20px;height:20px;background:url('http://static.tieba.baidu.com/tb/editor/images/try_music.gif') no-repeat ;}
+.m-trying{float:left;width:20px;height:20px;background:url('http://static.tieba.baidu.com/tb/editor/images/stop_music.gif') no-repeat ;}
+
+.loading{width:95px;height:7px;font-size:7px;margin:60px auto;background:url(http://static.tieba.baidu.com/tb/editor/images/loading.gif) no-repeat}
+.empty{width:300px;height:40px;padding:2px;margin:50px auto;line-height:40px; color:#006699;text-align:center;}

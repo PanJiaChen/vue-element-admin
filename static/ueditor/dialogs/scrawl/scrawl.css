@@ -1,0 +1,72 @@
+/*common
+*/
+body{margin: 0;}
+table{width:100%;}
+table td{padding:2px 4px;vertical-align: middle;}
+a{text-decoration: none;}
+em{font-style: normal;}
+.border_style1{border: 1px solid #ccc;border-radius: 5px;box-shadow:2px 2px 5px #d3d6da;}
+/*module
+*/
+.main{margin: 8px;overflow: hidden;}
+
+.hot{float:left;height:335px;}
+.drawBoard{position: relative; cursor: crosshair;}
+.brushBorad{position: absolute;left:0;top:0;z-index: 998;}
+.picBoard{border: none;text-align: center;line-height: 300px;cursor: default;}
+.operateBar{margin-top:10px;font-size:12px;text-align: center;}
+.operateBar span{margin-left: 10px;}
+
+.drawToolbar{float:right;width:110px;height:300px;overflow: hidden;}
+.colorBar{margin-top:10px;font-size: 12px;text-align: center;}
+.colorBar a{display:block;width: 10px;height: 10px;border:1px solid #1006F1;border-radius: 3px; box-shadow:2px 2px 5px #d3d6da;opacity: 0.3}
+.sectionBar{margin-top:15px;font-size: 12px;text-align: center;}
+.sectionBar a{display:inline-block;width:10px;height:12px;color: #888;text-indent: -999px;opacity: 0.3}
+.size1{background: url('images/size.png') 1px center no-repeat ;}
+.size2{background: url('images/size.png') -10px center no-repeat;}
+.size3{background: url('images/size.png') -22px center no-repeat;}
+.size4{background: url('images/size.png') -35px center no-repeat;}
+
+.addImgH{position: relative;}
+.addImgH_form{position: absolute;left: 18px;top: -1px;width: 75px;height: 21px;opacity: 0;cursor: pointer;}
+.addImgH_form input{width: 100%;}
+/*scrawl遮罩层
+*/
+.maskLayerNull{display: none;}
+.maskLayer{position: absolute;top:0;left:0;width: 100%; height: 100%;opacity: 0.7;
+    background-color: #fff;text-align:center;font-weight:bold;line-height:300px;z-index: 1000;}
+/*btn state
+*/
+.previousStepH .icon{display: inline-block;width:16px;height:16px;background-image: url('images/undoH.png');cursor: pointer;}
+.previousStepH .text{color:#888;cursor:pointer;}
+.previousStep .icon{display: inline-block;width:16px;height:16px;background-image: url('images/undo.png');cursor:default;}
+.previousStep .text{color:#ccc;cursor:default;}
+
+.nextStepH .icon{display: inline-block;width:16px;height:16px;background-image: url('images/redoH.png');cursor: pointer;}
+.nextStepH .text{color:#888;cursor:pointer;}
+.nextStep .icon{display: inline-block;width:16px;height:16px;background-image: url('images/redo.png');cursor:default;}
+.nextStep .text{color:#ccc;cursor:default;}
+
+.clearBoardH .icon{display: inline-block;width:16px;height:16px;background-image: url('images/emptyH.png');cursor: pointer;}
+.clearBoardH .text{color:#888;cursor:pointer;}
+.clearBoard .icon{display: inline-block;width:16px;height:16px;background-image: url('images/empty.png');cursor:default;}
+.clearBoard .text{color:#ccc;cursor:default;}
+
+.scaleBoardH .icon{display: inline-block;width:16px;height:16px;background-image: url('images/scaleH.png');cursor: pointer;}
+.scaleBoardH .text{color:#888;cursor:pointer;}
+.scaleBoard .icon{display: inline-block;width:16px;height:16px;background-image: url('images/scale.png');cursor:default;}
+.scaleBoard .text{color:#ccc;cursor:default;}
+
+.removeImgH .icon{display: inline-block;width:16px;height:16px;background-image: url('images/delimgH.png');cursor: pointer;}
+.removeImgH .text{color:#888;cursor:pointer;}
+.removeImg .icon{display: inline-block;width:16px;height:16px;background-image: url('images/delimg.png');cursor:default;}
+.removeImg .text{color:#ccc;cursor:default;}
+
+.addImgH .icon{vertical-align:top;display: inline-block;width:16px;height:16px;background-image: url('images/addimg.png')}
+.addImgH .text{color:#888;cursor:pointer;}
+/*icon
+*/
+.brushIcon{display: inline-block;width:16px;height:16px;background-image: url('images/brush.png')}
+.eraserIcon{display: inline-block;width:16px;height:16px;background-image: url('images/eraser.png')}
+
+

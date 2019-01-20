@@ -1,0 +1,18 @@
+.wrap{ padding: 5px;font-size: 14px;}
+.left{width:425px;float: left;}
+.right{width:160px;border: 1px solid #ccc;float: right;padding: 5px;margin-right: 5px;}
+.right .pre{height: 332px;overflow-y: auto;}
+.right .preitem{border: white 1px solid;margin: 5px 0;padding: 2px 0;}
+.right .preitem:hover{background-color: lemonChiffon;cursor: pointer;border: #ccc 1px solid;}
+.right .preitem img{display: block;margin: 0 auto;width:100px;}
+.clear{clear: both;}
+.top{height:26px;line-height: 26px;padding: 5px;}
+.bottom{height:320px;width:100%;margin: 0 auto;}
+.transparent{ background: url("images/bg.gif") repeat;}
+.bottom table tr td{border:1px dashed #ccc;}
+#colorPicker{width: 17px;height: 17px;border: 1px solid #CCC;display: inline-block;border-radius: 3px;box-shadow: 2px 2px 5px #D3D6DA;}
+.border_style1{padding:2px;border: 1px solid #ccc;border-radius: 5px;box-shadow:2px 2px 5px #d3d6da;}
+p{margin: 5px 0}
+table{clear:both;margin-bottom:10px;border-collapse:collapse;word-break:break-all;}
+li{clear:both}
+ol{padding-left:40px; }

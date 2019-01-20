@@ -1,0 +1,94 @@
+.wrapper{ width: 424px;margin: 10px auto; zoom:1;position: relative}
+.tabbody{height:225px;}
+.tabbody .panel { position: absolute;width:100%; height:100%;background: #fff; display: none;}
+.tabbody .focus { display: block;}
+
+body{font-size: 12px;color: #888;overflow: hidden;}
+input,label{vertical-align:middle}
+.clear{clear: both;}
+.pl{padding-left: 18px;padding-left: 23px\9;}
+
+#imageList {width: 420px;height: 215px;margin-top: 10px;overflow: hidden;overflow-y: auto;}
+#imageList div {float: left;width: 100px;height: 95px;margin: 5px 10px;}
+#imageList img {cursor: pointer;border: 2px solid white;}
+
+.bgarea{margin: 10px;padding: 5px;height: 84%;border: 1px solid #A8A297;}
+.content div{margin: 10px 0 10px 5px;}
+.content .iptradio{margin: 0px 5px 5px 0px;}
+.txt{width:280px;}
+
+.wrapcolor{height: 19px;}
+div.color{float: left;margin: 0;}
+#colorPicker{width: 17px;height: 17px;border: 1px solid #CCC;display: inline-block;border-radius: 3px;box-shadow: 2px 2px 5px #D3D6DA;margin: 0;float: left;}
+div.alignment,#custom{margin-left: 23px;margin-left: 28px\9;}
+#custom input{height: 15px;min-height: 15px;width:20px;}
+#repeatType{width:100px;}
+
+
+/* 图片管理样式 */
+#imgManager {
+    width: 100%;
+    height: 225px;
+}
+#imgManager #imageList{
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+#imgManager ul {
+    display: block;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+#imgManager li {
+    float: left;
+    display: block;
+    list-style: none;
+    padding: 0;
+    width: 113px;
+    height: 113px;
+    margin: 9px 0 0 19px;
+    background-color: #eee;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+}
+#imgManager li.clearFloat {
+    float: none;
+    clear: both;
+    display: block;
+    width:0;
+    height:0;
+    margin: 0;
+    padding: 0;
+}
+#imgManager li img {
+    cursor: pointer;
+}
+#imgManager li .icon {
+    cursor: pointer;
+    width: 113px;
+    height: 113px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    border: 0;
+    background-repeat: no-repeat;
+}
+#imgManager li .icon:hover {
+    width: 107px;
+    height: 107px;
+    border: 3px solid #1094fa;
+}
+#imgManager li.selected .icon {
+    background-image: url(images/success.png);
+    background-position: 75px 75px;
+}
+#imgManager li.selected .icon:hover {
+    width: 107px;
+    height: 107px;
+    border: 3px solid #1094fa;
+    background-position: 72px 72px;
+}
