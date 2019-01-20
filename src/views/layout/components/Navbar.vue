@@ -3,47 +3,31 @@
     <hamburger :toggle-click="toggleSideBar" :is-active="sidebar.opened" class="hamburger-container"/>
 
     <breadcrumb class="breadcrumb-container"/>
-
     <div class="right-menu">
       <template v-if="device!=='mobile'">
         <error-log class="errLog-container right-menu-item"/>
-
-        <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <screenfull class="screenfull right-menu-item"/>
-        </el-tooltip>
-
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select class="international right-menu-item"/>
-        </el-tooltip>
-
-        <lang-select class="international right-menu-item"/>
-
-        <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
-          <theme-picker class="theme-switch right-menu-item"/>
-        </el-tooltip>
-      </template>
-
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom"/>
+        <div>
+          <span style="color: slategray;">{{ $store.state.user.name }}</span>
+          <el-dropdown class="avatar-container right-menu-item" trigger="click">
+            <i style="cursor:pointer" class="el-icon-caret-bottom"/>
+            <el-dropdown-menu slot="dropdown">
+              <router-link to="/">
+                <el-dropdown-item>
+                  {{ $t('navbar.dashboard') }}
+                </el-dropdown-item>
+              </router-link>
+              <router-link to="/">
+                <el-dropdown-item>
+                  个人中心
+                </el-dropdown-item>
+              </router-link>
+              <el-dropdown-item divided>
+                <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
-            <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      </template>
     </div>
   </div>
 </template>
@@ -90,6 +74,31 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.Botton {
+   display: inline-block;
+    text-align:center;
+    color: slategray;
+}
+.title {
+  position:absolute;
+  left:40%;
+}
+.item {
+    margin-top: -30px;
+    margin-right: 1px;
+}
+.el-badge__content.is-dot {
+    height: 10px !important;
+    width: 10px !important;
+    top: 12px !important;
+}
+.el-badge__content.is-fixed {
+    position: absolute;
+    top: 12px !important;
+    right: 10px;
+    -webkit-transform: translateY(-50%) translateX(100%);
+    transform: translateY(-50%) translateX(100%);
+}
 .navbar {
   height: 50px;
   line-height: 50px;

@@ -5,6 +5,12 @@
       </a>
     </p>
     <div class="icons-wrapper">
+      <i class="iconfont icon-weixin"/>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-weixin"/>
+      </svg>
+      <svg-icon icon-class="school" />
+      <svg-icon icon-class="nianjiguanli" />年级管理
       <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
         <el-tooltip placement="top">
           <div slot="content">
