@@ -56,10 +56,13 @@ export default {
       this.width = this.width + 'px'
       this.isSticky = true
     },
-    reset() {
+    handleReset() {
       if (!this.active) {
         return
       }
+      this.reset()
+    },
+    reset() {
       this.position = ''
       this.width = 'auto'
       this.active = false
@@ -72,7 +75,7 @@ export default {
         this.sticky()
         return
       }
-      this.reset()
+      this.handleReset()
     },
     handleReize() {
       if (this.isSticky) {
