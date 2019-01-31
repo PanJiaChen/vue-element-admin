@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.3.2-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.4.11-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -40,7 +40,7 @@
 
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/zh/donate/)
+- [Donate](https://panjiachen.gitee.io/vue-element-admin-site/zh/donate)
 
 - [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
 
@@ -213,6 +213,8 @@ Detailed changes for each release are documented in the [release notes](https://
 
 如果你觉得这个项目帮助到了你，你可以帮作者买一杯果汁表示鼓励 :tropical_drink:
 ![donate](https://panjiachen.github.io/donate/donation.png)
+
+[更多捐赠方式](https://panjiachen.gitee.io/vue-element-admin-site/zh/donate)
 
 [Paypal Me](https://www.paypal.me/panfree23)
 

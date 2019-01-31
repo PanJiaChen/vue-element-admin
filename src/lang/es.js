@@ -87,7 +87,8 @@ export default {
   },
   permission: {
     roles: 'Tus permisos',
-    switchRoles: 'Cambiar permisos'
+    switchRoles: 'Cambiar permisos',
+    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.'
   },
   guide: {
     description: 'The guide page is useful for some people who entered the project for the first time. You can briefly introduce the features of the project. Demo is based on ',
@@ -141,6 +142,9 @@ export default {
   zip: {
     export: 'Exportar',
     placeholder: 'Por favor escribe un nombre de fichero'
+  },
+  pdf: {
+    tips: 'Here we use window.print() to implement the feature of downloading pdf.'
   },
   theme: {
     change: 'Cambiar tema',

@@ -157,8 +157,13 @@ export default {
       })
     },
     destroyTinymce() {
-      if (window.tinymce.get(this.tinymceId)) {
-        window.tinymce.get(this.tinymceId).destroy()
+      const tinymce = window.tinymce.get(this.tinymceId)
+      if (this.fullscreen) {
+        tinymce.execCommand('mceFullScreen')
+      }
+
+      if (tinymce) {
+        tinymce.destroy()
       }
     },
     setContent(value) {
@@ -180,6 +185,7 @@ export default {
 <style scoped>
 .tinymce-container {
   position: relative;
+  line-height: normal;
 }
 .tinymce-container>>>.mce-fullscreen {
   z-index: 10000;

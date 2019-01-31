@@ -7,7 +7,7 @@
     <img src="https://img.shields.io/badge/vue-2.5.17-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.4.6-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.4.11-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -92,7 +92,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Multiple dynamic themes
   - Dynamic sidebar (supports multi-level routing)
   - Dynamic breadcrumb
-  - Tags-view(Tab page Support right-click operation)
+  - Tags-view (Tab page Support right-click operation)
   - Svg Sprite
   - Mock data
   - Screenfull
