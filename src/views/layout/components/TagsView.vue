@@ -12,14 +12,16 @@
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)">
         {{ generateTitle(tag.title) }}
-        <span class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        <svg-icon v-else class-name="affix-icon" icon-class="affix" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
-      <li @click="closeSelectedTag(selectedTag)">{{ $t('tagsView.close') }}</li>
+      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">{{
+      $t('tagsView.close') }}</li>
       <li @click="closeOthersTags">{{ $t('tagsView.closeOthers') }}</li>
-      <li @click="closeAllTags">{{ $t('tagsView.closeAll') }}</li>
+      <li @click="closeAllTags(selectedTag)">{{ $t('tagsView.closeAll') }}</li>
     </ul>
   </div>
 </template>
@@ -27,6 +29,7 @@
 <script>
 import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
+import path from 'path'
 
 export default {
   components: { ScrollPane },
@@ -35,12 +38,16 @@ export default {
       visible: false,
       top: 0,
       left: 0,
-      selectedTag: {}
+      selectedTag: {},
+      affixTags: []
     }
   },
   computed: {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
+    },
+    routers() {
+      return this.$store.state.permission.routers
     }
   },
   watch: {
@@ -57,12 +64,42 @@ export default {
     }
   },
   mounted() {
+    this.initViewTags()
     this.addViewTags()
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n
     isActive(route) {
       return route.path === this.$route.path
+    },
+    filterAffixTags(routes, basePath = '/') {
+      let tags = []
+      routes.forEach(route => {
+        if (route.meta && route.meta.affix) {
+          tags.push({
+            path: path.resolve(basePath, route.path),
+            name: route.name,
+            meta: { ...route.meta }
+          })
+        }
+        if (route.children) {
+          const tempTags = this.filterAffixTags(route.children, route.path)
+          if (tempTags.length >= 1) {
+            tags = [...tags, ...tempTags]
+          }
+        }
+      })
+
+      return tags
+    },
+    initViewTags() {
+      const affixTags = this.affixTags = this.filterAffixTags(this.routers)
+      for (const tag of affixTags) {
+        // Must have tag name
+        if (tag.name) {
+          this.$store.dispatch('addView', tag)
+        }
+      }
     },
     addViewTags() {
       const { name } = this.$route
@@ -101,12 +138,7 @@ export default {
     closeSelectedTag(view) {
       this.$store.dispatch('delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          const latestView = visitedViews.slice(-1)[0]
-          if (latestView) {
-            this.$router.push(latestView)
-          } else {
-            this.$router.push('/')
-          }
+          this.toLastView(visitedViews)
         }
       })
     },
@@ -116,9 +148,22 @@ export default {
         this.moveToCurrentTag()
       })
     },
-    closeAllTags() {
-      this.$store.dispatch('delAllViews')
-      this.$router.push('/')
+    closeAllTags(view) {
+      this.$store.dispatch('delAllViews').then(({ visitedViews }) => {
+        if (this.affixTags.some(tag => tag.path === view.path)) {
+          return
+        }
+        this.toLastView(visitedViews)
+      })
+    },
+    toLastView(visitedViews) {
+      const latestView = visitedViews.slice(-1)[0]
+      if (latestView) {
+        this.$router.push(latestView)
+      } else {
+        // You can set another route
+        this.$router.push('/')
+      }
     },
     openMenu(tag, e) {
       const menuMinWidth = 105
@@ -185,6 +230,9 @@ export default {
           position: relative;
           margin-right: 2px;
         }
+      }
+      .affix-icon{
+        margin-left: 2px;
       }
     }
   }
