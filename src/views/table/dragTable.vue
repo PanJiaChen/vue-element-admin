@@ -46,7 +46,7 @@
       </el-table-column>
 
       <el-table-column align="center" label="Drag" width="80">
-        <template slot-scope="scope">
+        <template slot-scope="{}">
           <svg-icon class="drag-handler" icon-class="drag"/>
         </template>
       </el-table-column>
