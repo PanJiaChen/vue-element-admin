@@ -6,6 +6,9 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
+
+        <search class="right-menu-item" style="vertical-align: top;color: #5a5e66;font-size:20px;"/>
+
         <error-log class="errLog-container right-menu-item"/>
 
         <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
@@ -57,6 +60,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
+import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
@@ -66,7 +70,8 @@ export default {
     Screenfull,
     SizeSelect,
     LangSelect,
-    ThemePicker
+    ThemePicker,
+    Search
   },
   computed: {
     ...mapGetters([
