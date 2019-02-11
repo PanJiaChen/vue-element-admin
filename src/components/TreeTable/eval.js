@@ -1,27 +1,23 @@
-/**
-* @Author: jianglei
-* @Date:   2017-10-12 12:06:49
-*/
-'use strict'
 import Vue from 'vue'
-export default function treeToArray(data, expandAll, parent = null, level = null) {
+
+// 给数据添加额外的几个属性，并且扁平化数组
+export default function formatData(
+  data,
+  { parent = null, leavel = 0, expand = false } = {}
+) {
+  console.log('data', data)
   let tmp = []
-  Array.from(data).forEach(function(record) {
-    if (record._expanded === undefined) {
-      Vue.set(record, '_expanded', expandAll)
-    }
-    let _level = 1
-    if (level !== undefined && level !== null) {
-      _level = level + 1
-    }
-    Vue.set(record, '_level', _level)
-    // 如果有父元素
-    if (parent) {
-      Vue.set(record, 'parent', parent)
-    }
-    tmp.push(record)
-    if (record.children && record.children.length > 0) {
-      const children = treeToArray(record.children, expandAll, record, _level)
+  data.forEach(item => {
+    Vue.set(item, '__leavel', leavel)
+    Vue.set(item, '__expand', expand)
+    Vue.set(item, '__parent', parent)
+
+    tmp.push(item)
+    if (item.children && item.children.length > 0) {
+      const children = formatData(item.children, {
+        parent: item,
+        leavel: leavel + 1
+      })
       tmp = tmp.concat(children)
     }
   })

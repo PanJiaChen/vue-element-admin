@@ -1,41 +1,37 @@
 <template>
-  <el-table :data="formatData" :row-style="showRow" v-bind="$attrs">
-    <el-table-column v-if="columns.length===0" width="150">
+  <el-table :data="res" :row-style="isShowRow" border style="width: 100%">
+    <el-table-column
+      v-for="(item,idx) in columns"
+      :label="item.label"
+      :key="item.key"
+      :width="item.width"
+      align="center"
+    >
       <template slot-scope="scope">
-        <span v-for="space in scope.row._level" :key="space" class="ms-tree-space"/>
-        <span v-if="iconShow(0,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
+        <span
+          v-if="isNotLastChild(idx,scope.row)"
+          class="tree-ctrl"
+          @click="toggleExpanded(scope.$index)"
+        >
+          <i
+            v-if="!scope.row.__expand"
+            :style="{'padding-left':+scope.row.__leavel*50 + 'px'} "
+            class="el-icon-plus"
+          />
+          <i v-else :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " class="el-icon-minus"/>
         </span>
-        {{ scope.$index }}
+        <slot :scope="scope" :name="item.key">{{ scope.row[item.key] }}</slot>
       </template>
     </el-table-column>
-    <el-table-column v-for="(column, index) in columns" v-else :key="column.value" :label="column.text" :width="column.width">
-      <template slot-scope="scope">
-        <!-- Todo -->
-        <!-- eslint-disable-next-line vue/no-confusing-v-for-v-if -->
-        <span v-for="space in scope.row._level" v-if="index === 0" :key="space" class="ms-tree-space"/>
-        <span v-if="iconShow(index,scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"/>
-          <i v-else class="el-icon-minus"/>
-        </span>
-        {{ scope.row[column.value] }}
-      </template>
-    </el-table-column>
-    <slot/>
   </el-table>
 </template>
 
 <script>
-/**
-  Auth: Lei.j1ang
-  Created: 2018/1/19-13:59
-*/
-import treeToArray from './eval'
+import treeToArray from './eval.js'
+
 export default {
   name: 'TreeTable',
   props: {
-    /* eslint-disable */
     data: {
       type: [Array, Object],
       required: true
@@ -44,16 +40,16 @@ export default {
       type: Array,
       default: () => []
     },
-    evalFunc: Function,
-    evalArgs: Array,
-    expandAll: {
-      type: Boolean,
-      default: false
-    }
+/* eslint-disable */
+    evalFunc: {
+      type: Function
+    },
+    evalArgs: Array
+    /* eslint-enable */
   },
   computed: {
     // 格式化数据源
-    formatData: function() {
+    res() {
       let tmp
       if (!Array.isArray(this.data)) {
         tmp = [this.data]
@@ -61,67 +57,77 @@ export default {
         tmp = this.data
       }
       const func = this.evalFunc || treeToArray
-      const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll]
-      return func.apply(null, args)
+      const args = { ...this.evalArgs }
+      return func(tmp, args)
     }
   },
   methods: {
-    showRow: function(row) {
-      const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true)
-      row.row._show = show
-      return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
+    isShowRow: function(row) {
+      const show = row.row.__parent ? row.row.__parent.__expand : true
+      return show
+        ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;'
+        : 'display:none;'
     },
-    // 切换下级是否展开
-    toggleExpanded: function(trIndex) {
-      const record = this.formatData[trIndex]
-      record._expanded = !record._expanded
+    isNotLastChild(index, record) {
+      return index === 0 && record.children && record.children.length > 0
     },
-    // 图标显示
-    iconShow(index, record) {
-      return (index === 0 && record.children && record.children.length > 0)
+    toggleExpanded(trIndex) {
+      const record = this.res[trIndex]
+      const expand = !record.__expand
+      record.__expand = expand
+      // 默认收起是全部收起，展开是一级一级展开
+      if (!expand) {
+        this.expandRecursion(record, expand)
+      }
+    },
+    expandRecursion(row, expand) {
+      if (row.children && row.children.length > 0) {
+        row.children.map(child => {
+          child.__expand = expand
+          this.expandRecursion(child, expand)
+        })
+      }
     }
   }
 }
 </script>
-<style rel="stylesheet/css">
-  @keyframes treeTableShow {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-  @-webkit-keyframes treeTableShow {
-    from {opacity: 0;}
-    to {opacity: 1;}
-  }
-</style>
 
 <style lang="scss" rel="stylesheet/scss" scoped>
-  $color-blue: #2196F3;
-  $space-width: 18px;
-  .ms-tree-space {
-    position: relative;
-    top: 1px;
-    display: inline-block;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1;
-    width: $space-width;
-    height: 14px;
-    &::before {
-      content: ""
-    }
+@keyframes treeTableShow {
+  from {
+    opacity: 0;
   }
-  .processContainer{
-    width: 100%;
-    height: 100%;
+  to {
+    opacity: 1;
   }
-  table td {
-    line-height: 26px;
+}
+@-webkit-keyframes treeTableShow {
+  from {
+    opacity: 0;
   }
+  to {
+    opacity: 1;
+  }
+}
+$color-blue: #2196f3;
+$space-width: 18px;
+.ms-tree-space {
+  position: relative;
+  top: 1px;
+  display: inline-block;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  width: $space-width;
+  height: 14px;
+  &::before {
+    content: "";
+  }
+}
 
-  .tree-ctrl{
-    position: relative;
-    cursor: pointer;
-    color: $color-blue;
-    margin-left: -$space-width;
-  }
+.tree-ctrl {
+  position: relative;
+  cursor: pointer;
+  color: $color-blue;
+}
 </style>

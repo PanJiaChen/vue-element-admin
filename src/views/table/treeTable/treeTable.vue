@@ -24,21 +24,26 @@ export default {
     return {
       columns: [
         {
-          text: '事件',
-          value: 'event',
+          label: '',
+          key: '__sperad'
+
+        },
+        {
+          label: '事件',
+          key: 'event',
           width: 200
         },
         {
-          text: 'ID',
-          value: 'id'
+          label: 'ID',
+          key: 'id'
         },
         {
-          text: '时间线',
-          value: 'timeLine'
+          label: '时间线',
+          key: 'timeLine'
         },
         {
-          text: '备注',
-          value: 'comment'
+          label: '备注',
+          key: 'comment'
         }
       ],
       data: [
