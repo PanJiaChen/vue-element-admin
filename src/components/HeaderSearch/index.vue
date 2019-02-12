@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import Fuse from 'fuse.js'
 import path from 'path'
 import i18n from '@/lang'
 
@@ -27,8 +28,9 @@ export default {
     return {
       search: '',
       options: [],
-      routersArr: [],
-      show: false
+      searchPool: [],
+      show: false,
+      fuse: undefined
     }
   },
   computed: {
@@ -41,14 +43,17 @@ export default {
   },
   watch: {
     lang() {
-      this.routersArr = this.generateRouters(this.routers)
+      this.searchPool = this.generateRouters(this.routers)
     },
     routers() {
-      this.routersArr = this.generateRouters(this.routers)
+      this.searchPool = this.generateRouters(this.routers)
+    },
+    searchPool(list) {
+      this.initFuse(list)
     }
   },
   mounted() {
-    this.routersArr = this.generateRouters(this.routers)
+    this.searchPool = this.generateRouters(this.routers)
   },
   methods: {
     click() {
@@ -66,57 +71,63 @@ export default {
       this.$router.push(val.path)
       this.search = ''
     },
-    generateRouters(routers, basePath = '/') {
-      const res = []
+    initFuse(list) {
+      this.fuse = new Fuse(list, {
+        shouldSort: true,
+        threshold: 0.4,
+        location: 0,
+        distance: 100,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
+        keys: [{
+          name: 'title',
+          weight: 0.7
+        }, {
+          name: 'path',
+          weight: 0.3
+        }]
+      })
+    },
+    // Filter out the routes that can be displayed in the sidebar
+    // And generate the internationalized title
+    generateRouters(routers, basePath = '/', preFixTitle = []) {
+      let res = []
 
       for (const router of routers) {
+        // skip hidden router
         if (router.hidden) { continue }
 
         const data = {
           path: path.resolve(basePath, router.path),
-          meta: { ...router.meta }
+          meta: { ...router.meta },
+          title: [...preFixTitle]
         }
 
+        // generate internationalized title
         if (router.meta && router.meta.title) {
           const i18ntitle = i18n.t(`route.${router.meta.title}`)
-          data.title = i18ntitle
+          data.title = [...data.title, i18ntitle]
+
+          // only push the routes with title
+          res.push(data)
         }
+
+        // recursive child routers
         if (router.children) {
-          const tempRouters = this.generateRouters(router.children, router.path)
+          const tempRouters = this.generateRouters(router.children, router.path, data.title)
           if (tempRouters.length >= 1) {
-            data.children = tempRouters
+            res = [...res, ...tempRouters]
           }
         }
-        res.push(data)
       }
       return res
     },
     querySearch(query) {
       if (query !== '') {
-        this.options = this.matchRouters(this.routersArr, query)
-        console.log(this.options)
+        this.options = this.fuse.search(query)
       } else {
         this.options = []
       }
-    },
-    matchRouters(routers, query = query.trim().toLowerCase(), preTitle = []) {
-      let options = []
-      routers.forEach(router => {
-        const data = {
-          path: router.path,
-          title: router.title ? [...preTitle, router.title] : [...preTitle]
-        }
-        if (router.title && router.title.toLowerCase().includes(query)) {
-          options.push(data)
-        }
-        if (router.children) {
-          const tempTags = this.matchRouters(router.children, query, data.title)
-          if (tempTags.length >= 1) {
-            options = [...options, ...tempTags]
-          }
-        }
-      })
-      return options
     }
   }
 }
