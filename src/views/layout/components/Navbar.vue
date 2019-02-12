@@ -6,27 +6,26 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
+        <search class="right-menu-item" />
 
-        <search class="right-menu-item" style="vertical-align: top;color: #5a5e66;font-size:20px;"/>
-
-        <error-log class="errLog-container right-menu-item"/>
+        <error-log class="errLog-container right-menu-item hover-effect"/>
 
         <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <screenfull class="right-menu-item"/>
+          <screenfull class="right-menu-item hover-effect"/>
         </el-tooltip>
 
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select class="right-menu-item"/>
+          <size-select class="right-menu-item hover-effect"/>
         </el-tooltip>
 
-        <lang-select class="right-menu-item"/>
+        <lang-select class="right-menu-item hover-effect"/>
 
         <el-tooltip :content="$t('navbar.theme')" effect="dark" placement="bottom">
-          <theme-picker class="theme-picker right-menu-item"/>
+          <theme-picker class="right-menu-item hover-effect"/>
         </el-tooltip>
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom"/>
@@ -105,6 +104,7 @@ export default {
     float: left;
     cursor: pointer;
     transition: background .3s;
+
     &:hover {
       background: rgba(0, 0, 0, .025)
     }
@@ -129,24 +129,30 @@ export default {
     }
 
     .right-menu-item {
-      cursor: pointer;
       display: inline-block;
       padding: 0 8px;
       height: 100%;
-      font-size: 20px;
+      font-size: 18px;
       color: #5a5e66;
       vertical-align: text-bottom;
-      transition: background .3s;
-      &:hover {
-        background: rgba(0, 0, 0, .025)
+
+      &.hover-effect {
+        cursor: pointer;
+        transition: background .3s;
+
+        &:hover {
+          background: rgba(0, 0, 0, .025)
+        }
       }
     }
 
     .avatar-container {
       margin-right: 30px;
+
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+
         .user-avatar {
           cursor: pointer;
           width: 40px;

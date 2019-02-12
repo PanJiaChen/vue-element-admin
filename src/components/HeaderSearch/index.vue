@@ -1,10 +1,10 @@
 <template>
-  <div :class="{'show':show}" class="headerSearch">
+  <div :class="{'show':show}" class="header-search">
     <svg-icon class-name="search-icon" icon-class="search" @click="click" />
     <el-select
       ref="headerSearchSelect"
       v-model="search"
-      :remote-method="remoteMethod"
+      :remote-method="querySearch"
       filterable
       default-first-option
       remote
@@ -23,7 +23,6 @@ import i18n from '@/lang'
 
 export default {
   name: 'HeaderSearch',
-
   data() {
     return {
       search: '',
@@ -60,7 +59,12 @@ export default {
     },
     blur() {
       this.$refs.headerSearchSelect.blur()
+      this.options = []
       this.show = false
+    },
+    change(val) {
+      this.$router.push(val.path)
+      this.search = ''
     },
     generateRouters(routers, basePath = '/') {
       const res = []
@@ -78,14 +82,22 @@ export default {
           data.title = i18ntitle
         }
         if (router.children) {
-          const tempTags = this.generateRouters(router.children, router.path)
-          if (tempTags.length >= 1) {
-            data.children = tempTags
+          const tempRouters = this.generateRouters(router.children, router.path)
+          if (tempRouters.length >= 1) {
+            data.children = tempRouters
           }
         }
         res.push(data)
       }
       return res
+    },
+    querySearch(query) {
+      if (query !== '') {
+        this.options = this.matchRouters(this.routersArr, query)
+        console.log(this.options)
+      } else {
+        this.options = []
+      }
     },
     matchRouters(routers, query = query.trim().toLowerCase(), preTitle = []) {
       let options = []
@@ -105,36 +117,30 @@ export default {
         }
       })
       return options
-    },
-    remoteMethod(query) {
-      if (query !== '') {
-        this.options = this.matchRouters(this.routersArr, query)
-        console.log(this.options)
-      } else {
-        this.options = []
-      }
-    },
-    change(val) {
-      this.$router.push(val.path)
-      this.search = ''
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.headerSearch {
+.header-search {
+  font-size: 0 !important;
+
   .search-icon {
     cursor: pointer;
+    font-size: 18px;
+    vertical-align: middle;
   }
 
   .header-search-select {
-    transition: width 0.3s, margin-left 0.3s;
+    font-size: 18px;
+    transition: width 0.3s;
     width: 0;
     overflow: hidden;
     background: transparent;
     border-radius: 0;
     display: inline-block;
+    vertical-align: middle;
 
     /deep/ .el-input__inner {
       border-radius: 0;
@@ -143,12 +149,14 @@ export default {
       padding-right: 0;
       box-shadow: none !important;
       border-bottom: 1px solid #d9d9d9;
+      vertical-align: middle;
     }
   }
 
   &.show {
     .header-search-select {
       width: 210px;
+      margin-left: 10px;
     }
   }
 }
