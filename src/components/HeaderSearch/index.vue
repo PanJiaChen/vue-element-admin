@@ -10,7 +10,6 @@
       remote
       placeholder="Search"
       class="header-search-select"
-      @blur="blur"
       @change="change">
       <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')"/>
     </el-select>
@@ -50,6 +49,13 @@ export default {
     },
     searchPool(list) {
       this.initFuse(list)
+    },
+    show(value) {
+      if (value) {
+        document.body.addEventListener('click', this.close)
+      } else {
+        document.body.removeEventListener('click', this.close)
+      }
     }
   },
   mounted() {
@@ -62,7 +68,7 @@ export default {
         this.$refs.headerSearchSelect.focus()
       }
     },
-    blur() {
+    close() {
       this.$refs.headerSearchSelect.blur()
       this.options = []
       this.show = false
@@ -70,6 +76,10 @@ export default {
     change(val) {
       this.$router.push(val.path)
       this.search = ''
+      this.options = []
+      this.$nextTick(() => {
+        this.show = false
+      })
     },
     initFuse(list) {
       this.fuse = new Fuse(list, {
@@ -108,8 +118,11 @@ export default {
           const i18ntitle = i18n.t(`route.${router.meta.title}`)
           data.title = [...data.title, i18ntitle]
 
-          // only push the routes with title
-          res.push(data)
+          if (router.redirect !== 'noredirect') {
+            // only push the routes with title
+            // special case: need to exclude parent router without redirect
+            res.push(data)
+          }
         }
 
         // recursive child routers
@@ -145,7 +158,7 @@ export default {
 
   .header-search-select {
     font-size: 18px;
-    transition: width 0.3s;
+    transition: width 0.2s;
     width: 0;
     overflow: hidden;
     background: transparent;
