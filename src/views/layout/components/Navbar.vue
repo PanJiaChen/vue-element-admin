@@ -10,9 +10,7 @@
 
         <error-log class="errLog-container right-menu-item hover-effect"/>
 
-        <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <screenfull class="right-menu-item hover-effect"/>
-        </el-tooltip>
+        <screenfull class="right-menu-item hover-effect"/>
 
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select class="right-menu-item hover-effect"/>
