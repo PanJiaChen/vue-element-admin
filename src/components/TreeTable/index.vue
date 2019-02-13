@@ -1,26 +1,30 @@
 <template>
   <el-table :data="res" :row-style="isShowRow" border style="width: 100%">
     <el-table-column
-      v-for="(item,idx) in columns"
+      v-for="item in columns"
       :label="item.label"
       :key="item.key"
       :width="item.width"
       align="center"
     >
       <template slot-scope="scope">
-        <span
-          v-if="isNotLastChild(idx,scope.row)"
-          class="tree-ctrl"
-          @click="toggleExpanded(scope.$index)"
-        >
-          <i
-            v-if="!scope.row.__expand"
-            :style="{'padding-left':+scope.row.__leavel*50 + 'px'} "
-            class="el-icon-plus"
-          />
-          <i v-else :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " class="el-icon-minus"/>
-        </span>
-        <slot :scope="scope" :name="item.key">{{ scope.row[item.key] }}</slot>
+        <slot :scope="scope" :name="item.key">
+          <template v-if="item.key==='__sperad'">
+            <span
+              v-show="isShowSperadIcon(scope.row)"
+              class="tree-ctrl"
+              @click="toggleExpanded(scope.$index)"
+            >
+              <i
+                v-if="!scope.row.__expand"
+                :style="{'padding-left':+scope.row.__leavel*50 + 'px'} "
+                class="el-icon-plus"
+              />
+              <i v-else :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " class="el-icon-minus"/>
+            </span>
+          </template>
+          {{ scope.row[item.key] }}
+        </slot>
       </template>
     </el-table-column>
   </el-table>
@@ -44,7 +48,7 @@ export default {
     evalFunc: {
       type: Function
     },
-    evalArgs: Array
+    evalArgs: Object
     /* eslint-enable */
   },
   computed: {
@@ -59,30 +63,38 @@ export default {
       const func = this.evalFunc || treeToArray
       const args = { ...this.evalArgs }
       return func(tmp, args)
+    },
+
+    // 自定义的children字段
+    children() {
+      return this.evalArgs && this.evalArgs.children || 'children'
     }
   },
   methods: {
     isShowRow: function(row) {
-      const show = row.row.__parent ? row.row.__parent.__expand : true
+      const parent = row.row.__parent
+      const show = parent ? parent.__expand && parent.__show : true
+      row.row.__show = show
       return show
         ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;'
         : 'display:none;'
     },
-    isNotLastChild(index, record) {
-      return index === 0 && record.children && record.children.length > 0
+    isShowSperadIcon(record) {
+      return record[this.children] && record[this.children].length > 0
     },
     toggleExpanded(trIndex) {
       const record = this.res[trIndex]
       const expand = !record.__expand
       record.__expand = expand
-      // 默认收起是全部收起，展开是一级一级展开
-      if (!expand) {
-        this.expandRecursion(record, expand)
-      }
+      // 收起是全部收起，展开是一级一级展开
+      // if (!expand) {
+      //   this.expandRecursion(record, expand)
+      // }
     },
     expandRecursion(row, expand) {
-      if (row.children && row.children.length > 0) {
-        row.children.map(child => {
+      const children = row[this.children]
+      if (children && children.length > 0) {
+        children.map(child => {
           child.__expand = expand
           this.expandRecursion(child, expand)
         })

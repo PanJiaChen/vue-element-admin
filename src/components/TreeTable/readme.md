@@ -80,7 +80,25 @@ const columns = [
 
 #### evalArgs
 
-解析函数的参数，是一个对象，如果需要展开所有的数据，那么就传入`{expand:true}`
+解析函数的参数，是一个对象，
+
+-  parent = null
+
+树的顶层节点默认为 null
+
+- leavel = 0
+
+默认第一层级为0，然后依次递增
+
+- expand = false
+
+如果需要展开所有的数据，那么就传入`{expand:true}`
+
+- children = 'children' 
+
+如果后台返回的数据不都是带有children字段，那么修改一下即可
+
+
 
 ## 其他
 
