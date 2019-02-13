@@ -1,3 +1,6 @@
+import Vue from 'vue'
+import router from '@/router/index'
+import Layout from '@/views/layout/Layout'
 const tagsView = {
   state: {
     visitedViews: [],
@@ -155,6 +158,32 @@ const tagsView = {
 
     updateVisitedView({ commit }, view) {
       commit('UPDATE_VISITED_VIEW', view)
+    },
+    addPageDetail({ commit, state }, params) {
+      return new Promise((resolve, reject) => {
+        const Detail = params.component
+        const Component = Vue.component(params.name, {
+          components: { Detail },
+          render() {
+            return <Detail />
+          }
+        })
+        router.addRoutes([
+          {
+            path: '',
+            component: Layout,
+            children: [
+              {
+                path: params.path,
+                name: params.name,
+                component: Component,
+                meta: params.meta
+              }
+            ]
+          }
+        ])
+        resolve()
+      })
     }
   }
 }
