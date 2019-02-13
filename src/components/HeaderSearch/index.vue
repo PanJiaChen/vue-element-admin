@@ -100,7 +100,7 @@ export default {
     },
     // Filter out the routes that can be displayed in the sidebar
     // And generate the internationalized title
-    generateRouters(routers, basePath = '/', preFixTitle = []) {
+    generateRouters(routers, basePath = '/', prefixTitle = []) {
       let res = []
 
       for (const router of routers) {
@@ -109,13 +109,13 @@ export default {
 
         const data = {
           path: path.resolve(basePath, router.path),
-          meta: { ...router.meta },
-          title: [...preFixTitle]
+          title: [...prefixTitle]
         }
 
-        // generate internationalized title
         if (router.meta && router.meta.title) {
+          // generate internationalized title
           const i18ntitle = i18n.t(`route.${router.meta.title}`)
+
           data.title = [...data.title, i18ntitle]
 
           if (router.redirect !== 'noredirect') {
