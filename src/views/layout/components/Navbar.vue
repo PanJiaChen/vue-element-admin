@@ -10,9 +10,7 @@
 
         <error-log class="errLog-container right-menu-item hover-effect"/>
 
-        <el-tooltip :content="$t('navbar.screenfull')" effect="dark" placement="bottom">
-          <screenfull class="right-menu-item hover-effect"/>
-        </el-tooltip>
+        <screenfull class="right-menu-item hover-effect"/>
 
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
           <size-select class="right-menu-item hover-effect"/>
@@ -152,12 +150,8 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-<<<<<<< HEAD
         line-height: initial;
         cursor: pointer;
-=======
-
->>>>>>> c71f311... feature[Navbar]: add header-search component (#1591)
         .user-avatar {
           width: 40px;
           height: 40px;

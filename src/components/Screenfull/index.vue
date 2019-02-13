@@ -1,6 +1,6 @@
 <template>
   <div>
-    <svg-icon class-name="screenfull-icon" icon-class="screenfull" @click="click" />
+    <svg-icon :icon-class="isFullscreen?'exit-fullscreen':'fullscreen'" @click="click" />
   </div>
 </template>
 
@@ -23,7 +23,9 @@ export default {
         })
         return false
       }
-      screenfull.toggle()
+      screenfull.toggle().then(() => {
+        this.isFullscreen = screenfull.isFullscreen
+      })
     }
   }
 }

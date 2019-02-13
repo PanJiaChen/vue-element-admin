@@ -69,7 +69,6 @@ export default {
     logOut: 'Salir',
     dashboard: 'Panel de control',
     github: 'Github',
-    screenfull: 'Pantalla completa',
     theme: 'Tema',
     size: 'Tamaño global'
   },
