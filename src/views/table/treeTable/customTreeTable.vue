@@ -134,7 +134,7 @@ export default {
   },
   computed: {
     children() {
-      return this.evalArgs && this.evalArgs.children || 'children'
+      return this.args && this.args.children || 'children'
     }
   },
   methods: {
