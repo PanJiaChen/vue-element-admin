@@ -297,13 +297,12 @@ export const asyncRouterMap = [
     path: '/pdf',
     component: Layout,
     redirect: '/pdf/index',
-    meta: { title: 'PDF', icon: 'pdf' },
     children: [
       {
         path: 'index',
         component: () => import('@/views/pdf/index'),
         name: 'PDF',
-        meta: { title: 'PDF' }
+        meta: { title: 'pdf', icon: 'pdf' }
       }
     ]
   },

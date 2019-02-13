@@ -58,6 +58,7 @@ export default {
     selectExcel: 'Export Selected',
     uploadExcel: 'Upload Excel',
     zip: 'Zip',
+    pdf: 'PDF',
     exportZip: 'Export Zip',
     theme: '换肤',
     clipboardDemo: 'Clipboard',
