@@ -65,11 +65,11 @@ export default {
     click() {
       this.show = !this.show
       if (this.show) {
-        this.$refs.headerSearchSelect.focus()
+        this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.focus()
       }
     },
     close() {
-      this.$refs.headerSearchSelect.blur()
+      this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.blur()
       this.options = []
       this.show = false
     },
@@ -127,7 +127,7 @@ export default {
 
         // recursive child routers
         if (router.children) {
-          const tempRouters = this.generateRouters(router.children, router.path, data.title)
+          const tempRouters = this.generateRouters(router.children, data.path, data.title)
           if (tempRouters.length >= 1) {
             res = [...res, ...tempRouters]
           }
