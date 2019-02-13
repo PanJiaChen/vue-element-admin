@@ -143,8 +143,6 @@ export default {
       this.isIndeterminate = row.__select
     },
     selcetRecursion(row, select, children = 'children') {
-      console.log('row', row)
-      console.log('select', select)
       if (select) {
         this.$set(row, '__expand', true)
         this.$set(row, '__show', true)
