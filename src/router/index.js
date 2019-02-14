@@ -75,7 +75,16 @@ export const constantRouterMap = [
         meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
       }
     ]
-  },
+  }
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+let localRoutermap = [
   {
     path: '/documentation',
     component: Layout,
@@ -101,16 +110,7 @@ export const constantRouterMap = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
-  }
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+  },
   {
     path: '/permission',
     component: Layout,
@@ -142,7 +142,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/icon',
     component: Layout,
@@ -193,7 +192,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/tab',
     component: Layout,
@@ -206,7 +204,6 @@ export const asyncRouterMap = [
       }
     ]
   },
-
   {
     path: '/error',
     component: Layout,
@@ -366,3 +363,15 @@ export const asyncRouterMap = [
 
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+const routerGetType = 'local'
+
+if (routerGetType === 'server') {
+  localRoutermap = [
+    { path: '*', redirect: '/404', hidden: true }
+  ]
+}
+
+export const routerMode = routerGetType
+
+export const asyncRouterMap = localRoutermap
