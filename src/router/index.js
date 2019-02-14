@@ -379,7 +379,7 @@ let localRoutermap = [
   { path: '*', redirect: '/404', hidden: true }
 ]
 
-const routerGetType = 'server'
+const routerGetType = 'local'
 
 if (routerGetType === 'server') {
   localRoutermap = [
