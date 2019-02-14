@@ -54,6 +54,7 @@
     "sortablejs": "1.7.0",
     "tui-editor": "1.2.7",
     "vue": "2.5.17",
+    "vue-clickaway": "^2.2.2",
     "vue-count-to": "1.0.13",
     "vue-i18n": "7.3.2",
     "vue-router": "3.0.2",
