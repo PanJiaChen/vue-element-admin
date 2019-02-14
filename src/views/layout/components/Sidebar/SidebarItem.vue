@@ -25,7 +25,7 @@
             class="nest-menu" />
 
           <app-link v-else :to="resolvePath(child.path)" :key="child.name">
-            <el-menu-item :index="resolvePath(child.path)">
+            <el-menu-item :index="indexPath(child.path)" :route="resolvePath(child.path)">
               <item v-if="child.meta" :icon="child.meta.icon" :title="generateTitle(child.meta.title)" />
             </el-menu-item>
           </app-link>
@@ -101,6 +101,17 @@ export default {
     },
     isExternalLink(routePath) {
       return isExternal(routePath)
+    },
+    // fit for iframe url
+    indexPath(routePath) {
+      if (routePath.indexOf('myiframe')) {
+        return path.resolve(this.basePath, routePath.split('?')[0])
+      } else {
+        if (this.isExternalLink(routePath)) {
+          return routePath
+        }
+        return path.resolve(this.basePath, routePath)
+      }
     },
     generateTitle
   }

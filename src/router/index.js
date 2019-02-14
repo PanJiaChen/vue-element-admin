@@ -77,6 +77,27 @@ export const constantRouterMap = [
     ]
   },
   {
+    path: '/myiframe',
+    component: Layout,
+    redirect: '/myiframe',
+    hidden: true,
+    children: [{
+      path: ':routerPath',
+      name: 'myiframe',
+      component: () => import('@/views/iframe/main')
+    }]
+  }
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+let localRoutermap = [
+
+  {
     path: '/documentation',
     component: Layout,
     redirect: '/documentation/index',
@@ -101,16 +122,7 @@ export const constantRouterMap = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
-  }
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+  },
   {
     path: '/permission',
     component: Layout,
@@ -366,3 +378,14 @@ export const asyncRouterMap = [
 
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+const routerGetType = 'server'
+
+if (routerGetType === 'server') {
+  localRoutermap = [
+    { path: '*', redirect: '/404', hidden: true }
+  ]
+}
+
+export const routerMode = routerGetType
+export const asyncRouterMap = localRoutermap
