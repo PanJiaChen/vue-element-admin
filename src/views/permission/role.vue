@@ -1,47 +1,50 @@
 <template>
   <div class="app-container wrapper">
-    <el-button type="primary" @click="handleNewRole">新增角色</el-button>
+    <el-button type="primary" @click="handleNewRole">{{ $t('permission.newRole') }}</el-button>
 
     <el-table :data="rolesData" style="width: 100%" class="roles-table">
-      <el-table-column label="角色名称" width="220">
+      <el-table-column label="Role Id" width="220">
+        <template slot-scope="scope">{{ scope.row.id }}</template>
+      </el-table-column>
+      <el-table-column label="Role Name" width="220">
         <template slot-scope="scope">{{ scope.row.name }}</template>
       </el-table-column>
-      <el-table-column label="角色描述">
+      <el-table-column label="Description">
         <template slot-scope="scope">{{ scope.row.describe }}</template>
       </el-table-column>
-      <el-table-column label="操作">
+      <el-table-column label="Operations">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">修改权限</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">删除</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="newRoleDialogVisible" title="新增角色">
+    <el-dialog :visible.sync="newRoleDialogVisible" title="New Role">
       <el-form :model="newRole" class="new-role-form">
-        <el-form-item label="角色名称">
-          <el-input v-model="newRole.name" placeholder="角色名称"/>
+        <el-form-item label="Role Name">
+          <el-input v-model="newRole.name" placeholder="role name"/>
         </el-form-item>
-        <el-form-item label="角色描述">
-          <el-input v-model="newRole.describe" placeholder="角色描述"/>
+        <el-form-item label="Role Description">
+          <el-input v-model="newRole.describe" placeholder="role Description"/>
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" @click="confirmNewRole">确定</el-button>
-      <el-button type="danger" @click="cancleNewRole">取消</el-button>
+      <el-button type="primary" @click="confirmNewRole">{{ $t('permission.confirm') }}</el-button>
+      <el-button type="danger" @click="cancleNewRole">{{ $t('permission.cancel') }}</el-button>
     </el-dialog>
 
-    <el-dialog :visible.sync="permissionDialogVisible" title="修改权限">
+    <el-dialog :visible.sync="permissionDialogVisible" :title="$t('permission.editPermission')">
       <el-form label-width="100px">
-        <el-form-item label="角色名称">
+        <el-form-item label="Role Name">
           <span>{{ checkedRole.data.name }}</span>
         </el-form-item>
-        <el-form-item label="菜单列表">
+        <el-form-item label="Menus">
           <el-tree ref="tree" :check-strictly="checkStrictly" :data="MapRoutesData" :props="defaultProps" :filter-node-method="filterNode" show-checkbox node-key="id" class="permission-tree"/>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="confirmPermission">确定</el-button>
-          <el-button type="danger" @click="canclePermission">取消</el-button>
+          <el-button type="primary" @click="confirmPermission">{{ $t('permission.confirm') }}</el-button>
+          <el-button type="danger" @click="canclePermission">{{ $t('permission.cancel') }}</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -92,7 +95,7 @@ export default {
             route = this.onlyOneShowingChild(route.children, route)
           }
           route.children && (route.children = traverseRoutes(route.children))
-          route.name = this.generateTitle((route.meta && route.meta.title) || route.name || route.path || Math.random() + '')
+          route.name = this.generateTitle((route.meta && route.meta.title) || route.name)
           return route
         })
       }
@@ -110,7 +113,7 @@ export default {
   },
   methods: {
     generateTitle,
-    // 过滤掉隐藏的菜单
+    // filter out the hidden route menu
     filterNode(value, data) {
       return !data.hidden
     },
@@ -159,9 +162,9 @@ export default {
       // this.checkStrictly = false
     },
     handleDelete(scope) {
-      this.$confirm('此操作将删除角色, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
+      this.$confirm('Confirm to remove the role?', 'Warning', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel',
         type: 'warning'
       })
         .then(() => {
@@ -171,14 +174,14 @@ export default {
           this.rolesData.splice(scope.$index, 1)
           this.$message({
             type: 'success',
-            message: '删除成功!'
+            message: 'Delete succed!'
           })
         })
         .catch(err => {
           console.error(err)
           this.$message({
             type: 'info',
-            message: '已取消删除'
+            message: 'Delete canceled'
           })
         })
     },
@@ -195,7 +198,7 @@ export default {
       }).then(res => {
         this.rolesData[this.checkedRole.index].accessibleRoutes = routeIds
         this.$message({
-          message: '编辑成功',
+          message: 'Edit succed',
           type: 'success'
         })
         this.permissionDialogVisible = false

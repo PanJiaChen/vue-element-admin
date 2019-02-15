@@ -37,7 +37,7 @@ const asyncRoutesMap = [
         component: 'permission/role',
         name: 'role',
         meta: {
-          title: 'roleManagement',
+          title: 'rolePermission',
           roles: ['admin']
         }
       }
