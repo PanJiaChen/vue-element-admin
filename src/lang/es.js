@@ -5,6 +5,7 @@ export default {
     documentation: 'Documentación',
     guide: 'Guía',
     permission: 'Permisos',
+    rolePermission: 'Permisos de rol',
     pagePermission: 'Permisos de la página',
     directivePermission: 'Permisos de la directiva',
     icons: 'Iconos',
