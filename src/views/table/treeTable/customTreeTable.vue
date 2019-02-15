@@ -8,8 +8,8 @@
     <tree-table :data="data" :columns="columns" :eval-args="args" border>
       <template slot="__checkbox" slot-scope="{scope}">
         <!--  默认leaval 为 0 的时候，提供全选操作 -->
-        <el-checkbox v-if="scope.row[children]&&scope.row[children].length>0" :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " :indeterminate="scope.row.__select" v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">全</el-checkbox>
-        <el-checkbox v-else :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">选</el-checkbox>
+        <el-checkbox v-if="scope.row[children]&&scope.row[children].length>0" :style="{'padding-left':+scope.row.__level*50 + 'px'} " :indeterminate="scope.row.__select" v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">全</el-checkbox>
+        <el-checkbox v-else :style="{'padding-left':+scope.row.__level*50 + 'px'} " v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">选</el-checkbox>
       </template>
     </tree-table>
   </div>

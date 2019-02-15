@@ -86,7 +86,7 @@ const columns = [
 
 树的顶层节点默认为 null
 
-- leavel = 0
+- level = 0
 
 默认第一层级为0，然后依次递增
 

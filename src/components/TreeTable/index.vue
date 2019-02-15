@@ -17,10 +17,10 @@
             >
               <i
                 v-if="!scope.row.__expand"
-                :style="{'padding-left':+scope.row.__leavel*50 + 'px'} "
+                :style="{'padding-left':+scope.row.__level*50 + 'px'} "
                 class="el-icon-plus"
               />
-              <i v-else :style="{'padding-left':+scope.row.__leavel*50 + 'px'} " class="el-icon-minus"/>
+              <i v-else :style="{'padding-left':+scope.row.__level*50 + 'px'} " class="el-icon-minus"/>
             </span>
           </template>
           {{ scope.row[item.key] }}
