@@ -14,6 +14,9 @@ export default {
       isFullscreen: false
     }
   },
+  mounted() {
+    this.init()
+  },
   methods: {
     click() {
       if (!screenfull.enabled) {
@@ -23,9 +26,14 @@ export default {
         })
         return false
       }
-      screenfull.toggle().then(() => {
-        this.isFullscreen = screenfull.isFullscreen
-      })
+      screenfull.toggle()
+    },
+    init() {
+      if (screenfull.enabled) {
+        screenfull.on('change', () => {
+          this.isFullscreen = screenfull.isFullscreen
+        })
+      }
     }
   }
 }
