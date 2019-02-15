@@ -77,7 +77,7 @@ const roles = [
     ] // 可访问的菜单id列表
   },
   {
-    id: '2', // 角色id
+    id: 'operator', // 角色id
     name: 'operator',
     description: '运营',
     accessibleRoutes: [
