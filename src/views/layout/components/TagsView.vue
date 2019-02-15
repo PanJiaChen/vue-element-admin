@@ -230,9 +230,6 @@ export default {
           margin-right: 2px;
         }
       }
-      .affix-icon{
-        margin-left: 2px;
-      }
     }
   }
   .contextmenu {
