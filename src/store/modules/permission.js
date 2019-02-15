@@ -8,6 +8,8 @@ const _import = path => () => import(`@/views/${path}`)
  * @param route
  */
 function hasPermission(roles, route) {
+  // 如果是隐藏的菜单, 都是可访问的, 因为隐藏的菜单不会出现在左侧菜单栏, 不可编辑权限
+  if (route.hidden) return true
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {

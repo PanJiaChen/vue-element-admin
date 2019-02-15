@@ -30,6 +30,16 @@ const asyncRoutesMap = [
           title: 'directivePermission',
           roles: ['admin', 'editor']
         }
+      },
+      {
+        id: '66',
+        path: 'role',
+        component: 'permission/role',
+        name: 'role',
+        meta: {
+          title: 'roleManagement',
+          roles: ['admin']
+        }
       }
     ]
   },
@@ -406,6 +416,7 @@ const asyncRoutesMap = [
     redirect: 'noredirect',
     children: [
       {
+        id: '67',
         path: 'log',
         component: 'errorLog/index',
         name: 'ErrorLog',
@@ -450,23 +461,23 @@ const asyncRoutesMap = [
     ]
   },
 
-  // {
-  //   id: '53',
-  //   path: '/zip',
-  //   component: 'layout/Layout',
-  //   redirect: '/zip/download',
-  //   alwaysShow: true,
-  //   meta: { title: 'zip', icon: 'zip', roles: ['admin', 'editor'] },
-  //   children: [
-  //     {
-  //       id: '54',
-  //       path: 'download',
-  //       component: 'zip/index',
-  //       name: 'ExportZip',
-  //       meta: { title: 'exportZip', roles: ['admin', 'editor'] }
-  //     }
-  //   ]
-  // },
+  {
+    id: '53',
+    path: '/zip',
+    component: 'layout/Layout',
+    redirect: '/zip/download',
+    alwaysShow: true,
+    meta: { title: 'zip', icon: 'zip', roles: ['admin', 'editor'] },
+    children: [
+      {
+        id: '54',
+        path: 'download',
+        component: 'zip/index',
+        name: 'ExportZip',
+        meta: { title: 'exportZip', roles: ['admin', 'editor'] }
+      }
+    ]
+  },
 
   {
     id: '55',
