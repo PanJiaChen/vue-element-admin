@@ -29,6 +29,7 @@ import nestedRouter from './modules/nested'
     icon: 'svg-name'             the icon show in the sidebar
     noCache: true                if true, the page will no be cached(default is false)
     breadcrumb: false            if false, the item will hidden in breadcrumb(default is true)
+    affix: true                  if true, the tag will affix in the tags-view
   }
 **/
 export const constantRouterMap = [
@@ -72,7 +73,7 @@ export const constantRouterMap = [
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: true, affix: true }
       }
     ]
   },
@@ -85,7 +86,7 @@ export const constantRouterMap = [
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', noCache: true }
+        meta: { title: 'documentation', icon: 'documentation', affix: true }
       }
     ]
   },
