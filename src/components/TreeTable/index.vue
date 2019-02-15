@@ -1,5 +1,9 @@
 <template>
-  <el-table :data="res" :row-style="isShowRow" border style="width: 100%">
+  <el-table :data="res" :row-style="isShowRow" v-bind="$attrs">
+    <!--通过插槽支持element-ui原生的表格复选框 http://element-cn.eleme.io/#/zh-CN/component/table#duo-xuan -->
+    <slot name="__selection"/>
+    <!--通过插槽支持element-ui原生的表格展开行 http://element-cn.eleme.io/#/zh-CN/component/table#zhan-kai-xing -->
+    <slot name="__expand"/>
     <el-table-column
       v-for="item in columns"
       :label="item.label"
@@ -17,11 +21,15 @@
             >
               <i
                 v-if="!scope.row.__expand"
-                :style="{'padding-left':+scope.row.__level*50 + 'px'} "
+                :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "
                 class="el-icon-plus"
               />
-              <i v-else :style="{'padding-left':+scope.row.__level*50 + 'px'} " class="el-icon-minus"/>
+              <i v-else :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} " class="el-icon-minus"/>
             </span>
+          </template>
+          <template v-if="item.key==='__checkbox'">
+            <el-checkbox v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0" :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} " :indeterminate="scope.row.__select" v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)"/>
+            <el-checkbox v-else :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} " v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)"/>
           </template>
           {{ scope.row[item.key] }}
         </slot>
@@ -45,11 +53,26 @@ export default {
       default: () => []
     },
 /* eslint-disable */
-    evalFunc: {
+    renderContent: {
       type: Function
     },
-    evalArgs: Object
-    /* eslint-enable */
+  /* eslint-enable */
+    defaultExpandAll: {
+      type: Boolean,
+      default: false
+    },
+    defaultChildren: {
+      type: String,
+      default: 'children'
+    },
+    spreadOffset: {
+      type: Number,
+      default: 50
+    },
+    checkboxOffset: {
+      type: Number,
+      default: 50
+    }
   },
   computed: {
     // 格式化数据源
@@ -60,11 +83,9 @@ export default {
       } else {
         tmp = this.data
       }
-      const func = this.evalFunc || treeToArray
-      const args = { ...this.evalArgs }
-      return func(tmp, args)
+      const func = this.renderContent || treeToArray
+      return func(tmp, { expand: this.defaultExpandAll, children: this.defaultChildren })
     },
-
     // 自定义的children字段
     children() {
       return this.evalArgs && this.evalArgs.children || 'children'
@@ -86,17 +107,21 @@ export default {
       const record = this.res[trIndex]
       const expand = !record.__expand
       record.__expand = expand
-      // 收起是全部收起，展开是一级一级展开
-      // if (!expand) {
-      //   this.expandRecursion(record, expand)
-      // }
     },
-    expandRecursion(row, expand) {
-      const children = row[this.children]
-      if (children && children.length > 0) {
-        children.map(child => {
-          child.__expand = expand
-          this.expandRecursion(child, expand)
+    handleCheckAllChange(row) {
+      this.selcetRecursion(row, row.__select, this.defaultChildren)
+      this.isIndeterminate = row.__select
+    },
+    selcetRecursion(row, select, children = 'children') {
+      if (select) {
+        this.$set(row, '__expand', true)
+        this.$set(row, '__show', true)
+      }
+      const sub_item = row[children]
+      if (sub_item && sub_item.length > 0) {
+        sub_item.map(child => {
+          child.__select = select
+          this.selcetRecursion(child, select, children)
         })
       }
     }

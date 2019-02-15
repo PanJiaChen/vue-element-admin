@@ -57,6 +57,8 @@ const data = [
 const columns = [
   // 建议第一列做展开收缩操作
   { label: '', key: '__spread', width: '200' },
+  // 如果添加复选框
+  { label: '', key: '__checkbox', width: '200' },
   {
     value: string,
     text: string,

@@ -5,11 +5,24 @@
       <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
     </el-tag>
 
-    <tree-table :data="data" :columns="columns" :eval-args="args" border>
-      <template slot="__checkbox" slot-scope="{scope}">
-        <!--  默认leaval 为 0 的时候，提供全选操作 -->
-        <el-checkbox v-if="scope.row[children]&&scope.row[children].length>0" :style="{'padding-left':+scope.row.__level*50 + 'px'} " :indeterminate="scope.row.__select" v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">全</el-checkbox>
-        <el-checkbox v-else :style="{'padding-left':+scope.row.__level*50 + 'px'} " v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)">选</el-checkbox>
+    <tree-table :data="data" :columns="columns" :default-expand-all="true" border style="width: 100%" default-children="son" >
+      <template slot="__selection" >
+        <el-table-column
+          type="selection"
+          width="55"/>
+      </template>
+
+      <template slot="__expand">
+        <el-table-column
+          type="expand"
+          width="55">
+          <template slot-scope="props">
+            <el-button size="mini" type="danger" @click="handleExpandClick(props)">点我</el-button>
+          </template>
+        </el-table-column>
+      </template>
+      <template slot="__opt" slot-scope="{scope}">
+        <el-button size="mini" type="primary" @click="handleClick(scope)">点我</el-button>
       </template>
     </tree-table>
   </div>
@@ -31,11 +44,6 @@ export default {
           width: 400
         },
         {
-          label: '',
-          key: '__sperad',
-          width: 400
-        },
-        {
           label: 'ID',
           key: 'id'
         },
@@ -49,8 +57,8 @@ export default {
           key: 'timeLine'
         },
         {
-          label: '备注',
-          key: 'comment'
+          label: '操作',
+          key: '__opt'
         }
       ],
       data:
@@ -129,31 +137,13 @@ export default {
           ]
         },
       args: { children: 'son' },
-      isIndeterminate: false
-    }
-  },
-  computed: {
-    children() {
-      return this.args && this.args.children || 'children'
+      isIndeterminate: false,
+      children: 'son'
     }
   },
   methods: {
-    handleCheckAllChange(row) {
-      this.selcetRecursion(row, row.__select, this.children)
-      this.isIndeterminate = row.__select
-    },
-    selcetRecursion(row, select, children = 'children') {
-      if (select) {
-        this.$set(row, '__expand', true)
-        this.$set(row, '__show', true)
-      }
-      const sub_item = row[children]
-      if (sub_item && sub_item.length > 0) {
-        sub_item.map(child => {
-          child.__select = select
-          this.selcetRecursion(child, select, children)
-        })
-      }
+    handleClick(scope) {
+      this.$message.success(scope.row.event)
     }
   }
 }
