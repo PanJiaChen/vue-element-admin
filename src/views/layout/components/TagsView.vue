@@ -51,7 +51,7 @@ export default {
   },
   watch: {
     $route() {
-      this.addViewTags()
+      this.addTags()
       this.moveToCurrentTag()
     },
     visible(value) {
@@ -63,8 +63,8 @@ export default {
     }
   },
   mounted() {
-    this.initViewTags()
-    this.addViewTags()
+    this.initTags()
+    this.addTags()
   },
   methods: {
     generateTitle, // generateTitle by vue-i18n
@@ -91,7 +91,7 @@ export default {
 
       return tags
     },
-    initViewTags() {
+    initTags() {
       const affixTags = this.affixTags = this.filterAffixTags(this.routers)
       for (const tag of affixTags) {
         // Must have tag name
@@ -100,7 +100,7 @@ export default {
         }
       }
     },
-    addViewTags() {
+    addTags() {
       const { name } = this.$route
       if (name) {
         this.$store.dispatch('addView', this.$route)
