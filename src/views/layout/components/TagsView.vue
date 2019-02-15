@@ -96,7 +96,7 @@ export default {
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
-          this.$store.dispatch('addView', tag)
+          this.$store.dispatch('addVisitedView', tag)
         }
       }
     },
