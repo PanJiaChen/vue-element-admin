@@ -58,6 +58,7 @@ export default {
     selectExcel: 'Export Selected',
     uploadExcel: 'Upload Excel',
     zip: 'Zip',
+    pdf: 'PDF',
     exportZip: 'Export Zip',
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
@@ -68,7 +69,6 @@ export default {
     logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
-    screenfull: 'Screenfull',
     theme: 'Theme',
     size: 'Global Size'
   },
