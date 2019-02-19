@@ -39,7 +39,7 @@
 <script>
 import path from 'path'
 import { generateTitle } from '@/utils/i18n'
-import { isExternal } from '@/utils'
+import { isExternal } from '@/utils/validate'
 import Item from './Item'
 import AppLink from './Link'
 import FixiOSBug from './FixiOSBug'
@@ -94,14 +94,12 @@ export default {
       return false
     },
     resolvePath(routePath) {
-      if (this.isExternalLink(routePath)) {
+      if (isExternal(routePath)) {
         return routePath
       }
       return path.resolve(this.basePath, routePath)
     },
-    isExternalLink(routePath) {
-      return isExternal(routePath)
-    },
+
     generateTitle
   }
 }
