@@ -290,7 +290,3 @@ export function deepClone(source) {
 export function uniqueArr(arr) {
   return Array.from(new Set(arr))
 }
-
-export function isExternal(path) {
-  return /^(https?:|mailto:|tel:)/.test(path)
-}
