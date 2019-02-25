@@ -1,8 +1,7 @@
 import store from '@/store'
 
 const { body } = document
-const WIDTH = 1024
-const RATIO = 3
+const WIDTH = 992 // refer to Bootstrap's responsive design
 
 export default {
   watch: {
@@ -25,7 +24,7 @@ export default {
   methods: {
     isMobile() {
       const rect = body.getBoundingClientRect()
-      return rect.width - RATIO < WIDTH
+      return rect.width - 1 < WIDTH
     },
     resizeHandler() {
       if (!document.hidden) {
