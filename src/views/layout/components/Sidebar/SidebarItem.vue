@@ -13,7 +13,6 @@
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="generateTitle(item.meta.title)" />
       </template>
-
       <sidebar-item
         v-for="child in item.children"
         :is-nest="true"
