@@ -87,7 +87,7 @@ export default {
     github: 'Github Repository'
   },
   permission: {
-    newRole: 'New Role',
+    addRole: 'New Role',
     editPermission: 'Edit Permission',
     roles: 'Your roles',
     switchRoles: 'Switch roles',

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container wrapper">
-    <el-button type="primary" @click="handleNewRole">{{ $t('permission.newRole') }}</el-button>
+    <el-button type="primary" @click="handleaddRole">{{ $t('permission.addRole') }}</el-button>
 
     <el-table :data="rolesData" style="width: 100%" class="roles-table">
       <el-table-column label="Role Id" width="220">
@@ -20,18 +20,18 @@
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="newRoleDialogVisible" title="New Role">
-      <el-form :model="newRole" class="new-role-form">
+    <el-dialog :visible.sync="addRoleDialogVisible" title="New Role">
+      <el-form :model="addRole" class="new-role-form">
         <el-form-item label="Role Name">
-          <el-input v-model="newRole.name" placeholder="role name"/>
+          <el-input v-model="addRole.name" placeholder="role name"/>
         </el-form-item>
         <el-form-item label="Role Description">
-          <el-input v-model="newRole.describe" placeholder="role Description"/>
+          <el-input v-model="addRole.describe" placeholder="role Description"/>
         </el-form-item>
       </el-form>
 
-      <el-button type="primary" @click="confirmNewRole">{{ $t('permission.confirm') }}</el-button>
-      <el-button type="danger" @click="cancleNewRole">{{ $t('permission.cancel') }}</el-button>
+      <el-button type="primary" @click="confirmaddRole">{{ $t('permission.confirm') }}</el-button>
+      <el-button type="danger" @click="cancleaddRole">{{ $t('permission.cancel') }}</el-button>
     </el-dialog>
 
     <el-dialog :visible.sync="permissionDialogVisible" :title="$t('permission.editPermission')">
@@ -55,7 +55,7 @@
 <script>
 import { deepClone } from '@/utils'
 import { generateTitle } from '@/utils/i18n'
-import { newRole, deleteRole, updateRole, fetchRoles } from '@/api/role'
+import { addRole, deleteRole, updateRole, getRoles } from '@/api/role'
 import { fetchAsyncRoutes } from '@/api/routes'
 
 export default {
@@ -63,13 +63,13 @@ export default {
     return {
       checkStrictly: false,
       routesData: [],
-      newRoleDialogVisible: false,
+      addRoleDialogVisible: false,
       permissionDialogVisible: false,
       defaultProps: {
         children: 'children',
         label: 'name'
       },
-      newRole: {
+      addRole: {
         id: '',
         name: '',
         describe: '',
@@ -106,7 +106,7 @@ export default {
     fetchAsyncRoutes().then(res => {
       this.routesData = res.data
     })
-    fetchRoles().then(res => {
+    getRoles().then(res => {
       console.log(res)
       this.rolesData = res.data
     })
@@ -142,8 +142,8 @@ export default {
 
       return false
     },
-    handleNewRole() {
-      this.newRoleDialogVisible = true
+    handleaddRole() {
+      this.addRoleDialogVisible = true
     },
     handleEdit(scope) {
       this.checkedRole.index = scope.$index
@@ -207,25 +207,25 @@ export default {
     canclePermission() {
       this.permissionDialogVisible = false
     },
-    resetNewRole() {
-      this.newRole = {
+    resetaddRole() {
+      this.addRole = {
         id: '',
         name: '',
         describe: '',
         accessibleRoutes: []
       }
     },
-    confirmNewRole() {
-      newRole(this.newRole).then(res => {
-        this.newRole.id = res.data.id
-        this.rolesData.push(deepClone(this.newRole))
-        this.resetNewRole()
-        this.newRoleDialogVisible = false
+    confirmaddRole() {
+      addRole(this.addRole).then(res => {
+        this.addRole.id = res.data.id
+        this.rolesData.push(deepClone(this.addRole))
+        this.resetaddRole()
+        this.addRoleDialogVisible = false
       })
     },
-    cancleNewRole() {
-      this.resetNewRole()
-      this.newRoleDialogVisible = false
+    cancleaddRole() {
+      this.resetaddRole()
+      this.addRoleDialogVisible = false
     }
   }
 }

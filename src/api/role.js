@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function fetchRoles() {
+export function getRoles() {
   return request({
     url: '/roles',
     method: 'get'
@@ -14,7 +14,7 @@ export function deleteRole(id) {
   })
 }
 
-export function newRole(data) {
+export function addRole(data) {
   return request({
     url: '/roles',
     method: 'post',

@@ -87,7 +87,7 @@ export default {
     github: 'Github 地址'
   },
   permission: {
-    newRole: '新增角色',
+    addRole: '新增角色',
     editPermission: '编辑权限',
     roles: '你的权限',
     switchRoles: '切换权限',

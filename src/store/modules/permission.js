@@ -1,31 +1,16 @@
-import { constantRoutes, generalRoutes } from '@/router'
-import { fetchAsyncRoutes } from '@/api/routes'
+import { asyncRoutes, constantRoutes } from '@/router'
 
-const _import = path => () => import(`@/views/${path}`)
 /**
  * 通过meta.role判断是否与当前用户权限匹配
  * @param roles
  * @param route
  */
 function hasPermission(roles, route) {
-  // 如果是隐藏的菜单, 都是可访问的, 因为隐藏的菜单不会出现在左侧菜单栏, 不可编辑权限
-  if (route.hidden) return true
   if (route.meta && route.meta.roles) {
     return roles.some(role => route.meta.roles.includes(role))
   } else {
     return true
   }
-}
-
-// 将从服务器获得的路由表转换为vue-router的路由表
-function mapAsyncRoutes(asyncRoutes) {
-  return asyncRoutes.map(route => {
-    route.component && (route.component = _import(route.component))
-    if (route.children) {
-      route.children = mapAsyncRoutes(route.children)
-    }
-    return route
-  })
 }
 
 /**
@@ -34,27 +19,30 @@ function mapAsyncRoutes(asyncRoutes) {
  * @param roles
  */
 function filterAsyncRoutes(routes, roles) {
-  return routes.filter(route => {
-    if (!hasPermission(roles, route)) {
-      return false
+  const res = []
+
+  routes.forEach(route => {
+    const tmp = { ...route }
+    if (hasPermission(roles, tmp)) {
+      if (tmp.children) {
+        tmp.children = filterAsyncRoutes(tmp.children, roles)
+      }
+      res.push(tmp)
     }
-    if (route.children) {
-      route.children = filterAsyncRoutes(route.children, roles)
-    }
-    return true
   })
+
+  return res
 }
 
 const permission = {
   state: {
-    routers: [],
-    addRouters: [],
-    asyncRoutes: []
+    routes: [],
+    addRoutes: []
   },
   mutations: {
-    SET_ROUTERS: (state, routes) => {
-      state.addRouters = routes
-      state.routers = constantRoutes.concat(routes)
+    SET_ROUTES: (state, routes) => {
+      state.addRoutes = routes
+      state.routes = constantRoutes.concat(routes)
     }
   },
   actions: {
@@ -62,16 +50,13 @@ const permission = {
       return new Promise(resolve => {
         const { roles } = data
         let accessedRoutes
-        fetchAsyncRoutes().then(res => {
-          const asyncRoutes = res.data
-          if (roles.includes('admin')) {
-            accessedRoutes = mapAsyncRoutes(asyncRoutes).concat(generalRoutes)
-          } else {
-            accessedRoutes = mapAsyncRoutes(filterAsyncRoutes(asyncRoutes, roles)).concat(generalRoutes)
-          }
-          commit('SET_ROUTERS', accessedRoutes)
-          resolve(accessedRoutes)
-        })
+        if (roles.includes('admin')) {
+          accessedRoutes = asyncRoutes
+        } else {
+          accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+        }
+        commit('SET_ROUTES', accessedRoutes)
+        resolve(accessedRoutes)
       })
     }
   }
