@@ -18,7 +18,8 @@ export default {
     }
   },
   watch: {
-    theme(val, oldVal) {
+    theme(val) {
+      const oldVal = this.theme
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
@@ -66,11 +67,18 @@ export default {
 
   methods: {
     updateStyle(style, oldCluster, newCluster) {
-      let newStyle = style
+      const colorOverrides = [] // only capture color overides
       oldCluster.forEach((color, index) => {
-        newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
+        const value = newCluster[index]
+        const color_plain = color.replace(/([()])/g, '\\$1')
+        const repl = new RegExp(`(^|})([^{]+{[^{}]+)${color_plain}\\b([^}]*)(?=})`, 'gi')
+        const nestRepl = new RegExp(color_plain, 'ig') // for greed matching before the 'color'
+        let v
+        while ((v = repl.exec(style))) {
+          colorOverrides.push(v[2].replace(nestRepl, value) + value + v[3] + '}') // '}' not captured in the regexp repl to reserve it as locator-boundary
+        }
       })
-      return newStyle
+      return colorOverrides.join('')
     },
 
     getCSSString(url, callback, variable) {
@@ -135,7 +143,10 @@ export default {
 
 <style>
 .theme-picker .el-color-picker__trigger {
-  vertical-align: middle;
+  margin-top: 12px;
+  height: 26px!important;
+  width: 26px!important;
+  padding: 2px;
 }
 
 .theme-picker-dropdown .el-color-dropdown__link-btn {

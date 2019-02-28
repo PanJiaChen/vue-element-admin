@@ -60,13 +60,13 @@
           <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
         </el-form-item>
 
-        <div class="editor-container">
+        <el-form-item prop="content" style="margin-bottom: 30px;">
           <Tinymce ref="editor" :height="400" v-model="postForm.content" />
-        </div>
+        </el-form-item>
 
-        <div style="margin-bottom: 20px;">
+        <el-form-item prop="image_uri" style="margin-bottom: 30px;">
           <Upload v-model="postForm.image_uri" />
-        </div>
+        </el-form-item>
       </div>
     </el-form>
 
@@ -78,7 +78,7 @@ import Tinymce from '@/components/Tinymce'
 import Upload from '@/components/Upload/singleImage3'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { validateURL } from '@/utils/validate'
+import { validURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
 import { userSearch } from '@/api/remoteSearch'
 import Warning from './Warning'
@@ -121,7 +121,7 @@ export default {
     }
     const validateSourceUri = (rule, value, callback) => {
       if (value) {
-        if (validateURL(value)) {
+        if (validURL(value)) {
           callback()
         } else {
           this.$message({
@@ -245,17 +245,6 @@ export default {
       margin-bottom: 10px;
       .postInfo-container-item {
         float: left;
-      }
-    }
-    .editor-container {
-      min-height: 500px;
-      margin: 0 0 30px;
-      .editor-upload-btn-container {
-        text-align: right;
-        margin-right: 10px;
-        .editor-upload-btn {
-          display: inline-block;
-        }
       }
     }
   }

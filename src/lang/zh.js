@@ -58,6 +58,7 @@ export default {
     selectExcel: 'Export Selected',
     uploadExcel: 'Upload Excel',
     zip: 'Zip',
+    pdf: 'PDF',
     exportZip: 'Export Zip',
     theme: '换肤',
     clipboardDemo: 'Clipboard',
@@ -68,7 +69,6 @@ export default {
     logOut: '退出登录',
     dashboard: '首页',
     github: '项目地址',
-    screenfull: '全屏',
     theme: '换肤',
     size: '布局大小'
   },
@@ -87,7 +87,8 @@ export default {
   },
   permission: {
     roles: '你的权限',
-    switchRoles: '切换权限'
+    switchRoles: '切换权限',
+    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。'
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
@@ -141,6 +142,9 @@ export default {
   zip: {
     export: '导出',
     placeholder: '请输入文件名(默认file)'
+  },
+  pdf: {
+    tips: '这里使用   window.print() 来实现下载pdf的功能'
   },
   theme: {
     change: '换肤',

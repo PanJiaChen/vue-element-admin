@@ -28,8 +28,6 @@ export default {
 
       let firstTag = null
       let lastTag = null
-      let prevTag = null
-      let nextTag = null
 
       // find first tag and last tag
       if (tagList.length > 0) {
@@ -37,26 +35,15 @@ export default {
         lastTag = tagList[tagList.length - 1]
       }
 
-      // find preTag and nextTag
-      for (let i = 0; i < tagList.length; i++) {
-        if (tagList[i] === currentTag) {
-          if (i === 0) {
-            nextTag = tagList[i].length > 1 && tagList[i + 1]
-          } else if (i === tagList.length - 1) {
-            prevTag = tagList[i].length > 1 && tagList[i - 1]
-          } else {
-            prevTag = tagList[i - 1]
-            nextTag = tagList[i + 1]
-          }
-          break
-        }
-      }
-
       if (firstTag === currentTag) {
         $scrollWrapper.scrollLeft = 0
       } else if (lastTag === currentTag) {
         $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
       } else {
+        // find preTag and nextTag
+        const currentIndex = tagList.findIndex(item => item === currentTag)
+        const prevTag = tagList[currentIndex - 1]
+        const nextTag = tagList[currentIndex + 1]
         // the tag's offsetLeft after of nextTag
         const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
 
