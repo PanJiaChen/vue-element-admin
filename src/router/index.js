@@ -80,7 +80,6 @@ export const constantRoutes = [
   {
     path: '/documentation',
     component: Layout,
-    redirect: '/documentation/index',
     children: [
       {
         path: 'index',
@@ -139,6 +138,15 @@ export const asyncRoutes = [
         meta: {
           title: 'directivePermission'
           // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: 'RolePermission',
+        meta: {
+          title: 'rolePermission',
+          roles: ['admin']
         }
       }
     ]

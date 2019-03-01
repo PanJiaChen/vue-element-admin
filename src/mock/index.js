@@ -25,6 +25,7 @@ Mock.mock(/\/login\/logout/, 'post', loginAPI.logout)
 Mock.mock(/\/user\/info\.*/, 'get', loginAPI.getUserInfo)
 
 // 角色相关
+Mock.mock(/\/routes/, 'get', roleAPI.getRoutes)
 Mock.mock(/\/roles/, 'get', roleAPI.getRoles)
 Mock.mock(/\/roles$/, 'post', roleAPI.addRole)
 Mock.mock(/\/roles\/[A-Za-z0-9]+/, 'put', roleAPI.updateRole)
