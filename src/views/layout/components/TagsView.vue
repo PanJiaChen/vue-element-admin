@@ -29,6 +29,7 @@
 import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
+const tagAndTagSpacing = 4 // tagAndTagSpacing
 
 export default {
   components: { ScrollPane },
@@ -113,7 +114,33 @@ export default {
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
+            const $scrollContainerWidth = this.$refs.scrollPane.$el.offsetWidth
+            const $scrollWrapper = this.$refs.scrollPane.scrollWrapper
+
+            const firstTag = tags[0]
+            const lastTag = tags[tags.length - 1]
+
+            if (firstTag === tag) { // Current tag is the first one
+              this.$refs.scrollPane.scrollLeft(0)
+            } else if (lastTag === tag) { // Current tag is the last one
+              this.$refs.scrollPane.scrollLeft($scrollWrapper.scrollWidth - $scrollContainerWidth)
+            } else {
+              // find preTag and nextTag
+              const currentIndex = tags.findIndex(item => item === tag)
+              const prevTag = tags[currentIndex - 1]
+              const nextTag = tags[currentIndex + 1]
+              // the tag's offsetLeft after of nextTag
+              const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
+
+              // the tag's offsetLeft before of prevTag
+              const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+
+              if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $scrollContainerWidth) {
+                this.$refs.scrollPane.scrollLeft(afterNextTagOffsetLeft - $scrollContainerWidth)
+              } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
+                this.$refs.scrollPane.scrollLeft(beforePrevTagOffsetLeft)
+              }
+            }
 
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
