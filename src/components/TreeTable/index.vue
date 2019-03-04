@@ -24,12 +24,27 @@
                 :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "
                 class="el-icon-plus"
               />
-              <i v-else :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} " class="el-icon-minus"/>
+              <i
+                v-else
+                :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "
+                class="el-icon-minus"
+              />
             </span>
           </template>
           <template v-if="item.key==='__checkbox'">
-            <el-checkbox v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0" :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} " :indeterminate="scope.row.__select" v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)"/>
-            <el-checkbox v-else :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} " v-model="scope.row.__select" @change="handleCheckAllChange(scope.row)"/>
+            <el-checkbox
+              v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
+              :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
+              :indeterminate="scope.row.__select"
+              v-model="scope.row.__select"
+              @change="handleCheckAllChange(scope.row)"
+            />
+            <el-checkbox
+              v-else
+              :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
+              v-model="scope.row.__select"
+              @change="handleCheckAllChange(scope.row)"
+            />
           </template>
           {{ scope.row[item.key] }}
         </slot>
@@ -39,7 +54,7 @@
 </template>
 
 <script>
-import treeToArray from './eval.js'
+import treeToArray, { addAttrs } from './eval.js'
 
 export default {
   name: 'TreeTable',
@@ -52,11 +67,11 @@ export default {
       type: Array,
       default: () => []
     },
-/* eslint-disable */
+    /* eslint-disable */
     renderContent: {
       type: Function
     },
-  /* eslint-enable */
+    /* eslint-enable */
     defaultExpandAll: {
       type: Boolean,
       default: false
@@ -74,21 +89,45 @@ export default {
       default: 50
     }
   },
+  data() {
+    return {
+      res: [],
+      guard: 1
+    }
+  },
   computed: {
-    // 格式化数据源
-    res() {
-      let tmp
-      if (!Array.isArray(this.data)) {
-        tmp = [this.data]
-      } else {
-        tmp = this.data
-      }
-      const func = this.renderContent || treeToArray
-      return func(tmp, { expand: this.defaultExpandAll, children: this.defaultChildren })
-    },
-    // 自定义的children字段
     children() {
-      return this.evalArgs && this.evalArgs.children || 'children'
+      return this.defaultChildren
+    }
+  },
+  watch: {
+    data: {
+      // deep watch，监听树表的数据的增删，如果仅仅是展示，可以不用deep watch
+      handler(val) {
+        if (Array.isArray(val) && val.length === 0) {
+          this.res = []
+          return
+        }
+        let tmp = ''
+        if (!Array.isArray(val)) {
+          tmp = [val]
+        } else {
+          tmp = val
+        }
+        const func = this.renderContent || treeToArray
+        if (this.guard > 0) {
+          addAttrs(tmp, {
+            expand: this.defaultExpandAll,
+            children: this.defaultChildren
+          })
+          this.guard--
+        }
+
+        const retval = func(tmp, this.defaultChildren)
+        this.res = retval
+      },
+      deep: true,
+      immediate: true
     }
   },
   methods: {
