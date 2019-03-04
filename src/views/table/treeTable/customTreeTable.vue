@@ -14,7 +14,7 @@
         border
         default-children="sub_button"
       >
-        <template slot="__selection">
+        <template slot="selection">
           <el-table-column type="selection" width="55"/>
         </template>
         <template slot="__expand">

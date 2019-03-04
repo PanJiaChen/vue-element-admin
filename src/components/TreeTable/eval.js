@@ -1,15 +1,13 @@
 import Vue from 'vue'
 
 // 扁平化数组
-export default function treeToTable(
-  data, children = 'children'
-) {
+export default function treeToArray(data, children = 'children') {
   let tmp = []
   data.forEach((item, idx) => {
     Vue.set(item, '__index', idx)
     tmp.push(item)
     if (item[children] && item[children].length > 0) {
-      const res = treeToTable(item[children], children)
+      const res = treeToArray(item[children], children)
       tmp = tmp.concat(res)
     }
   })

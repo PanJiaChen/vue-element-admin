@@ -1,50 +1,34 @@
 <template>
-  <el-table :data="res" :row-style="isShowRow" v-bind="$attrs">
-    <!--通过插槽支持element-ui原生的表格复选框 http://element-cn.eleme.io/#/zh-CN/component/table#duo-xuan -->
-    <slot name="__selection"/>
-    <!--通过插槽支持element-ui原生的表格展开行 http://element-cn.eleme.io/#/zh-CN/component/table#zhan-kai-xing -->
-    <slot name="__expand"/>
+  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs">
+    <slot name="selection" />
     <el-table-column
       v-for="item in columns"
       :label="item.label"
       :key="item.key"
       :width="item.width"
-      align="center"
-    >
+      :align="item.align||'center'"
+      :header-align="item.headerAlign">
       <template slot-scope="scope">
         <slot :scope="scope" :name="item.key">
-          <template v-if="item.key==='__sperad'">
-            <span
-              v-show="isShowSperadIcon(scope.row)"
-              class="tree-ctrl"
-              @click="toggleExpanded(scope.$index)"
-            >
-              <i
-                v-if="!scope.row.__expand"
-                :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "
-                class="el-icon-plus"
-              />
-              <i
-                v-else
-                :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "
-                class="el-icon-minus"
-              />
+          <template v-if="item.expand">
+            <span :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "/>
+            <span v-show="showSperadIcon(scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
+              <i v-if="!scope.row.__expand" class="el-icon-plus" />
+              <i v-else class="el-icon-minus" />
             </span>
           </template>
-          <template v-if="item.key==='__checkbox'">
+          <template v-if="item.checkbox">
             <el-checkbox
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
               :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
               :indeterminate="scope.row.__select"
               v-model="scope.row.__select"
-              @change="handleCheckAllChange(scope.row)"
-            />
+              @change="handleCheckAllChange(scope.row)" />
             <el-checkbox
               v-else
               :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
               v-model="scope.row.__select"
-              @change="handleCheckAllChange(scope.row)"
-            />
+              @change="handleCheckAllChange(scope.row)" />
           </template>
           {{ scope.row[item.key] }}
         </slot>
@@ -60,16 +44,13 @@ export default {
   name: 'TreeTable',
   props: {
     data: {
-      type: [Array, Object],
-      required: true
+      type: Array,
+      required: true,
+      default: () => []
     },
     columns: {
       type: Array,
       default: () => []
-    },
-    /* eslint-disable */
-    renderContent: {
-      type: Function
     },
     /* eslint-enable */
     defaultExpandAll: {
@@ -91,7 +72,7 @@ export default {
   },
   data() {
     return {
-      res: [],
+      tableData: [],
       guard: 1
     }
   },
@@ -104,46 +85,40 @@ export default {
     data: {
       // deep watch，监听树表的数据的增删，如果仅仅是展示，可以不用deep watch
       handler(val) {
-        if (Array.isArray(val) && val.length === 0) {
-          this.res = []
+        if (val.length === 0) {
+          this.tableData = []
           return
         }
-        let tmp = ''
-        if (!Array.isArray(val)) {
-          tmp = [val]
-        } else {
-          tmp = val
-        }
-        const func = this.renderContent || treeToArray
+
         if (this.guard > 0) {
-          addAttrs(tmp, {
+          addAttrs(val, {
             expand: this.defaultExpandAll,
             children: this.defaultChildren
           })
           this.guard--
         }
 
-        const retval = func(tmp, this.defaultChildren)
-        this.res = retval
+        const retval = treeToArray(val, this.defaultChildren)
+        this.tableData = retval
       },
       deep: true,
       immediate: true
     }
   },
   methods: {
-    isShowRow: function(row) {
-      const parent = row.row.__parent
+    showRow: function({ row }) {
+      const parent = row.__parent
       const show = parent ? parent.__expand && parent.__show : true
-      row.row.__show = show
+      row.__show = show
       return show
         ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;'
         : 'display:none;'
     },
-    isShowSperadIcon(record) {
+    showSperadIcon(record) {
       return record[this.children] && record[this.children].length > 0
     },
     toggleExpanded(trIndex) {
-      const record = this.res[trIndex]
+      const record = this.tableData[trIndex]
       const expand = !record.__expand
       record.__expand = expand
     },
@@ -168,7 +143,7 @@ export default {
 }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style>
 @keyframes treeTableShow {
   from {
     opacity: 0;
@@ -185,6 +160,9 @@ export default {
     opacity: 1;
   }
 }
+</style>
+
+<style lang="scss" rel="stylesheet/scss" scoped>
 $color-blue: #2196f3;
 $space-width: 18px;
 .ms-tree-space {
