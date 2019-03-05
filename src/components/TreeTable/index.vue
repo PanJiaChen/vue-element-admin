@@ -1,6 +1,7 @@
 <template>
   <el-table :data="tableData" :row-style="showRow" v-bind="$attrs">
     <slot name="selection" />
+    <slot name="pre-column" />
     <el-table-column
       v-for="item in columns"
       :label="item.label"
@@ -90,22 +91,47 @@ export default {
           return
         }
         console.log('render')
-        if (this.guard > 0) {
-          addAttrs(val, {
-            expand: this.defaultExpandAll,
-            children: this.defaultChildren
-          })
-          this.guard--
-        }
+        // if (this.guard > 0) {
+        addAttrs(val, {
+          expand: this.defaultExpandAll,
+          children: this.defaultChildren
+        })
+        this.guard--
+        // }
 
         const retval = treeToArray(val, this.defaultChildren)
         this.tableData = retval
+        console.log(retval)
       },
-      // deep: true,
+      deep: true,
       immediate: true
     }
   },
   methods: {
+    addBrother(row, data) {
+      if (row._parent) {
+        row._parent.children.push(data)
+      } else {
+        this.data.push(data)
+      }
+    },
+    addChild(row, data) {
+      if (!row.children) {
+        this.$set(row, 'children', [])
+      }
+      row.children.push(data)
+    },
+    delete(row) {
+      const { _index, _parent } = row
+      if (_parent) {
+        _parent.children.splice(_index, 1)
+      } else {
+        this.data.splice(_index, 1)
+      }
+    },
+    getData() {
+      return this.tableData
+    },
     showRow: function({ row }) {
       const parent = row._parent
       const show = parent ? parent._expand && parent._show : true
