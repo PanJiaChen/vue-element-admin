@@ -11,23 +11,23 @@
       <template slot-scope="scope">
         <slot :scope="scope" :name="item.key">
           <template v-if="item.expand">
-            <span :style="{'padding-left':+scope.row.__level*spreadOffset + 'px'} "/>
+            <span :style="{'padding-left':+scope.row._level*spreadOffset + 'px'} "/>
             <span v-show="showSperadIcon(scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
-              <i v-if="!scope.row.__expand" class="el-icon-plus" />
+              <i v-if="!scope.row._expand" class="el-icon-plus" />
               <i v-else class="el-icon-minus" />
             </span>
           </template>
           <template v-if="item.checkbox">
             <el-checkbox
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
-              :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
-              :indeterminate="scope.row.__select"
-              v-model="scope.row.__select"
+              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              :indeterminate="scope.row._select"
+              v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
             <el-checkbox
               v-else
-              :style="{'padding-left':+scope.row.__level*checkboxOffset + 'px'} "
-              v-model="scope.row.__select"
+              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
           </template>
           {{ scope.row[item.key] }}
@@ -89,7 +89,7 @@ export default {
           this.tableData = []
           return
         }
-
+        console.log('render')
         if (this.guard > 0) {
           addAttrs(val, {
             expand: this.defaultExpandAll,
@@ -101,15 +101,15 @@ export default {
         const retval = treeToArray(val, this.defaultChildren)
         this.tableData = retval
       },
-      deep: true,
+      // deep: true,
       immediate: true
     }
   },
   methods: {
     showRow: function({ row }) {
-      const parent = row.__parent
-      const show = parent ? parent.__expand && parent.__show : true
-      row.__show = show
+      const parent = row._parent
+      const show = parent ? parent._expand && parent._show : true
+      row._show = show
       return show
         ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;'
         : 'display:none;'
@@ -119,22 +119,22 @@ export default {
     },
     toggleExpanded(trIndex) {
       const record = this.tableData[trIndex]
-      const expand = !record.__expand
-      record.__expand = expand
+      const expand = !record._expand
+      record._expand = expand
     },
     handleCheckAllChange(row) {
-      this.selcetRecursion(row, row.__select, this.defaultChildren)
-      this.isIndeterminate = row.__select
+      this.selcetRecursion(row, row._select, this.defaultChildren)
+      this.isIndeterminate = row._select
     },
     selcetRecursion(row, select, children = 'children') {
       if (select) {
-        this.$set(row, '__expand', true)
-        this.$set(row, '__show', true)
+        this.$set(row, '_expand', true)
+        this.$set(row, '_show', true)
       }
       const sub_item = row[children]
       if (sub_item && sub_item.length > 0) {
         sub_item.map(child => {
-          child.__select = select
+          child._select = select
           this.selcetRecursion(child, select, children)
         })
       }
@@ -164,20 +164,6 @@ export default {
 
 <style lang="scss" rel="stylesheet/scss" scoped>
 $color-blue: #2196f3;
-$space-width: 18px;
-.ms-tree-space {
-  position: relative;
-  top: 1px;
-  display: inline-block;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1;
-  width: $space-width;
-  height: 14px;
-  &::before {
-    content: "";
-  }
-}
 
 .tree-ctrl {
   position: relative;
