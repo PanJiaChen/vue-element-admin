@@ -1,6 +1,6 @@
 <template>
   <div class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+    <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container tags-view-wrapper" @wheel.native.prevent="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
@@ -14,7 +14,7 @@
         {{ generateTitle(tag.title) }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
-    </scroll-pane>
+    </el-scrollbar>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
       <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">{{
@@ -26,13 +26,10 @@
 </template>
 
 <script>
-import ScrollPane from '@/components/ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
 const tagAndTagSpacing = 4 // tagAndTagSpacing
-
 export default {
-  components: { ScrollPane },
   data() {
     return {
       visible: false,
@@ -114,16 +111,17 @@ export default {
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
-            const $scrollContainerWidth = this.$refs.scrollPane.$el.offsetWidth
-            const $scrollWrapper = this.$refs.scrollPane.scrollWrapper
+            const $container = this.$refs.scrollContainer.$el
+            const $containerWidth = $container.offsetWidth
+            const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
 
             const firstTag = tags[0]
             const lastTag = tags[tags.length - 1]
 
             if (firstTag === tag) { // Current tag is the first one
-              this.$refs.scrollPane.scrollLeft(0)
+              $scrollWrapper.scrollLeft = 0
             } else if (lastTag === tag) { // Current tag is the last one
-              this.$refs.scrollPane.scrollLeft($scrollWrapper.scrollWidth - $scrollContainerWidth)
+              $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
             } else {
               // find preTag and nextTag
               const currentIndex = tags.findIndex(item => item === tag)
@@ -135,10 +133,10 @@ export default {
               // the tag's offsetLeft before of prevTag
               const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
 
-              if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $scrollContainerWidth) {
-                this.$refs.scrollPane.scrollLeft(afterNextTagOffsetLeft - $scrollContainerWidth)
+              if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
+                $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
               } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
-                this.$refs.scrollPane.scrollLeft(beforePrevTagOffsetLeft)
+                $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
               }
             }
 
@@ -211,6 +209,10 @@ export default {
     },
     closeMenu() {
       this.visible = false
+    },
+    handleScroll(e) {
+      const eventDelta = e.wheelDelta || -e.deltaY * 40
+      this.$refs.scrollContainer.$refs.wrap.scrollLeft = this.$refs.scrollContainer.$refs.wrap.scrollLeft + eventDelta / 4
     }
   }
 }
@@ -223,6 +225,20 @@ export default {
   background: #fff;
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  .scroll-container {
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    /deep/ {
+      .el-scrollbar__bar {
+        bottom: 0px;
+      }
+      .el-scrollbar__wrap {
+        height: 49px;
+      }
+    }
+  }
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;

@@ -20,10 +20,8 @@ export default {
   methods: {
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
-      this.scrollWrapper.scrollLeft = this.scrollWrapper.scrollLeft + eventDelta / 4
-    },
-    scrollLeft(offsetLeft) {
-      this.scrollWrapper.scrollLeft = offsetLeft
+      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
     }
   }
 }
