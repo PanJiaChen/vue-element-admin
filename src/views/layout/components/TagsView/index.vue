@@ -1,6 +1,6 @@
 <template>
   <div class="tags-view-container">
-    <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container tags-view-wrapper" @wheel.native.prevent="handleScroll">
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
@@ -14,7 +14,7 @@
         {{ generateTitle(tag.title) }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
-    </el-scrollbar>
+    </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">{{ $t('tagsView.refresh') }}</li>
       <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">{{
@@ -26,10 +26,11 @@
 </template>
 
 <script>
+import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
-const tagAndTagSpacing = 4 // tagAndTagSpacing
 export default {
+  components: { ScrollPane },
   data() {
     return {
       visible: false,
@@ -73,9 +74,10 @@ export default {
       let tags = []
       routes.forEach(route => {
         if (route.meta && route.meta.affix) {
+          const tagPath = path.resolve(basePath, route.path)
           tags.push({
-            fullPath: path.resolve(basePath, route.path),
-            path: path.resolve(basePath, route.path),
+            fullPath: tagPath,
+            path: tagPath,
             name: route.name,
             meta: { ...route.meta }
           })
@@ -87,7 +89,6 @@ export default {
           }
         }
       })
-
       return tags
     },
     initTags() {
@@ -111,40 +112,11 @@ export default {
       this.$nextTick(() => {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
-            const $container = this.$refs.scrollContainer.$el
-            const $containerWidth = $container.offsetWidth
-            const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
-
-            const firstTag = tags[0]
-            const lastTag = tags[tags.length - 1]
-
-            if (firstTag === tag) { // Current tag is the first one
-              $scrollWrapper.scrollLeft = 0
-            } else if (lastTag === tag) { // Current tag is the last one
-              $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
-            } else {
-              // find preTag and nextTag
-              const currentIndex = tags.findIndex(item => item === tag)
-              const prevTag = tags[currentIndex - 1]
-              const nextTag = tags[currentIndex + 1]
-              // the tag's offsetLeft after of nextTag
-              const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
-
-              // the tag's offsetLeft before of prevTag
-              const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
-
-              if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
-                $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
-              } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
-                $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
-              }
-            }
-
+            this.$refs.scrollPane.moveToTarget(tag)
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
               this.$store.dispatch('updateVisitedView', this.$route)
             }
-
             break
           }
         }
@@ -196,23 +168,17 @@ export default {
       const offsetWidth = this.$el.offsetWidth // container width
       const maxLeft = offsetWidth - menuMinWidth // left boundary
       const left = e.clientX - offsetLeft + 15 // 15: margin right
-
       if (left > maxLeft) {
         this.left = maxLeft
       } else {
         this.left = left
       }
       this.top = e.clientY
-
       this.visible = true
       this.selectedTag = tag
     },
     closeMenu() {
       this.visible = false
-    },
-    handleScroll(e) {
-      const eventDelta = e.wheelDelta || -e.deltaY * 40
-      this.$refs.scrollContainer.$refs.wrap.scrollLeft = this.$refs.scrollContainer.$refs.wrap.scrollLeft + eventDelta / 4
     }
   }
 }
@@ -225,20 +191,6 @@ export default {
   background: #fff;
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
-  .scroll-container {
-    white-space: nowrap;
-    position: relative;
-    overflow: hidden;
-    width: 100%;
-    /deep/ {
-      .el-scrollbar__bar {
-        bottom: 0px;
-      }
-      .el-scrollbar__wrap {
-        height: 49px;
-      }
-    }
-  }
   .tags-view-wrapper {
     .tags-view-item {
       display: inline-block;
