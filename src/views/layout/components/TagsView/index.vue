@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import ScrollPane from '@/components/ScrollPane'
+import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
 
@@ -90,7 +90,6 @@ export default {
           }
         }
       })
-
       return tags
     },
     initTags() {
@@ -115,12 +114,10 @@ export default {
         for (const tag of tags) {
           if (tag.to.path === this.$route.path) {
             this.$refs.scrollPane.moveToTarget(tag)
-
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
               this.$store.dispatch('updateVisitedView', this.$route)
             }
-
             break
           }
         }
@@ -178,8 +175,8 @@ export default {
       } else {
         this.left = left
       }
-      this.top = e.clientY
 
+      this.top = e.clientY
       this.visible = true
       this.selectedTag = tag
     },
