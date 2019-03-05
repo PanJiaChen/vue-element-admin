@@ -160,14 +160,10 @@ export default {
     opacity: 1;
   }
 }
-</style>
-
-<style lang="scss" rel="stylesheet/scss" scoped>
-$color-blue: #2196f3;
 
 .tree-ctrl {
   position: relative;
   cursor: pointer;
-  color: $color-blue;
+  color: #2196f3;
 }
 </style>

@@ -2,7 +2,7 @@
 
 此组件仅提供一个创建 TreeTable 的解决思路，本组件充分利用 vue 插槽的特性，方便用户自定义
 
-evel.js 里面。addAttrs 方法会给数据添加几个属性，treeTotable 会对数组扁平化。这些操作都不会破坏源数据，只是会新增属性。
+evel.js 里面 `addAttrs` 方法会给数据添加几个属性，treeTotable 会对数组扁平化。这些操作都不会破坏源数据，只是会新增属性。
 
 调用 addAttrs 后，因\_\_parent 属性，会造成数据循环引用，使用 JSON.stringify()报错，所以转成 JSON 之前需要清除\_\_parent 属性。
 
