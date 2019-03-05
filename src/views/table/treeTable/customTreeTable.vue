@@ -15,6 +15,7 @@
         :columns="columns"
         border
         default-children="children"
+        @selection-change	="selectChange"
       >
 
         <template slot="selection">
@@ -90,11 +91,6 @@ export default {
       tempItem: {},
       dialogFormVisible: false,
       columns: [
-        // {
-        //   label: '',
-        //   // key: '__sperad'
-
-        // },
         {
           label: 'Name',
           key: 'name',
@@ -123,9 +119,6 @@ export default {
         }
       ]
     }
-  },
-  computed: {
-
   },
   created() {
     this.getData()
@@ -165,8 +158,8 @@ export default {
     deleteItem(row) {
       this.$refs.TreeTable.delete(row)
     },
-    updateMenuItem(menuItem) {
-
+    selectChange(val) {
+      console.log(val)
     }
   }
 }

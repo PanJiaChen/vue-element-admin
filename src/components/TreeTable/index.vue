@@ -1,5 +1,5 @@
 <template>
-  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs">
+  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs" v-on="$listeners" >
     <slot name="selection" />
     <slot name="pre-column" />
     <el-table-column
@@ -12,7 +12,7 @@
       <template slot-scope="scope">
         <slot :scope="scope" :name="item.key">
           <template v-if="item.expand">
-            <span :style="{'padding-left':+scope.row._level*spreadOffset + 'px'} "/>
+            <span :style="{'padding-left':+scope.row._level*indent + 'px'} "/>
             <span v-show="showSperadIcon(scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
               <i v-if="!scope.row._expand" class="el-icon-plus" />
               <i v-else class="el-icon-minus" />
@@ -21,13 +21,13 @@
           <template v-if="item.checkbox">
             <el-checkbox
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
-              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              :style="{'padding-left':+scope.row._level*indent + 'px'} "
               :indeterminate="scope.row._select"
               v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
             <el-checkbox
               v-else
-              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              :style="{'padding-left':+scope.row._level*indent + 'px'} "
               v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
           </template>
@@ -53,7 +53,6 @@ export default {
       type: Array,
       default: () => []
     },
-    /* eslint-enable */
     defaultExpandAll: {
       type: Boolean,
       default: false
@@ -62,11 +61,7 @@ export default {
       type: String,
       default: 'children'
     },
-    spreadOffset: {
-      type: Number,
-      default: 50
-    },
-    checkboxOffset: {
+    indent: {
       type: Number,
       default: 50
     }
@@ -85,7 +80,8 @@ export default {
   watch: {
     data: {
       // deep watch，监听树表的数据的增删，如果仅仅是展示，可以不用deep watch
-      handler(val) {
+      handler(newVal, oldVal) {
+        const val = JSON.parse(JSON.stringify(newVal))
         if (val.length === 0) {
           this.tableData = []
           return
