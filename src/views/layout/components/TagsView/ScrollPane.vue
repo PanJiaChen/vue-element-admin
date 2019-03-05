@@ -55,6 +55,7 @@ export default {
 
         // the tag's offsetLeft before of prevTag
         const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+
         if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
           $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
         } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
