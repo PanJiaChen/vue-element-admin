@@ -68,39 +68,25 @@ export default {
   },
   data() {
     return {
-      tableData: [],
       guard: 1
     }
   },
   computed: {
     children() {
       return this.defaultChildren
-    }
-  },
-  watch: {
-    data: {
-      // deep watch，监听树表的数据的增删，如果仅仅是展示，可以不用deep watch
-      handler(newVal, oldVal) {
-        const val = JSON.parse(JSON.stringify(newVal))
-        if (val.length === 0) {
-          this.tableData = []
-          return
-        }
-        console.log('render')
-        // if (this.guard > 0) {
-        addAttrs(val, {
-          expand: this.defaultExpandAll,
-          children: this.defaultChildren
-        })
-        this.guard--
-        // }
+    },
+    tableData() {
+      const data = this.data
+      if (this.data.length === 0) {
+        return []
+      }
+      addAttrs(data, {
+        expand: this.defaultExpandAll,
+        children: this.defaultChildren
+      })
 
-        const retval = treeToArray(val, this.defaultChildren)
-        this.tableData = retval
-        console.log(retval)
-      },
-      deep: true,
-      immediate: true
+      const retval = treeToArray(data, this.defaultChildren)
+      return retval
     }
   },
   methods: {
