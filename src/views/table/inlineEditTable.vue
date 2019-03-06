@@ -23,7 +23,7 @@
 
       <el-table-column width="100px" label="Importance">
         <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon"/>
+          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon" />
         </template>
       </el-table-column>
 
@@ -36,7 +36,7 @@
       <el-table-column min-width="300px" label="Title">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
-            <el-input v-model="scope.row.title" class="edit-input" size="small"/>
+            <el-input v-model="scope.row.title" class="edit-input" size="small" />
             <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">cancel</el-button>
           </template>
           <span v-else>{{ scope.row.title }}</span>

@@ -11,7 +11,7 @@
       placeholder="Search"
       class="header-search-select"
       @change="change">
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')"/>
+      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
     </el-select>
   </div>
 </template>

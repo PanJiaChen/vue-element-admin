@@ -17,8 +17,7 @@
           :placeholder="$t('login.username')"
           name="username"
           type="text"
-          auto-complete="on"
-        />
+          auto-complete="on" />
       </el-form-item>
 
       <el-form-item prop="password">
@@ -31,8 +30,7 @@
           :placeholder="$t('login.password')"
           name="password"
           auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
+          @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>

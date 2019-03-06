@@ -21,6 +21,20 @@ module.exports = {
         "allowFirstLine": false
       }
     }],
+    "vue/html-closing-bracket-newline": ["error", {
+      "singleline": "never",
+      "multiline": "never"
+    }],
+    "vue/singleline-html-element-content-newline": ["error", {
+      "ignoreWhenNoAttributes": true,
+      "ignoreWhenEmpty": true,
+      "ignores": ["a", "abbr", "audio", "b", "bdi", "bdo", "canvas", "cite", "code", "data", "del", "dfn", "em", "i", "iframe", "ins", "kbd", "label", "map", "mark", "noscript", "object", "output", "picture", "q", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "svg", "time", "u", "var", "video", "div"]
+    }],
+    "vue/multiline-html-element-content-newline": ["error", {
+      "ignoreWhenEmpty": true,
+      "ignores": ["a", "abbr", "audio", "b", "bdi", "bdo", "canvas", "cite", "code", "data", "del", "dfn", "em", "i", "iframe", "ins", "kbd", "label", "map", "mark", "noscript", "object", "output", "picture", "q", "ruby", "s", "samp", "small", "span", "strong", "sub", "sup", "svg", "time", "u", "var", "video"],
+      "allowEmptyLines": true
+    }],
     "vue/name-property-casing": ["error", "PascalCase"],
     'accessor-pairs': 2,
     'arrow-spacing': [2, {

@@ -5,7 +5,7 @@
       <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
     </el-tag>
 
-    <tree-table :data="data" :columns="columns" border/>
+    <tree-table :data="data" :columns="columns" border />
 
   </div>
 </template>

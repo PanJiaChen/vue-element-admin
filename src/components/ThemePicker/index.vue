@@ -2,7 +2,7 @@
   <el-color-picker
     v-model="theme"
     class="theme-picker"
-    popper-class="theme-picker-dropdown"/>
+    popper-class="theme-picker-dropdown" />
 </template>
 
 <script>

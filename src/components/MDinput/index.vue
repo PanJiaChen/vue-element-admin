@@ -1,12 +1,12 @@
 <template>
   <div :class="computedClasses" class="material-input__component">
     <div :class="{iconClass:icon}">
-      <i v-if="icon" :class="['el-icon-' + icon]" class="el-input__icon material-input__icon"/>
+      <i v-if="icon" :class="['el-icon-' + icon]" class="el-input__icon material-input__icon" />
       <input
         v-if="type === 'email'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
         :autoComplete="autoComplete"
@@ -18,9 +18,9 @@
         @input="handleModelInput">
       <input
         v-if="type === 'url'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
         :autoComplete="autoComplete"
@@ -32,9 +32,9 @@
         @input="handleModelInput">
       <input
         v-if="type === 'number'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :step="step"
         :readonly="readonly"
         :disabled="disabled"
@@ -51,9 +51,9 @@
         @input="handleModelInput">
       <input
         v-if="type === 'password'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
         :autoComplete="autoComplete"
@@ -67,9 +67,9 @@
         @input="handleModelInput">
       <input
         v-if="type === 'tel'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
         :autoComplete="autoComplete"
@@ -81,9 +81,9 @@
         @input="handleModelInput">
       <input
         v-if="type === 'text'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
         :autoComplete="autoComplete"
@@ -95,9 +95,9 @@
         @focus="handleMdFocus"
         @blur="handleMdBlur"
         @input="handleModelInput">
-      <span class="material-input-bar"/>
+      <span class="material-input-bar" />
       <label class="material-label">
-        <slot/>
+        <slot />
       </label>
     </div>
   </div>
