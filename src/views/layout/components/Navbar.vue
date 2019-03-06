@@ -150,15 +150,15 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
-        line-height: initial;
-        cursor: pointer;
         .user-avatar {
+          cursor: pointer;
           width: 40px;
           height: 40px;
           border-radius: 10px;
         }
 
         .el-icon-caret-bottom {
+          cursor: pointer;
           position: absolute;
           right: -20px;
           top: 25px;
