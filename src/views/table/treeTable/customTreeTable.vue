@@ -32,21 +32,27 @@
           </el-table-column>
         </template>
 
-        <!-- <template slot="name" slot-scope="{scope}">
-          <span :style="{'padding-left':+scope.row.__level*50 + 'px'} ">
-            <a
-              v-if="scope.row.type === 'view'"
-              :href="scope.row.url"
-              class="link-type"
-            >{{ scope.row.name }}</a>
-            <span v-else>{{ scope.row.name }}</span>
-          </span>
-        </template> -->
+        <template slot="timeline" slot-scope="{scope}">
+
+          <el-tooltip :content="scope.row.timeLine+'ms'" effect="dark" placement="left">
+            <div class="processContainer">
+              <div
+                :style="{ width:(scope.row.timeLine||0) * 3+'px',
+                          background:scope.row.timeLine>50?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
+                          marginLeft:scope.row._level * 50+'px' }"
+                class="process">
+                <span style="display:inline-block"/>
+              </div>
+            </div>
+          </el-tooltip>
+
+        </template>
+
         <template slot="append" slot-scope="{scope}">
           <el-button
             size="mini"
             type="primary"
-            @click="addMenuItem(scope.row,'brother',scope)"
+            @click="addMenuItem(scope.row,'brother')"
           >Append Brother
           </el-button>
           <el-button
@@ -97,25 +103,18 @@ export default {
           expand: true
         },
         {
-          label: 'type',
-          key: 'type'
-        },
-        {
-          label: 'appid',
-          key: 'appid'
-        },
-        {
-          label: 'key',
-          key: 'key'
+          label: 'Timeline',
+          key: 'timeline'
         },
         {
           label: 'Append',
-          key: 'append'
+          key: 'append',
+          width: 300
         },
         {
           label: 'Operation',
           key: 'operation',
-          width: '160px'
+          width: 160
         }
       ]
     }
@@ -146,7 +145,7 @@ export default {
       data.splice(index, 1, Object.assign({}, this.tempItem))
       this.dialogFormVisible = false
     },
-    addMenuItem(row, type, a) {
+    addMenuItem(row, type) {
       if (type === 'children') {
         this.$refs.TreeTable.addChild(row, { name: 'child' })
       }
