@@ -1,20 +1,48 @@
 <template>
   <div class="app-container">
 
-    <el-tag style="margin-bottom:20px;">
-      <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
-    </el-tag>
+    <div style="margin-bottom:20px;">
 
-    <tree-table :data="data" :columns="columns" border/>
+      <el-button type="primary" class="option-item">
+        <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
+      </el-button>
+
+      <div class="option-item">
+        <el-tag>Expand All</el-tag>
+        <el-switch
+          v-model="defaultExpandAll"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+          @change="reset"/>
+      </div>
+
+      <div class="option-item">
+        <el-tag>Show Checkbox</el-tag>
+        <el-switch
+          v-model="showCheckbox"
+          active-color="#13ce66"
+          inactive-color="#ff4949"
+        />
+      </div>
+
+    </div>
+
+    <tree-table :key="key" :default-expand-all="defaultExpandAll" :data="data" :columns="columns" border>
+      <template slot="scope" slot-scope="{scope}">
+        <el-tag>level: {{ scope.row._level }}</el-tag>
+        <el-tag>expand: {{ scope.row._expand }}</el-tag>
+        <el-tag>select: {{ scope.row._select }}</el-tag>
+      </template>
+      <template slot="operation" slot-scope="{scope}">
+        <el-button type="primary" size="" @click="click(scope)">Click</el-button>
+      </template>
+    </tree-table>
 
   </div>
 </template>
 
 <script>
-/**
-  Auth: Lei.j1ang
-  Created: 2018/1/19-14:54
-*/
+
 import treeTable from '@/components/TreeTable'
 
 export default {
@@ -22,99 +50,103 @@ export default {
   components: { treeTable },
   data() {
     return {
+      defaultExpandAll: false,
+      showCheckbox: true,
+      key: 1,
       columns: [
         {
-          text: '事件',
-          value: 'event',
-          width: 200
+          label: 'Checkbox',
+          checkbox: true
         },
         {
-          text: 'ID',
-          value: 'id'
+          label: '',
+          key: 'id',
+          expand: true
         },
         {
-          text: '时间线',
-          value: 'timeLine'
+          label: 'Event',
+          key: 'event',
+          width: 200,
+          align: 'left'
         },
         {
-          text: '备注',
-          value: 'comment'
+          label: 'Scope',
+          key: 'scope'
+        },
+        {
+          label: 'Operation',
+          key: 'operation'
         }
       ],
       data: [
         {
           id: 0,
-          event: '事件1',
-          timeLine: 50,
-          comment: '无'
+          event: 'Event-0',
+          timeLine: 50
         },
         {
           id: 1,
-          event: '事件1',
+          event: 'Event-1',
           timeLine: 100,
-          comment: '无',
           children: [
             {
               id: 2,
-              event: '事件2',
-              timeLine: 10,
-              comment: '无'
+              event: 'Event-2',
+              timeLine: 10
+
             },
             {
               id: 3,
-              event: '事件3',
+              event: 'Event-3',
               timeLine: 90,
-              comment: '无',
               children: [
                 {
                   id: 4,
-                  event: '事件4',
-                  timeLine: 5,
-                  comment: '无'
+                  event: 'Event-4',
+                  timeLine: 5
+
                 },
                 {
                   id: 5,
-                  event: '事件5',
-                  timeLine: 10,
-                  comment: '无'
+                  event: 'Event-5',
+                  timeLine: 10
+
                 },
                 {
                   id: 6,
-                  event: '事件6',
+                  event: 'Event-6',
                   timeLine: 75,
-                  comment: '无',
+
                   children: [
                     {
                       id: 7,
-                      event: '事件7',
+                      event: 'Event-7',
                       timeLine: 50,
-                      comment: '无',
+
                       children: [
                         {
                           id: 71,
-                          event: '事件71',
-                          timeLine: 25,
-                          comment: 'xx'
+                          event: 'Event-7-1',
+                          timeLine: 25
+
                         },
                         {
                           id: 72,
-                          event: '事件72',
-                          timeLine: 5,
-                          comment: 'xx'
+                          event: 'Event-7-2',
+                          timeLine: 5
+
                         },
                         {
                           id: 73,
-                          event: '事件73',
-                          timeLine: 20,
-                          comment: 'xx'
+                          event: 'Event-7-3',
+                          timeLine: 20
                         }
                       ]
                     },
                     {
                       id: 8,
-                      event: '事件8',
-                      timeLine: 25,
-                      comment: '无'
+                      event: 'Event-8',
+                      timeLine: 25
                     }
                   ]
                 }
@@ -124,6 +156,34 @@ export default {
         }
       ]
     }
+  },
+  watch: {
+    showCheckbox(val) {
+      if (val) {
+        this.columns.unshift({
+          label: 'Checkbox',
+          checkbox: true
+        })
+      } else {
+        this.columns.shift()
+      }
+      this.reset()
+    }
+  },
+  methods: {
+    reset() {
+      ++this.key
+    },
+    click(scope) {
+      console.log(scope)
+    }
   }
 }
 </script>
+
+<style scoped>
+.option-item{
+  display: inline-block;
+  margin-right: 15px;
+}
+</style>

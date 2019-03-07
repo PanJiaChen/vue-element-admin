@@ -1,137 +1,162 @@
 <template>
-  <div class="app-container">
+  <div>
+    <div class="app-container">
+      <el-tag style="margin-bottom:20px;">
+        <a
+          href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable"
+          target="_blank"
+        >Documentation</a>
+      </el-tag>
 
-    <el-tag style="margin-bottom:20px;">
-      <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
-    </el-tag>
+      <tree-table
+        ref="TreeTable"
+        :data="tableData"
+        :default-expand-all="true"
+        :columns="columns"
+        border
+        default-children="children"
+        @selection-change	="selectChange"
+      >
 
-    <tree-table :data="data" :eval-func="func" :eval-args="args" :expand-all="expandAll" border>
-      <el-table-column label="事件">
-        <template slot-scope="scope">
-          <span style="color:sandybrown">{{ scope.row.event }}</span>
-          <el-tag>{{ scope.row.timeLine+'ms' }}</el-tag>
+        <template slot="selection">
+          <el-table-column type="selection" align="center" width="55"/>
         </template>
-      </el-table-column>
-      <el-table-column label="时间线">
-        <template slot-scope="scope">
+
+        <template slot="pre-column">
+          <el-table-column type="expand" width="55">
+            <template>
+              <el-tag type="info">
+                Here is just a placeholder slot, you can display anything.
+              </el-tag>
+            </template>
+          </el-table-column>
+        </template>
+
+        <template slot="timeline" slot-scope="{scope}">
+
           <el-tooltip :content="scope.row.timeLine+'ms'" effect="dark" placement="left">
             <div class="processContainer">
               <div
-                :style="{ width:scope.row._width * 500+'px',
-                          background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
-                          marginLeft:scope.row._marginLeft * 500+'px' }"
+                :style="{ width:(scope.row.timeLine||0) * 3+'px',
+                          background:scope.row.timeLine>50?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
+                          marginLeft:scope.row._level * 50+'px' }"
                 class="process">
                 <span style="display:inline-block"/>
               </div>
             </div>
           </el-tooltip>
+
         </template>
-      </el-table-column>
-      <el-table-column label="操作" width="200">
-        <template slot-scope="scope">
-          <el-button type="text" @click="message(scope.row)">点击</el-button>
+
+        <template slot="append" slot-scope="{scope}">
+          <el-button
+            size="mini"
+            type="primary"
+            @click="addMenuItem(scope.row,'brother')"
+          >Append Brother
+          </el-button>
+          <el-button
+            size="mini"
+            type="primary"
+            @click="addMenuItem(scope.row,'children')"
+          >Append Child
+          </el-button>
         </template>
-      </el-table-column>
-    </tree-table>
+        <template slot="operation" slot-scope="{scope}">
+          <el-button size="mini" type="success" @click="editItem(scope.row)">Edit</el-button>
+          <el-button size="mini" type="danger" @click="deleteItem(scope.row)">Delete</el-button>
+        </template>
+      </tree-table>
+    </div>
+
+    <el-dialog :visible.sync="dialogFormVisible" title="Edit">
+      <el-form :model="tempItem" label-width="100px" style="width:600px">
+        <el-form-item label="Name">
+          <el-input v-model.trim="tempItem.name" placeholder="Name"/>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="updateItem">Confirm</el-button>
+      </span>
+    </el-dialog>
+
   </div>
 </template>
 
 <script>
-/**
-  Auth: Lei.j1ang
-  Created: 2018/1/19-14:54
-*/
-import treeTable from '@/components/TreeTable'
-import treeToArray from './customEval'
+
+import TreeTable from '@/components/TreeTable'
+import { data } from './data.js'
 
 export default {
-  name: 'CustomTreeTableDemo',
-  components: { treeTable },
+  components: { TreeTable },
   data() {
     return {
-      func: treeToArray,
-      expandAll: false,
-      data:
+      tableData: [],
+      tempItem: {},
+      dialogFormVisible: false,
+      columns: [
         {
-          id: 1,
-          event: '事件1',
-          timeLine: 100,
-          comment: '无',
-          children: [
-            {
-              id: 2,
-              event: '事件2',
-              timeLine: 10,
-              comment: '无'
-            },
-            {
-              id: 3,
-              event: '事件3',
-              timeLine: 90,
-              comment: '无',
-              children: [
-                {
-                  id: 4,
-                  event: '事件4',
-                  timeLine: 5,
-                  comment: '无'
-                },
-                {
-                  id: 5,
-                  event: '事件5',
-                  timeLine: 10,
-                  comment: '无'
-                },
-                {
-                  id: 6,
-                  event: '事件6',
-                  timeLine: 75,
-                  comment: '无',
-                  children: [
-                    {
-                      id: 7,
-                      event: '事件7',
-                      timeLine: 50,
-                      comment: '无',
-                      children: [
-                        {
-                          id: 71,
-                          event: '事件71',
-                          timeLine: 25,
-                          comment: 'xx'
-                        },
-                        {
-                          id: 72,
-                          event: '事件72',
-                          timeLine: 5,
-                          comment: 'xx'
-                        },
-                        {
-                          id: 73,
-                          event: '事件73',
-                          timeLine: 20,
-                          comment: 'xx'
-                        }
-                      ]
-                    },
-                    {
-                      id: 8,
-                      event: '事件8',
-                      timeLine: 25,
-                      comment: '无'
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
+          label: 'Name',
+          key: 'name',
+          expand: true
         },
-      args: [null, null, 'timeLine']
+        {
+          label: 'Timeline',
+          key: 'timeline'
+        },
+        {
+          label: 'Append',
+          key: 'append',
+          width: 300
+        },
+        {
+          label: 'Operation',
+          key: 'operation',
+          width: 160
+        }
+      ]
     }
   },
+  created() {
+    this.getData()
+  },
   methods: {
-    message(row) {
-      this.$message.info(row.event)
+    getData() {
+      this.tableData = data
+    },
+    editItem(row) {
+      this.tempItem = Object.assign({}, row)
+      this.dialogFormVisible = true
+    },
+    updateItem() {
+      const data = this.$refs.TreeTable.getData()
+      const { _id } = this.tempItem
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i]._id === _id) {
+          data.splice(i, 1, Object.assign({}, this.tempItem))
+          break
+        }
+      }
+
+      this.dialogFormVisible = false
+    },
+    addMenuItem(row, type) {
+      if (type === 'children') {
+        this.$refs.TreeTable.addChild(row, { name: 'child' })
+      }
+
+      if (type === 'brother') {
+        this.$refs.TreeTable.addBrother(row, { name: 'brother' })
+      }
+    },
+    deleteItem(row) {
+      this.$refs.TreeTable.delete(row)
+    },
+    selectChange(val) {
+      console.log(val)
     }
   }
 }
