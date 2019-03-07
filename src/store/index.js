@@ -9,7 +9,7 @@ modulesFiles.keys().forEach(item => {
   const key = item.replace(/^\.\/(.*)\.\w+$/, '$1')
   const value = modulesFiles(item)
   modules[key] = value.default
-});
+})
 const store = new Vuex.Store({
   modules,
   getters
