@@ -1,12 +1,10 @@
 <template>
   <div>
     <div class="app-container">
-      <el-tag style="margin-bottom:20px;">
-        <a
-          href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable"
-          target="_blank"
-        >Documentation</a>
-      </el-tag>
+
+      <el-button type="primary" size="small" style="margin:0 0 20px 0;">
+        <a href="https://github.com/PanJiaChen/vue-element-admin/tree/master/src/components/TreeTable" target="_blank">Documentation</a>
+      </el-button>
 
       <tree-table
         ref="TreeTable"
@@ -85,9 +83,8 @@
 </template>
 
 <script>
-
 import TreeTable from '@/components/TreeTable'
-import { data } from './data.js'
+import data from './data.js'
 
 export default {
   components: { TreeTable },
@@ -145,11 +142,11 @@ export default {
     },
     addMenuItem(row, type) {
       if (type === 'children') {
-        this.$refs.TreeTable.addChild(row, { name: 'child' })
+        this.$refs.TreeTable.addChild(row, { name: 'child', timeLine: this.randomNum() })
       }
 
       if (type === 'brother') {
-        this.$refs.TreeTable.addBrother(row, { name: 'brother' })
+        this.$refs.TreeTable.addBrother(row, { name: 'brother', timeLine: this.randomNum() })
       }
     },
     deleteItem(row) {
@@ -157,6 +154,12 @@ export default {
     },
     selectChange(val) {
       console.log(val)
+    },
+    randomNum() {
+      // return 1~100
+      const max = 100
+      const min = 1
+      return Math.floor(Math.random() * (max - min + 1) + min)
     }
   }
 }
