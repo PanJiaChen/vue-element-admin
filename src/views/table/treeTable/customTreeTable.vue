@@ -134,15 +134,13 @@ export default {
       const data = this.$refs.TreeTable.getData()
       const { _id } = this.tempItem
 
-      let index
       for (let i = 0; i < data.length; i++) {
         if (data[i]._id === _id) {
-          index = i
+          data.splice(i, 1, Object.assign({}, this.tempItem))
           break
         }
       }
 
-      data.splice(index, 1, Object.assign({}, this.tempItem))
       this.dialogFormVisible = false
     },
     addMenuItem(row, type) {
