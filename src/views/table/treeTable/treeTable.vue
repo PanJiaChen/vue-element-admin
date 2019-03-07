@@ -8,7 +8,7 @@
       </el-button>
 
       <div class="option-item">
-        <el-tag>默认展开所有</el-tag>
+        <el-tag>Expand All</el-tag>
         <el-switch
           v-model="defaultExpandAll"
           active-color="#13ce66"
@@ -17,7 +17,7 @@
       </div>
 
       <div class="option-item">
-        <el-tag>显示Checkbox</el-tag>
+        <el-tag>Show Checkbox</el-tag>
         <el-switch
           v-model="showCheckbox"
           active-color="#13ce66"

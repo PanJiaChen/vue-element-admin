@@ -1,6 +1,7 @@
 <template>
-  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs">
+  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs" v-on="$listeners" >
     <slot name="selection" />
+    <slot name="pre-column" />
     <el-table-column
       v-for="item in columns"
       :label="item.label"
@@ -11,7 +12,7 @@
       <template slot-scope="scope">
         <slot :scope="scope" :name="item.key">
           <template v-if="item.expand">
-            <span :style="{'padding-left':+scope.row._level*spreadOffset + 'px'} "/>
+            <span :style="{'padding-left':+scope.row._level*indent + 'px'} "/>
             <span v-show="showSperadIcon(scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
               <i v-if="!scope.row._expand" class="el-icon-plus" />
               <i v-else class="el-icon-minus" />
@@ -20,13 +21,13 @@
           <template v-if="item.checkbox">
             <el-checkbox
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
-              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              :style="{'padding-left':+scope.row._level*indent + 'px'} "
               :indeterminate="scope.row._select"
               v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
             <el-checkbox
               v-else
-              :style="{'padding-left':+scope.row._level*checkboxOffset + 'px'} "
+              :style="{'padding-left':+scope.row._level*indent + 'px'} "
               v-model="scope.row._select"
               @change="handleCheckAllChange(scope.row)" />
           </template>
@@ -52,7 +53,6 @@ export default {
       type: Array,
       default: () => []
     },
-    /* eslint-enable */
     defaultExpandAll: {
       type: Boolean,
       default: false
@@ -61,51 +61,59 @@ export default {
       type: String,
       default: 'children'
     },
-    spreadOffset: {
-      type: Number,
-      default: 50
-    },
-    checkboxOffset: {
+    indent: {
       type: Number,
       default: 50
     }
   },
   data() {
     return {
-      tableData: [],
       guard: 1
     }
   },
   computed: {
     children() {
       return this.defaultChildren
-    }
-  },
-  watch: {
-    data: {
-      // deep watch，监听树表的数据的增删，如果仅仅是展示，可以不用deep watch
-      handler(val) {
-        if (val.length === 0) {
-          this.tableData = []
-          return
-        }
-        console.log('render')
-        if (this.guard > 0) {
-          addAttrs(val, {
-            expand: this.defaultExpandAll,
-            children: this.defaultChildren
-          })
-          this.guard--
-        }
+    },
+    tableData() {
+      const data = this.data
+      if (this.data.length === 0) {
+        return []
+      }
+      addAttrs(data, {
+        expand: this.defaultExpandAll,
+        children: this.defaultChildren
+      })
 
-        const retval = treeToArray(val, this.defaultChildren)
-        this.tableData = retval
-      },
-      // deep: true,
-      immediate: true
+      const retval = treeToArray(data, this.defaultChildren)
+      return retval
     }
   },
   methods: {
+    addBrother(row, data) {
+      if (row._parent) {
+        row._parent.children.push(data)
+      } else {
+        this.data.push(data)
+      }
+    },
+    addChild(row, data) {
+      if (!row.children) {
+        this.$set(row, 'children', [])
+      }
+      row.children.push(data)
+    },
+    delete(row) {
+      const { _index, _parent } = row
+      if (_parent) {
+        _parent.children.splice(_index, 1)
+      } else {
+        this.data.splice(_index, 1)
+      }
+    },
+    getData() {
+      return this.tableData
+    },
     showRow: function({ row }) {
       const parent = row._parent
       const show = parent ? parent._expand && parent._show : true
