@@ -1,22 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import app from './modules/app'
-import errorLog from './modules/errorLog'
-import permission from './modules/permission'
-import tagsView from './modules/tagsView'
-import user from './modules/user'
 import getters from './getters'
 
 Vue.use(Vuex)
-
+const modulesFiles = require.context('./modules', false, /\.js$/)
+const modules = {}
+modulesFiles.keys().forEach(item => {
+  const key = item.replace(/^\.\/(.*)\.\w+$/, '$1')
+  const value = modulesFiles(item)
+  modules[key] = value.default
+});
 const store = new Vuex.Store({
-  modules: {
-    app,
-    errorLog,
-    permission,
-    tagsView,
-    user
-  },
+  modules,
   getters
 })
 
