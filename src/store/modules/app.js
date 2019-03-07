@@ -1,5 +1,5 @@
 import Cookies from 'js-cookie'
-
+import { getLanguage } from '@/lang/index'
 const app = {
   state: {
     sidebar: {
@@ -7,7 +7,7 @@ const app = {
       withoutAnimation: false
     },
     device: 'desktop',
-    language: Cookies.get('language') || 'en',
+    language: getLanguage(),
     size: Cookies.get('size') || 'medium'
   },
   mutations: {
