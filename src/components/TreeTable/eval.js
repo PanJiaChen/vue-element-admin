@@ -37,7 +37,7 @@ export function addAttrs(data, { parent = null, preIndex = false, level = 0, exp
   })
 }
 
-export function cleanAttrs(data, children = 'children') {
+export function cleanParentAttr(data, children = 'children') {
   data.forEach(item => {
     item._parent = null
     if (item[children] && item[children].length > 0) {
