@@ -1,4 +1,4 @@
-export const data = [
+const data = [
   {
     name: '1',
     timeLine: 100,
@@ -46,4 +46,6 @@ export const data = [
     timeLine: 40
   }
 ]
+
+export default data
 
