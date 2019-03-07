@@ -14,16 +14,21 @@ export default {
       left: 0
     }
   },
+  computed: {
+    scrollWrapper() {
+      return this.$refs.scrollContainer.$refs.wrap
+    }
+  },
   methods: {
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
-      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
+      const $scrollWrapper = this.scrollWrapper
       $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
     },
     moveToTarget(currentTag) {
       const $container = this.$refs.scrollContainer.$el
       const $containerWidth = $container.offsetWidth
-      const $scrollWrapper = this.$refs.scrollContainer.$refs.wrap
+      const $scrollWrapper = this.scrollWrapper
       const tagList = this.$parent.$refs.tag
 
       let firstTag = null
@@ -44,6 +49,7 @@ export default {
         const currentIndex = tagList.findIndex(item => item === currentTag)
         const prevTag = tagList[currentIndex - 1]
         const nextTag = tagList[currentIndex + 1]
+
         // the tag's offsetLeft after of nextTag
         const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
 

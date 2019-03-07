@@ -10,6 +10,7 @@ import Layout from '@/views/layout/Layout'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
+import treeTableRouter from './modules/tree-table'
 import nestedRouter from './modules/nested'
 
 /** note: sub-menu only appear when children.length>=1
@@ -162,6 +163,7 @@ export const asyncRouterMap = [
   chartsRouter,
   nestedRouter,
   tableRouter,
+  treeTableRouter,
 
   {
     path: '/example',

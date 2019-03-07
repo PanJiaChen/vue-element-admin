@@ -91,20 +91,19 @@ export function getQueryObject(url) {
 }
 
 /**
- *get getByteLen
- * @param {Sting} val input value
+ * @param {Sting} input value
  * @returns {number} output value
  */
-export function getByteLen(val) {
-  let len = 0
-  for (let i = 0; i < val.length; i++) {
-    if (val[i].match(/[^\x00-\xff]/gi) != null) {
-      len += 1
-    } else {
-      len += 0.5
-    }
+export function byteLength(str) {
+  // returns the byte length of an utf8 string
+  let s = str.length
+  for (var i = str.length - 1; i >= 0; i--) {
+    const code = str.charCodeAt(i)
+    if (code > 0x7f && code <= 0x7ff) s++
+    else if (code > 0x7ff && code <= 0xffff) s += 2
+    if (code >= 0xDC00 && code <= 0xDFFF) i--
   }
-  return Math.floor(len)
+  return s
 }
 
 export function cleanArray(actual) {
@@ -239,7 +238,7 @@ export function debounce(func, wait, immediate) {
     // 据上一次触发时间间隔
     const last = +new Date() - timestamp
 
-    // 上次被包装函数被调用时间间隔last小于设定时间间隔wait
+    // 上次被包装函数被调用时间间隔 last 小于设定时间间隔 wait
     if (last < wait && last > 0) {
       timeout = setTimeout(later, wait - last)
     } else {
