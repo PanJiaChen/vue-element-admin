@@ -142,11 +142,11 @@ export default {
     },
     addMenuItem(row, type) {
       if (type === 'children') {
-        this.$refs.TreeTable.addChild(row, { name: 'child' })
+        this.$refs.TreeTable.addChild(row, { name: 'child', timeLine: this.randomNum() })
       }
 
       if (type === 'brother') {
-        this.$refs.TreeTable.addBrother(row, { name: 'brother' })
+        this.$refs.TreeTable.addBrother(row, { name: 'brother', timeLine: this.randomNum() })
       }
     },
     deleteItem(row) {
@@ -154,6 +154,12 @@ export default {
     },
     selectChange(val) {
       console.log(val)
+    },
+    randomNum() {
+      // return 1~100
+      const max = 100
+      const min = 1
+      return Math.floor(Math.random() * (max - min + 1) + min)
     }
   }
 }

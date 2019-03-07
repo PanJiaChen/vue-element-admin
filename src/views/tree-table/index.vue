@@ -100,6 +100,20 @@ export default {
     },
     click(scope) {
       console.log(scope)
+
+      const row = scope.row
+      const message = Object.keys(row)
+        .map(i => {
+          return `<p>${i}: ${row[i]}</p>`
+        })
+        .join('')
+
+      this.$notify({
+        title: 'Success',
+        dangerouslyUseHTMLString: true,
+        message: message,
+        type: 'success'
+      })
     }
   }
 }
