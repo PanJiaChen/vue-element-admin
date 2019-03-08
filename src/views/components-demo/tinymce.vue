@@ -5,9 +5,9 @@
       <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/component/rich-editor.html"> {{ $t('components.documentation') }}</a>
     </code>
     <div>
-      <tinymce :height="300" v-model="content"/>
+      <tinymce v-model="content" :height="300" />
     </div>
-    <div class="editor-content" v-html="content"/>
+    <div class="editor-content" v-html="content" />
   </div>
 </template>
 

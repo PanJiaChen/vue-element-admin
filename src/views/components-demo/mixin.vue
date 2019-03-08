@@ -7,22 +7,34 @@
         </div>
         <div style="margin-bottom:50px;">
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn blue-btn" to="/documentation/index">Documentation</router-link>
+            <router-link class="pan-btn blue-btn" to="/documentation/index">
+              Documentation
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn light-blue-btn" to="/icon/index">Icons</router-link>
+            <router-link class="pan-btn light-blue-btn" to="/icon/index">
+              Icons
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn pink-btn" to="/excel/export-excel">Excel</router-link>
+            <router-link class="pan-btn pink-btn" to="/excel/export-excel">
+              Excel
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn green-btn" to="/table/complex-table">Table</router-link>
+            <router-link class="pan-btn green-btn" to="/table/complex-table">
+              Table
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn tiffany-btn" to="/example/create">Form</router-link>
+            <router-link class="pan-btn tiffany-btn" to="/example/create">
+              Form
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
+            <router-link class="pan-btn yellow-btn" to="/theme/index">
+              Theme
+            </router-link>
           </el-col>
         </div>
       </el-card>
@@ -37,7 +49,9 @@
           <div style="height:100px;">
             <el-form :model="demo" :rules="demoRules">
               <el-form-item prop="title">
-                <md-input v-model="demo.title" icon="search" name="title" placeholder="输入标题">标题</md-input>
+                <md-input v-model="demo.title" icon="search" name="title" placeholder="输入标题">
+                  标题
+                </md-input>
               </el-form-item>
             </el-form>
           </div>
@@ -63,7 +77,9 @@
             <span>水波纹 waves v-directive</span>
           </div>
           <div class="component-item">
-            <el-button v-waves type="primary">水波纹效果</el-button>
+            <el-button v-waves type="primary">
+              水波纹效果
+            </el-button>
           </div>
         </el-card>
       </el-col>
@@ -74,7 +90,7 @@
             <span>hover text</span>
           </div>
           <div class="component-item">
-            <mallki class-name="mallki-text" text="vue-element-admin"/>
+            <mallki class-name="mallki-text" text="vue-element-admin" />
           </div>
         </el-card>
       </el-col>
@@ -87,12 +103,11 @@
             <span>Share</span>
           </div>
           <div class="component-item" style="height:420px;">
-            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章"/>
+            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章" />
           </div>
         </el-card>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
