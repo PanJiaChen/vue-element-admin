@@ -80,11 +80,6 @@ export default {
       if (this.data.length === 0) {
         return []
       }
-<<<<<<< HEAD
-      const func = this.evalFunc || treeToArray
-      const args = this.evalArgs ? [].concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll]
-      return func.apply(null, args)
-=======
       addAttrs(data, {
         expand: this.defaultExpandAll,
         children: this.defaultChildren
@@ -92,7 +87,6 @@ export default {
 
       const retval = treeToArray(data, this.defaultChildren)
       return retval
->>>>>>> dc6030b... perf[Tree-Table]: refactor tree-table (#1587)
     }
   },
   methods: {
