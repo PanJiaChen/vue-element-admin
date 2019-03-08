@@ -45,7 +45,9 @@ module.exports = {
       // parse app.body
       // http://expressjs.com/en/4x/api.html#req.body
       app.use(bodyParser.json())
-      app.use(bodyParser.urlencoded({ extended: true }))
+      app.use(bodyParser.urlencoded({
+        extended: true
+      }))
 
       // import ES2015 module from common.js module
       const { default: mocks } = require('./mock')
@@ -65,8 +67,8 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    config.plugins.delete('preload')// TODO: need test
-    config.plugins.delete('prefetch')// TODO: need test
+    config.plugins.delete('preload') // TODO: need test
+    config.plugins.delete('prefetch') // TODO: need test
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
@@ -82,7 +84,15 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
+      })
+      .end()
     config
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
