@@ -4,7 +4,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/views/layout/Layout'
+import Layout from '@/layout/Layout'
 
 /* Router Modules */
 import componentsRouter from './modules/components'
