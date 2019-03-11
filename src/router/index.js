@@ -85,9 +85,9 @@ export const constantRouterMap = [
     children: [
       {
         path: 'list',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Gift List', icon: 'documentation', affix: true }
+        component: () => import('@/views/gift/list'),
+        name: 'GiftList',
+        meta: { title: 'Gift List', icon: 'table', affix: true }
       }
     ]
   },
