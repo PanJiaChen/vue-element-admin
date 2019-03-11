@@ -5,7 +5,9 @@ function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const port = 9527 // TODO: change to Settings
+// TODO: change to Settings
+const port = 9527
+const name = 'vue-element-admin'
 
 // Explanation of each configuration item You can find it in https://cli.vuejs.org/config/
 module.exports = {
@@ -20,7 +22,7 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: process.env.NODE_ENV === 'development' ? 'error' : false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -39,7 +41,6 @@ module.exports = {
       }
     },
     after(app) {
-      console.log('apple')
       const bodyParser = require('body-parser')
       require('@babel/register')
       // parse app.body
@@ -59,7 +60,7 @@ module.exports = {
   configureWebpack: {
     // We provide the app's title in Webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: 'vue-element-admin', // TODO: change to Settings
+    name: name,
     resolve: {
       alias: {
         '@': resolve('src')
@@ -102,11 +103,13 @@ module.exports = {
       .when(process.env.NODE_ENV !== 'development',
         config => {
           config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .use('script-ext-html-webpack-plugin', [{
-              // `runtime` must same as runtimeChunk name. default is `runtime`
-              inline: /runtime\..*\.js$/
-            }])
+          // .plugin('ScriptExtHtmlWebpackPlugin')
+          // .after('html')
+          // .use('script-ext-html-webpack-plugin', [{
+          //   // `runtime` must same as runtimeChunk name. default is `runtime`
+          //   inline: /runtime\..*\.js$/
+          // }])
+          // .end()
           config
             .optimization.splitChunks({
               chunks: 'all',
