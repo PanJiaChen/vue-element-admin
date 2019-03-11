@@ -18,6 +18,8 @@
 </template>
 
 <script>
+// fuse is a lightweight fuzzy-search module
+// make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path'
 import i18n from '@/lang'
