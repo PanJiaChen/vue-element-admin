@@ -26,6 +26,8 @@ const messages = {
 }
 
 const i18n = new VueI18n({
+  // 暂时隐藏 i18n 警告 todo
+  silentTranslationWarn: true,
   // set locale
   // options: en | zh | es
   locale: Cookies.get('language') || 'en',
