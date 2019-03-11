@@ -31,25 +31,42 @@
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.date')" width="150px" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column :label="$t('table.title')" min-width="150px">
-        <template slot-scope="scope">
-          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
-          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column :label="$t('giftList.giftName')" width="110px" align="center">
         <template slot-scope="scope">
           <span>{{ scope.row.author }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+      <el-table-column :label="'Seller SKU'" width="110px" align="center">
         <template slot-scope="scope">
-          <span style="color:red;">{{ scope.row.reviewer }}</span>
+          <span>{{ scope.row.author }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="'Short Description'" min-width="150px">
+        <template slot-scope="scope">
+          <span class="link-type" @click="handleUpdate(scope.row)">{{ scope.row.title }}</span>
+          <el-tag>{{ scope.row.type | typeFilter }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column :label="'Image'" width="80px">
+        <template slot-scope="scope">
+          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon"/>
+        </template>
+      </el-table-column>
+      <el-table-column :label="'Product Link'" align="center" width="95">
+        <template slot-scope="scope">
+          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
+          <span v-else>0</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="'Location & ASIN'" width="110px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.author }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="'Cost'" align="center" width="95">
+        <template slot-scope="scope">
+          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
+          <span v-else>0</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.importance')" width="80px">
@@ -57,15 +74,19 @@
           <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="meta-item__icon"/>
         </template>
       </el-table-column>
-      <el-table-column :label="$t('table.readings')" align="center" width="95">
-        <template slot-scope="scope">
-          <span v-if="scope.row.pageviews" class="link-type" @click="handleFetchPv(scope.row.pageviews)">{{ scope.row.pageviews }}</span>
-          <span v-else>0</span>
-        </template>
-      </el-table-column>
       <el-table-column :label="$t('table.status')" class-name="status-col" width="100">
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="showReviewer" :label="$t('table.reviewer')" width="110px" align="center">
+        <template slot-scope="scope">
+          <span style="color:red;">{{ scope.row.reviewer }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column :label="$t('table.date')" width="150px" align="center">
+        <template slot-scope="scope">
+          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="$t('table.actions')" align="center" width="230" class-name="small-padding fixed-width">
