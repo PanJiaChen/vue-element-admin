@@ -146,6 +146,17 @@ export default {
           this.selcetRecursion(child, select, children)
         })
       }
+    },
+    updateTreeArray(index, item) {
+      const { _id } = item
+      const data = this.data
+
+      for (let i = 0; i < data.length; i++) {
+        if (data[i]._id === _id) {
+          data.splice(i, 1, Object.assign({}, item))
+          break
+        }
+      }
     }
   }
 }

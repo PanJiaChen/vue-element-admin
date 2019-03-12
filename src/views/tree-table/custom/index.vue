@@ -134,6 +134,7 @@ export default {
       for (let i = 0; i < data.length; i++) {
         if (data[i]._id === _id) {
           data.splice(i, 1, Object.assign({}, this.tempItem))
+          this.$refs.TreeTable.updateTreeArray(i, this.tempItem)
           break
         }
       }
