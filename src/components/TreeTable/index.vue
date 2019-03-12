@@ -147,16 +147,18 @@ export default {
         })
       }
     },
-    updateTreeArray(index, item) {
-      const { _id } = item
-      const data = this.data
-
-      for (let i = 0; i < data.length; i++) {
-        if (data[i]._id === _id) {
-          data.splice(i, 1, Object.assign({}, item))
-          break
+    updateTreeNode(item) {
+      return new Promise(resolve => {
+        const { _id, _parent } = item
+        const index = _id.split('-').slice(-1)[0] // get last index
+        if (_parent) {
+          _parent.children.splice(index, 1, item)
+          resolve(this.data)
+        } else {
+          this.data.splice(index, 1, item)
+          resolve(this.data)
         }
-      }
+      })
     }
   }
 }
