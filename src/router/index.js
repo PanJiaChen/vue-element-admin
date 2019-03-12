@@ -87,23 +87,78 @@ export const constantRouterMap = [
         path: 'list',
         component: () => import('@/views/gift/list'),
         name: 'GiftList',
-        meta: { title: 'Gift List', icon: 'table', affix: true }
+        // affix 固定在标签栏上
+        meta: { title: 'Gift List', icon: 'table', affix: false }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/customer',
     component: Layout,
-    redirect: '/documentation/index',
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/gift/list'),
+        name: 'CustomerList',
+        meta: { title: 'Customer List', icon: 'user', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/vip',
+    component: Layout,
+    children: [
+      {
+        path: 'list',
+        component: () => import('@/views/gift/list'),
+        name: 'VIPList',
+        meta: { title: 'VIP List', icon: 'theme', affix: false }
+      }
+    ]
+  },
+  {
+    path: '/knowledge',
+    component: Layout,
     children: [
       {
         path: 'index',
         component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', affix: true }
+        name: 'Knowledge',
+        meta: { title: 'Knowledge', icon: 'tab', affix: false }
       }
     ]
   },
+  {
+    path: '/settings',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/documentation/index'),
+        name: 'Settings',
+        meta: { title: 'Settings', icon: 'example', affix: false }
+      }
+    ]
+  },
+  {
+    path: 'test-form',
+    component: Layout,
+    children: [
+      {
+        path: 'https://dev.zealousbrand.com/free-gift',
+        meta: { title: 'Test Form', icon: 'link' }
+      }
+    ]
+  },
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
   {
     path: '/guide',
     component: Layout,
@@ -116,16 +171,7 @@ export const constantRouterMap = [
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
-  }
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+  },
   {
     path: '/permission',
     component: Layout,
