@@ -15,8 +15,17 @@ RUN yarn run build:prod
 
 
 
+# https://docs.docker.com/develop/develop-images/multistage-build/
+
 FROM busybox
 
 COPY --from=0 /app/dist /app_dist
 
 
+# git push aliyun master:master
+
+# docker login --username=logig registry.cn-shenzhen.aliyuncs.com
+# docker pull registry.cn-shenzhen.aliyuncs.com/logaxn/zealouscrm-vue
+
+# 将镜像里的 /app_dist 目录拷出来
+# docker run --rm -v $HOME/dist:/dist registry.cn-shenzhen.aliyuncs.com/logaxn/zealouscrm-vue cp -r -T /app_dist /dist
