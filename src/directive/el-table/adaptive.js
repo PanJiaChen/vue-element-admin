@@ -1,7 +1,7 @@
 
 export default{
   /**
-   * 仅当 el-table :data属性为动态加载（不包括computed）才会触发此事件
+   * 仅当 el-table :data属性为动态加载（不包括computed）才会触发此事件，且 已为 el-table 设置  height 的初始值(任何值)  此指令才起作用
    * @param {*} el
    * @param {*} binding
    * binding.value 格式为 {
