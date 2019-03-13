@@ -6,17 +6,21 @@
       <navbar />
       <tags-view />
       <app-main />
+      <right-panel v-if="showSettings" />
     </div>
   </div>
 </template>
 
 <script>
+import RightPanel from '@/components/RightPanel'
 import { Navbar, Sidebar, AppMain, TagsView } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
+import { mapState } from 'vuex'
 
 export default {
   name: 'Layout',
   components: {
+    RightPanel,
     Navbar,
     Sidebar,
     AppMain,
@@ -24,12 +28,11 @@ export default {
   },
   mixins: [ResizeMixin],
   computed: {
-    sidebar() {
-      return this.$store.state.app.sidebar
-    },
-    device() {
-      return this.$store.state.app.device
-    },
+    ...mapState({
+      sidebar: state => state.app.sidebar,
+      device: state => state.app.device,
+      showSettings: state => state.app.showSettings
+    }),
     classObj() {
       return {
         hideSidebar: !this.sidebar.opened,
