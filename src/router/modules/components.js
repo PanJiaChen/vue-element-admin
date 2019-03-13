@@ -95,6 +95,12 @@ const componentsRouter = {
       component: () => import('@/views/components-demo/dragKanban'),
       name: 'DragKanbanDemo',
       meta: { title: 'dragKanban' }
+    },
+    {
+      path: 'city-cascader',
+      component: () => import('@/views/components-demo/cityCascader'),
+      name: 'cityCascaderDemo',
+      meta: { title: 'cityCascader' }
     }
   ]
 }
