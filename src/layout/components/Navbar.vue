@@ -92,9 +92,16 @@ export default {
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
+.hasTagsView {
+  .navbar {
+    border-bottom: none;
+  }
+}
+
 .navbar {
   height: 50px;
   overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
     line-height: 46px;
@@ -150,6 +157,7 @@ export default {
       .avatar-wrapper {
         margin-top: 5px;
         position: relative;
+
         .user-avatar {
           cursor: pointer;
           width: 40px;

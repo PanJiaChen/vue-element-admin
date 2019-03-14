@@ -2,18 +2,20 @@
   <div :class="classObj" class="app-wrapper">
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
-    <div class="main-container">
+    <div :class="{hasTagsView:needTagsView}" class="main-container">
       <navbar />
-      <tags-view />
+      <tags-view v-if="needTagsView" />
       <app-main />
-      <right-panel v-if="showSettings" />
+      <right-panel v-if="showSettings">
+        <settings />
+      </right-panel>
     </div>
   </div>
 </template>
 
 <script>
 import RightPanel from '@/components/RightPanel'
-import { Navbar, Sidebar, AppMain, TagsView } from './components'
+import { Navbar, Sidebar, AppMain, TagsView, Settings } from './components'
 import ResizeMixin from './mixin/ResizeHandler'
 import { mapState } from 'vuex'
 
@@ -24,14 +26,16 @@ export default {
     Navbar,
     Sidebar,
     AppMain,
-    TagsView
+    TagsView,
+    Settings
   },
   mixins: [ResizeMixin],
   computed: {
     ...mapState({
       sidebar: state => state.app.sidebar,
       device: state => state.app.device,
-      showSettings: state => state.app.showSettings
+      showSettings: state => state.settings.showSettings,
+      needTagsView: state => state.settings.tagsView
     }),
     classObj() {
       return {

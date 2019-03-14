@@ -18,10 +18,6 @@ import { addClass, removeClass } from '@/utils'
 export default {
   name: 'RightPanel',
   props: {
-    value: {
-      default: false,
-      type: Boolean
-    },
     clickNotClose: {
       default: false,
       type: Boolean
@@ -29,7 +25,7 @@ export default {
   },
   data() {
     return {
-      show: false
+      show: true
     }
   },
   watch: {
@@ -52,7 +48,7 @@ export default {
       window.addEventListener('click', this.closeSidebar)
     },
     closeSidebar(evt) {
-      const parent = evt.target.closest('.rightPanel')
+      const parent = evt.target.closest('.rightPanel-container')
       if (!parent) {
         this.show = false
         window.removeEventListener('click', this.closeSidebar)
