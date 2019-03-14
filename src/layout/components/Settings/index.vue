@@ -10,10 +10,10 @@
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
-      <div class="drawer-item">
+      <!-- <div class="drawer-item">
         <span>显示 Logo</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

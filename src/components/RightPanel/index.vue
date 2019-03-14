@@ -2,7 +2,7 @@
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
-      <div class="handle-button" type="primary" circle @click="show=!show">
+      <div class="handle-button" :style="{'top':buttonTop+'px'}" type="primary" circle @click="show=!show">
         <i :class="show?'el-icon-close':'el-icon-setting'" />
       </div>
       <div class="rightPanel-items">
@@ -21,11 +21,15 @@ export default {
     clickNotClose: {
       default: false,
       type: Boolean
+    },
+    buttonTop: {
+      default: 240,
+      type: Number
     }
   },
   data() {
     return {
-      show: true
+      show: false
     }
   },
   watch: {
@@ -48,7 +52,7 @@ export default {
       window.addEventListener('click', this.closeSidebar)
     },
     closeSidebar(evt) {
-      const parent = evt.target.closest('.rightPanel-container')
+      const parent = evt.target.closest('.rightPanel')
       if (!parent) {
         this.show = false
         window.removeEventListener('click', this.closeSidebar)
@@ -118,7 +122,6 @@ export default {
    position: absolute;
    left: -48px;
    border-radius: 4px 0 0 4px !important;
-   top: 240px;
    width: 48px;
    height: 48px;
    background: #1890ff;
