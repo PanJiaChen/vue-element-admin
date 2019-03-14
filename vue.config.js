@@ -1,13 +1,11 @@
 'use strict'
 const path = require('path')
+const settings = require('./src/settings.js')
+const { name } = settings
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
-
-// TODO: change to Settings
-const port = 9527
-const name = 'vue-element-admin'
 
 // Explanation of each configuration item You can find it in https://cli.vuejs.org/config/
 module.exports = {
@@ -25,7 +23,7 @@ module.exports = {
   lintOnSave: process.env.NODE_ENV === 'development' ? 'error' : false,
   productionSourceMap: false,
   devServer: {
-    port: port,
+    port: 9527,
     open: true,
     overlay: {
       warnings: false,
