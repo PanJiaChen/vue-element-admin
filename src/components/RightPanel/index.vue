@@ -78,7 +78,7 @@ export default {
 <style rel="stylesheet/scss" lang="scss" scoped>
  .rightPanel-background {
    opacity: 0;
-   transition: opacity .3s ease;
+   transition: opacity .3s cubic-bezier(.7,.3,.1,1);
    background: rgba(0, 0, 0, .2);
    width: 0;
    height: 0;
@@ -87,16 +87,16 @@ export default {
  }
 
  .rightPanel {
-   background: rgb(255, 255, 255);
+   background: #fff;
    z-index: 3000;
    position: fixed;
    height: 100vh;
    width: 100%;
    max-width: 260px;
    top: 0px;
+  left: 0px;
    box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
-   left: 0px;
-   transition: all .25s ease;
+   transition: all .25s cubic-bezier(.7,.3,.1,1);
    transform: translate(100%);
    z-index: 40000;
    left: auto;
@@ -105,7 +105,7 @@ export default {
 
  .show {
 
-   transition: all .25s ease;
+   transition: all .3s cubic-bezier(.7,.3,.1,1);
    .rightPanel-background {
      z-index: 20000;
      opacity: 1;
