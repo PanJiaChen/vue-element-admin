@@ -23,7 +23,7 @@
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'">
       <el-form :model="role" label-width="80px" label-position="left"	>
         <el-form-item label="Key">
-          <el-input v-model="role.key" placeholder="Role Key"/>
+          <el-input :disabled="dialogType==='edit'" v-model="role.key" placeholder="Role Key"/>
         </el-form-item>
         <el-form-item label="Name">
           <el-input v-model="role.name" placeholder="Role Name"/>
@@ -39,9 +39,10 @@
           <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree"/>
         </el-form-item>
       </el-form>
-
-      <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
-      <el-button type="danger" @click="dialogVisible=false">{{ $t('permission.cancel') }}</el-button>
+      <div style="text-align:right;">
+        <el-button type="danger" @click="dialogVisible=false">{{ $t('permission.cancel') }}</el-button>
+        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+      </div>
     </el-dialog>
   </div>
 
@@ -88,9 +89,9 @@ export default {
   methods: {
     async getRoutes() {
       const res = await getRoutes()
+      this.serviceRoutes = res.data
       const routes = this.generateRoutes(res.data)
       this.routes = this.i18n(routes)
-      console.log(this.routes)
     },
     async getRoles() {
       const res = await getRoles()
@@ -111,18 +112,18 @@ export default {
       const res = []
 
       for (let route of routes) {
-        const title = route.meta && route.meta.title
         // skip some route
         if (route.hidden) { continue }
 
         const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
+
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild
         }
 
         const data = {
           path: path.resolve(basePath, route.path),
-          title: title
+          title: route.meta && route.meta.title
         }
 
         // recursive child routes
@@ -179,39 +180,43 @@ export default {
         })
         .catch(err => { console.error(err) })
     },
-
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
+      // TODO:refactor
+      // this.role.routes = this.$refs.tree.getCheckedNodes()
+
       if (isEdit) {
-        await updateRole()
+        await updateRole(this.role.key, this.role)
+        for (let index = 0; index < this.rolesList.length; index++) {
+          if (this.rolesList[index].key === this.role.key) {
+            this.rolesList.splice(index, 1, this.role)
+            break
+          }
+        }
       } else {
-        await addRole()
+        await addRole(this.role)
+        this.rolesList.push(this.role)
       }
 
-      // const $tree = this.$refs.tree
-      // let routeIds = $tree.getCheckedNodes(false, true).reduce((result, node) => {
-      //   // 如果父菜单被隐藏(onlyOneShowingChild),需要把父菜单的id也添加进去
-      //   return result.concat(node.id, node.parentId)
-      // }, [])
-      // routeIds = Array.from(new Set(routeIds))
-      // await updateRole(this.role)
-      // this.$message({
-      //   message: 'Edit succed',
-      //   type: 'success'
-      // })
-      // this.dialogVisible = false
+      const { description, key, name, routes } = this.role
+      this.dialogVisible = false
+      this.$notify({
+        title: 'Success',
+        dangerouslyUseHTMLString: true,
+        message: `
+            <div>Role Key: ${key}</div>
+            <div>Role Nmae: ${name}</div>
+            <div>Description: ${description}</div>
+            <div>Routes: ${routes.join(',')}</div>
+          `,
+        type: 'success'
+      })
     },
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null
-      const showingChildren = children.filter(item => {
-        if (item.hidden) {
-          return false
-        } else {
-          return true
-        }
-      })
+      const showingChildren = children.filter(item => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
