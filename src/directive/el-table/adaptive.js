@@ -29,7 +29,6 @@ export default {
     addResizeListener(el, el.resizeListener)
   },
   unbind(el) {
-    el.data = null
     removeResizeListener(el, el.resizeListener)
   }
 }
