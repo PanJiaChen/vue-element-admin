@@ -44,10 +44,7 @@ export default {
     return roles
   },
   addRole() {
-    const res = {
-      data: Mock.mock('id')
-    }
-    return res
+    return Mock.mock('@integer(300, 5000)')
   },
   updateRole() {
     const res = {

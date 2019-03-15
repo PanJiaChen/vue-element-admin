@@ -22,9 +22,6 @@
 
     <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'">
       <el-form :model="role" label-width="80px" label-position="left"	>
-        <el-form-item label="Key">
-          <el-input :disabled="dialogType==='edit'" v-model="role.key" placeholder="Role Key"/>
-        </el-form-item>
         <el-form-item label="Name">
           <el-input v-model="role.name" placeholder="Role Name"/>
         </el-form-item>
@@ -150,7 +147,9 @@ export default {
     },
     handleAddRole() {
       this.role = Object.assign({}, defaultRole)
-      this.$refs.tree.setCheckedNodes([])
+      if (this.$refs.tree) {
+        this.$refs.tree.setCheckedNodes([])
+      }
       this.dialogType = 'new'
       this.dialogVisible = true
     },
@@ -214,7 +213,8 @@ export default {
           }
         }
       } else {
-        await addRole(this.role)
+        const { data } = await addRole(this.role)
+        this.role.key = data
         this.rolesList.push(this.role)
       }
 
