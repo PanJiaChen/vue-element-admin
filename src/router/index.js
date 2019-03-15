@@ -33,7 +33,7 @@ import nestedRouter from './modules/nested'
     affix: true                  if true, the tag will affix in the tags-view
   }
 **/
-export const constantRouterMap = [
+export const constantRoutes = [
   {
     path: '/redirect',
     component: Layout,
@@ -81,7 +81,6 @@ export const constantRouterMap = [
   {
     path: '/documentation',
     component: Layout,
-    redirect: '/documentation/index',
     children: [
       {
         path: 'index',
@@ -109,10 +108,10 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRoutes
 })
 
-export const asyncRouterMap = [
+export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
@@ -140,6 +139,15 @@ export const asyncRouterMap = [
         meta: {
           title: 'directivePermission'
           // if do not set roles, means: this page does not require permission
+        }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: 'RolePermission',
+        meta: {
+          title: 'rolePermission',
+          roles: ['admin']
         }
       }
     ]
