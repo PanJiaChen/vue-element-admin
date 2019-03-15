@@ -124,6 +124,7 @@ export default {
         const data = {
           path: path.resolve(basePath, route.path),
           title: route.meta && route.meta.title
+
         }
 
         // recursive child routes
@@ -149,6 +150,7 @@ export default {
     },
     handleAddRole() {
       this.role = Object.assign({}, defaultRole)
+      this.$refs.tree.setCheckedNodes([])
       this.dialogType = 'new'
       this.dialogVisible = true
     },
@@ -180,17 +182,34 @@ export default {
         })
         .catch(err => { console.error(err) })
     },
+    generateTree(routes, basePath = '/', checkedKeys) {
+      const res = []
+
+      for (const route of routes) {
+        const routePath = path.resolve(basePath, route.path)
+
+        // recursive child routes
+        if (route.children) {
+          route.children = this.generateTree(route.children, routePath, checkedKeys)
+        }
+
+        if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
+          res.push(route)
+        }
+      }
+      return res
+    },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
-      // TODO:refactor
-      // this.role.routes = this.$refs.tree.getCheckedNodes()
+      const checkedKeys = this.$refs.tree.getCheckedKeys()
+      this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
 
       if (isEdit) {
         await updateRole(this.role.key, this.role)
         for (let index = 0; index < this.rolesList.length; index++) {
           if (this.rolesList[index].key === this.role.key) {
-            this.rolesList.splice(index, 1, this.role)
+            this.rolesList.splice(index, 1, Object.assign({}, this.role))
             break
           }
         }
@@ -199,7 +218,7 @@ export default {
         this.rolesList.push(this.role)
       }
 
-      const { description, key, name, routes } = this.role
+      const { description, key, name } = this.role
       this.dialogVisible = false
       this.$notify({
         title: 'Success',
@@ -208,7 +227,6 @@ export default {
             <div>Role Key: ${key}</div>
             <div>Role Nmae: ${name}</div>
             <div>Description: ${description}</div>
-            <div>Routes: ${routes.join(',')}</div>
           `,
         type: 'success'
       })
