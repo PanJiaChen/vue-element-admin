@@ -16,6 +16,8 @@ RUN yarn run build:prod
 
 WORKDIR dist
 
+# GZIP=-9
+# 设置压缩级别
 RUN GZIP=-9 tar -pzcf ../dist.tgz *
 
 # https://docs.docker.com/develop/develop-images/multistage-build/

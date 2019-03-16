@@ -33,12 +33,12 @@
       </el-table-column>
       <el-table-column :label="$t('giftList.giftName')" width="110px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.Name }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="'Seller SKU'" width="110px" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+          <span>{{ scope.row.SellerSKU }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="'Short Description'" min-width="150px">
