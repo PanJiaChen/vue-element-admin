@@ -136,7 +136,8 @@ export function param2Obj(url) {
       decodeURIComponent(search)
         .replace(/"/g, '\\"')
         .replace(/&/g, '","')
-        .replace(/=/g, '":"') +
+        .replace(/=/g, '":"')
+        .replace(/\+/g, ' ') +
       '"}'
   )
 }

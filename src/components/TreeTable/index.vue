@@ -146,6 +146,19 @@ export default {
           this.selcetRecursion(child, select, children)
         })
       }
+    },
+    updateTreeNode(item) {
+      return new Promise(resolve => {
+        const { _id, _parent } = item
+        const index = _id.split('-').slice(-1)[0] // get last index
+        if (_parent) {
+          _parent.children.splice(index, 1, item)
+          resolve(this.data)
+        } else {
+          this.data.splice(index, 1, item)
+          resolve(this.data)
+        }
+      })
     }
   }
 }

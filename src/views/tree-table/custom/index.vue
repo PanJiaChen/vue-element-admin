@@ -127,17 +127,8 @@ export default {
       this.tempItem = Object.assign({}, row)
       this.dialogFormVisible = true
     },
-    updateItem() {
-      const data = this.$refs.TreeTable.getData()
-      const { _id } = this.tempItem
-
-      for (let i = 0; i < data.length; i++) {
-        if (data[i]._id === _id) {
-          data.splice(i, 1, Object.assign({}, this.tempItem))
-          break
-        }
-      }
-
+    async updateItem() {
+      await this.$refs.TreeTable.updateTreeNode(this.tempItem)
       this.dialogFormVisible = false
     },
     addMenuItem(row, type) {
