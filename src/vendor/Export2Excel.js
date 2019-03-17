@@ -158,18 +158,18 @@ export function export_json_to_excel({
   data = [...data]
   data.unshift(header);
 
-  for (let i = multiHeader.length-1; i > -1; i--) {
-    data.unshift(multiHeader[i])
+  for (let header of multiHeader) {
+    data.unshift(header)
   }
 
   var ws_name = "SheetJS";
   var wb = new Workbook(),
     ws = sheet_from_array_of_arrays(data);
-  
+
   if (merges.length > 0) {
     if (!ws['!merges']) ws['!merges'] = [];
     merges.forEach(item => {
-      ws['!merges'].push(XLSX.utils.decode_range(item))   
+      ws['!merges'].push(XLSX.utils.decode_range(item))
     })
   }
 
