@@ -18,22 +18,20 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="主要信息" align="center">
-        <el-table-column label="Title">
-          <template slot-scope="scope">
-            {{ scope.row.title }}
-          </template>
-        </el-table-column>
-        <el-table-column label="Author" width="110" align="center">
-          <template slot-scope="scope">
-            <el-tag>{{ scope.row.author }}</el-tag>
-          </template>
-        </el-table-column>
-        <el-table-column label="Readings" width="115" align="center">
-          <template slot-scope="scope">
-            {{ scope.row.pageviews }}
-          </template>
-        </el-table-column>
+      <el-table-column label="Title">
+        <template slot-scope="scope">
+          {{ scope.row.title }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Author" width="110" align="center">
+        <template slot-scope="scope">
+          <el-tag>{{ scope.row.author }}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="Readings" width="115" align="center">
+        <template slot-scope="scope">
+          {{ scope.row.pageviews }}
+        </template>
       </el-table-column>
       <el-table-column align="center" label="Date" width="220">
         <template slot-scope="scope">
@@ -48,12 +46,10 @@
 <script>
 import { fetchList } from '@/api/article'
 import { parseTime } from '@/utils'
-
 // options components
 import FilenameOption from './components/FilenameOption'
 import AutoWidthOption from './components/AutoWidthOption'
 import BookTypeOption from './components/BookTypeOption'
-
 export default {
   name: 'ExportExcel',
   components: { FilenameOption, AutoWidthOption, BookTypeOption },
@@ -81,17 +77,13 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const multiHeader = [['Id', '主要信息', '', '', 'Date']]
-        const tHeader = ['', 'Title', 'Author', 'Readings', '']
+        const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
-        const merges = ['A1:A2', 'B1:D1', 'E1:E2']
         excel.export_json_to_excel({
-          multiHeader,
           header: tHeader,
           data,
-          merges,
           filename: this.filename,
           autoWidth: this.autoWidth,
           bookType: this.bookType
@@ -120,4 +112,3 @@ export default {
   padding: 0 12px 0 30px;
 }
 </style>
-
