@@ -9,12 +9,12 @@
 
     <div class="editor-container">
       <el-tag class="tag-title">Basic:</el-tag>
-      <markdown-editor v-model="content" height="300px"/>
+      <markdown-editor v-model="content" height="300px" />
     </div>
 
     <div class="editor-container">
       <el-tag class="tag-title">Markdown Mode:</el-tag>
-      <markdown-editor ref="markdownEditor" v-model="content" :options="{hideModeSwitch:true,previewStyle:'tab'}" height="200px"/>
+      <markdown-editor ref="markdownEditor" v-model="content" :options="{hideModeSwitch:true,previewStyle:'tab'}" height="200px" />
     </div>
 
     <div class="editor-container">
@@ -28,12 +28,13 @@
 
     <div class="editor-container">
       <el-tag class="tag-title">I18n:</el-tag>
-      <el-alert :closable="false" title="You can change the language of the admin system to see the effect" type="success"/>
-      <markdown-editor v-model="content" :language="language" height="300px"/>
+      <el-alert :closable="false" title="You can change the language of the admin system to see the effect" type="success" />
+      <markdown-editor v-model="content" :language="language" height="300px" />
     </div>
 
     <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="getHtml">Get HTML</el-button>
-    <div v-html="html"/>
+    <!-- eslint-disable-next-line -->
+    <div v-html="html" />
 
   </div>
 </template>

@@ -4,8 +4,8 @@
     <el-button :loading="downloadLoading" style="margin-bottom:20px" type="primary" icon="document" @click="handleDownload">Export</el-button>
 
     <el-table
-      v-loading="listLoading"
       ref="multipleTable"
+      v-loading="listLoading"
       :data="list"
       element-loading-text="Loading"
       border
@@ -36,7 +36,7 @@
       </el-table-column>
       <el-table-column align="center" label="Date" width="220">
         <template slot-scope="scope">
-          <i class="el-icon-time"/>
+          <i class="el-icon-time" />
           <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
