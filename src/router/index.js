@@ -10,6 +10,7 @@ import Layout from '@/views/layout/Layout'
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
+import treeTableRouter from './modules/tree-table'
 import nestedRouter from './modules/nested'
 
 /** note: sub-menu only appear when children.length>=1
@@ -32,7 +33,7 @@ import nestedRouter from './modules/nested'
     affix: true                  if true, the tag will affix in the tags-view
   }
 **/
-export const constantRouterMap = [
+export const constantRoutes = [
   {
     path: '/redirect',
     component: Layout,
@@ -80,7 +81,6 @@ export const constantRouterMap = [
   {
     path: '/documentation',
     component: Layout,
-    redirect: '/documentation/index',
     children: [
       {
         path: 'index',
@@ -108,10 +108,10 @@ export const constantRouterMap = [
 export default new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
+  routes: constantRoutes
 })
 
-export const asyncRouterMap = [
+export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
@@ -140,6 +140,15 @@ export const asyncRouterMap = [
           title: 'directivePermission'
           // if do not set roles, means: this page does not require permission
         }
+      },
+      {
+        path: 'role',
+        component: () => import('@/views/permission/role'),
+        name: 'RolePermission',
+        meta: {
+          title: 'rolePermission',
+          roles: ['admin']
+        }
       }
     ]
   },
@@ -162,6 +171,7 @@ export const asyncRouterMap = [
   chartsRouter,
   nestedRouter,
   tableRouter,
+  treeTableRouter,
 
   {
     path: '/example',
@@ -268,6 +278,12 @@ export const asyncRouterMap = [
         component: () => import('@/views/excel/selectExcel'),
         name: 'SelectExcel',
         meta: { title: 'selectExcel' }
+      },
+      {
+        path: 'export-merge-header',
+        component: () => import('@/views/excel/mergeHeader'),
+        name: 'MergeHeader',
+        meta: { title: 'mergeHeader' }
       },
       {
         path: 'upload-excel',

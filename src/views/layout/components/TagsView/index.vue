@@ -47,8 +47,8 @@ export default {
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
-    routers() {
-      return this.$store.state.permission.routers
+    routes() {
+      return this.$store.state.permission.routes
     }
   },
   watch: {
@@ -95,7 +95,7 @@ export default {
       return tags
     },
     initTags() {
-      const affixTags = this.affixTags = this.filterAffixTags(this.routers)
+      const affixTags = this.affixTags = this.filterAffixTags(this.routes)
       for (const tag of affixTags) {
         // Must have tag name
         if (tag.name) {
