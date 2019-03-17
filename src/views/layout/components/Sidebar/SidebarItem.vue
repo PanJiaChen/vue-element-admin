@@ -15,11 +15,12 @@
       </template>
       <sidebar-item
         v-for="child in item.children"
+        :key="child.path"
         :is-nest="true"
         :item="child"
-        :key="child.path"
         :base-path="resolvePath(child.path)"
-        class="nest-menu" />
+        class="nest-menu"
+      />
     </el-submenu>
 
   </div>

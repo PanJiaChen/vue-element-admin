@@ -74,7 +74,7 @@
             <span>hover text</span>
           </div>
           <div class="component-item">
-            <mallki class-name="mallki-text" text="vue-element-admin"/>
+            <mallki class-name="mallki-text" text="vue-element-admin" />
           </div>
         </el-card>
       </el-col>
@@ -87,12 +87,11 @@
             <span>Share</span>
           </div>
           <div class="component-item" style="height:420px;">
-            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章"/>
+            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章" />
           </div>
         </el-card>
       </el-col>
     </el-row>
-
   </div>
 </template>
 

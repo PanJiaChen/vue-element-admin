@@ -1,18 +1,19 @@
 <template>
-  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs" v-on="$listeners" >
+  <el-table :data="tableData" :row-style="showRow" v-bind="$attrs" v-on="$listeners">
     <slot name="selection" />
     <slot name="pre-column" />
     <el-table-column
       v-for="item in columns"
-      :label="item.label"
       :key="item.key"
+      :label="item.label"
       :width="item.width"
       :align="item.align||'center'"
-      :header-align="item.headerAlign">
+      :header-align="item.headerAlign"
+    >
       <template slot-scope="scope">
         <slot :scope="scope" :name="item.key">
           <template v-if="item.expand">
-            <span :style="{'padding-left':+scope.row._level*indent + 'px'} "/>
+            <span :style="{'padding-left':+scope.row._level*indent + 'px'} " />
             <span v-show="showSperadIcon(scope.row)" class="tree-ctrl" @click="toggleExpanded(scope.$index)">
               <i v-if="!scope.row._expand" class="el-icon-plus" />
               <i v-else class="el-icon-minus" />
@@ -21,15 +22,17 @@
           <template v-if="item.checkbox">
             <el-checkbox
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
+              v-model="scope.row._select"
               :style="{'padding-left':+scope.row._level*indent + 'px'} "
               :indeterminate="scope.row._select"
-              v-model="scope.row._select"
-              @change="handleCheckAllChange(scope.row)" />
+              @change="handleCheckAllChange(scope.row)"
+            />
             <el-checkbox
               v-else
-              :style="{'padding-left':+scope.row._level*indent + 'px'} "
               v-model="scope.row._select"
-              @change="handleCheckAllChange(scope.row)" />
+              :style="{'padding-left':+scope.row._level*indent + 'px'} "
+              @change="handleCheckAllChange(scope.row)"
+            />
           </template>
           {{ scope.row[item.key] }}
         </slot>
