@@ -57,6 +57,7 @@ export default {
     excel: 'Excel',
     exportExcel: 'Export Excel',
     selectExcel: 'Export Selected',
+    mergeHeader: 'Merge Header',
     uploadExcel: 'Upload Excel',
     zip: 'Zip',
     pdf: 'PDF',
