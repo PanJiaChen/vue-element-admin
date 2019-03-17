@@ -1,7 +1,8 @@
 'use strict'
 require('@babel/register')
+require('module-alias/register')
 const path = require('path')
-const settings = require('./src/settings.js').default
+const { default: settings } = require('./src/settings.js')
 const { name } = settings
 
 function resolve(dir) {
@@ -54,6 +55,7 @@ module.exports = {
       // import ES2015 module from common.js module
       const { default: mocks } = require('./mock')
       for (const mock of mocks) {
+        console.log(mock, mock.response)
         app.all(mock.route, mock.response)
       }
     }
