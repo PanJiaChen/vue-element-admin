@@ -5,7 +5,8 @@
         :checked="todo.done"
         class="toggle"
         type="checkbox"
-        @change="toggleTodo( todo)">
+        @change="toggleTodo( todo)"
+      >
       <label @dblclick="editing = true" v-text="todo.text" />
       <button class="destroy" @click="deleteTodo( todo )" />
     </div>
@@ -16,7 +17,8 @@
       class="edit"
       @keyup.enter="doneEdit"
       @keyup.esc="cancelEdit"
-      @blur="doneEdit">
+      @blur="doneEdit"
+    >
   </li>
 </template>
 

@@ -15,7 +15,8 @@
           :todo="todo"
           @toggleTodo="toggleTodo"
           @editTodo="editTodo"
-          @deleteTodo="deleteTodo" />
+          @deleteTodo="deleteTodo"
+        />
       </ul>
     </section>
     <!-- footer -->

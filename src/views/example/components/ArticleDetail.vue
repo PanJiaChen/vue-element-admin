@@ -48,7 +48,8 @@
                       :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
                       :low-threshold="1"
                       :high-threshold="3"
-                      style="margin-top:8px;" />
+                      style="margin-top:8px;"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>

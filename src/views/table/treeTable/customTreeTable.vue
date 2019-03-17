@@ -20,7 +20,8 @@
                 :style="{ width:scope.row._width * 500+'px',
                           background:scope.row._width>0.5?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
                           marginLeft:scope.row._marginLeft * 500+'px' }"
-                class="process">
+                class="process"
+              >
                 <span style="display:inline-block" />
               </div>
             </div>

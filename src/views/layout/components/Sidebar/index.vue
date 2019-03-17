@@ -6,7 +6,8 @@
       :background-color="variables.menuBg"
       :text-color="variables.menuText"
       :active-text-color="variables.menuActiveText"
-      mode="vertical">
+      mode="vertical"
+    >
       <sidebar-item v-for="route in permission_routers" :key="route.path" :item="route" :base-path="route.path" />
     </el-menu>
   </el-scrollbar>

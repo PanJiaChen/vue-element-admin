@@ -48,7 +48,8 @@
                 @mousedown="imgStartMove"
                 @mousemove="imgMove"
                 @mouseup="createImg"
-                @mouseout="createImg">
+                @mouseout="createImg"
+              >
               <div :style="sourceImgShadeStyle" class="vicp-img-shade vicp-img-shade-1" />
               <div :style="sourceImgShadeStyle" class="vicp-img-shade vicp-img-shade-2" />
             </div>

@@ -14,7 +14,8 @@
       border
       fit
       highlight-current-row
-      @selection-change="handleSelectionChange">
+      @selection-change="handleSelectionChange"
+    >
       <el-table-column type="selection" align="center" />
       <el-table-column align="center" label="Id" width="95">
         <template slot-scope="scope">

@@ -6,7 +6,8 @@
         v-for="item in options"
         :key="item"
         :label="item"
-        :value="item" />
+        :value="item"
+      />
     </el-select>
   </div>
 </template>

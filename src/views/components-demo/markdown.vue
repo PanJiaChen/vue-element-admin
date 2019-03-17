@@ -22,7 +22,8 @@
       <markdown-editor
         ref="markdownEditor"
         v-model="content"
-        :options="{ toolbarItems: ['heading','bold','italic']}" />
+        :options="{ toolbarItems: ['heading','bold','italic']}"
+      />
     </div>
 
     <div class="editor-container">

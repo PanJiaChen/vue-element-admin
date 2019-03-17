@@ -15,7 +15,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'url'"
         v-model="currentValue"
@@ -29,7 +30,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'number'"
         v-model="currentValue"
@@ -48,7 +50,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'password'"
         v-model="currentValue"
@@ -64,7 +67,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'tel'"
         v-model="currentValue"
@@ -78,7 +82,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'text'"
         v-model="currentValue"
@@ -94,7 +99,8 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <span class="material-input-bar" />
       <label class="material-label">
         <slot />

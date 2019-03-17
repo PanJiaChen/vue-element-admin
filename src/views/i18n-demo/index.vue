@@ -26,7 +26,8 @@
               v-for="item in options"
               :key="item.value"
               :label="item.label"
-              :value="item.value" />
+              :value="item.value"
+            />
           </el-select>
         </div>
         <div class="block">

@@ -25,7 +25,8 @@
       fit
       highlight-current-row
       style="width: 100%;"
-      @sort-change="sortChange">
+      @sort-change="sortChange"
+    >
       <el-table-column :label="$t('table.id')" prop="id" sortable="custom" align="center" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>

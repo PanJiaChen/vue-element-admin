@@ -19,7 +19,8 @@
       url="https://httpbin.org/post"
       lang-type="en"
       @close="close"
-      @crop-upload-success="cropSuccess" />
+      @crop-upload-success="cropSuccess"
+    />
   </div>
 </template>
 

@@ -7,7 +7,8 @@
       :on-success="handleImageSuccess"
       class="image-uploader"
       drag
-      action="https://httpbin.org/post">
+      action="https://httpbin.org/post"
+    >
       <i class="el-icon-upload" />
       <div class="el-upload__text">Drag或<em>点击上传</em></div>
     </el-upload>
