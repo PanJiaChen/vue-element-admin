@@ -18,20 +18,22 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Author" width="110" align="center">
-        <template slot-scope="scope">
-          <el-tag>{{ scope.row.author }}</el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column label="Readings" width="115" align="center">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
+      <el-table-column label="主要信息" align="center">
+        <el-table-column label="Title">
+          <template slot-scope="scope">
+            {{ scope.row.title }}
+          </template>
+        </el-table-column>
+        <el-table-column label="Author" width="110" align="center">
+          <template slot-scope="scope">
+            <el-tag>{{ scope.row.author }}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Readings" width="115" align="center">
+          <template slot-scope="scope">
+            {{ scope.row.pageviews }}
+          </template>
+        </el-table-column>
       </el-table-column>
       <el-table-column align="center" label="Date" width="220">
         <template slot-scope="scope">
@@ -79,13 +81,17 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['Id', 'Title', 'Author', 'Readings', 'Date']
+        const multiHeader = [['Id', '主要信息', '', '', 'Date']]
+        const tHeader = ['', 'Title', 'Author', 'Readings', '']
         const filterVal = ['id', 'title', 'author', 'pageviews', 'display_time']
         const list = this.list
         const data = this.formatJson(filterVal, list)
+        const merges = ['A1:A2', 'B1:D1', 'E1:E2']
         excel.export_json_to_excel({
+          multiHeader,
           header: tHeader,
           data,
+          merges,
           filename: this.filename,
           autoWidth: this.autoWidth,
           bookType: this.bookType
