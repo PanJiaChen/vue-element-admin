@@ -1,22 +1,21 @@
 import Mock from 'mockjs'
-// import { deepClone } from '@/utils'
-// import { filterAsyncRoutes } from '@/store/modules/permission'
-// import { asyncRoutes, constantRoutes } from '@/router'
+import { deepClone } from '../../src/utils/index.js'
+import { asyncRoutes, constantRoutes } from './routes.js'
 
-// const routes = deepClone([...constantRoutes, ...asyncRoutes])
+const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
 const roles = [
   {
     key: 'admin',
     name: 'admin',
     description: 'Super Administrator. Have access to view all pages.',
-    routes: []
+    routes: routes
   },
   {
     key: 'editor',
     name: 'editor',
     description: 'Normal Editor. Can see all pages except permission page',
-    routes: []
+    routes: routes.filter(i => i.path !== '/permission')// just a mock
   },
   {
     key: 'visitor',
@@ -38,7 +37,7 @@ const roles = [
 
 export default {
   '/routes': () => {
-    return []
+    return routes
   },
   '/roles': () => {
     return roles

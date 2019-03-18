@@ -1,6 +1,5 @@
 'use strict'
 require('@babel/register')
-require('module-alias/register')
 const path = require('path')
 const { default: settings } = require('./src/settings.js')
 const { name } = settings
