@@ -1,6 +1,6 @@
 <template>
   <el-select ref="dragSelect" v-model="selectVal" v-bind="$attrs" class="drag-select" multiple v-on="$listeners">
-    <slot/>
+    <slot />
   </el-select>
 </template>
 
