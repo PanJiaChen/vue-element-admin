@@ -35,26 +35,34 @@ const roles = [
   }
 ]
 
-export default {
-  '/routes': () => {
-    return routes
+export default [
+  {
+    url: '/routes',
+    type: 'get',
+    response: routes
   },
-  '/roles': () => {
-    return roles
+  {
+    url: '/roles',
+    type: 'get',
+    response: roles
   },
-  '/roles/add': () => {
-    return Mock.mock('@integer(300, 5000)')
+  {
+    url: '/roles/add',
+    type: 'post',
+    response: Mock.mock('@integer(300, 5000)')
   },
-  '/roles/update/\/[A-Za-z0-9]': () => {
-    const res = {
+  {
+    url: '/roles/update/\/[A-Za-z0-9]',
+    type: 'put',
+    response: {
       data: 'success'
     }
-    return res
   },
-  '/roles/delete/\/[A-Za-z0-9]'() {
-    const res = {
+  {
+    url: '/roles/delete/\/[A-Za-z0-9]',
+    type: 'delete',
+    response: {
       data: 'success'
     }
-    return res
   }
-}
+]

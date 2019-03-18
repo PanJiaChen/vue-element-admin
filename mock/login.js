@@ -15,19 +15,34 @@ const userMap = {
   }
 }
 
-export default {
-  '/login/login': config => {
-    const { username } = config.body
-    return userMap[username]
+export default [
+  {
+    url: '/login/login',
+    type: 'post',
+    response: config => {
+      const { username } = config.body
+      return userMap[username]
+    }
   },
-  '/login/logout': 'success',
-  '/user/info': config => {
-    const { token } = config.query
-    if (userMap[token]) {
-      return userMap[token]
-    } else {
-      return false
+  {
+    url: '/login/logout',
+    type: 'post',
+    response: _ => {
+      return {
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/user/info\.*',
+    type: 'get',
+    response: config => {
+      const { token } = config.query
+      if (userMap[token]) {
+        return userMap[token]
+      } else {
+        return false
+      }
     }
   }
-}
-
+]

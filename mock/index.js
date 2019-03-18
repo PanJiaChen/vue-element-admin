@@ -33,18 +33,21 @@ export function mockXHR() {
     }
   }
 
-  for (const [route, respond] of Object.entries(mocks)) {
-    Mock.mock(new RegExp(`${route}`), XHR2ExpressReqWrap(respond))
+  for (const i of mocks) {
+    Mock.mock(new RegExp(i.url), i.type || 'get', XHR2ExpressReqWrap(i.response))
   }
 }
 
-const responseFake = (route, respond) => (
-  {
-    route: new RegExp(`${MOCK_API_BASE}${route}`),
+const responseFake = (url, type, respond) => {
+  return {
+    url: new RegExp(`${MOCK_API_BASE}${url}`),
+    type: type || 'get',
     response(req, res) {
       res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
     }
   }
-)
+}
 
-export default Object.keys(mocks).map(route => responseFake(route, mocks[route]))
+export default mocks.map(route => {
+  return responseFake(route.url, route.type, route.response)
+})

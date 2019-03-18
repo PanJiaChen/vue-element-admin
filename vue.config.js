@@ -51,10 +51,9 @@ module.exports = {
         extended: true
       }))
 
-      // import ES2015 module from common.js module
       const { default: mocks } = require('./mock')
       for (const mock of mocks) {
-        app.all(mock.route, mock.response)
+        app[mock.type](mock.url, mock.response)
       }
     }
   },

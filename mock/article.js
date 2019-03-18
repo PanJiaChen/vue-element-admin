@@ -27,48 +27,78 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
-export default {
-  '/article/list': config => {
-    const { importance, type, title, page = 1, limit = 20, sort } = config.query
+export default [
+  {
+    url: '/article/list',
+    type: 'get',
+    response: config => {
+      const { importance, type, title, page = 1, limit = 20, sort } = config.query
 
-    let mockList = List.filter(item => {
-      if (importance && item.importance !== +importance) return false
-      if (type && item.type !== type) return false
-      if (title && item.title.indexOf(title) < 0) return false
-      return true
-    })
+      let mockList = List.filter(item => {
+        if (importance && item.importance !== +importance) return false
+        if (type && item.type !== type) return false
+        if (title && item.title.indexOf(title) < 0) return false
+        return true
+      })
 
-    if (sort === '-id') {
-      mockList = mockList.reverse()
-    }
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
 
-    const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
-    return {
-      total: mockList.length,
-      items: pageList
-    }
-  },
-  '/article/detail': config => {
-    const { id } = config.query
-    for (const article of List) {
-      if (article.id === +id) {
-        return article
+      return {
+        total: mockList.length,
+        items: pageList
       }
     }
   },
-  '/article/pv': {
-    pvData: [
-      { key: 'PC', pv: 1024 },
-      { key: 'mobile', pv: 1024 },
-      { key: 'ios', pv: 1024 },
-      { key: 'android', pv: 1024 }
-    ]
+
+  {
+    url: '/article/detail',
+    type: 'get',
+    response: config => {
+      const { id } = config.query
+      for (const article of List) {
+        if (article.id === +id) {
+          return article
+        }
+      }
+    }
   },
-  '/article/create': {
-    data: 'success'
+
+  {
+    url: '/article/pv',
+    type: 'get',
+    response: _ => {
+      return { pvData: [
+        { key: 'PC', pv: 1024 },
+        { key: 'mobile', pv: 1024 },
+        { key: 'ios', pv: 1024 },
+        { key: 'android', pv: 1024 }
+      ]
+      }
+    }
   },
-  '/article/update': {
-    data: 'success'
+
+  {
+    url: '/article/create',
+    type: 'post',
+    response: _ => {
+      return {
+        data: 'success'
+      }
+    }
+  },
+
+  {
+    url: '/article/update',
+    type: 'post',
+    response: _ => {
+      return {
+        data: 'success'
+      }
+    }
   }
-}
+]
+
