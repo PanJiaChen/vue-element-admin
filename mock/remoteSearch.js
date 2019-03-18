@@ -8,9 +8,10 @@ for (let i = 0; i < count; i++) {
     name: '@first'
   }))
 }
-NameList.push({ name: 'mockPan' })
+NameList.push({ name: 'mock-Pan' })
 
 export default [
+  // username search
   {
     url: '/search/user',
     type: 'get',
@@ -23,14 +24,15 @@ export default [
       return { items: mockNameList }
     }
   },
+
+  // transaction list
   {
     url: '/transaction/list',
     type: 'get',
     response: _ => {
-      const count = 20
       return {
-        total: count,
-        [`items|${count}`]: [{
+        total: 20,
+        'items|20': [{
           order_no: '@guid()',
           timestamp: +Mock.Random.date('T'),
           username: '@name()',

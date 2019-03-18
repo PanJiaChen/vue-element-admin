@@ -1,47 +1,56 @@
-const userMap = {
+
+const tokens = {
   admin: {
+    token: 'admin-token'
+  },
+  editor: {
+    token: 'editor-token'
+  }
+}
+
+const users = {
+  'admin-token': {
     roles: ['admin'],
-    token: 'admin',
-    introduction: '我是超级管理员',
+    introduction: 'I am a super administrator',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Super Admin'
   },
-  editor: {
+  'editor-token': {
     roles: ['editor'],
-    token: 'editor',
-    introduction: '我是编辑',
+    introduction: 'I am an editor',
     avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
     name: 'Normal Editor'
   }
 }
 
 export default [
+  // user login
   {
-    url: '/login/login',
+    url: '/user/login',
     type: 'post',
     response: config => {
       const { username } = config.body
-      return userMap[username]
+      return tokens[username]
     }
   },
-  {
-    url: '/login/logout',
-    type: 'post',
-    response: _ => {
-      return {
-        data: 'success'
-      }
-    }
-  },
+
+  // get user info
   {
     url: '/user/info\.*',
     type: 'get',
     response: config => {
       const { token } = config.query
-      if (userMap[token]) {
-        return userMap[token]
-      } else {
-        return false
+      return users[token]
+    }
+  },
+
+  // user logout
+  {
+    url: '/user/logout',
+    type: 'post',
+    response: _ => {
+      return {
+        data: 'success'
       }
     }
   }

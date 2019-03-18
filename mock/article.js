@@ -13,7 +13,7 @@ for (let i = 0; i < count; i++) {
     author: '@first',
     reviewer: '@first',
     title: '@title(5, 10)',
-    content_short: '我是测试数据',
+    content_short: 'mock data',
     content: baseContent,
     forecast: '@float(0, 100, 2, 2)',
     importance: '@integer(1, 3)',

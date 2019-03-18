@@ -1,10 +1,10 @@
-import login from './login'
+import user from './user'
 import role from './role'
 import article from './article'
 import search from './remoteSearch'
 
 export default [
-  ...login,
+  ...user,
   ...role,
   ...article,
   ...search
