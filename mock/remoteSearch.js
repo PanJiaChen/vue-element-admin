@@ -21,7 +21,10 @@ export default [
         const lowerCaseName = item.name.toLowerCase()
         return !(name && lowerCaseName.indexOf(name.toLowerCase()) < 0)
       })
-      return { items: mockNameList }
+      return {
+        code: '20000',
+        data: { items: mockNameList }
+      }
     }
   },
 
@@ -31,14 +34,17 @@ export default [
     type: 'get',
     response: _ => {
       return {
-        total: 20,
-        'items|20': [{
-          order_no: '@guid()',
-          timestamp: +Mock.Random.date('T'),
-          username: '@name()',
-          price: '@float(1000, 15000, 0, 2)',
-          'status|1': ['success', 'pending']
-        }]
+        code: '20000',
+        data: {
+          total: 20,
+          'items|20': [{
+            order_no: '@guid()',
+            timestamp: +Mock.Random.date('T'),
+            username: '@name()',
+            price: '@float(1000, 15000, 0, 2)',
+            'status|1': ['success', 'pending']
+          }]
+        }
       }
     }
   }

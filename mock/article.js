@@ -48,8 +48,11 @@ export default [
       const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
       return {
-        total: mockList.length,
-        items: pageList
+        code: '20000',
+        data: {
+          total: mockList.length,
+          items: pageList
+        }
       }
     }
   },
@@ -61,7 +64,10 @@ export default [
       const { id } = config.query
       for (const article of List) {
         if (article.id === +id) {
-          return article
+          return {
+            code: '20000',
+            data: article
+          }
         }
       }
     }
@@ -71,12 +77,16 @@ export default [
     url: '/article/pv',
     type: 'get',
     response: _ => {
-      return { pvData: [
-        { key: 'PC', pv: 1024 },
-        { key: 'mobile', pv: 1024 },
-        { key: 'ios', pv: 1024 },
-        { key: 'android', pv: 1024 }
-      ]
+      return {
+        code: '20000',
+        data: {
+          pvData: [
+            { key: 'PC', pv: 1024 },
+            { key: 'mobile', pv: 1024 },
+            { key: 'ios', pv: 1024 },
+            { key: 'android', pv: 1024 }
+          ]
+        }
       }
     }
   },
@@ -86,6 +96,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
+        code: '20000',
         data: 'success'
       }
     }
@@ -96,6 +107,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
+        code: '20000',
         data: 'success'
       }
     }

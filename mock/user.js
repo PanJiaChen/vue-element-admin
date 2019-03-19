@@ -30,7 +30,10 @@ export default [
     type: 'post',
     response: config => {
       const { username } = config.body
-      return tokens[username]
+      return {
+        code: '20000',
+        data: tokens[username]
+      }
     }
   },
 
@@ -40,7 +43,10 @@ export default [
     type: 'get',
     response: config => {
       const { token } = config.query
-      return users[token]
+      return {
+        code: '20000',
+        data: users[token]
+      }
     }
   },
 
@@ -50,6 +56,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
+        code: '20000',
         data: 'success'
       }
     }

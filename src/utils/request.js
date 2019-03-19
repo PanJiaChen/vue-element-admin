@@ -29,7 +29,11 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-  response => response,
+  /**
+   * If you want to get information such as headers or status
+   * Please return  response => response
+  */
+  response => response.data,
   /**
    * 下面的注释为通过在response里，自定义code来标示请求状态
    * 当code返回如下情况则说明权限有问题，登出并返回到登录页

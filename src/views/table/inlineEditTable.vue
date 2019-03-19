@@ -88,17 +88,16 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        const items = response.data.items
-        this.list = items.map(v => {
-          this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-          v.originalTitle = v.title //  will be used when user click the cancel botton
-          return v
-        })
-        this.listLoading = false
+      const { data } = await fetchList(this.listQuery)
+      const items = data.items
+      this.list = items.map(v => {
+        this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+        v.originalTitle = v.title //  will be used when user click the cancel botton
+        return v
       })
+      this.listLoading = false
     },
     cancelEdit(row) {
       row.title = row.originalTitle
