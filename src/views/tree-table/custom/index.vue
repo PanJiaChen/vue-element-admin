@@ -13,11 +13,11 @@
         :columns="columns"
         border
         default-children="children"
-        @selection-change	="selectChange"
+        @selection-change="selectChange"
       >
 
         <template slot="selection">
-          <el-table-column type="selection" align="center" width="55"/>
+          <el-table-column type="selection" align="center" width="55" />
         </template>
 
         <template slot="pre-column">
@@ -38,8 +38,9 @@
                 :style="{ width:(scope.row.timeLine||0) * 3+'px',
                           background:scope.row.timeLine>50?'rgba(233,0,0,.5)':'rgba(0,0,233,0.5)',
                           marginLeft:scope.row._level * 50+'px' }"
-                class="process">
-                <span style="display:inline-block"/>
+                class="process"
+              >
+                <span style="display:inline-block" />
               </div>
             </div>
           </el-tooltip>
@@ -70,7 +71,7 @@
     <el-dialog :visible.sync="dialogFormVisible" title="Edit">
       <el-form :model="tempItem" label-width="100px" style="width:600px">
         <el-form-item label="Name">
-          <el-input v-model.trim="tempItem.name" placeholder="Name"/>
+          <el-input v-model.trim="tempItem.name" placeholder="Name" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">

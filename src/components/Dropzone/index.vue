@@ -1,5 +1,5 @@
 <template>
-  <div :ref="id" :action="url" :id="id" class="dropzone">
+  <div :id="id" :ref="id" :action="url" class="dropzone">
     <input type="file" name="file">
   </div>
 </template>
