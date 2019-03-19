@@ -158,8 +158,8 @@ export function export_json_to_excel({
   data = [...data]
   data.unshift(header);
 
-  for (let header of multiHeader) {
-    data.unshift(header)
+  for (let i = multiHeader.length-1; i > -1; i--) {
+    data.unshift(multiHeader[i])
   }
 
   var ws_name = "SheetJS";
