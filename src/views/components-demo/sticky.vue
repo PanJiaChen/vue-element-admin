@@ -49,7 +49,9 @@
       <div>placeholder</div>
       <div>placeholder</div>
       <div>placeholder</div>
-      <div>placeholder</div>
+      <sticky :sticky-top="200">
+        <el-button type="primary"> placeholder</el-button>
+      </sticky>
       <div>placeholder</div>
       <div>placeholder</div>
       <div>placeholder</div>
