@@ -22,7 +22,7 @@ export default [
         return !(name && lowerCaseName.indexOf(name.toLowerCase()) < 0)
       })
       return {
-        code: '20000',
+        code: 20000,
         data: { items: mockNameList }
       }
     }
@@ -34,7 +34,7 @@ export default [
     type: 'get',
     response: _ => {
       return {
-        code: '20000',
+        code: 20000,
         data: {
           total: 20,
           'items|20': [{

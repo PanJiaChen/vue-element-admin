@@ -230,7 +230,7 @@ export default {
         }
       } else {
         const { data } = await addRole(this.role)
-        this.role.key = data
+        this.role.key = data.key
         this.rolesList.push(this.role)
       }
 

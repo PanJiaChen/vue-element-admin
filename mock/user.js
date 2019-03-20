@@ -31,7 +31,7 @@ export default [
     response: config => {
       const { username } = config.body
       return {
-        code: '20000',
+        code: 20000,
         data: tokens[username]
       }
     }
@@ -44,7 +44,7 @@ export default [
     response: config => {
       const { token } = config.query
       return {
-        code: '20000',
+        code: 20000,
         data: users[token]
       }
     }
@@ -56,7 +56,7 @@ export default [
     type: 'post',
     response: _ => {
       return {
-        code: '20000',
+        code: 20000,
         data: 'success'
       }
     }
