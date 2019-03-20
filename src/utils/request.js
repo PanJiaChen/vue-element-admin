@@ -57,7 +57,7 @@ service.interceptors.response.use(
   //         cancelButtonText: '取消',
   //         type: 'warning'
   //       }).then(() => {
-  //         store.dispatch('resetToken').then(() => {
+  //         store.dispatch('user/resetToken').then(() => {
   //           location.reload() // 为了重新实例化vue-router对象 避免bug
   //         })
   //       })

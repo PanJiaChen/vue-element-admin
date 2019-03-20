@@ -34,7 +34,7 @@ export default {
         return this.$store.state.settings.tagsView
       },
       set(val) {
-        this.$store.dispatch('changeSetting', {
+        this.$store.dispatch('settings/changeSetting', {
           key: 'tagsView',
           value: val
         })

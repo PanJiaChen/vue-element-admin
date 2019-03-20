@@ -75,10 +75,10 @@ export default {
   },
   methods: {
     toggleSideBar() {
-      this.$store.dispatch('toggleSideBar')
+      this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
-      await this.$store.dispatch('Logout')
+      await this.$store.dispatch('user/logout')
       // In order to re-instantiate the vue-router object to avoid bugs
       location.reload()
     }

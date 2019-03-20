@@ -7,7 +7,7 @@ export default {
   watch: {
     $route(route) {
       if (this.device === 'mobile' && this.sidebar.opened) {
-        store.dispatch('closeSideBar', { withoutAnimation: false })
+        store.dispatch('app/closeSideBar', { withoutAnimation: false })
       }
     }
   },
@@ -17,8 +17,8 @@ export default {
   mounted() {
     const isMobile = this.isMobile()
     if (isMobile) {
-      store.dispatch('toggleDevice', 'mobile')
-      store.dispatch('closeSideBar', { withoutAnimation: true })
+      store.dispatch('app/toggleDevice', 'mobile')
+      store.dispatch('app/closeSideBar', { withoutAnimation: true })
     }
   },
   methods: {
@@ -29,10 +29,10 @@ export default {
     resizeHandler() {
       if (!document.hidden) {
         const isMobile = this.isMobile()
-        store.dispatch('toggleDevice', isMobile ? 'mobile' : 'desktop')
+        store.dispatch('app/toggleDevice', isMobile ? 'mobile' : 'desktop')
 
         if (isMobile) {
-          store.dispatch('closeSideBar', { withoutAnimation: true })
+          store.dispatch('app/closeSideBar', { withoutAnimation: true })
         }
       }
     }

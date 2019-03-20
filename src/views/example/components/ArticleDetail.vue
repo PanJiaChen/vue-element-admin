@@ -186,7 +186,7 @@ export default {
     setTagsViewTitle() {
       const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('updateVisitedView', route)
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     submitForm() {
       this.postForm.display_time = parseInt(this.display_time / 1000)
