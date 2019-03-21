@@ -74,57 +74,60 @@ export default {
 </style>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
- .rightPanel-background {
-   opacity: 0;
-   transition: opacity .3s cubic-bezier(.7,.3,.1,1);
-   background: rgba(0, 0, 0, .2);
-   width: 0;
-   height: 0;
-   position: fixed;
-   z-index: -1;
- }
+.rightPanel-background {
+  opacity: 0;
+  transition: opacity .3s cubic-bezier(.7, .3, .1, 1);
+  background: rgba(0, 0, 0, .2);
+  width: 0;
+  height: 0;
+  top: 0;
+  left: 0;
+  position: fixed;
+  z-index: -1;
+}
 
- .rightPanel {
-   background: #fff;
-   z-index: 3000;
-   position: fixed;
-   height: 100vh;
-   width: 100%;
-   max-width: 260px;
-   top: 0px;
+.rightPanel {
+  background: #fff;
+  z-index: 3000;
+  position: fixed;
+  height: 100vh;
+  width: 100%;
+  max-width: 260px;
+  top: 0px;
   left: 0px;
-   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
-   transition: all .25s cubic-bezier(.7,.3,.1,1);
-   transform: translate(100%);
-   z-index: 40000;
-   left: auto;
-   right: 0px;
- }
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
+  transition: all .25s cubic-bezier(.7, .3, .1, 1);
+  transform: translate(100%);
+  z-index: 40000;
+  left: auto;
+  right: 0px;
+}
 
- .show {
+.show {
 
-   transition: all .3s cubic-bezier(.7,.3,.1,1);
-   .rightPanel-background {
-     z-index: 20000;
-     opacity: 1;
-     width: 100%;
-     height: 100%;
-   }
+  transition: all .3s cubic-bezier(.7, .3, .1, 1);
 
-   .rightPanel {
-     transform: translate(0);
-   }
- }
+  .rightPanel-background {
+    z-index: 20000;
+    opacity: 1;
+    width: 100%;
+    height: 100%;
+  }
 
- .handle-button {
-   position: absolute;
-   left: -48px;
-   border-radius: 6px 0 0 6px !important;
-   width: 48px;
-   height: 48px;
-   pointer-events: auto;
-   z-index: 0;
-   font-size: 24px;
-   text-align: center;
- }
+  .rightPanel {
+    transform: translate(0);
+  }
+}
+
+.handle-button {
+  position: absolute;
+  left: -48px;
+  border-radius: 6px 0 0 6px !important;
+  width: 48px;
+  height: 48px;
+  pointer-events: auto;
+  z-index: 0;
+  font-size: 24px;
+  text-align: center;
+}
 </style>

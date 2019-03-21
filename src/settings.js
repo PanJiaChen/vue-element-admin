@@ -14,6 +14,12 @@ export default {
   tagsView: true,
 
   /**
+   * @type {boolean} true | false
+   * @description Whether fix the header
+   */
+  fixedHeader: true,
+
+  /**
    * @type {string | array} 'production' | ['production','development']
    * @description Need show err logs component.
    * The default is only used in the production env

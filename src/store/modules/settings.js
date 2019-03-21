@@ -1,9 +1,10 @@
 import defaultSettings from '@/settings'
-const { showSettings, tagsView } = defaultSettings
+const { showSettings, tagsView, fixedHeader } = defaultSettings
 
 const state = {
   showSettings: showSettings,
-  tagsView: tagsView
+  tagsView: tagsView,
+  fixedHeader: fixedHeader
 }
 
 const mutations = {

@@ -3,8 +3,10 @@
     <div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <sidebar class="sidebar-container" />
     <div :class="{hasTagsView:needTagsView}" class="main-container">
-      <navbar />
-      <tags-view v-if="needTagsView" />
+      <div :class="{'fixed-header':fixedHeader}">
+        <navbar />
+        <tags-view v-if="needTagsView" />
+      </div>
       <app-main />
       <right-panel v-if="showSettings">
         <settings />
@@ -35,7 +37,8 @@ export default {
       sidebar: state => state.app.sidebar,
       device: state => state.app.device,
       showSettings: state => state.settings.showSettings,
-      needTagsView: state => state.settings.tagsView
+      needTagsView: state => state.settings.tagsView,
+      fixedHeader: state => state.settings.fixedHeader
     }),
     classObj() {
       return {
@@ -56,6 +59,8 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   @import "~@/styles/mixin.scss";
+  @import "~@/styles/variables.scss";
+
   .app-wrapper {
     @include clearfix;
     position: relative;
@@ -74,5 +79,16 @@ export default {
     height: 100%;
     position: absolute;
     z-index: 999;
+  }
+  .fixed-header{
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 9;
+    width: calc(100% - #{$sideBarWidth});
+     transition: width 0.28s;
+  }
+  .hideSidebar .fixed-header{
+     width: calc(100% - 54px)
   }
 </style>
