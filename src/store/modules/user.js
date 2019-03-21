@@ -1,5 +1,6 @@
 import { login, logout, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
+import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
@@ -78,6 +79,7 @@ const actions = {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         removeToken()
+        resetRouter()
         resolve()
       }).catch(error => {
         reject(error)
@@ -95,22 +97,25 @@ const actions = {
     })
   },
 
-  // 动态修改权限
+  // Dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
-    return new Promise(resolve => {
+    return new Promise(async resolve => {
       const token = role + '-token'
+
       commit('SET_TOKEN', token)
       setToken(token)
-      getInfo(token).then(response => {
-        const { data } = response
-        const { roles, name, avatar, introduction } = data
-        commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
-        commit('SET_AVATAR', avatar)
-        commit('SET_INTRODUCTION', introduction)
-        dispatch('permission/generateRoutes', data) // 动态修改权限后 重绘侧边菜单
-        resolve()
-      })
+
+      const { roles } = await dispatch('getInfo')
+
+      resetRouter()
+
+      // generate accessible routes map based on roles
+      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+
+      // dynamically add accessible routes
+      router.addRoutes(accessRoutes)
+
+      resolve()
     })
   }
 }
