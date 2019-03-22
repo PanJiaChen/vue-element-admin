@@ -24,14 +24,14 @@
               v-if="scope.row[defaultChildren]&&scope.row[defaultChildren].length>0"
               v-model="scope.row._select"
               :style="{'padding-left':+scope.row._level*indent + 'px'} "
-              :indeterminate="scope.row._select"
-              @change="handleCheckAllChange(scope.row)"
+              :indeterminate="scope.row._isIndeterminate"
+              @change="(val) => handleCheckAllChange(val, scope.row)"
             />
             <el-checkbox
               v-else
               v-model="scope.row._select"
               :style="{'padding-left':+scope.row._level*indent + 'px'} "
-              @change="handleCheckAllChange(scope.row)"
+              @change="(val) => handleCheckAllChange(val, scope.row)"
             />
           </template>
           {{ scope.row[item.key] }}
@@ -133,9 +133,52 @@ export default {
       const expand = !record._expand
       record._expand = expand
     },
-    handleCheckAllChange(row) {
-      this.selcetRecursion(row, row._select, this.defaultChildren)
-      this.isIndeterminate = row._select
+    handleCheckAllChange(val, row) {
+      row._select = val;
+      row._isIndeterminate = false;
+      this.selcetRecursion(row, val, this.defaultChildren);
+      this.handleParentData(row, '_parent', 'children', '_select', '_isIndeterminate')
+    },
+    /**
+     * @param {Object} obj 表行数据
+     * @param {String} parent 父级数据键值对键名
+     * @param {String} children 子级数据键值对键名
+     * @param {String} select 是否勾选择值对键名
+     * @param {String} isIndeterminate 是否非全选状态键值对键名
+     */
+    handleParentData(obj, parent, children, select, isIndeterminate) {
+        if(obj.hasOwnProperty(parent) && obj[parent]) {
+          if(obj[parent].hasOwnProperty(children) && obj[parent][children] && obj[parent][children].length >0) {
+            this.changeCheckStatus(obj[parent], select, isIndeterminate, children)
+            if(obj[parent].hasOwnProperty(parent) && obj[parent][parent]) {
+              this.handleParentData(obj[parent], parent, children, select, isIndeterminate)
+            }
+          }
+        }
+    },
+    /**
+     * @param {Object} obj 表行数据
+     * @param {String} children 子级数据键值对键名
+     * @param {String} select 是否勾选择值对键名
+     * @param {String} isIndeterminate 是否非全选状态键值对键名
+     */
+    changeCheckStatus(obj, select, isIndeterminate, children) {
+        let isSelectAll = obj[children].every(item => {
+            return item[select];
+        });
+        let isSelect = obj[children].some(item => {
+            return item[select];
+        });
+        if (isSelectAll) {
+            obj[isIndeterminate] = false;
+            obj[select] = true;
+        } else if (!isSelectAll && isSelect) {
+            obj[isIndeterminate] = true;
+            obj[select] = false;
+        } else if (!isSelect) {
+            obj[isIndeterminate] = false;
+            obj[select] = false;
+        }
     },
     selcetRecursion(row, select, children = 'children') {
       if (select) {
