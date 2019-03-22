@@ -45,6 +45,10 @@ export default {
   mounted() {
     this.insertToBody()
   },
+  beforeDestroy() {
+    const elx = this.$refs.rightPanel
+    elx.remove()
+  },
   methods: {
     addEventClick() {
       window.addEventListener('click', this.closeSidebar)
