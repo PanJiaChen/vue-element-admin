@@ -1,6 +1,6 @@
 <template>
   <div :class="{'show':show}" class="header-search">
-    <svg-icon class-name="search-icon" icon-class="search" @click="click" />
+    <svg-icon class-name="search-icon" icon-class="search" @click.stop="click" />
     <el-select
       ref="headerSearchSelect"
       v-model="search"
@@ -10,8 +10,9 @@
       remote
       placeholder="Search"
       class="header-search-select"
-      @change="change">
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')"/>
+      @change="change"
+    >
+      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
     </el-select>
   </div>
 </template>
@@ -33,8 +34,8 @@ export default {
     }
   },
   computed: {
-    routers() {
-      return this.$store.getters.permission_routers
+    routes() {
+      return this.$store.getters.permission_routes
     },
     lang() {
       return this.$store.getters.language
@@ -42,10 +43,10 @@ export default {
   },
   watch: {
     lang() {
-      this.searchPool = this.generateRouters(this.routers)
+      this.searchPool = this.generateRoutes(this.routes)
     },
-    routers() {
-      this.searchPool = this.generateRouters(this.routers)
+    routes() {
+      this.searchPool = this.generateRoutes(this.routes)
     },
     searchPool(list) {
       this.initFuse(list)
@@ -59,7 +60,7 @@ export default {
     }
   },
   mounted() {
-    this.searchPool = this.generateRouters(this.routers)
+    this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
     click() {
@@ -100,10 +101,10 @@ export default {
     },
     // Filter out the routes that can be displayed in the sidebar
     // And generate the internationalized title
-    generateRouters(routers, basePath = '/', prefixTitle = []) {
+    generateRoutes(routes, basePath = '/', prefixTitle = []) {
       let res = []
 
-      for (const router of routers) {
+      for (const router of routes) {
         // skip hidden router
         if (router.hidden) { continue }
 
@@ -125,11 +126,11 @@ export default {
           }
         }
 
-        // recursive child routers
+        // recursive child routes
         if (router.children) {
-          const tempRouters = this.generateRouters(router.children, data.path, data.title)
-          if (tempRouters.length >= 1) {
-            res = [...res, ...tempRouters]
+          const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
+          if (tempRoutes.length >= 1) {
+            res = [...res, ...tempRoutes]
           }
         }
       }

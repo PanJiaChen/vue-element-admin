@@ -13,7 +13,8 @@
           v-model="defaultExpandAll"
           active-color="#13ce66"
           inactive-color="#ff4949"
-          @change="reset"/>
+          @change="reset"
+        />
       </div>
 
       <div class="option-item">
