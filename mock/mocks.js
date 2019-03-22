@@ -1,12 +1,12 @@
-import login from './login'
+import user from './user'
+import role from './role'
 import article from './article'
 import search from './remoteSearch'
-import transaction from './transaction'
 
-export default {
-  ...login,
+export default [
+  ...user,
+  ...role,
   ...article,
-  ...search,
-  ...transaction
-}
+  ...search
+]
 

@@ -1,11 +1,14 @@
 'use strict'
+require('@babel/register')
 const path = require('path')
+const { default: settings } = require('./src/settings.js')
+const { name } = settings
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const port = 9527 // TODO: change to Settings
+const port = 9527 // dev port
 
 // Explanation of each configuration item You can find it in https://cli.vuejs.org/config/
 module.exports = {
@@ -15,12 +18,12 @@ module.exports = {
    * for example GitHub pages. If you plan to deploy your site to https://foo.github.io/bar/,
    * then assetsPublicPath should be set to "/bar/".
    * In most cases please use '/' !!!
-   * Detail https://cli.vuejs.org/config/#baseurl
+   * Detail https://cli.vuejs.org/config/#publicPath
    */
-  baseUrl: '/',
+  publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV !== 'production',
+  lintOnSave: process.env.NODE_ENV === 'development' ? 'error' : false,
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -39,25 +42,25 @@ module.exports = {
       }
     },
     after(app) {
-      console.log('apple')
       const bodyParser = require('body-parser')
-      require('@babel/register')
+
       // parse app.body
       // http://expressjs.com/en/4x/api.html#req.body
       app.use(bodyParser.json())
-      app.use(bodyParser.urlencoded({ extended: true }))
+      app.use(bodyParser.urlencoded({
+        extended: true
+      }))
 
-      // import ES2015 module from common.js module
       const { default: mocks } = require('./mock')
       for (const mock of mocks) {
-        app.all(mock.route, mock.response)
+        app[mock.type](mock.url, mock.response)
       }
     }
   },
   configureWebpack: {
     // We provide the app's title in Webpack's name field, so that
     // it can be accessed in index.html to inject the correct title.
-    name: 'vue-element-admin', // TODO: change to Settings
+    name: name,
     resolve: {
       alias: {
         '@': resolve('src')
@@ -65,8 +68,8 @@ module.exports = {
     }
   },
   chainWebpack(config) {
-    config.plugins.delete('preload')// TODO: need test
-    config.plugins.delete('prefetch')// TODO: need test
+    config.plugins.delete('preload') // TODO: need test
+    config.plugins.delete('prefetch') // TODO: need test
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
@@ -82,7 +85,15 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
-
+    config.module
+      .rule('vue')
+      .use('vue-loader')
+      .loader('vue-loader')
+      .tap(options => {
+        options.compilerOptions.preserveWhitespace = true
+        return options
+      })
+      .end()
     config
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
@@ -92,11 +103,13 @@ module.exports = {
       .when(process.env.NODE_ENV !== 'development',
         config => {
           config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .use('script-ext-html-webpack-plugin', [{
-              // `runtime` must same as runtimeChunk name. default is `runtime`
-              inline: /runtime\..*\.js$/
-            }])
+          // .plugin('ScriptExtHtmlWebpackPlugin')
+          // .after('html')
+          // .use('script-ext-html-webpack-plugin', [{
+          //   // `runtime` must same as runtimeChunk name. default is `runtime`
+          //   inline: /runtime\..*\.js$/
+          // }])
+          // .end()
           config
             .optimization.splitChunks({
               chunks: 'all',

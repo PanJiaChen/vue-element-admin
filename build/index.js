@@ -8,14 +8,14 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
   run(`vue-cli-service build ${args}`)
 
   const port = 9526
-  const basePath = config.baseUrl
+  const publicPath = config.publicPath
 
   var connect = require('connect')
   var serveStatic = require('serve-static')
   const app = connect()
 
   app.use(
-    basePath,
+    publicPath,
     serveStatic('./dist', {
       index: ['index.html', '/']
     })
@@ -23,7 +23,7 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
 
   app.listen(port, function() {
     console.log(
-      chalk.green(`> Listening at  http://localhost:${port}${basePath}`)
+      chalk.green(`> Listening at  http://localhost:${port}${publicPath}`)
     )
   })
 } else {

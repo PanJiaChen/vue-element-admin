@@ -5,7 +5,7 @@ import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import Element from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
 
@@ -15,8 +15,8 @@ import router from './router'
 
 import i18n from './lang' // Internationalization
 import './icons' // icon
-import './errorLog' // error log
 import './permission' // permission control
+import './utils/errorLog' // error log
 
 import * as filters from './filters' // global filters
 

@@ -1,7 +1,7 @@
 <template>
   <div class="errPage-container">
-    <errorA/>
-    <errorB/>
+    <errorA />
+    <errorB />
     <!-- $t is vue-i18n global function to translate lang -->
     <h3>{{ $t('errorLog.tips') }}</h3>
     <code>
