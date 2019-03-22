@@ -1,13 +1,12 @@
 'use strict'
-require('@babel/register')
+
 const path = require('path')
-const { default: settings } = require('./src/settings.js')
-const { name } = settings
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
+const name = 'vue-element-admin'
 const port = 9527 // dev port
 
 // Explanation of each configuration item You can find it in https://cli.vuejs.org/config/
@@ -42,6 +41,7 @@ module.exports = {
       }
     },
     after(app) {
+      require('@babel/register')
       const bodyParser = require('body-parser')
 
       // parse app.body
