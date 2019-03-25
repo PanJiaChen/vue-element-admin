@@ -33,6 +33,12 @@ import nestedRouter from './modules/nested'
     affix: true                  if true, the tag will affix in the tags-view
   }
 **/
+
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ * */
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -105,6 +111,10 @@ export const constantRoutes = [
   }
 ]
 
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+*/
 export const asyncRoutes = [
   {
     path: '/permission',
@@ -160,7 +170,7 @@ export const asyncRoutes = [
     ]
   },
 
-  /** When your routing table is too long, you can split it into small modules**/
+  /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   chartsRouter,
   nestedRouter,
