@@ -32,7 +32,7 @@
 
 [vue-element-admin](http://panjiachen.github.io/vue-element-admin) 是一个后台集成解决方案，它基于 [vue](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，内置了 i18 国际化解决方案，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件，它可以帮助你快速搭建企业级中后台产品原型。相信不管你的需求是什么，本项目都能帮助到你。
 
-**[v4.0](https://github.com/PanJiaChen/vue-element-admin/tree/v4.0) 已经进入 beta 测试阶段。 它基于vue-cli进行构建，优化了大量代码尤其是权限和mock这快，并且增加了不少新特性。欢迎使用并提出建议。**
+**[v4.0](https://github.com/PanJiaChen/vue-element-admin/tree/v4.0) 已经进入 beta 测试阶段。 它基于 vue-cli@3 进行构建，优化了大量代码(尤其是权限和 mock)，并且增加了不少新特性。欢迎使用并提出建议。**
 
 - [在线访问](http://panjiachen.github.io/vue-element-admin)
 
@@ -54,7 +54,7 @@
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
-群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)
+群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)或者关注[微博](https://weibo.com/u/3423485724?is_all=1)
 
 **注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
 
