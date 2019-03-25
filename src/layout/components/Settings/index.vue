@@ -77,7 +77,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .drawer-container {
   padding: 24px;
   font-size: 14px;

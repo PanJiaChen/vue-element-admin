@@ -35,7 +35,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   .social-signup-container {
     margin: 20px 0;
     .sign-btn {

@@ -99,7 +99,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .dndList {
   background: #fff;
   padding-bottom: 40px;

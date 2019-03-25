@@ -70,7 +70,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .panel-group {
   margin-top: 18px;
   .card-panel-col{

@@ -58,7 +58,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   .errPage-container {
     width: 800px;
     max-width: 100%;

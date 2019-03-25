@@ -101,7 +101,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .editor-slide-upload {
   margin-bottom: 20px;
   /deep/ .el-upload--picture-card {
