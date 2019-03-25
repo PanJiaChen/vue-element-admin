@@ -1,27 +1,25 @@
 <template>
   <div class="drawer-container">
     <div>
-      <h3 class="drawer-title">
-        系统布局配置
-      </h3>
+      <h3 class="drawer-title">{{ $t('settings.title') }}</h3>
 
       <div class="drawer-item">
-        <span>主题色</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 5px 0 0;" />
+        <span>{{ $t('settings.theme') }}</span>
+        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" />
       </div>
 
       <div class="drawer-item">
-        <span>开启 Tags-View</span>
+        <span>{{ $t('settings.tagsView') }}</span>
         <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>固定 Header</span>
+        <span>{{ $t('settings.fixedHeader') }}</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
-        <span>侧边栏 Logo</span>
+        <span>{{ $t('settings.sidebarLogo') }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
 
@@ -35,9 +33,7 @@ import ThemePicker from '@/components/ThemePicker'
 export default {
   components: { ThemePicker },
   data() {
-    return {
-
-    }
+    return {}
   },
   computed: {
     fixedHeader: {

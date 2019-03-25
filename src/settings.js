@@ -1,6 +1,4 @@
 export default {
-  title: 'vue-element-admin',
-
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
