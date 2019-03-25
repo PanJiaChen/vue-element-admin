@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar wrap-class="scrollbar-wrapper">
-    <logo :collapse="isCollapse" />
+    <logo v-if="showLogo" :collapse="isCollapse" />
     <el-menu
       :default-active="$route.path"
       :collapse="isCollapse"
@@ -28,6 +28,9 @@ export default {
       'permission_routes',
       'sidebar'
     ]),
+    showLogo() {
+      return this.$store.state.settings.sidebarLogo
+    },
     variables() {
       return variables
     },

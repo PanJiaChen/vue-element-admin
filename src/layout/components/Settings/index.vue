@@ -20,6 +20,11 @@
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
+      <div class="drawer-item">
+        <span>侧边栏 Logo</span>
+        <el-switch v-model="sidebarLogo" class="drawer-switch" />
+      </div>
+
     </div>
   </div>
 </template>
@@ -31,7 +36,7 @@ export default {
   components: { ThemePicker },
   data() {
     return {
-      sidebarLogo: true
+
     }
   },
   computed: {
@@ -53,6 +58,17 @@ export default {
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'tagsView',
+          value: val
+        })
+      }
+    },
+    sidebarLogo: {
+      get() {
+        return this.$store.state.settings.sidebarLogo
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'sidebarLogo',
           value: val
         })
       }
