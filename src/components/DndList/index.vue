@@ -2,7 +2,7 @@
   <div class="dndList">
     <div :style="{width:width1}" class="dndList-list">
       <h3>{{ list1Title }}</h3>
-      <draggable :list="list1" :options="{group:'article'}" class="dragArea">
+      <draggable :list="list1" group="article" class="dragArea">
         <div v-for="element in list1" :key="element.id" class="list-complete-item">
           <div class="list-complete-item-handle">
             {{ element.id }}[{{ element.author }}] {{ element.title }}
@@ -17,7 +17,7 @@
     </div>
     <div :style="{width:width2}" class="dndList-list">
       <h3>{{ list2Title }}</h3>
-      <draggable :list="list2" :options="{group:'article'}" class="dragArea">
+      <draggable :list="list2" group="article" class="dragArea">
         <div v-for="element in list2" :key="element.id" class="list-complete-item">
           <div class="list-complete-item-handle2" @click="pushEle(element)">
             {{ element.id }} [{{ element.author }}] {{ element.title }}
