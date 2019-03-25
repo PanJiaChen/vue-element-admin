@@ -5,7 +5,7 @@ const rawArgv = process.argv.slice(2)
 const args = rawArgv.join(' ')
 
 if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
-  run(`vue-cli-service build ${args}`)
+  run(`vue-cli-service build ${args} --report`)
 
   const port = 9526
   const publicPath = config.publicPath
@@ -23,7 +23,10 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
 
   app.listen(port, function() {
     console.log(
-      chalk.green(`> Listening at  http://localhost:${port}${publicPath}`)
+      chalk.green(`> Preview at  http://localhost:${port}${publicPath}`)
+    )
+    console.log(
+      chalk.green(`> Report at  http://localhost:${port}${publicPath}/report.html`)
     )
   })
 } else {
