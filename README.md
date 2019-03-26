@@ -4,10 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.5.17-brightgreen.svg" alt="vue">
+    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.4.11-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.6.3-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -46,17 +46,11 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 - [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
 
-**This project is positioned as a background integration solution and is not suitable for secondary development as a basic template.**
-
 - Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
 **This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
-
-**Note: This project uses element-ui@2.3.0+ version, so the minimum compatible vue@2.5.0+**
-
-**Start using `webpack4` from `v3.8.0`. If you still want to continue using `webpack3`, please use this branch [webpack3](https://github.com/PanJiaChen/vue-element-admin/tree/webpack3)**
 
 ## Preparation
 
@@ -70,6 +64,7 @@ Understanding and learning this knowledge in advance will greatly help the use o
 </p>
 
 ## Sponsors
+
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
@@ -159,7 +154,7 @@ This will automatically open http://localhost:9527.
 
 ```bash
 # build for test environment
-npm run build:sit
+npm run build:stage
 
 # build for production environment
 npm run build:prod
@@ -168,19 +163,16 @@ npm run build:prod
 ## Advanced
 
 ```bash
-# --report to build with bundle size analytics
-npm run build:prod --report
+# preview the release environment effect
+npm run preview
 
-# --generate a bundle size analytics. default: bundle-report.html
-npm run build:prod --generate_report
+# preview the release environment effect + static resource analysis
+npm run preview -- --report
 
-# --preview to start a server in local to preview
-npm run build:prod --preview
-
-# lint code
+# code format check
 npm run lint
 
-# auto fix
+# code format check and auto fix
 npm run lint -- --fix
 ```
 

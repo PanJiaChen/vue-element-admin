@@ -4,10 +4,10 @@
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.5.10-brightgreen.svg" alt="vue">
+    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.4.11-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.6.3-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
     <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
@@ -46,17 +46,11 @@
 
 - [国内访问文档](https://panjiachen.gitee.io/vue-element-admin-site/zh/) 方便没翻墙的用户查看文档
 
-**本项目的定位是后台集成方案，不适合当基础模板来开发。**
-
 - 模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
-群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)
-
-**注意：该项目使用 element-ui@2.3.0+ 版本，所以最低兼容 vue@2.5.0+**
-
-**从`v3.8.0`开始使用`webpack4`。所以若还想使用`webpack3`开发，请使用该分支[webpack3](https://github.com/PanJiaChen/vue-element-admin/tree/webpack3)**
+群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)或者关注[微博](https://weibo.com/u/3423485724?is_all=1)
 
 **该项目不支持低版本浏览器(如 ie)，有需求请自行添加 polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
@@ -94,6 +88,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 - 权限验证
   - 页面权限
   - 指令权限
+  - 权限配置
   - 二步登录
 
 - 多环境发布
@@ -106,7 +101,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - 动态面包屑
   - 快捷导航(标签页)
   - Svg Sprite 图标
-  - 本地mock数据
+  - 本地 mock 数据
   - Screenfull全屏
   - 自适应收缩侧边栏
 
@@ -174,7 +169,7 @@ npm run dev
 
 ```bash
 # 构建测试环境
-npm run build:sit
+npm run build:stage
 
 # 构建生产环境
 npm run build:prod
@@ -183,19 +178,16 @@ npm run build:prod
 ## 其它
 
 ```bash
-# --report to build with bundle size analytics
-npm run build:prod
+# 预览发布环境效果
+npm run preview
 
-# --generate a bundle size analytics. default: bundle-report.html
-npm run build:prod --generate_report
+# 预览发布环境效果 + 静态资源分析
+npm run preview -- --report
 
-# --preview to start a server in local to preview
-npm run build:prod --preview
-
-# lint code
+# 代码格式检查
 npm run lint
 
-# auto fix
+# 代码格式检查并自动修复
 npm run lint -- --fix
 ```
 
