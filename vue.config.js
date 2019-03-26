@@ -31,8 +31,8 @@ module.exports = {
       errors: true
     },
     proxy: {
-      // Detail: https://cli.vuejs.org/config/#devserver-proxy
-      // xxx-api/login => mock/login
+      // change xxx-api/login => mock/login
+      // detail: https://cli.vuejs.org/config/#devserver-proxy
       [process.env.VUE_APP_BASE_API]: {
         target: `http://localhost:${port}/mock`,
         changeOrigin: true,
@@ -71,6 +71,8 @@ module.exports = {
   chainWebpack(config) {
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
+
+    // set svg-sprite-loader
     config.module
       .rule('svg')
       .exclude.add(resolve('src/icons'))
@@ -86,6 +88,8 @@ module.exports = {
         symbolId: 'icon-[name]'
       })
       .end()
+
+    // set preserveWhitespace
     config.module
       .rule('vue')
       .use('vue-loader')
@@ -120,17 +124,17 @@ module.exports = {
                   name: 'chunk-libs',
                   test: /[\\/]node_modules[\\/]/,
                   priority: 10,
-                  chunks: 'initial' // 只打包初始时依赖的第三方
+                  chunks: 'initial' // only package third parties that are initially dependent
                 },
                 elementUI: {
-                  name: 'chunk-elementUI', // 单独将 elementUI 拆包
-                  priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
+                  name: 'chunk-elementUI', // split elementUI into a single package
+                  priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
                   test: /[\\/]node_modules[\\/]element-ui[\\/]/
                 },
                 commons: {
                   name: 'chunk-commons',
-                  test: resolve('src/components'), // 可自定义拓展你的规则
-                  minChunks: 3, // 最小公用次数
+                  test: resolve('src/components'), // can customize your rules
+                  minChunks: 3, //  minimum common number
                   priority: 5,
                   reuseExistingChunk: true
                 }

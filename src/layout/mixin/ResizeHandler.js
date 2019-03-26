@@ -14,6 +14,9 @@ export default {
   beforeMount() {
     window.addEventListener('resize', this.resizeHandler)
   },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.resizeHandler)
+  },
   mounted() {
     const isMobile = this.isMobile()
     if (isMobile) {
