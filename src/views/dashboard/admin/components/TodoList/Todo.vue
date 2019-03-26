@@ -11,8 +11,8 @@
       <button class="destroy" @click="deleteTodo( todo )" />
     </div>
     <input
-      v-show="editing"
       v-focus="editing"
+      v-show="editing"
       :value="todo.text"
       class="edit"
       @keyup.enter="doneEdit"

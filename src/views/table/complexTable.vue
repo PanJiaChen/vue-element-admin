@@ -18,8 +18,8 @@
     </div>
 
     <el-table
-      :key="tableKey"
       v-loading="listLoading"
+      :key="tableKey"
       :data="list"
       border
       fit

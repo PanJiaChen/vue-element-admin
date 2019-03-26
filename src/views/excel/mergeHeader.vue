@@ -4,8 +4,8 @@
     <el-button :loading="downloadLoading" style="margin-bottom:20px" type="primary" icon="document" @click="handleDownload">Export</el-button>
 
     <el-table
-      ref="multipleTable"
       v-loading="listLoading"
+      ref="multipleTable"
       :data="list"
       element-loading-text="Loading"
       border
