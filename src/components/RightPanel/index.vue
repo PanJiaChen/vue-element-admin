@@ -21,7 +21,7 @@ export default {
       type: Boolean
     },
     buttonTop: {
-      default: 240,
+      default: 250,
       type: Number
     }
   },
@@ -108,7 +108,6 @@ export default {
 }
 
 .show {
-
   transition: all .3s cubic-bezier(.7, .3, .1, 1);
 
   .rightPanel-background {
