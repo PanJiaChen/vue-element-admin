@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <!-- Note that row-key is necessary to get a correct row order. -->
-    <el-table v-loading="listLoading" ref="dragTable" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
+    <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="ID" width="65">
         <template slot-scope="scope">

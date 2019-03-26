@@ -7,8 +7,8 @@
       <el-tag type="info">Documentation</el-tag>
     </a>
     <el-table
-      v-loading="listLoading"
       ref="multipleTable"
+      v-loading="listLoading"
       :data="list"
       element-loading-text="拼命加载中"
       border
