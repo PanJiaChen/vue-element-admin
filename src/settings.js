@@ -1,4 +1,7 @@
+import variables from '@/styles/element-variables.scss'
+
 export default {
+  theme: variables.theme,
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel

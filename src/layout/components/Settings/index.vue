@@ -5,7 +5,7 @@
 
       <div class="drawer-item">
         <span>{{ $t('settings.theme') }}</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" />
+        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
       </div>
 
       <div class="drawer-item">
@@ -68,6 +68,14 @@ export default {
           value: val
         })
       }
+    }
+  },
+  methods: {
+    themeChange(val) {
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'theme',
+        value: val
+      })
     }
   }
 }

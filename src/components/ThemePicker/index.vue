@@ -1,7 +1,7 @@
 <template>
   <el-color-picker
     v-model="theme"
-    :predefine="['#409EFF', '#11a983', '#13c2c2', '#6959CD', '#f5222d', '#eb2f96', '#DB7093', '#e6a23c', '#8B8989', '#212121']"
+    :predefine="['#409EFF', '#1890ff', '#304156','#212121','#11a983', '#13c2c2', '#6959CD', '#f5222d', ]"
     class="theme-picker"
     popper-class="theme-picker-dropdown"
   />
@@ -11,17 +11,18 @@
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
+import defaultSettings from '@/settings'
 
 export default {
   data() {
     return {
       chalk: '', // content of theme-chalk css
-      theme: ORIGINAL_THEME
+      theme: defaultSettings.theme
     }
   },
   watch: {
     async theme(val) {
-      const oldVal = this.theme
+      const oldVal = this.chalk ? this.theme : ORIGINAL_THEME
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
@@ -69,6 +70,8 @@ export default {
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
+
+      this.$emit('change', val)
 
       $message.close()
     }

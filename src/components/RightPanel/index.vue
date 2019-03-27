@@ -2,7 +2,9 @@
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
-      <el-button class="handle-button" :style="{'top':buttonTop+'px'}" type="primary" circle :icon="show?'el-icon-close':'el-icon-setting'" @click="show=!show" />
+      <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
+        <i :class="show?'el-icon-close':'el-icon-setting'" />
+      </div>
       <div class="rightPanel-items">
         <slot />
       </div>
@@ -28,6 +30,11 @@ export default {
   data() {
     return {
       show: false
+    }
+  },
+  computed: {
+    theme() {
+      return this.$store.state.settings.theme
     }
   },
   watch: {
@@ -130,7 +137,16 @@ export default {
   height: 48px;
   pointer-events: auto;
   z-index: 0;
+  cursor: pointer;
+  pointer-events: auto;
   font-size: 24px;
   text-align: center;
+  color: #fff;
+  line-height: 48px;
+
+  i {
+    font-size: 24px;
+    line-height: 48px;
+  }
 }
 </style>
