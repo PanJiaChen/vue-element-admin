@@ -41,11 +41,12 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="Actions" width="200">
         <template slot-scope="scope">
           <router-link :to="'/example/edit/'+scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">Edit</el-button>
           </router-link>
+          <el-button size="small" @click="handleDetail(scope.row)">Alive</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -56,12 +57,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+import Detail from './detail'
 import { fetchList } from '@/api/article'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
   name: 'ArticleList',
-  components: { Pagination },
+  components: { Pagination, Detail },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -87,6 +90,9 @@ export default {
     this.getList()
   },
   methods: {
+    ...mapActions([
+      'addPageDetail'
+    ]),
     getList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -102,6 +108,18 @@ export default {
     handleCurrentChange(val) {
       this.listQuery.page = val
       this.getList()
+    },
+    handleDetail(row) {
+      this.addPageDetail({
+        component: Detail,
+        name: `alive-${row.id}`,
+        path: `/example/alive/${row.id}`,
+        meta: {
+          title: `文章详情-${row.id}`
+        }
+      }).then(() => {
+        this.$router.push({ name: `alive-${row.id}` })
+      })
     }
   }
 }
