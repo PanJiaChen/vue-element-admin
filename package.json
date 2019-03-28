@@ -1,7 +1,7 @@
 {
   "name": "vue-element-admin",
   "version": "4.0.0",
-  "description": "A magical vue admin. Typical templates for enterprise applications. Newest development stack of vue. Lots of awesome features",
+  "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
   "scripts": {
@@ -10,8 +10,8 @@
     "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
     "lint": "eslint --ext .js,.vue src",
-    "test": "npm run lint",
     "test:unit": "vue-cli-service test:unit",
+    "test:ci": "npm run lint && npm run test:unit",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "new": "plop"
   },
@@ -28,10 +28,12 @@
   },
   "keywords": [
     "vue",
-    "element-ui",
     "admin",
-    "management-system",
-    "admin-template"
+    "dashboard",
+    "element-ui",
+    "boilerplate",
+    "admin-template",
+    "management-system"
   ],
   "repository": {
     "type": "git",

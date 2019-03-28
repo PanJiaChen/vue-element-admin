@@ -30,35 +30,37 @@
 
 ## 简介
 
-[vue-element-admin](http://panjiachen.github.io/vue-element-admin) 是一个后台集成解决方案，它基于 [vue](https://github.com/vuejs/vue) 和 [element](https://github.com/ElemeFE/element)。它使用了最新的前端技术栈，内置了 i18 国际化解决方案，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件，它可以帮助你快速搭建企业级中后台产品原型。相信不管你的需求是什么，本项目都能帮助到你。
+[vue-element-admin](http://panjiachen.github.io/vue-element-admin) 是一个后台前端解决方案，它基于 [vue](https://github.com/vuejs/vue) 和 [element-ui](https://github.com/ElemeFE/element)实现。它使用了最新的前端技术栈，内置了 i18 国际化解决方案，动态路由，权限验证，提炼了典型的业务模型，提供了丰富的功能组件，它可以帮助你快速搭建企业级中后台产品原型。相信不管你的需求是什么，本项目都能帮助到你。
 
-- [在线访问](http://panjiachen.github.io/vue-element-admin)
+- [在线预览](http://panjiachen.github.io/vue-element-admin)
 
 - [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
 - [Gitter 讨论组](https://gitter.im/vue-element-admin/discuss)
 
-- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
-
 - [Donate](https://panjiachen.gitee.io/vue-element-admin-site/zh/donate)
 
-- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [国内访问文档](https://panjiachen.gitee.io/vue-element-admin-site/zh/) 方便没翻墙的用户查看文档
+- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 在线预览（国内用户可访问该地址）
 
-- 模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
+- [国内访问文档](https://panjiachen.gitee.io/vue-element-admin-site/zh/) 文档（方便没翻墙的用户查看）
+
+- 基础模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-- Typescript版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
+- Typescript 版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
-群主 **[圈子](https://jianshiapp.com/circles/1209)** 楼主会经常分享一些技术相关的东西，或者加入[qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602)或者关注[微博](https://weibo.com/u/3423485724?is_all=1)
+**目前版本为 `4.0-beta`，若发现问题，欢迎提[issue](https://github.com/PanJiaChen/vue-element-admin/issues/new)。若你想使用旧版本-稳定版，可以切换分支到[tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0)**
 
 **该项目不支持低版本浏览器(如 ie)，有需求请自行添加 polyfill [详情](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
+群主 **[圈子](https://jianshiapp.com/circles/1209)** 群主会经常分享一些技术相关的东西，或者加入 [qq 群](https://github.com/PanJiaChen/vue-element-admin/issues/602) 或者关注 [微博](https://weibo.com/u/3423485724?is_all=1)
+
 ## 前序准备
 
-你需要在本地安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。本项目技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[axios](https://github.com/axios/axios) 和 [element-ui](https://github.com/ElemeFE/element)，所有的请求数据都使用[Mock.js](https://github.com/nuysoft/Mock)模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
+你需要在本地安装 [node](http://nodejs.org/) 和 [git](https://git-scm.com/)。本项目技术栈基于 [ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[vue-cli](https://github.com/vuejs/vue-cli) 、[axios](https://github.com/axios/axios) 和 [element-ui](https://github.com/ElemeFE/element)，所有的请求数据都使用[Mock.js](https://github.com/nuysoft/Mock)进行模拟，提前了解和学习这些知识会对使用本项目有很大的帮助。
 
-同时配套一个系列的教程文章，如何从零构建后一个完整的后台项目，建议大家先看完这些文章再来实践本项目
+同时配套了系列教程文章，如何从零构建后一个完整的后台项目，建议大家先看完这些文章再来实践本项目
 
 - [手摸手，带你用 vue 撸后台 系列一(基础篇)](https://juejin.im/post/59097cd7a22b9d0065fb61d2)
 - [手摸手，带你用 vue 撸后台 系列二(登录权限篇)](https://juejin.im/post/591aa14f570c35006961acac)
@@ -76,6 +78,7 @@
 </p>
 
 ## Sponsors
+
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
@@ -101,7 +104,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - 动态面包屑
   - 快捷导航(标签页)
   - Svg Sprite 图标
-  - 本地 mock 数据
+  - 本地/后端 mock 数据
   - Screenfull全屏
   - 自适应收缩侧边栏
 
@@ -112,9 +115,9 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 - Excel
   - 导出excel
-  - 导出zip
   - 导入excel
   - 前端可视化excel
+  - 导出zip
 
 - 表格
   - 动态表格
@@ -152,6 +155,9 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 ```bash
 # 克隆项目
 git clone https://github.com/PanJiaChen/vue-element-admin.git
+
+# 进入项目目录
+cd vue-element-admin
 
 # 安装依赖
 npm install
@@ -209,6 +215,8 @@ Detailed changes for each release are documented in the [release notes](https://
 [更多捐赠方式](https://panjiachen.gitee.io/vue-element-admin-site/zh/donate)
 
 [Paypal Me](https://www.paypal.me/panfree23)
+
+[Buy me a coffee](https://www.buymeacoffee.com/Pan)
 
 ## Browsers support
 

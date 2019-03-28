@@ -30,7 +30,7 @@ English | [简体中文](./README.zh-CN.md)
 
 ## Introduction
 
-[vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a front-end management background integration solution. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element](https://github.com/ElemeFE/element).
+[vue-element-admin](http://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
 
 It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
 
@@ -40,9 +40,9 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 
 - [Gitter](https://gitter.im/vue-element-admin/discuss)
 
-- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
-
 - [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
+
+- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
 
@@ -50,14 +50,14 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 
-**This project does not support low version browsers (e.g. IE). Please add polyfill yourself if you need them.**
+**The current version is `4.0-beta`. If you find a problem, please put [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). If you want to use the old version - stable version, you can switch branches to [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0)**
+
+**This project does not support low version browsers (e.g. IE). Please add polyfill by yourself.**
 
 ## Preparation
 
-You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](http://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
+You need to install [node](http://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](http://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
 Understanding and learning this knowledge in advance will greatly help the use of this project.
-
----
 
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
@@ -77,6 +77,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 - Permission Authentication
   - Page permission
   - Directive permission
+  - Permission configuration page
   - Two-step login
 
 - Multi-environment build
@@ -100,9 +101,9 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 - Excel
   - Export Excel
-  - Export zip
   - Upload Excel
   - Visualization Excel
+  - Export zip
 
 - Table
   - Dynamic Table
@@ -141,6 +142,9 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 # clone the project
 git clone https://github.com/PanJiaChen/vue-element-admin.git
 
+# enter the project directory
+cd vue-element-admin
+
 # install dependency
 npm install
 
@@ -148,7 +152,7 @@ npm install
 npm run dev
 ```
 
-This will automatically open http://localhost:9527.
+This will automatically open http://localhost:9527
 
 ## Build
 
