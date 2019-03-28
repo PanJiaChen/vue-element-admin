@@ -1,6 +1,6 @@
 <template>
   <div>
-    <sticky class-name="sub-navbar">
+    <sticky :z-index="10" class-name="sub-navbar">
       <el-dropdown trigger="click">
         <el-button plain>
           Platform<i class="el-icon-caret-bottom el-icon--right" />
