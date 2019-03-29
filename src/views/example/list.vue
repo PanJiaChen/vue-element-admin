@@ -94,14 +94,6 @@ export default {
         this.total = response.data.total
         this.listLoading = false
       })
-    },
-    handleSizeChange(val) {
-      this.listQuery.limit = val
-      this.getList()
-    },
-    handleCurrentChange(val) {
-      this.listQuery.page = val
-      this.getList()
     }
   }
 }
