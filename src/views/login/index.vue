@@ -13,6 +13,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
+          ref="usernameInput"
           v-model="loginForm.username"
           :placeholder="$t('login.username')"
           name="username"
@@ -26,6 +27,7 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
+          ref="passwordInput"
           v-model="loginForm.password"
           :type="passwordType"
           :placeholder="$t('login.password')"
@@ -118,6 +120,13 @@ export default {
   },
   created() {
     // window.addEventListener('hashchange', this.afterQRScan)
+  },
+  mounted() {
+    if (this.loginForm.username === '') {
+      this.$refs.usernameInput.focus()
+    } else if (this.loginForm.password === '') {
+      this.$refs.passwordInput.focus()
+    }
   },
   destroyed() {
     // window.removeEventListener('hashchange', this.afterQRScan)
