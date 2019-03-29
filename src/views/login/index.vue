@@ -13,7 +13,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="usernameInput"
+          ref="username"
           v-model="loginForm.username"
           :placeholder="$t('login.username')"
           name="username"
@@ -27,7 +27,7 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
-          ref="passwordInput"
+          ref="password"
           v-model="loginForm.password"
           :type="passwordType"
           :placeholder="$t('login.password')"
@@ -98,7 +98,7 @@ export default {
     return {
       loginForm: {
         username: 'admin',
-        password: '1111111'
+        password: '111111'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -123,9 +123,9 @@ export default {
   },
   mounted() {
     if (this.loginForm.username === '') {
-      this.$refs.usernameInput.focus()
+      this.$refs.username.focus()
     } else if (this.loginForm.password === '') {
-      this.$refs.passwordInput.focus()
+      this.$refs.password.focus()
     }
   },
   destroyed() {
@@ -138,6 +138,9 @@ export default {
       } else {
         this.passwordType = 'password'
       }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
