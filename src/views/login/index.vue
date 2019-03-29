@@ -27,6 +27,7 @@
           <svg-icon icon-class="password" />
         </span>
         <el-input
+          :key="passwordType"
           v-model="loginForm.password"
           :type="passwordType"
           :placeholder="$t('login.password')"
