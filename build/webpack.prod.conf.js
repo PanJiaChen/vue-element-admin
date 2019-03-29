@@ -57,7 +57,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       favicon: resolve('favicon.ico'),
       title: 'vue-element-admin',
       templateParameters: {
-        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory,
+        BASE_URL: config.build.assetsPublicPath + config.build.assetsSubDirectory
       },
       minify: {
         removeComments: true,
@@ -71,7 +71,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       // matter anyway
     }),
     new ScriptExtHtmlWebpackPlugin({
-      //`runtime` must same as runtimeChunk name. default is `runtime`
+      // `runtime` must same as runtimeChunk name. default is `runtime`
       inline: /runtime\..*\.js$/
     }),
     // keep chunk.id stable when chunk has no name
