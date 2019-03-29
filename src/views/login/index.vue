@@ -177,16 +177,12 @@ export default {
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
 $bg:#283443;
-$light_gray:#eee;
+$light_gray:#fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
   .login-container .el-input input {
     color: $cursor;
-
-    &::first-line {
-      color: $light_gray;
-    }
   }
 }
 
