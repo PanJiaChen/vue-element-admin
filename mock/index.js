@@ -11,6 +11,7 @@ export function mockXHR() {
   Mock.XHR.prototype.send = function() {
     if (this.custom.xhr) {
       this.custom.xhr.withCredentials = this.withCredentials || false
+      this.custom.xhr.responseType = this.responseType
     }
     this.proxy_send(...arguments)
   }
