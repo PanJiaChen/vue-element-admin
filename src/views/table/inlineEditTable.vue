@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-
       <el-table-column align="center" label="ID" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -29,7 +27,9 @@
 
       <el-table-column class-name="status-col" label="Status" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.status | statusFilter">
+            {{ scope.row.status }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -37,7 +37,9 @@
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input v-model="scope.row.title" class="edit-input" size="small" />
-            <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">cancel</el-button>
+            <el-button class="cancel-btn" size="small" icon="el-icon-refresh" type="warning" @click="cancelEdit(scope.row)">
+              cancel
+            </el-button>
           </template>
           <span v-else>{{ scope.row.title }}</span>
         </template>
@@ -45,11 +47,14 @@
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
-          <el-button v-if="scope.row.edit" type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)">Ok</el-button>
-          <el-button v-else type="primary" size="small" icon="el-icon-edit" @click="scope.row.edit=!scope.row.edit">Edit</el-button>
+          <el-button v-if="scope.row.edit" type="success" size="small" icon="el-icon-circle-check-outline" @click="confirmEdit(scope.row)">
+            Ok
+          </el-button>
+          <el-button v-else type="primary" size="small" icon="el-icon-edit" @click="scope.row.edit=!scope.row.edit">
+            Edit
+          </el-button>
         </template>
       </el-table-column>
-
     </el-table>
   </div>
 </template>
@@ -83,17 +88,16 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        const items = response.data.items
-        this.list = items.map(v => {
-          this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
-          v.originalTitle = v.title //  will be used when user click the cancel botton
-          return v
-        })
-        this.listLoading = false
+      const { data } = await fetchList(this.listQuery)
+      const items = data.items
+      this.list = items.map(v => {
+        this.$set(v, 'edit', false) // https://vuejs.org/v2/guide/reactivity.html
+        v.originalTitle = v.title //  will be used when user click the cancel botton
+        return v
       })
+      this.listLoading = false
     },
     cancelEdit(row) {
       row.title = row.originalTitle

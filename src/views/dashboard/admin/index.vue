@@ -1,6 +1,5 @@
 <template>
   <div class="dashboard-editor-container">
-
     <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
@@ -38,7 +37,6 @@
         <box-card />
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -98,7 +96,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .dashboard-editor-container {
   padding: 32px;
   background-color: rgb(240, 242, 245);

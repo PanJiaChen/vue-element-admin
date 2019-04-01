@@ -5,7 +5,7 @@
     </div>
     <draggable
       :list="list"
-      :options="options"
+      v-bind="$attrs"
       class="board-column-content"
     >
       <div v-for="element in list" :key="element.id" class="board-item">

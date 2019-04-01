@@ -1,20 +1,20 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-
-      <sticky :class-name="'sub-navbar '+postForm.status">
+      <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
           发布
         </el-button>
-        <el-button v-loading="loading" type="warning" @click="draftForm">草稿</el-button>
+        <el-button v-loading="loading" type="warning" @click="draftForm">
+          草稿
+        </el-button>
       </sticky>
 
       <div class="createPost-main-container">
         <el-row>
-
           <Warning />
 
           <el-col :span="24">
@@ -71,7 +71,6 @@
         </el-form-item>
       </div>
     </el-form>
-
   </div>
 </template>
 
@@ -82,7 +81,7 @@ import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
 import { fetchArticle } from '@/api/article'
-import { userSearch } from '@/api/remoteSearch'
+import { searchUser } from '@/api/remoteSearch'
 import Warning from './Warning'
 import { CommentDropdown, PlatformDropdown, SourceUrlDropdown } from './Dropdown'
 
@@ -187,7 +186,7 @@ export default {
     setTagsViewTitle() {
       const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
-      this.$store.dispatch('updateVisitedView', route)
+      this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     submitForm() {
       this.postForm.display_time = parseInt(this.display_time / 1000)
@@ -226,7 +225,7 @@ export default {
       this.postForm.status = 'draft'
     },
     getRemoteUserList(query) {
-      userSearch(query).then(response => {
+      searchUser(query).then(response => {
         if (!response.data.items) return
         this.userListOptions = response.data.items.map(v => v.name)
       })
@@ -235,7 +234,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
 .createPost-container {
   position: relative;

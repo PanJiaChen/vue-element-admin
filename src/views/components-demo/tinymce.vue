@@ -7,7 +7,6 @@
     <div>
       <tinymce v-model="content" :height="300" />
     </div>
-    <!-- eslint-disable-next-line -->
     <div class="editor-content" v-html="content" />
   </div>
 </template>

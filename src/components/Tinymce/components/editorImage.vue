@@ -15,10 +15,16 @@
         action="https://httpbin.org/post"
         list-type="picture-card"
       >
-        <el-button size="small" type="primary">点击上传</el-button>
+        <el-button size="small" type="primary">
+          点击上传
+        </el-button>
       </el-upload>
-      <el-button @click="dialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="handleSubmit">确 定</el-button>
+      <el-button @click="dialogVisible = false">
+        取 消
+      </el-button>
+      <el-button type="primary" @click="handleSubmit">
+        确 定
+      </el-button>
     </el-dialog>
   </div>
 </template>
@@ -95,7 +101,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .editor-slide-upload {
   margin-bottom: 20px;
   /deep/ .el-upload--picture-card {
