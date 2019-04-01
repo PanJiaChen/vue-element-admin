@@ -43,8 +43,6 @@ export default {
     dragTable: 'Arrastrar tabla',
     inlineEditTable: 'Editor',
     complexTable: 'Complex Table',
-    treeTable: 'Tree Table',
-    customTreeTable: 'Custom TreeTable',
     tab: 'Pestaña',
     form: 'Formulario',
     createArticle: 'Crear artículo',

@@ -122,7 +122,6 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 - 表格
   - 动态表格
   - 拖拽表格
-  - 树形表格
   - 内联编辑
 
 - 错误页面

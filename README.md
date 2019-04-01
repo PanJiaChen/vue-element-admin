@@ -108,7 +108,6 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 - Table
   - Dynamic Table
   - Drag And Drop Table
-  - Tree Table
   - Inline Edit Table
 
 - Error Page
