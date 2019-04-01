@@ -1,21 +1,33 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAddRole">{{ $t('permission.addRole') }}</el-button>
+    <el-button type="primary" @click="handleAddRole">
+      {{ $t('permission.addRole') }}
+    </el-button>
 
     <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="Role Key" width="220">
-        <template slot-scope="scope">{{ scope.row.key }}</template>
+        <template slot-scope="scope">
+          {{ scope.row.key }}
+        </template>
       </el-table-column>
       <el-table-column align="center" label="Role Name" width="220">
-        <template slot-scope="scope">{{ scope.row.name }}</template>
+        <template slot-scope="scope">
+          {{ scope.row.name }}
+        </template>
       </el-table-column>
       <el-table-column align="header-center" label="Description">
-        <template slot-scope="scope">{{ scope.row.description }}</template>
+        <template slot-scope="scope">
+          {{ scope.row.description }}
+        </template>
       </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">{{ $t('permission.editPermission') }}</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">{{ $t('permission.delete') }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">
+            {{ $t('permission.editPermission') }}
+          </el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope)">
+            {{ $t('permission.delete') }}
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -38,12 +50,15 @@
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">{{ $t('permission.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmRole">{{ $t('permission.confirm') }}</el-button>
+        <el-button type="danger" @click="dialogVisible=false">
+          {{ $t('permission.cancel') }}
+        </el-button>
+        <el-button type="primary" @click="confirmRole">
+          {{ $t('permission.confirm') }}
+        </el-button>
       </div>
     </el-dialog>
   </div>
-
 </template>
 
 <script>
@@ -173,7 +188,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deleteRole(row.id)
+          await deleteRole(row.key)
           this.rolesList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -215,7 +230,7 @@ export default {
         }
       } else {
         const { data } = await addRole(this.role)
-        this.role.key = data
+        this.role.key = data.key
         this.rolesList.push(this.role)
       }
 

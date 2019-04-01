@@ -1,12 +1,13 @@
 <template>
   <div v-loading.fullscreen.lock="fullscreenLoading" class="main-article" element-loading-text="Efforts to generate PDF">
     <div class="article__heading">
-      <div class="article__heading__title"> {{ article.title }}</div>
+      <div class="article__heading__title">
+        {{ article.title }}
+      </div>
     </div>
     <div style="color: #ccc;">
       This article is from Evan You on <a target="_blank" href="https://medium.com/the-vue-point/plans-for-the-next-iteration-of-vue-js-777ffea6fabf">medium</a>
     </div>
-    <!-- eslint-disable-next-line -->
     <div ref="content" class="node-article-content" v-html="article.content" />
   </div>
 </template>
@@ -41,7 +42,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss">
+<style lang="scss">
 @mixin clearfix {
   &:before {
     display: table;

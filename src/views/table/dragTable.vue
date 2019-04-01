@@ -2,7 +2,6 @@
   <div class="app-container">
     <!-- Note that row-key is necessary to get a correct row order. -->
     <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
-
       <el-table-column align="center" label="ID" width="65">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
@@ -41,7 +40,9 @@
 
       <el-table-column class-name="status-col" label="Status" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.status | statusFilter">
+            {{ scope.row.status }}
+          </el-tag>
         </template>
       </el-table-column>
 
@@ -50,12 +51,14 @@
           <svg-icon class="drag-handler" icon-class="drag" />
         </template>
       </el-table-column>
-
     </el-table>
     <!-- $t is vue-i18n global function to translate lang (lang in @/lang)  -->
-    <div class="show-d">{{ $t('table.dragTips1') }} : &nbsp; {{ oldList }}</div>
-    <div class="show-d">{{ $t('table.dragTips2') }} : {{ newList }}</div>
-
+    <div class="show-d">
+      {{ $t('table.dragTips1') }} : &nbsp; {{ oldList }}
+    </div>
+    <div class="show-d">
+      {{ $t('table.dragTips2') }} : {{ newList }}
+    </div>
   </div>
 </template>
 
@@ -93,17 +96,16 @@ export default {
     this.getList()
   },
   methods: {
-    getList() {
+    async getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-        this.oldList = this.list.map(v => v.id)
-        this.newList = this.oldList.slice()
-        this.$nextTick(() => {
-          this.setSort()
-        })
+      const { data } = await fetchList(this.listQuery)
+      this.list = data.items
+      this.total = data.total
+      this.listLoading = false
+      this.oldList = this.list.map(v => v.id)
+      this.newList = this.oldList.slice()
+      this.$nextTick(() => {
+        this.setSort()
       })
     },
     setSort() {

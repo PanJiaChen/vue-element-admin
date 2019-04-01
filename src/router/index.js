@@ -4,13 +4,12 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 /* Layout */
-import Layout from '@/views/layout/Layout'
+import Layout from '@/layout'
 
 /* Router Modules */
 import componentsRouter from './modules/components'
 import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import treeTableRouter from './modules/tree-table'
 import nestedRouter from './modules/nested'
 
 /** note: sub-menu only appear when children.length>=1
@@ -33,6 +32,12 @@ import nestedRouter from './modules/nested'
     affix: true                  if true, the tag will affix in the tags-view
   }
 **/
+
+/**
+ * constantRoutes
+ * a base page that does not have permission requirements
+ * all roles can be accessed
+ * */
 export const constantRoutes = [
   {
     path: '/redirect',
@@ -105,12 +110,10 @@ export const constantRoutes = [
   }
 ]
 
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRoutes
-})
-
+/**
+ * asyncRoutes
+ * the routes that need to be dynamically loaded based on user roles
+*/
 export const asyncRoutes = [
   {
     path: '/permission',
@@ -166,12 +169,11 @@ export const asyncRoutes = [
     ]
   },
 
-  /** When your routing table is too long, you can split it into small modules**/
+  /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   chartsRouter,
   nestedRouter,
   tableRouter,
-  treeTableRouter,
 
   {
     path: '/example',
@@ -383,3 +385,19 @@ export const asyncRoutes = [
 
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+const createRouter = () => new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRoutes
+})
+
+const router = createRouter()
+
+// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+export function resetRouter() {
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
+}
+
+export default router

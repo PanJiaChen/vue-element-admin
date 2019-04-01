@@ -38,6 +38,16 @@
       right: 0px;
     }
 
+    .el-scrollbar {
+      height: 100%;
+    }
+
+    &.has-logo {
+      .el-scrollbar {
+        height: calc(100% - 50px);
+      }
+    }
+
     .is-horizontal {
       display: none;
     }
@@ -100,6 +110,7 @@
 
       .el-tooltip {
         padding: 0 !important;
+
         .svg-icon {
           margin-left: 20px;
         }
@@ -111,6 +122,7 @@
 
       &>.el-submenu__title {
         padding: 0 !important;
+
         .svg-icon {
           margin-left: 20px;
         }

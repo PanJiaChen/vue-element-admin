@@ -43,8 +43,6 @@ export default {
     dragTable: '拖拽Table',
     inlineEditTable: 'Table内编辑',
     complexTable: '综合Table',
-    treeTable: '树形表格',
-    customTreeTable: '自定义树表',
     tab: 'Tab',
     form: '表单',
     createArticle: '创建文章',
@@ -163,5 +161,12 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  settings: {
+    title: '系统布局配置',
+    theme: '主题色',
+    tagsView: '开启 Tags-View',
+    fixedHeader: '固定 Header',
+    sidebarLogo: '侧边栏 Logo'
   }
 }
