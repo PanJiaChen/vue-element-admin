@@ -1,7 +1,6 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',
     permission: 'Permission',
@@ -10,7 +9,6 @@ export default {
     directivePermission: 'Directive Permission',
     icons: 'Icons',
     components: 'Components',
-    componentIndex: 'Introduction',
     tinymce: 'Tinymce',
     markdown: 'Markdown',
     jsonEditor: 'JSON Editor',
@@ -19,9 +17,9 @@ export default {
     avatarUpload: 'Avatar Upload',
     dropzone: 'Dropzone',
     sticky: 'Sticky',
-    countTo: 'CountTo',
+    countTo: 'Count To',
     componentMixin: 'Mixin',
-    backToTop: 'BackToTop',
+    backToTop: 'Back To Top',
     dragDialog: 'Drag Dialog',
     dragSelect: 'Drag Select',
     dragKanban: 'Drag Kanban',
