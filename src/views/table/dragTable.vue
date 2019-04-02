@@ -52,12 +52,11 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- $t is vue-i18n global function to translate lang (lang in @/lang)  -->
     <div class="show-d">
-      {{ $t('table.dragTips1') }} : &nbsp; {{ oldList }}
+      <el-tag>The default order :</el-tag> {{ oldList }}
     </div>
     <div class="show-d">
-      {{ $t('table.dragTips2') }} : {{ newList }}
+      <el-tag>The after dragging order :</el-tag> {{ newList }}
     </div>
   </div>
 </template>
