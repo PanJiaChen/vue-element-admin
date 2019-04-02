@@ -37,7 +37,7 @@
     </sticky>
 
     <div class="components-container">
-      <code>Sticky header, {{ $t('components.stickyTips') }}</code>
+      <code>Sticky header, When the page is scrolled to the preset position will be sticky on the top.</code>
       <div>placeholder</div>
       <div>placeholder</div>
       <div>placeholder</div>
