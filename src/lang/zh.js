@@ -5,6 +5,7 @@ export default {
     documentation: '文档',
     guide: '引导页',
     permission: '权限测试页',
+    rolePermission: '角色权限',
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     icons: '图标',
@@ -42,8 +43,6 @@ export default {
     dragTable: '拖拽Table',
     inlineEditTable: 'Table内编辑',
     complexTable: '综合Table',
-    treeTable: '树形表格',
-    customTreeTable: '自定义树表',
     tab: 'Tab',
     form: '表单',
     createArticle: '创建文章',
@@ -54,9 +53,10 @@ export default {
     page404: '404',
     errorLog: '错误日志',
     excel: 'Excel',
-    exportExcel: 'Export Excel',
-    selectExcel: 'Export Selected',
-    uploadExcel: 'Upload Excel',
+    exportExcel: '导出 Excel',
+    selectExcel: '导出 已选择项',
+    mergeHeader: '导出 多级表头',
+    uploadExcel: '上传 Excel',
     zip: 'Zip',
     pdf: 'PDF',
     exportZip: 'Export Zip',
@@ -86,9 +86,14 @@ export default {
     github: 'Github 地址'
   },
   permission: {
+    addRole: '新增角色',
+    editPermission: '编辑权限',
     roles: '你的权限',
     switchRoles: '切换权限',
-    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。'
+    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。',
+    delete: '删除',
+    confirm: '确定',
+    cancel: '取消'
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
@@ -156,5 +161,12 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  settings: {
+    title: '系统布局配置',
+    theme: '主题色',
+    tagsView: '开启 Tags-View',
+    fixedHeader: '固定 Header',
+    sidebarLogo: '侧边栏 Logo'
   }
 }

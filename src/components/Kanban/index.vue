@@ -5,8 +5,9 @@
     </div>
     <draggable
       :list="list"
-      :options="options"
-      class="board-column-content">
+      v-bind="$attrs"
+      class="board-column-content"
+    >
       <div v-for="element in list" :key="element.id" class="board-item">
         {{ element.name }} {{ element.id }}
       </div>

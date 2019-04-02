@@ -20,10 +20,11 @@ export default {
     isActive: {
       type: Boolean,
       default: false
-    },
-    toggleClick: {
-      type: Function,
-      default: null
+    }
+  },
+  methods: {
+    toggleClick() {
+      this.$emit('toggleClick')
     }
   }
 }

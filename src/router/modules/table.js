@@ -1,6 +1,6 @@
 /** When your routing table is too long, you can split it into small modules**/
 
-import Layout from '@/views/layout/Layout'
+import Layout from '@/layout'
 
 const tableRouter = {
   path: '/table',
@@ -29,18 +29,6 @@ const tableRouter = {
       component: () => import('@/views/table/inlineEditTable'),
       name: 'InlineEditTable',
       meta: { title: 'inlineEditTable' }
-    },
-    {
-      path: 'tree-table',
-      component: () => import('@/views/table/treeTable/treeTable'),
-      name: 'TreeTableDemo',
-      meta: { title: 'treeTable' }
-    },
-    {
-      path: 'custom-tree-table',
-      component: () => import('@/views/table/treeTable/customTreeTable'),
-      name: 'CustomTreeTableDemo',
-      meta: { title: 'customTreeTable' }
     },
     {
       path: 'complex-table',
