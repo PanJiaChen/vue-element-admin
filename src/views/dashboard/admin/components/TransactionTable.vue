@@ -11,9 +11,9 @@
       </template>
     </el-table-column>
     <el-table-column label="Status" width="100" align="center">
-      <template slot-scope="scope">
-        <el-tag :type="scope.row.status | statusFilter">
-          {{ scope.row.status }}
+      <template slot-scope="{row}">
+        <el-tag :type="row.status | statusFilter">
+          {{ row.status }}
         </el-tag>
       </template>
     </el-table-column>
