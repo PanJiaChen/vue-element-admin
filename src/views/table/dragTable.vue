@@ -54,10 +54,10 @@
     </el-table>
     <!-- $t is vue-i18n global function to translate lang (lang in @/lang)  -->
     <div class="show-d">
-      {{ $t('table.dragTips1') }} : &nbsp; {{ oldList }}
+      <el-tag style="margin-right:12px;">{{ $t('table.dragTips1') }} :</el-tag> {{ oldList }}
     </div>
     <div class="show-d">
-      {{ $t('table.dragTips2') }} : {{ newList }}
+      <el-tag>{{ $t('table.dragTips2') }} :</el-tag> {{ newList }}
     </div>
   </div>
 </template>
