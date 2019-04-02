@@ -37,15 +37,9 @@ export default {
   computed: {
     routes() {
       return this.$store.getters.permission_routes
-    },
-    lang() {
-      return this.$store.getters.language
     }
   },
   watch: {
-    lang() {
-      this.searchPool = this.generateRoutes(this.routes)
-    },
     routes() {
       this.searchPool = this.generateRoutes(this.routes)
     },

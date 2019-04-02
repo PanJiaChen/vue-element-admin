@@ -79,7 +79,7 @@ export default {
   },
   computed: {
     language() {
-      return this.languageTypeList[this.$store.getters.language]
+      return this.languageTypeList['en']
     }
   },
   methods: {

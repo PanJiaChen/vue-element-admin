@@ -55,21 +55,12 @@ export default {
       }
     }
   },
-  computed: {
-    language() {
-      return this.languageTypeList[this.$store.getters.language]
-    }
-  },
   watch: {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
-    },
-    language() {
-      this.destroyTinymce()
-      this.$nextTick(() => this.initTinymce())
     }
   },
   mounted() {
@@ -88,7 +79,6 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
-        language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
