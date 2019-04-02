@@ -72,7 +72,7 @@ export default {
   },
   login: {
     title: 'Login Form',
-    logIn: 'Log in',
+    logIn: 'Login',
     username: 'Username',
     password: 'Password',
     any: 'any',
@@ -85,10 +85,10 @@ export default {
   },
   permission: {
     addRole: 'New Role',
-    editPermission: 'Edit Permission',
+    editPermission: 'Edit',
     roles: 'Your roles',
     switchRoles: 'Switch roles',
-    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    tips: 'In some cases, using v-permission will have no effect. For example: Element-UI  el-tab or el-table-column and other scenes that dynamically render dom. You can only do this with v-if.',
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel'
