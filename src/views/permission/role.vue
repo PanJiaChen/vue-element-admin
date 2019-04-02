@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="handleAddRole">
-      {{ $t('permission.addRole') }}
-    </el-button>
+    <el-button type="primary" @click="handleAddRole">New Role</el-button>
 
     <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
       <el-table-column align="center" label="Role Key" width="220">
@@ -22,12 +20,8 @@
       </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">
-            {{ $t('permission.editPermission') }}
-          </el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">
-            {{ $t('permission.delete') }}
-          </el-button>
+          <el-button type="primary" size="small" @click="handleEdit(scope)">Edit</el-button>
+          <el-button type="danger" size="small" @click="handleDelete(scope)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,16 +40,20 @@
           />
         </el-form-item>
         <el-form-item label="Menus">
-          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+          <el-tree
+            ref="tree"
+            :check-strictly="checkStrictly"
+            :data="routesData"
+            :props="defaultProps"
+            show-checkbox
+            node-key="path"
+            class="permission-tree"
+          />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">
-          {{ $t('permission.cancel') }}
-        </el-button>
-        <el-button type="primary" @click="confirmRole">
-          {{ $t('permission.confirm') }}
-        </el-button>
+        <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
+        <el-button type="primary" @click="confirmRole">Confirm</el-button>
       </div>
     </el-dialog>
   </div>
