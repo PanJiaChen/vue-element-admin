@@ -6,14 +6,14 @@
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search class="right-menu-item" />
+        <search class="right-menu-item header-search" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <screenfull class="right-menu-item hover-effect" />
+        <screenfull class="right-menu-item hover-effect screenfull" />
 
         <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select class="right-menu-item hover-effect" />
+          <size-select class="right-menu-item hover-effect size-select" />
         </el-tooltip>
 
       </template>
