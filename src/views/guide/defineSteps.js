@@ -1,6 +1,6 @@
 const steps = [
   {
-    element: '.hamburger-container',
+    element: '#hamburger-container',
     popover: {
       title: 'Hamburger',
       description: 'Open && Close sidebar',
@@ -8,7 +8,7 @@ const steps = [
     }
   },
   {
-    element: '.breadcrumb-container',
+    element: '#breadcrumb-container',
     popover: {
       title: 'Breadcrumb',
       description: 'Indicate the current page location',
@@ -16,7 +16,7 @@ const steps = [
     }
   },
   {
-    element: '.header-search',
+    element: '#header-search',
     popover: {
       title: 'Page Search',
       description: 'Page search, quick navigation',
@@ -24,7 +24,7 @@ const steps = [
     }
   },
   {
-    element: '.screenfull',
+    element: '#screenfull',
     popover: {
       title: 'Screenfull',
       description: 'Set the page into fullscreen',
@@ -32,7 +32,7 @@ const steps = [
     }
   },
   {
-    element: '.size-select',
+    element: '#size-select',
     popover: {
       title: 'Switch Size',
       description: 'Switch the system size',
@@ -40,7 +40,7 @@ const steps = [
     }
   },
   {
-    element: '.tags-view-container',
+    element: '#tags-view-container',
     popover: {
       title: 'Tags view',
       description: 'The history of the page you visited',
