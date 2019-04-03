@@ -17,19 +17,10 @@
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        {{ $t('tagsView.refresh') }}
-      </li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">
-        {{
-          $t('tagsView.close') }}
-      </li>
-      <li @click="closeOthersTags">
-        {{ $t('tagsView.closeOthers') }}
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        {{ $t('tagsView.closeAll') }}
-      </li>
+      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
+      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">Close</li>
+      <li @click="closeOthersTags">Close Others</li>
+      <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
 </template>
