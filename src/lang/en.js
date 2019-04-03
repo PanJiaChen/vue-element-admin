@@ -140,14 +140,14 @@ export default {
   excel: {
     export: 'Export',
     selectedExport: 'Export Selected Items',
-    placeholder: 'Please enter the file name(default excel-list)'
+    placeholder: 'Please enter the file name (default excel-list)'
   },
   zip: {
     export: 'Export',
-    placeholder: 'Please enter the file name(default file)'
+    placeholder: 'Please enter the file name (default file)'
   },
   pdf: {
-    tips: 'Here we use window.print() to implement the feature of downloading pdf.'
+    tips: 'Here we use window.print() to implement the feature of downloading PDF.'
   },
   theme: {
     change: 'Change Theme',
