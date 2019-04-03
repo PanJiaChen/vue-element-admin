@@ -1,19 +1,19 @@
 <template>
   <div class="navbar">
-    <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
+    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb class="breadcrumb-container" />
+    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <search class="right-menu-item" />
+        <search class="right-menu-item header-search" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
 
-        <screenfull class="right-menu-item hover-effect" />
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select class="right-menu-item hover-effect" />
+          <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <lang-select class="right-menu-item hover-effect" />
