@@ -19,6 +19,7 @@ const steps = [
     element: '.header-search',
     popover: {
       title: 'Page Search',
+      description: 'Page search, quick navigation',
       position: 'left'
     }
   },
