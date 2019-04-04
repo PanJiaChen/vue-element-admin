@@ -6,7 +6,7 @@
       </el-button>
     </el-badge>
 
-    <el-dialog :visible.sync="dialogTableVisible" title="Error Log" width="80%">
+    <el-dialog :visible.sync="dialogTableVisible" title="Error Log" width="80%" append-to-body>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
           <template slot-scope="{row}">
