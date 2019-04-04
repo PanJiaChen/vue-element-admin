@@ -35,6 +35,7 @@
           :placeholder="$t('login.password')"
           name="password"
           auto-complete="on"
+          @keyup.native="checkCapslock"
           @keyup.enter.native="handleLogin"
         />
         <span class="show-pwd" @click="showPwd">
@@ -76,6 +77,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
+import { debounce } from '@/utils'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialSignin'
 
@@ -134,6 +136,24 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
+    capslockNotify: debounce(function() {
+      this.$notify({
+        title: '提示',
+        message: '大写锁定已打开',
+        duration: 4500,
+        showClose: false,
+        type: 'warning'
+      })
+    }, 4500, true),
+    checkCapslock({ shiftKey, key } = {}) {
+      if (((key >= 'a' && key <= 'z') || (key >= 'A' && key <= 'Z')) && key.length === 1) {
+        if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
+          this.capslockNotify()
+        } else {
+          this.$notify.closeAll()
+        }
+      }
+    },
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
