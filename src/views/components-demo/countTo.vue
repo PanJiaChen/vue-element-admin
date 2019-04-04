@@ -13,36 +13,41 @@
       :prefix="_prefix"
       :suffix="_suffix"
       :autoplay="false"
-      class="example"/>
+      class="example"
+    />
     <div style="margin-left: 25%;margin-top: 40px;">
       <label class="label" for="startValInput">startVal:
-        <input v-model.number="setStartVal" type="number" name="startValInput" >
+        <input v-model.number="setStartVal" type="number" name="startValInput">
       </label>
       <label class="label" for="endValInput">endVal:
-        <input v-model.number="setEndVal" type="number" name="endVaInput" >
+        <input v-model.number="setEndVal" type="number" name="endVaInput">
       </label>
       <label class="label" for="durationInput">duration:
-        <input v-model.number="setDuration" type="number" name="durationInput" >
+        <input v-model.number="setDuration" type="number" name="durationInput">
       </label>
-      <div class="startBtn example-btn" @click="start">开始</div>
-      <div class="pause-resume-btn example-btn" @click="pauseResume">暂停/恢复</div>
+      <div class="startBtn example-btn" @click="start">
+        Start
+      </div>
+      <div class="pause-resume-btn example-btn" @click="pauseResume">
+        pause/resume
+      </div>
       <br>
       <label class="label" for="decimalsInput">decimals:
-        <input v-model.number="setDecimals" type="number" name="decimalsInput" >
+        <input v-model.number="setDecimals" type="number" name="decimalsInput">
       </label>
       <label class="label" for="separatorInput">separator:
-        <input v-model="setSeparator" name="separatorInput" >
+        <input v-model="setSeparator" name="separatorInput">
       </label>
       <label class="label" for="prefixInput">prefix:
-        <input v-model="setPrefix" name="prefixInput" >
+        <input v-model="setPrefix" name="prefixInput">
       </label>
       <label class="label" for="suffixInput">suffix:
-        <input v-model="setSuffix" name="suffixInput" >
+        <input v-model="setSuffix" name="suffixInput">
       </label>
     </div>
     <code>&lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{ _endVal }}&#x27; :duration=&#x27;{{ _duration }}&#x27;
-    :decimals=&#x27;{{ _decimals }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{ _prefix }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27;
-    :autoplay=false&gt;</code>
+      :decimals=&#x27;{{ _decimals }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{ _prefix }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27;
+      :autoplay=false&gt;</code>
   </div>
 </template>
 

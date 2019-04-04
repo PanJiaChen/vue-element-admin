@@ -38,6 +38,16 @@
       right: 0px;
     }
 
+    .el-scrollbar {
+      height: 100%;
+    }
+
+    &.has-logo {
+      .el-scrollbar {
+        height: calc(100% - 50px);
+      }
+    }
+
     .is-horizontal {
       display: none;
     }
@@ -83,19 +93,27 @@
 
   .hideSidebar {
     .sidebar-container {
-      width: 36px !important;
+      width: 54px !important;
     }
 
     .main-container {
-      margin-left: 36px;
+      margin-left: 54px;
+    }
+
+    .svg-icon {
+      margin-right: 0px;
     }
 
     .submenu-title-noDropdown {
-      padding-left: 10px !important;
+      padding: 0 !important;
       position: relative;
 
       .el-tooltip {
-        padding: 0 10px !important;
+        padding: 0 !important;
+
+        .svg-icon {
+          margin-left: 20px;
+        }
       }
     }
 
@@ -103,7 +121,11 @@
       overflow: hidden;
 
       &>.el-submenu__title {
-        padding-left: 10px !important;
+        padding: 0 !important;
+
+        .svg-icon {
+          margin-left: 20px;
+        }
 
         .el-submenu__icon-arrow {
           display: none;
