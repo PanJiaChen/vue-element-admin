@@ -4,7 +4,7 @@ import getters from './getters'
 
 Vue.use(Vuex)
 
-// https://webpack.js.org/guides/dependency-management/#require-context
+// https://webpack.js.org/guides/dependency-management/#requirecontext
 const modulesFiles = require.context('./modules', false, /\.js$/)
 
 // you do not need `import app from './modules/app'`
