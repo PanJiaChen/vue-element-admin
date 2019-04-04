@@ -1,4 +1,3 @@
-
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
@@ -19,26 +18,26 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
-  import Logo from './Logo'
-  import SidebarItem from './SidebarItem'
-  import variables from '@/styles/variables.scss'
-  export default {
-    components: { SidebarItem, Logo },
-    computed: {
-      ...mapGetters([
-        'permission_routes',
-        'sidebar'
-      ]),
-      showLogo() {
-        return this.$store.state.settings.sidebarLogo
-      },
-      variables() {
-        return variables
-      },
-      isCollapse() {
-        return !this.sidebar.opened
-      }
+import { mapGetters } from 'vuex'
+import Logo from './Logo'
+import SidebarItem from './SidebarItem'
+import variables from '@/styles/variables.scss'
+export default {
+  components: { SidebarItem, Logo },
+  computed: {
+    ...mapGetters([
+      'permission_routes',
+      'sidebar'
+    ]),
+    showLogo() {
+      return this.$store.state.settings.sidebarLogo
+    },
+    variables() {
+      return variables
+    },
+    isCollapse() {
+      return !this.sidebar.opened
     }
   }
+}
 </script>
