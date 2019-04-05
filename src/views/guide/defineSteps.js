@@ -1,6 +1,6 @@
 const steps = [
   {
-    element: '.hamburger-container',
+    element: '#hamburger-container',
     popover: {
       title: 'Hamburger',
       description: 'Open && Close sidebar',
@@ -8,7 +8,7 @@ const steps = [
     }
   },
   {
-    element: '.breadcrumb-container',
+    element: '#breadcrumb-container',
     popover: {
       title: 'Breadcrumb',
       description: 'Indicate the current page location',
@@ -16,31 +16,31 @@ const steps = [
     }
   },
   {
-    element: '.screenfull',
+    element: '#header-search',
+    popover: {
+      title: 'Page Search',
+      description: 'Page search, quick navigation',
+      position: 'left'
+    }
+  },
+  {
+    element: '#screenfull',
     popover: {
       title: 'Screenfull',
-      description: 'Bring the page into fullscreen',
+      description: 'Set the page into fullscreen',
       position: 'left'
     }
   },
   {
-    element: '.international-icon',
+    element: '#size-select',
     popover: {
-      title: 'Switch language',
-      description: 'Switch the system language',
+      title: 'Switch Size',
+      description: 'Switch the system size',
       position: 'left'
     }
   },
   {
-    element: '.theme-switch',
-    popover: {
-      title: 'Theme Switch',
-      description: 'Custom switch system theme',
-      position: 'left'
-    }
-  },
-  {
-    element: '.tags-view-container',
+    element: '#tags-view-container',
     popover: {
       title: 'Tags view',
       description: 'The history of the page you visited',

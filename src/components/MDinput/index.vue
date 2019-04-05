@@ -197,7 +197,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   // Fonts:
   $font-size-base: 16px;
   $font-size-small: 18px;

@@ -1,6 +1,5 @@
 <template>
   <el-table :data="list" border fit highlight-current-row style="width: 100%">
-
     <el-table-column
       v-loading="loading"
       align="center"
@@ -20,9 +19,9 @@
     </el-table-column>
 
     <el-table-column min-width="300px" label="Title">
-      <template slot-scope="scope">
-        <span>{{ scope.row.title }}</span>
-        <el-tag>{{ scope.row.type }}</el-tag>
+      <template slot-scope="{row}">
+        <span>{{ row.title }}</span>
+        <el-tag>{{ row.type }}</el-tag>
       </template>
     </el-table-column>
 
@@ -45,13 +44,12 @@
     </el-table-column>
 
     <el-table-column class-name="status-col" label="Status" width="110">
-      <template slot-scope="scope">
-        <el-tag :type="scope.row.status | statusFilter">
-          {{ scope.row.status }}
+      <template slot-scope="{row}">
+        <el-tag :type="row.status | statusFilter">
+          {{ row.status }}
         </el-tag>
       </template>
     </el-table-column>
-
   </el-table>
 </template>
 

@@ -25,8 +25,12 @@
       <label class="label" for="durationInput">duration:
         <input v-model.number="setDuration" type="number" name="durationInput">
       </label>
-      <div class="startBtn example-btn" @click="start">开始</div>
-      <div class="pause-resume-btn example-btn" @click="pauseResume">暂停/恢复</div>
+      <div class="startBtn example-btn" @click="start">
+        Start
+      </div>
+      <div class="pause-resume-btn example-btn" @click="pauseResume">
+        pause/resume
+      </div>
       <br>
       <label class="label" for="decimalsInput">decimals:
         <input v-model.number="setDecimals" type="number" name="decimalsInput">
@@ -41,11 +45,9 @@
         <input v-model="setSuffix" name="suffixInput">
       </label>
     </div>
-    <code>
-      &lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{ _endVal }}&#x27; :duration=&#x27;{{ _duration }}&#x27;
+    <code>&lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{ _endVal }}&#x27; :duration=&#x27;{{ _duration }}&#x27;
       :decimals=&#x27;{{ _decimals }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{ _prefix }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27;
-      :autoplay=false&gt;
-    </code>
+      :autoplay=false&gt;</code>
   </div>
 </template>
 

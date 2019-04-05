@@ -10,7 +10,9 @@
       action="https://httpbin.org/post"
     >
       <i class="el-icon-upload" />
-      <div class="el-upload__text">Drag或<em>点击上传</em></div>
+      <div class="el-upload__text">
+        Drag或<em>点击上传</em>
+      </div>
     </el-upload>
     <div v-show="imageUrl.length>0" class="image-preview">
       <div v-show="imageUrl.length>1" class="image-preview-wrapper">
@@ -74,7 +76,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .upload-container {
   width: 100%;
   height: 100%;

@@ -1,7 +1,7 @@
 <template>
   <el-color-picker
     v-model="theme"
-    :predefine="['#409EFF', '#11a983', '#13c2c2', '#6959CD', '#f5222d', '#eb2f96', '#DB7093', '#e6a23c', '#8B8989', '#212121']"
+    :predefine="['#409EFF', '#1890ff', '#304156','#212121','#11a983', '#13c2c2', '#6959CD', '#f5222d', ]"
     class="theme-picker"
     popper-class="theme-picker-dropdown"
   />
@@ -11,21 +11,31 @@
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
+import defaultSettings from '@/settings'
 
 export default {
   data() {
     return {
       chalk: '', // content of theme-chalk css
-      theme: ORIGINAL_THEME
+      theme: defaultSettings.theme
     }
   },
   watch: {
-    theme(val) {
-      const oldVal = this.theme
+    async theme(val) {
+      const oldVal = this.chalk ? this.theme : ORIGINAL_THEME
       if (typeof val !== 'string') return
       const themeCluster = this.getThemeCluster(val.replace('#', ''))
       const originalCluster = this.getThemeCluster(oldVal.replace('#', ''))
       console.log(themeCluster, originalCluster)
+
+      const $message = this.$message({
+        message: '  Compiling the theme',
+        customClass: 'theme-message',
+        type: 'success',
+        duration: 0,
+        iconClass: 'el-icon-loading'
+      })
+
       const getHandler = (variable, id) => {
         return () => {
           const originalCluster = this.getThemeCluster(ORIGINAL_THEME.replace('#', ''))
@@ -41,14 +51,14 @@ export default {
         }
       }
 
-      const chalkHandler = getHandler('chalk', 'chalk-style')
-
       if (!this.chalk) {
         const url = `https://unpkg.com/element-ui@${version}/lib/theme-chalk/index.css`
-        this.getCSSString(url, chalkHandler, 'chalk')
-      } else {
-        chalkHandler()
+        await this.getCSSString(url, 'chalk')
       }
+
+      const chalkHandler = getHandler('chalk', 'chalk-style')
+
+      chalkHandler()
 
       const styles = [].slice.call(document.querySelectorAll('style'))
         .filter(style => {
@@ -60,39 +70,34 @@ export default {
         if (typeof innerText !== 'string') return
         style.innerText = this.updateStyle(innerText, originalCluster, themeCluster)
       })
-      this.$message({
-        message: '换肤成功',
-        type: 'success'
-      })
+
+      this.$emit('change', val)
+
+      $message.close()
     }
   },
 
   methods: {
     updateStyle(style, oldCluster, newCluster) {
-      const colorOverrides = [] // only capture color overides
+      let newStyle = style
       oldCluster.forEach((color, index) => {
-        const value = newCluster[index]
-        const color_plain = color.replace(/([()])/g, '\\$1')
-        const repl = new RegExp(`(^|})([^{]+{[^{}]+)${color_plain}\\b([^}]*)(?=})`, 'gi')
-        const nestRepl = new RegExp(color_plain, 'ig') // for greed matching before the 'color'
-        let v
-        while ((v = repl.exec(style))) {
-          colorOverrides.push(v[2].replace(nestRepl, value) + value + v[3] + '}') // '}' not captured in the regexp repl to reserve it as locator-boundary
-        }
+        newStyle = newStyle.replace(new RegExp(color, 'ig'), newCluster[index])
       })
-      return colorOverrides.join('')
+      return newStyle
     },
 
-    getCSSString(url, callback, variable) {
-      const xhr = new XMLHttpRequest()
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
-          callback()
+    getCSSString(url, variable) {
+      return new Promise(resolve => {
+        const xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = () => {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            this[variable] = xhr.responseText.replace(/@font-face{[^}]+}/, '')
+            resolve()
+          }
         }
-      }
-      xhr.open('GET', url)
-      xhr.send()
+        xhr.open('GET', url)
+        xhr.send()
+      })
     },
 
     getThemeCluster(theme) {
@@ -144,10 +149,14 @@ export default {
 </script>
 
 <style>
+.theme-message,
+.theme-picker-dropdown {
+  z-index: 99999 !important;
+}
+
 .theme-picker .el-color-picker__trigger {
-  margin-top: 12px;
-  height: 26px!important;
-  width: 26px!important;
+  height: 26px !important;
+  width: 26px !important;
   padding: 2px;
 }
 

@@ -7,11 +7,19 @@
       </div>
       <div>
         <el-radio-group v-model="lang" size="small">
-          <el-radio label="zh" border>简体中文</el-radio>
-          <el-radio label="en" border>English</el-radio>
-          <el-radio label="es" border>Español</el-radio>
+          <el-radio label="zh" border>
+            简体中文
+          </el-radio>
+          <el-radio label="en" border>
+            English
+          </el-radio>
+          <el-radio label="es" border>
+            Español
+          </el-radio>
         </el-radio-group>
-        <el-tag style="margin-top:15px;display:block;" type="info">{{ $t('i18nView.note') }}</el-tag>
+        <el-tag style="margin-top:15px;display:block;" type="info">
+          {{ $t('i18nView.note') }}
+        </el-tag>
       </div>
     </el-card>
 
@@ -31,12 +39,24 @@
           </el-select>
         </div>
         <div class="block">
-          <el-button class="item-btn" size="small">{{ $t('i18nView.default') }}</el-button>
-          <el-button class="item-btn" size="small" type="primary">{{ $t('i18nView.primary') }}</el-button>
-          <el-button class="item-btn" size="small" type="success">{{ $t('i18nView.success') }}</el-button>
-          <el-button class="item-btn" size="small" type="info">{{ $t('i18nView.info') }}</el-button>
-          <el-button class="item-btn" size="small" type="warning">{{ $t('i18nView.warning') }}</el-button>
-          <el-button class="item-btn" size="small" type="danger">{{ $t('i18nView.danger') }}</el-button>
+          <el-button class="item-btn" size="small">
+            {{ $t('i18nView.default') }}
+          </el-button>
+          <el-button class="item-btn" size="small" type="primary">
+            {{ $t('i18nView.primary') }}
+          </el-button>
+          <el-button class="item-btn" size="small" type="success">
+            {{ $t('i18nView.success') }}
+          </el-button>
+          <el-button class="item-btn" size="small" type="info">
+            {{ $t('i18nView.info') }}
+          </el-button>
+          <el-button class="item-btn" size="small" type="warning">
+            {{ $t('i18nView.warning') }}
+          </el-button>
+          <el-button class="item-btn" size="small" type="danger">
+            {{ $t('i18nView.danger') }}
+          </el-button>
         </div>
       </el-col>
       <el-col :span="12" :xs="24">
@@ -90,7 +110,7 @@ export default {
       },
       set(lang) {
         this.$i18n.locale = lang
-        this.$store.dispatch('setLanguage', lang)
+        this.$store.dispatch('app/setLanguage', lang)
       }
     }
   },
