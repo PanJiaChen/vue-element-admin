@@ -1,7 +1,6 @@
 export default {
   route: {
     dashboard: 'Panel de control',
-    introduction: 'Introducción',
     documentation: 'Documentación',
     guide: 'Guía',
     permission: 'Permisos',
@@ -10,7 +9,6 @@ export default {
     directivePermission: 'Permisos de la directiva',
     icons: 'Iconos',
     components: 'Componentes',
-    componentIndex: 'Introducción',
     tinymce: 'Tinymce',
     markdown: 'Markdown',
     jsonEditor: 'Editor JSON',

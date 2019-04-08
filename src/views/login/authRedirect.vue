@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: 'Authredirect',
+  name: 'AuthRedirect',
   created() {
     const hash = window.location.search.slice(1)
     if (window.localStorage) {

@@ -23,7 +23,7 @@ service.interceptors.request.use(
   error => {
     // Do something with request error
     console.log(error) // for debug
-    Promise.reject(error)
+    return Promise.reject(error)
   }
 )
 
@@ -43,7 +43,7 @@ service.interceptors.response.use(
     const res = response.data
     if (res.code !== 20000) {
       Message({
-        message: res.message,
+        message: res.message || 'error',
         type: 'error',
         duration: 5 * 1000
       })
@@ -61,7 +61,7 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject('error')
+      return Promise.reject(res.message || 'error')
     } else {
       return res
     }
