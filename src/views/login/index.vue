@@ -37,6 +37,7 @@
             name="password"
             auto-complete="on"
             @keyup.native="checkCapslock"
+            @blur="visible = false"
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
