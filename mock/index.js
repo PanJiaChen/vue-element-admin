@@ -1,11 +1,23 @@
 import Mock from 'mockjs'
-import mocks from './mocks'
 import { param2Obj } from '../src/utils'
 
-const MOCK_API_BASE = '/mock'
+import user from './user'
+import role from './role'
+import article from './article'
+import search from './remoteSearch'
 
+const mocks = [
+  ...user,
+  ...role,
+  ...article,
+  ...search
+]
+
+// for front mock
+// please use it cautiously, it will redefine XMLHttpRequest,
+// which will cause many of your third-party libraries to be invalidated(like progress event).
 export function mockXHR() {
-  // 修复在使用 MockJS 情况下，设置 withCredentials = true，且未被拦截的跨域请求丢失 Cookies 的问题
+  // mock patch
   // https://github.com/nuysoft/Mock/issues/300
   Mock.XHR.prototype.proxy_send = Mock.XHR.prototype.send
   Mock.XHR.prototype.send = function() {
@@ -42,9 +54,10 @@ export function mockXHR() {
   }
 }
 
+// for mock server
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`${MOCK_API_BASE}${url}`),
+    url: new RegExp(`/mock${url}`),
     type: type || 'get',
     response(req, res) {
       res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
