@@ -3,19 +3,18 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 function registerRoutes(app) {
-  const { default: mocks, MOCK_API_BASE } = require('./index.js')
+  const { default: mocks } = require('./index.js')
   for (const mock of mocks) {
     app[mock.type](mock.url, mock.response)
   }
   return {
-    mockRoutesLength: Object.keys(mocks).length,
-    MOCK_API_BASE: MOCK_API_BASE
+    mockRoutesLength: Object.keys(mocks).length
   }
 }
 
-function unregisterRoutes(MOCK_API_BASE) {
+function unregisterRoutes() {
   Object.keys(require.cache).forEach(i => {
-    if (i.includes(MOCK_API_BASE)) {
+    if (i.includes('/mock')) {
       delete require.cache[require.resolve(i)]
     }
   })
@@ -54,7 +53,7 @@ module.exports = app => {
     extended: true
   }))
 
-  const { mockRoutesLength, MOCK_API_BASE } = registerRoutes(app)
+  const { mockRoutesLength } = registerRoutes(app)
 
   // watch files, hot reload mock server
   chokidar.watch(('./mock'), {
@@ -70,7 +69,7 @@ module.exports = app => {
       app._router.stack.splice(index, mockRoutesLength)
 
       // clear routes cache
-      unregisterRoutes(MOCK_API_BASE)
+      unregisterRoutes()
 
       registerRoutes(app)
 
