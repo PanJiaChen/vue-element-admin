@@ -23,25 +23,27 @@
         />
       </el-form-item>
 
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          :placeholder="$t('login.password')"
-          name="password"
-          auto-complete="on"
-          @keyup.native="checkCapslock"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-        </span>
-      </el-form-item>
+      <el-tooltip v-model="visible" content="大写锁定已打开" placement="top-end" manual>
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            :placeholder="$t('login.password')"
+            name="password"
+            auto-complete="on"
+            @keyup.native="checkCapslock"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+          </span>
+        </el-form-item>
+      </el-tooltip>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">
         {{ $t('login.logIn') }}
@@ -77,7 +79,6 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-import { debounce } from '@/utils'
 import LangSelect from '@/components/LangSelect'
 import SocialSign from './socialSignin'
 
@@ -109,6 +110,7 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
+      visible: false,
       loading: false,
       showDialog: false,
       redirect: undefined
@@ -136,22 +138,16 @@ export default {
     // window.removeEventListener('storage', this.afterQRScan)
   },
   methods: {
-    capslockNotify: debounce(function() {
-      this.$notify({
-        title: '提示',
-        message: '大写锁定已打开',
-        duration: 4500,
-        showClose: false,
-        type: 'warning'
-      })
-    }, 4500, true),
     checkCapslock({ shiftKey, key } = {}) {
       if (((key >= 'a' && key <= 'z') || (key >= 'A' && key <= 'Z')) && key.length === 1) {
         if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
-          this.capslockNotify()
+          this.visible = true
         } else {
-          this.$notify.closeAll()
+          this.visible = false
         }
+      }
+      if (key === 'CapsLock' && this.visible === true) {
+        this.visible = false
       }
     },
     showPwd() {
