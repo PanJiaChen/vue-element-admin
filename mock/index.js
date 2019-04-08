@@ -2,7 +2,7 @@ import Mock from 'mockjs'
 import mocks from './mocks'
 import { param2Obj } from '../src/utils'
 
-const MOCK_API_BASE = '/mock'
+export const MOCK_API_BASE = '/mock'
 
 export function mockXHR() {
   // 修复在使用 MockJS 情况下，设置 withCredentials = true，且未被拦截的跨域请求丢失 Cookies 的问题
