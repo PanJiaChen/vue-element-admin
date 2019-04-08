@@ -75,6 +75,7 @@
     "@babel/core": "7.0.0",
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.5.3",
+    "@vue/cli-plugin-eslint": "3.5.1",
     "@vue/cli-plugin-unit-jest": "3.5.3",
     "@vue/cli-service": "3.5.3",
     "@vue/test-utils": "1.0.0-beta.29",
