@@ -1,16 +1,6 @@
-
 const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
-
-function getPath(path) {
-  var match = path.toString()
-    .replace('\\/?', '')
-    .replace('(?=\\/|$)', '$')
-    .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
-  return match
-    ? match[1].replace(/\\(.)/g, '$1').split('/')
-    : path.toString()
-}
+const chalk = require('chalk')
 
 function registerRoutes(app) {
   const { default: mocks } = require('./index.js')
@@ -31,6 +21,16 @@ function unregisterRoutes(caches) {
   })
 }
 
+function getPath(path) {
+  var match = path.toString()
+    .replace('\\/?', '')
+    .replace('(?=\\/|$)', '$')
+    .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
+  return match
+    ? match[1].replace(/\\(.)/g, '$1').split('/')
+    : path.toString()
+}
+
 function getMockRoutesIndex(app) {
   for (let index = 0; index <= app._router.stack.length; index++) {
     const r = app._router.stack[index]
@@ -44,8 +44,11 @@ function getMockRoutesIndex(app) {
 }
 
 module.exports = app => {
+  // es6 polyfill
   require('@babel/register')
 
+  // parse app.body
+  // http://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true
@@ -53,17 +56,25 @@ module.exports = app => {
 
   const { mockRoutesLength, caches } = registerRoutes(app)
 
-  chokidar.watch(('./mock'), { ignored: 'mock/mock-server.js', persistent: true, ignoreInitial: false }).on('all', (event, path) => {
+  // watch files, hot reload mock server
+  chokidar.watch(('./mock'), {
+    ignored: 'mock/mock-server.js',
+    persistent: true,
+    ignoreInitial: true
+  }).on('all', (event, path) => {
     if (event === 'change' || event === 'add') {
+      // find mock routes stack index
       const index = getMockRoutesIndex(app)
 
+      // remove mock routes stack
       app._router.stack.splice(index, mockRoutesLength)
-      console.log('caches')
-      console.log(index)
-      // console.log(path)
+
+      // clear routes cache
       unregisterRoutes(caches)
-      // console.log(app)
+
       registerRoutes(app)
+
+      console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
     }
   })
 }
