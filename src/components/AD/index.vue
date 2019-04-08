@@ -1,5 +1,5 @@
 <template>
-  <div id="codefund"/>
+  <div id="codefund" />
 </template>
 
 <script>
@@ -46,8 +46,17 @@ export default {
 }
 </script>
 
-<style>
-.cf-wrapper{
-  margin: 0!important;
+<style lang="scss">
+.cf-wrapper {
+  margin: 0 !important;
 }
+ .fixed-header+#codefund {
+    margin-top: 50px;
+  }
+.hasTagsView {
+  .fixed-header+#codefund {
+    margin-top: 84px;
+  }
+}
+
 </style>
