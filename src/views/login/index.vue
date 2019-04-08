@@ -23,7 +23,7 @@
         />
       </el-form-item>
 
-      <el-tooltip v-model="visible" content="大写锁定已打开" placement="top-end" manual>
+      <el-tooltip v-model="capsTooltip" content="Caps lock is On" placement="right" manual>
         <el-form-item prop="password">
           <span class="svg-container">
             <svg-icon icon-class="password" />
@@ -37,7 +37,7 @@
             name="password"
             auto-complete="on"
             @keyup.native="checkCapslock"
-            @blur="visible = false"
+            @blur="capsTooltip = false"
             @keyup.enter.native="handleLogin"
           />
           <span class="show-pwd" @click="showPwd">
@@ -111,7 +111,7 @@ export default {
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       passwordType: 'password',
-      visible: false,
+      capsTooltip: false,
       loading: false,
       showDialog: false,
       redirect: undefined
@@ -140,15 +140,15 @@ export default {
   },
   methods: {
     checkCapslock({ shiftKey, key } = {}) {
-      if (((key >= 'a' && key <= 'z') || (key >= 'A' && key <= 'Z')) && key.length === 1) {
+      if (key && key.length === 1) {
         if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
-          this.visible = true
+          this.capsTooltip = true
         } else {
-          this.visible = false
+          this.capsTooltip = false
         }
       }
-      if (key === 'CapsLock' && this.visible === true) {
-        this.visible = false
+      if (key === 'CapsLock' && this.capsTooltip === true) {
+        this.capsTooltip = false
       }
     },
     showPwd() {
