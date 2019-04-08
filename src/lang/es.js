@@ -1,7 +1,6 @@
 export default {
   route: {
     dashboard: 'Panel de control',
-    introduction: 'Introducción',
     documentation: 'Documentación',
     guide: 'Guía',
     permission: 'Permisos',
@@ -10,7 +9,6 @@ export default {
     directivePermission: 'Permisos de la directiva',
     icons: 'Iconos',
     components: 'Componentes',
-    componentIndex: 'Introducción',
     tinymce: 'Tinymce',
     markdown: 'Markdown',
     jsonEditor: 'Editor JSON',
@@ -43,8 +41,6 @@ export default {
     dragTable: 'Arrastrar tabla',
     inlineEditTable: 'Editor',
     complexTable: 'Complex Table',
-    treeTable: 'Tree Table',
-    customTreeTable: 'Custom TreeTable',
     tab: 'Pestaña',
     form: 'Formulario',
     createArticle: 'Crear artículo',
@@ -163,5 +159,12 @@ export default {
     close: 'Cerrar',
     closeOthers: 'Cerrar otros',
     closeAll: 'Cerrar todos'
+  },
+  settings: {
+    title: 'Page style setting',
+    theme: 'Theme Color',
+    tagsView: 'Open Tags-View',
+    fixedHeader: 'Fixed Header',
+    sidebarLogo: 'Sidebar Logo'
   }
 }

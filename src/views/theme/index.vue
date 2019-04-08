@@ -14,18 +14,30 @@
     </el-card>
 
     <div class="block">
-      <el-button type="primary">Primary</el-button>
-      <el-button type="success">Success</el-button>
-      <el-button type="info">Info</el-button>
-      <el-button type="warning">Warning</el-button>
-      <el-button type="danger">Danger</el-button>
+      <el-button type="primary">
+        Primary
+      </el-button>
+      <el-button type="success">
+        Success
+      </el-button>
+      <el-button type="info">
+        Info
+      </el-button>
+      <el-button type="warning">
+        Warning
+      </el-button>
+      <el-button type="danger">
+        Danger
+      </el-button>
     </div>
 
     <div class="block">
       <el-button type="primary" icon="el-icon-edit" />
       <el-button type="primary" icon="el-icon-share" />
       <el-button type="primary" icon="el-icon-delete" />
-      <el-button type="primary" icon="el-icon-search">Search</el-button>
+      <el-button type="primary" icon="el-icon-search">
+        Search
+      </el-button>
       <el-button type="primary">
         Upload
         <i class="el-icon-upload el-icon-right" />
@@ -40,16 +52,21 @@
 
     <div class="block">
       <el-radio-group v-model="radio">
-        <el-radio :label="3">Option A</el-radio>
-        <el-radio :label="6">Option B</el-radio>
-        <el-radio :label="9">Option C</el-radio>
+        <el-radio :label="3">
+          Option A
+        </el-radio>
+        <el-radio :label="6">
+          Option B
+        </el-radio>
+        <el-radio :label="9">
+          Option C
+        </el-radio>
       </el-radio-group>
     </div>
 
     <div class="block">
       <el-slider v-model="slideValue" />
     </div>
-
   </div>
 </template>
 

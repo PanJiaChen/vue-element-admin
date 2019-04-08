@@ -7,7 +7,9 @@
           Only
           <el-tag class="permission-tag" size="small">admin</el-tag> can see this
         </span>
-        <el-tag v-permission="['admin']" class="permission-sourceCode" type="info">v-permission="['admin']"</el-tag>
+        <el-tag v-permission="['admin']" class="permission-sourceCode" type="info">
+          v-permission="['admin']"
+        </el-tag>
       </div>
 
       <div>
@@ -15,7 +17,9 @@
           Only
           <el-tag class="permission-tag" size="small">editor</el-tag> can see this
         </span>
-        <el-tag v-permission="['editor']" class="permission-sourceCode" type="info">v-permission="['editor']"</el-tag>
+        <el-tag v-permission="['editor']" class="permission-sourceCode" type="info">
+          v-permission="['editor']"
+        </el-tag>
       </div>
 
       <div>
@@ -24,7 +28,9 @@
           <el-tag class="permission-tag" size="small">admin</el-tag> and
           <el-tag class="permission-tag" size="small">editor</el-tag> can see this
         </span>
-        <el-tag v-permission="['admin','editor']" class="permission-sourceCode" type="info">v-permission="['admin','editor']"</el-tag>
+        <el-tag v-permission="['admin','editor']" class="permission-sourceCode" type="info">
+          v-permission="['admin','editor']"
+        </el-tag>
       </div>
     </div>
 
@@ -37,17 +43,23 @@
       <el-tabs type="border-card" style="width:550px;">
         <el-tab-pane v-if="checkPermission(['admin'])" label="Admin">
           Admin can see this
-          <el-tag class="permission-sourceCode" type="info">v-if="checkPermission(['admin'])"</el-tag>
+          <el-tag class="permission-sourceCode" type="info">
+            v-if="checkPermission(['admin'])"
+          </el-tag>
         </el-tab-pane>
 
         <el-tab-pane v-if="checkPermission(['editor'])" label="Editor">
           Editor can see this
-          <el-tag class="permission-sourceCode" type="info">v-if="checkPermission(['editor'])"</el-tag>
+          <el-tag class="permission-sourceCode" type="info">
+            v-if="checkPermission(['editor'])"
+          </el-tag>
         </el-tab-pane>
 
         <el-tab-pane v-if="checkPermission(['admin','editor'])" label="Admin-OR-Editor">
           Both admin or editor can see this
-          <el-tag class="permission-sourceCode" type="info">v-if="checkPermission(['admin','editor'])"</el-tag>
+          <el-tag class="permission-sourceCode" type="info">
+            v-if="checkPermission(['admin','editor'])"
+          </el-tag>
         </el-tab-pane>
       </el-tabs>
     </div>
@@ -77,7 +89,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .app-container {
   /deep/ .permission-alert {
     width: 320px;

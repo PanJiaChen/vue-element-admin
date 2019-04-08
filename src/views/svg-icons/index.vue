@@ -42,7 +42,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .icons-container {
   margin: 10px 20px 0;
   overflow: hidden;

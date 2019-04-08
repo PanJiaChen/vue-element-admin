@@ -1,7 +1,6 @@
 export default {
   route: {
     dashboard: 'Dashboard',
-    introduction: 'Introduction',
     documentation: 'Documentation',
     guide: 'Guide',
     permission: 'Permission',
@@ -10,7 +9,6 @@ export default {
     directivePermission: 'Directive Permission',
     icons: 'Icons',
     components: 'Components',
-    componentIndex: 'Introduction',
     tinymce: 'Tinymce',
     markdown: 'Markdown',
     jsonEditor: 'JSON Editor',
@@ -19,9 +17,9 @@ export default {
     avatarUpload: 'Avatar Upload',
     dropzone: 'Dropzone',
     sticky: 'Sticky',
-    countTo: 'CountTo',
+    countTo: 'Count To',
     componentMixin: 'Mixin',
-    backToTop: 'BackToTop',
+    backToTop: 'Back To Top',
     dragDialog: 'Drag Dialog',
     dragSelect: 'Drag Select',
     dragKanban: 'Drag Kanban',
@@ -43,8 +41,6 @@ export default {
     dragTable: 'Drag Table',
     inlineEditTable: 'Inline Edit',
     complexTable: 'Complex Table',
-    treeTable: 'Tree Table',
-    customTreeTable: 'Custom TreeTable',
     tab: 'Tab',
     form: 'Form',
     createArticle: 'Create Article',
@@ -76,7 +72,7 @@ export default {
   },
   login: {
     title: 'Login Form',
-    logIn: 'Log in',
+    logIn: 'Login',
     username: 'Username',
     password: 'Password',
     any: 'any',
@@ -89,10 +85,10 @@ export default {
   },
   permission: {
     addRole: 'New Role',
-    editPermission: 'Edit Permission',
+    editPermission: 'Edit',
     roles: 'Your roles',
     switchRoles: 'Switch roles',
-    tips: 'In some cases it is not suitable to use v-permission, such as element Tab component or el-table-column and other asynchronous rendering dom cases which can only be achieved by manually setting the v-if.',
+    tips: 'In some cases, using v-permission will have no effect. For example: Element-UI  el-tab or el-table-column and other scenes that dynamically render dom. You can only do this with v-if.',
     delete: 'Delete',
     confirm: 'Confirm',
     cancel: 'Cancel'
@@ -103,7 +99,7 @@ export default {
   },
   components: {
     documentation: 'Documentation',
-    tinymceTips: 'Rich text editor is a core part of management system, but at the same time is a place with lots of problems. In the process of selecting rich texts, I also walked a lot of detours. The common rich text editors in the market are basically used, and the finally chose Tinymce. See documentation for more detailed rich text editor comparisons and introductions.',
+    tinymceTips: 'Rich text is a core feature of the management backend, but at the same time it is a place with lots of pits. In the process of selecting rich texts, I also took a lot of detours. The common rich texts on the market have been basically used, and I finally chose Tinymce. See the more detailed rich text comparison and introduction.',
     dropzoneTips: 'Because my business has special needs, and has to upload images to qiniu, so instead of a third party, I chose encapsulate it by myself. It is very simple, you can see the detail code in @/components/Dropzone.',
     stickyTips: 'when the page is scrolled to the preset position will be sticky on the top.',
     backToTopTips1: 'When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner',
@@ -144,14 +140,14 @@ export default {
   excel: {
     export: 'Export',
     selectedExport: 'Export Selected Items',
-    placeholder: 'Please enter the file name(default excel-list)'
+    placeholder: 'Please enter the file name (default excel-list)'
   },
   zip: {
     export: 'Export',
-    placeholder: 'Please enter the file name(default file)'
+    placeholder: 'Please enter the file name (default file)'
   },
   pdf: {
-    tips: 'Here we use window.print() to implement the feature of downloading pdf.'
+    tips: 'Here we use window.print() to implement the feature of downloading PDF.'
   },
   theme: {
     change: 'Change Theme',
@@ -163,5 +159,12 @@ export default {
     close: 'Close',
     closeOthers: 'Close Others',
     closeAll: 'Close All'
+  },
+  settings: {
+    title: 'Page style setting',
+    theme: 'Theme Color',
+    tagsView: 'Open Tags-View',
+    fixedHeader: 'Fixed Header',
+    sidebarLogo: 'Sidebar Logo'
   }
 }
