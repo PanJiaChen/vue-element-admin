@@ -145,7 +145,7 @@ export default {
     closeSelectedTag(view) {
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          this.toLastView(visitedViews)
+          this.toLastView(visitedViews, view)
         }
       })
     },
@@ -160,16 +160,17 @@ export default {
         if (this.affixTags.some(tag => tag.path === view.path)) {
           return
         }
-        this.toLastView(visitedViews)
+        this.toLastView(visitedViews, view)
       })
     },
-    toLastView(visitedViews) {
+    toLastView(visitedViews, view) {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
         this.$router.push(latestView)
       } else {
         // You can set another route
-        this.$router.push('/')
+        if (view.name === 'Dashboard') this.$router.replace({ path: '/redirect' + view.fullPath })
+        else this.$router.push('/')
       }
     },
     openMenu(tag, e) {
