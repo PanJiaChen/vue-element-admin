@@ -21,7 +21,7 @@ module.exports = {
   publicPath: '/',
   outputDir: 'dist',
   assetsDir: 'static',
-  lintOnSave: process.env.NODE_ENV === 'development' ? 'error' : false,
+  lintOnSave: process.env.NODE_ENV === 'development',
   productionSourceMap: false,
   devServer: {
     port: port,
@@ -41,22 +41,7 @@ module.exports = {
         }
       }
     },
-    after(app) {
-      require('@babel/register')
-      const bodyParser = require('body-parser')
-
-      // parse app.body
-      // http://expressjs.com/en/4x/api.html#req.body
-      app.use(bodyParser.json())
-      app.use(bodyParser.urlencoded({
-        extended: true
-      }))
-
-      const { default: mocks } = require('./mock')
-      for (const mock of mocks) {
-        app[mock.type](mock.url, mock.response)
-      }
-    }
+    after: require('./mock/mock-server.js')
   },
   configureWebpack: {
     // provide the app's title in webpack's name field, so that
@@ -129,7 +114,7 @@ module.exports = {
                 elementUI: {
                   name: 'chunk-elementUI', // split elementUI into a single package
                   priority: 20, // the weight needs to be larger than libs and app or it will be packaged into libs or app
-                  test: /[\\/]node_modules[\\/]element-ui[\\/]/
+                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/ // in order to adapt to cnpm
                 },
                 commons: {
                   name: 'chunk-commons',
