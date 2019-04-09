@@ -168,9 +168,14 @@ export default {
       if (latestView) {
         this.$router.push(latestView)
       } else {
-        // You can set another route
-        if (view.name === 'Dashboard') this.$router.replace({ path: '/redirect' + view.fullPath })
-        else this.$router.push('/')
+        // now the default is to redirect to the home page if there is no tags-view,
+        // you can adjust it according to your needs.
+        if (view.name === 'Dashboard') {
+          // to reload home page
+          this.$router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          this.$router.push('/')
+        }
       }
     },
     openMenu(tag, e) {
