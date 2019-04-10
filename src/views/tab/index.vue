@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import tabPane from './components/tabPane'
+import tabPane from './components/TabPane'
 
 export default {
   name: 'Tab',
