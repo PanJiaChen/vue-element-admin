@@ -3,12 +3,16 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 function registerRoutes(app) {
+  let mockStartIndex
   const { default: mocks } = require('./index.js')
   for (const mock of mocks) {
     app[mock.type](mock.url, mock.response)
+    mockStartIndex = app._router.stack.length
   }
+  const mockRoutesLength = Object.keys(mocks).length
   return {
-    mockRoutesLength: Object.keys(mocks).length
+    mockRoutesLength: mockRoutesLength,
+    mockStartIndex: mockStartIndex - mockRoutesLength
   }
 }
 
@@ -18,28 +22,6 @@ function unregisterRoutes() {
       delete require.cache[require.resolve(i)]
     }
   })
-}
-
-function getPath(path) {
-  var match = path.toString()
-    .replace('\\/?', '')
-    .replace('(?=\\/|$)', '$')
-    .match(/^\/\^((?:\\[.*+?^${}()|[\]\\\/]|[^.*+?^${}()|[\]\\\/])*)\$\//)
-  return match
-    ? match[1].replace(/\\(.)/g, '$1').split('/')
-    : path.toString()
-}
-
-function getMockRoutesIndex(app) {
-  for (let index = 0; index <= app._router.stack.length; index++) {
-    const r = app._router.stack[index]
-    if (r.route && r.route.path) {
-      const path = getPath(r.route.path)
-      if (path.includes('mock')) {
-        return index
-      }
-    }
-  }
 }
 
 module.exports = app => {
@@ -53,7 +35,9 @@ module.exports = app => {
     extended: true
   }))
 
-  const { mockRoutesLength } = registerRoutes(app)
+  const mockRoutes = registerRoutes(app)
+  var mockRoutesLength = mockRoutes.mockRoutesLength
+  var mockStartIndex = mockRoutes.mockStartIndex
 
   // watch files, hot reload mock server
   chokidar.watch(('./mock'), {
@@ -62,16 +46,15 @@ module.exports = app => {
     ignoreInitial: true
   }).on('all', (event, path) => {
     if (event === 'change' || event === 'add') {
-      // find mock routes stack index
-      const index = getMockRoutesIndex(app)
-
       // remove mock routes stack
-      app._router.stack.splice(index, mockRoutesLength)
+      app._router.stack.splice(mockStartIndex, mockRoutesLength)
 
       // clear routes cache
       unregisterRoutes()
 
-      registerRoutes(app)
+      const mockRoutes = registerRoutes(app)
+      mockRoutesLength = mockRoutes.mockRoutesLength
+      mockStartIndex = mockRoutes.mockStartIndex
 
       console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
     }
