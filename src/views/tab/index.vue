@@ -39,7 +39,7 @@ export default {
 </script>
 
 <style scoped>
-  .tab-container{
+  .tab-container {
     margin: 30px;
   }
 </style>
