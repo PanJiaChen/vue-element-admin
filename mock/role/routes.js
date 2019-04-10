@@ -390,7 +390,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'log',
-        component: 'views/errorLog/index',
+        component: 'views/error-log/index',
         name: 'ErrorLog',
         meta: { title: 'errorLog', icon: 'bug' }
       }
