@@ -29,7 +29,7 @@ module.exports = app => {
   require('@babel/register')
 
   // parse app.body
-  // http://expressjs.com/en/4x/api.html#req.body
+  // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true
