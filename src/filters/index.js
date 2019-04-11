@@ -3,7 +3,6 @@ export { parseTime, formatTime } from '@/utils'
 
 /**
  * Show plural label if time is plural number
- *
  * @param {number} time
  * @param {string} label
  * @return {string}
@@ -30,7 +29,8 @@ export function timeAgo(time) {
 }
 
 /**
- * 数字 格式化
+ * Number formatting
+ * like 10000 => 10k
  * @param {number} num
  * @param {number} digits
  */
@@ -52,6 +52,7 @@ export function numberFormatter(num, digits) {
 }
 
 /**
+ * 10000 => "10,000"
  * @param {number} num
  */
 export function toThousandFilter(num) {
