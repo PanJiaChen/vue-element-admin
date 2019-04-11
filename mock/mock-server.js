@@ -3,16 +3,16 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 function registerRoutes(app) {
-  let mockStartIndex
+  let mockLastIndex
   const { default: mocks } = require('./index.js')
   for (const mock of mocks) {
     app[mock.type](mock.url, mock.response)
-    mockStartIndex = app._router.stack.length
+    mockLastIndex = app._router.stack.length
   }
   const mockRoutesLength = Object.keys(mocks).length
   return {
     mockRoutesLength: mockRoutesLength,
-    mockStartIndex: mockStartIndex - mockRoutesLength
+    mockStartIndex: mockLastIndex - mockRoutesLength
   }
 }
 
