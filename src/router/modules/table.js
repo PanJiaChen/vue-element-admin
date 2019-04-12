@@ -14,25 +14,25 @@ const tableRouter = {
   children: [
     {
       path: 'dynamic-table',
-      component: () => import('@/views/table/dynamicTable/index'),
+      component: () => import('@/views/table/dynamic-table/index'),
       name: 'DynamicTable',
       meta: { title: 'dynamicTable' }
     },
     {
       path: 'drag-table',
-      component: () => import('@/views/table/dragTable'),
+      component: () => import('@/views/table/drag-table'),
       name: 'DragTable',
       meta: { title: 'dragTable' }
     },
     {
       path: 'inline-edit-table',
-      component: () => import('@/views/table/inlineEditTable'),
+      component: () => import('@/views/table/inline-edit-table'),
       name: 'InlineEditTable',
       meta: { title: 'inlineEditTable' }
     },
     {
       path: 'complex-table',
-      component: () => import('@/views/table/complexTable'),
+      component: () => import('@/views/table/complex-table'),
       name: 'ComplexTable',
       meta: { title: 'complexTable' }
     }

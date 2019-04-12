@@ -57,17 +57,17 @@ export const constantRoutes = [
   },
   {
     path: '/auth-redirect',
-    component: () => import('@/views/login/authRedirect'),
+    component: () => import('@/views/login/auth-redirect'),
     hidden: true
   },
   {
     path: '/404',
-    component: () => import('@/views/errorPage/404'),
+    component: () => import('@/views/error-page/404'),
     hidden: true
   },
   {
     path: '/401',
-    component: () => import('@/views/errorPage/401'),
+    component: () => import('@/views/error-page/401'),
     hidden: true
   },
   {
@@ -232,13 +232,13 @@ export const asyncRoutes = [
     children: [
       {
         path: '401',
-        component: () => import('@/views/errorPage/401'),
+        component: () => import('@/views/error-page/401'),
         name: 'Page401',
         meta: { title: 'page401', noCache: true }
       },
       {
         path: '404',
-        component: () => import('@/views/errorPage/404'),
+        component: () => import('@/views/error-page/404'),
         name: 'Page404',
         meta: { title: 'page404', noCache: true }
       }
@@ -252,7 +252,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'log',
-        component: () => import('@/views/errorLog/index'),
+        component: () => import('@/views/error-log/index'),
         name: 'ErrorLog',
         meta: { title: 'errorLog', icon: 'bug' }
       }
@@ -271,25 +271,25 @@ export const asyncRoutes = [
     children: [
       {
         path: 'export-excel',
-        component: () => import('@/views/excel/exportExcel'),
+        component: () => import('@/views/excel/export-excel'),
         name: 'ExportExcel',
         meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
-        component: () => import('@/views/excel/selectExcel'),
+        component: () => import('@/views/excel/select-excel'),
         name: 'SelectExcel',
         meta: { title: 'selectExcel' }
       },
       {
         path: 'export-merge-header',
-        component: () => import('@/views/excel/mergeHeader'),
+        component: () => import('@/views/excel/merge-header'),
         name: 'MergeHeader',
         meta: { title: 'mergeHeader' }
       },
       {
         path: 'upload-excel',
-        component: () => import('@/views/excel/uploadExcel'),
+        component: () => import('@/views/excel/upload-excel'),
         name: 'UploadExcel',
         meta: { title: 'uploadExcel' }
       }
