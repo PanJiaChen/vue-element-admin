@@ -19,7 +19,7 @@ export const constantRoutes = [
   },
   {
     path: '/auth-redirect',
-    component: 'views/login/authRedirect',
+    component: 'views/login/auth-redirect',
     hidden: true
   },
   {
@@ -150,19 +150,19 @@ export const asyncRoutes = [
       },
       {
         path: 'json-editor',
-        component: 'views/components-demo/jsonEditor',
+        component: 'views/components-demo/json-editor',
         name: 'JsonEditorDemo',
         meta: { title: 'jsonEditor' }
       },
       {
-        path: 'splitpane',
-        component: 'views/components-demo/splitpane',
+        path: 'split-pane',
+        component: 'views/components-demo/split-pane',
         name: 'SplitpaneDemo',
         meta: { title: 'splitPane' }
       },
       {
         path: 'avatar-upload',
-        component: 'views/components-demo/avatarUpload',
+        component: 'views/components-demo/avatar-upload',
         name: 'AvatarUploadDemo',
         meta: { title: 'avatarUpload' }
       },
@@ -180,7 +180,7 @@ export const asyncRoutes = [
       },
       {
         path: 'count-to',
-        component: 'views/components-demo/countTo',
+        component: 'views/components-demo/count-to',
         name: 'CountToDemo',
         meta: { title: 'countTo' }
       },
@@ -192,31 +192,31 @@ export const asyncRoutes = [
       },
       {
         path: 'back-to-top',
-        component: 'views/components-demo/backToTop',
+        component: 'views/components-demo/back-to-top',
         name: 'BackToTopDemo',
         meta: { title: 'backToTop' }
       },
       {
         path: 'drag-dialog',
-        component: 'views/components-demo/dragDialog',
+        component: 'views/components-demo/drag-dialog',
         name: 'DragDialogDemo',
         meta: { title: 'dragDialog' }
       },
       {
         path: 'drag-select',
-        component: 'views/components-demo/dragSelect',
+        component: 'views/components-demo/drag-select',
         name: 'DragSelectDemo',
         meta: { title: 'dragSelect' }
       },
       {
         path: 'dnd-list',
-        component: 'views/components-demo/dndList',
+        component: 'views/components-demo/dnd-list',
         name: 'DndListDemo',
         meta: { title: 'dndList' }
       },
       {
         path: 'drag-kanban',
-        component: 'views/components-demo/dragKanban',
+        component: 'views/components-demo/drag-kanban',
         name: 'DragKanbanDemo',
         meta: { title: 'dragKanban' }
       }
@@ -409,25 +409,25 @@ export const asyncRoutes = [
     children: [
       {
         path: 'export-excel',
-        component: 'views/excel/exportExcel',
+        component: 'views/excel/export-excel',
         name: 'ExportExcel',
         meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
-        component: 'views/excel/selectExcel',
+        component: 'views/excel/select-excel',
         name: 'SelectExcel',
         meta: { title: 'selectExcel' }
       },
       {
         path: 'export-merge-header',
-        component: 'views/excel/mergeHeader',
+        component: 'views/excel/merge-header',
         name: 'MergeHeader',
         meta: { title: 'mergeHeader' }
       },
       {
         path: 'upload-excel',
-        component: 'views/excel/uploadExcel',
+        component: 'views/excel/upload-excel',
         name: 'UploadExcel',
         meta: { title: 'uploadExcel' }
       }
