@@ -57,7 +57,7 @@ export const constantRoutes = [
   },
   {
     path: '/auth-redirect',
-    component: () => import('@/views/login/authRedirect'),
+    component: () => import('@/views/login/auth-redirect'),
     hidden: true
   },
   {
@@ -271,25 +271,25 @@ export const asyncRoutes = [
     children: [
       {
         path: 'export-excel',
-        component: () => import('@/views/excel/exportExcel'),
+        component: () => import('@/views/excel/export-excel'),
         name: 'ExportExcel',
         meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
-        component: () => import('@/views/excel/selectExcel'),
+        component: () => import('@/views/excel/select-excel'),
         name: 'SelectExcel',
         meta: { title: 'selectExcel' }
       },
       {
         path: 'export-merge-header',
-        component: () => import('@/views/excel/mergeHeader'),
+        component: () => import('@/views/excel/merge-header'),
         name: 'MergeHeader',
         meta: { title: 'mergeHeader' }
       },
       {
         path: 'upload-excel',
-        component: () => import('@/views/excel/uploadExcel'),
+        component: () => import('@/views/excel/upload-excel'),
         name: 'UploadExcel',
         meta: { title: 'uploadExcel' }
       }
