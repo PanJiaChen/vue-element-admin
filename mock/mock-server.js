@@ -3,16 +3,16 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 
 function registerRoutes(app) {
-  let mockStartIndex
+  let mockLastIndex
   const { default: mocks } = require('./index.js')
   for (const mock of mocks) {
     app[mock.type](mock.url, mock.response)
-    mockStartIndex = app._router.stack.length
+    mockLastIndex = app._router.stack.length
   }
   const mockRoutesLength = Object.keys(mocks).length
   return {
     mockRoutesLength: mockRoutesLength,
-    mockStartIndex: mockStartIndex - mockRoutesLength
+    mockStartIndex: mockLastIndex - mockRoutesLength
   }
 }
 
@@ -29,7 +29,7 @@ module.exports = app => {
   require('@babel/register')
 
   // parse app.body
-  // http://expressjs.com/en/4x/api.html#req.body
+  // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())
   app.use(bodyParser.urlencoded({
     extended: true

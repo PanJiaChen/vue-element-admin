@@ -26,19 +26,19 @@ const componentsRouter = {
     },
     {
       path: 'json-editor',
-      component: () => import('@/views/components-demo/jsonEditor'),
+      component: () => import('@/views/components-demo/json-editor'),
       name: 'JsonEditorDemo',
       meta: { title: 'JSON Editor' }
     },
     {
-      path: 'splitpane',
-      component: () => import('@/views/components-demo/splitpane'),
+      path: 'split-pane',
+      component: () => import('@/views/components-demo/split-pane'),
       name: 'SplitpaneDemo',
       meta: { title: 'SplitPane' }
     },
     {
       path: 'avatar-upload',
-      component: () => import('@/views/components-demo/avatarUpload'),
+      component: () => import('@/views/components-demo/avatar-upload'),
       name: 'AvatarUploadDemo',
       meta: { title: 'Upload' }
     },
@@ -56,7 +56,7 @@ const componentsRouter = {
     },
     {
       path: 'count-to',
-      component: () => import('@/views/components-demo/countTo'),
+      component: () => import('@/views/components-demo/count-to'),
       name: 'CountToDemo',
       meta: { title: 'Count To' }
     },
@@ -68,31 +68,31 @@ const componentsRouter = {
     },
     {
       path: 'back-to-top',
-      component: () => import('@/views/components-demo/backToTop'),
+      component: () => import('@/views/components-demo/back-to-top'),
       name: 'BackToTopDemo',
       meta: { title: 'Back To Top' }
     },
     {
       path: 'drag-dialog',
-      component: () => import('@/views/components-demo/dragDialog'),
+      component: () => import('@/views/components-demo/drag-dialog'),
       name: 'DragDialogDemo',
       meta: { title: 'Drag Dialog' }
     },
     {
       path: 'drag-select',
-      component: () => import('@/views/components-demo/dragSelect'),
+      component: () => import('@/views/components-demo/drag-select'),
       name: 'DragSelectDemo',
       meta: { title: 'Drag Select' }
     },
     {
       path: 'dnd-list',
-      component: () => import('@/views/components-demo/dndList'),
+      component: () => import('@/views/components-demo/dnd-list'),
       name: 'DndListDemo',
       meta: { title: 'Dnd List' }
     },
     {
       path: 'drag-kanban',
-      component: () => import('@/views/components-demo/dragKanban'),
+      component: () => import('@/views/components-demo/drag-kanban'),
       name: 'DragKanbanDemo',
       meta: { title: 'Drag Kanban' }
     }

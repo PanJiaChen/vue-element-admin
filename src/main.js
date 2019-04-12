@@ -15,7 +15,7 @@ import router from './router'
 
 import './icons' // icon
 import './permission' // permission control
-import './utils/errorLog' // error log
+import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 

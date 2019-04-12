@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import editorImage from './components/editorImage'
+import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
 

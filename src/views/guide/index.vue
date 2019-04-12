@@ -3,8 +3,7 @@
     <p class="warn-content">
       The guide page is useful for some people who entered the project for the first time. You can briefly introduce the
       features of the project. Demo is based on
-      <a href="https://github.com/kamranahmedse/driver.js" target="_blank">driver.js.
-      </a>
+      <a href="https://github.com/kamranahmedse/driver.js" target="_blank">driver.js.</a>
     </p>
     <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">
       Show Guide
@@ -15,7 +14,7 @@
 <script>
 import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
-import steps from './defineSteps'
+import steps from './steps'
 
 export default {
   name: 'Guide',
