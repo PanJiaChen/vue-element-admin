@@ -118,8 +118,9 @@ export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
-    redirect: '/permission/index',
+    redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
+    name: 'permission',
     meta: {
       title: 'permission',
       icon: 'lock',
@@ -301,6 +302,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/zip/download',
     alwaysShow: true,
+    name: 'zip',
     meta: { title: 'zip', icon: 'zip' },
     children: [
       {
