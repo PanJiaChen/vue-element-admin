@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
-    <p class="warn-content">
+    <aside>
       {{ $t('guide.description') }}
       <a href="https://github.com/kamranahmedse/driver.js" target="_blank">driver.js.</a>
-    </p>
+    </aside>
     <el-button icon="el-icon-question" type="primary" @click.prevent.stop="guide">
       {{ $t('guide.button') }}
     </el-button>

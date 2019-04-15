@@ -6,10 +6,10 @@
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          发布
+          Publush
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">
-          草稿
+          Draft
         </el-button>
       </sticky>
 
