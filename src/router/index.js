@@ -120,7 +120,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
-    name: 'permission',
+    name: 'Permission',
     meta: {
       title: 'permission',
       icon: 'lock',
@@ -302,7 +302,7 @@ export const asyncRoutes = [
     component: Layout,
     redirect: '/zip/download',
     alwaysShow: true,
-    name: 'zip',
+    name: 'Zip',
     meta: { title: 'zip', icon: 'zip' },
     children: [
       {
