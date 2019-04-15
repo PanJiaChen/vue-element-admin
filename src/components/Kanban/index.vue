@@ -15,6 +15,7 @@
     </draggable>
   </div>
 </template>
+
 <script>
 import draggable from 'vuedraggable'
 
