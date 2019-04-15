@@ -1,7 +1,7 @@
 <template>
   <div class="errPage-container">
-    <errorA />
-    <errorB />
+    <ErrorA />
+    <ErrorB />
     <!-- $t is vue-i18n global function to translate lang -->
     <h3>{{ $t('errorLog.tips') }}</h3>
     <code>
@@ -17,12 +17,12 @@
 </template>
 
 <script>
-import errorA from './errorTestA'
-import errorB from './errorTestB'
+import ErrorA from './components/ErrorTestA'
+import ErrorB from './components/ErrorTestB'
 
 export default {
   name: 'ErrorLog',
-  components: { errorA, errorB }
+  components: { ErrorA, ErrorB }
 }
 </script>
 

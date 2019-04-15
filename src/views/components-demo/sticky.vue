@@ -28,7 +28,7 @@
       </el-dropdown>
 
       <div class="time-container">
-        <el-date-picker v-model="time" :picker-options="pickerOptions" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Release time" />
+        <el-date-picker v-model="time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Release time" />
       </div>
 
       <el-button style="margin-left: 10px;" type="success">

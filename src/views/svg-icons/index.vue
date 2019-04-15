@@ -37,7 +37,7 @@
 
 <script>
 import clipboard from '@/utils/clipboard'
-import icons from './requireIcons'
+import icons from './require-icons'
 import elementIcons from './element-icon.json'
 
 export default {
