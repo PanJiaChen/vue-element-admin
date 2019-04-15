@@ -11,16 +11,26 @@
 
 const version = require('element-ui/package.json').version // element-ui version from node_modules
 const ORIGINAL_THEME = '#409EFF' // default color
-import defaultSettings from '@/settings'
 
 export default {
   data() {
     return {
       chalk: '', // content of theme-chalk css
-      theme: defaultSettings.theme
+      theme: ''
+    }
+  },
+  computed: {
+    defaultTheme() {
+      return this.$store.state.settings.theme
     }
   },
   watch: {
+    defaultTheme: {
+      handler: function(val, oldVal) {
+        this.theme = val
+      },
+      immediate: true
+    },
     async theme(val) {
       const oldVal = this.chalk ? this.theme : ORIGINAL_THEME
       if (typeof val !== 'string') return
