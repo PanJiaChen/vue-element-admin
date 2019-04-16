@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <aside>
     Creating and editing pages cannot be cached by keep-alive because keep-alive include does not currently support
     caching based on routes, so it is currently cached based on component name. If you want to achieve a similar caching
