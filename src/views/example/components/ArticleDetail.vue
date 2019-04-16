@@ -59,7 +59,7 @@
 
         <el-form-item style="margin-bottom: 40px;" label-width="70px" label="Summary:">
           <el-input v-model="postForm.content_short" :rows="1" type="textarea" class="article-textarea" autosize placeholder="Please enter the content" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}字</span>
+          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
         </el-form-item>
 
         <el-form-item prop="content" style="margin-bottom: 30px;">
@@ -236,24 +236,39 @@ export default {
 
 <style lang="scss" scoped>
 @import "~@/styles/mixin.scss";
+
 .createPost-container {
   position: relative;
+
   .createPost-main-container {
     padding: 40px 45px 20px 50px;
+
     .postInfo-container {
       position: relative;
       @include clearfix;
       margin-bottom: 10px;
+
       .postInfo-container-item {
         float: left;
       }
     }
   }
+
   .word-counter {
     width: 40px;
     position: absolute;
-    right: -10px;
+    right: 10px;
     top: 0px;
+  }
+}
+
+.article-textarea /deep/ {
+  textarea {
+    padding-right: 40px;
+    resize: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #bfcbd9;
   }
 }
 </style>
