@@ -1,11 +1,11 @@
 <template>
   <div class="components-container">
-    <code>
+    <aside>
       Based on <a class="link-type" href="https://github.com/rowanwins/vue-dropzone"> dropzone </a>.
       {{ $t('components.dropzoneTips') }}
-    </code>
+    </aside>
     <div class="editor-container">
-      <dropzone id="myVueDropzone" url="https://httpbin.org/post" @dropzone-removedFile="dropzoneR" @dropzone-success="dropzoneS"/>
+      <dropzone id="myVueDropzone" url="https://httpbin.org/post" @dropzone-removedFile="dropzoneR" @dropzone-success="dropzoneS" />
     </div>
   </div>
 </template>

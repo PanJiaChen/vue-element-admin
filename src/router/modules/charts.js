@@ -1,6 +1,6 @@
 /** When your routing table is too long, you can split it into small modules**/
 
-import Layout from '@/views/layout/Layout'
+import Layout from '@/layout'
 
 const chartsRouter = {
   path: '/charts',
@@ -25,8 +25,8 @@ const chartsRouter = {
       meta: { title: 'lineChart', noCache: true }
     },
     {
-      path: 'mixchart',
-      component: () => import('@/views/charts/mixChart'),
+      path: 'mix-chart',
+      component: () => import('@/views/charts/mix-chart'),
       name: 'MixChart',
       meta: { title: 'mixChart', noCache: true }
     }

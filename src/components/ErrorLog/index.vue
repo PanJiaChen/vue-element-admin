@@ -6,23 +6,29 @@
       </el-button>
     </el-badge>
 
-    <el-dialog :visible.sync="dialogTableVisible" title="Error Log" width="80%">
+    <el-dialog :visible.sync="dialogTableVisible" title="Error Log" width="80%" append-to-body>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
-          <template slot-scope="scope">
+          <template slot-scope="{row}">
             <div>
               <span class="message-title">Msg:</span>
-              <el-tag type="danger">{{ scope.row.err.message }}</el-tag>
+              <el-tag type="danger">
+                {{ row.err.message }}
+              </el-tag>
             </div>
             <br>
             <div>
               <span class="message-title" style="padding-right: 10px;">Info: </span>
-              <el-tag type="warning">{{ scope.row.vm.$vnode.tag }} error in {{ scope.row.info }}</el-tag>
+              <el-tag type="warning">
+                {{ row.vm.$vnode.tag }} error in {{ row.info }}
+              </el-tag>
             </div>
             <br>
             <div>
               <span class="message-title" style="padding-right: 16px;">Url: </span>
-              <el-tag type="success">{{ scope.row.url }}</el-tag>
+              <el-tag type="success">
+                {{ row.url }}
+              </el-tag>
             </div>
           </template>
         </el-table-column>
@@ -33,7 +39,6 @@
         </el-table-column>
       </el-table>
     </el-dialog>
-
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <div :id="id"/>
+  <div :id="id" />
 </template>
 
 <script>
@@ -9,7 +9,7 @@ import 'tui-editor/dist/tui-editor.css' // editor ui
 import 'tui-editor/dist/tui-editor-contents.css' // editor content
 
 import Editor from 'tui-editor'
-import defaultOptions from './defaultOptions'
+import defaultOptions from './default-options'
 
 export default {
   name: 'MarddownEditor',

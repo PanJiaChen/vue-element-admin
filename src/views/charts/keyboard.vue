@@ -1,11 +1,11 @@
 <template>
   <div class="chart-container">
-    <chart height="100%" width="100%"/>
+    <chart height="100%" width="100%" />
   </div>
 </template>
 
 <script>
-import Chart from '@/components/Charts/keyboard'
+import Chart from '@/components/Charts/Keyboard'
 
 export default {
   name: 'KeyboardChart',

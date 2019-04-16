@@ -1,24 +1,23 @@
 export default {
   route: {
     dashboard: '首页',
-    introduction: '简述',
     documentation: '文档',
     guide: '引导页',
     permission: '权限测试页',
+    rolePermission: '角色权限',
     pagePermission: '页面权限',
     directivePermission: '指令权限',
     icons: '图标',
     components: '组件',
-    componentIndex: '介绍',
     tinymce: '富文本编辑器',
     markdown: 'Markdown',
-    jsonEditor: 'JSON编辑器',
+    jsonEditor: 'JSON 编辑器',
     dndList: '列表拖拽',
     splitPane: 'Splitpane',
     avatarUpload: '头像上传',
     dropzone: 'Dropzone',
     sticky: 'Sticky',
-    countTo: 'CountTo',
+    countTo: 'Count To',
     componentMixin: '小组件',
     backToTop: '返回顶部',
     dragDialog: '拖拽 Dialog',
@@ -31,19 +30,17 @@ export default {
     example: '综合实例',
     nested: '路由嵌套',
     menu1: '菜单1',
-    'menu1-1': '菜单1-1',
-    'menu1-2': '菜单1-2',
-    'menu1-2-1': '菜单1-2-1',
-    'menu1-2-2': '菜单1-2-2',
-    'menu1-3': '菜单1-3',
-    menu2: '菜单2',
+    'menu1-1': '菜单 1-1',
+    'menu1-2': '菜单 1-2',
+    'menu1-2-1': '菜单 1-2-1',
+    'menu1-2-2': '菜单 1-2-2',
+    'menu1-3': '菜单 1-3',
+    menu2: '菜单 2',
     Table: 'Table',
-    dynamicTable: '动态Table',
-    dragTable: '拖拽Table',
-    inlineEditTable: 'Table内编辑',
-    complexTable: '综合Table',
-    treeTable: '树形表格',
-    customTreeTable: '自定义树表',
+    dynamicTable: '动态 Table',
+    dragTable: '拖拽 Table',
+    inlineEditTable: 'Table 内编辑',
+    complexTable: '综合 Table',
     tab: 'Tab',
     form: '表单',
     createArticle: '创建文章',
@@ -54,9 +51,10 @@ export default {
     page404: '404',
     errorLog: '错误日志',
     excel: 'Excel',
-    exportExcel: 'Export Excel',
-    selectExcel: 'Export Selected',
-    uploadExcel: 'Upload Excel',
+    exportExcel: '导出 Excel',
+    selectExcel: '导出 已选择项',
+    mergeHeader: '导出 多级表头',
+    uploadExcel: '上传 Excel',
     zip: 'Zip',
     pdf: 'PDF',
     exportZip: 'Export Zip',
@@ -86,9 +84,14 @@ export default {
     github: 'Github 地址'
   },
   permission: {
+    addRole: '新增角色',
+    editPermission: '编辑权限',
     roles: '你的权限',
     switchRoles: '切换权限',
-    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 Tab 组件或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。'
+    tips: '在某些情况下，不适合使用 v-permission。例如：Element-UI 的 el-tab 或 el-table-column 以及其它动态渲染 dom 的场景。你只能通过手动设置 v-if 来实现。',
+    delete: '删除',
+    confirm: '确定',
+    cancel: '取消'
   },
   guide: {
     description: '引导页对于一些第一次进入项目的人很有用，你可以简单介绍下项目的功能。本 Demo 是基于',
@@ -129,6 +132,9 @@ export default {
     cancel: '取 消',
     confirm: '确 定'
   },
+  example: {
+    warning: '创建和编辑页面是不能被 keep-alive 缓存的，因为keep-alive 的 include 目前不支持根据路由来缓存，所以目前都是基于 component name 来进行缓存的。如果你想类似的实现缓存效果，可以使用 localStorage 等浏览器缓存方案。或者不要使用 keep-alive 的 include，直接缓存所有页面。详情见'
+  },
   errorLog: {
     tips: '请点击右上角bug小图标',
     description: '现在的管理后台基本都是spa的形式了，它增强了用户体验，但同时也会增加页面出问题的可能性，可能一个小小的疏忽就导致整个页面的死锁。好在 Vue 官网提供了一个方法来捕获处理异常，你可以在其中进行错误处理或者异常上报。',
@@ -156,5 +162,12 @@ export default {
     close: '关闭',
     closeOthers: '关闭其它',
     closeAll: '关闭所有'
+  },
+  settings: {
+    title: '系统布局配置',
+    theme: '主题色',
+    tagsView: '开启 Tags-View',
+    fixedHeader: '固定 Header',
+    sidebarLogo: '侧边栏 Logo'
   }
 }

@@ -30,7 +30,6 @@ export default {
     el.resizeListener = () => {
       doResize(el, binding, vnode)
     }
-
     // parameter 1 is must  "Element" type
     addResizeListener(window.document.body, el.resizeListener)
   },
@@ -38,6 +37,7 @@ export default {
     doResize(el, binding, vnode)
   },
   unbind(el) {
+
     removeResizeListener(window.document.body, el.resizeListener)
   }
 }

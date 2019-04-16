@@ -1,13 +1,13 @@
 <template>
   <div class="components-container">
-    <code>
+    <aside>
       {{ $t('components.tinymceTips') }}
       <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/component/rich-editor.html"> {{ $t('components.documentation') }}</a>
-    </code>
+    </aside>
     <div>
-      <tinymce :height="300" v-model="content"/>
+      <tinymce v-model="content" :height="300" />
     </div>
-    <div class="editor-content" v-html="content"/>
+    <div class="editor-content" v-html="content" />
   </div>
 </template>
 

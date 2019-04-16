@@ -1,11 +1,11 @@
 <template>
   <div class="chart-container">
-    <chart height="100%" width="100%"/>
+    <chart height="100%" width="100%" />
   </div>
 </template>
 
 <script>
-import Chart from '@/components/Charts/lineMarker'
+import Chart from '@/components/Charts/LineMarker'
 
 export default {
   name: 'LineChart',
