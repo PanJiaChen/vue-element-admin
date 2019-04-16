@@ -16,6 +16,7 @@ import 'codemirror/addon/lint/json-lint'
 
 export default {
   name: 'JsonEditor',
+  /* eslint-disable vue/require-prop-types */
   props: ['value'],
   data() {
     return {
@@ -24,8 +25,8 @@ export default {
   },
   watch: {
     value(value) {
-      const editor_value = this.jsonEditor.getValue()
-      if (value !== editor_value) {
+      const editorValue = this.jsonEditor.getValue()
+      if (value !== editorValue) {
         this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
       }
     }
