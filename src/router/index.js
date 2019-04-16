@@ -20,7 +20,7 @@ import nestedRouter from './modules/nested'
  * alwaysShow: true               if set true, will always show the root menu
  *                                if not set alwaysShow, when item has more than one children route,
  *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
     roles: ['admin','editor']    control the page roles (you can set multiple roles)
@@ -224,7 +224,7 @@ export const asyncRoutes = [
   {
     path: '/error',
     component: Layout,
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
       title: 'errorPages',
@@ -249,7 +249,6 @@ export const asyncRoutes = [
   {
     path: '/error-log',
     component: Layout,
-    redirect: 'noredirect',
     children: [
       {
         path: 'log',
@@ -336,7 +335,6 @@ export const asyncRoutes = [
   {
     path: '/theme',
     component: Layout,
-    redirect: 'noredirect',
     children: [
       {
         path: 'index',
@@ -350,7 +348,6 @@ export const asyncRoutes = [
   {
     path: '/clipboard',
     component: Layout,
-    redirect: 'noredirect',
     children: [
       {
         path: 'index',

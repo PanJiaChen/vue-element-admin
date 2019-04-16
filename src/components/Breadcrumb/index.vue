@@ -2,7 +2,7 @@
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
       <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
-        <span v-if="item.redirect==='noredirect'||index==levelList.length-1" class="no-redirect">{{
+        <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{
           generateTitle(item.meta.title) }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.title) }}</a>
       </el-breadcrumb-item>
@@ -31,6 +31,7 @@ export default {
   methods: {
     generateTitle,
     getBreadcrumb() {
+      // only show routes with name
       let matched = this.$route.matched.filter(item => item.name)
 
       const first = matched[0]

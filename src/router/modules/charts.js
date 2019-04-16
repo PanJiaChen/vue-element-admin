@@ -5,7 +5,7 @@ import Layout from '@/layout'
 const chartsRouter = {
   path: '/charts',
   component: Layout,
-  redirect: 'noredirect',
+  redirect: 'noRedirect',
   name: 'Charts',
   meta: {
     title: 'charts',
