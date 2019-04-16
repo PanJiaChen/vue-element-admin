@@ -35,10 +35,10 @@
     </div>
 
     <div :key="'checkPermission'+key" style="margin-top:60px;">
-      <code>
+      <aside>
         {{ $t('permission.tips') }}
         <br> e.g.
-      </code>
+      </aside>
 
       <el-tabs type="border-card" style="width:550px;">
         <el-tab-pane v-if="checkPermission(['admin'])" label="Admin">

@@ -1,6 +1,5 @@
 #app {
 
-  // 主体区域 Main container
   .main-container {
     min-height: 100%;
     transition: margin-left .28s;
@@ -8,7 +7,6 @@
     position: relative;
   }
 
-  // 侧边栏 Sidebar container
   .sidebar-container {
     transition: width 0.28s;
     width: $sideBarWidth !important;
@@ -22,7 +20,7 @@
     z-index: 1001;
     overflow: hidden;
 
-    //reset element-ui css
+    // reset element-ui css
     .horizontal-collapse-transition {
       transition: 0s width ease-in-out, 0s padding-left ease-in-out, 0s padding-right ease-in-out;
     }
@@ -149,7 +147,7 @@
     min-width: $sideBarWidth !important;
   }
 
-  // 适配移动端, Mobile responsive
+  // mobile responsive
   .mobile {
     .main-container {
       margin-left: 0px;

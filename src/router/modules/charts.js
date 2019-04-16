@@ -5,7 +5,7 @@ import Layout from '@/layout'
 const chartsRouter = {
   path: '/charts',
   component: Layout,
-  redirect: 'noredirect',
+  redirect: 'noRedirect',
   name: 'Charts',
   meta: {
     title: 'charts',
@@ -25,8 +25,8 @@ const chartsRouter = {
       meta: { title: 'lineChart', noCache: true }
     },
     {
-      path: 'mixchart',
-      component: () => import('@/views/charts/mixChart'),
+      path: 'mix-chart',
+      component: () => import('@/views/charts/mix-chart'),
       name: 'MixChart',
       meta: { title: 'mixChart', noCache: true }
     }
