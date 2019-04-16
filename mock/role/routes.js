@@ -129,7 +129,7 @@ export const asyncRoutes = [
   {
     path: '/components',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     name: 'ComponentDemo',
     meta: {
       title: 'components',
@@ -225,7 +225,7 @@ export const asyncRoutes = [
   {
     path: '/charts',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     name: 'Charts',
     meta: {
       title: 'charts',
@@ -361,7 +361,7 @@ export const asyncRoutes = [
   {
     path: '/error',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
       title: 'errorPages',
@@ -386,7 +386,7 @@ export const asyncRoutes = [
   {
     path: '/error-log',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'log',
@@ -472,7 +472,7 @@ export const asyncRoutes = [
   {
     path: '/theme',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'index',
@@ -486,7 +486,7 @@ export const asyncRoutes = [
   {
     path: '/clipboard',
     component: 'layout/Layout',
-    redirect: 'noredirect',
+    redirect: 'noRedirect',
     children: [
       {
         path: 'index',
