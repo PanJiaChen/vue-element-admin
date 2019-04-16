@@ -37,7 +37,9 @@
     </sticky>
 
     <div class="components-container">
-      <code>Sticky header, When the page is scrolled to the preset position will be sticky on the top.</code>
+      <aside>
+        Sticky header, When the page is scrolled to the preset position will be sticky on the top.
+      </aside>
       <div>placeholder</div>
       <div>placeholder</div>
       <div>placeholder</div>

@@ -1,8 +1,8 @@
 <template>
   <div class="components-container">
-    <code>drag-list base on
+    <aside>drag-list base on
       <a href="https://github.com/SortableJS/Vue.Draggable" target="_blank">Vue.Draggable</a>
-    </code>
+    </aside>
     <div class="editor-container">
       <dnd-list :list1="list1" :list2="list2" list1-title="List" list2-title="Article pool" />
     </div>

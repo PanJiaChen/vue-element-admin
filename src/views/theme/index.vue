@@ -9,7 +9,9 @@
       <div class="box-item">
         <span class="field-label">Change Theme : </span>
         <el-switch v-model="theme" />
-        <code style="margin-top:15px;">Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.</code>
+        <aside style="margin-top:15px;">
+          Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.
+        </aside>
       </div>
     </el-card>
 

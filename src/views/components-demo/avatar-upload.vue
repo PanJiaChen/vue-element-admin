@@ -1,9 +1,9 @@
 <template>
   <div class="components-container">
-    <code>This is based on
+    <aside>This is based on
       <a class="link-type" href="//github.com/dai-siki/vue-image-crop-upload"> vue-image-crop-upload</a>.
       Since I was using only the vue@1 version, and it is not compatible with mockjs at the moment, I modified it myself, and if you are going to use it, it is better to use official version.
-    </code>
+    </aside>
 
     <pan-thumb :image="image" />
 
