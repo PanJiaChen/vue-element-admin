@@ -1,10 +1,10 @@
 <template>
   <div class="components-container">
-    <code><strong>SplitPane</strong> If you've used
+    <aside><strong>SplitPane</strong> If you've used
       <a href="https://codepen.io/" target="_blank"> codepen</a>,
       <a href="https://jsfiddle.net/" target="_blank"> jsfiddle </a>will not be unfamiliar.
       <a href="https://github.com/PanJiaChen/vue-split-pane" target="_blank"> Github repository</a>
-    </code>
+    </aside>
     <split-pane split="vertical" @resize="resize">
       <template slot="paneL">
         <div class="left-container" />
