@@ -1,4 +1,4 @@
-<template>
+<template functional>
   <aside>
     {{ $t('example.warning') }}
     <a
@@ -7,4 +7,3 @@
     >Document</a>
   </aside>
 </template>
-
