@@ -6,7 +6,7 @@
     </aside>
     <el-tabs type="border-card">
       <el-tab-pane label="Icons">
-        <div v-for="item of iconsMap" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
+        <div v-for="item of svgIcons" :key="item" @click="handleClipboard(generateIconCode(item),$event)">
           <el-tooltip placement="top">
             <div slot="content">
               {{ generateIconCode(item) }}
@@ -37,15 +37,15 @@
 
 <script>
 import clipboard from '@/utils/clipboard'
-import icons from './require-icons'
-import elementIcons from './element-icon.json'
+import svgIcons from './svg-icons'
+import elementIcons from './element-icons'
 
 export default {
   name: 'Icons',
   data() {
     return {
-      iconsMap: icons,
-      elementIcons: elementIcons
+      svgIcons,
+      elementIcons
     }
   },
   methods: {
