@@ -18,7 +18,7 @@ function registerRoutes(app) {
 
 function unregisterRoutes() {
   Object.keys(require.cache).forEach(i => {
-    if (i.includes('/mock')) {
+    if (i.includes('/mock') || i.includes('\\mock') || i.includes('./mock')) {
       delete require.cache[require.resolve(i)]
     }
   })
