@@ -1,6 +1,9 @@
 const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
+const path = require('path')
+
+const mockDir = path.join(process.cwd(), 'mock')
 
 function registerRoutes(app) {
   let mockLastIndex
@@ -18,7 +21,7 @@ function registerRoutes(app) {
 
 function unregisterRoutes() {
   Object.keys(require.cache).forEach(i => {
-    if (i.includes('/mock')) {
+    if (i.includes(mockDir)) {
       delete require.cache[require.resolve(i)]
     }
   })
@@ -40,9 +43,8 @@ module.exports = app => {
   var mockStartIndex = mockRoutes.mockStartIndex
 
   // watch files, hot reload mock server
-  chokidar.watch(('./mock'), {
-    ignored: 'mock/mock-server.js',
-    persistent: true,
+  chokidar.watch(mockDir, {
+    ignored: /mock-server/,
     ignoreInitial: true
   }).on('all', (event, path) => {
     if (event === 'change' || event === 'add') {
