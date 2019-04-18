@@ -30,7 +30,7 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            :placeholder="Password"
+            placeholder="Password"
             name="password"
             auto-complete="on"
             @keyup.native="checkCapslock"
