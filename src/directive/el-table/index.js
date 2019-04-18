@@ -1,4 +1,3 @@
-
 import adaptive from './adaptive'
 
 const install = function(Vue) {

@@ -86,6 +86,9 @@ export default {
       if (isExternal(routePath)) {
         return routePath
       }
+      if (isExternal(this.basePath)) {
+        return this.basePath
+      }
       return path.resolve(this.basePath, routePath)
     },
 

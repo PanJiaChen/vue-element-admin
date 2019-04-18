@@ -1,6 +1,6 @@
 {
   "name": "vue-element-admin",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "license": "MIT",
@@ -75,6 +75,7 @@
     "@babel/core": "7.0.0",
     "@babel/register": "7.0.0",
     "@vue/cli-plugin-babel": "3.5.3",
+    "@vue/cli-plugin-eslint": "3.5.1",
     "@vue/cli-plugin-unit-jest": "3.5.3",
     "@vue/cli-service": "3.5.3",
     "@vue/test-utils": "1.0.0-beta.29",
