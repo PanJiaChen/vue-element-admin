@@ -37,7 +37,7 @@
     </sticky>
 
     <div class="components-container">
-      <code>Sticky header, {{ $t('components.stickyTips') }}</code>
+      <aside>Sticky header, {{ $t('components.stickyTips') }}</aside>
       <div>placeholder</div>
       <div>placeholder</div>
       <div>placeholder</div>

@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { transactionList } from '@/api/remoteSearch'
+import { transactionList } from '@/api/remote-search'
 
 export default {
   filters: {
