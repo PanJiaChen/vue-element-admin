@@ -19,6 +19,7 @@
           :placeholder="$t('login.username')"
           name="username"
           type="text"
+          tabindex="1"
           auto-complete="on"
         />
       </el-form-item>
@@ -35,6 +36,7 @@
             :type="passwordType"
             :placeholder="$t('login.password')"
             name="password"
+            tabindex="2"
             auto-complete="on"
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
