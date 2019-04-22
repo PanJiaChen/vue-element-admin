@@ -61,12 +61,14 @@ export default {
     theme: 'Theme',
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
-    externalLink: 'External Link'
+    externalLink: 'External Link',
+    profile: 'Profile'
   },
   navbar: {
-    logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
+    logOut: 'Log Out',
+    profile: 'Profile',
     theme: 'Theme',
     size: 'Global Size'
   },
