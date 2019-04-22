@@ -70,9 +70,9 @@ export default {
      */
     containerStyle() {
       const style = {}
-      if (/^[\d]+(\.\d+)?$/.test(this.width)) { // Matches `100`, `'100'`
+      if (/^[\d]+(\.[\d]+)?$/.test(this.width)) { // Matches `100`, `'100'`
         style.width = `${this.width}px`
-      } else if (/^[\d]+(\.\d+)?([a-z]{2}|%)$/.test(this.width)) { // Matches `100px`, `100rem`, `70%`, etc
+      } else if (/^[\d]+(\.[\d]+)?([a-z]{2,4}|%)$/.test(this.width)) { // Matches `100px`, `100rem`, `70%`, etc
         style.width = `${this.width}`
       }
       return style
