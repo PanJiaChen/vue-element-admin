@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
+  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container" :style="containerStyle">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
@@ -41,6 +41,11 @@ export default {
       type: Number,
       required: false,
       default: 360
+    },
+    width: {
+      type: [Number, String],
+      required: false,
+      default: ''
     }
   },
   data() {
@@ -58,6 +63,19 @@ export default {
   computed: {
     language() {
       return this.languageTypeList[this.$store.getters.language]
+    },
+    /**
+     * Computes style for `div.editor-container`
+     * @return {Object}
+     */
+    containerStyle() {
+      const style = {}
+      if (/^[\d]+(\.\d+)?$/.test(this.width)) { // Matches `100`, `'100'`
+        style.width = `${this.width}px`
+      } else if (/^[\d]+(\.\d+)?([a-z]{2}|%)$/.test(this.width)) { // Matches `100px`, `100rem`, `70%`, etc
+        style.width = `${this.width}`
+      }
+      return style
     }
   },
   watch: {
