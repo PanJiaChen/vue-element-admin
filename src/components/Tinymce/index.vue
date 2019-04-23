@@ -38,9 +38,14 @@ export default {
       default: 'file edit insert view format table'
     },
     height: {
-      type: Number,
+      type: [Number, String],
       required: false,
       default: 360
+    },
+    width: {
+      type: [Number, String],
+      required: false,
+      default: 'auto'
     }
   },
   data() {
@@ -91,6 +96,7 @@ export default {
         language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
+        width: this.width,
         body_class: 'panel-body ',
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
