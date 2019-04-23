@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container" :style="containerStyle">
+  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
@@ -38,14 +38,14 @@ export default {
       default: 'file edit insert view format table'
     },
     height: {
-      type: Number,
+      type: [Number, String],
       required: false,
       default: 360
     },
     width: {
       type: [Number, String],
       required: false,
-      default: ''
+      default: 'auto'
     }
   },
   data() {
@@ -63,19 +63,6 @@ export default {
   computed: {
     language() {
       return this.languageTypeList[this.$store.getters.language]
-    },
-    /**
-     * Computes style for `div.editor-container`
-     * @return {Object}
-     */
-    containerStyle() {
-      const style = {}
-      if (/^[\d]+(\.[\d]+)?$/.test(this.width)) { // Matches `100`, `'100'`
-        style.width = `${this.width}px`
-      } else if (/^[\d]+(\.[\d]+)?([a-z]{2,4}|%)$/.test(this.width)) { // Matches `100px`, `100rem`, `70%`, etc
-        style.width = `${this.width}`
-      }
-      return style
     }
   },
   watch: {
@@ -109,6 +96,7 @@ export default {
         language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
+        width: this.width,
         body_class: 'panel-body ',
         object_resizing: false,
         toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
