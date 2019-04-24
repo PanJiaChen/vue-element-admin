@@ -1,8 +1,10 @@
 <template>
   <div class="app-container">
-    <code style="margin-top:15px;">{{ $t('pdf.tips') }}</code>
+    <aside style="margin-top:15px;">{{ $t('pdf.tips') }}</aside>
     <router-link target="_blank" to="/pdf/download">
-      <el-button type="primary">Click to download PDF</el-button>
+      <el-button type="primary">
+        Click to download PDF
+      </el-button>
     </router-link>
   </div>
 </template>
