@@ -1,5 +1,5 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container editor-container">
+  <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
       <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
@@ -38,9 +38,14 @@ export default {
       default: 'file edit insert view format table'
     },
     height: {
-      type: Number,
+      type: [Number, String],
       required: false,
       default: 360
+    },
+    width: {
+      type: [Number, String],
+      required: false,
+      default: 'auto'
     }
   },
   data() {
@@ -58,6 +63,13 @@ export default {
   computed: {
     language() {
       return this.languageTypeList[this.$store.getters.language]
+    },
+    containerWidth() {
+      const width = this.width
+      if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
+        return `${width}px`
+      }
+      return width
     }
   },
   watch: {
