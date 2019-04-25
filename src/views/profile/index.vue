@@ -42,27 +42,8 @@ export default {
   components: { UserCard, Activity, Timeline, Account },
   data() {
     return {
-      user: null,
-      social: [
-        {
-          'name': 'Followers',
-          'count': 1235
-        },
-        {
-          'name': 'Following',
-          'count': 23512
-        },
-        {
-          'name': 'Friends',
-          'count': 7242
-        }
-      ],
-      activeTab: 'activity',
-      input: {
-        comment1: '',
-        comment2: '',
-        reply: ''
-      }
+      user: {},
+      activeTab: 'activity'
     }
   },
   computed: {

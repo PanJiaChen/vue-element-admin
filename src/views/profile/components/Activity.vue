@@ -2,15 +2,8 @@
   <div class="user-activity">
     <div class="post">
       <div class="user-block">
-        <img
-          class="img-circle"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRDkaQO69Fro8SZLTVZQ75JH2R0T-sn5yIA_lKGwvvgQ0R0BoQtUQ"
-          alt="user image"
-        >
-        <span class="username text-muted">
-          <span>Iron Man</span>
-          <span class="pull-right btn-box-tool"><i class="fa fa-times" /></span>
-        </span>
+        <img class="img-circle" :src="'https://wpimg.wallstcn.com/57ed425a-c71e-4201-9428-68760c0537c4.jpg'+avatarPrefix">
+        <span class="username text-muted">Iron Man</span>
         <span class="description">Shared publicly - 7:30 PM today</span>
       </div>
       <p>
@@ -37,15 +30,8 @@
     </div>
     <div class="post">
       <div class="user-block">
-        <img
-          class="img-circle"
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQMMN-8f9CQQ3MKJpboBJIqaiJ2Wus2Tf4w_vx9STtalxrY3qGJ"
-          alt="user image"
-        >
-        <span class="username text-muted">
-          <span>Captain American</span>
-          <span class="pull-right btn-box-tool"><i class="fa fa-times" /></span>
-        </span>
+        <img class="img-circle" :src="'https://wpimg.wallstcn.com/9e2a5d0a-bd5b-457f-ac8e-86554616c87b.jpg'+avatarPrefix">
+        <span class="username text-muted">Captain American</span>
         <span class="description">Sent you a message - yesterday</span>
       </div>
       <p>
@@ -55,25 +41,31 @@
         tools to help create filler text for everyone from bacon lovers
         to Charlie Sheen fans.
       </p>
-
+      <ul class="list-inline">
+        <li>
+          <span class="link-black text-sm">
+            <i class="el-icon-share" />
+            Share
+          </span>
+        </li>
+        <li>
+          <span class="link-black text-sm">
+            <svg-icon icon-class="like" />
+            Like
+          </span>
+        </li>
+      </ul>
     </div>
     <div class="post">
       <div class="user-block">
-        <img
-          class="img-circle img-bordered-sm"
-          src="https://cdn3.iconfinder.com/data/icons/movies-3/32/daredevil-superhero-marvel-comics-mutant-avatar-512.png"
-          alt="User Image"
-        >
-        <span class="username">
-          <span>Daredevil</span>
-          <span class="pull-right btn-box-tool"><i class="fa fa-times" /></span>
-        </span>
+        <img class="img-circle" :src="'https://wpimg.wallstcn.com/fb57f689-e1ab-443c-af12-8d4066e202e2.jpg'+avatarPrefix">
+        <span class="username">Spider Man</span>
         <span class="description">Posted 4 photos - 2 days ago</span>
       </div>
       <div class="user-images">
-        <el-carousel :interval="6000" type="card" height="200px">
+        <el-carousel :interval="6000" type="card" height="220px">
           <el-carousel-item v-for="item in carouselImages" :key="item">
-            <img :src="item" class="image">
+            <img :src="item+carouselPrefix" class="image">
           </el-carousel-item>
         </el-carousel>
       </div>
@@ -89,23 +81,20 @@
 </template>
 
 <script>
+const avatarPrefix = '?imageView2/1/w/80/h/80'
+const carouselPrefix = '?imageView2/2/h/440'
+
 export default {
   data() {
     return {
       carouselImages: [
-        'https://cdn.laravue.dev/photo1.jpg',
-        'https://cdn.laravue.dev/photo2.jpg',
-        'https://cdn.laravue.dev/photo3.jpg',
-        'https://cdn.laravue.dev/photo4.jpg'
-      ]
-    }
-  },
-  methods: {
-    submit() {
-      this.$message({
-        message: 'Update',
-        type: 'success'
-      })
+        'https://wpimg.wallstcn.com/9679ffb0-9e0b-4451-9916-e21992218054.jpg',
+        'https://wpimg.wallstcn.com/bcce3734-0837-4b9f-9261-351ef384f75a.jpg',
+        'https://wpimg.wallstcn.com/d1d7b033-d75e-4cd6-ae39-fcd5f1c0a7c5.jpg',
+        'https://wpimg.wallstcn.com/50530061-851b-4ca5-9dc5-2fead928a939.jpg'
+      ],
+      avatarPrefix,
+      carouselPrefix
     }
   }
 }
@@ -122,10 +111,9 @@ export default {
       padding: 2px 0;
     }
 
-    img {
-      width: 40px;
-      height: 40px;
-      float: left;
+    .username{
+      font-size: 16px;
+      color: #000;
     }
 
     :after {
@@ -134,8 +122,9 @@ export default {
 
     .img-circle {
       border-radius: 50%;
-      border: 2px solid #d2d6de;
-      padding: 2px;
+      width: 40px;
+      height: 40px;
+      float: left;
     }
 
     span {
@@ -153,6 +142,8 @@ export default {
 
     .image {
       width: 100%;
+      height: 100%;
+
     }
 
     .user-images {
@@ -181,21 +172,6 @@ export default {
     }
   }
 
-  .el-carousel__item h3 {
-    color: #475669;
-    font-size: 14px;
-    opacity: 0.75;
-    line-height: 200px;
-    margin: 0;
-  }
-
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
-
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
 }
 
 .box-center {
@@ -205,9 +181,5 @@ export default {
 
 .text-muted {
   color: #777;
-}
-
-.pull-right {
-  float: right !important;
 }
 </style>
