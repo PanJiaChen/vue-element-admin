@@ -60,7 +60,8 @@ export default {
       fullscreen: false,
       languageTypeList: {
         'en': 'en',
-        'zh': 'zh_CN'
+        'zh': 'zh_CN',
+        'ja': 'ja'
       }
     }
   },
@@ -106,7 +107,7 @@ export default {
       window.tinymce.init({
         language: this.language,
         // language cnd URL, detail see https://github.com/PanJiaChen/tinymce-lang
-        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-lang/langs/zh_CN.js',
+        language_url: `https://cdn.jsdelivr.net/npm/tinymce-lang/langs/${this.language}.js`,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
