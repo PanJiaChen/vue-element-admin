@@ -55,7 +55,9 @@ module.exports = {
   },
   chainWebpack(config) {
     const cdn = {
-      js: ['https://cdn.jsdelivr.net/npm/tinymce@4.7.5/tinymce.min.js']
+      // inject tinymce into index.html
+      // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
+      js: ['https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.2/tinymce.min.js']
     }
     config.plugin('html')
       .tap(args => {
