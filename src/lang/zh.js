@@ -62,12 +62,14 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: '国际化',
     externalLink: '外链',
-    donate: '打赏'
+    donate: '打赏',
+    profile: '个人中心'
   },
   navbar: {
-    logOut: '退出登录',
     dashboard: '首页',
     github: '项目地址',
+    logOut: '退出登录',
+    profile: '个人中心',
     theme: '换肤',
     size: '布局大小'
   },

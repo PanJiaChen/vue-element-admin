@@ -62,14 +62,16 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
     externalLink: 'Enlace externo',
-    donate: 'Donate'
+    donate: 'Donate',
+    profile: 'Profile'
   },
   navbar: {
     logOut: 'Salir',
     dashboard: 'Panel de control',
     github: 'Github',
     theme: 'Tema',
-    size: 'Tamaño global'
+    size: 'Tamaño global',
+    profile: 'Profile'
   },
   login: {
     title: 'Formulario de acceso',

@@ -62,12 +62,14 @@ export default {
     clipboardDemo: 'Clipboard',
     i18n: 'I18n',
     externalLink: 'External Link',
-    donate: 'Donate'
+    donate: 'Donate',
+    profile: 'Profile'
   },
   navbar: {
-    logOut: 'Log Out',
     dashboard: 'Dashboard',
     github: 'Github',
+    logOut: 'Log Out',
+    profile: 'Profile',
     theme: 'Theme',
     size: 'Global Size'
   },
