@@ -55,10 +55,7 @@ module.exports = {
   },
   chainWebpack(config) {
     const cdn = {
-      js: [
-        'https://cdn.jsdelivr.net/npm/tinymce@4.7.5/tinymce.min.js'
-
-      ]
+      js: ['https://cdn.jsdelivr.net/npm/tinymce@4.7.5/tinymce.min.js']
     }
     config.plugin('html')
       .tap(args => {
