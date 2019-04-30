@@ -54,6 +54,17 @@ module.exports = {
     }
   },
   chainWebpack(config) {
+    const cdn = {
+      js: [
+        'https://cdn.jsdelivr.net/npm/tinymce@4.7.5/tinymce.min.js'
+
+      ]
+    }
+    config.plugin('html')
+      .tap(args => {
+        args[0].cdn = cdn
+        return args
+      })
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
