@@ -101,7 +101,8 @@ export default {
       const _this = this
       window.tinymce.init({
         language: this.language,
-        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-lang/langs/zh_CN.js', // site absolute URL
+        // language cnd URL, detail see https://github.com/PanJiaChen/tinymce-lang
+        language_url: 'https://cdn.jsdelivr.net/npm/tinymce-lang/langs/zh_CN.js',
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
