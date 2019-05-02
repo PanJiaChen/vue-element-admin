@@ -23,6 +23,7 @@ export default {
     dragDialog: '拖拽 Dialog',
     dragSelect: '拖拽 Select',
     dragKanban: '可拖拽看板',
+    cityCascader: '城市联动选择',
     charts: '图表',
     keyboardChart: '键盘图表',
     lineChart: '折线图',
@@ -106,7 +107,8 @@ export default {
     stickyTips: '当页面滚动到预设的位置会吸附在顶部',
     backToTopTips1: '页面滚动到指定位置会在右下角出现返回顶部按钮',
     backToTopTips2: '可自定义按钮的样式、show/hide、出现的高度、返回的位置 如需文字提示，可在外部使用Element的el-tooltip元素',
-    imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。'
+    imageUploadTips: '由于我在使用时它只有vue@1版本，而且和mockjs不兼容，所以自己改造了一下，如果大家要使用的话，优先还是使用官方版本。',
+    cityCascaderTips: '直接引用element的cascader级联选择组件，options参数使用组件目录下的city.js'
   },
   table: {
     dynamicTips1: '固定表头, 按照表头顺序排序',
