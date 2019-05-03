@@ -36,7 +36,7 @@
 
                 <el-col :span="10">
                   <el-form-item label-width="120px" label="Publush Time:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
+                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
 
@@ -154,6 +154,18 @@ export default {
     },
     lang() {
       return this.$store.getters.language
+    },
+    displayTime: {
+      // set and get is useful when the data
+      // returned by the back end api is different from the front end
+      // back end return => "2013-06-25 06:59:25"
+      // front end need timestamp => 1372114765000
+      get() {
+        return (+new Date(this.postForm.display_time))
+      },
+      set(val) {
+        this.postForm.display_time = new Date(val)
+      }
     }
   },
   created() {
@@ -189,7 +201,6 @@ export default {
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.postForm.display_time / 1000)
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
