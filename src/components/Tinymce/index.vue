@@ -8,6 +8,10 @@
 </template>
 
 <script>
+/**
+ * docs:
+ * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
+ */
 import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
@@ -56,7 +60,9 @@ export default {
       fullscreen: false,
       languageTypeList: {
         'en': 'en',
-        'zh': 'zh_CN'
+        'zh': 'zh_CN',
+        'es': 'es_MX',
+        'ja': 'ja'
       }
     }
   },
@@ -101,6 +107,8 @@ export default {
       const _this = this
       window.tinymce.init({
         language: this.language,
+        // language cnd URL, detail see https://github.com/PanJiaChen/tinymce-lang
+        language_url: this.language === 'en' ? '' : `https://cdn.jsdelivr.net/npm/tinymce-lang/langs/${this.language}.js`,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
