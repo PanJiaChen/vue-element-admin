@@ -26,7 +26,7 @@
   </a>
 </p>
 
-日本語 | [English](./README.md) | [简体中文](./README.zh-CN.md) 
+日本語 | [English](./README.md) | [简体中文](./README.zh-CN.md)
 
 ## 概要
 
@@ -135,7 +135,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 ```bash
 # clone the project
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+git clone -b i18n git@github.com:PanJiaChen/vue-element-admin.git
 
 # enter the project directory
 cd vue-element-admin
