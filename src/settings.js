@@ -1,7 +1,5 @@
-import variables from '@/styles/element-variables.scss'
-
-export default {
-  theme: variables.theme,
+module.exports = {
+  title: 'Vue Element Admin',
 
   /**
    * @type {boolean} true | false

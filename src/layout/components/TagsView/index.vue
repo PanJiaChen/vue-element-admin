@@ -12,31 +12,21 @@
         @click.middle.native="closeSelectedTag(tag)"
         @contextmenu.prevent.native="openMenu(tag,$event)"
       >
-        {{ generateTitle(tag.title) }}
+        {{ tag.title }}
         <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        {{ $t('tagsView.refresh') }}
-      </li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">
-        {{
-          $t('tagsView.close') }}
-      </li>
-      <li @click="closeOthersTags">
-        {{ $t('tagsView.closeOthers') }}
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        {{ $t('tagsView.closeAll') }}
-      </li>
+      <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
+      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">Close</li>
+      <li @click="closeOthersTags">Close Others</li>
+      <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
 </template>
 
 <script>
 import ScrollPane from './ScrollPane'
-import { generateTitle } from '@/utils/i18n'
 import path from 'path'
 
 export default {
@@ -76,7 +66,6 @@ export default {
     this.addTags()
   },
   methods: {
-    generateTitle, // generateTitle by vue-i18n
     isActive(route) {
       return route.path === this.$route.path
     },
@@ -145,7 +134,7 @@ export default {
     closeSelectedTag(view) {
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
-          this.toLastView(visitedViews)
+          this.toLastView(visitedViews, view)
         }
       })
     },
@@ -160,16 +149,22 @@ export default {
         if (this.affixTags.some(tag => tag.path === view.path)) {
           return
         }
-        this.toLastView(visitedViews)
+        this.toLastView(visitedViews, view)
       })
     },
-    toLastView(visitedViews) {
+    toLastView(visitedViews, view) {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
         this.$router.push(latestView)
       } else {
-        // You can set another route
-        this.$router.push('/')
+        // now the default is to redirect to the home page if there is no tags-view,
+        // you can adjust it according to your needs.
+        if (view.name === 'Dashboard') {
+          // to reload home page
+          this.$router.replace({ path: '/redirect' + view.fullPath })
+        } else {
+          this.$router.push('/')
+        }
       }
     },
     openMenu(tag, e) {
