@@ -8,6 +8,10 @@
 </template>
 
 <script>
+/**
+ * docs:
+ * https://panjiachen.github.io/vue-element-admin-site/feature/component/rich-editor.html#tinymce
+ */
 import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
@@ -61,9 +65,6 @@ export default {
     }
   },
   computed: {
-    language() {
-      return this.languageTypeList[this.$store.getters.language]
-    },
     containerWidth() {
       const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
@@ -78,10 +79,6 @@ export default {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
-    },
-    language() {
-      this.destroyTinymce()
-      this.$nextTick(() => this.initTinymce())
     }
   },
   mounted() {
@@ -100,7 +97,6 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
-        language: this.language,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',

@@ -7,6 +7,9 @@ function resolve(dir) {
 }
 
 const name = defaultSettings.title || 'vue Element Admin' // page title
+// If your port is set to 80,
+// use administrator privileges to execute the command line.
+// For example, Mac: sudo npm run
 const port = 9527 // dev port
 
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
@@ -54,6 +57,16 @@ module.exports = {
     }
   },
   chainWebpack(config) {
+    const cdn = {
+      // inject tinymce into index.html
+      // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
+      js: ['https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.2/tinymce.min.js']
+    }
+    config.plugin('html')
+      .tap(args => {
+        args[0].cdn = cdn
+        return args
+      })
     config.plugins.delete('preload') // TODO: need test
     config.plugins.delete('prefetch') // TODO: need test
 
@@ -86,7 +99,7 @@ module.exports = {
       .end()
 
     config
-    // https://webpack.js.org/configuration/devtool/#development
+      // https://webpack.js.org/configuration/devtool/#development
       .when(process.env.NODE_ENV === 'development',
         config => config.devtool('cheap-source-map')
       )
