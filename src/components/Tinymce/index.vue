@@ -60,16 +60,11 @@ export default {
       fullscreen: false,
       languageTypeList: {
         'en': 'en',
-        'zh': 'zh_CN',
-        'es': 'es_MX',
-        'ja': 'ja'
+        'zh': 'zh_CN'
       }
     }
   },
   computed: {
-    language() {
-      return this.languageTypeList[this.$store.getters.language]
-    },
     containerWidth() {
       const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
@@ -84,10 +79,6 @@ export default {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
-    },
-    language() {
-      this.destroyTinymce()
-      this.$nextTick(() => this.initTinymce())
     }
   },
   mounted() {
@@ -106,9 +97,6 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
-        language: this.language,
-        // language cnd URL, detail see https://github.com/PanJiaChen/tinymce-lang
-        language_url: this.language === 'en' ? '' : `https://cdn.jsdelivr.net/npm/tinymce-lang/langs/${this.language}.js`,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',
