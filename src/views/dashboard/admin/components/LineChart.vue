@@ -45,7 +45,10 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
+    this.$nextTick(() => {
+      this.initChart()
+    })
+
     if (this.autoResize) {
       this.__resizeHandler = debounce(() => {
         if (this.chart) {
