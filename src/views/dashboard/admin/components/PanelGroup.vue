@@ -160,7 +160,7 @@ export default {
   }
 }
 
-@media (max-width:600px) {
+@media (max-width:550px) {
   .card-panel-description {
     display: none;
   }
