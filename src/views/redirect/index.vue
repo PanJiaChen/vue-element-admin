@@ -1,10 +1,9 @@
 <script>
 export default {
-  beforeCreate() {
+  created() {
     const { params, query } = this.$route
     const { path } = params
     this.$router.replace({ path: '/' + path, query })
-    return
   },
   render: function(h) {
     return h() // avoid warning message
