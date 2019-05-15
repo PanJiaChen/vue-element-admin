@@ -71,7 +71,7 @@ Se un patrocinante y pon tu logo en nuestro README on GitHub con un enlace direc
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Plantilla de Dashboard de administración hecha con Vue, React y Angular.</p>
 
-## Features
+## Características
 
 ```
 - Iniciar / Cerrar Sesión
@@ -155,7 +155,7 @@ npm run dev
 
 Automáticamente se abrirá el siguiente enlace en su navegador http://localhost:9527
 
-## Build
+## Construcción
 
 ```bash
 # Construcción para entornos de prueba
@@ -181,7 +181,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Vaya a [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información
+Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información
 
 ## Registro de Cambios
 
@@ -213,4 +213,4 @@ Navegadores modernos e Internet Explorer 10+.
 
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 
-Copyright (c) 2017-present PanJiaChen
+Copyright (c) 2017-presente PanJiaChen
