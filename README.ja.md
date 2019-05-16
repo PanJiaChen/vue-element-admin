@@ -21,45 +21,42 @@
   <a href="https://gitter.im/vue-element-admin/discuss">
     <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
   </a>
-  <a href="https://panjiachen.github.io/vue-element-admin-site/donate">
+  <a href="https://panjiachen.gitee.io/vue-element-admin-site/zh/donate">
     <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg" alt="donate">
   </a>
 </p>
 
-English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
+日本語 | [English](./README.md) | [简体中文](./README.zh-CN.md) | [Spanish](./README.es.md)
 
-## Introduction
+## 概要
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) は管理画面のフロントエンドのインタフェース，[vue](https://github.com/vuejs/vue) と [element-ui](https://github.com/ElemeFE/element)を使っています。i18nの多言語対応、可変ルート、権限、典型的なビジネスアプリテンプレートであり、豊富なコンポーネントを提供しています、素早くビジネス用の管理画面の現型を構築に役立ちます。
 
-It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
+- [デモページ](https://panjiachen.github.io/vue-element-admin)
 
-- [Preview](https://panjiachen.github.io/vue-element-admin)
-
-- [Documentation](https://panjiachen.github.io/vue-element-admin-site/)
+- [ドキュメント](https://panjiachen.github.io/vue-element-admin-site/)
 
 - [Gitter](https://gitter.im/vue-element-admin/discuss)
 
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
+- [Donate](https://panjiachen.gitee.io/vue-element-admin-site/zh/donate)
 
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
-- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
-
-- Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
-- Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-- Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+- おすすめシンプルテンプレート: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
+- デスクトップバージョン: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Typescriptバージョン: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
 
 **After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
 
-**The current version is `v4.0+` build on `vue-cli`. If you find a problem, please put [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), it does not rely on `vue-cli`**
+**現在のバージョン `v4.0+` は `vue-cli` で構築，バグ報告は[issue](https://github.com/PanJiaChen/vue-element-admin/issues/new)のissueでお願いします。旧バージョン[tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0)もあります。`vue-cli`に依存しないです。**
 
-**This project does not support low version browsers (e.g. IE). Please add polyfill by yourself.**
+**低いバージョンのブラウザはサーポートしないです(例えば ie)，必要があれば polyfill を追加してください。 [詳細はこちら](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
-## Preparation
+## 前準備
 
-You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
-Understanding and learning this knowledge in advance will greatly help the use of this project.
+ローカル環境に [node](http://nodejs.org/) と [git](https://git-scm.com/)をインストールが必要です。[ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[vue-cli](https://github.com/vuejs/vue-cli) 、[axios](https://github.com/axios/axios) 和 [element-ui](https://github.com/ElemeFE/element)で開発しています。Requestは[Mock.js](https://github.com/nuysoft/Mock)のモックデータを使っています。
+
+**バグ修正や新規機能追加のissue と pull requestは大歓迎です。**
 
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
@@ -71,41 +68,40 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
 
-## Features
+## 機能一覧
 
 ```
-- Login / Logout
+- ログイン / ログアウト
 
-- Permission Authentication
-  - Page permission
-  - Directive permission
-  - Permission configuration page
-  - Two-step login
+- Auth認証
+  - ページ権限
+  - 権限パーミッション
+  - 権限設定
+  - 外部IDでログイン
 
-- Multi-environment build
+- 複数環境デプロイ
   - dev sit stage prod
 
-- Global Features
-  - I18n
-  - Multiple dynamic themes
-  - Dynamic sidebar (supports multi-level routing)
-  - Dynamic breadcrumb
-  - Tags-view (Tab page Support right-click operation)
-  - Svg Sprite
-  - Mock data
+- 共通機能
+  - 多言語切替
+  - テーマ切替
+  - サイトメニュー（ルートから生成）
+  - Breadcrumb Navigation
+  - Tag Navigation
+  - Svg Sprite Icon
+  - ローカル/バックエンド モック データ
   - Screenfull
-  - Responsive Sidebar
 
-- Editor
-  - Rich Text Editor
-  - Markdown Editor
-  - JSON Editor
+- WYSIWYG
+  - TinyMCE
+  - Markdown
+  - JSON
 
 - Excel
-  - Export Excel
-  - Upload Excel
-  - Visualization Excel
-  - Export zip
+  - エクスポート
+  - インポート
+  - リード
+  - Zip
 
 - Table
   - Dynamic Table
@@ -116,7 +112,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - 401
   - 404
 
-- Components
+- コンポーネント
   - Avatar Upload
   - Back To Top
   - Drag Dialog

@@ -1,7 +1,11 @@
 <template>
   <div class="components-container">
-    <aside>{{ $t('components.backToTopTips1') }}</aside>
-    <aside>{{ $t('components.backToTopTips2') }}</aside>
+    <aside>
+      When the page is scrolled to the specified position, the Back to Top button appears in the lower right corner
+    </aside>
+    <aside>
+      You can customize the style of the button, show / hide, height of appearance, height of the return. If you need a text prompt, you can use element-ui el-tooltip elements externally
+    </aside>
     <div class="placeholder-container">
       <div>placeholder</div>
       <div>placeholder</div>

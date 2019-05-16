@@ -1,6 +1,7 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
+
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
@@ -36,7 +37,7 @@
 
                 <el-col :span="10">
                   <el-form-item label-width="120px" label="Publush Time:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
+                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
 
@@ -152,8 +153,17 @@ export default {
     contentShortLength() {
       return this.postForm.content_short.length
     },
-    lang() {
-      return this.$store.getters.language
+    displayTime: {
+      // set and get is useful when the data
+      // returned by the back end api is different from the front end
+      // back end return => "2013-06-25 06:59:25"
+      // front end need timestamp => 1372114765000
+      get() {
+        return (+new Date(this.postForm.display_time))
+      },
+      set(val) {
+        this.postForm.display_time = new Date(val)
+      }
     }
   },
   created() {
@@ -184,12 +194,11 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const title = 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
