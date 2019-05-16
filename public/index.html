@@ -15,5 +15,13 @@
     <% } %>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+
+    <!-- Compatibility tip -->
+    <script>
+      if (typeof (Promise) === 'undefined') {
+        var app = document.getElementById('app')
+        app.innerHTML = '<h1>你正在使用的浏览器版本过低，将不能正常浏览和使用</h1><h3>推荐使用chrome或者QQ浏览器下载地址：</h3><a style="color:#409EFF" href="https://www.google.cn/chrome/" target="_blank" rel="noopener noreferrer">点击下载chrome</a><br /><br /><a style="color:#409EFF" href="https://browser.qq.com/" target="_blank" rel="noopener noreferrer">点击下载QQ浏览器</a><br /><h5>(或者使用平板手机等移动设备进行访问)</h5>'
+      }
+    </script>
   </body>
 </html>
