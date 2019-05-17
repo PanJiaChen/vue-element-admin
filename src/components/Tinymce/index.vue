@@ -87,16 +87,10 @@ export default {
     }
   },
   mounted() {
-    load(tinymceCDN, (err) => {
-      if (err) {
-        this.$message.error(err.message)
-        return
-      }
-      this.initTinymce()
-    })
+    this.init()
   },
   activated() {
-    this.initTinymce()
+    this.init()
   },
   deactivated() {
     this.destroyTinymce()
@@ -105,6 +99,15 @@ export default {
     this.destroyTinymce()
   },
   methods: {
+    init() {
+      load(tinymceCDN, (err) => {
+        if (err) {
+          this.$message.error(err.message)
+          return
+        }
+        this.initTinymce()
+      })
+    },
     initTinymce() {
       const _this = this
       window.tinymce.init({
