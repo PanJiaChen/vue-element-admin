@@ -8,15 +8,32 @@ const dynamicLoadScript = (src, callback) => {
     script.id = src
     document.body.appendChild(script)
 
-    script.onload = () => {
-      if (cb) cb(null, script)
+    const onend = 'onload' in script ? stdOnEnd : ieOnEnd
+    onend(script, cb)
+  }
+
+  if (existingScript && cb) cb()
+
+  function stdOnEnd(script, cb) {
+    script.onload = function() {
+      this.onerror = this.onload = null
+      cb(null, script)
     }
-    script.onerror = () => {
+    script.onerror = function() {
+      // this.onload = null here is necessary
+      // because even IE9 works not like others
+      this.onerror = this.onload = null
       cb(new Error('Failed to load ' + src), script)
     }
   }
 
-  if (existingScript && cb) cb()
+  function ieOnEnd(script, cb) {
+    script.onreadystatechange = function() {
+      if (this.readyState !== 'complete' && this.readyState !== 'loaded') return
+      this.onreadystatechange = null
+      cb(null, script) // there is no way to catch loading errors in IE8
+    }
+  }
 }
 
 export default dynamicLoadScript
