@@ -135,7 +135,6 @@ export default {
   border-radius: 6px 0 0 6px !important;
   width: 48px;
   height: 48px;
-  pointer-events: auto;
   z-index: 0;
   cursor: pointer;
   pointer-events: auto;
