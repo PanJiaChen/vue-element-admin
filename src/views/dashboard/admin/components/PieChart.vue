@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" :style="{height:height,width:width}"/>
+  <div :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -28,7 +28,9 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
+    this.$nextTick(() => {
+      this.initChart()
+    })
     this.__resizeHandler = debounce(() => {
       if (this.chart) {
         this.chart.resize()
@@ -58,7 +60,6 @@ export default {
           bottom: '10',
           data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
         },
-        calculable: true,
         series: [
           {
             name: 'WEEKLY WRITE ARTICLES',
