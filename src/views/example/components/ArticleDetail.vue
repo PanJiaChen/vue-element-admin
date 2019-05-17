@@ -183,12 +183,16 @@ export default {
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
-        // Just for test
+
+        // just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
         this.postForm.content_short += `   Article Id:${this.postForm.id}`
 
-        // Set tagsview title
+        // set tagsview title
         this.setTagsViewTitle()
+
+        // set page title
+        this.setPageTitle()
       }).catch(err => {
         console.log(err)
       })
@@ -197,6 +201,10 @@ export default {
       const title = 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
+    },
+    setPageTitle() {
+      const title = 'Edit Article'
+      document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
       console.log(this.postForm)
