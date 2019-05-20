@@ -8,20 +8,20 @@ const dynamicLoadScript = (src, callback) => {
     script.id = src
     document.body.appendChild(script)
 
-    const onend = 'onload' in script ? stdOnEnd : ieOnEnd
-    onend(script, cb)
+    const onEnd = 'onload' in script ? stdOnEnd : ieOnEnd
+    onEnd(script, cb)
   }
 
-  if (existingScript && cb) cb()
+  if (existingScript && cb) cb(null, existingScript)
 
   function stdOnEnd(script, cb) {
     script.onload = function() {
+      // this.onload = null here is necessary
+      // because even IE9 works not like others
       this.onerror = this.onload = null
       cb(null, script)
     }
     script.onerror = function() {
-      // this.onload = null here is necessary
-      // because even IE9 works not like others
       this.onerror = this.onload = null
       cb(new Error('Failed to load ' + src), script)
     }

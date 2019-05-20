@@ -90,7 +90,9 @@ export default {
     this.init()
   },
   activated() {
-    this.init()
+    if (window.tinymce) {
+      this.initTinymce()
+    }
   },
   deactivated() {
     this.destroyTinymce()
