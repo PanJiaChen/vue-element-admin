@@ -30,6 +30,11 @@ export default {
       createdTimes: 0
     }
   },
+  watch: {
+    activeName(val) {
+      this.$router.push(`${this.$route.path}?tab=${val}`)
+    }
+  },
   methods: {
     showCreatedTimes() {
       this.createdTimes = this.createdTimes + 1
