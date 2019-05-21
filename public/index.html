@@ -9,10 +9,6 @@
     <title><%= webpackConfig.name %></title>
   </head>
   <body>
-    <!-- import cdn js -->
-    <% for(var js of htmlWebpackPlugin.options.cdn.js) { %>
-      <script src="<%=js%>"></script>
-    <% } %>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
