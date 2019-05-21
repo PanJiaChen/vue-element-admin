@@ -15,6 +15,10 @@
 import editorImage from './components/EditorImage'
 import plugins from './plugins'
 import toolbar from './toolbar'
+import load from './dynamicLoadScript'
+
+// why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
+const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -91,10 +95,12 @@ export default {
     }
   },
   mounted() {
-    this.initTinymce()
+    this.init()
   },
   activated() {
-    this.initTinymce()
+    if (window.tinymce) {
+      this.initTinymce()
+    }
   },
   deactivated() {
     this.destroyTinymce()
@@ -103,12 +109,20 @@ export default {
     this.destroyTinymce()
   },
   methods: {
+    init() {
+      // dynamic load tinymce from cdn
+      load(tinymceCDN, (err) => {
+        if (err) {
+          this.$message.error(err.message)
+          return
+        }
+        this.initTinymce()
+      })
+    },
     initTinymce() {
       const _this = this
       window.tinymce.init({
         language: this.language,
-        // language cnd URL, detail see https://github.com/PanJiaChen/tinymce-lang
-        language_url: this.language === 'en' ? '' : `https://cdn.jsdelivr.net/npm/tinymce-lang/langs/${this.language}.js`,
         selector: `#${this.tinymceId}`,
         height: this.height,
         body_class: 'panel-body ',

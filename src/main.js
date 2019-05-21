@@ -21,15 +21,24 @@ import './utils/error-log' // error log
 import * as filters from './filters' // global filters
 
 import VueAnalytics from 'vue-analytics'
-import { mockXHR } from '../mock' // simulation data
 
 Vue.use(VueAnalytics, {
   id: 'UA-109340118-1',
   router
 })
 
-// mock api in github pages site build
-if (process.env.NODE_ENV === 'production') { mockXHR() }
+/**
+ * If you don't want to use mock-server
+ * you want to use MockJs for mock api
+ * you can execute: mockXHR()
+ *
+ * Currently MockJs will be used in the production environment,
+ * please remove it before going online! ! !
+ */
+import { mockXHR } from '../mock'
+if (process.env.NODE_ENV === 'production') {
+  mockXHR()
+}
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
