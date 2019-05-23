@@ -33,8 +33,7 @@ export default {
   },
   data() {
     return {
-      chart: null,
-      sidebarElm: null
+      chart: null
     }
   },
   watch: {
@@ -58,6 +57,10 @@ export default {
     this.chart = null
   },
   methods: {
+    initChart() {
+      this.chart = echarts.init(this.$el, 'macarons')
+      this.setOptions(this.chartData)
+    },
     setOptions({ expectedData, actualData } = {}) {
       this.chart.setOption({
         xAxis: {
@@ -126,10 +129,6 @@ export default {
           animationEasing: 'quadraticOut'
         }]
       })
-    },
-    initChart() {
-      this.chart = echarts.init(this.$el, 'macarons')
-      this.setOptions(this.chartData)
     }
   }
 }

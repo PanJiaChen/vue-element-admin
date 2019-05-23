@@ -14,6 +14,8 @@ export default {
     this.$_destroyResizeEvent()
     this.$_destroySidebarResizeEvent()
   },
+  // to fixed bug when cached by keep-alive
+  // https://github.com/PanJiaChen/vue-element-admin/issues/2116
   activated() {
     this.$_initResizeEvent()
     this.$_initSidebarResizeEvent()
@@ -25,11 +27,6 @@ export default {
   methods: {
     // use $_ for mixins properties
     // https://vuejs.org/v2/style-guide/index.html#Private-property-names-essential
-    $_sidebarResizeHandler(e) {
-      if (e.propertyName === 'width') {
-        this.$_resizeHandler()
-      }
-    },
     $_resizeHandler() {
       return debounce(() => {
         if (this.chart) {
@@ -42,6 +39,11 @@ export default {
     },
     $_destroyResizeEvent() {
       window.removeEventListener('resize', this.$_resizeHandler)
+    },
+    $_sidebarResizeHandler(e) {
+      if (e.propertyName === 'width') {
+        this.$_resizeHandler()
+      }
     },
     $_initSidebarResizeEvent() {
       this.$_sidebarElm = document.getElementsByClassName('sidebar-container')[0]
