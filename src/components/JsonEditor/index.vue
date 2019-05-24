@@ -1,6 +1,6 @@
 <template>
   <div class="json-editor">
-    <textarea ref="textarea"></textarea>
+    <textarea ref="textarea" />
   </div>
 </template>
 
@@ -15,17 +15,18 @@ import 'codemirror/addon/lint/lint'
 import 'codemirror/addon/lint/json-lint'
 
 export default {
-  name: 'jsonEditor',
+  name: 'JsonEditor',
+  /* eslint-disable vue/require-prop-types */
+  props: ['value'],
   data() {
     return {
       jsonEditor: false
     }
   },
-  props: ['value'],
   watch: {
     value(value) {
-      const editor_value = this.jsonEditor.getValue()
-      if (value !== editor_value) {
+      const editorValue = this.jsonEditor.getValue()
+      if (value !== editorValue) {
         this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
       }
     }

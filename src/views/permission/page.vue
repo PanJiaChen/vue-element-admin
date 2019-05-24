@@ -7,8 +7,8 @@
 <script>
 import SwitchRoles from './components/SwitchRoles'
 
-export default{
-  name: 'pagePermission',
+export default {
+  name: 'PagePermission',
   components: { SwitchRoles },
   methods: {
     handleRolesChange() {

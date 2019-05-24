@@ -1,23 +1,27 @@
 <template>
   <div class="dndList">
-    <div class="dndList-list" :style="{width:width1}">
-      <h3>{{list1Title}}</h3>
-      <draggable :list="list1" class="dragArea" :options="{group:'article'}">
-        <div class="list-complete-item" v-for="element in list1" :key='element.id'>
-          <div class="list-complete-item-handle">[{{element.author}}] {{element.title}}</div>
+    <div :style="{width:width1}" class="dndList-list">
+      <h3>{{ list1Title }}</h3>
+      <draggable :set-data="setData" :list="list1" group="article" class="dragArea">
+        <div v-for="element in list1" :key="element.id" class="list-complete-item">
+          <div class="list-complete-item-handle">
+            {{ element.id }}[{{ element.author }}] {{ element.title }}
+          </div>
           <div style="position:absolute;right:0px;">
             <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
-              <i style="color:#ff4949" class="el-icon-delete"></i>
+              <i style="color:#ff4949" class="el-icon-delete" />
             </span>
           </div>
         </div>
       </draggable>
     </div>
-    <div class="dndList-list" :style="{width:width2}">
-      <h3>{{list2Title}}</h3>
-      <draggable :list="filterList2" class="dragArea" :options="{group:'article'}">
-        <div class="list-complete-item" v-for="element in filterList2" :key='element.id'>
-          <div class='list-complete-item-handle2' @click="pushEle(element)"> [{{element.author}}] {{element.title}}</div>
+    <div :style="{width:width2}" class="dndList-list">
+      <h3>{{ list2Title }}</h3>
+      <draggable :list="list2" group="article" class="dragArea">
+        <div v-for="element in list2" :key="element.id" class="list-complete-item">
+          <div class="list-complete-item-handle2" @click="pushEle(element)">
+            {{ element.id }} [{{ element.author }}] {{ element.title }}
+          </div>
         </div>
       </draggable>
     </div>
@@ -30,16 +34,6 @@ import draggable from 'vuedraggable'
 export default {
   name: 'DndList',
   components: { draggable },
-  computed: {
-    filterList2() {
-      return this.list2.filter(v => {
-        if (this.isNotInList1(v)) {
-          return v
-        }
-        return false
-      })
-    }
-  },
   props: {
     list1: {
       type: Array,
@@ -90,13 +84,27 @@ export default {
       }
     },
     pushEle(ele) {
-      this.list1.push(ele)
+      for (const item of this.list2) {
+        if (item.id === ele.id) {
+          const index = this.list2.indexOf(item)
+          this.list2.splice(index, 1)
+          break
+        }
+      }
+      if (this.isNotInList1(ele)) {
+        this.list1.push(ele)
+      }
+    },
+    setData(dataTransfer) {
+      // to avoid Firefox bug
+      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+      dataTransfer.setData('Text', '')
     }
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .dndList {
   background: #fff;
   padding-bottom: 40px;

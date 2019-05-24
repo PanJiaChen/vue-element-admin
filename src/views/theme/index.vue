@@ -2,54 +2,73 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <a class='link-type link-title' target="_blank" href='https://panjiachen.github.io/vue-element-admin-site/#/theme'>
-        {{$t('theme.documentation')}}
+        <a class="link-type link-title" target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/theme.html">
+          Theme documentation
         </a>
       </div>
       <div class="box-item">
-        <span class="field-label">{{$t('theme.change')}} : </span>
-        <el-switch v-model="theme"></el-switch>
-        <code style="margin-top:15px;">{{$t('theme.tips')}}</code>
+        <span class="field-label">Change Theme : </span>
+        <el-switch v-model="theme" />
+        <aside style="margin-top:15px;">
+          Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.
+        </aside>
       </div>
     </el-card>
 
     <div class="block">
-      <el-button type="primary">Primary</el-button>
-      <el-button type="success">Success</el-button>
-      <el-button type="info">Info</el-button>
-      <el-button type="warning">Warning</el-button>
-      <el-button type="danger">Danger</el-button>
-    </div>
-
-    <div class="block">
-      <el-button type="primary" icon="el-icon-edit"></el-button>
-      <el-button type="primary" icon="el-icon-share"></el-button>
-      <el-button type="primary" icon="el-icon-delete"></el-button>
-      <el-button type="primary" icon="el-icon-search">Search</el-button>
       <el-button type="primary">
-        Upload
-        <i class="el-icon-upload el-icon-right"></i>
+        Primary
+      </el-button>
+      <el-button type="success">
+        Success
+      </el-button>
+      <el-button type="info">
+        Info
+      </el-button>
+      <el-button type="warning">
+        Warning
+      </el-button>
+      <el-button type="danger">
+        Danger
       </el-button>
     </div>
 
     <div class="block">
-      <el-tag class='tag-item' v-for="tag in tags" :type="tag.type" :key='tag.type'>
-        {{tag.name}}
+      <el-button type="primary" icon="el-icon-edit" />
+      <el-button type="primary" icon="el-icon-share" />
+      <el-button type="primary" icon="el-icon-delete" />
+      <el-button type="primary" icon="el-icon-search">
+        Search
+      </el-button>
+      <el-button type="primary">
+        Upload
+        <i class="el-icon-upload el-icon-right" />
+      </el-button>
+    </div>
+
+    <div class="block">
+      <el-tag v-for="tag in tags" :key="tag.type" :type="tag.type" class="tag-item">
+        {{ tag.name }}
       </el-tag>
     </div>
 
     <div class="block">
       <el-radio-group v-model="radio">
-        <el-radio :label="3">Option A</el-radio>
-        <el-radio :label="6">Option B</el-radio>
-        <el-radio :label="9">Option C</el-radio>
+        <el-radio :label="3">
+          Option A
+        </el-radio>
+        <el-radio :label="6">
+          Option B
+        </el-radio>
+        <el-radio :label="9">
+          Option C
+        </el-radio>
       </el-radio-group>
     </div>
 
     <div class="block">
-      <el-slider v-model="slideValue"></el-slider>
+      <el-slider v-model="slideValue" />
     </div>
-
   </div>
 </template>
 
@@ -58,7 +77,7 @@ import { toggleClass } from '@/utils'
 import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
 
 export default {
-  name: 'theme',
+  name: 'Theme',
   data() {
     return {
       theme: false,
@@ -87,6 +106,7 @@ export default {
 }
 .box-card {
   width: 400px;
+  max-width: 100%;
   margin: 20px auto;
 }
 

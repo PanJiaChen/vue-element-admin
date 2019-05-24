@@ -7,22 +7,34 @@
         </div>
         <div style="margin-bottom:50px;">
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn blue-btn" to="/components/index">Components</router-link>
+            <router-link class="pan-btn blue-btn" to="/documentation/index">
+              Documentation
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn light-blue-btn" to="/charts/index">Charts</router-link>
+            <router-link class="pan-btn light-blue-btn" to="/icon/index">
+              Icons
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn pink-btn" to="/excel/download">Excel</router-link>
+            <router-link class="pan-btn pink-btn" to="/excel/export-excel">
+              Excel
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn green-btn" to="/example/table/complex-table">Table</router-link>
+            <router-link class="pan-btn green-btn" to="/table/complex-table">
+              Table
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn tiffany-btn" to="/form/edit-form">Form</router-link>
+            <router-link class="pan-btn tiffany-btn" to="/example/create">
+              Form
+            </router-link>
           </el-col>
           <el-col :span="4" class="text-center">
-            <router-link class="pan-btn yellow-btn" to="/theme/index">Theme</router-link>
+            <router-link class="pan-btn yellow-btn" to="/theme/index">
+              Theme
+            </router-link>
           </el-col>
         </div>
       </el-card>
@@ -37,7 +49,9 @@
           <div style="height:100px;">
             <el-form :model="demo" :rules="demoRules">
               <el-form-item prop="title">
-                <md-input icon="search" name="title" placeholder="输入标题" v-model="demo.title">标题</md-input>
+                <md-input v-model="demo.title" icon="search" name="title" placeholder="输入标题">
+                  标题
+                </md-input>
               </el-form-item>
             </el-form>
           </div>
@@ -63,7 +77,9 @@
             <span>水波纹 waves v-directive</span>
           </div>
           <div class="component-item">
-            <el-button v-waves type="primary">水波纹效果</el-button>
+            <el-button v-waves type="primary">
+              水波纹效果
+            </el-button>
           </div>
         </el-card>
       </el-col>
@@ -74,25 +90,24 @@
             <span>hover text</span>
           </div>
           <div class="component-item">
-            <mallki className="mallki-text" text="vue-element-admin"></mallki>
+            <mallki class-name="mallki-text" text="vue-element-admin" />
           </div>
         </el-card>
       </el-col>
     </el-row>
 
     <el-row :gutter="20" style="margin-top:50px;">
-      <el-col :span="6">
+      <el-col :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>Share</span>
           </div>
           <div class="component-item" style="height:420px;">
-            <dropdown-menu style="margin:0 auto;" title='系列文章' :items='articleList'></dropdown-menu>
+            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章" />
           </div>
         </el-card>
       </el-col>
     </el-row>
-
   </div>
 </template>
 
@@ -100,11 +115,11 @@
 import PanThumb from '@/components/PanThumb'
 import MdInput from '@/components/MDinput'
 import Mallki from '@/components/TextHoverEffect/Mallki'
-import DropdownMenu from '@/components/Share/dropdownMenu'
+import DropdownMenu from '@/components/Share/DropdownMenu'
 import waves from '@/directive/waves/index.js' // 水波纹指令
 
 export default {
-  name: 'componentMixin-demo',
+  name: 'ComponentMixinDemo',
   components: {
     PanThumb,
     MdInput,
@@ -130,12 +145,12 @@ export default {
         title: [{ required: true, trigger: 'change', validator: validate }]
       },
       articleList: [
-        { title: '基础篇', href: 'https://segmentfault.com/a/1190000009275424' },
-        { title: '登录权限篇', href: 'https://segmentfault.com/a/1190000009506097' },
-        { title: '实战篇', href: 'https://segmentfault.com/a/1190000009762198' },
-        { title: 'vueAdmin-template 篇', href: 'https://segmentfault.com/a/1190000010043013' },
-        { title: '自行封装 component', href: 'https://segmentfault.com/a/1190000009090836' },
-        { title: '优雅的使用 icon', href: 'https://segmentfault.com/a/https://segmentfault.com/a/1190000012213278' }
+        { title: '基础篇', href: 'https://juejin.im/post/59097cd7a22b9d0065fb61d2' },
+        { title: '登录权限篇', href: 'https://juejin.im/post/591aa14f570c35006961acac' },
+        { title: '实战篇', href: 'https://juejin.im/post/593121aa0ce4630057f70d35' },
+        { title: 'vue-admin-template 篇', href: 'https://juejin.im/post/595b4d776fb9a06bbe7dba56' },
+        { title: 'v4.0 篇', href: 'https://juejin.im/post/5c92ff94f265da6128275a85' },
+        { title: '优雅的使用 icon', href: 'https://juejin.im/post/59bb864b5188257e7a427c09' }
       ]
     }
   }

@@ -1,14 +1,14 @@
 <template>
-  <div class='chart-container'>
-    <chart height='100%' width='100%'></chart>
+  <div class="chart-container">
+    <chart height="100%" width="100%" />
   </div>
 </template>
 
 <script>
-import Chart from '@/components/Charts/keyboard'
+import Chart from '@/components/Charts/Keyboard'
 
 export default {
-  name: 'keyboardChart',
+  name: 'KeyboardChart',
   components: { Chart }
 }
 </script>
@@ -16,9 +16,8 @@ export default {
 <style scoped>
 .chart-container{
   position: relative;
-  padding: 20px;
   width: 100%;
-  height: 85vh;
+  height: calc(100vh - 84px);
 }
 </style>
 
