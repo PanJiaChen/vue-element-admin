@@ -1,6 +1,7 @@
 let callbacks = []
 
 function loadedTinymce() {
+  // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2144
   // check is successfully downloaded script
   return window.tinymce
 }
@@ -9,17 +10,12 @@ const dynamicLoadScript = (src, callback) => {
   const existingScript = document.getElementById(src)
   const cb = callback || function() {}
 
-  // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2144
-  if (!loadedTinymce()) {
-    callbacks.push(cb)
-  }
-
   if (!existingScript) {
     const script = document.createElement('script')
     script.src = src // src url for the third-party library being loaded.
     script.id = src
     document.body.appendChild(script)
-
+    callbacks.push(cb)
     const onEnd = 'onload' in script ? stdOnEnd : ieOnEnd
     onEnd(script)
   }
@@ -27,6 +23,8 @@ const dynamicLoadScript = (src, callback) => {
   if (existingScript && cb) {
     if (loadedTinymce()) {
       cb(null, existingScript)
+    } else {
+      callbacks.push(cb)
     }
   }
 
