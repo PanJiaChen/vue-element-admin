@@ -46,7 +46,7 @@
     "axios": "0.18.0",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
-    "driver.js": "0.9.5",
+    "driver.js": "0.9.6",
     "dropzone": "5.5.1",
     "echarts": "4.2.1",
     "element-ui": "2.7.0",
