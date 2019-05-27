@@ -1,9 +1,9 @@
 <template>
   <div>
     <div style="margin-bottom:15px;">
-      {{ $t('permission.roles') }}: {{ roles }}
+      Your roles: {{ roles }}
     </div>
-    {{ $t('permission.switchRoles') }}:
+    Switch roles:
     <el-radio-group v-model="switchRoles">
       <el-radio-button label="editor" />
       <el-radio-button label="admin" />
