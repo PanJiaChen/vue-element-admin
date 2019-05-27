@@ -66,7 +66,7 @@ service.interceptors.response.use(
           })
         })
       }
-      return Promise.reject(res.message || 'error')
+      return Promise.reject(new Error(res.message || 'have been logged out'))
     } else {
       return res
     }
