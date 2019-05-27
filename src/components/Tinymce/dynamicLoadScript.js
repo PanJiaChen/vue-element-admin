@@ -1,3 +1,11 @@
+let callbacks = []
+
+function loadedTinymce() {
+  // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2144
+  // check is successfully downloaded script
+  return window.tinymce
+}
+
 const dynamicLoadScript = (src, callback) => {
   const existingScript = document.getElementById(src)
   const cb = callback || function() {}
@@ -7,19 +15,28 @@ const dynamicLoadScript = (src, callback) => {
     script.src = src // src url for the third-party library being loaded.
     script.id = src
     document.body.appendChild(script)
-
+    callbacks.push(cb)
     const onEnd = 'onload' in script ? stdOnEnd : ieOnEnd
-    onEnd(script, cb)
+    onEnd(script)
   }
 
-  if (existingScript && cb) cb(null, existingScript)
+  if (existingScript && cb) {
+    if (loadedTinymce()) {
+      cb(null, existingScript)
+    } else {
+      callbacks.push(cb)
+    }
+  }
 
-  function stdOnEnd(script, cb) {
+  function stdOnEnd(script) {
     script.onload = function() {
       // this.onload = null here is necessary
       // because even IE9 works not like others
       this.onerror = this.onload = null
-      cb(null, script)
+      for (const cb of callbacks) {
+        cb(null, script)
+      }
+      callbacks = null
     }
     script.onerror = function() {
       this.onerror = this.onload = null
@@ -27,11 +44,14 @@ const dynamicLoadScript = (src, callback) => {
     }
   }
 
-  function ieOnEnd(script, cb) {
+  function ieOnEnd(script) {
     script.onreadystatechange = function() {
       if (this.readyState !== 'complete' && this.readyState !== 'loaded') return
       this.onreadystatechange = null
-      cb(null, script) // there is no way to catch loading errors in IE8
+      for (const cb of callbacks) {
+        cb(null, script) // there is no way to catch loading errors in IE8
+      }
+      callbacks = null
     }
   }
 }
