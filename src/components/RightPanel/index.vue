@@ -14,6 +14,7 @@
 
 <script>
 import { addClass, removeClass } from '@/utils'
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   name: 'RightPanel',
@@ -58,13 +59,13 @@ export default {
   },
   methods: {
     addEventClick() {
-      window.addEventListener('click', this.closeSidebar)
+      on(window, 'click', this.closeSidebar)
     },
     closeSidebar(evt) {
       const parent = evt.target.closest('.rightPanel')
       if (!parent) {
         this.show = false
-        window.removeEventListener('click', this.closeSidebar)
+        off(window, 'click', this.closeSidebar)
       }
     },
     insertToBody() {

@@ -1,4 +1,5 @@
 import { debounce } from '@/utils'
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   data() {
@@ -12,15 +13,15 @@ export default {
         this.chart.resize()
       }
     }, 100)
-    window.addEventListener('resize', this.__resizeHandler)
+    on(window, 'resize', this.__resizeHandler)
 
     this.$_sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-    this.$_sidebarElm && this.$_sidebarElm.addEventListener('transitionend', this.$_sidebarResizeHandler)
+    on(this.$_sidebarElm && this.$_sidebarElm, 'transitionend', this.$_sidebarResizeHandler)
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.__resizeHandler)
+    off(window, 'resize', this.__resizeHandler)
 
-    this.$_sidebarElm && this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
+    off(this.$_sidebarElm && this.$_sidebarElm, 'transitionend', this.$_sidebarResizeHandler)
   },
   methods: {
     // use $_ for mixins properties

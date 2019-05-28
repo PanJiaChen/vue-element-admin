@@ -115,6 +115,8 @@ import language from './utils/language.js'
 import mimes from './utils/mimes.js'
 import data2blob from './utils/data2blob.js'
 import effectRipple from './utils/effectRipple.js'
+import { on, off } from 'element-ui/src/utils/dom'
+
 export default {
   props: {
     // 域，上传文件name，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
@@ -839,15 +841,19 @@ export default {
           that.$emit('crop-upload-fail', err, field, ki)
         }
       })
+    },
+    $_closeHandler(e) {
+      if (this.value && (e.key == 'Escape' || e.keyCode == 27)) {
+        this.off()
+      }
     }
   },
   created() {
     // 绑定按键esc隐藏此插件事件
-    document.addEventListener('keyup', (e) => {
-      if (this.value && (e.key == 'Escape' || e.keyCode == 27)) {
-        this.off()
-      }
-    })
+    on(document, 'keyup', this.$_closeHandler)
+  },
+  beforeDestroy() {
+    off(document, 'keyup', this.$_closeHandler)
   }
 }
 </script>

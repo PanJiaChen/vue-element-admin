@@ -7,6 +7,7 @@
 <script>
 import Dropzone from 'dropzone'
 import 'dropzone/dist/dropzone.css'
+import { on, off } from 'element-ui/src/utils/dom'
 // import { getToken } from 'api/qiniu';
 
 Dropzone.autoDiscover = false
@@ -145,7 +146,7 @@ export default {
     })
 
     if (this.couldPaste) {
-      document.addEventListener('paste', this.pasteImg)
+      on(document, 'paste', this.pasteImg)
     }
 
     this.dropzone.on('success', file => {
@@ -165,7 +166,7 @@ export default {
     })
   },
   destroyed() {
-    document.removeEventListener('paste', this.pasteImg)
+    off(document, 'paste', this.pasteImg)
     this.dropzone.destroy()
   },
   methods: {

@@ -1,4 +1,5 @@
 import store from '@/store'
+import { on, off } from 'element-ui/src/utils/dom'
 
 const { body } = document
 const WIDTH = 992 // refer to Bootstrap's responsive design
@@ -12,10 +13,10 @@ export default {
     }
   },
   beforeMount() {
-    window.addEventListener('resize', this.$_resizeHandler)
+    on(window, 'resize', this.$_resizeHandler)
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.$_resizeHandler)
+    off(window, 'resize', this.$_resizeHandler)
   },
   mounted() {
     const isMobile = this.$_isMobile()

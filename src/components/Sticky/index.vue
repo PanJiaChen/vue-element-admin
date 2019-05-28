@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { on, off } from 'element-ui/src/utils/dom'
+
 export default {
   name: 'Sticky',
   props: {
@@ -39,15 +41,15 @@ export default {
   },
   mounted() {
     this.height = this.$el.getBoundingClientRect().height
-    window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener('resize', this.handleResize)
+    on(window, 'scroll', this.handleScroll)
+    on(window, 'resize', this.handleResize)
   },
   activated() {
     this.handleScroll()
   },
   destroyed() {
-    window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener('resize', this.handleResize)
+    off(window, 'scroll', this.handleScroll)
+    off(window, 'resize', this.handleResize)
   },
   methods: {
     sticky() {

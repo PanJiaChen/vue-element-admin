@@ -76,6 +76,8 @@
 <script>
 import { validUsername } from '@/utils/validate'
 import SocialSign from './components/SocialSignin'
+// eslint-disable-next-line
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   name: 'Login',
@@ -125,7 +127,7 @@ export default {
     }
   },
   created() {
-    // window.addEventListener('storage', this.afterQRScan)
+    // on(window, 'storage', this.afterQRScan)
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -135,7 +137,7 @@ export default {
     }
   },
   destroyed() {
-    // window.removeEventListener('storage', this.afterQRScan)
+    // off(window, 'storage', this.afterQRScan)
   },
   methods: {
     checkCapslock({ shiftKey, key } = {}) {

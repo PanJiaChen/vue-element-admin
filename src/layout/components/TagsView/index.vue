@@ -28,6 +28,7 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   components: { ScrollPane },
@@ -55,9 +56,9 @@ export default {
     },
     visible(value) {
       if (value) {
-        document.body.addEventListener('click', this.closeMenu)
+        on(document.body, 'click', this.closeMenu)
       } else {
-        document.body.removeEventListener('click', this.closeMenu)
+        off(document.body, 'click', this.closeMenu)
       }
     }
   },

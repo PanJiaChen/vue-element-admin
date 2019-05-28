@@ -22,6 +22,7 @@
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path'
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   name: 'HeaderSearch',
@@ -48,9 +49,9 @@ export default {
     },
     show(value) {
       if (value) {
-        document.body.addEventListener('click', this.close)
+        on(document.body, 'click', this.close)
       } else {
-        document.body.removeEventListener('click', this.close)
+        off(document.body, 'click', this.close)
       }
     }
   },

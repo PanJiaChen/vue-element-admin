@@ -1,4 +1,5 @@
 import './waves.css'
+import { on, off } from 'element-ui/src/utils/dom'
 
 const context = '@@wavesContext'
 
@@ -58,14 +59,14 @@ function handleClick(el, binding) {
 
 export default {
   bind(el, binding) {
-    el.addEventListener('click', handleClick(el, binding), false)
+    on(el, 'click', handleClick(el, binding), false)
   },
   update(el, binding) {
-    el.removeEventListener('click', el[context].removeHandle, false)
-    el.addEventListener('click', handleClick(el, binding), false)
+    off(el, 'click', el[context].removeHandle, false)
+    on(el, 'click', handleClick(el, binding), false)
   },
   unbind(el) {
-    el.removeEventListener('click', el[context].removeHandle, false)
+    off(el, 'click', el[context].removeHandle, false)
     el[context] = null
     delete el[context]
   }

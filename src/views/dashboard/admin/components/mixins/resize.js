@@ -1,4 +1,5 @@
 import { debounce } from '@/utils'
+import { on, off } from 'element-ui/src/utils/dom'
 
 export default {
   data() {
@@ -35,10 +36,10 @@ export default {
       }, 100)()
     },
     $_initResizeEvent() {
-      window.addEventListener('resize', this.$_resizeHandler)
+      on(window, 'resize', this.$_resizeHandler)
     },
     $_destroyResizeEvent() {
-      window.removeEventListener('resize', this.$_resizeHandler)
+      off(window, 'resize', this.$_resizeHandler)
     },
     $_sidebarResizeHandler(e) {
       if (e.propertyName === 'width') {
@@ -47,10 +48,10 @@ export default {
     },
     $_initSidebarResizeEvent() {
       this.$_sidebarElm = document.getElementsByClassName('sidebar-container')[0]
-      this.$_sidebarElm && this.$_sidebarElm.addEventListener('transitionend', this.$_sidebarResizeHandler)
+      on(this.$_sidebarElm && this.$_sidebarElm, 'transitionend', this.$_sidebarResizeHandler)
     },
     $_destroySidebarResizeEvent() {
-      this.$_sidebarElm && this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
+      off(this.$_sidebarElm && this.$_sidebarElm, 'transitionend', this.$_sidebarResizeHandler)
     }
   }
 }

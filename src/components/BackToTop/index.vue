@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { on, off } from 'element-ui/src/utils/dom'
+
 export default {
   name: 'BackToTop',
   props: {
@@ -45,10 +47,10 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener('scroll', this.handleScroll)
+    on(window, 'scroll', this.handleScroll)
   },
   beforeDestroy() {
-    window.removeEventListener('scroll', this.handleScroll)
+    off(window, 'scroll', this.handleScroll)
     if (this.interval) {
       clearInterval(this.interval)
     }

@@ -1,3 +1,5 @@
+import { on, off } from 'element-ui/src/utils/dom'
+
 const vueSticky = {}
 let listenAction
 vueSticky.install = Vue => {
@@ -78,11 +80,11 @@ vueSticky.install = Vue => {
         check()
       }
 
-      window.addEventListener('scroll', listenAction)
+      on(window, 'scroll', listenAction)
     },
 
     unbind() {
-      window.removeEventListener('scroll', listenAction)
+      off(window, 'scroll', listenAction)
     }
   })
 }
