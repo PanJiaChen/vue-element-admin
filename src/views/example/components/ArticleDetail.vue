@@ -7,7 +7,7 @@
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          Publush
+          Publish
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">
           Draft
@@ -36,7 +36,7 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="120px" label="Publush Time:" class="postInfo-container-item">
+                  <el-form-item label-width="120px" label="Publish Time:" class="postInfo-container-item">
                     <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
