@@ -16,7 +16,7 @@ export default {
       return this.$store.state.tagsView.cachedViews
     },
     key() {
-      return this.$route.fullPath
+      return this.$route.path
     }
   }
 }
@@ -33,8 +33,6 @@ export default {
 
 .fixed-header+.app-main {
   padding-top: 50px;
-  height: 100vh;
-  overflow: auto;
 }
 
 .hasTagsView {
@@ -49,3 +47,11 @@ export default {
 }
 </style>
 
+<style lang="scss">
+// fix css style bug in open el-dialog
+.el-popup-parent--hidden {
+  .fixed-header {
+    padding-right: 15px;
+  }
+}
+</style>
