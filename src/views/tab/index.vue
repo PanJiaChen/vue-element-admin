@@ -26,20 +26,18 @@ export default {
         { label: 'Japan', key: 'JP' },
         { label: 'Eurozone', key: 'EU' }
       ],
-      activeName: 'CN',
       createdTimes: 0
     }
   },
-  watch: {
-    activeName(val) {
-      this.$router.push(`${this.$route.path}?tab=${val}`)
-    }
-  },
-  created() {
-    // init the default  selected tab
-    const tab = this.$route.query.tab
-    if (tab) {
-      this.activeName = tab
+  computed: {
+    activeName: {
+      get() {
+        return this.$route.query.tab || 'CN'
+      },
+      set(tab) {
+        // this.$router.push({ query: { tab }})
+        this.$router.replace({ query: { tab }})
+      }
     }
   },
   methods: {
