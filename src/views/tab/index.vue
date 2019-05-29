@@ -30,6 +30,18 @@ export default {
       createdTimes: 0
     }
   },
+  watch: {
+    activeName(val) {
+      this.$router.push(`${this.$route.path}?tab=${val}`)
+    }
+  },
+  created() {
+    // init the default  selected tab
+    const tab = this.$route.query.tab
+    if (tab) {
+      this.activeName = tab
+    }
+  },
   methods: {
     showCreatedTimes() {
       this.createdTimes = this.createdTimes + 1

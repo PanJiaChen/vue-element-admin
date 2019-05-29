@@ -5,11 +5,12 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
+import resize from './mixins/resize'
 
 const animationDuration = 6000
 
 export default {
+  mixins: [resize],
   props: {
     className: {
       type: String,
@@ -33,18 +34,11 @@ export default {
     this.$nextTick(() => {
       this.initChart()
     })
-    this.__resizeHandler = debounce(() => {
-      if (this.chart) {
-        this.chart.resize()
-      }
-    }, 100)
-    window.addEventListener('resize', this.__resizeHandler)
   },
   beforeDestroy() {
     if (!this.chart) {
       return
     }
-    window.removeEventListener('resize', this.__resizeHandler)
     this.chart.dispose()
     this.chart = null
   },
