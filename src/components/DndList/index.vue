@@ -2,9 +2,11 @@
   <div class="dndList">
     <div :style="{width:width1}" class="dndList-list">
       <h3>{{ list1Title }}</h3>
-      <draggable :list="list1" :options="{group:'article'}" class="dragArea">
+      <draggable :set-data="setData" :list="list1" group="article" class="dragArea">
         <div v-for="element in list1" :key="element.id" class="list-complete-item">
-          <div class="list-complete-item-handle">{{ element.id }}[{{ element.author }}] {{ element.title }}</div>
+          <div class="list-complete-item-handle">
+            {{ element.id }}[{{ element.author }}] {{ element.title }}
+          </div>
           <div style="position:absolute;right:0px;">
             <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
               <i style="color:#ff4949" class="el-icon-delete" />
@@ -15,9 +17,11 @@
     </div>
     <div :style="{width:width2}" class="dndList-list">
       <h3>{{ list2Title }}</h3>
-      <draggable :list="list2" :options="{group:'article'}" class="dragArea">
+      <draggable :list="list2" group="article" class="dragArea">
         <div v-for="element in list2" :key="element.id" class="list-complete-item">
-          <div class="list-complete-item-handle2" @click="pushEle(element)">{{ element.id }} [{{ element.author }}] {{ element.title }}</div>
+          <div class="list-complete-item-handle2" @click="pushEle(element)">
+            {{ element.id }} [{{ element.author }}] {{ element.title }}
+          </div>
         </div>
       </draggable>
     </div>
@@ -90,12 +94,17 @@ export default {
       if (this.isNotInList1(ele)) {
         this.list1.push(ele)
       }
+    },
+    setData(dataTransfer) {
+      // to avoid Firefox bug
+      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+      dataTransfer.setData('Text', '')
     }
   }
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
 .dndList {
   background: #fff;
   padding-bottom: 40px;

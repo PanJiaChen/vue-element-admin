@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import tabPane from './components/tabPane'
+import tabPane from './components/TabPane'
 
 export default {
   name: 'Tab',
@@ -30,6 +30,18 @@ export default {
       createdTimes: 0
     }
   },
+  watch: {
+    activeName(val) {
+      this.$router.push(`${this.$route.path}?tab=${val}`)
+    }
+  },
+  created() {
+    // init the default  selected tab
+    const tab = this.$route.query.tab
+    if (tab) {
+      this.activeName = tab
+    }
+  },
   methods: {
     showCreatedTimes() {
       this.createdTimes = this.createdTimes + 1
@@ -39,7 +51,7 @@ export default {
 </script>
 
 <style scoped>
-  .tab-container{
+  .tab-container {
     margin: 30px;
   }
 </style>
