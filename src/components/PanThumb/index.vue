@@ -5,7 +5,8 @@
         <slot />
       </div>
     </div>
-    <img :src="image" class="pan-thumb">
+    <!-- eslint-disable-next-line -->
+    <div :style="{backgroundImage: `url(${image})`}" class="pan-thumb"></div>
   </div>
 </template>
 
@@ -52,7 +53,8 @@ export default {
 .pan-thumb {
   width: 100%;
   height: 100%;
-  background-size: 100%;
+  background-position: center center;
+  background-size: cover;
   border-radius: 50%;
   overflow: hidden;
   position: absolute;
