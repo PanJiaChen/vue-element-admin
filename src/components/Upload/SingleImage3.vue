@@ -10,21 +10,19 @@
       action="https://httpbin.org/post"
     >
       <i class="el-icon-upload" />
-      <div class="el-upload__text">
-        将文件拖到此处，或<em>点击上传</em>
-      </div>
+      <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
     </el-upload>
     <div class="image-preview image-app-preview">
-      <div v-show="imageUrl.length>1" class="image-preview-wrapper">
-        <img :src="imageUrl">
+      <div v-show="imageUrl.length > 1" class="image-preview-wrapper">
+        <img :src="imageUrl" />
         <div class="image-preview-action">
           <i class="el-icon-delete" @click="rmImage" />
         </div>
       </div>
     </div>
     <div class="image-preview">
-      <div v-show="imageUrl.length>1" class="image-preview-wrapper">
-        <img :src="imageUrl">
+      <div v-show="imageUrl.length > 1" class="image-preview-wrapper">
+        <img :src="imageUrl" />
         <div class="image-preview-action">
           <i class="el-icon-delete" @click="rmImage" />
         </div>
@@ -34,55 +32,57 @@
 </template>
 
 <script>
-import { getToken } from '@/api/qiniu'
+import { getToken } from "@/api/qiniu";
 
 export default {
-  name: 'SingleImageUpload3',
+  name: "SingleImageUpload3",
   props: {
     value: {
       type: String,
-      default: ''
+      default: ""
     }
   },
   data() {
     return {
-      tempUrl: '',
-      dataObj: { token: '', key: '' }
-    }
+      tempUrl: "",
+      dataObj: { token: "", key: "" }
+    };
   },
   computed: {
     imageUrl() {
-      return this.value
+      return this.value;
     }
   },
   methods: {
     rmImage() {
-      this.emitInput('')
+      this.emitInput("");
     },
     emitInput(val) {
-      this.$emit('input', val)
+      this.$emit("input", val);
     },
     handleImageSuccess(file) {
-      this.emitInput(file.files.file)
+      this.emitInput(file.files.file);
     },
     beforeUpload() {
-      const _self = this
+      const _self = this;
       return new Promise((resolve, reject) => {
-        getToken().then(response => {
-          const key = response.data.qiniu_key
-          const token = response.data.qiniu_token
-          _self._data.dataObj.token = token
-          _self._data.dataObj.key = key
-          this.tempUrl = response.data.qiniu_url
-          resolve(true)
-        }).catch(err => {
-          console.log(err)
-          reject(false)
-        })
-      })
+        getToken()
+          .then(response => {
+            const key = response.data.qiniu_key;
+            const token = response.data.qiniu_token;
+            _self._data.dataObj.token = token;
+            _self._data.dataObj.key = key;
+            this.tempUrl = response.data.qiniu_url;
+            resolve(true);
+          })
+          .catch(err => {
+            console.log(err);
+            reject(false);
+          });
+      });
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -122,8 +122,8 @@ export default {
       color: #fff;
       opacity: 0;
       font-size: 20px;
-      background-color: rgba(0, 0, 0, .5);
-      transition: opacity .3s;
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: opacity 0.3s;
       cursor: pointer;
       text-align: center;
       line-height: 200px;

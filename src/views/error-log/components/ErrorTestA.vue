@@ -8,6 +8,6 @@
 
 <script>
 export default {
-  name: 'ErrorTestA'
-}
+  name: "ErrorTestA"
+};
 </script>

@@ -13,6 +13,7 @@
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
+    "format": "prettier \"./{src,tests,mock}/{**/*,*}.{ts,spec.ts,vue,js,spec.js}\" --write",
     "new": "plop"
   },
   "husky": {
@@ -86,7 +87,8 @@
     "chokidar": "2.1.5",
     "connect": "3.6.6",
     "eslint": "5.15.3",
-    "eslint-plugin-vue": "5.2.2",
+    "eslint-config-prettier": "^4.3.0",
+    "eslint-plugin-vue": "^5.2.2",
     "html-webpack-plugin": "3.2.0",
     "husky": "1.3.1",
     "lint-staged": "8.1.5",

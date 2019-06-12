@@ -1,5 +1,10 @@
 <template>
-  <a href="https://github.com/PanJiaChen/vue-element-admin" target="_blank" class="github-corner" aria-label="View source on Github">
+  <a
+    href="https://github.com/PanJiaChen/vue-element-admin"
+    target="_blank"
+    class="github-corner"
+    aria-label="View source on Github"
+  >
     <svg
       width="80"
       height="80"
@@ -25,30 +30,30 @@
 
 <style scoped>
 .github-corner:hover .octo-arm {
-  animation: octocat-wave 560ms ease-in-out
+  animation: octocat-wave 560ms ease-in-out;
 }
 
 @keyframes octocat-wave {
   0%,
   100% {
-    transform: rotate(0)
+    transform: rotate(0);
   }
   20%,
   60% {
-    transform: rotate(-25deg)
+    transform: rotate(-25deg);
   }
   40%,
   80% {
-    transform: rotate(10deg)
+    transform: rotate(10deg);
   }
 }
 
-@media (max-width:500px) {
+@media (max-width: 500px) {
   .github-corner:hover .octo-arm {
-    animation: none
+    animation: none;
   }
   .github-corner .octo-arm {
-    animation: octocat-wave 560ms ease-in-out
+    animation: octocat-wave 560ms ease-in-out;
   }
 }
 </style>

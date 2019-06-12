@@ -2,7 +2,11 @@
   <div class="app-container">
     <el-card class="box-card">
       <div slot="header">
-        <a class="link-type link-title" target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/theme.html">
+        <a
+          class="link-type link-title"
+          target="_blank"
+          href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/theme.html"
+        >
           Theme documentation
         </a>
       </div>
@@ -10,7 +14,9 @@
         <span class="field-label">Change Theme : </span>
         <el-switch v-model="theme" />
         <aside style="margin-top:15px;">
-          Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.
+          Tips: It is different from the theme-pick on the navbar is two
+          different skinning methods, each with different application scenarios.
+          Refer to the documentation for details.
         </aside>
       </div>
     </el-card>
@@ -47,7 +53,12 @@
     </div>
 
     <div class="block">
-      <el-tag v-for="tag in tags" :key="tag.type" :type="tag.type" class="tag-item">
+      <el-tag
+        v-for="tag in tags"
+        :key="tag.type"
+        :type="tag.type"
+        class="tag-item"
+      >
         {{ tag.name }}
       </el-tag>
     </div>
@@ -73,35 +84,35 @@
 </template>
 
 <script>
-import { toggleClass } from '@/utils'
-import '@/assets/custom-theme/index.css' // the theme changed version element-ui css
+import { toggleClass } from "@/utils";
+import "@/assets/custom-theme/index.css"; // the theme changed version element-ui css
 
 export default {
-  name: 'Theme',
+  name: "Theme",
   data() {
     return {
       theme: false,
       tags: [
-        { name: 'Tag One', type: '' },
-        { name: 'Tag Two', type: 'info' },
-        { name: 'Tag Three', type: 'success' },
-        { name: 'Tag Four', type: 'warning' },
-        { name: 'Tag Five', type: 'danger' }
+        { name: "Tag One", type: "" },
+        { name: "Tag Two", type: "info" },
+        { name: "Tag Three", type: "success" },
+        { name: "Tag Four", type: "warning" },
+        { name: "Tag Five", type: "danger" }
       ],
       slideValue: 50,
       radio: 3
-    }
+    };
   },
   watch: {
     theme() {
-      toggleClass(document.body, 'custom-theme')
+      toggleClass(document.body, "custom-theme");
     }
   }
-}
+};
 </script>
 
 <style scoped>
-.field-label{
+.field-label {
   vertical-align: middle;
 }
 .box-card {

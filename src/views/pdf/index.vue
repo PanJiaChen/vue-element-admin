@@ -10,4 +10,3 @@
     </router-link>
   </div>
 </template>
-

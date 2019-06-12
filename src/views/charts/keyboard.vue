@@ -5,19 +5,18 @@
 </template>
 
 <script>
-import Chart from '@/components/Charts/Keyboard'
+import Chart from "@/components/Charts/Keyboard";
 
 export default {
-  name: 'KeyboardChart',
+  name: "KeyboardChart",
   components: { Chart }
-}
+};
 </script>
 
 <style scoped>
-.chart-container{
+.chart-container {
   position: relative;
   width: 100%;
   height: calc(100vh - 84px);
 }
 </style>
-

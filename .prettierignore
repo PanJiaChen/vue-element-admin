@@ -1,0 +1,6 @@
+.prettierrc.js
+.eslintrc.js
+jest.config.js
+vue.config.js
+postcss.config.js
+settings.js

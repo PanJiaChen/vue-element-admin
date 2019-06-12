@@ -1,7 +1,9 @@
 <template>
   <div class="components-container">
     <aside>
-      <a href="https://github.com/PanJiaChen/vue-countTo" target="_blank">countTo-component</a>
+      <a href="https://github.com/PanJiaChen/vue-countTo" target="_blank"
+        >countTo-component</a
+      >
     </aside>
     <count-to
       ref="example"
@@ -16,14 +18,25 @@
       class="example"
     />
     <div style="margin-left: 25%;margin-top: 40px;">
-      <label class="label" for="startValInput">startVal:
-        <input v-model.number="setStartVal" type="number" name="startValInput">
+      <label class="label" for="startValInput"
+        >startVal:
+        <input
+          v-model.number="setStartVal"
+          type="number"
+          name="startValInput"
+        />
       </label>
-      <label class="label" for="endValInput">endVal:
-        <input v-model.number="setEndVal" type="number" name="endVaInput">
+      <label class="label" for="endValInput"
+        >endVal:
+        <input v-model.number="setEndVal" type="number" name="endVaInput" />
       </label>
-      <label class="label" for="durationInput">duration:
-        <input v-model.number="setDuration" type="number" name="durationInput">
+      <label class="label" for="durationInput"
+        >duration:
+        <input
+          v-model.number="setDuration"
+          type="number"
+          name="durationInput"
+        />
       </label>
       <div class="startBtn example-btn" @click="start">
         Start
@@ -31,31 +44,45 @@
       <div class="pause-resume-btn example-btn" @click="pauseResume">
         pause/resume
       </div>
-      <br>
-      <label class="label" for="decimalsInput">decimals:
-        <input v-model.number="setDecimals" type="number" name="decimalsInput">
+      <br />
+      <label class="label" for="decimalsInput"
+        >decimals:
+        <input
+          v-model.number="setDecimals"
+          type="number"
+          name="decimalsInput"
+        />
       </label>
-      <label class="label" for="separatorInput">separator:
-        <input v-model="setSeparator" name="separatorInput">
+      <label class="label" for="separatorInput"
+        >separator:
+        <input v-model="setSeparator" name="separatorInput" />
       </label>
-      <label class="label" for="prefixInput">prefix:
-        <input v-model="setPrefix" name="prefixInput">
+      <label class="label" for="prefixInput"
+        >prefix:
+        <input v-model="setPrefix" name="prefixInput" />
       </label>
-      <label class="label" for="suffixInput">suffix:
-        <input v-model="setSuffix" name="suffixInput">
+      <label class="label" for="suffixInput"
+        >suffix:
+        <input v-model="setSuffix" name="suffixInput" />
       </label>
     </div>
-    <aside>&lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{ _endVal }}&#x27; :duration=&#x27;{{ _duration }}&#x27;
-      :decimals=&#x27;{{ _decimals }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{ _prefix }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27;
-      :autoplay=false&gt;</aside>
+    <aside>
+      &lt;count-to :start-val=&#x27;{{ _startVal }}&#x27; :end-val=&#x27;{{
+        _endVal
+      }}&#x27; :duration=&#x27;{{ _duration }}&#x27; :decimals=&#x27;{{
+        _decimals
+      }}&#x27; :separator=&#x27;{{ _separator }}&#x27; :prefix=&#x27;{{
+        _prefix
+      }}&#x27; :suffix=&#x27;{{ _suffix }}&#x27; :autoplay=false&gt;
+    </aside>
   </div>
 </template>
 
 <script>
-import countTo from 'vue-count-to'
+import countTo from "vue-count-to";
 
 export default {
-  name: 'CountToDemo',
+  name: "CountToDemo",
   components: { countTo },
   data() {
     return {
@@ -63,63 +90,63 @@ export default {
       setEndVal: 2017,
       setDuration: 4000,
       setDecimals: 0,
-      setSeparator: ',',
-      setSuffix: ' rmb',
-      setPrefix: '¥ '
-    }
+      setSeparator: ",",
+      setSuffix: " rmb",
+      setPrefix: "¥ "
+    };
   },
   computed: {
     _startVal() {
       if (this.setStartVal) {
-        return this.setStartVal
+        return this.setStartVal;
       } else {
-        return 0
+        return 0;
       }
     },
     _endVal() {
       if (this.setEndVal) {
-        return this.setEndVal
+        return this.setEndVal;
       } else {
-        return 0
+        return 0;
       }
     },
     _duration() {
       if (this.setDuration) {
-        return this.setDuration
+        return this.setDuration;
       } else {
-        return 100
+        return 100;
       }
     },
     _decimals() {
       if (this.setDecimals) {
         if (this.setDecimals < 0 || this.setDecimals > 20) {
-          alert('digits argument must be between 0 and 20')
-          return 0
+          alert("digits argument must be between 0 and 20");
+          return 0;
         }
-        return this.setDecimals
+        return this.setDecimals;
       } else {
-        return 0
+        return 0;
       }
     },
     _separator() {
-      return this.setSeparator
+      return this.setSeparator;
     },
     _suffix() {
-      return this.setSuffix
+      return this.setSuffix;
     },
     _prefix() {
-      return this.setPrefix
+      return this.setPrefix;
     }
   },
   methods: {
     start() {
-      this.$refs.example.start()
+      this.$refs.example.start();
     },
     pauseResume() {
-      this.$refs.example.pauseResume()
+      this.$refs.example.pauseResume();
     }
   }
-}
+};
 </script>
 
 <style scoped>
@@ -142,22 +169,22 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
-  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: relative;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: #fff;
   border-color: #d9d9d9;
 }
 
 .example-btn:hover {
-  color: #4AB7BD;
+  color: #4ab7bd;
   background-color: #fff;
-  border-color: #4AB7BD;
+  border-color: #4ab7bd;
 }
 .example {
   font-size: 50px;
-  color: #F6416C;
+  color: #f6416c;
   display: block;
   margin: 10px 0;
   text-align: center;
@@ -181,38 +208,37 @@ input {
   cursor: text;
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: #fff;
   background-image: none;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  -webkit-transition: all .3s;
-  transition: all .3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .startBtn {
   margin-left: 20px;
   font-size: 20px;
-  color: #30B08F;
+  color: #30b08f;
   background-color: #fff;
 }
 
 .startBtn:hover {
-  background-color: #30B08F;
+  background-color: #30b08f;
   color: #fff;
-  border-color: #30B08F;
+  border-color: #30b08f;
 }
 
 .pause-resume-btn {
   font-size: 20px;
-  color: #E65D6E;
+  color: #e65d6e;
   background-color: #fff;
 }
 
 .pause-resume-btn:hover {
-  background-color: #E65D6E;
+  background-color: #e65d6e;
   color: #fff;
-  border-color: #E65D6E;
+  border-color: #e65d6e;
 }
 </style>
-

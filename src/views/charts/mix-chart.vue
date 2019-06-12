@@ -5,19 +5,18 @@
 </template>
 
 <script>
-import Chart from '@/components/Charts/MixChart'
+import Chart from "@/components/Charts/MixChart";
 
 export default {
-  name: 'MixChart',
+  name: "MixChart",
   components: { Chart }
-}
+};
 </script>
 
 <style scoped>
-.chart-container{
+.chart-container {
   position: relative;
   width: 100%;
   height: calc(100vh - 84px);
 }
 </style>
-

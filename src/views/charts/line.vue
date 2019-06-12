@@ -5,19 +5,18 @@
 </template>
 
 <script>
-import Chart from '@/components/Charts/LineMarker'
+import Chart from "@/components/Charts/LineMarker";
 
 export default {
-  name: 'LineChart',
+  name: "LineChart",
   components: { Chart }
-}
+};
 </script>
 
 <style scoped>
-.chart-container{
+.chart-container {
   position: relative;
   width: 100%;
   height: calc(100vh - 84px);
 }
 </style>
-

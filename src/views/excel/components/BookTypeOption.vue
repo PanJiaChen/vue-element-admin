@@ -17,23 +17,23 @@ export default {
   props: {
     value: {
       type: String,
-      default: 'xlsx'
+      default: "xlsx"
     }
   },
   data() {
     return {
-      options: ['xlsx', 'csv', 'txt']
-    }
+      options: ["xlsx", "csv", "txt"]
+    };
   },
   computed: {
     bookType: {
       get() {
-        return this.value
+        return this.value;
       },
       set(val) {
-        this.$emit('input', val)
+        this.$emit("input", val);
       }
     }
   }
-}
+};
 </script>
