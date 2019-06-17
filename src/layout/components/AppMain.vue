@@ -1,5 +1,5 @@
 <template>
-  <section class="app-main">
+  <section class="app-main" :style="{height: mianHeight+'px'}">
     <transition name="fade-transform" mode="out-in">
       <keep-alive :include="cachedViews">
         <router-view :key="key" />
@@ -11,6 +11,11 @@
 <script>
 export default {
   name: 'AppMain',
+  data() {
+    return {
+      mianHeight: 0
+    }
+  },
   computed: {
     cachedViews() {
       return this.$store.state.tagsView.cachedViews
@@ -18,6 +23,11 @@ export default {
     key() {
       return this.$route.path
     }
+  },
+  created() {
+    window.addEventListener('resize', () => {
+      this.mianHeight = document.documentElement.clientHeight - 34 - 50
+    })
   }
 }
 </script>
@@ -28,7 +38,7 @@ export default {
   min-height: calc(100vh - 50px);
   width: 100%;
   position: relative;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .fixed-header+.app-main {
