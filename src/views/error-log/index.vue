@@ -2,12 +2,11 @@
   <div class="errPage-container">
     <ErrorA />
     <ErrorB />
-    <!-- $t is vue-i18n global function to translate lang -->
-    <h3>{{ $t('errorLog.tips') }}</h3>
+    <h3>Please click the bug icon in the upper right corner</h3>
     <aside>
-      {{ $t('errorLog.description') }}
+      Now the management system are basically the form of the spa, it enhances the user experience, but it also increases the possibility of page problems, a small negligence may lead to the entire page deadlock. Fortunately Vue provides a way to catch handling exceptions, where you can handle errors or report exceptions.
       <a target="_blank" class="link-type" href="https://panjiachen.github.io/vue-element-admin-site/guide/advanced/error.html">
-        {{ $t('errorLog.documentation') }}
+        Document introduction
       </a>
     </aside>
     <a href="#">

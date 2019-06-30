@@ -1,9 +1,8 @@
 <template>
   <div class="app-container">
-    <!-- $t is vue-i18n global function to translate lang -->
-    <el-input v-model="filename" :placeholder="$t('zip.placeholder')" style="width:300px;" prefix-icon="el-icon-document" />
+    <el-input v-model="filename" placeholder="Please enter the file name (default file)" style="width:300px;" prefix-icon="el-icon-document" />
     <el-button :loading="downloadLoading" style="margin-bottom:20px;" type="primary" icon="document" @click="handleDownload">
-      {{ $t('zip.export') }} Zip
+      Export Zip
     </el-button>
     <el-table v-loading="listLoading" :data="list" element-loading-text="拼命加载中" border fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">

@@ -1,12 +1,13 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
+
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
         <SourceUrlDropdown v-model="postForm.source_uri" />
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
-          Publush
+          Publish
         </el-button>
         <el-button v-loading="loading" type="warning" @click="draftForm">
           Draft
@@ -35,8 +36,8 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="120px" label="Publush Time:" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.display_time" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
+                  <el-form-item label-width="120px" label="Publish Time:" class="postInfo-container-item">
+                    <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
 
@@ -48,7 +49,7 @@
                       :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
                       :low-threshold="1"
                       :high-threshold="3"
-                      style="margin-top:8px;"
+                      style="display:inline-block"
                     />
                   </el-form-item>
                 </el-col>
@@ -152,8 +153,17 @@ export default {
     contentShortLength() {
       return this.postForm.content_short.length
     },
-    lang() {
-      return this.$store.getters.language
+    displayTime: {
+      // set and get is useful when the data
+      // returned by the back end api is different from the front end
+      // back end return => "2013-06-25 06:59:25"
+      // front end need timestamp => 1372114765000
+      get() {
+        return (+new Date(this.postForm.display_time))
+      },
+      set(val) {
+        this.postForm.display_time = new Date(val)
+      }
     }
   },
   created() {
@@ -173,23 +183,30 @@ export default {
     fetchData(id) {
       fetchArticle(id).then(response => {
         this.postForm = response.data
-        // Just for test
+
+        // just for test
         this.postForm.title += `   Article Id:${this.postForm.id}`
         this.postForm.content_short += `   Article Id:${this.postForm.id}`
 
-        // Set tagsview title
+        // set tagsview title
         this.setTagsViewTitle()
+
+        // set page title
+        this.setPageTitle()
       }).catch(err => {
         console.log(err)
       })
     },
     setTagsViewTitle() {
-      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
+      const title = 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
+    setPageTitle() {
+      const title = 'Edit Article'
+      document.title = `${title} - ${this.postForm.id}`
+    },
     submitForm() {
-      this.postForm.display_time = parseInt(this.display_time / 1000)
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {

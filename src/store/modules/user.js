@@ -97,7 +97,7 @@ const actions = {
     })
   },
 
-  // Dynamically modify permissions
+  // dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
     return new Promise(async resolve => {
       const token = role + '-token'
@@ -114,6 +114,9 @@ const actions = {
 
       // dynamically add accessible routes
       router.addRoutes(accessRoutes)
+
+      // reset visited views and cached views
+      dispatch('tagsView/delAllViews', null, { root: true })
 
       resolve()
     })

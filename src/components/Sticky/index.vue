@@ -40,14 +40,14 @@ export default {
   mounted() {
     this.height = this.$el.getBoundingClientRect().height
     window.addEventListener('scroll', this.handleScroll)
-    window.addEventListener('resize', this.handleReize)
+    window.addEventListener('resize', this.handleResize)
   },
   activated() {
     this.handleScroll()
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll)
-    window.removeEventListener('resize', this.handleReize)
+    window.removeEventListener('resize', this.handleResize)
   },
   methods: {
     sticky() {
@@ -81,7 +81,7 @@ export default {
       }
       this.handleReset()
     },
-    handleReize() {
+    handleResize() {
       if (this.isSticky) {
         this.width = this.$el.getBoundingClientRect().width + 'px'
       }
