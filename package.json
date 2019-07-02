@@ -43,7 +43,7 @@
     "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
   },
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "0.18.1",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
     "driver.js": "0.9.5",
