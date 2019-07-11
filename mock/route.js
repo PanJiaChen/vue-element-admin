@@ -33,5 +33,15 @@ export default [
         data: asyncRoutesMap
       }
     }
+  },
+  {
+    url: '/routes',
+    type: 'put',
+    response: _ => {
+      return {
+        code: 20000,
+        data: {}
+      }
+    }
   }
 ]

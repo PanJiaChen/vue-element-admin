@@ -6,3 +6,11 @@ export function getRoutes() {
     method: 'get'
   })
 }
+
+export function importRoutes(data) {
+  return request({
+    url: '/routes',
+    method: 'put',
+    data
+  })
+}
