@@ -47,7 +47,7 @@ export function mockXHR() {
       } else {
         result = respond
       }
-      return result
+      return Mock.mock(result)
     }
   }
 
