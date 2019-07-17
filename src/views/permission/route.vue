@@ -35,7 +35,7 @@ export default {
       })
     },
     handleImport() {
-      Route.importRoutes(routes).then(res => {
+      Route.importRoutes({ routes }).then(res => {
         this.$message({
           type: 'success',
           message: 'Import Success'
