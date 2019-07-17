@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-button type="primary" style="margin:0 0 20px 0;" @click="handleImport">Import Routes</el-button>
 
-    <el-table :data="routes" style="width: 100%;margin-bottom: 20px;" border row-key="path">
+    <el-table :data="routes" style="width: 100%;margin-bottom: 20px;" border row-key="id">
       <el-table-column v-for="key in keys" :key="key" :prop="key" :label="key" sortable>
         <template slot-scope="scope">
           <span>{{ scope.row[key] }}</span>
@@ -35,6 +35,7 @@ export default {
       })
     },
     handleImport() {
+      console.log(JSON.stringify(routes))
       Route.importRoutes({ routes }).then(res => {
         this.$message({
           type: 'success',

@@ -19,6 +19,14 @@ const mapAsyncRoutes = asyncRoutes => {
     return tmp
   })
 }
+const mapRouteId = routes => {
+  return routes.map(route => {
+    const tmp = { ...route }
+    tmp.id = Math.random()
+    tmp.children && tmp.children.length && (tmp.children = mapRouteId(tmp.children))
+    return tmp
+  })
+}
 const asyncRoutesMap = mapAsyncRoutes(asyncRoutes)
 
 export { asyncRoutesMap as routes }
@@ -30,7 +38,7 @@ export default [
     response: _ => {
       return {
         code: 20000,
-        data: asyncRoutesMap
+        data: mapRouteId(asyncRoutesMap)
       }
     }
   },
