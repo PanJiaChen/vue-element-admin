@@ -1,6 +1,6 @@
 <template>
   <div class="json-editor">
-    <textarea ref="textarea"/>
+    <textarea ref="textarea" />
   </div>
 </template>
 
@@ -25,8 +25,8 @@ export default {
   },
   watch: {
     value(value) {
-      const editor_value = this.jsonEditor.getValue()
-      if (value !== editor_value) {
+      const editorValue = this.jsonEditor.getValue()
+      if (value !== editorValue) {
         this.jsonEditor.setValue(JSON.stringify(this.value, null, 2))
       }
     }
