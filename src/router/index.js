@@ -89,7 +89,7 @@ export const constantRoutes = [
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        meta: { title: 'Documentation', icon: 'documentation' }
       }
     ]
   }
@@ -100,6 +100,43 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/accounts',
+    component: Layout,
+    redirect: '/accounts/list',
+    name: 'Accounts',
+    meta: {
+      title: 'Accounts',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/accounts/create'),
+        name: 'CreateAccount',
+        meta: { title: 'Create Account', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/accounts/edit'),
+        name: 'EditAccount',
+        meta: { title: 'Edit Account', noCache: true, activeMenu: '/accounts/list' },
+        hidden: true
+      },
+      {
+        path: 'buyer-list',
+        component: () => import('@/views/accounts/list'),
+        name: 'BuyerAccountList',
+        meta: { title: 'Buyer Account List', icon: 'list', type: 'buyer' }
+      },
+      {
+        path: 'seller-list',
+        component: () => import('@/views/accounts/list'),
+        name: 'SellerAccountList',
+        meta: { title: 'Seller Account List', icon: 'list', type: 'seller' }
+      }
+    ]
+  },
   {
     path: '/permission',
     component: Layout,
@@ -145,45 +182,6 @@ export const asyncRoutes = [
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
   tableRouter,
-
-  {
-    path: '/accounts',
-    component: Layout,
-    redirect: '/accounts/list',
-    name: 'Accounts',
-    meta: {
-      title: 'Accounts',
-      icon: 'example'
-    },
-    children: [
-      {
-        path: 'create',
-        component: () => import('@/views/accounts/create'),
-        name: 'CreateAccount',
-        meta: { title: 'Create Account', icon: 'edit' }
-      },
-      {
-        path: 'edit/:id',
-        component: () => import('@/views/accounts/edit'),
-        name: 'EditAccount',
-        meta: { title: 'Edit Account', noCache: true, activeMenu: '/accounts/list' },
-        hidden: true
-      },
-      {
-        path: 'buyer-list',
-        component: () => import('@/views/accounts/list'),
-        name: 'BuyerAccountList',
-        meta: { title: 'Buyer Account List', icon: 'list', type: 'buyer' }
-      },
-      {
-        path: 'seller-list',
-        component: () => import('@/views/accounts/list'),
-        name: 'SellerAccountList',
-        meta: { title: 'Seller Account List', icon: 'list', type: 'seller' }
-      }
-    ]
-  },
-
   {
     path: 'external-link',
     component: Layout,
