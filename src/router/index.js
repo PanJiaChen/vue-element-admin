@@ -8,9 +8,7 @@ import Layout from '@/layout'
 
 /* Router Modules */
 import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -146,38 +144,42 @@ export const asyncRoutes = [
 
   /** when your routing map is too long, you can split it into small modules **/
   componentsRouter,
-  chartsRouter,
-  nestedRouter,
   tableRouter,
 
   {
-    path: '/example',
+    path: '/accounts',
     component: Layout,
-    redirect: '/example/list',
-    name: 'Example',
+    redirect: '/accounts/list',
+    name: 'Accounts',
     meta: {
-      title: 'Example',
+      title: 'Accounts',
       icon: 'example'
     },
     children: [
       {
         path: 'create',
-        component: () => import('@/views/example/create'),
-        name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        component: () => import('@/views/accounts/create'),
+        name: 'CreateAccount',
+        meta: { title: 'Create Account', icon: 'edit' }
       },
       {
-        path: 'edit/:id(\\d+)',
-        component: () => import('@/views/example/edit'),
-        name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true, activeMenu: '/example/list' },
+        path: 'edit/:id',
+        component: () => import('@/views/accounts/edit'),
+        name: 'EditAccount',
+        meta: { title: 'Edit Account', noCache: true, activeMenu: '/accounts/list' },
         hidden: true
       },
       {
-        path: 'list',
-        component: () => import('@/views/example/list'),
-        name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        path: 'buyer-list',
+        component: () => import('@/views/accounts/list'),
+        name: 'BuyerAccountList',
+        meta: { title: 'Buyer Account List', icon: 'list', type: 'buyer' }
+      },
+      {
+        path: 'seller-list',
+        component: () => import('@/views/accounts/list'),
+        name: 'SellerAccountList',
+        meta: { title: 'Seller Account List', icon: 'list', type: 'seller' }
       }
     ]
   },
