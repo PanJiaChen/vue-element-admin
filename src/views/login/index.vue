@@ -139,16 +139,7 @@ export default {
   },
   methods: {
     checkCapslock({ shiftKey, key } = {}) {
-      if (key && key.length === 1) {
-        if (shiftKey && (key >= 'a' && key <= 'z') || !shiftKey && (key >= 'A' && key <= 'Z')) {
-          this.capsTooltip = true
-        } else {
-          this.capsTooltip = false
-        }
-      }
-      if (key === 'CapsLock' && this.capsTooltip === true) {
-        this.capsTooltip = false
-      }
+      this.capsTooltip = (key && key.length === 1 && (shiftKey && (key >= 'A' && key <= 'Z') || !shiftKey && (key >= 'A' && key <= 'Z')))
     },
     showPwd() {
       if (this.passwordType === 'password') {
