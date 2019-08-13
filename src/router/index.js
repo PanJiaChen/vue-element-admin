@@ -169,6 +169,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/regions',
+    component: Layout,
+    redirect: '/regions/list',
+    name: 'Regions',
+    meta: {
+      title: 'Regions',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/regions/create'),
+        name: 'CreateRegion',
+        meta: { title: 'Create Region', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/regions/edit'),
+        name: 'EditRegion',
+        meta: { title: 'Edit Region', noCache: true, activeMenu: '/regions/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/regions/list'),
+        name: 'RegionsList',
+        meta: { title: 'Region List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',

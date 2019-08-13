@@ -2,7 +2,7 @@
   <div class="createAccount-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
-      <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
+      <sticky :z-index="10" :class-name="'sub-navbar ' + postForm.status">
         <el-button v-loading="loading" style="margin-left: 10px;" type="success" @click="submitForm">
           Save
         </el-button>
@@ -16,76 +16,17 @@
               <el-row v-if="isEdit">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Id" class="postInfo-container-item">
-                    <el-input v-model="postForm.id" placeholder="Id" readonly />
+                    <el-input v-model="postForm._id" placeholder="Id" readonly />
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="Account:" class="postInfo-container-item">
-                    <el-select v-model="postForm.accountId" :remote-method="getRemoteAccountList" filterable default-first-option remote placeholder="Search Accounts" loading-text="Loading...">
-                      <el-option v-for="(item,index) in accountListOptions" :key="item+index" :label="item.name" :value="item.id" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.name" placeholder="Region Name" />
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="First Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.firstName" placeholder="First Name" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Last Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.lastName" placeholder="Last Name" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Email" class="postInfo-container-item">
-                    <el-input v-model="postForm.email" placeholder="Email" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Username" class="postInfo-container-item">
-                    <el-input v-model="postForm.username" placeholder="Username" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Phone" class="postInfo-container-item">
-                    <el-input v-model="postForm.phone" placeholder="User Phone" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Type" class="postInfo-container-item">
-                    <el-radio-group v-model="postForm.type_id">
-                      <el-radio-button label="user">User</el-radio-button>
-                      <el-radio-button label="admin">Admin</el-radio-button>
-                    </el-radio-group>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
-                    <el-radio-group v-model="postForm.status_id">
-                      <el-radio-button label="100">Enabled</el-radio-button>
-                      <el-radio-button label="200">Disabled</el-radio-button>
-                      <el-radio-button label="300">Locked</el-radio-button>
-                    </el-radio-group>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
             </div>
           </el-col>
         </el-row>
@@ -97,25 +38,15 @@
 
 <script>
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchUser, updateUser, createUser } from '@/api/user'
-import { fetchList } from '@/api/account'
+import { fetchRegion, updateRegion, createRegion } from '@/api/region'
 
 const defaultForm = {
   id: '',
-  accountId: '',
-  firstName: '',
-  lastName: '',
-  email: '',
-  phone: '',
-  status_id: 100,
-  type_id: 'user',
-  account: {
-    name: ''
-  }
+  name: ''
 }
 
 export default {
-  name: 'UserDetail',
+  name: 'AccountDetail',
   components: { Sticky },
   props: {
     isEdit: {
@@ -138,7 +69,7 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      accountListOptions: [],
+      userListOptions: [],
       rules: {
         // image_uri: [{ validator: validateRequire }],
         name: [{ validator: validateRequire }]
@@ -177,7 +108,7 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchUser(id).then(response => {
+      fetchRegion(id).then(response => {
         this.postForm = response.data
 
         // // set tagsview title
@@ -190,12 +121,12 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit User'
-      const route = Object.assign({}, this.tempRoute, { title: `${title} - ${this.postForm.firstName} ${this.postForm.lastName} (${this.postForm.account.name})` })
+      const title = 'Edit Region'
+      const route = Object.assign({}, this.tempRoute, { title: `${title} - ${this.postForm.name}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit User'
+      const title = 'Edit Region'
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
@@ -204,17 +135,17 @@ export default {
           this.loading = true
 
           // Save the account
-          const methodToCall = this.isEdit ? updateUser : createUser
+          const methodToCall = this.isEdit ? updateRegion : createRegion
           methodToCall(this.postForm).then((r) => {
             this.$notify({
               title: 'Success',
-              message: 'User Saved',
+              message: 'Region Saved',
               type: 'success',
               duration: 2000
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/users/edit/${r.data.id}`) }
+            if (!this.isEdit) { this.$router.push(`/regions/edit/${r.data.createdRegion._id}`) }
 
             this.loading = false
           }).catch((e) => {
@@ -224,15 +155,6 @@ export default {
           console.log('error submit!!')
           return false
         }
-      })
-    },
-    getRemoteAccountList(query) {
-      query = {}
-      query.platform = 'OLFDE'
-      query.limit = 100
-      fetchList(query).then(response => {
-        if (!response.data.docs) return
-        this.accountListOptions = response.data.docs.map(v => { return { name: v.name, id: v._id } })
       })
     }
   }
