@@ -138,6 +138,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/users',
+    component: Layout,
+    redirect: '/users/list',
+    name: 'Users',
+    meta: {
+      title: 'Users',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/users/create'),
+        name: 'CreateUser',
+        meta: { title: 'Create User', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/users/edit'),
+        name: 'EditUser',
+        meta: { title: 'Edit User', noCache: true, activeMenu: '/users/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/users/list'),
+        name: 'UsersList',
+        meta: { title: 'User List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
