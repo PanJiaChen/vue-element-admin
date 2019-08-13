@@ -200,6 +200,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/terminals',
+    component: Layout,
+    redirect: '/terminals/list',
+    name: 'Terminals',
+    meta: {
+      title: 'Terminals',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/terminals/create'),
+        name: 'CreateRegion',
+        meta: { title: 'Create Terminal', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/terminals/edit'),
+        name: 'EditTerminal',
+        meta: { title: 'Edit Terminal', noCache: true, activeMenu: '/terminals/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/terminals/list'),
+        name: 'TerminalsList',
+        meta: { title: 'Terminal List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
