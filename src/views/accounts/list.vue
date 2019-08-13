@@ -1,5 +1,13 @@
 <template>
   <div class="app-container">
+
+    <div class="filter-container">
+      <el-input v-model="listQuery.accountName" placeholder="Account Name or Email" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        Search
+      </el-button>
+    </div>
+
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">

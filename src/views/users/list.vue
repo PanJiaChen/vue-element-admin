@@ -1,5 +1,15 @@
 <template>
   <div class="app-container">
+
+    <div class="filter-container">
+      <el-select v-model="listQuery.accountId" :remote-method="getRemoteAccountList" filterable default-first-option remote placeholder="Search Accounts" loading-text="Loading...">
+        <el-option v-for="(item,index) in accountListOptions" :key="item+index" :label="item.name" :value="item.id" />
+      </el-select>
+      <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
+        Search
+      </el-button>
+    </div>
+
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
 
       <el-table-column align="center" label="Name" width="200">
@@ -42,6 +52,7 @@
 </template>
 
 <script>
+const fetchAccountList = require('@/api/account').fetchList
 import { fetchList } from '@/api/user'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -63,16 +74,18 @@ export default {
       list: null,
       total: 0,
       listLoading: true,
+      accountListOptions: [],
       listQuery: {
         page: 1,
-        limit: 20
+        limit: 20,
+        accountId: ''
       }
     }
   },
   created() {
     // Set the type for the query
     // this.listQuery.type = this.$route.meta.type
-    // this.listQuery.platform = 'OLFDE'
+    this.listQuery.platform = 'OLFDE'
 
     this.getList()
   },
@@ -84,6 +97,19 @@ export default {
         this.total = response.data.total
         this.listLoading = false
       })
+    },
+    getRemoteAccountList(query) {
+      query = {}
+      query.platform = 'OLFDE'
+      query.limit = 100
+      fetchAccountList(query).then(response => {
+        if (!response.data.docs) return
+        this.accountListOptions = response.data.docs.map(v => { return { name: v.name, id: v._id } })
+      })
+    },
+    handleFilter(query) {
+      this.listQuery.page = 1
+      this.getList()
     }
   }
 }
