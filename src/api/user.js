@@ -1,19 +1,36 @@
 import axios from 'axios'
 import request from '@/utils/request'
 
+const apiUrl = 'https://users.service.development.therig.onlinefuelslabs.io'
+
 export function login(data) {
-  return request({
-    url: '/user/login',
-    method: 'post',
-    data
+  const payload = {
+    code: 20000,
+    data: { token: 'admin-token' }
+  }
+
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve(payload)
+    }, 250)
   })
 }
 
 export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+  const payload = {
+    code: 20000,
+    data: {
+      roles: ['admin'],
+      introduction: 'Super Administrator',
+      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
+      name: 'Super Admin'
+    }
+  }
+
+  return new Promise(function(resolve, reject) {
+    setTimeout(function() {
+      resolve(payload)
+    }, 250)
   })
 }
 
@@ -26,22 +43,22 @@ export function logout() {
 
 export function fetchList(query) {
   query.platform = 'OLFDE'
-  return axios.get('https://users.service.development.therig.onlinefuelslabs.io/user/search', { params: query })
+  return axios.get(`${apiUrl}/user/search`, { params: query })
 }
 
 export function fetchUser(id) {
-  return axios.get(`https://users.service.development.therig.onlinefuelslabs.io/user/${id}`)
+  return axios.get(`${apiUrl}/user/${id}`)
 }
 
 export function createUser(data) {
   const dto = __dataToDTO(data)
 
-  return axios.post(`https://users.service.development.therig.onlinefuelslabs.io/user`, dto)
+  return axios.post(`${apiUrl}/user`, dto)
 }
 
 export function updateUser(data) {
   const dto = __dataToDTO(data)
-  return axios.put(`https://users.service.development.therig.onlinefuelslabs.io/user/${data.id}`, dto)
+  return axios.put(`${apiUrl}/user/${data.id}`, dto)
 }
 
 function __dataToDTO(data) {
