@@ -5,6 +5,7 @@ import Cookies from 'js-cookie'
 import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
+import locale from 'element-ui/lib/locale/lang/en'
 import './styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
@@ -33,6 +34,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 Vue.use(Element, {
+  locale,
   size: Cookies.get('size') || 'medium' // set element-ui default size
 })
 
