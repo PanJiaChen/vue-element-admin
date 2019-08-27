@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-    // init the default  selected tab
+    // init the default selected tab
     const tab = this.$route.query.tab
     if (tab) {
       this.activeName = tab
