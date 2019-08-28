@@ -115,6 +115,7 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
+        language: this.language,
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['en'],
         height: this.height,

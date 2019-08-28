@@ -156,7 +156,7 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 ```bash
 # 克隆项目
-git clone https://github.com/PanJiaChen/vue-element-admin.git
+git clone -b i18n git@github.com:PanJiaChen/vue-element-admin.git
 
 # 进入项目目录
 cd vue-element-admin
