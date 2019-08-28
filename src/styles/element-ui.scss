@@ -1,4 +1,4 @@
-//覆盖一些element-ui样式
+// cover some element-ui styles
 
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
@@ -46,7 +46,7 @@
   }
 }
 
-//暂时性解决dialog 问题 https://github.com/ElemeFE/element/issues/2461
+// to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
   transform: none;
   left: 0;
@@ -54,18 +54,7 @@
   margin: 0 auto;
 }
 
-//文章页textarea修改样式
-.article-textarea {
-  textarea {
-    padding-right: 40px;
-    resize: none;
-    border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
-  }
-}
-
-//element ui upload
+// refine element ui upload
 .upload-container {
   .el-upload {
     width: 100%;
@@ -77,9 +66,14 @@
   }
 }
 
-//dropdown
+// dropdown
 .el-dropdown-menu {
   a {
     display: block
   }
+}
+
+// fix date-picker ui bug in filter-item
+.el-range-editor.el-input__inner {
+  display: inline-flex !important;
 }

@@ -6,8 +6,8 @@ yarn-debug.log*
 yarn-error.log*
 **/*.log
 
-test/unit/coverage
-test/e2e/reports
+tests/**/coverage/
+tests/e2e/reports
 selenium-debug.log
 
 # Editor directories and files
@@ -17,5 +17,7 @@ selenium-debug.log
 *.ntvs*
 *.njsproj
 *.sln
+*.local
 
 package-lock.json
+yarn.lock

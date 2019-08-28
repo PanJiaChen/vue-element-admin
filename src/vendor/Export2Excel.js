@@ -145,9 +145,11 @@ export function export_table_to_excel(id) {
 }
 
 export function export_json_to_excel({
+  multiHeader = [],
   header,
   data,
   filename,
+  merges = [],
   autoWidth = true,
   bookType=  'xlsx'
 } = {}) {
@@ -155,9 +157,21 @@ export function export_json_to_excel({
   filename = filename || 'excel-list'
   data = [...data]
   data.unshift(header);
+
+  for (let i = multiHeader.length-1; i > -1; i--) {
+    data.unshift(multiHeader[i])
+  }
+
   var ws_name = "SheetJS";
   var wb = new Workbook(),
     ws = sheet_from_array_of_arrays(data);
+
+  if (merges.length > 0) {
+    if (!ws['!merges']) ws['!merges'] = [];
+    merges.forEach(item => {
+      ws['!merges'].push(XLSX.utils.decode_range(item))
+    })
+  }
 
   if (autoWidth) {
     /*设置worksheet每列的最大宽度*/
