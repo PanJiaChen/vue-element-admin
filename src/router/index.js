@@ -231,6 +231,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/products',
+    component: Layout,
+    redirect: '/products/list',
+    name: 'Products',
+    meta: {
+      title: 'Products',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/products/create'),
+        name: 'CreateProduct',
+        meta: { title: 'Create Products', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/products/edit'),
+        name: 'EditProducts',
+        meta: { title: 'Edit Product', noCache: true, activeMenu: '/products/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/products/list'),
+        name: 'ProductssList',
+        meta: { title: 'Products List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
