@@ -1,13 +1,13 @@
 <template>
-  <account-detail :is-edit="false" />
+  <terminal-detail :is-edit="false" />
 </template>
 
 <script>
-import AccountDetail from './components/AccountDetail'
+import TerminalDetail from './components/TerminalDetail'
 
 export default {
   name: 'CreateForm',
-  components: { AccountDetail }
+  components: { TerminalDetail }
 }
 </script>
 

@@ -185,12 +185,12 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit Account'
+      const title = 'Edit Terminal'
       const route = Object.assign({}, this.tempRoute, { title: `${title} - ${this.postForm.name}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Account'
+      const title = 'Edit Terminal'
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
@@ -203,13 +203,13 @@ export default {
           methodToCall(this.postForm).then((r) => {
             this.$notify({
               title: 'Success',
-              message: 'Account Saved',
+              message: 'Terminal Saved',
               type: 'success',
               duration: 2000
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/accounts/edit/${r.data.id}`) }
+            if (!this.isEdit) { this.$router.push(`/terminals/edit/${r.data.id}`) }
 
             this.loading = false
           }).catch((e) => {
