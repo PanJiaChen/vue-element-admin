@@ -32,7 +32,21 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.name" placeholder="Account Name" />
+                    <el-input v-model="postForm.name" placeholder="Terminal Display Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Full Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.fullName" placeholder="Terminal Full Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Contact Num" class="postInfo-container-item">
+                    <el-input v-model="postForm.contactNumber" placeholder="Terminal Contact Number" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -73,6 +87,13 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
+                  <el-form-item label-width="120px" label="Opening Hours" class="postInfo-container-item">
+                    <el-input v-model="postForm.meta.openingHours" type="textarea" rows="2" placeholder="Terminal Opening Hours" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.status">
                       <el-radio-button label="100">Enabled</el-radio-button>
@@ -99,6 +120,8 @@ const fetchRegionList = require('@/api/region').fetchList
 const defaultForm = {
   id: '',
   name: '',
+  fullName: '',
+  contactNumber: '',
   region_id: '',
   address: {
     line1: '',
@@ -106,6 +129,9 @@ const defaultForm = {
     county: '',
     postCode: '',
     country: ''
+  },
+  meta: {
+    openingHours: ''
   }
 }
 
@@ -173,7 +199,15 @@ export default {
   methods: {
     fetchData(id) {
       fetchTerminal(id).then(response => {
-        this.postForm = response.data
+        const terminal = response.data
+
+        if (!terminal.meta) {
+          terminal.meta = {
+            openingHours: ''
+          }
+        }
+
+        this.postForm = terminal
 
         // // set tagsview title
         this.setTagsViewTitle()
