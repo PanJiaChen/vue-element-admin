@@ -293,6 +293,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/orders',
+    component: Layout,
+    redirect: '/orders/list',
+    name: 'Orders',
+    meta: {
+      title: 'Orders',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/orders/create'),
+        name: 'CreateOrder',
+        meta: { title: 'Create Order', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/orders/edit'),
+        name: 'EditOrder',
+        meta: { title: 'Edit Order', noCache: true, activeMenu: '/orders/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/orders/list'),
+        name: 'OrderList',
+        meta: { title: 'Order List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
