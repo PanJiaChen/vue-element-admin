@@ -262,6 +262,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/faqs',
+    component: Layout,
+    redirect: '/faqs/list',
+    name: 'FAQs',
+    meta: {
+      title: 'FAQs',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/faqs/create'),
+        name: 'CreateFAQ',
+        meta: { title: 'Create FAQ', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/faqs/edit'),
+        name: 'EditFAQs',
+        meta: { title: 'Edit FAQ', noCache: true, activeMenu: '/faqs/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/faqs/list'),
+        name: 'FAQList',
+        meta: { title: 'FAQ List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/page',
