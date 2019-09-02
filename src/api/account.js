@@ -24,7 +24,9 @@ export function createAccount(data) {
     'addressLine2': data.address.addressLine2,
     'county': data.address.county,
     'country': data.address.country,
-    'postCode': data.address.postCode
+    'postCode': data.address.postCode,
+    'fuelRestrictions': data.restrictions.fuels,
+    'terminalRestrictions': data.restrictions.terminals
   }
 
   return axios.post(`${apiUrl}/account/create`, dto)
@@ -44,7 +46,9 @@ export function updateAccount(data) {
     'addressLine2': data.address.addressLine2,
     'county': data.address.county,
     'country': data.address.country,
-    'postCode': data.address.postCode
+    'postCode': data.address.postCode,
+    'fuelRestrictions': data.restrictions.fuels,
+    'terminalRestrictions': data.restrictions.terminals
   }
 
   return axios.put(`${apiUrl}/account/${data.id}`, dto)

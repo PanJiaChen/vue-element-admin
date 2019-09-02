@@ -94,6 +94,28 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Fuel Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.fuels"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="fuelsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Terminal Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.terminals"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="terminalsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.status">
@@ -116,6 +138,8 @@
 <script>
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchAccount, updateAccount, createAccount } from '@/api/account'
+const fetchFuelList = require('@/api/product').fetchList
+const fetchTerminalList = require('@/api/terminal').fetchList
 
 const defaultForm = {
   id: '',
@@ -123,6 +147,10 @@ const defaultForm = {
   phone: '',
   email: '',
   orderConfirmationEmail: '',
+  restrictions: {
+    fuels: [],
+    terminals: []
+  },
   address: {
     addressLine1: '',
     addressLine2: '',
@@ -163,7 +191,10 @@ export default {
         // content: [{ validator: validateRequire }],
         // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       },
-      tempRoute: {}
+      tempRoute: {},
+      terminals: [],
+      fuels: [],
+      fuelRestrictions: []
     }
   },
   computed: {
@@ -178,6 +209,32 @@ export default {
       set(val) {
         this.postForm.display_time = new Date(val)
       }
+    },
+    fuelsAvailable: {
+      get() {
+        return this.fuels.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.fuels = value
+      }
+    },
+    terminalsAvailable: {
+      get() {
+        return this.terminals.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.terminals = value
+      }
     }
   },
   created() {
@@ -188,6 +245,13 @@ export default {
       this.postForm = Object.assign({}, defaultForm)
     }
 
+    // Fetch the fuels and terminals, to be used as part of the restriction process
+    const requestPromises = [fetchFuelList({ platform: 'OLFDE' }), fetchTerminalList({ platform: 'OLFDE' })]
+    Promise.all(requestPromises).then((responses) => {
+      this.fuels = responses[0].data.fuels
+      this.terminals = responses[1].data.terminals
+    })
+
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -196,7 +260,22 @@ export default {
   methods: {
     fetchData(id) {
       fetchAccount(id).then(response => {
-        this.postForm = response.data
+        const account = response.data
+        if (!account.restrictions) {
+          account.restrictions = {
+            fuels: [],
+            terminals: []
+          }
+        }
+
+        if (account.restrictions.fuels.length === 0) {
+          account.restrictions.fuels = this.fuels.map(f => f._id)
+        }
+        if (account.restrictions.terminals.length === 0) {
+          account.restrictions.terminals = this.terminals.map(f => f._id)
+        }
+
+        this.postForm = account
 
         // // set tagsview title
         this.setTagsViewTitle()
@@ -221,9 +300,21 @@ export default {
         if (valid) {
           this.loading = true
 
+          // Make a clone of the object
+          const accountToSave = Object.assign({}, this.postForm)
+
+          // If we have selected *all* the fuels/terminals available, then send an empty array back. As this means we want *everything*
+          if (accountToSave.restrictions.fuels.length === this.fuels.length) {
+            accountToSave.restrictions.fuels = []
+          }
+
+          if (accountToSave.restrictions.terminals.length === this.terminals.length) {
+            accountToSave.restrictions.terminals = []
+          }
+
           // Save the account
           const methodToCall = this.isEdit ? updateAccount : createAccount
-          methodToCall(this.postForm).then((r) => {
+          methodToCall(accountToSave).then((r) => {
             this.$notify({
               title: 'Success',
               message: 'Account Saved',
