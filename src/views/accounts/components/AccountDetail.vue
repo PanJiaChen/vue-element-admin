@@ -293,7 +293,7 @@ export default {
     },
     setPageTitle() {
       const title = 'Edit Account'
-      document.title = `${title} - ${this.postForm.id}`
+      document.title = `${title} - ${this.postForm.name}`
     },
     submitForm() {
       this.$refs.postForm.validate(valid => {
