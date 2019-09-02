@@ -22,8 +22,15 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.name" placeholder="Account Name" />
+                  <el-form-item label-width="120px" label="Display Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.name" placeholder="Display Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Full Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.fullName" placeholder="Full Name" />
                   </el-form-item>
                 </el-col>
               </el-row>

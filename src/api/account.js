@@ -13,6 +13,7 @@ export function fetchAccount(id) {
 export function createAccount(data) {
   const dto = {
     'name': data.name,
+    'fullName': data.fullName || data.name,
     'type': data.type,
     'email': data.email,
     'platform': data.platform || 'OLFDE',
@@ -32,6 +33,7 @@ export function createAccount(data) {
 export function updateAccount(data) {
   const dto = {
     'name': data.name,
+    'fullName': data.fullName || data.name,
     'type': data.type,
     'email': data.email,
     'platform': data.platform,

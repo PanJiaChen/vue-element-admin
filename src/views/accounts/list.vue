@@ -15,6 +15,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="Full Name" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.fullName || scope.row.name }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Email" width="250">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
