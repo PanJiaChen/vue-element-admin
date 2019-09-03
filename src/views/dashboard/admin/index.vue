@@ -2,6 +2,15 @@
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
 
+    <el-radio v-model="platform" label="DE">
+      DE
+    </el-radio>
+    <el-radio v-model="platform" label="UK">
+      UK
+    </el-radio>
+
+    <h1>{{ platform }}</h1>
+
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
@@ -85,7 +94,8 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitis,
+      platform: 'UK'
     }
   },
   methods: {

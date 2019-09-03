@@ -23,24 +23,18 @@
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
 
-      <div class="drawer-item">
-        <span>Select Platform</span>
-        <PlatformDropdown v-model="postForm.platform_selection" />
-      </div>
-
     </div>
   </div>
 </template>
 
 <script>
 import ThemePicker from '@/components/ThemePicker'
-import { PlatformDropdown } from './Dropdown'
 const defaultForm = {
   platform_selection: 'DE'
 }
 
 export default {
-  components: { ThemePicker, PlatformDropdown },
+  components: { ThemePicker },
   data() {
     return {
       postForm: Object.assign({}, defaultForm)
@@ -87,10 +81,8 @@ export default {
         key: 'theme',
         value: val
       })
-    },
-    selectPlatform(val) {
-      console.log(val)
     }
+
   }
 }
 </script>
