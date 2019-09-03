@@ -26,6 +26,12 @@ module.exports = {
   sidebarLogo: false,
 
   /**
+   * @type {string} true | false
+   * @description Decide which countrys platform to show to the user
+   */
+  platform: 'DE',
+
+  /**
    * @type {string | array} 'production' | ['production', 'development']
    * @description Need show err logs component.
    * The default is only used in the production env

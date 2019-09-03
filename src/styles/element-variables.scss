@@ -8,6 +8,9 @@ $--color-primary: #1890ff;
 $--color-success: #13ce66;
 $--color-warning: #FFBA00;
 $--color-danger: #ff4949;
+$--color-UKTheme: #29CBDD;
+$--color-DETheme: #41ED1B;
+
 // $--color-info: #1E1E1E;
 
 $--button-font-weight: 400;
@@ -27,5 +30,5 @@ $--font-path: '~element-ui/lib/theme-chalk/fonts';
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass
 :export {
-  theme: $--color-primary;
+  theme: $--color-DETheme;
 }

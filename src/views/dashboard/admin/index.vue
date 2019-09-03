@@ -92,8 +92,11 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis,
-      platform: 'UK'
+      platform: ''
     }
+  },
+  created() {
+    this.platform = this.$store.state.settings.platform
   },
   methods: {
     handleSetLineChartData(type) {
@@ -104,7 +107,14 @@ export default {
         key: 'platform',
         value: this.platform
       })
-      console.log(this.$store.state.settings.platform)
+      this.themeChange()
+    },
+    themeChange() {
+      const themeColour = this.platform === 'UK' ? '#29CBDD' : '#41ED1B'
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'theme',
+        value: themeColour
+      })
     }
   }
 }
