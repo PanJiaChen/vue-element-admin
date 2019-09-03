@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
-    <el-radio v-model="platform" label="DE" @change="someHandler">
+    <el-radio v-model="platform" label="OLFDE" @change="someHandler">
       DE
     </el-radio>
-    <el-radio v-model="platform" label="UK" @change="someHandler">
+    <el-radio v-model="platform" label="OLFUK" @change="someHandler">
       UK
     </el-radio>
     <h1>{{ platform }}</h1>

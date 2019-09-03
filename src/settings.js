@@ -29,7 +29,7 @@ module.exports = {
    * @type {string} true | false
    * @description Decide which countrys platform to show to the user
    */
-  platform: 'DE',
+  platform: 'OLFDE',
 
   /**
    * @type {string | array} 'production' | ['production', 'development']
