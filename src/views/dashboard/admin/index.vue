@@ -2,10 +2,10 @@
   <div class="dashboard-editor-container">
     <github-corner class="github-corner" />
 
-    <el-radio v-model="platform" label="DE">
+    <el-radio v-model="platform" label="DE" @change="someHandler">
       DE
     </el-radio>
-    <el-radio v-model="platform" label="UK">
+    <el-radio v-model="platform" label="UK" @change="someHandler">
       UK
     </el-radio>
 
@@ -101,6 +101,9 @@ export default {
   methods: {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
+    },
+    someHandler() {
+      console.log(this.platform)
     }
   }
 }
