@@ -100,7 +100,11 @@ export default {
       this.lineChartData = lineChartData[type]
     },
     someHandler() {
-      console.log(this.platform)
+      this.$store.dispatch('settings/changeSetting', {
+        key: 'platform',
+        value: this.platform
+      })
+      console.log(this.$store.state.settings.platform)
     }
   }
 }
