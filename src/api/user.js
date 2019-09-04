@@ -1,5 +1,6 @@
 import axios from 'axios'
 import request from '@/utils/request'
+import store from '../store/modules/settings.js'
 
 const apiUrl = 'https://users.service.development.therig.onlinefuelslabs.io'
 
@@ -42,7 +43,7 @@ export function logout() {
 }
 
 export function fetchList(query) {
-  query.platform = 'OLFDE'
+  query.platform = store.state.platform
   return axios.get(`${apiUrl}/user/search`, { params: query })
 }
 
