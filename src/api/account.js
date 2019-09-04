@@ -1,4 +1,5 @@
 import axios from 'axios'
+import store from '../store/modules/settings.js'
 
 const apiUrl = 'https://users.service.development.therig.onlinefuelslabs.io'
 
@@ -15,7 +16,7 @@ export function createAccount(data) {
     'name': data.name,
     'type': data.type,
     'email': data.email,
-    'platform': data.platform || 'OLFDE',
+    'platform': store.state.platform,
     'phone': data.phone,
     'status': parseInt(data.status),
     'orderConfirmationEmail': data.orderConfirmationEmail,
