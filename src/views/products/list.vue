@@ -52,7 +52,7 @@ export default {
     }
   },
   created() {
-    this.listQuery.platform = 'OLFDE'
+    this.listQuery.platform = this.$store.state.settings.platform
 
     this.getList()
   },

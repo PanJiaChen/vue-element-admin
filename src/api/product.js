@@ -30,7 +30,7 @@ function __dataToDTO(data) {
     'lpt': Number(data.lpt),
     'duty': Number(data.duty),
     'type': 'SPOT',
-    'platform': data.platform || 'OLFDE',
+    'platform': store.state.platform,
     'meta': data.meta,
     'status': data.status
   }
