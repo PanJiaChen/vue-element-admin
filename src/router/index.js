@@ -134,6 +134,12 @@ export const asyncRoutes = [
         component: () => import('@/views/accounts/list'),
         name: 'SellerAccountList',
         meta: { title: 'Seller Account List', icon: 'list', type: 'seller' }
+      },
+      {
+        path: 'relationship-list',
+        component: () => import('@/views/accounts/relationships'),
+        name: 'RelationshipMatrix',
+        meta: { title: 'Relationships', icon: 'list' }
       }
     ]
   },

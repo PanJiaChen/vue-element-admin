@@ -6,6 +6,10 @@ export function fetchList(query) {
   return axios.get(`${apiUrl}/account/search`, { params: query })
 }
 
+export function fetchRelationships(query) {
+  return axios.get(`${apiUrl}/account/relationship`, { params: query })
+}
+
 export function fetchAccount(id) {
   return axios.get(`${apiUrl}/account/${id}`)
 }
