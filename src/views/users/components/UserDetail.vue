@@ -228,7 +228,7 @@ export default {
     },
     getRemoteAccountList(query) {
       query = {}
-      query.platform = 'OLFDE'
+      query.platform = this.$store.state.platform
       query.limit = 100
       fetchList(query).then(response => {
         if (!response.data.docs) return
