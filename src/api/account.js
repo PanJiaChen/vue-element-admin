@@ -3,9 +3,13 @@ import store from '../store/modules/settings.js'
 
 const apiUrl = 'https://users.service.development.therig.onlinefuelslabs.io'
 
-export function fetchList() {
-  return axios.get(`${apiUrl}/account/search?page=1&limit=2000&platform=${store.state.platform}`)
-  // temporary fix. It seems query parameters are not going trhough as intended. Will have to look at backend?
+export function fetchList(query) {
+  const dto = {
+    'page': query.page,
+    'limit': query.limit,
+    'platform': query.platform || store.state.platform
+  }
+  return axios.get(`${apiUrl}/account/search`, { params: dto })
 }
 
 export function fetchAccount(id) {
