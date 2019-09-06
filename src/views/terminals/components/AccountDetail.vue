@@ -223,7 +223,7 @@ export default {
     },
     getRemoteRegionList(query) {
       query = {}
-      query.platform = 'OLFDE'
+      query.platform = this.$store.state.platform
       query.limit = 100
       fetchRegionList(query).then(response => {
         if (!response.data.regions) return

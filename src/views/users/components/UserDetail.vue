@@ -166,6 +166,7 @@ export default {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
+      this.getRemoteAccountList()
     } else {
       this.postForm = Object.assign({}, defaultForm)
     }
@@ -226,10 +227,11 @@ export default {
         }
       })
     },
-    getRemoteAccountList(query) {
+    getRemoteAccountList(query) { // platform is undefined
       query = {}
-      query.platform = 'OLFDE'
-      query.limit = 100
+      query.platform = this.$store.state.platform
+      query.limit = 100 // to fix limit maybe add another parameter in the Api call
+
       fetchList(query).then(response => {
         if (!response.data.docs) return
         this.accountListOptions = response.data.docs.map(v => { return { name: v.name, id: v._id } })
