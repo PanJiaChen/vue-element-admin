@@ -1,13 +1,15 @@
 import axios from 'axios'
+import store from '../store/modules/settings.js'
 
 const TerminalEndpointUrl = 'https://metadata.service.development.therig.onlinefuelslabs.io'
 
 export function fetchList(query) {
+  query.platform = store.state.platform
   return axios.get(`${TerminalEndpointUrl}/terminals`, { params: query })
 }
 
 export function fetchTerminal(id) {
-  return axios.get(`${TerminalEndpointUrl}/terminal/${id}?platform=OLFDE`)
+  return axios.get(`${TerminalEndpointUrl}/terminal/${id}?platform=${store.state.platform}`)
 }
 
 export function createTerminal(data) {
@@ -23,7 +25,7 @@ export function updateTerminal(data) {
 function __dataToDTO(data) {
   return {
     'name': data.name,
-    'platform': data.platform || 'OLFDE',
+    'platform': store.state.platform,
     'addressLine1': data.address.addressLine1,
     'addressLine2': data.address.addressLine2,
     'county': data.address.county,
