@@ -4,13 +4,11 @@ import store from '../store/modules/settings.js'
 const ProductEndpointUrl = 'https://metadata.service.development.therig.onlinefuelslabs.io'
 
 export function fetchList(query) {
-  console.log(store.state.platform)
   return axios.get(`${ProductEndpointUrl}/fuels`, { params: query })
 }
 
 export function fetchProduct(id) {
-  console.log(`${ProductEndpointUrl}/fuels/${id}?platform=${store.state.platform}`)
-  return axios.get(`${ProductEndpointUrl}/fuels/${id}?platform=OLFDE`)
+  return axios.get(`${ProductEndpointUrl}/fuels/${id}?platform=${store.state.platform}`)
 }
 
 export function createProduct(data) {
