@@ -4,7 +4,12 @@ import store from '../store/modules/settings.js'
 const apiUrl = 'https://users.service.development.therig.onlinefuelslabs.io'
 
 export function fetchList(query) {
-  return axios.get(`${apiUrl}/account/search`, { params: query })
+  const dto = {
+    'page': query.page,
+    'limit': query.limit,
+    'platform': query.platform || store.state.platform
+  }
+  return axios.get(`${apiUrl}/account/search`, { params: dto })
 }
 
 export function fetchAccount(id) {
