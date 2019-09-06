@@ -26,8 +26,8 @@ function __dataToDTO(data) {
   return {
     'name': data.name,
     'platform': store.state.platform,
-    'addressLine1': data.address.addressLine1,
-    'addressLine2': data.address.addressLine2,
+    'addressLine1': data.address.line1,
+    'addressLine2': data.address.line2,
     'county': data.address.county,
     'country': data.address.country,
     'postCode': data.address.postCode,
