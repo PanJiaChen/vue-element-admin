@@ -23,6 +23,7 @@
 import Fuse from 'fuse.js'
 import path from 'path'
 import i18n from '@/lang'
+import pinyin from 'pinyin'
 
 export default {
   name: 'HeaderSearch',
@@ -51,6 +52,10 @@ export default {
       this.searchPool = this.generateRoutes(this.routes)
     },
     searchPool(list) {
+      // Support pinyin search
+      if (this.lang === 'zh') {
+        this.pinyin(list)
+      }
       this.initFuse(list)
     },
     show(value) {
@@ -65,6 +70,22 @@ export default {
     this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
+    pinyin(list) {
+      if (Array.isArray(list)) {
+        list.forEach(element => {
+          const title = element.title
+          if (Array.isArray(title)) {
+            title.forEach(v => {
+              v = pinyin(v, {
+                style: pinyin.STYLE_NORMAL
+              }).join('')
+              element.pinyinTitle = v
+            })
+          }
+        })
+        return list
+      }
+    },
     click() {
       this.show = !this.show
       if (this.show) {
@@ -95,6 +116,9 @@ export default {
         keys: [{
           name: 'title',
           weight: 0.7
+        }, {
+          name: 'pinyinTitle',
+          weight: 0.3
         }, {
           name: 'path',
           weight: 0.3
