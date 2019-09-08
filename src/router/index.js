@@ -268,6 +268,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/lifting-periods',
+    component: Layout,
+    redirect: '/lifting-periods/list',
+    name: 'LiftingPeriods',
+    meta: {
+      title: 'Lifting Periods',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/liftingperiods/create'),
+        name: 'CreateLiftingPeriod',
+        meta: { title: 'Create Lifting Period', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/liftingperiods/edit'),
+        name: 'EditLiftingPeriod',
+        meta: { title: 'Edit Lifting Period', noCache: true, activeMenu: '/liftingperiods/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/liftingperiods/list'),
+        name: 'LiftingPeriodList',
+        meta: { title: 'Lifting Period List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/faqs',
     component: Layout,
     redirect: '/faqs/list',
