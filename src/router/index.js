@@ -299,6 +299,37 @@ export const asyncRoutes = [
     ]
   },
   {
+    path: '/payment-terms',
+    component: Layout,
+    redirect: '/payment-terms/list',
+    name: 'PaymentTerms',
+    meta: {
+      title: 'Payment Terms',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/paymentterms/create'),
+        name: 'CreatePaymentTerm',
+        meta: { title: 'Create Payment Terms', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/paymentterms/edit'),
+        name: 'EditPaymentTerm',
+        meta: { title: 'Edit Payment Terms', noCache: true, activeMenu: '/paymentterms/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/paymentterms/list'),
+        name: 'LiftingPaymentTerm',
+        meta: { title: 'Payment Terms List', icon: 'list' }
+      }
+    ]
+  },
+  {
     path: '/faqs',
     component: Layout,
     redirect: '/faqs/list',
