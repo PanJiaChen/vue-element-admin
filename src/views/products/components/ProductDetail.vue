@@ -169,6 +169,7 @@ export default {
       this.fetchData(id)
     } else {
       this.postForm = Object.assign({}, defaultForm)
+      this.postForm.meta = Object.assign({}, defaultForm.meta)
     }
 
     // Why need to make a copy of this.$route here?
