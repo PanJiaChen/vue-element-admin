@@ -40,8 +40,7 @@
               Edit
             </el-button>
           </router-link>
-
-          <editorImage
+          <deletePopUp
             :item="scope.row"
             :type="'Product'"
           />
@@ -56,11 +55,11 @@
 <script>
 import { fetchList } from '@/api/product'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
-import editorImage from './components/EditorImage'
+import DeletePopUp from '@/components/PopUps/Delete'
 
 export default {
   name: 'ProductList',
-  components: { Pagination, editorImage },
+  components: { Pagination, DeletePopUp },
   filters: {
     statusFilter(status) {
       const statusMap = {
