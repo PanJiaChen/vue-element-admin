@@ -27,6 +27,7 @@
       </div>
       <div v-else-if="viewState==='Success'">
         <h1>SUCCESS you can now close this popup</h1>
+        <h1>{{ item._id }}</h1>
       </div>
       <div v-else-if="viewState==='Error'">
         <h1>ERROR please try again, if the error persist contact Chadmin!</h1>
@@ -57,9 +58,18 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      input: '',
-      isNameCorrect: false,
-      viewState: 'initialState'
+      viewState: 'initialState',
+      isNameCorrect: true,
+      input: ''
+    }
+  },
+  watch: {
+    input: function() {
+      if (this.input === this.item.name) {
+        this.isNameCorrect = false
+      } else {
+        this.isNameCorrect = true
+      }
     }
   },
   methods: {
@@ -71,8 +81,6 @@ export default {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
-      console.log(this.input)
-      console.log(this.item._id)
       if (this.input) {
         this.viewState = 'Success'
       } else if (!this.input) {
