@@ -21,6 +21,16 @@ export function updateProduct(data) {
   return axios.put(`${ProductEndpointUrl}/fuels/${data._id}`, dto)
 }
 
+export function deleteProduct(data) {
+  if (data !== '') {
+    console.log(data)
+    const chad = `${ProductEndpointUrl}/fuels/${data}?secret=MySecretForFuels&platform=${store.state.platform}`
+    // return axios.delete(${ProductEndpointUrl}/fuels/${data}?secret=MySecretForFuels&platform=${store.state.platform})
+    return chad
+  }
+  return 'error'
+}
+
 function __dataToDTO(data) {
   return {
     'name': data.name,

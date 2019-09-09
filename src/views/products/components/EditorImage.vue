@@ -28,16 +28,23 @@
       <div v-else-if="viewState==='Success'">
         <h1>SUCCESS you can now close this popup</h1>
         <h1>{{ item._id }}</h1>
+        <el-button @click="dialogVisible = false">
+          Close
+        </el-button>
       </div>
       <div v-else-if="viewState==='Error'">
         <h1>ERROR please try again, if the error persist contact Chadmin!</h1>
+        <el-button @click="dialogVisible = false">
+          Close
+        </el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-// import { getToken } from 'api/qiniu'
+// const deleteProduct = require('@/api/product').deleteProduct
+import { deleteProduct } from '@/api/product'
 
 export default {
   props: {
@@ -76,56 +83,22 @@ export default {
     openDeletePopup() {
       this.dialogVisible = true
       this.viewState = 'initialState'
+      this.input = ''
     },
     checkAllSuccess() {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
+      console.log(this.item._id)
+      console.log(deleteProduct(this.item._id))
+      // .then((r) => {
+      // console.log(r)
+      // })
       if (this.input) {
         this.viewState = 'Success'
       } else if (!this.input) {
         this.viewState = 'Error'
       }
-      // const arr = Object.keys(this.listObj).map(v => this.listObj[v])
-      // if (!this.checkAllSuccess()) {
-      //   this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
-      //   return
-      // }
-    },
-    handleSuccess(response, file) {
-      const uid = file.uid
-      const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
-          this.listObj[objKeyArr[i]].hasSuccess = true
-          return
-        }
-      }
-    },
-    handleRemove(file) {
-      const uid = file.uid
-      const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          delete this.listObj[objKeyArr[i]]
-          return
-        }
-      }
-    },
-    beforeUpload(file) {
-      const _self = this
-      const _URL = window.URL || window.webkitURL
-      const fileName = file.uid
-      this.listObj[fileName] = {}
-      return new Promise((resolve, reject) => {
-        const img = new Image()
-        img.src = _URL.createObjectURL(file)
-        img.onload = function() {
-          _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
-        }
-        resolve(true)
-      })
     }
   }
 }
