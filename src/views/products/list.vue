@@ -7,6 +7,31 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="Description" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.description }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Type" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.type }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Duty" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.duty }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="LPT" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.lpt }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Status" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.status }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
@@ -61,6 +86,7 @@ export default {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
         this.list = response.data.fuels
+        console.log(this.list)
         this.total = response.data.fuels.length
         this.listLoading = false
       })
