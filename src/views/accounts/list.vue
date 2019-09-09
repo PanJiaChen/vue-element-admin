@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/account'
+const fetchAccountList = require('@/api/account').fetchList
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -86,11 +86,15 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchAccountList(this.listQuery).then(response => {
         this.list = response.data.docs
         this.total = response.data.total
         this.listLoading = false
       })
+    },
+    handleFilter(query) {
+      this.listQuery.page = 1
+      this.getList()
     }
   }
 }
