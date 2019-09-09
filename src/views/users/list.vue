@@ -85,7 +85,7 @@ export default {
   created() {
     // Set the type for the query
     // this.listQuery.type = this.$route.meta.type
-    this.listQuery.platform = 'OLFDE'
+    this.listQuery.platform = this.$store.state.settings.platform
 
     this.getList()
   },
@@ -100,7 +100,7 @@ export default {
     },
     getRemoteAccountList(query) {
       query = {}
-      query.platform = 'OLFDE'
+      query.platform = this.$store.state.settings.platform
       query.limit = 100
       fetchAccountList(query).then(response => {
         if (!response.data.docs) return
