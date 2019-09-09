@@ -2,13 +2,13 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-input v-model="listQuery.accountName" placeholder="Account Name or Email" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="accountName" placeholder="Account Name" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="listLoading" :data="filteredList" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -67,7 +67,9 @@ export default {
   },
   data() {
     return {
-      list: null,
+      accountName: '',
+      originalList: null,
+      filteredList: null,
       total: 0,
       listLoading: true,
       listQuery: {
@@ -87,14 +89,17 @@ export default {
     getList() {
       this.listLoading = true
       fetchAccountList(this.listQuery).then(response => {
-        this.list = response.data.docs
+        this.originalList = response.data.docs
+        this.filteredList = this.originalList
         this.total = response.data.total
         this.listLoading = false
       })
     },
-    handleFilter(query) {
-      this.listQuery.page = 1
-      this.getList()
+    handleFilter() {
+      const searchQuery = this.accountName.toLowerCase()
+      this.filteredList = this.originalList.filter(function(account) {
+        return account.name.toLowerCase().includes(searchQuery)
+      })
     }
   }
 }
