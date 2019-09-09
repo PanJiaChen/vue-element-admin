@@ -226,7 +226,7 @@ export default {
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/products/edit/${r.data.id}`) }
+            if (!this.isEdit) { this.$router.push(`/products/edit/${r.data.createdFuel._id}`) }
 
             this.loading = false
           }).catch((e) => {
