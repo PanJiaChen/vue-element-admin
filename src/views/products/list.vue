@@ -40,6 +40,9 @@
               Edit
             </el-button>
           </router-link>
+
+          <editorImage />
+
         </template>
       </el-table-column>
     </el-table>
@@ -51,10 +54,11 @@
 <script>
 import { fetchList } from '@/api/product'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import editorImage from './components/EditorImage'
 
 export default {
   name: 'ProductList',
-  components: { Pagination },
+  components: { Pagination, editorImage },
   filters: {
     statusFilter(status) {
       const statusMap = {
