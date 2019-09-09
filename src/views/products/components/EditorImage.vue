@@ -1,28 +1,26 @@
 <template>
-  <div class="upload-container">
+  <div>
     <el-button icon="el-icon-delete" size="mini" type="danger" @click=" dialogVisible=true">
       Delete
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <el-upload
-        :multiple="true"
-        :file-list="fileList"
-        :show-file-list="true"
-        :on-remove="handleRemove"
-        :on-success="handleSuccess"
-        :before-upload="beforeUpload"
-        class="editor-slide-upload"
-        action="https://httpbin.org/post"
-        list-type="picture-card"
-      >
-        <el-button size="small" type="primary">
-          Click upload
-        </el-button>
-      </el-upload>
+      <div>
+        <h3>
+          Are you sure you want to delete this {{ type }} ?
+        </h3>
+        <p>To delete this {{ type }}, type in <b>{{ name }}</b> and click delete</p>
+      </div>
+      <el-row :gutter="20">
+        <el-col :span="12" :offset="6">
+          <div class="inputBox">
+            <el-input v-model="input" placeholder="Please input" />
+          </div>
+        </el-col>
+      </el-row>
       <el-button @click="dialogVisible = false">
         Cancel
       </el-button>
-      <el-button type="primary" @click="handleSubmit">
+      <el-button type="danger" :disabled="isNameCorrect" @click="handleSubmit">
         Confirm
       </el-button>
     </el-dialog>
@@ -42,8 +40,10 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      listObj: {},
-      fileList: []
+      isNameCorrect: true,
+      input: '',
+      type: 'product',
+      name: 'Kerosenos'
     }
   },
   methods: {
@@ -101,10 +101,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.editor-slide-upload {
+.inputBox {
   margin-bottom: 20px;
-  /deep/ .el-upload--picture-card {
-    width: 100%;
-  }
 }
 </style>
