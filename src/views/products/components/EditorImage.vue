@@ -1,28 +1,36 @@
 <template>
   <div>
-    <el-button icon="el-icon-delete" size="mini" type="danger" @click=" dialogVisible=true">
+    <el-button icon="el-icon-delete" size="mini" type="danger" @click="openDeletePopup">
       Delete
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <div>
-        <h3>
-          Are you sure you want to delete this {{ type }} ?
-        </h3>
-        <p>To delete this {{ type }}, type in <b>{{ name }}</b> and click delete</p>
+      <div v-if="viewState==='initialState'">
+        <div>
+          <h3>
+            Are you sure you want to delete this {{ type }} ?
+          </h3>
+          <p>To delete this {{ type }}, type in <b>{{ item.name }}</b> and click delete</p>
+        </div>
+        <el-row :gutter="20">
+          <el-col :span="12" :offset="6">
+            <div class="inputBox">
+              <el-input v-model="input" placeholder="Please input" />
+            </div>
+          </el-col>
+        </el-row>
+        <el-button @click="dialogVisible = false">
+          Cancel
+        </el-button>
+        <el-button type="danger" :disabled="isNameCorrect" @click="handleSubmit">
+          Confirm
+        </el-button>
       </div>
-      <el-row :gutter="20">
-        <el-col :span="12" :offset="6">
-          <div class="inputBox">
-            <el-input v-model="input" placeholder="Please input" />
-          </div>
-        </el-col>
-      </el-row>
-      <el-button @click="dialogVisible = false">
-        Cancel
-      </el-button>
-      <el-button type="danger" :disabled="isNameCorrect" @click="handleSubmit">
-        Confirm
-      </el-button>
+      <div v-else-if="viewState==='Success'">
+        <h1>SUCCESS you can now close this popup</h1>
+      </div>
+      <div v-else-if="viewState==='Error'">
+        <h1>ERROR please try again, if the error persist contact Chadmin!</h1>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -32,34 +40,49 @@
 
 export default {
   props: {
-    color: {
+    item: {
+      type: Object,
+      default: function() {
+        return {
+          name: 'BROKEN!-KEROSENOS-BROKEN!',
+          _id: 'THIS-ID-IS-BROKEN!'
+        }
+      }
+    },
+    type: {
       type: String,
-      default: '#1890ff'
+      default: 'chad'
     }
   },
   data() {
     return {
       dialogVisible: false,
-      isNameCorrect: true,
       input: '',
-      type: 'product',
-      name: 'Kerosenos'
+      isNameCorrect: false,
+      viewState: 'initialState'
     }
   },
   methods: {
+    openDeletePopup() {
+      this.dialogVisible = true
+      this.viewState = 'initialState'
+    },
     checkAllSuccess() {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
-      const arr = Object.keys(this.listObj).map(v => this.listObj[v])
-      if (!this.checkAllSuccess()) {
-        this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
-        return
+      console.log(this.input)
+      console.log(this.item._id)
+      if (this.input) {
+        this.viewState = 'Success'
+      } else if (!this.input) {
+        this.viewState = 'Error'
       }
-      this.$emit('successCBK', arr)
-      this.listObj = {}
-      this.fileList = []
-      this.dialogVisible = false
+      // const arr = Object.keys(this.listObj).map(v => this.listObj[v])
+      // if (!this.checkAllSuccess()) {
+      //   this.$message('Please wait for all images to be uploaded successfully. If there is a network problem, please refresh the page and upload again!')
+      //   return
+      // }
     },
     handleSuccess(response, file) {
       const uid = file.uid

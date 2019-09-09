@@ -41,8 +41,10 @@
             </el-button>
           </router-link>
 
-          <editorImage />
-
+          <editorImage
+            :item="scope.row"
+            :type="'Product'"
+          />
         </template>
       </el-table-column>
     </el-table>
