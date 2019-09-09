@@ -22,6 +22,10 @@
               Edit
             </el-button>
           </router-link>
+          <deletePopUp
+            :item="scope.row"
+            :type="'terminal'"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -33,10 +37,11 @@
 <script>
 import { fetchList } from '@/api/terminal'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
+import DeletePopUp from '@/components/PopUps/Delete'
 
 export default {
   name: 'ArticleList',
-  components: { Pagination },
+  components: { Pagination, DeletePopUp },
   filters: {
     statusFilter(status) {
       const statusMap = {

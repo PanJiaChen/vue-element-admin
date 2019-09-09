@@ -42,7 +42,7 @@
           </router-link>
           <deletePopUp
             :item="scope.row"
-            :type="'Product'"
+            :type="'product'"
           />
         </template>
       </el-table-column>

@@ -22,6 +22,17 @@ export function updateTerminal(data) {
   return axios.put(`${TerminalEndpointUrl}/terminal/${data._id}`, dto)
 }
 
+export function deleteTerminal(data) {
+  // put this logic in the .vue file
+  if (data !== '') {
+    console.log(data)
+    const chad = `${TerminalEndpointUrl}/terminal/${data}?secret=MySecretForTerminal&platform=${store.state.platform}`
+    // return axios.delete(${ProductEndpointUrl}/fuels/${data}?secret=MySecretForTermina&platform=${store.state.platform})
+    return chad
+  }
+  return 'error'
+}
+
 function __dataToDTO(data) {
   return {
     'name': data.name,

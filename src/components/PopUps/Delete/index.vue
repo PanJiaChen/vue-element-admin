@@ -45,6 +45,8 @@
 <script>
 // const deleteProduct = require('@/api/product').deleteProduct
 import { deleteProduct } from '@/api/product'
+import { deleteTerminal } from '@/api/terminal'
+// import { `delete${this.type}` } from `@/api/${this.type}`
 
 export default {
   name: 'DeletePopUp',
@@ -53,7 +55,7 @@ export default {
       type: Object,
       default: function() {
         return {
-          name: 'BROKEN!-KEROSENOS-BROKEN!',
+          name: 'BROKEN!-BROKEN!',
           _id: 'THIS-ID-IS-BROKEN!'
         }
       }
@@ -91,7 +93,13 @@ export default {
     },
     handleSubmit() {
       console.log(this.item._id)
+      if (this.type === 'terminal') {
+        console.log(deleteTerminal(this.item._id))
+      } else {
+        console.log(deleteProduct(this.item._id))
+      }
       console.log(deleteProduct(this.item._id))
+      // delete${this.type}(this.item._id))
       // .then((r) => {
       // console.log(r)
       // })
