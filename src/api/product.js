@@ -23,10 +23,7 @@ export function updateProduct(data) {
 
 export function deleteProduct(data) {
   if (data !== '') {
-    console.log(data)
-    const chad = `${ProductEndpointUrl}/fuels/${data}?secret=MySecretForFuels&platform=${store.state.platform}`
-    // return axios.delete(${ProductEndpointUrl}/fuels/${data}?secret=MySecretForFuels&platform=${store.state.platform})
-    return chad
+    return axios.delete(`${ProductEndpointUrl}/fuels/${data}?secret=MySecretForFuels&platform=${store.state.platform}`)
   }
   return 'error'
 }

@@ -23,12 +23,8 @@ export function updateTerminal(data) {
 }
 
 export function deleteTerminal(data) {
-  // put this logic in the .vue file
   if (data !== '') {
-    console.log(data)
-    const chad = `${TerminalEndpointUrl}/terminal/${data}?secret=MySecretForTerminal&platform=${store.state.platform}`
-    // return axios.delete(${ProductEndpointUrl}/fuels/${data}?secret=MySecretForTermina&platform=${store.state.platform})
-    return chad
+    return axios.delete(`${TerminalEndpointUrl}/terminal/${data}?secret=MySecretForTerminals&platform=${store.state.platform}`)
   }
   return 'error'
 }

@@ -44,6 +44,8 @@
             :item="scope.row"
             :type="'product'"
           />
+          <!-- NEED TO SEND BACK SUCCESSFULLY DELETED  from above SO IT REFETCHES THE PRODUCT LIST -->
+
         </template>
       </el-table-column>
     </el-table>

@@ -98,30 +98,36 @@ export default {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
     handleSubmit() {
-      console.log(this.item._id)
       if (this.type === 'terminal') {
-        console.log(deleteTerminal(this.item._id))
-      } else {
-        console.log(deleteProduct(this.item._id))
+        deleteTerminal(this.item._id).then((response) => {
+          this.confirmationPage(response)
+        })
+      } else if (this.type === 'product') {
+        deleteProduct(this.item._id).then((response) => {
+          this.confirmationPage(response)
+        })
       }
       // delete${this.type}(this.item._id))
       // .then((r) => {
       // console.log(r)
+      // confirmationPage (response)
       // })
+    },
+    confirmationPage(response) {
       this.viewState = 'confirmation'
-      // if (response && response.success){
-      this.confirmation = {
-        text: `Succesfully deleted ${this.item.name} form ${this.type}s list`,
-        icon: 'el-icon-circle-check',
-        iconStyle: 'font-size: 75px; color: green;'
+      if (response && response.data.message === 'Completed') {
+        this.confirmation = {
+          text: `Succesfully deleted ${this.item.name} form ${this.type}s list`,
+          icon: 'el-icon-circle-check',
+          iconStyle: 'font-size: 75px; color: green;'
+        }
+      } else if (!response || response === 'error') {
+        this.confirmation = {
+          text: `Error deleting ${this.item.name} form ${this.type}s list. Please refresh your page and try again. If the Error persists, please contact dev team`,
+          icon: 'el-icon-circle-close',
+          iconStyle: 'font-size: 75px; color: red;'
+        }
       }
-    // }else if (!response || !response.success){
-      // this.confirmation = {
-      //   text: `Error deleting ${this.item.name} form ${this.type}s list. /n Please refresh your page and try again. If the Error persists, please contact Chadmin`,
-      //   icon: 'el-icon-circle-close',
-      //   iconStyle: 'font-size: 75px; color: red;'
-      // }
-    // }
     }
   }
 }
