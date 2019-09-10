@@ -116,6 +116,28 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Lifting Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.liftingPeriods"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="liftingPeriodsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Payment Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.paymentTerms"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="paymentTermsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.status">
@@ -140,6 +162,8 @@ import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchAccount, updateAccount, createAccount } from '@/api/account'
 const fetchFuelList = require('@/api/product').fetchList
 const fetchTerminalList = require('@/api/terminal').fetchList
+const fetchLiftingPeriodsList = require('@/api/liftingPeriod').fetchList
+const fetchPaymentTermsList = require('@/api/paymentTerm').fetchList
 
 const defaultForm = {
   id: '',
@@ -149,7 +173,9 @@ const defaultForm = {
   orderConfirmationEmail: '',
   restrictions: {
     fuels: [],
-    terminals: []
+    terminals: [],
+    liftingPeriods: [],
+    paymentTerms: []
   },
   address: {
     addressLine1: '',
@@ -194,6 +220,8 @@ export default {
       tempRoute: {},
       terminals: [],
       fuels: [],
+      paymentTerms: [],
+      liftingPeriods: [],
       fuelRestrictions: []
     }
   },
@@ -235,6 +263,32 @@ export default {
       set(value) {
         this.postForm.restrictions.terminals = value
       }
+    },
+    liftingPeriodsAvailable: {
+      get() {
+        return this.liftingPeriods.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.liftingPeriods = value
+      }
+    },
+    paymentTermsAvailable: {
+      get() {
+        return this.paymentTerms.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.paymentTerms = value
+      }
     }
   },
   created() {
@@ -246,10 +300,18 @@ export default {
     }
 
     // Fetch the fuels and terminals, to be used as part of the restriction process
-    const requestPromises = [fetchFuelList({ platform: 'OLFDE' }), fetchTerminalList({ platform: 'OLFDE' })]
+    const requestPromises = [
+      fetchFuelList({ platform: 'OLFDE' }),
+      fetchTerminalList({ platform: 'OLFDE' }),
+      fetchLiftingPeriodsList({ platform: 'OLFDE' }),
+      fetchPaymentTermsList({ platform: 'OLFDE' })
+    ]
+
     Promise.all(requestPromises).then((responses) => {
       this.fuels = responses[0].data.fuels
       this.terminals = responses[1].data.terminals
+      this.liftingPeriods = responses[2].data.liftingPeriods
+      this.paymentTerms = responses[3].data.paymentTerms
     })
 
     // Why need to make a copy of this.$route here?
@@ -264,15 +326,26 @@ export default {
         if (!account.restrictions) {
           account.restrictions = {
             fuels: [],
-            terminals: []
+            terminals: [],
+            paymentTerms: [],
+            liftingPeriods: []
           }
         }
 
         if (account.restrictions.fuels.length === 0) {
           account.restrictions.fuels = this.fuels.map(f => f._id)
         }
+
         if (account.restrictions.terminals.length === 0) {
           account.restrictions.terminals = this.terminals.map(f => f._id)
+        }
+
+        if (account.restrictions.paymentTerms != null && account.restrictions.paymentTerms.length === 0) {
+          account.restrictions.paymentTerms = this.paymentTerms.map(f => f._id)
+        }
+
+        if (account.restrictions.liftingPeriods != null && account.restrictions.liftingPeriods.length === 0) {
+          account.restrictions.liftingPeriods = this.liftingPeriods.map(f => f._id)
         }
 
         this.postForm = account
@@ -302,15 +375,6 @@ export default {
 
           // Make a clone of the object
           const accountToSave = Object.assign({}, this.postForm)
-
-          // If we have selected *all* the fuels/terminals available, then send an empty array back. As this means we want *everything*
-          if (accountToSave.restrictions.fuels.length === this.fuels.length) {
-            accountToSave.restrictions.fuels = []
-          }
-
-          if (accountToSave.restrictions.terminals.length === this.terminals.length) {
-            accountToSave.restrictions.terminals = []
-          }
 
           // Save the account
           const methodToCall = this.isEdit ? updateAccount : createAccount
