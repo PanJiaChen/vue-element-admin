@@ -9,7 +9,6 @@
       </sticky>
 
       <div class="createPost-main-container">
-
         <el-row>
           <el-col :span="20">
             <div class="postInfo-container">
@@ -20,7 +19,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Region:" class="postInfo-container-item">
                     <el-select v-model="postForm.region_id" :remote-method="getRemoteRegionList" filterable default-first-option remote placeholder="Search Regions" loading-text="Loading...">

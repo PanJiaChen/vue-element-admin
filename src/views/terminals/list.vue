@@ -78,6 +78,12 @@ export default {
         this.total = response.data.terminals.length
         this.listLoading = false
       })
+    },
+    handleFilter() {
+      // const searchQuery = this.accountName.toLowerCase()
+      // this.filteredList = this.originalList.filter(function(account) {
+      //   return account.name.toLowerCase().includes(searchQuery)
+      // })
     }
   }
 }
