@@ -19,22 +19,22 @@
           <span>{{ scope.row.fullName }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Identifier" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFUK'" align="center" label="Identifier" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.identifier }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Region Id" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Region Id" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.region_id }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Phone" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Phone" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.contactNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="openingHours" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Meta" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.meta }}</span>
         </template>
