@@ -69,13 +69,26 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="$store.state.settings.platform === &quot;OLFDE&quot;">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Category" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.category" placeholder="Product Category" />
                   </el-form-item>
                 </el-col>
               </el-row>
+
+              <el-row v-else>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
+                    <el-radio-group v-model="postForm.meta.category">
+                      <el-radio-button label="SPOT">SPOT</el-radio-button>
+                      <el-radio-button label="BUNKERING">BUNKERING</el-radio-button>
+                      <el-radio-button label="NOT4SALE">NOT4SALE</el-radio-button>
+                    </el-radio-group>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">

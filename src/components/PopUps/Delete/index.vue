@@ -28,7 +28,7 @@
       <div v-else-if="viewState==='confirmation'">
         <i :class="confirmation.icon" :style="confirmation.iconStyle" />
         <p>{{ confirmation.text }}</p>
-        <el-button @click="dialogVisible = false">
+        <el-button @click="closePopup">
           Close
         </el-button>
       </div>
@@ -65,7 +65,6 @@ export default {
       isNameCorrect: true,
       input: '',
       viewState: 'input',
-      Error: false,
       confirmation: {
         text: 'Request has been sent, waiting for a response from the servers',
         icon: 'el-icon-loading',
@@ -94,6 +93,10 @@ export default {
         iconStyle: 'font-size: 75px;'
       }
     },
+    closePopup() {
+      this.dialogVisible = false
+      this.$emit('success', true)
+    },
     checkAllSuccess() {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
     },
@@ -121,14 +124,13 @@ export default {
           icon: 'el-icon-circle-check',
           iconStyle: 'font-size: 75px; color: green;'
         }
-        this.$emit('success', true)
       } else if (!response || response === 'error') {
         this.confirmation = {
           text: `Error deleting ${this.item.name} form ${this.type}s list. Please refresh your page and try again. If the Error persists, please contact dev team`,
           icon: 'el-icon-circle-close',
           iconStyle: 'font-size: 75px; color: red;'
+
         }
-        this.$emit('success', false)
       }
     }
   }
