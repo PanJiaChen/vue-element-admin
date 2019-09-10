@@ -84,6 +84,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/uploader',
+    component: Layout,
+    children: [
+      {
+        path: 'vueUploader',
+        component: () => import('@/views/VueUploader/index'),
+        name: 'VueUploader',
+        meta: { title: 'VueUploader', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
     path: '/documentation',
     component: Layout,
     children: [

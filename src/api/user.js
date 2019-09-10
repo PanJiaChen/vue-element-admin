@@ -22,3 +22,11 @@ export function logout() {
     method: 'post'
   })
 }
+
+export function sendAnalyzeRequest() {
+  return request({
+    url: '/uploader/analyze',
+    method: 'get',
+    baseURL: 'http://www.google.com'
+  })
+}
