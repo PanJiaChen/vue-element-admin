@@ -121,12 +121,14 @@ export default {
           icon: 'el-icon-circle-check',
           iconStyle: 'font-size: 75px; color: green;'
         }
+        this.$emit('success', true)
       } else if (!response || response === 'error') {
         this.confirmation = {
           text: `Error deleting ${this.item.name} form ${this.type}s list. Please refresh your page and try again. If the Error persists, please contact dev team`,
           icon: 'el-icon-circle-close',
           iconStyle: 'font-size: 75px; color: red;'
         }
+        this.$emit('success', false)
       }
     }
   }

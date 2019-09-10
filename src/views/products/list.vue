@@ -43,9 +43,8 @@
           <deletePopUp
             :item="scope.row"
             :type="'product'"
+            @success="successfullyDeleted"
           />
-          <!-- NEED TO SEND BACK SUCCESSFULLY DELETED  from above SO IT REFETCHES THE PRODUCT LIST -->
-
         </template>
       </el-table-column>
     </el-table>
@@ -97,6 +96,11 @@ export default {
         this.total = response.data.fuels.length
         this.listLoading = false
       })
+    },
+    successfullyDeleted: function(val) {
+      if (val) {
+        this.getList()
+      }
     }
   }
 }
