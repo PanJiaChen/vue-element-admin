@@ -14,6 +14,31 @@
           <span>{{ scope.row.name }}</span>
         </template>
       </el-table-column>
+      <el-table-column align="center" label="FullName" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.fullName }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Identifier" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.identifier }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Region Id" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.region_id }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="Phone" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.contactNumber }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column align="center" label="openingHours" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.meta }}</span>
+        </template>
+      </el-table-column>
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
@@ -70,6 +95,7 @@ export default {
       fetchList().then(response => {
         this.originaList = response.data.terminals
         this.filteredList = this.originaList
+        console.log(this.originaList)
         this.total = response.data.terminals.length
         this.listLoading = false
       })
