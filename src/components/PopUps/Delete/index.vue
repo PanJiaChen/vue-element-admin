@@ -4,7 +4,7 @@
       Delete
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
-      <div v-if="viewState==='initialState'">
+      <div v-if="viewState==='input'">
         <div>
           <h3>
             Are you sure you want to delete this {{ type }} ?
@@ -25,15 +25,9 @@
           Confirm
         </el-button>
       </div>
-      <div v-else-if="viewState==='Success'">
-        <h1>SUCCESS you can now close this popup</h1>
-        <h1>{{ item._id }}</h1>
-        <el-button @click="dialogVisible = false">
-          Close
-        </el-button>
-      </div>
-      <div v-else-if="viewState==='Error'">
-        <h1>ERROR please try again, if the error persist contact Chadmin!</h1>
+      <div v-else-if="viewState==='confirmation'">
+        <i :class="confirmation.icon" :style="confirmation.iconStyle" />
+        <p>{{ confirmation.text }}</p>
         <el-button @click="dialogVisible = false">
           Close
         </el-button>
@@ -68,9 +62,15 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      viewState: 'initialState',
       isNameCorrect: true,
-      input: ''
+      input: '',
+      viewState: 'input',
+      Error: false,
+      confirmation: {
+        text: 'Loading',
+        icon: 'el-icon-loading',
+        iconStyle: 'font-size: 75px;'
+      }
     }
   },
   watch: {
@@ -84,9 +84,15 @@ export default {
   },
   methods: {
     openDeletePopup() {
+      // do the object assing thing to default like edit/create product
       this.dialogVisible = true
-      this.viewState = 'initialState'
+      this.viewState = 'input'
       this.input = ''
+      this.confirmation = {
+        text: 'Loading',
+        icon: 'el-icon-loading',
+        iconStyle: 'font-size: 75px;'
+      }
     },
     checkAllSuccess() {
       return Object.keys(this.listObj).every(item => this.listObj[item].hasSuccess)
@@ -98,16 +104,24 @@ export default {
       } else {
         console.log(deleteProduct(this.item._id))
       }
-      console.log(deleteProduct(this.item._id))
       // delete${this.type}(this.item._id))
       // .then((r) => {
       // console.log(r)
       // })
-      if (this.input) {
-        this.viewState = 'Success'
-      } else if (!this.input) {
-        this.viewState = 'Error'
+      this.viewState = 'confirmation'
+      // if (response && response.success){
+      this.confirmation = {
+        text: `Succesfully deleted ${this.item.name} form ${this.type}s list`,
+        icon: 'el-icon-circle-check',
+        iconStyle: 'font-size: 75px; color: green;'
       }
+    // }else if (!response || !response.success){
+      // this.confirmation = {
+      //   text: `Error deleting ${this.item.name} form ${this.type}s list. /n Please refresh your page and try again. If the Error persists, please contact Chadmin`,
+      //   icon: 'el-icon-circle-close',
+      //   iconStyle: 'font-size: 75px; color: red;'
+      // }
+    // }
     }
   }
 }
@@ -117,4 +131,7 @@ export default {
 .inputBox {
   margin-bottom: 20px;
 }
+.icon {
+}
+
 </style>
