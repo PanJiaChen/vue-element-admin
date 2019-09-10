@@ -2,13 +2,13 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-input v-model="listQuery.terminalName" placeholder="Account Name or Email" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="terminalName" placeholder="Terminal Name" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="listLoading" :data="filteredList" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -53,36 +53,32 @@ export default {
   },
   data() {
     return {
-      list: null,
+      terminalName: '',
+      originaList: null,
+      filteredList: null,
       total: 0,
-      listLoading: true,
-      listQuery: {
-        page: 1,
-        limit: 20
-      }
+      listLoading: true
     }
   },
   created() {
     // Set the type for the query
-    this.listQuery.type = this.$route.meta.type
-    this.listQuery.platform = this.$store.state.platform
-
     this.getList()
   },
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.terminals
+      fetchList().then(response => {
+        this.originaList = response.data.terminals
+        this.filteredList = this.originaList
         this.total = response.data.terminals.length
         this.listLoading = false
       })
     },
     handleFilter() {
-      // const searchQuery = this.accountName.toLowerCase()
-      // this.filteredList = this.originalList.filter(function(account) {
-      //   return account.name.toLowerCase().includes(searchQuery)
-      // })
+      const searchQuery = this.terminalName.toLowerCase()
+      this.filteredList = this.originaList.filter(function(terminal) {
+        return terminal.name.toLowerCase().includes(searchQuery)
+      })
     }
   }
 }

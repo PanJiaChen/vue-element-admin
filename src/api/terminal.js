@@ -4,8 +4,7 @@ import store from '../store/modules/settings.js'
 const TerminalEndpointUrl = 'https://metadata.service.development.therig.onlinefuelslabs.io'
 
 export function fetchList(query) {
-  query.platform = store.state.platform
-  return axios.get(`${TerminalEndpointUrl}/terminals`, { params: query })
+  return axios.get(`${TerminalEndpointUrl}/terminals?platform=${store.state.platform}`)
 }
 
 export function fetchTerminal(id) {
