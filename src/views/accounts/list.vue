@@ -27,12 +27,6 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Order Confirmation Email" width="200">
-        <template slot-scope="scope">
-          <span>{{ scope.row.orderConfirmationEmail }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column align="center" label="Phone" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.phone }}</span>
