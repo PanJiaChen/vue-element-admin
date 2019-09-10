@@ -67,7 +67,7 @@ export default {
       viewState: 'input',
       Error: false,
       confirmation: {
-        text: 'Loading',
+        text: 'Request has been sent, waiting for a response from the servers',
         icon: 'el-icon-loading',
         iconStyle: 'font-size: 75px;'
       }
@@ -89,7 +89,7 @@ export default {
       this.viewState = 'input'
       this.input = ''
       this.confirmation = {
-        text: 'Loading',
+        text: 'Request has been sent, waiting for a response from the servers',
         icon: 'el-icon-loading',
         iconStyle: 'font-size: 75px;'
       }
