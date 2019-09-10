@@ -32,7 +32,9 @@ export function createAccount(data) {
     'fuelRestrictions': data.restrictions.fuels,
     'terminalRestrictions': data.restrictions.terminals,
     'paymentTermsRestrictions': data.restrictions.paymentTerms,
-    'liftingPeriodRestrictions': data.restrictions.liftingPeriods
+    'liftingPeriodRestrictions': data.restrictions.liftingPeriods,
+    'sendOrderCompleteAlert': data.sendOrderCompleteAlert,
+    'orderCompleteAlertText': data.orderCompleteAlertText
   }
 
   return axios.post(`${apiUrl}/account/create`, dto)
@@ -56,7 +58,9 @@ export function updateAccount(data) {
     'fuelRestrictions': data.restrictions.fuels,
     'terminalRestrictions': data.restrictions.terminals,
     'paymentTermsRestrictions': data.restrictions.paymentTerms,
-    'liftingPeriodRestrictions': data.restrictions.liftingPeriods
+    'liftingPeriodRestrictions': data.restrictions.liftingPeriods,
+    'sendOrderCompleteAlert': data.sendOrderCompleteAlert,
+    'orderCompleteAlertText': data.orderCompleteAlertText
   }
 
   return axios.put(`${apiUrl}/account/${data.id}`, dto)

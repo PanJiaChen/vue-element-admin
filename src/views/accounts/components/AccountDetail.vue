@@ -93,7 +93,22 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Send Order Complete Alert" class="postInfo-container-item">
+                    <el-switch v-model="postForm.sendOrderCompleteAlert" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-if="postForm.type === 'seller' && postForm.sendOrderCompleteAlert">
+                <el-col :span="20">
+                  <el-form-item label-width="120px" label="Order Complete Email Text" class="postInfo-container-item">
+                    <tinymce v-model="postForm.orderCompleteAlertText" :height="150" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row v-if="postForm.type === 'seller'">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Fuel Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -104,7 +119,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="postForm.type === 'seller'">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Terminal Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -115,7 +130,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="postForm.type === 'seller'">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Lifting Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -126,7 +141,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="postForm.type === 'seller'">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Payment Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -160,6 +175,7 @@
 <script>
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchAccount, updateAccount, createAccount } from '@/api/account'
+import Tinymce from '@/components/Tinymce'
 const fetchFuelList = require('@/api/product').fetchList
 const fetchTerminalList = require('@/api/terminal').fetchList
 const fetchLiftingPeriodsList = require('@/api/liftingPeriod').fetchList
@@ -171,6 +187,8 @@ const defaultForm = {
   phone: '',
   email: '',
   orderConfirmationEmail: '',
+  sendOrderCompleteAlert: false,
+  orderCompleteAlertText: '',
   restrictions: {
     fuels: [],
     terminals: [],
@@ -188,7 +206,7 @@ const defaultForm = {
 
 export default {
   name: 'AccountDetail',
-  components: { Sticky },
+  components: { Sticky, Tinymce },
   props: {
     isEdit: {
       type: Boolean,
@@ -323,6 +341,8 @@ export default {
     fetchData(id) {
       fetchAccount(id).then(response => {
         const account = response.data
+        console.dir(account)
+
         if (!account.restrictions) {
           account.restrictions = {
             fuels: [],
