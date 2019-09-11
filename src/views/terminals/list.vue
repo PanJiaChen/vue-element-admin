@@ -26,7 +26,7 @@
       </el-table-column>
       <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Region Id" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.region_id }}</span>
+          <span>{{ scope.row.regionName }}</span>
         </template>
       </el-table-column>
       <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Phone" width="200">
@@ -34,11 +34,11 @@
           <span>{{ scope.row.contactNumber }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Meta" width="200">
+      <!-- <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Meta" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.meta }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
 
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
@@ -60,7 +60,8 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/terminal'
+const fetchTerminalList = require('@/api/terminal').fetchList
+const fetchRegionList = require('@/api/region').fetchList
 // import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import DeletePopUp from '@/components/PopUps/Delete'
 
@@ -93,12 +94,20 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList().then(response => {
+      fetchTerminalList().then(response => {
         this.originaList = response.data.terminals
         this.filteredList = this.originaList
-        console.log(this.originaList)
         this.total = response.data.terminals.length
         this.listLoading = false
+      }).then(() => {
+        fetchRegionList().then(regions => {
+          this.filteredList.forEach(terminal => {
+            const region = regions.data.regions.find(function(region) {
+              if (region._id === terminal.region_id) { return region }
+            })
+            if (region) { terminal.regionName = region.name }
+          })
+        })
       })
     },
     handleFilter() {

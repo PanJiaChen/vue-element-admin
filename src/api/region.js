@@ -1,9 +1,10 @@
 import axios from 'axios'
+import store from '../store/modules/settings.js'
 
 const RegionEndpointUrl = 'https://metadata.service.development.therig.onlinefuelslabs.io'
 
-export function fetchList(query) {
-  return axios.get(`${RegionEndpointUrl}/regions`, { params: query })
+export function fetchList() {
+  return axios.get(`${RegionEndpointUrl}/regions?platform=${store.state.platform}`)
 }
 
 export function fetchRegion(id) {
