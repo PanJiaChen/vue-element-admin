@@ -49,13 +49,13 @@
                 </el-col>
               </el-row>
               <el-row>
-                <el-col :span="8">
+                <el-col :span="8" v-if="$store.state.settings.platform === 'OLFDE'" >
                   <el-form-item label-width="120px" label="EBV" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.ebv" placeholder="Product EBV" />
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'" >
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Seasonality" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.seasonality" type="textarea" rows="4" placeholder="Product Seasonality" />
