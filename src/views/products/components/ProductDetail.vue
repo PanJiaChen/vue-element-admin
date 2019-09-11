@@ -36,7 +36,7 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="Density" class="postInfo-container-item">
+                  <el-form-item label-width="120px" label="Density (LPT)" class="postInfo-container-item">
                     <el-input v-model="postForm.lpt" placeholder="Product Density" />
                   </el-form-item>
                 </el-col>

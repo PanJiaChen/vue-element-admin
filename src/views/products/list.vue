@@ -32,7 +32,7 @@
           <span>{{ scope.row.duty }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="LPT" width="200">
+      <el-table-column align="center" label="Density (LPT)" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.lpt }}</span>
         </template>
@@ -52,7 +52,6 @@
           <span>{{ scope.row.status }}</span>
         </template>
       </el-table-column>
-
       <el-table-column align="center" label="Actions" width="120">
         <template slot-scope="scope">
           <router-link :to="'/products/edit/' + scope.row._id">
