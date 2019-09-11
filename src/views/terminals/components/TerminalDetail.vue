@@ -36,13 +36,21 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Full Name" class="postInfo-container-item">
                     <el-input v-model="postForm.fullName" placeholder="Terminal Full Name" />
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-row v-else>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Identifier" class="postInfo-container-item">
+                    <el-input v-model="postForm.identifier" placeholder="Terminal Full Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
               <el-row v-if="$store.state.settings.platform === 'OLFDE'">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Contact Num" class="postInfo-container-item">
@@ -189,6 +197,7 @@ export default {
       this.fetchData(id)
     } else {
       this.postForm = Object.assign({}, defaultForm)
+      this.postForm.address = Object.assign({}, defaultForm.address)
     }
 
     // Why need to make a copy of this.$route here?
