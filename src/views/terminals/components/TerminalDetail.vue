@@ -209,8 +209,7 @@ export default {
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/terminals/edit/${r.data.id}`) }
-
+            if (!this.isEdit) { this.$router.push(`/terminals/edit/${r.data.createdTerminal._id}`) }
             this.loading = false
           }).catch((e) => {
             console.dir(e)
