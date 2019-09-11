@@ -50,6 +50,7 @@
           <deletePopUp
             :item="scope.row"
             :type="'terminal'"
+            @success="successfullyDeleted"
           />
         </template>
       </el-table-column>
@@ -105,6 +106,11 @@ export default {
       this.filteredList = this.originaList.filter(function(terminal) {
         return terminal.name.toLowerCase().includes(searchQuery)
       })
+    },
+    successfullyDeleted: function(val) {
+      if (val) {
+        this.getList()
+      }
     }
   }
 }
