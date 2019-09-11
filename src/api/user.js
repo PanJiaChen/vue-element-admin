@@ -25,8 +25,8 @@ export function logout() {
 
 export function sendAnalyzeRequest() {
   return request({
-    url: '/uploader/analyze',
+    url: '/testpredict',
     method: 'get',
-    baseURL: 'http://www.google.com'
+    baseURL: 'http://localhost:8010'
   })
 }
