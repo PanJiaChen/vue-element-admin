@@ -63,7 +63,7 @@
                 </el-col>
               </el-row>
               <el-row v-if="$store.state.settings.platform ==='OLFDE'">
-                <el-col :span="8"> {{ $store.state.settings.platform }}
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="Type" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.type_id">
                       <el-radio-button label="user">User</el-radio-button>
