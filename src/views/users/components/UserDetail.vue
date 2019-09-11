@@ -7,9 +7,7 @@
           Save
         </el-button>
       </sticky>
-
       <div class="createPost-main-container">
-
         <el-row>
           <el-col :span="20">
             <div class="postInfo-container">
@@ -64,8 +62,8 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="8">
+              <el-row v-if="$store.state.settings.platform ==='OLFDE'">
+                <el-col :span="8"> {{ $store.state.settings.platform }}
                   <el-form-item label-width="120px" label="Type" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.type_id">
                       <el-radio-button label="user">User</el-radio-button>
@@ -80,12 +78,10 @@
                     <el-radio-group v-model="postForm.status_id">
                       <el-radio-button label="100">Enabled</el-radio-button>
                       <el-radio-button label="200">Disabled</el-radio-button>
-                      <el-radio-button label="300">Locked</el-radio-button>
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
-
             </div>
           </el-col>
         </el-row>
