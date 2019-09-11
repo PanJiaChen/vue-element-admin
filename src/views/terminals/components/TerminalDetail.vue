@@ -35,6 +35,13 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-row v-if="$store.state.settings.platform === 'OLFUK'">
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Identifier" class="postInfo-container-item">
+                    <el-input v-model="postForm.identifier" placeholder="DeliveredIn Identifier" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Address Line 1" class="postInfo-container-item">
@@ -99,6 +106,7 @@ const defaultForm = {
   id: '',
   name: '',
   region_id: '',
+  identifier: '',
   address: {
     line1: '',
     line2: '',
