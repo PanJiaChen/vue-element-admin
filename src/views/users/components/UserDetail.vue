@@ -229,8 +229,8 @@ export default {
     },
     getRemoteAccountList(query) { // platform is undefined
       query = {}
-      query.platform = this.$store.state.platform
-      query.limit = 100 // to fix limit maybe add another parameter in the Api call
+      query.platform = this.$store.state.settings.platform
+      query.limit = 100000 // to fix limit maybe add another parameter in the Api call
 
       fetchList(query).then(response => {
         if (!response.data.docs) return
