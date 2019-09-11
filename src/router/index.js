@@ -134,6 +134,12 @@ export const asyncRoutes = [
         component: () => import('@/views/accounts/list'),
         name: 'SellerAccountList',
         meta: { title: 'Seller Account List', icon: 'list', type: 'seller' }
+      },
+      {
+        path: 'relationship-list',
+        component: () => import('@/views/accounts/relationships'),
+        name: 'RelationshipMatrix',
+        meta: { title: 'Relationships', icon: 'list' }
       }
     ]
   },
@@ -244,7 +250,7 @@ export const asyncRoutes = [
         path: 'create',
         component: () => import('@/views/products/create'),
         name: 'CreateProduct',
-        meta: { title: 'Create Products', icon: 'edit' }
+        meta: { title: 'Create Product', icon: 'edit' }
       },
       {
         path: 'edit/:id',
@@ -258,6 +264,130 @@ export const asyncRoutes = [
         component: () => import('@/views/products/list'),
         name: 'ProductssList',
         meta: { title: 'Products List', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/lifting-periods',
+    component: Layout,
+    redirect: '/lifting-periods/list',
+    name: 'LiftingPeriods',
+    meta: {
+      title: 'Lifting Periods',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/liftingperiods/create'),
+        name: 'CreateLiftingPeriod',
+        meta: { title: 'Create Lifting Period', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/liftingperiods/edit'),
+        name: 'EditLiftingPeriod',
+        meta: { title: 'Edit Lifting Period', noCache: true, activeMenu: '/liftingperiods/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/liftingperiods/list'),
+        name: 'LiftingPeriodList',
+        meta: { title: 'Lifting Period List', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/payment-terms',
+    component: Layout,
+    redirect: '/payment-terms/list',
+    name: 'PaymentTerms',
+    meta: {
+      title: 'Payment Terms',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/paymentterms/create'),
+        name: 'CreatePaymentTerm',
+        meta: { title: 'Create Payment Terms', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/paymentterms/edit'),
+        name: 'EditPaymentTerm',
+        meta: { title: 'Edit Payment Terms', noCache: true, activeMenu: '/paymentterms/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/paymentterms/list'),
+        name: 'LiftingPaymentTerm',
+        meta: { title: 'Payment Terms List', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/faqs',
+    component: Layout,
+    redirect: '/faqs/list',
+    name: 'FAQs',
+    meta: {
+      title: 'FAQs',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/faqs/create'),
+        name: 'CreateFAQ',
+        meta: { title: 'Create FAQ', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/faqs/edit'),
+        name: 'EditFAQs',
+        meta: { title: 'Edit FAQ', noCache: true, activeMenu: '/faqs/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/faqs/list'),
+        name: 'FAQList',
+        meta: { title: 'FAQ List', icon: 'list' }
+      }
+    ]
+  },
+  {
+    path: '/orders',
+    component: Layout,
+    redirect: '/orders/list',
+    name: 'Orders',
+    meta: {
+      title: 'Orders',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/orders/create'),
+        name: 'CreateOrder',
+        meta: { title: 'Create Order', icon: 'edit' }
+      },
+      {
+        path: 'edit/:id',
+        component: () => import('@/views/orders/edit'),
+        name: 'EditOrder',
+        meta: { title: 'Edit Order', noCache: true, activeMenu: '/orders/list' },
+        hidden: true
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/orders/list'),
+        name: 'OrderList',
+        meta: { title: 'Order List', icon: 'list' }
       }
     ]
   },

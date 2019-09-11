@@ -37,6 +37,10 @@ function __dataToDTO(data) {
     'county': data.address.county,
     'country': data.address.country,
     'postCode': data.address.postCode,
-    'identifier': data.identifier
+    'identifier': data.identifier,
+    'contactNumber': data.contactNumber,
+    'fullName': data.fullName,
+    'meta': data.meta,
+    'regionId': data.region_id
   }
 }

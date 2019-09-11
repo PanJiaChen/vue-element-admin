@@ -22,8 +22,15 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.name" placeholder="Account Name" />
+                  <el-form-item label-width="120px" label="Display Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.name" placeholder="Display Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Full Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.fullName" placeholder="Full Name" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -86,6 +93,65 @@
                   </el-form-item>
                 </el-col>
               </el-row>
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Send Order Complete Alert" class="postInfo-container-item">
+                    <el-switch v-model="postForm.sendOrderCompleteAlert" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-if="postForm.type === 'seller' && postForm.sendOrderCompleteAlert">
+                <el-col :span="20">
+                  <el-form-item label-width="120px" label="Order Complete Email Text" class="postInfo-container-item">
+                    <tinymce v-model="postForm.orderCompleteAlertText" :height="150" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Fuel Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.fuels"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="fuelsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Terminal Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.terminals"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="terminalsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Lifting Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.liftingPeriods"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="liftingPeriodsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row v-if="postForm.type === 'seller'">
+                <el-col :span="12">
+                  <el-form-item label-width="120px" label="Payment Restriction" class="postInfo-container-item">
+                    <el-transfer
+                      v-model="postForm.restrictions.paymentTerms"
+                      :titles="['Disabled', 'Enabled']"
+                      :data="paymentTermsAvailable"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
@@ -109,6 +175,11 @@
 <script>
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { fetchAccount, updateAccount, createAccount } from '@/api/account'
+import Tinymce from '@/components/Tinymce'
+const fetchFuelList = require('@/api/product').fetchList
+const fetchTerminalList = require('@/api/terminal').fetchList
+const fetchLiftingPeriodsList = require('@/api/liftingPeriod').fetchList
+const fetchPaymentTermsList = require('@/api/paymentTerm').fetchList
 
 const defaultForm = {
   id: '',
@@ -116,6 +187,14 @@ const defaultForm = {
   phone: '',
   email: '',
   orderConfirmationEmail: '',
+  sendOrderCompleteAlert: false,
+  orderCompleteAlertText: '',
+  restrictions: {
+    fuels: [],
+    terminals: [],
+    liftingPeriods: [],
+    paymentTerms: []
+  },
   address: {
     addressLine1: '',
     addressLine2: '',
@@ -127,7 +206,7 @@ const defaultForm = {
 
 export default {
   name: 'AccountDetail',
-  components: { Sticky },
+  components: { Sticky, Tinymce },
   props: {
     isEdit: {
       type: Boolean,
@@ -156,7 +235,12 @@ export default {
         // content: [{ validator: validateRequire }],
         // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       },
-      tempRoute: {}
+      tempRoute: {},
+      terminals: [],
+      fuels: [],
+      paymentTerms: [],
+      liftingPeriods: [],
+      fuelRestrictions: []
     }
   },
   computed: {
@@ -171,6 +255,58 @@ export default {
       set(val) {
         this.postForm.display_time = new Date(val)
       }
+    },
+    fuelsAvailable: {
+      get() {
+        return this.fuels.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.fuels = value
+      }
+    },
+    terminalsAvailable: {
+      get() {
+        return this.terminals.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.terminals = value
+      }
+    },
+    liftingPeriodsAvailable: {
+      get() {
+        return this.liftingPeriods.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.liftingPeriods = value
+      }
+    },
+    paymentTermsAvailable: {
+      get() {
+        return this.paymentTerms.map(f => {
+          return {
+            label: f.name,
+            key: f._id
+          }
+        })
+      },
+      set(value) {
+        this.postForm.restrictions.paymentTerms = value
+      }
     }
   },
   created() {
@@ -181,6 +317,21 @@ export default {
       this.postForm = Object.assign({}, defaultForm)
     }
 
+    // Fetch the fuels and terminals, to be used as part of the restriction process
+    const requestPromises = [
+      fetchFuelList({ platform: 'OLFDE' }),
+      fetchTerminalList({ platform: 'OLFDE' }),
+      fetchLiftingPeriodsList({ platform: 'OLFDE' }),
+      fetchPaymentTermsList({ platform: 'OLFDE' })
+    ]
+
+    Promise.all(requestPromises).then((responses) => {
+      this.fuels = responses[0].data.fuels
+      this.terminals = responses[1].data.terminals
+      this.liftingPeriods = responses[2].data.liftingPeriods
+      this.paymentTerms = responses[3].data.paymentTerms
+    })
+
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
     // https://github.com/PanJiaChen/vue-element-admin/issues/1221
@@ -189,7 +340,35 @@ export default {
   methods: {
     fetchData(id) {
       fetchAccount(id).then(response => {
-        this.postForm = response.data
+        const account = response.data
+        console.dir(account)
+
+        if (!account.restrictions) {
+          account.restrictions = {
+            fuels: [],
+            terminals: [],
+            paymentTerms: [],
+            liftingPeriods: []
+          }
+        }
+
+        if (account.restrictions.fuels.length === 0) {
+          account.restrictions.fuels = this.fuels.map(f => f._id)
+        }
+
+        if (account.restrictions.terminals.length === 0) {
+          account.restrictions.terminals = this.terminals.map(f => f._id)
+        }
+
+        if (account.restrictions.paymentTerms != null && account.restrictions.paymentTerms.length === 0) {
+          account.restrictions.paymentTerms = this.paymentTerms.map(f => f._id)
+        }
+
+        if (account.restrictions.liftingPeriods != null && account.restrictions.liftingPeriods.length === 0) {
+          account.restrictions.liftingPeriods = this.liftingPeriods.map(f => f._id)
+        }
+
+        this.postForm = account
 
         // // set tagsview title
         this.setTagsViewTitle()
@@ -207,16 +386,19 @@ export default {
     },
     setPageTitle() {
       const title = 'Edit Account'
-      document.title = `${title} - ${this.postForm.id}`
+      document.title = `${title} - ${this.postForm.name}`
     },
     submitForm() {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
 
+          // Make a clone of the object
+          const accountToSave = Object.assign({}, this.postForm)
+
           // Save the account
           const methodToCall = this.isEdit ? updateAccount : createAccount
-          methodToCall(this.postForm).then((r) => {
+          methodToCall(accountToSave).then((r) => {
             this.$notify({
               title: 'Success',
               message: 'Account Saved',

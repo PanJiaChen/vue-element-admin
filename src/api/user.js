@@ -62,6 +62,16 @@ export function updateUser(data) {
   return axios.put(`${apiUrl}/user/${data.id}`, dto)
 }
 
+export function sendPasswordReset(email, type) {
+  const dto = {
+    email,
+    type,
+    platform: 'OLFDE'
+  }
+
+  return axios.post(`${apiUrl}/user/password/send-reset-link`, dto)
+}
+
 function __dataToDTO(data) {
   return {
     'firstName': data.firstName,

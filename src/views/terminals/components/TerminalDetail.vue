@@ -9,6 +9,7 @@
       </sticky>
 
       <div class="createPost-main-container">
+
         <el-row>
           <el-col :span="20">
             <div class="postInfo-container">
@@ -19,7 +20,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
+              <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Region:" class="postInfo-container-item">
                     <el-select v-model="postForm.region_id" :remote-method="getRemoteRegionList" filterable default-first-option remote placeholder="Search Regions" loading-text="Loading...">
@@ -31,14 +32,21 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Name" class="postInfo-container-item">
-                    <el-input v-model="postForm.name" placeholder="Terminal Name" />
+                    <el-input v-model="postForm.name" placeholder="Terminal Display Name" />
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="$store.state.settings.platform === 'OLFUK'">
+              <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="Identifier" class="postInfo-container-item">
-                    <el-input v-model="postForm.identifier" placeholder="DeliveredIn Identifier" />
+                  <el-form-item label-width="120px" label="Full Name" class="postInfo-container-item">
+                    <el-input v-model="postForm.fullName" placeholder="Terminal Full Name" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="Contact Num" class="postInfo-container-item">
+                    <el-input v-model="postForm.contactNumber" placeholder="Terminal Contact Number" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -79,6 +87,13 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
+                  <el-form-item label-width="120px" label="Opening Hours" class="postInfo-container-item">
+                    <el-input v-model="postForm.meta.openingHours" type="textarea" rows="2" placeholder="Terminal Opening Hours" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.status">
                       <el-radio-button label="100">Enabled</el-radio-button>
@@ -105,19 +120,23 @@ const fetchRegionList = require('@/api/region').fetchList
 const defaultForm = {
   id: '',
   name: '',
+  fullName: '',
+  contactNumber: '',
   region_id: '',
-  identifier: '',
   address: {
     line1: '',
     line2: '',
     county: '',
     postCode: '',
     country: ''
+  },
+  meta: {
+    openingHours: ''
   }
 }
 
 export default {
-  name: 'TerminalDetail',
+  name: 'AccountDetail',
   components: { Sticky },
   props: {
     isEdit: {
@@ -170,7 +189,6 @@ export default {
       this.fetchData(id)
     } else {
       this.postForm = Object.assign({}, defaultForm)
-      this.postForm.address = Object.assign({}, defaultForm.address)
     }
 
     // Why need to make a copy of this.$route here?
@@ -181,7 +199,15 @@ export default {
   methods: {
     fetchData(id) {
       fetchTerminal(id).then(response => {
-        this.postForm = response.data
+        const terminal = response.data
+
+        if (!terminal.meta) {
+          terminal.meta = {
+            openingHours: ''
+          }
+        }
+
+        this.postForm = terminal
 
         // // set tagsview title
         this.setTagsViewTitle()
@@ -206,7 +232,7 @@ export default {
         if (valid) {
           this.loading = true
 
-          // Save the terminal
+          // Save the account
           const methodToCall = this.isEdit ? updateTerminal : createTerminal
           methodToCall(this.postForm).then((r) => {
             this.$notify({
@@ -217,7 +243,8 @@ export default {
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/terminals/edit/${r.data.createdTerminal._id}`) }
+            if (!this.isEdit) { this.$router.push(`/terminals/edit/${r.data.id}`) }
+
             this.loading = false
           }).catch((e) => {
             console.dir(e)
@@ -230,7 +257,7 @@ export default {
     },
     getRemoteRegionList(query) {
       query = {}
-      query.platform = this.$store.state.platform
+      query.platform = 'OLFDE'
       query.limit = 100
       fetchRegionList(query).then(response => {
         if (!response.data.regions) return

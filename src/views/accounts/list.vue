@@ -15,15 +15,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Email" width="250">
+      <el-table-column align="center" label="Full Name" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
+          <span>{{ scope.row.fullName || scope.row.name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Order Confirmation Email" width="200">
+      <el-table-column align="center" label="Email" width="250">
         <template slot-scope="scope">
-          <span>{{ scope.row.orderConfirmationEmail }}</span>
+          <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 

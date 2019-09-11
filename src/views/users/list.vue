@@ -50,13 +50,16 @@
         </template>
       </el-table-column>
 
-      <el-table-column align="center" label="Actions" width="120">
+      <el-table-column align="center" label="Actions" width="250">
         <template slot-scope="scope">
           <router-link :to="'/users/edit/' + scope.row.id">
             <el-button type="primary" size="small" icon="el-icon-edit">
               Edit
             </el-button>
           </router-link>
+          <el-button type="primary" size="small" icon="el-icon-message" @click="sendPasswordResetConfirm(scope.row.email)">
+            Send PW Reset
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -67,7 +70,7 @@
 
 <script>
 const fetchAccountList = require('@/api/account').fetchList
-import { fetchList } from '@/api/user'
+import { fetchList, sendPasswordReset } from '@/api/user'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -124,6 +127,30 @@ export default {
     handleFilter(query) {
       this.listQuery.page = 1
       this.getList()
+    },
+    sendPasswordResetConfirm(email) {
+      this.$confirm(`This will send an email to <b>${email}</b>, prompting them to reset their password with the provided link. Are you sure you want to do this?`, 'Warning', {
+        confirmButtonText: 'Proceed',
+        cancelButtonText: 'Cancel',
+        dangerouslyUseHTMLString: true,
+        type: 'warning'
+      }).then(() => {
+        sendPasswordReset(email, 'RESET').then(() => {
+          // Send the request
+          this.$message({
+            type: 'success',
+            message: 'Password Reset Sent'
+          })
+        }).catch(() => {
+          // Send the request
+          this.$message({
+            type: 'danger',
+            message: 'Password Reset Failed'
+          })
+        })
+      }).catch(() => {
+        // Do nothing, we don't care that they clicked cancel, but if we don't catch it, we get a console error
+      })
     }
   }
 }
