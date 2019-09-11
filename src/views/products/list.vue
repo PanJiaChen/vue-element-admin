@@ -12,9 +12,14 @@
           <span>{{ scope.row.description }}</span>
         </template>
       </el-table-column>
-      <el-table-column align="center" label="Type" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFUK'" align="center" label="Type" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.type }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-else align="center" label="Type" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.meta.category }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Duty" width="200">

@@ -34,7 +34,7 @@ function __dataToDTO(data) {
     'description': data.description,
     'lpt': Number(data.lpt),
     'duty': Number(data.duty),
-    'type': 'SPOT',
+    'type': data.type,
     'platform': store.state.platform,
     'meta': data.meta,
     'status': data.status

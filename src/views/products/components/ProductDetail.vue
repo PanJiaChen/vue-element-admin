@@ -48,14 +48,14 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="8" v-if="$store.state.settings.platform === 'OLFDE'" >
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="EBV" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.ebv" placeholder="Product EBV" />
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="$store.state.settings.platform === 'OLFDE'" >
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Seasonality" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.seasonality" type="textarea" rows="4" placeholder="Product Seasonality" />
@@ -76,19 +76,16 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-
               <el-row v-else>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
-                    <el-radio-group v-model="postForm.meta.category">
+                    <el-radio-group v-model="postForm.type">
                       <el-radio-button label="SPOT">SPOT</el-radio-button>
                       <el-radio-button label="BUNKERING">BUNKERING</el-radio-button>
-                      <el-radio-button label="NOT4SALE">NOT4SALE</el-radio-button>
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
               </el-row>
-
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
@@ -228,7 +225,11 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-
+          console.log(this.postForm)
+          console.log(this.postForm.type)
+          if (this.$store.state.settings.platform === 'OLFDE') {
+            this.postForm.type === 'SPOT'
+          }
           // Save the account
           const methodToCall = this.isEdit ? updateProduct : createProduct
           methodToCall(this.postForm).then((r) => {
