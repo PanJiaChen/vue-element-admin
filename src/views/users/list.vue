@@ -18,6 +18,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column align="center" label="Username" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.username }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Account" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.account.name }}</span>
@@ -33,6 +39,14 @@
       <el-table-column align="center" label="Phone" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.phone }}</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column align="center" label="Status" width="200">
+        <template slot-scope="scope">
+          <span v-if="scope.row.status_id===100">Active</span>
+          <span v-if="scope.row.status_id===200">Inactive</span>
+          <span v-if="scope.row.status_id===300">Locked</span>
         </template>
       </el-table-column>
 
