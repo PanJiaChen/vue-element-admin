@@ -17,9 +17,14 @@
           <span>{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column v-else align="center" label="Type" width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Category" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.meta.category }}</span>
+          <span>{{ scope.row.meta.category }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="ebv" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.meta.ebv }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Duty" width="200">
@@ -30,6 +35,16 @@
       <el-table-column align="center" label="LPT" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.lpt }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Price" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.meta.price }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="seasonality" width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.meta.seasonality }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Status" width="200">
