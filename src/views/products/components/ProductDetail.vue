@@ -69,7 +69,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="$store.state.settings.platform === &quot;OLFDE&quot;">
+              <el-row v-if="$store.state.settings.platform === 'OLFDE'">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Category" class="postInfo-container-item">
                     <el-input v-model="postForm.meta.category" placeholder="Product Category" />
