@@ -93,14 +93,14 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="postForm.type === 'seller'">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' ">
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Send Order Complete Alert" class="postInfo-container-item">
                     <el-switch v-model="postForm.sendOrderCompleteAlert" />
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="postForm.type === 'seller' && postForm.sendOrderCompleteAlert">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' && postForm.sendOrderCompleteAlert">
                 <el-col :span="20">
                   <el-form-item label-width="120px" label="Order Complete Email Text" class="postInfo-container-item">
                     <tinymce v-model="postForm.orderCompleteAlertText" :height="150" />
@@ -108,7 +108,7 @@
                 </el-col>
               </el-row>
 
-              <el-row v-if="postForm.type === 'seller'">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' ">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Fuel Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -119,7 +119,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="postForm.type === 'seller'">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' ">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Terminal Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -130,7 +130,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="postForm.type === 'seller'">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' ">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Lifting Restriction" class="postInfo-container-item">
                     <el-transfer
@@ -141,7 +141,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row v-if="postForm.type === 'seller'">
+              <el-row v-if="postForm.type === 'seller' && $store.state.settings.platform === 'OLFDE' ">
                 <el-col :span="12">
                   <el-form-item label-width="120px" label="Payment Restriction" class="postInfo-container-item">
                     <el-transfer
