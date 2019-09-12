@@ -96,6 +96,19 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/analyzing',
+    hidden: true,
+    component: Layout,
+    children: [
+      {
+        path: 'haha',
+        component: ()=>import('@/views/Analyzing/analyzing'),
+        name: 'analyze',
+        meta: { title: 'analyzing' }
+      }
+    ]
+  },
+  {
     path: '/documentation',
     component: Layout,
     children: [
