@@ -42,6 +42,12 @@
         </template>
       </el-table-column>
 
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label=Type width="200">
+        <template slot-scope="scope">
+          <span>{{ scope.row.type_id }}</span>
+        </template>
+      </el-table-column>
+
       <el-table-column align="center" label="Status" width="200">
         <template slot-scope="scope">
           <span v-if="scope.row.status_id===100">Active</span>
