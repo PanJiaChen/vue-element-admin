@@ -100,7 +100,7 @@
                   </el-form-item>
                 </el-col>
               </el-row>
-              <el-row>
+              <!-- <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.status">
@@ -109,7 +109,7 @@
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
-              </el-row>
+              </el-row> -->
 
             </div>
           </el-col>
@@ -131,6 +131,7 @@ const defaultForm = {
   fullName: '',
   contactNumber: '',
   region_id: '',
+  // status: '',
   address: {
     line1: '',
     line2: '',
@@ -264,11 +265,8 @@ export default {
         }
       })
     },
-    getRemoteRegionList(query) {
-      query = {}
-      query.platform = 'OLFDE'
-      query.limit = 100
-      fetchRegionList(query).then(response => {
+    getRemoteRegionList() {
+      fetchRegionList().then(response => {
         if (!response.data.regions) return
         this.regionListOptions = response.data.regions.map(v => { return { name: v.name, id: v._id } })
       })

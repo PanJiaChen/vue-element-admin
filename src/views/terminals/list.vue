@@ -34,9 +34,10 @@
           <span>{{ scope.row.contactNumber }}</span>
         </template>
       </el-table-column>
-      <!-- <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Meta" width="200">
+      <!-- <el-table-column align="center" label="Status" width="200">
         <template slot-scope="scope">
-          <span>{{ scope.row.meta }}</span>
+          <span v-if="scope.row.status === '100'">Enabled</span>
+          <span v-else>{{scope.row.status}}</span>
         </template>
       </el-table-column> -->
 

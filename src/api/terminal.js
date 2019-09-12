@@ -41,6 +41,7 @@ function __dataToDTO(data) {
     'contactNumber': data.contactNumber,
     'fullName': data.fullName,
     'meta': data.meta,
+    // 'status': data.status,
     'regionId': data.region_id
   }
 }

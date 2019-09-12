@@ -68,7 +68,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchList().then(response => {
         this.list = response.data.regions
         this.total = response.data.regions.length
         this.listLoading = false
