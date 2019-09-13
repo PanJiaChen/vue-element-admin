@@ -101,8 +101,8 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'haha',
-        component: ()=>import('@/views/Analyzing/analyzing'),
+        path: 'analyzing',
+        component: () => import('@/views/Analyzing/analyzing'),
         name: 'analyze',
         meta: { title: 'analyzing' }
       }
