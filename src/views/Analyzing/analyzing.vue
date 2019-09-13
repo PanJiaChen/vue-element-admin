@@ -25,7 +25,7 @@
 <script>
 import Circle9 from 'vue-loading-spinner/src/components/Circle9'
 export default {
-  	name: 'Analyze',
+  name: 'Analyze',
   components: {
     Circle9
   }

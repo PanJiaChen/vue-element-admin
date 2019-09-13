@@ -93,7 +93,7 @@
     "chalk": "2.4.2",
     "chokidar": "2.1.5",
     "connect": "3.6.6",
-    "eslint-plugin-vue": "5.2.2",
+    "eslint-plugin-vue": "^5.2.3",
     "html-webpack-plugin": "3.2.0",
     "lint-staged": "8.1.5",
     "mockjs": "1.0.1-beta3",
