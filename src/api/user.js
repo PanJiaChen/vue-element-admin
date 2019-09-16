@@ -27,7 +27,7 @@ export function sendAnalyzeRequest(token) {
   return request({
     url: '/testpredict',
     method: 'get',
-    baseURL: 'http://localhost:8888',
+    baseURL: 'http://localhost:8010',
     params: { token }
   })
 }
