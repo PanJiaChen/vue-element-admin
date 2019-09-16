@@ -7,6 +7,10 @@ export function fetchList(query) {
   return axios.get(`${apiUrl}/account/search`, { params: query })
 }
 
+export function fetchSubstringList(substring, query) { // This query expects that you have setthe platform in the calling class
+  return axios.get(`${apiUrl}/account/search/${substring}/`, { params: query })
+}
+
 export function fetchRelationships(query) {
   return axios.get(`${apiUrl}/account/relationship`, { params: query })
 }

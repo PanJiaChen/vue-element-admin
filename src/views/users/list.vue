@@ -2,7 +2,7 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <input v-model="substring" placeholder="Search Accounts" class="filter-item">
+      <el-input v-model="substring" placeholder="Search Users" class="filter-item" style="width: 200px;" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
@@ -112,6 +112,13 @@ export default {
     this.getFullList()
   },
   methods: {
+    getList() {
+      if (this.substring === '') {
+        this.getFullList()
+      } else {
+        this.getSubstring()
+      }
+    },
     getFullList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
@@ -127,14 +134,6 @@ export default {
         this.list = response.data.docs
         this.total = response.data.total
       })
-    },
-    getList() {
-      console.log(this.listQuery)
-      if (this.substring === '') {
-        this.getFullList()
-      } else {
-        this.getSubstring()
-      }
     },
     handleFilter() {
       this.listQuery.page = 1

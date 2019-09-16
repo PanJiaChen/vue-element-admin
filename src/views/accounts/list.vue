@@ -2,13 +2,13 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-input v-model="accountName" placeholder="Account Name" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
+      <el-input v-model="substring" placeholder="Account Name" style="width: 200px;" class="filter-item" @keyup.enter.native="handleFilter" />
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
     </div>
 
-    <el-table v-loading="listLoading" :data="filteredList" border fit highlight-current-row style="width: 100%">
+    <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="Name" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.name }}</span>
@@ -50,6 +50,7 @@
 
 <script>
 const fetchAccountList = require('@/api/account').fetchList
+const fetchSubstringList = require('@/api/account').fetchSubstringList
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -68,14 +69,14 @@ export default {
   data() {
     return {
       accountName: '',
-      originalList: null,
-      filteredList: null,
+      list: null,
       total: 0,
       listLoading: true,
       listQuery: {
         page: 1,
         limit: 20
-      }
+      },
+      substring: ''
     }
   },
   created() {
@@ -87,19 +88,30 @@ export default {
   },
   methods: {
     getList() {
+      if (this.substring === '') {
+        this.getFullList()
+      } else {
+        this.getSubstring()
+      }
+    },
+    getFullList() {
       this.listLoading = true
       fetchAccountList(this.listQuery).then(response => {
-        this.originalList = response.data.docs
-        this.filteredList = this.originalList
+        this.list = response.data.docs
         this.total = response.data.total
         this.listLoading = false
       })
     },
-    handleFilter() {
-      const searchQuery = this.accountName.toLowerCase()
-      this.filteredList = this.originalList.filter(function(account) {
-        return account.name.toLowerCase().includes(searchQuery)
+    getSubstring() {
+      fetchSubstringList(this.substring, this.listQuery).then(response => {
+        console.log(response)
+        this.list = response.data.docs
+        this.total = response.data.total
       })
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
     }
   }
 }
