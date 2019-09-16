@@ -75,6 +75,7 @@
     "vue-splitpane": "1.0.4",
     "vue-upload-component": "^2.8.20",
     "vuedraggable": "2.20.0",
+    "vuejs-datepicker": "^1.6.2",
     "vuex": "3.1.0",
     "xlsx": "0.14.1"
   },

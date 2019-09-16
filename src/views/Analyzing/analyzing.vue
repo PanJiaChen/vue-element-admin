@@ -16,10 +16,10 @@
 </script> -->
 
 <template>
-  <div class="vue-spinner">
-    <Circle9 />
-    <h1>Analyzing....</h1>
-  </div>
+    <div class="vue-spinner">
+      <Circle9></Circle9>
+      <h1>Analyzing....</h1>
+    </div>
 </template>
 
 <script>

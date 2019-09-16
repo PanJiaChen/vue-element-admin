@@ -516,18 +516,17 @@ export default {
     },
 
     onSendAnalyzeRequest() {
-      this.$router.push({ name: 'analyze' })
-      this.listLoading = true
-      sendAnalyzeRequest().then(response => {
+        this.$router.push({ name: "analyze" })
+        this.listLoading = true
+        sendAnalyzeRequest().then(response => {
         // console.log("success!")
-        // console.log(response['token'])
         // this.list = response.data.items
         // this.listLoading = false
-        /*eslint-disable*/ 
-        token = response['token']
+        var token = response['token']
+
         // if the response from the server indicating that it's running the analysis, then redirect to a loading view
-        if (this.list.indexOf('anylyzing') >= 0) {
-          // this.$router.push('@/views/Analyzing/analyzing')
+        if (token == 'success') {
+          this.$router.push({ name: "plot" })
 
           // sendAnalyzeRequest().then(response => {
           //   this.list = response.data.items
