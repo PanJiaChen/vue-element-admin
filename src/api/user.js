@@ -31,3 +31,12 @@ export function sendAnalyzeRequest(token) {
     params: { token }
   })
 }
+
+export function sendAnalyzeOnDateRequest(token, fromDate, toDate) {
+  return request({
+    url: '/predictOnDate',
+    method: 'get',
+    baseURL: 'http://localhost:8888',
+    params: { token, fromDate, toDate }
+  })
+}

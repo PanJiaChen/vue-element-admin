@@ -18,20 +18,24 @@
 </script> -->
 
 <template>
-  <div class="vue-spinner">
-    <Circle9></Circle9>
-    <h1>Analyzing....</h1>
-  </div>
+    <div class="vue-spinner">
+      <Circle9></Circle9>
+      <h1>Analyzing....</h1>
+    </div>
 </template>
  
 <script>
   import Circle9 from 'vue-loading-spinner/src/components/Circle9'
+  
   export default {
   	name: 'analyze',
     components: {
       Circle9
     }
+
   }
+
+
 </script>
 
 <style scoped>
