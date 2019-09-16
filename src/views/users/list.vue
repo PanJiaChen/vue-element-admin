@@ -109,12 +109,13 @@ export default {
     // this.listQuery.type = this.$route.meta.type
     this.listQuery.platform = this.$store.state.settings.platform
 
-    this.getList()
+    this.getFullList()
   },
   methods: {
-    getList() {
+    getFullList() {
       this.listLoading = true
       fetchList(this.listQuery).then(response => {
+        console.log(response.data.docs)
         this.list = response.data.docs
         this.total = response.data.total
         this.listLoading = false
@@ -127,13 +128,17 @@ export default {
         this.total = response.data.total
       })
     },
-    handleFilter() {
-      this.listQuery.page = 1
+    getList() {
+      console.log(this.listQuery)
       if (this.substring === '') {
-        this.getList
+        this.getFullList()
       } else {
         this.getSubstring()
       }
+    },
+    handleFilter() {
+      this.listQuery.page = 1
+      this.getList()
     },
     sendPasswordResetConfirm(email) {
       this.$confirm(`This will send an email to <b>${email}</b>, prompting them to reset their password with the provided link. Are you sure you want to do this?`, 'Warning', {
