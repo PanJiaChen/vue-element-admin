@@ -80,7 +80,7 @@
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Status" class="postInfo-container-item">
                     <el-radio-group v-model="postForm.type">
-                      <el-radio-button label="SPOT">SPOT</el-radio-button>
+                      <el-radio-button label="EX-RACK">EX-RACK</el-radio-button>
                       <el-radio-button label="BUNKERING">BUNKERING</el-radio-button>
                     </el-radio-group>
                   </el-form-item>
@@ -228,7 +228,7 @@ export default {
           console.log(this.postForm)
           console.log(this.postForm.type)
           if (this.$store.state.settings.platform === 'OLFDE') {
-            this.postForm.type === 'SPOT'
+            this.postForm.type === 'EX-RACK'
           }
           // Save the account
           const methodToCall = this.isEdit ? updateProduct : createProduct

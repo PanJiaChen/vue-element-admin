@@ -15,8 +15,8 @@
 
             <span style="color: green">B: Enabled<br></span>
 
-            <span v-if="relationshipMatrix[`${buyerAccounts[scope.$index].id}-${seller.id}`].other.enabled_spot" style="color: green">S: Enabled<br></span>
-            <span v-else style="color: red">S: Disabled<br></span>
+            <span v-if="relationshipMatrix[`${buyerAccounts[scope.$index].id}-${seller.id}`].other.enabled_spot" style="color: green">E: Enabled<br></span>
+            <span v-else style="color: red">E: Disabled<br></span>
           </span>
           <span v-else style="color: red;">
             No Relationship
