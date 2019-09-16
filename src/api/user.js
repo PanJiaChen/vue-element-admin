@@ -42,6 +42,9 @@ export function logout() {
   })
 }
 
+export function fetchSubstringList(substring, query) {
+  return axios.get(`${apiUrl}/user/search/${substring}/`, { params: query })
+}
 export function fetchList(query) {
   query.platform = store.state.platform
   return axios.get(`${apiUrl}/user/search`, { params: query })

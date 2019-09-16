@@ -2,9 +2,7 @@
   <div class="app-container">
 
     <div class="filter-container">
-      <el-select v-model="listQuery.accountId" :remote-method="getRemoteAccountList" filterable default-first-option remote placeholder="Search Accounts" loading-text="Loading...">
-        <el-option v-for="(item,index) in accountListOptions" :key="item+index" :label="item.name" :value="item.id" />
-      </el-select>
+      <input v-model="substring" placeholder="Search Accounts" class="filter-item">
       <el-button class="filter-item" type="primary" icon="el-icon-search" @click="handleFilter">
         Search
       </el-button>
@@ -42,7 +40,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label=Type width="200">
+      <el-table-column v-if="$store.state.settings.platform === 'OLFDE'" align="center" label="Type" width="200">
         <template slot-scope="scope">
           <span>{{ scope.row.type_id }}</span>
         </template>
@@ -75,7 +73,7 @@
 </template>
 
 <script>
-const fetchAccountList = require('@/api/account').fetchList
+const fetchSubstringList = require('@/api/user').fetchSubstringList
 import { fetchList, sendPasswordReset } from '@/api/user'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
@@ -98,6 +96,7 @@ export default {
       total: 0,
       listLoading: true,
       accountListOptions: [],
+      substring: '',
       listQuery: {
         page: 1,
         limit: 20,
@@ -121,18 +120,20 @@ export default {
         this.listLoading = false
       })
     },
-    getRemoteAccountList(query) {
-      query = {}
-      query.platform = this.$store.state.settings.platform
-      query.limit = 100
-      fetchAccountList(query).then(response => {
-        if (!response.data.docs) return
-        this.accountListOptions = response.data.docs.map(v => { return { name: v.name, id: v._id } })
+    getSubstring() {
+      fetchSubstringList(this.substring, this.listQuery).then(response => {
+        console.log(response)
+        this.list = response.data.docs
+        this.total = response.data.total
       })
     },
-    handleFilter(query) {
+    handleFilter() {
       this.listQuery.page = 1
-      this.getList()
+      if (this.substring === '') {
+        this.getList
+      } else {
+        this.getSubstring()
+      }
     },
     sendPasswordResetConfirm(email) {
       this.$confirm(`This will send an email to <b>${email}</b>, prompting them to reset their password with the provided link. Are you sure you want to do this?`, 'Warning', {
