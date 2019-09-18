@@ -4,6 +4,7 @@ import Layout from '@/layout'
 
 const tableRouter = {
   path: '/table',
+  hidden: true,
   component: Layout,
   redirect: '/table/complex-table',
   name: 'Table',

@@ -12,7 +12,7 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
-/** 
+/**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
@@ -73,18 +73,19 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/dashboard',
+    redirect: '/uploader',
     children: [
       {
-        path: 'dashboard',
-        component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        path: 'vueUploader',
+        component: () => import('@/views/VueUploader/index'),
+        name: 'VueUploader',
+        meta: { title: 'VueUploader', icon: 'documentation', affix: true }
       }
     ]
   },
   {
     path: '/uploader',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -101,29 +102,16 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'analyzing',
-        component: () => import('@/views/Analyzing/analyzing'),
+        path: 'haha',
+        component: ()=>import('@/views/Analyzing/analyzing'),
         name: 'analyze',
         meta: { title: 'analyzing' }
       }
     ]
   },
   {
-    path: '/plot',
-    //hidden: true,
-    component: Layout,
-
-    children: [
-      {
-        path: 'plot',
-        component: () => import('@/views/plot/index'),
-        name: 'plot',
-        meta: { title: 'plot' }
-      }
-    ]
-  },
-  {
     path: '/documentation',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -136,6 +124,7 @@ export const constantRoutes = [
   },
   {
     path: '/guide',
+    hidden: true,
     component: Layout,
     redirect: '/guide/index',
     children: [
@@ -170,6 +159,7 @@ export const constantRoutes = [
 export const asyncRoutes = [
   {
     path: '/permission',
+    hidden: true,
     component: Layout,
     redirect: '/permission/page',
     alwaysShow: true, // will always show the root menu
@@ -212,6 +202,7 @@ export const asyncRoutes = [
 
   {
     path: '/icon',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -231,6 +222,7 @@ export const asyncRoutes = [
 
   {
     path: '/example',
+    hidden: true,
     component: Layout,
     redirect: '/example/list',
     name: 'Example',
@@ -263,6 +255,7 @@ export const asyncRoutes = [
 
   {
     path: '/tab',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -276,6 +269,7 @@ export const asyncRoutes = [
 
   {
     path: '/error',
+    hidden: true,
     component: Layout,
     redirect: 'noRedirect',
     name: 'ErrorPages',
@@ -301,6 +295,7 @@ export const asyncRoutes = [
 
   {
     path: '/error-log',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -314,6 +309,7 @@ export const asyncRoutes = [
 
   {
     path: '/excel',
+    hidden: true,
     component: Layout,
     redirect: '/excel/export-excel',
     name: 'Excel',
@@ -351,6 +347,7 @@ export const asyncRoutes = [
 
   {
     path: '/zip',
+    hidden: true,
     component: Layout,
     redirect: '/zip/download',
     alwaysShow: true,
@@ -368,6 +365,7 @@ export const asyncRoutes = [
 
   {
     path: '/pdf',
+    hidden: true,
     component: Layout,
     redirect: '/pdf/index',
     children: [
@@ -387,6 +385,7 @@ export const asyncRoutes = [
 
   {
     path: '/theme',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -400,6 +399,7 @@ export const asyncRoutes = [
 
   {
     path: '/clipboard',
+    hidden: true,
     component: Layout,
     children: [
       {
@@ -413,6 +413,7 @@ export const asyncRoutes = [
 
   {
     path: 'external-link',
+    hidden: true,
     component: Layout,
     children: [
       {
