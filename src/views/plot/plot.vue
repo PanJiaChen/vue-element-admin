@@ -9,6 +9,7 @@
 	  <button type="button" class="btn btn-success" @click="onSendAnalyzeOnDateRequest">Apply</button>
     </div>
     <iframe src="http://localhost:808" width=1300 height=600></iframe>
+    <button type="button" class="btn btn-secondary" @click="onBackToUpload">Back</button>
 </template>
 
 <script>
@@ -39,6 +40,9 @@ export default {
 	          this.$router.push({ name: "plot" })
 	        }
 	    })
+	  },
+	  onBackToUpload() {
+	  	this.$router.push({ name: "Task" })
 	  }
   }
 }

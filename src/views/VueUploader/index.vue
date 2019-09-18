@@ -1,9 +1,10 @@
 <template>
 <div class="example-full">
-  <button type="button" class="btn btn-danger float-right btn-is-option" @click.prevent="isOption = !isOption">
+  <taskList></taskList>
+<!--   <button type="button" class="btn btn-danger float-right btn-is-option" @click.prevent="isOption = !isOption">
     <i class="fa fa-cog" aria-hidden="true"></i>
     Options
-  </button>
+  </button> -->
   <h1 id="example-title" class="example-title">Data Uploader</h1>
 
   <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
@@ -309,11 +310,12 @@ import Cropper from 'cropperjs'
 import ImageCompressor from '@xkeshi/image-compressor'
 import FileUpload from 'vue-upload-component'
 import { sendAnalyzeRequest } from '@/api/user'
+import taskList from '@/views/VueUploader/components/taskList'
 // import 'bootstrap'
 // import 'bootstrap/dist/css/bootstrap.min.css'
 export default {
   components: {
-    FileUpload,
+    FileUpload, taskList
   },
   data() {
     return {
@@ -332,7 +334,7 @@ export default {
       thread: 3,
       name: 'file',
       postAction: '/upload/post',
-      putAction: 'http://localhost:8888/uploader',
+      putAction: 'http://localhost:8010/uploader',
       headers: {
         'X-Csrf-Token': 'xxxx',
       },
