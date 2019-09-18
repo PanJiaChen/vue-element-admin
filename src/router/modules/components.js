@@ -4,6 +4,7 @@ import Layout from '@/layout'
 
 const componentsRouter = {
   path: '/components',
+  hidden: true,
   component: Layout,
   redirect: 'noRedirect',
   name: 'ComponentDemo',
