@@ -236,6 +236,28 @@ export const asyncRoutes = [
       }
     ]
   },
+  { path: '/activesymbol',
+    component: Layout,
+    name: 'Ice Pricing',
+    meta: {
+      title: 'Ice Pricing',
+      icon: 'example'
+    },
+    children: [
+      {
+        path: 'create',
+        component: () => import('@/views/active-symbol/create'),
+        name: 'CreateActiveSymbol',
+        meta: { title: 'Create Active Pricing', icon: 'edit' }
+      },
+      {
+        path: 'list',
+        component: () => import('@/views/active-symbol/list'),
+        name: 'ActiveSymbolList',
+        meta: { title: 'Ice Pricing List', icon: 'list' }
+      }
+    ]
+  },
   {
     path: '/products',
     component: Layout,
