@@ -1,15 +1,21 @@
 <template>
 	<div>
-	  <span style="font-weight: bold">You could also run the analysis on the data from the specific date range</span><br>
-	  <span>From: </span>
-	  <Datepicker v-model="state.from" style="display: inline-block" :bootstrap-styling="true">
-	  </Datepicker>
-	  <span>To: </span>
-	  <Datepicker v-model="state.to" style="display: inline-block" :bootstrap-styling="true"></Datepicker>
-	  <button type="button" class="btn btn-success" @click="onSendAnalyzeOnDateRequest">Apply</button>
+		<div>
+		<span style="font-weight: bold">You could also run the analysis on the data from the specific date range</span><br>
+		<span>From: </span>
+		<Datepicker v-model="state.from" style="display: inline-block" :bootstrap-styling="true">
+		</Datepicker>
+		<span>To: </span>
+		<Datepicker v-model="state.to" style="display: inline-block" :bootstrap-styling="true"></Datepicker>
+		<button type="button" class="btn btn-success" @click="onSendAnalyzeOnDateRequest">Apply</button>
+		</div>
+		<div>
+		<iframe src="http://localhost:808" width=1000 height=600></iframe>
+		</div>
+		<div>
+		<button type="button" class="btn btn-secondary" @click="onBackToUpload">Back</button>
+		</div>
     </div>
-    <iframe src="http://localhost:808" width=1300 height=600></iframe>
-    <button type="button" class="btn btn-secondary" @click="onBackToUpload">Back</button>
 </template>
 
 <script>

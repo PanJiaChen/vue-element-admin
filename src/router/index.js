@@ -97,6 +97,20 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/plot',
+    hidden: true,
+    component: Layout,
+
+    children: [
+      {
+        path: 'plot',
+        component: () => import('@/views/plot/plot'),
+        name: 'plot',
+        meta: { title: 'plot' }
+      }
+    ]
+  },
+  {
     path: '/analyzing',
     hidden: true,
     component: Layout,
