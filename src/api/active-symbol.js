@@ -2,6 +2,10 @@ import axios from 'axios'
 
 const apiUrl = 'https://localhost:3000'
 
+// export function fetchList(query) {
+//   return axios.get(`${apiUrl}/fuels`, { params: query })
+// }
+
 export function fetchActiveSymbol() {
   return axios.get(`${apiUrl}/symbol/future/active/`)
 }

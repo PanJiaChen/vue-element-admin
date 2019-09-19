@@ -63,7 +63,7 @@
 <script>
 /* eslint-disable */
 import Sticky from '@/components/Sticky' // 粘性header组件
-// import { fetchActiveSymbol, createActiveSymbol } from '@/api/active-symbol'
+import { fetchActiveSymbol, createActiveSymbol } from '@/api/active-symbol'
 
 const defaultForm = {
   type: '',
@@ -136,19 +136,9 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchProduct(id).then(response => {
-        const product = response.data
-
-        if (!product.meta) {
-          product.meta = {
-            ebv: '',
-            category: '',
-            seasonality: '',
-            price: ''
-          }
-        }
-
-        this.postForm = product
+      fetchActiveSymbol(id).then(response => {
+        const activeSymbol = response.data
+        this.postForm = activeSymbol
 
         // // set tagsview title
         this.setTagsViewTitle()
@@ -159,15 +149,7 @@ export default {
         console.log(err)
       })
     },
-    setTagsViewTitle() {
-      const title = 'Edit Product'
-      const route = Object.assign({}, this.tempRoute, { title: `${title} - ${this.postForm.name}` })
-      this.$store.dispatch('tagsView/updateVisitedView', route)
-    },
-    setPageTitle() {
-      const title = 'Edit Product'
-      document.title = `${title} - ${this.postForm.id}`
-    },
+    
     submitForm() {
       this.$refs.postForm.validate(valid => {
         if (valid) {
@@ -178,17 +160,17 @@ export default {
             this.postForm.type === 'EX-RACK'
           }
           // Save the account
-          const methodToCall = this.isEdit ? updateProduct : createProduct
+          const methodToCall = this.isEdit ? updateActiveSymbol : createActiveSymbol
           methodToCall(this.postForm).then((r) => {
             this.$notify({
               title: 'Success',
-              message: 'Product Saved',
+              message: 'Ice Pricing Saved',
               type: 'success',
               duration: 2000
             })
 
             // Redirect to the edit page when we create a new one
-            if (!this.isEdit) { this.$router.push(`/products/edit/${r.data.createdFuel._id}`) }
+            // if (!this.isEdit) { this.$router.push(`/products/edit/${r.data.createdFuel._id}`) }
 
             this.loading = false
           }).catch((e) => {
