@@ -238,6 +238,7 @@ export const asyncRoutes = [
   },
   { path: '/activesymbol',
     component: Layout,
+    // redirect: '/pricings/list,'
     name: 'Ice Pricing',
     meta: {
       title: 'Ice Pricing',

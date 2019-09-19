@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const apiUrl = 'https://localhost:3000'
 
-export function fetchActiveSymbols() {
+export function fetchActiveSymbol() {
   return axios.get(`${apiUrl}/symbol/future/active/`)
 }
 
