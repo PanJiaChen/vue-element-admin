@@ -13,18 +13,10 @@
         <el-row>
           <el-col :span="20">
             <div class="postInfo-container">
-              <el-row v-if="isEdit">
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="Id" class="postInfo-container-item">
-                    <el-input v-model="postForm._id" placeholder="Id" readonly />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Type" class="postInfo-container-item">
-                    <el-radio-group v-model="postForm.status">
+                    <el-radio-group v-model="postForm.type">
                       <el-radio-button label="SETTLE" value="SETTLE">Settle</el-radio-button>
                       <el-radio-button label="LIVE" value="LIVE">Live</el-radio-button>
                     </el-radio-group>
@@ -35,9 +27,9 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Pricing Point" class="postInfo-container-item">
-                    <el-radio-group v-model="postForm.status">
+                    <el-radio-group v-model="postForm.symbol">
                       <el-radio-button label="GAS" value="GAS">Gas</el-radio-button>
-                      <el-radio-button label="GAS1" value="GAS<1>">Gas1</el-radio-button>
+                      <el-radio-button label="GAS<1>" value="GAS<1>">Gas 1</el-radio-button>
                     </el-radio-group>
                   </el-form-item>
                 </el-col>
@@ -46,7 +38,7 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="Start Date" class="postInfo-container-item">
-                    <el-date-picker v-model="postForm.startDate" type="date" placeholder="Pick a Date" />
+                    <el-date-picker v-model="postForm.start_date" type="date" placeholder="Pick a Date" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -63,7 +55,7 @@
 <script>
 /* eslint-disable */
 import Sticky from '@/components/Sticky' // 粘性header组件
-import { fetchActiveSymbol, createActiveSymbol } from '@/api/active-symbol'
+import { createActiveSymbol } from '@/api/active-symbol'
 
 const defaultForm = {
   type: '',
@@ -104,7 +96,7 @@ export default {
         // source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
       },
       tempRoute: {}
-    }
+    } 
   },
   computed: {
     displayTime: {
@@ -121,13 +113,7 @@ export default {
     }
   },
   created() {
-    if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
-    } else {
-      this.postForm = Object.assign({}, defaultForm)
-      this.postForm.meta = Object.assign({}, defaultForm.meta)
-    }
+    
 
     // Why need to make a copy of this.$route here?
     // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
@@ -135,33 +121,17 @@ export default {
     this.tempRoute = Object.assign({}, this.$route)
   },
   methods: {
-    fetchData(id) {
-      fetchActiveSymbol(id).then(response => {
-        const activeSymbol = response.data
-        this.postForm = activeSymbol
-
-        // // set tagsview title
-        this.setTagsViewTitle()
-
-        // // set page title
-        this.setPageTitle()
-      }).catch(err => {
-        console.log(err)
-      })
-    },
     
     submitForm() {
-      this.$refs.postForm.validate(valid => {
+      this.$refs.postForm.validate(valid => { 
         if (valid) {
           this.loading = true
-          console.log(this.postForm)
-          console.log(this.postForm.type)
-          if (this.$store.state.settings.platform === 'OLFDE') {
-            this.postForm.type === 'EX-RACK'
-          }
+          console.log("1:",this.postForm)
+          console.log("2:",this.loading)
+                  
+    
           // Save the account
-          const methodToCall = this.isEdit ? updateActiveSymbol : createActiveSymbol
-          methodToCall(this.postForm).then((r) => {
+          createActiveSymbol(this.postForm).then((r) => {
             this.$notify({
               title: 'Success',
               message: 'Ice Pricing Saved',
