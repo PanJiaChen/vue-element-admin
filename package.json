@@ -53,6 +53,7 @@
     "element-ui": "2.7.0",
     "file-saver": "2.0.1",
     "fuse.js": "3.4.4",
+    "papaparse": "^5.0.2",
     "js-cookie": "2.2.0",
     "jsonlint": "1.6.3",
     "jszip": "3.2.1",
