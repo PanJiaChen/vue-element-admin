@@ -60,8 +60,7 @@ import { createActiveSymbol } from '@/api/active-symbol'
 const defaultForm = {
   type: '',
   symbol: '',
-  start_date: ''
-
+  start_date: '',
 }
 
 export default {
@@ -126,8 +125,7 @@ export default {
       this.$refs.postForm.validate(valid => { 
         if (valid) {
           this.loading = true
-          console.log("1:",this.postForm)
-          console.log("2:",this.loading)
+       
                   
     
           // Save the account

@@ -14,10 +14,17 @@ export function createActiveSymbol(data) {
   const dto = {
     'type': data.type,
     'start_date': data.start_date,
-    'symbol': data.symbol
+    'symbol': data.symbol,
+    'platform': 'OLFUK',
+    'allow_retroactive_date': false
+    // 'type': 'SETTLE',
+    // 'start_date': '2019-10-20T13:53:32.216Z',
+    // 'symbol': 'GAS'
   }
   if (data.allow_retroactive_data) dto.allow_retroactive_data = data.allow_retroactive_data
   if (data.platform) dto.platform = data.platform
+
+  console.log((`${apiUrl}/symbol/future/active`))
 
   return axios.put(`${apiUrl}/symbol/future/active`, dto)
 }
