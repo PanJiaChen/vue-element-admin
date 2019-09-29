@@ -111,6 +111,21 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/plotTest',
+    hidden: true,
+    component: Layout,
+    props: true,
+    children: [
+      {
+        path: 'plotTest',
+        component: () => import('@/views/plotTest/plotTest'),
+        props: true,
+        name: 'plotTest',
+        meta: { title: 'plotTest', icon: 'chart' }
+      }
+    ]
+  },
+  {
     path: '/analyzing',
     hidden: true,
     component: Layout,

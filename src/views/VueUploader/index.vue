@@ -114,7 +114,7 @@
       </div>
       <button type="button" class="btn btn-success" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="$refs.upload.active = true">
         <i class="fa fa-arrow-up" aria-hidden="true"></i>
-        Start Upload 
+        Start Upload
       </button>
       <button type="button" class="btn btn-warning" v-if="!$refs.upload || !$refs.upload.active" @click.prevent="onSendAnalyzeRequest">
         Analyze
@@ -531,25 +531,33 @@ export default {
     },
 
     onSendAnalyzeRequest() {
-        this.$router.push({ name: "analyze" })
-        this.listLoading = true
-        sendAnalyzeRequest().then(response => {
-        // console.log("success!")
-        // this.list = response.data.items
-        // this.listLoading = false
-        var token = response['token']
+        var k = [100, 120, 161, 134, 105, 160, 165,190,200]
+        this.$router.push({ name: "plotTest", params: {
+          past: {
+            yAxisData: [100, 120, 161, 134, 105, 160, 165, 190,200,250],
+            xAxisData: ['2019-7-13', '2019-7-14', '2019-7-15', '2019-7-16', '2019-7-17', '2019-7-18', '2019-7-19', '2019-7-20','2019-7-21','2019-7-22'] ,
+            label: 'Past',
+            colorPicked: '#999997'
+          },
+          future: {
+            yAxisData: [260, 230, 270, 285, 295, 300, 310,330],
+            xAxisData: ['2019-8-13', '2019-8-14', '2019-8-15', '2019-8-16', '2019-8-17', '2019-8-18', '2019-8-19', '2019-8-20'] ,
+            label: 'Future',
+            colorPicked: '#519e19'
+          }
+          }})
 
-        // if the response from the server indicating that it's running the analysis, then redirect to a loading view
-        if (token == 'success') {
-          this.$router.push({ name: "plot" })
+        // this.$router.push({ name: "analyze" })
+        // this.listLoading = true
+        // sendAnalyzeRequest().then(response => {
+        // var token = response['token']
+        //
+        // // if the response from the server indicating that it's running the analysis, then redirect to a loading view
+        // if (token == 'success') {
+        //   this.$router.push({ name: "plot" })
+        // }
+      // })
 
-          // sendAnalyzeRequest().then(response => {
-          //   this.list = response.data.items
-          //   this.listLoading = false
-
-          // }
-        }
-      })
     }
   }
 }
@@ -730,7 +738,7 @@ import 'vue-upload-component/dist/vue-upload-component.part.css'
 
 
 
- 
+
 .file-uploads {
   overflow: hidden;
   position: relative;
