@@ -33,14 +33,26 @@ export default {
   methods: {
     getBreadcrumb() {
       // only show routes with meta.title
-      let matched = this.$route.matched.filter(item => item.meta && item.meta.title)
+      let matched = []
+      this.$route.matched.forEach(item => {
+        if (item.meta && item.meta.title && item.meta.breadcrumb !== false) {
+          matched.push({
+            meta: {
+              title: item.meta.title
+            },
+            path: item.path,
+            name: item.name
+          })
+        }
+      })
+
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
         matched = [{ path: '/dashboard', meta: { title: 'Dashboard' }}].concat(matched)
       }
 
-      this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      this.levelList = matched
     },
     isDashboard(route) {
       const name = route && route.name
