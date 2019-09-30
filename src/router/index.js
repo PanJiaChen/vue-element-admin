@@ -73,13 +73,13 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/uploader',
+    redirect: '/vueUploader',
     children: [
       {
         path: 'vueUploader',
         component: () => import('@/views/VueUploader/index'),
-        name: 'VueUploader',
-        meta: { title: 'VueUploader', icon: 'documentation', affix: true }
+        name: 'Task',
+        meta: { title: 'Task', icon: 'documentation', affix: true }
       }
     ]
   },
@@ -91,8 +91,37 @@ export const constantRoutes = [
       {
         path: 'vueUploader',
         component: () => import('@/views/VueUploader/index'),
-        name: 'VueUploader',
-        meta: { title: 'VueUploader', icon: 'documentation', affix: true }
+        name: 'Task',
+        meta: { title: 'Task', icon: 'documentation', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/plot',
+    hidden: true,
+    component: Layout,
+
+    children: [
+      {
+        path: 'plot',
+        component: () => import('@/views/plot/plot'),
+        name: 'plot',
+        meta: { title: 'plot' }
+      }
+    ]
+  },
+  {
+    path: '/plotTest',
+    hidden: true,
+    component: Layout,
+    props: true,
+    children: [
+      {
+        path: 'plotTest',
+        component: () => import('@/views/plotTest/plotTest'),
+        props: true,
+        name: 'plotTest',
+        meta: { title: 'plotTest', icon: 'chart' }
       }
     ]
   },

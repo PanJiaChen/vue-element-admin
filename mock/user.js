@@ -26,7 +26,7 @@ const users = {
 export default [
   // user login
   {
-    url: '/user/login',
+    url: '/user/loogin',
     type: 'post',
     response: config => {
       const { username } = config.body
@@ -78,6 +78,18 @@ export default [
       return {
         code: 20000,
         data: 'success'
+      }
+    }
+  },
+
+  // plot prediction graph
+  {
+    url: '/testpredict',
+    type: 'get',
+    response: _ => {
+      return {
+        code: 20000,
+        token: 'success'
       }
     }
   }

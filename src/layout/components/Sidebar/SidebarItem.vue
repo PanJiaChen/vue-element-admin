@@ -21,6 +21,7 @@
         class="nest-menu"
       />
     </el-submenu>
+<!--     <button type="button" class="btn btn-outline-light" style="margin-left: 5px" @click="addNewTask">+</button> -->
   </div>
 </template>
 
@@ -57,6 +58,12 @@ export default {
     return {}
   },
   methods: {
+    // addNewTask() {
+    //   this.item.children.push({
+    //     name: "Task 2",
+    //     path: ""
+    //   })
+    // },
     hasOneShowingChild(children = [], parent) {
       const showingChildren = children.filter(item => {
         if (item.hidden) {
@@ -67,6 +74,7 @@ export default {
           return true
         }
       })
+      // console.log(showingChildren)
 
       // When there is only one child router, the child router is displayed by default
       if (showingChildren.length === 1) {
