@@ -64,7 +64,9 @@ export default {
       fullscreen: false,
       languageTypeList: {
         'en': 'en',
-        'zh': 'zh_CN'
+        'zh': 'zh_CN',
+        'es': 'es_MX',
+        'ja': 'ja'
       }
     }
   },
@@ -114,6 +116,7 @@ export default {
       const _this = this
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
+        language: this.languageTypeList['en'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
