@@ -531,8 +531,19 @@ export default {
     },
 
     onSendAnalyzeRequest() {
-        var k = [100, 120, 161, 134, 105, 160, 165,190,200]
-        this.$router.push({ name: "plotTest", params: {
+        // var k = [100, 120, 161, 134, 105, 160, 165,190,200]
+
+
+        this.$router.push({ name: "analyze" })
+        this.listLoading = true
+        sendAnalyzeRequest().then(response => {
+        var token = response['token']
+        var para = response['future']
+        
+        // if the response from the server indicating that it's running the analysis, then redirect to a loading view
+        if (token == 'success') {
+          // this.$router.push({ name: "plot" })
+          this.$router.push({ name: "plotTest", params: {
           past: {
             yAxisData: [100, 120, 161, 134, 105, 160, 165, 190,200,250],
             xAxisData: ['2019-7-13', '2019-7-14', '2019-7-15', '2019-7-16', '2019-7-17', '2019-7-18', '2019-7-19', '2019-7-20','2019-7-21','2019-7-22'] ,
@@ -546,17 +557,8 @@ export default {
             colorPicked: '#519e19'
           }
           }})
-
-        // this.$router.push({ name: "analyze" })
-        // this.listLoading = true
-        // sendAnalyzeRequest().then(response => {
-        // var token = response['token']
-        //
-        // // if the response from the server indicating that it's running the analysis, then redirect to a loading view
-        // if (token == 'success') {
-        //   this.$router.push({ name: "plot" })
-        // }
-      // })
+        }
+      })
 
     }
   }
