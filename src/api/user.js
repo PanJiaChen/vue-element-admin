@@ -29,7 +29,7 @@ export function sendAnalyzeRequest(token) {
   return request({
     url: '/testpredict',
     method: 'get',
-    // baseURL: 'http://localhost:8010',
+    baseURL: 'http://localhost:8010',
     // authorization: token,
     // params: { token }
   })
