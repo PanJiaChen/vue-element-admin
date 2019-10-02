@@ -108,7 +108,7 @@ export default {
           data: yAxisData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
-        }
+        },
         // {
         //   name: 'actual',
         //   smooth: true,

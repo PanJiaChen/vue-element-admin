@@ -63,6 +63,21 @@ export default {
         default: '#999997'
       }
     },
+    past_predict: {
+      xAxisData: {
+        default: [120, 82, 91, 154, 162, 140, 145,230]
+      },
+      yAxisData: {
+        default: ['a', 'x', 'c', 'd', 'e', 'f', 'g', 'h']
+      },
+      label: {
+        default: 'Future'
+      },
+      colorPicked: {
+        default: '#999997'
+      }
+    },
+
     future: {
       xAxisData: {
         default: [120, 82, 91, 154, 162, 140, 145,230]
