@@ -540,12 +540,14 @@ export default {
         var token = response['token']
         var future = response['future']
         var past = response['past']
+        var past_predict = response['past_predict']
         
         // if the response from the server indicating that it's running the analysis, then redirect to a loading view
         if (token == 'success') {
           // this.$router.push({ name: "plot" })
           this.$router.push({ name: "plotTest", params: {
             past,
+            past_predict,
             future
           }})
         }
