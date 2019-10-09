@@ -1,4 +1,4 @@
-const { run } = require('runjs')
+const { sh } = require('tasksfile')
 const chalk = require('chalk')
 const config = require('../vue.config.js')
 const rawArgv = process.argv.slice(2)
@@ -7,7 +7,7 @@ const args = rawArgv.join(' ')
 if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
   const report = rawArgv.includes('--report')
 
-  run(`vue-cli-service build ${args}`)
+  sh(`vue-cli-service build ${args}`)
 
   const port = 9526
   const publicPath = config.publicPath
@@ -31,5 +31,5 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
 
   })
 } else {
-  run(`vue-cli-service build ${args}`)
+  sh(`vue-cli-service build ${args}`)
 }
