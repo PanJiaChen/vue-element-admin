@@ -248,7 +248,8 @@ export default {
       // 浏览器是否支持该控件
       isSupported,
       // 浏览器是否支持触屏事件
-      isSupportTouch: document.hasOwnProperty('ontouchstart'),
+
+      isSupportTouch: Object.prototype.hasOwnProperty.call(document, 'ontouchstart'),
       // 步骤
       step: 1, // 1选择文件 2剪裁 3上传
       // 上传状态及进度

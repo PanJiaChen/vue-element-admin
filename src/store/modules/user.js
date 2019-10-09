@@ -104,6 +104,7 @@ const actions = {
 
   // dynamically modify permissions
   changeRoles({ commit, dispatch }, role) {
+    // eslint-disable-next-line
     return new Promise(async resolve => {
       const token = role + '-token'
 
