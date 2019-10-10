@@ -72,8 +72,8 @@ export default {
     this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
-    addPinyinField(list) {
-      const pinyin = require('pinyin')
+    async addPinyinField(list) {
+      const { default: pinyin } = await import('pinyin')
       if (Array.isArray(list)) {
         list.forEach(element => {
           const title = element.title
