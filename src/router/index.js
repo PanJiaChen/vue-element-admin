@@ -71,9 +71,9 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: '',
+    path: '/',
     component: Layout,
-    redirect: 'dashboard',
+    redirect: '/dashboard',
     children: [
       {
         path: 'dashboard',
@@ -396,6 +396,7 @@ export const asyncRoutes = [
     ]
   },
 
+  // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
 

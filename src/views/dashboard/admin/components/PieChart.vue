@@ -54,7 +54,6 @@ export default {
           bottom: '10',
           data: ['Industries', 'Technology', 'Forex', 'Gold', 'Forecasts']
         },
-        calculable: true,
         series: [
           {
             name: 'WEEKLY WRITE ARTICLES',
