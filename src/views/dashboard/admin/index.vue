@@ -115,4 +115,10 @@ export default {
     margin-bottom: 32px;
   }
 }
+
+@media (max-width:1024px) {
+  .chart-wrapper {
+    padding: 8px;
+  }
+}
 </style>
