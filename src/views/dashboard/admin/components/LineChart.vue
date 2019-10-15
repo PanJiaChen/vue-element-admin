@@ -62,7 +62,85 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ xAxisData, yAxisData, label, colorPicked} = {}) {
+    setOptions({ xAxisData, yAxisData, label, colorPicked, twoLines = false, label2 = "none", yAxisData2 = [], colorPicked2 = ""} = {}) {
+      if (twoLines) {
+      this.chart.setOption({
+        xAxis: {
+          data: xAxisData,
+          boundaryGap: false,
+          axisTick: {
+            show: false
+          }
+        },
+        grid: {
+          left: 10,
+          right: 10,
+          bottom: 20,
+          top: 30,
+          containLabel: true
+        },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          },
+          padding: [5, 10]
+        },
+        yAxis: {
+          axisTick: {
+            show: false
+          }
+        },
+        legend: {
+          data: [label, label2]
+        },
+        series: [{
+          name: label, itemStyle: {
+            normal: {
+              color: colorPicked,
+              lineStyle: {
+                color: colorPicked,
+                width: 3
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          data: yAxisData,
+          animationDuration: 2800,
+          animationEasing: 'cubicInOut'
+        },
+        {
+          name: label2, itemStyle: {
+            normal: {
+              color: colorPicked2,
+              lineStyle: {
+                color: colorPicked2,
+                width: 3
+              }
+            }
+          },
+          smooth: true,
+          type: 'line',
+          itemStyle: {
+            normal: {
+              color: '#3888fa',
+              lineStyle: {
+                color: '#3888fa',
+                width: 3
+              },
+              areaStyle: {
+                color: '#f3f8ff'
+              }
+            }
+          },
+          data: yAxisData2,
+          animationDuration: 2800,
+          animationEasing: 'quadraticOut'
+        }
+      ]
+      })
+      } else {
       this.chart.setOption({
         xAxis: {
           data: xAxisData,
@@ -108,29 +186,14 @@ export default {
           data: yAxisData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
-        },
-        // {
-        //   name: 'actual',
-        //   smooth: true,
-        //   type: 'line',
-        //   itemStyle: {
-        //     normal: {
-        //       color: '#3888fa',
-        //       lineStyle: {
-        //         color: '#3888fa',
-        //         width: 3
-        //       },
-        //       areaStyle: {
-        //         color: '#f3f8ff'
-        //       }
-        //     }
-        //   },
-        //   data: actualData,
-        //   animationDuration: 2800,
-        //   animationEasing: 'quadraticOut'
-        // }
+        }
+
       ]
       })
+
+      }
+
+
     }
   }
 }

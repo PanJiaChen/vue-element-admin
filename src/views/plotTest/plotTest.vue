@@ -3,10 +3,10 @@
     <div class="dashboard-editor-container">
       <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
         <!-- <line-chart :chart-data="{xAxisData, yAxisData, label}" /> -->
-        <h2>History Plot</h2>
-        <line-chart :chart-data="past" />
         <h2>Prediction Plot</h2>
         <line-chart :chart-data="future" />
+        <h2>History Plot</h2>
+        <line-chart :chart-data="past" />
       </el-row>
     </div>
     <div>
@@ -49,17 +49,30 @@ export default {
     BoxCard
   },
   props: {
+    twoLines: true,
     past: {
       xAxisData: {
-        default: [120, 82, 91, 154, 162, 140, 145,230]
-      },
-      yAxisData: {
         default: ['a', 'x', 'c', 'd', 'e', 'f', 'g', 'h']
       },
+      yAxisData: {
+        default: [120, 82, 91, 154, 162, 140, 145,230]
+      },
       label: {
-        default: 'Future'
+        default: 'Past'
       },
       colorPicked: {
+        default: '#999997'
+      },
+      twoLines: {
+        default: true
+      },
+      yAxisData2: {
+        default: [150, 96, 190, 150, 180, 160, 76,180]
+      },
+      label2: {
+        default: 'Prediction'
+      },
+      colorPicked2: {
         default: '#999997'
       }
     },
