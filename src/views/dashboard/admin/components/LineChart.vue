@@ -187,6 +187,7 @@ export default {
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         }
+
       ]
       })
 
