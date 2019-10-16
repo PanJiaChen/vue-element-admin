@@ -84,7 +84,7 @@ export default [
 
   // plot prediction graph
   {
-    url: '/testpredict',
+    url: '/testppppredict',
     type: 'get',
     response: _ => {
       return {
