@@ -29,6 +29,8 @@ export default {
   width: 100%;
   position: relative;
   overflow: hidden;
+  color: #19191a !important;
+  background-color: #1D1F2E;
 }
 
 .fixed-header+.app-main {
@@ -36,6 +38,7 @@ export default {
 }
 
 .hasTagsView {
+  
   .app-main {
     /* 84 = navbar + tags-view = 50 + 34 */
     min-height: calc(100vh - 84px);

@@ -139,19 +139,6 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/documentation',
-    hidden: true,
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
     path: '/guide',
     hidden: true,
     component: Layout,

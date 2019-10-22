@@ -5,15 +5,15 @@
     <i class="fa fa-cog" aria-hidden="true"></i>
     Options
   </button> -->
-  <h1 id="example-title" class="example-title">Data Uploader</h1>
+  <h1 id="example-title" class="example-title" style="color: white">Data Uploader</h1>
 
   <div v-show="$refs.upload && $refs.upload.dropActive" class="drop-active">
     <h3>Drop files to upload</h3>
   </div>
   <div class="upload" v-show="!isOption">
-    <div class="table-responsive" style="height: 400px">
-      <table class="table table-hover">
-        <thead>
+    <div class="table-responsive" style="height: 400px;">
+      <table class="table table-hover table-dark" style="color: white">
+        <thead style="background-color: #313436;">
           <tr>
             <th>#</th>
             <th>Thumb</th>
@@ -50,7 +50,8 @@
             <td>{{file.size | formatSize}}</td>
             <td>{{file.speed | formatSize}}</td>
 
-            <td v-if="file.error">{{file.error}}</td>
+            <!-- <td v-if="file.error">{{file.error}}</td> -->
+            <td v-if="file.error">fail: wrong format</td>
             <td v-else-if="file.success">success</td>
             <td v-else-if="file.active">active</td>
             <td v-else></td>
@@ -531,7 +532,6 @@ export default {
     },
 
     onSendAnalyzeRequest() {
-        // var k = [100, 120, 161, 134, 105, 160, 165,190,200]
 
 
         this.$router.push({ name: "analyze" })
@@ -561,6 +561,11 @@ export default {
 
 <style>
 @import '~bootstrap/dist/css/bootstrap.min.css';
+
+.example-full {
+  color: #19191a;
+  background-color: #26293c;
+}
 .example-full .btn-group .dropdown-menu {
   display: block;
   visibility: hidden;

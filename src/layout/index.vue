@@ -59,6 +59,9 @@ export default {
 <style lang="scss" scoped>
   @import "~@/styles/mixin.scss";
   @import "~@/styles/variables.scss";
+  .main-container {
+    background-color: #19191a;
+  }
 
   .app-wrapper {
     @include clearfix;

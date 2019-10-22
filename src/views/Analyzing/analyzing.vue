@@ -20,7 +20,7 @@
 <template>
     <div class="vue-spinner">
       <Circle9></Circle9>
-      <h1>Analyzing....</h1>
+      <h1 style="color: white">Analyzing....</h1>
     </div>
 </template>
  

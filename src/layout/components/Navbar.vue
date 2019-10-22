@@ -87,7 +87,7 @@ export default {
   height: 62px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: #19191a;
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
   padding: 0;
 
