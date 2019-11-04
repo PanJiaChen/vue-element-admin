@@ -31,6 +31,12 @@ const componentsRouter = {
       meta: { title: 'JSON Editor' }
     },
     {
+      path: 'form-create',
+      component: () => import('@/views/components-demo/create-form'),
+      name: 'FormCreateDemo',
+      meta: { title: 'Form Create' }
+    },
+    {
       path: 'split-pane',
       component: () => import('@/views/components-demo/split-pane'),
       name: 'SplitpaneDemo',
