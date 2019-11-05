@@ -90,7 +90,7 @@ $t: .1s;
     .share-dropdown-menu-item {
       @for $i from 1 through $n {
         &:nth-of-type(#{$i}) {
-         transition-delay: ($n - $i)*$t;
+          transition-delay: ($n - $i)*$t;
           transform: translate3d(0, ($i - 1)*60px, 0);
         }
       }
