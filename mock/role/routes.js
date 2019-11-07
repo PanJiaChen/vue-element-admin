@@ -41,7 +41,7 @@ export const constantRoutes = [
         path: 'dashboard',
         component: 'views/dashboard/index',
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: 'dashboard', icon: 'dashboard', affix: true }
       }
     ]
   },
@@ -53,7 +53,7 @@ export const constantRoutes = [
         path: 'index',
         component: 'views/documentation/index',
         name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        meta: { title: 'documentation', icon: 'documentation', affix: true }
       }
     ]
   },
@@ -66,7 +66,7 @@ export const constantRoutes = [
         path: 'index',
         component: 'views/guide/index',
         name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        meta: { title: 'guide', icon: 'guide', noCache: true }
       }
     ]
   }
@@ -79,7 +79,7 @@ export const asyncRoutes = [
     redirect: '/permission/index',
     alwaysShow: true,
     meta: {
-      title: 'Permission',
+      title: 'permission',
       icon: 'lock',
       roles: ['admin', 'editor']
     },
@@ -89,7 +89,7 @@ export const asyncRoutes = [
         component: 'views/permission/page',
         name: 'PagePermission',
         meta: {
-          title: 'Page Permission',
+          title: 'pagePermission',
           roles: ['admin']
         }
       },
@@ -98,7 +98,7 @@ export const asyncRoutes = [
         component: 'views/permission/directive',
         name: 'DirectivePermission',
         meta: {
-          title: 'Directive Permission'
+          title: 'directivePermission'
         }
       },
       {
@@ -106,7 +106,7 @@ export const asyncRoutes = [
         component: 'views/permission/role',
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
+          title: 'rolePermission',
           roles: ['admin']
         }
       }
@@ -121,7 +121,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/icons/index',
         name: 'Icons',
-        meta: { title: 'Icons', icon: 'icon', noCache: true }
+        meta: { title: 'icons', icon: 'icon', noCache: true }
       }
     ]
   },
@@ -132,7 +132,7 @@ export const asyncRoutes = [
     redirect: 'noRedirect',
     name: 'ComponentDemo',
     meta: {
-      title: 'Components',
+      title: 'components',
       icon: 'component'
     },
     children: [
@@ -140,49 +140,49 @@ export const asyncRoutes = [
         path: 'tinymce',
         component: 'views/components-demo/tinymce',
         name: 'TinymceDemo',
-        meta: { title: 'Tinymce' }
+        meta: { title: 'tinymce' }
       },
       {
         path: 'markdown',
         component: 'views/components-demo/markdown',
         name: 'MarkdownDemo',
-        meta: { title: 'Markdown' }
+        meta: { title: 'markdown' }
       },
       {
         path: 'json-editor',
         component: 'views/components-demo/json-editor',
         name: 'JsonEditorDemo',
-        meta: { title: 'Json Editor' }
+        meta: { title: 'jsonEditor' }
       },
       {
         path: 'split-pane',
         component: 'views/components-demo/split-pane',
         name: 'SplitpaneDemo',
-        meta: { title: 'SplitPane' }
+        meta: { title: 'splitPane' }
       },
       {
         path: 'avatar-upload',
         component: 'views/components-demo/avatar-upload',
         name: 'AvatarUploadDemo',
-        meta: { title: 'Avatar Upload' }
+        meta: { title: 'avatarUpload' }
       },
       {
         path: 'dropzone',
         component: 'views/components-demo/dropzone',
         name: 'DropzoneDemo',
-        meta: { title: 'Dropzone' }
+        meta: { title: 'dropzone' }
       },
       {
         path: 'sticky',
         component: 'views/components-demo/sticky',
         name: 'StickyDemo',
-        meta: { title: 'Sticky' }
+        meta: { title: 'sticky' }
       },
       {
         path: 'count-to',
         component: 'views/components-demo/count-to',
         name: 'CountToDemo',
-        meta: { title: 'Count To' }
+        meta: { title: 'countTo' }
       },
       {
         path: 'mixin',
@@ -194,31 +194,31 @@ export const asyncRoutes = [
         path: 'back-to-top',
         component: 'views/components-demo/back-to-top',
         name: 'BackToTopDemo',
-        meta: { title: 'Back To Top' }
+        meta: { title: 'backToTop' }
       },
       {
         path: 'drag-dialog',
         component: 'views/components-demo/drag-dialog',
         name: 'DragDialogDemo',
-        meta: { title: 'Drag Dialog' }
+        meta: { title: 'dragDialog' }
       },
       {
         path: 'drag-select',
         component: 'views/components-demo/drag-select',
         name: 'DragSelectDemo',
-        meta: { title: 'Drag Select' }
+        meta: { title: 'dragSelect' }
       },
       {
         path: 'dnd-list',
         component: 'views/components-demo/dnd-list',
         name: 'DndListDemo',
-        meta: { title: 'Dnd List' }
+        meta: { title: 'dndList' }
       },
       {
         path: 'drag-kanban',
         component: 'views/components-demo/drag-kanban',
         name: 'DragKanbanDemo',
-        meta: { title: 'Drag Kanban' }
+        meta: { title: 'dragKanban' }
       }
     ]
   },
@@ -228,7 +228,7 @@ export const asyncRoutes = [
     redirect: 'noRedirect',
     name: 'Charts',
     meta: {
-      title: 'Charts',
+      title: 'charts',
       icon: 'chart'
     },
     children: [
@@ -236,19 +236,19 @@ export const asyncRoutes = [
         path: 'keyboard',
         component: 'views/charts/keyboard',
         name: 'KeyboardChart',
-        meta: { title: 'Keyboard Chart', noCache: true }
+        meta: { title: 'keyboardChart', noCache: true }
       },
       {
         path: 'line',
         component: 'views/charts/line',
         name: 'LineChart',
-        meta: { title: 'Line Chart', noCache: true }
+        meta: { title: 'lineChart', noCache: true }
       },
       {
         path: 'mixchart',
         component: 'views/charts/mixChart',
         name: 'MixChart',
-        meta: { title: 'Mix Chart', noCache: true }
+        meta: { title: 'mixChart', noCache: true }
       }
     ]
   },
@@ -258,7 +258,7 @@ export const asyncRoutes = [
     redirect: '/nested/menu1/menu1-1',
     name: 'Nested',
     meta: {
-      title: 'Nested',
+      title: 'nested',
       icon: 'nested'
     },
     children: [
@@ -266,33 +266,33 @@ export const asyncRoutes = [
         path: 'menu1',
         component: 'views/nested/menu1/index',
         name: 'Menu1',
-        meta: { title: 'Menu1' },
+        meta: { title: 'menu1' },
         redirect: '/nested/menu1/menu1-1',
         children: [
           {
             path: 'menu1-1',
             component: 'views/nested/menu1/menu1-1',
             name: 'Menu1-1',
-            meta: { title: 'Menu1-1' }
+            meta: { title: 'menu1-1' }
           },
           {
             path: 'menu1-2',
             component: 'views/nested/menu1/menu1-2',
             name: 'Menu1-2',
             redirect: '/nested/menu1/menu1-2/menu1-2-1',
-            meta: { title: 'Menu1-2' },
+            meta: { title: 'menu1-2' },
             children: [
               {
                 path: 'menu1-2-1',
                 component: 'views/nested/menu1/menu1-2/menu1-2-1',
                 name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' }
+                meta: { title: 'menu1-2-1' }
               },
               {
                 path: 'menu1-2-2',
                 component: 'views/nested/menu1/menu1-2/menu1-2-2',
                 name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' }
+                meta: { title: 'menu1-2-2' }
               }
             ]
           },
@@ -300,7 +300,7 @@ export const asyncRoutes = [
             path: 'menu1-3',
             component: 'views/nested/menu1/menu1-3',
             name: 'Menu1-3',
-            meta: { title: 'Menu1-3' }
+            meta: { title: 'menu1-3' }
           }
         ]
       },
@@ -308,7 +308,7 @@ export const asyncRoutes = [
         path: 'menu2',
         name: 'Menu2',
         component: 'views/nested/menu2/index',
-        meta: { title: 'Menu2' }
+        meta: { title: 'menu2' }
       }
     ]
   },
@@ -319,7 +319,7 @@ export const asyncRoutes = [
     redirect: '/example/list',
     name: 'Example',
     meta: {
-      title: 'Example',
+      title: 'example',
       icon: 'example'
     },
     children: [
@@ -327,20 +327,20 @@ export const asyncRoutes = [
         path: 'create',
         component: 'views/example/create',
         name: 'CreateArticle',
-        meta: { title: 'Create Article', icon: 'edit' }
+        meta: { title: 'createArticle', icon: 'edit' }
       },
       {
         path: 'edit/:id(\\d+)',
         component: 'views/example/edit',
         name: 'EditArticle',
-        meta: { title: 'Edit Article', noCache: true },
+        meta: { title: 'editArticle', noCache: true },
         hidden: true
       },
       {
         path: 'list',
         component: 'views/example/list',
         name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        meta: { title: 'articleList', icon: 'list' }
       }
     ]
   },
@@ -353,7 +353,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/tab/index',
         name: 'Tab',
-        meta: { title: 'Tab', icon: 'tab' }
+        meta: { title: 'tab', icon: 'tab' }
       }
     ]
   },
@@ -364,7 +364,7 @@ export const asyncRoutes = [
     redirect: 'noRedirect',
     name: 'ErrorPages',
     meta: {
-      title: 'Error Pages',
+      title: 'errorPages',
       icon: '404'
     },
     children: [
@@ -372,13 +372,13 @@ export const asyncRoutes = [
         path: '401',
         component: 'views/error-page/401',
         name: 'Page401',
-        meta: { title: 'Page 401', noCache: true }
+        meta: { title: 'page401', noCache: true }
       },
       {
         path: '404',
         component: 'views/error-page/404',
         name: 'Page404',
-        meta: { title: 'Page 404', noCache: true }
+        meta: { title: 'page404', noCache: true }
       }
     ]
   },
@@ -392,7 +392,7 @@ export const asyncRoutes = [
         path: 'log',
         component: 'views/error-log/index',
         name: 'ErrorLog',
-        meta: { title: 'Error Log', icon: 'bug' }
+        meta: { title: 'errorLog', icon: 'bug' }
       }
     ]
   },
@@ -403,7 +403,7 @@ export const asyncRoutes = [
     redirect: '/excel/export-excel',
     name: 'Excel',
     meta: {
-      title: 'Excel',
+      title: 'excel',
       icon: 'excel'
     },
     children: [
@@ -411,25 +411,25 @@ export const asyncRoutes = [
         path: 'export-excel',
         component: 'views/excel/export-excel',
         name: 'ExportExcel',
-        meta: { title: 'Export Excel' }
+        meta: { title: 'exportExcel' }
       },
       {
         path: 'export-selected-excel',
         component: 'views/excel/select-excel',
         name: 'SelectExcel',
-        meta: { title: 'Select Excel' }
+        meta: { title: 'selectExcel' }
       },
       {
         path: 'export-merge-header',
         component: 'views/excel/merge-header',
         name: 'MergeHeader',
-        meta: { title: 'Merge Header' }
+        meta: { title: 'mergeHeader' }
       },
       {
         path: 'upload-excel',
         component: 'views/excel/upload-excel',
         name: 'UploadExcel',
-        meta: { title: 'Upload Excel' }
+        meta: { title: 'uploadExcel' }
       }
     ]
   },
@@ -439,13 +439,13 @@ export const asyncRoutes = [
     component: 'layout/Layout',
     redirect: '/zip/download',
     alwaysShow: true,
-    meta: { title: 'Zip', icon: 'zip' },
+    meta: { title: 'zip', icon: 'zip' },
     children: [
       {
         path: 'download',
         component: 'views/zip/index',
         name: 'ExportZip',
-        meta: { title: 'Export Zip' }
+        meta: { title: 'exportZip' }
       }
     ]
   },
@@ -459,7 +459,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/pdf/index',
         name: 'PDF',
-        meta: { title: 'PDF', icon: 'pdf' }
+        meta: { title: 'pdf', icon: 'pdf' }
       }
     ]
   },
@@ -478,7 +478,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/theme/index',
         name: 'Theme',
-        meta: { title: 'Theme', icon: 'theme' }
+        meta: { title: 'theme', icon: 'theme' }
       }
     ]
   },
@@ -492,7 +492,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/clipboard/index',
         name: 'ClipboardDemo',
-        meta: { title: 'Clipboard Demo', icon: 'clipboard' }
+        meta: { title: 'clipboardDemo', icon: 'clipboard' }
       }
     ]
   },
@@ -505,7 +505,7 @@ export const asyncRoutes = [
         path: 'index',
         component: 'views/i18n-demo/index',
         name: 'I18n',
-        meta: { title: 'I18n', icon: 'international' }
+        meta: { title: 'i18n', icon: 'international' }
       }
     ]
   },
@@ -516,7 +516,7 @@ export const asyncRoutes = [
     children: [
       {
         path: 'https://github.com/PanJiaChen/vue-element-admin',
-        meta: { title: 'External Link', icon: 'link' }
+        meta: { title: 'externalLink', icon: 'link' }
       }
     ]
   },

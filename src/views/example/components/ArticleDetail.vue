@@ -1,7 +1,6 @@
 <template>
   <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
-
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
         <CommentDropdown v-model="postForm.comment_disabled" />
         <PlatformDropdown v-model="postForm.platforms" />
@@ -153,6 +152,9 @@ export default {
     contentShortLength() {
       return this.postForm.content_short.length
     },
+    lang() {
+      return this.$store.getters.language
+    },
     displayTime: {
       // set and get is useful when the data
       // returned by the back end api is different from the front end
@@ -196,7 +198,7 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit Article'
+      const title = this.lang === 'zh' ? '编辑文章' : 'Edit Article'
       const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },

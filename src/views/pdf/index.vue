@@ -1,8 +1,6 @@
 <template>
   <div class="app-container">
-    <aside style="margin-top:15px;">
-      Here we use window.print() to implement the feature of downloading PDF.
-    </aside>
+    <aside style="margin-top:15px;">{{ $t('pdf.tips') }}</aside>
     <router-link target="_blank" to="/pdf/download">
       <el-button type="primary">
         Click to download PDF

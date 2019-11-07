@@ -71,6 +71,9 @@ export default {
     }
   },
   computed: {
+    language() {
+      return this.languageTypeList[this.$store.getters.language]
+    },
     containerWidth() {
       const width = this.width
       if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
@@ -85,6 +88,10 @@ export default {
         this.$nextTick(() =>
           window.tinymce.get(this.tinymceId).setContent(val || ''))
       }
+    },
+    language() {
+      this.destroyTinymce()
+      this.$nextTick(() => this.initTinymce())
     }
   },
   mounted() {
@@ -115,8 +122,8 @@ export default {
     initTinymce() {
       const _this = this
       window.tinymce.init({
+        language: this.language,
         selector: `#${this.tinymceId}`,
-        language: this.languageTypeList['en'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
