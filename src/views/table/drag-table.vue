@@ -3,38 +3,38 @@
     <!-- Note that row-key is necessary to get a correct row order. -->
     <el-table ref="dragTable" v-loading="listLoading" :data="list" row-key="id" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="ID" width="65">
-        <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.id }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="Date">
-        <template slot-scope="scope">
-          <span>{{ scope.row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column min-width="300px" label="Title">
-        <template slot-scope="scope">
-          <span>{{ scope.row.title }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.title }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="110px" align="center" label="Author">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.author }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="100px" label="Importance">
-        <template slot-scope="scope">
-          <svg-icon v-for="n in +scope.row.importance" :key="n" icon-class="star" class="icon-star" />
+        <template slot-scope="{row}">
+          <svg-icon v-for="n in + row.importance" :key="n" icon-class="star" class="icon-star" />
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="Readings" width="95">
-        <template slot-scope="scope">
-          <span>{{ scope.row.pageviews }}</span>
+        <template slot-scope="{row}">
+          <span>{{ row.pageviews }}</span>
         </template>
       </el-table-column>
 
