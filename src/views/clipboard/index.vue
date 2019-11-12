@@ -1,9 +1,14 @@
 <template>
   <div class="app-container">
+
+    <aside>
+      <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/feature/component/clipboard.html">Documentation</a>
+    </aside>
+
     <el-tabs v-model="activeName">
       <el-tab-pane label="use clipboard  directly" name="directly">
         <el-input v-model="inputData" placeholder="Please input" style="width:400px;max-width:100%;" />
-        <el-button type="primary" icon="el-icon-document" @click="handleCopy(inputData,$event)">
+        <el-button type="primary" icon="el-icon-document" @click="handleCopy(inputData)">
           copy
         </el-button>
       </el-tab-pane>
@@ -33,8 +38,11 @@ export default {
     }
   },
   methods: {
-    handleCopy(text, event) {
-      clip(text, event)
+    handleCopy(text) {
+      // return a promise
+      clip({ text: text }).then(() => {
+        console.log('success')
+      })
     },
     clipboardSuccess() {
       this.$message({
