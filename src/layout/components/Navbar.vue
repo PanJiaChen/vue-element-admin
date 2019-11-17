@@ -1,26 +1,12 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
-    <div class="right-menu">
-      <template v-if="device!=='mobile'">
-        <search id="header-search" class="right-menu-item" />
-
-        <error-log class="errLog-container right-menu-item hover-effect" />
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-        <lang-select class="right-menu-item hover-effect" />
-
-      </template>
-
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+    <el-button v-if="isMenuMobile && isMobile" type="text" icon="el-icon-close" style="padding-top: 13px; color: #000000;font-size: 121%;font-weight: 615!important;" @click="isMenuOption()" />
+    <breadcrumb v-show="!isMenuMobile || device!=='mobile'" id="breadcrumb-container" class="breadcrumb-container" :style="isMobile ? { width: '40%'} : { width: 'auto'} " />
+    <div v-show="isMenuMobile && isMobile" style="display: inline-flex; float: right;">
+      <search id="header-search" class="right-menu-item" style="padding-top: 10px;" />
+      <badge style="padding-top: 6px;" />
+      <!-- <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
@@ -48,12 +34,42 @@
             <span style="display:block;" @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
+    </div>
+    <div class="right-menu">
+      <template v-if="device!=='mobile'">
+        <search id="header-search" class="right-menu-item" />
+        <badge />
+        <error-log class="errLog-container right-menu-item hover-effect" />
+
+        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+
+        <el-tooltip :content="$t('navbar.size')" effect="dark" placement="bottom">
+          <size-select id="size-select" class="right-menu-item hover-effect" />
+        </el-tooltip>
+
+        <lang-select class="right-menu-item hover-effect" />
+
+      </template>
+      <el-button v-show="!isMenuMobile && isMobile" type="text" icon="el-icon-more" @click="isMenuOption()" />
+      <el-popover
+        placement="bottom"
+        width="245"
+        trigger="click"
+      >
+        <div>
+          <user-card :user="user" />
+          <el-button type="text" style="float: left;" @click="handleClick">{{ $t('navbar.profile') }}</el-button>
+          <el-button type="text" style="float: right;" @click="logout">{{ $t('navbar.logOut') }}</el-button>
+        </div>
+        <el-button slot="reference" type="text" style="padding-top: 0px;"><img :src="avatar+'?imageView2/1/w/40/h/40'" class="user-avatar"></el-button>
+      </el-popover>
     </div>
   </div>
 </template>
 
 <script>
+import UserCard from '@/views/profile/components/Profile'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
@@ -62,18 +78,30 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
+import Badge from '@/components/ADempiere/Badge'
 
 export default {
   components: {
     Breadcrumb,
+    Badge,
     Hamburger,
     ErrorLog,
     Screenfull,
     SizeSelect,
     LangSelect,
+    UserCard,
     Search
   },
+  data() {
+    return {
+      user: {},
+      isMenuMobile: false
+    }
+  },
   computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
     ...mapGetters([
       'sidebar',
       'avatar',
@@ -81,18 +109,37 @@ export default {
     ])
   },
   methods: {
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath)
+    },
+    isMenuOption() {
+      this.isMenuMobile = !this.isMenuMobile
+    },
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+    },
+    handleClick() {
+      this.$router.push({ name: 'Profile' })
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+.el-dropdown {
+  display: inline-block;
+  position: relative;
+  color: #606266;
+  font-size: 14px;
+  width: 50px;
+}
 .navbar {
   height: 50px;
   overflow: hidden;
@@ -124,6 +171,7 @@ export default {
 
   .right-menu {
     float: right;
+    display: flex;
     height: 100%;
     line-height: 50px;
 

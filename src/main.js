@@ -6,6 +6,7 @@ import 'normalize.css/normalize.css' // a modern alternative to CSS resets
 
 import Element from 'element-ui'
 import './styles/element-variables.scss'
+import VueSplit from 'vue-split-panel'
 
 import '@/styles/index.scss' // global css
 
@@ -19,6 +20,7 @@ import './permission' // permission control
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
+import * as globalMethods from '@/utils/ADempiere/globalMethods' // global methods
 
 /**
  * If you don't want to use mock-server
@@ -32,7 +34,7 @@ import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
-
+Vue.use(VueSplit)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value)
@@ -41,6 +43,11 @@ Vue.use(Element, {
 // register global utility filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
+})
+
+// register global utility methods
+Object.keys(globalMethods).forEach(key => {
+  Vue.prototype[key] = globalMethods[key]
 })
 
 Vue.config.productionTip = false

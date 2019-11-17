@@ -2,13 +2,13 @@
 
   .main-container {
     min-height: 100%;
-    transition: margin-left .28s;
+    transition: margin-left .1s;
     margin-left: $sideBarWidth;
     position: relative;
   }
 
   .sidebar-container {
-    transition: width 0.28s;
+    transition: width 0.1s;
     width: $sideBarWidth !important;
     background-color: $menuBg;
     height: 100%;
@@ -66,6 +66,8 @@
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
+      overflow: hidden;
+      text-overflow: ellipsis;
       &:hover {
         background-color: $menuHover !important;
       }
@@ -77,6 +79,8 @@
 
     & .nest-menu .el-submenu>.el-submenu__title,
     & .el-submenu .el-menu-item {
+      overflow: hidden;
+      text-overflow: ellipsis;
       min-width: $sideBarWidth !important;
       background-color: $subMenuBg !important;
 
@@ -150,14 +154,14 @@
     }
 
     .sidebar-container {
-      transition: transform .28s;
+      transition: transform .1s;
       width: $sideBarWidth !important;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
-        transition-duration: 0.3s;
+        transition-duration: 0.1s;
         transform: translate3d(-$sideBarWidth, 0, 0);
       }
     }

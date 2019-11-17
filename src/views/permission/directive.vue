@@ -94,7 +94,7 @@ export default {
   /deep/ .permission-alert {
     width: 320px;
     margin-top: 15px;
-    background-color: #f0f9eb;
+    background-color: #ffffff;
     color: #67c23a;
     padding: 8px 16px;
     border-radius: 4px;
@@ -108,4 +108,3 @@ export default {
   }
 }
 </style>
-

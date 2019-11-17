@@ -3,11 +3,11 @@
     <div class=" clearfix">
       <pan-thumb :image="avatar" style="float: left">
         Your roles:
-        <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
+        <span class="pan-info-roles">{{ currentRole }}</span>
       </pan-thumb>
       <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
-        <span class="display_name">{{ name }}</span>
+        <span class="display_name">{{ currentRole }}</span>
         <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
       </div>
     </div>
@@ -31,10 +31,14 @@ export default {
     }
   },
   computed: {
+    currentRole() {
+      return this.$store.getters.currentRole
+    },
     ...mapGetters([
       'name',
       'avatar',
-      'roles'
+      'roles',
+      'currentRole'
     ])
   }
 }

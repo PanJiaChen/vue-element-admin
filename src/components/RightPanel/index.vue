@@ -1,12 +1,16 @@
 <template>
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
-    <div class="rightPanel-background" />
-    <div class="rightPanel">
-      <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
-        <i :class="show?'el-icon-close':'el-icon-setting'" />
-      </div>
-      <div class="rightPanel-items">
-        <slot />
+    <div class="setting">
+      <div class="showme">
+        <div class="rightPanel-background" />
+        <div class="rightPanel">
+          <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
+            <i :class="show?'el-icon-close':'el-icon-setting'" />
+          </div>
+          <div class="rightPanel-items">
+            <slot />
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -77,6 +81,21 @@ export default {
 </script>
 
 <style>
+.setting {
+  z-index: 3;
+  width: 5%;
+  height: 10%;
+  right: 0%;
+  position: absolute;
+  top: 250px;
+}
+.showme {
+  display: none;
+}
+
+.setting:hover .showme {
+  display: block;
+}
 .showRightPanel {
   overflow: hidden;
   position: relative;

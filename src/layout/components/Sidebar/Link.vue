@@ -12,23 +12,23 @@ import { isExternal } from '@/utils/validate'
 export default {
   props: {
     to: {
-      type: String,
+      type: Object,
       required: true
     }
   },
   methods: {
-    linkProps(url) {
-      if (isExternal(url)) {
+    linkProps(route) {
+      if (isExternal(route.path)) {
         return {
           is: 'a',
-          href: url,
+          href: route.path,
           target: '_blank',
           rel: 'noopener'
         }
       }
       return {
         is: 'router-link',
-        to: url
+        to: { name: route.name }
       }
     }
   }

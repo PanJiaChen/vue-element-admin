@@ -1,7 +1,33 @@
 <template>
   <el-breadcrumb class="app-breadcrumb" separator="/">
     <transition-group name="breadcrumb">
-      <el-breadcrumb-item v-for="(item,index) in levelList" :key="item.path">
+      <template v-if="levelList.length > 3">
+        <el-breadcrumb-item key="0">
+          <span v-if="firstItem.redirect==='noRedirect'" class="no-redirect">
+            {{ generateTitle(firstItem.meta.title) }}
+          </span>
+          <a v-else @click.prevent="handleLink(firstItem)">
+            {{ generateTitle(firstItem.meta.title) }}
+          </a>
+        </el-breadcrumb-item>
+        <el-breadcrumb-item key="1">
+          <el-dropdown placement="bottom" trigger="click" :hide-on-click="true" class="el-dropdown-link" @command="handleLink">
+            <i class="el-icon-more" />
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item v-for="(item, index) in dropdownList" :key="index" :command="item">{{ generateTitle(item.meta.title) }}</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+        </el-breadcrumb-item>
+        <el-breadcrumb-item key="2">
+          <span v-if="lastItem.redirect==='noRedirect'" class="no-redirect">
+            {{ generateTitle(lastItem.meta.title) }}
+          </span>
+          <a v-else @click.prevent="handleLink(lastItem)">
+            {{ generateTitle(lastItem.meta.title) }}
+          </a>
+        </el-breadcrumb-item>
+      </template>
+      <el-breadcrumb-item v-for="(item,index) in levelList" v-else :key="item.path">
         <span v-if="item.redirect==='noRedirect'||index==levelList.length-1" class="no-redirect">{{
           generateTitle(item.meta.title) }}</span>
         <a v-else @click.prevent="handleLink(item)">{{ generateTitle(item.meta.title) }}</a>
@@ -17,7 +43,10 @@ import pathToRegexp from 'path-to-regexp'
 export default {
   data() {
     return {
-      levelList: null
+      levelList: null,
+      dropdownList: null,
+      firstItem: null,
+      lastItem: null
     }
   },
   watch: {
@@ -36,10 +65,15 @@ export default {
       const first = matched[0]
 
       if (!this.isDashboard(first)) {
-        matched = [{ path: '/dashboard', meta: { title: 'dashboard' }}].concat(matched)
+        matched = [{ path: '/dashboard', name: 'Dashboard', meta: { title: 'dashboard' }}].concat(matched)
       }
 
       this.levelList = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+      if (this.levelList.length > 3) {
+        this.dropdownList = [...this.levelList]
+        this.lastItem = this.dropdownList.pop()
+        this.firstItem = this.dropdownList.shift()
+      }
     },
     isDashboard(route) {
       const name = route && route.name
@@ -55,12 +89,9 @@ export default {
       return toPath(params)
     },
     handleLink(item) {
-      const { redirect, path } = item
-      if (redirect) {
-        this.$router.push(redirect)
-        return
+      if (this.$route.name !== item.name) {
+        this.$router.push({ name: item.name, params: { childs: item.meta.childs }})
       }
-      this.$router.push(this.pathCompile(path))
     }
   }
 }
@@ -68,7 +99,6 @@ export default {
 
 <style lang="scss" scoped>
 .app-breadcrumb.el-breadcrumb {
-  display: inline-block;
   font-size: 14px;
   line-height: 50px;
   margin-left: 8px;
@@ -76,6 +106,12 @@ export default {
   .no-redirect {
     color: #97a8be;
     cursor: text;
+  }
+  .el-dropdown-link {
+    cursor: pointer;
+    .el-icon-more {
+      transform: none;
+    }
   }
 }
 </style>

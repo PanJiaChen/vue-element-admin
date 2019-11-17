@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="320" src="https://wpimg.wallstcn.com/ecc53a42-d79b-42e2-8852-5126b810a4c8.svg">
+  <img width="320" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Adempiere-logo.png">
 </p>
 
 <p align="center">
@@ -9,78 +9,76 @@
   <a href="https://github.com/ElemeFE/element">
     <img src="https://img.shields.io/badge/element--ui-2.7.0-brightgreen.svg" alt="element-ui">
   </a>
-  <a href="https://travis-ci.org/PanJiaChen/vue-element-admin" rel="nofollow">
-    <img src="https://travis-ci.org/PanJiaChen/vue-element-admin.svg?branch=master" alt="Build Status">
+  <a href="https://travis-ci.org/adempiere/adempiere-vue" rel="nofollow">
+    <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Build Status">
   </a>
-  <a href="https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE">
+  <a href="https://github.com/adempiere/adempiere-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
   </a>
-  <a href="https://github.com/PanJiaChen/vue-element-admin/releases">
-    <img src="https://img.shields.io/github/release/PanJiaChen/vue-element-admin.svg" alt="GitHub release">
+  <a href="https://github.com/adempiere/adempiere-vue/releases">
+    <img src="https://img.shields.io/github/release/adempiere/adempiere-vue.svg" alt="GitHub release">
   </a>
-  <a href="https://gitter.im/vue-element-admin/discuss">
+  <a href="https://gitter.im/adempiere/adempiere-vue">
     <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
-  </a>
-  <a href="https://panjiachen.github.io/vue-element-admin-site/donate">
-    <img src="https://img.shields.io/badge/%24-donate-ff69b4.svg" alt="donate">
   </a>
 </p>
 
-English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md)
+English | [Spanish](./README.es.md)
 
 ## Introduction
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
+[adempiere-vue](https://github.com/adempiere/adempiere-vue) is a new UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)]. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
 
-It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
+It is a great UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)] based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. This project was forked from [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) originally write by [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) over [MIT license](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) and was changed to [GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) by [Yamel Senih](https://github.com/yamelsenih) after forked granted by [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) on issue ["Extend as GNU/Gpl v3 License #1434"](https://github.com/PanJiaChen/vue-element-admin/issues/1434).
 
-- [Preview](https://panjiachen.github.io/vue-element-admin)
+[adempiere-vue](https://github.com/adempiere/adempiere-vue) use the modern open source high performance RPC framework that can run in any environment [gRPC](https://grpc.io/) as [server](https://github.com/erpcya/adempiere-gRPC-Server).
+
+- [Preview](http://adempiere-ui.erpya.com:9526/)
 
 - [Documentation](https://panjiachen.github.io/vue-element-admin-site/)
 
-- [Gitter](https://gitter.im/vue-element-admin/discuss)
+- [Gitter](https://gitter.im/adempiere/adempiere-vue)
 
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
+- [Donate](https://www.paypal.me/?)
 
-- [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
+- [Wiki](http://wiki.adempiere.net/ADempiere_ERP)
 
-- [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
+- [Forked From](https://github.com/PanJiaChen/vue-element-admin)
 
-- Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
-- Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-- Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
-
-**After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
-
-**The current version is `v4.0+` build on `vue-cli`. If you find a problem, please put [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), it does not rely on `vue-cli`**
+**The current version is `v1.0+` build on `vue-cli`. If you find a problem, please put [issue](https://github.com/adempiere/adempiere-vue/issues/new).**
 
 **This project does not support low version browsers (e.g. IE). Please add polyfill by yourself.**
 
 ## Preparation
 
-You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
+You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [gRPC](https://grpc.io/) and [element-ui](https://github.com/ElemeFE/element).
 Understanding and learning this knowledge in advance will greatly help the use of this project.
 
- <p align="center">
+<p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
 ## Sponsors
 
-Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
+<a href="http://erpya.com/"><img width="250px" src="https://i0.wp.com/spin-suite.com/erpya/wp-content/uploads/sites/28/2017/11/ERP-logotipo-H-color.png" /></a>
+<a href="http://www.e-evolution.com/"><img width="250px" src="https://i0.wp.com/mysmart.business/evolution/wp-content/uploads/sites/29/2017/10/e-evolution-logo-v2.png?fit=150%2C92" /></a>
+<a href="http://westfalia-it.com/"><img width="150px" src="https://i1.wp.com/spin-suite.com/westfalia/wp-content/uploads/sites/30/2017/12/logo_copy.jpg?fit=265%2C357" /></a>
+<a href="http://erpya.com/"><img width="250px" src="https://i0.wp.com/spin-suite.com/openupsolutions/wp-content/uploads/sites/32/2017/05/Openup-Solutions-Logo-2017-80x200px.png" /></a>
 
-<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
+Become a sponsor and get your logo on our README on GitHub with a link to your site. [Become a sponsor](https://www.paypal.me/?)
 
 ## Features
 
 ```
 - Login / Logout
+- Register
+- Forgot Password
 
 - Permission Authentication
+  - ADempiere backend permission
   - Page permission
   - Directive permission
   - Permission configuration page
-  - Two-step login
 
 - Multi-environment build
   - dev sit stage prod
@@ -92,7 +90,6 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Dynamic breadcrumb
   - Tags-view (Tab page Support right-click operation)
   - Svg Sprite
-  - Mock data
   - Screenfull
   - Responsive Sidebar
 
@@ -127,6 +124,11 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Dropzone
   - Sticky
   - CountTo
+- ADempiere supported
+  - Window
+  - Process
+  - Report
+  - Smart Browser
 
 - Advanced Example
 - Error Log
@@ -139,12 +141,14 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 ## Getting started
 
+Use [gRPC ADempiere Server](https://github.com/erpcya/adempiere-gRPC-Server) as gRPC provider.
+
 ```bash
 # clone the project
-git clone -b i18n git@github.com:PanJiaChen/vue-element-admin.git
+git clone -b develop git@github.com:adempiere/vue-element-admin.git
 
 # enter the project directory
-cd vue-element-admin
+cd adempiere-vue
 
 # install dependency
 npm install
@@ -185,21 +189,17 @@ Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/gui
 
 ## Changelog
 
-Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
+Detailed changes for each release are documented in the [release notes](https://github.com/adempiere/adempiere-vue/releases).
 
 ## Online Demo
 
-[Preview](https://panjiachen.github.io/vue-element-admin)
+[Preview](http://adempiere-ui.erpya.com:9526/)
 
 ## Donate
 
-If you find this project useful, you can buy author a glass of juice :tropical_drink:
+If you find this project useful, you can help this make a better UI
 
-![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
-
-[Paypal Me](https://www.paypal.me/panfree23)
-
-[Buy me a coffee](https://www.buymeacoffee.com/Pan)
+[Paypal Me](https://www.paypal.me/?)
 
 ## Browsers support
 
@@ -211,6 +211,15 @@ Modern browsers and Internet Explorer 10+.
 
 ## License
 
-[MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
+[GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE)
 
-Copyright (c) 2017-present PanJiaChen
+## Previous License
+[MIT](./PREVIOUS-LICENSE)
+
+## Initial Contributors
+
+- [Yamel Senih](https://github.com/yamelsenih)
+- [Raúl Muñoz](https://github.com/Raul-mz)
+- [Edwin Betancourt](https://github.com/EdwinBetanc0urt)
+- [Leonel Matos](https://github.com/leonel1524)
+- [Elsio Sanchez](https://github.com/elsiosanchez)

@@ -8,11 +8,11 @@
       filterable
       default-first-option
       remote
-      placeholder="Search"
+      :placeholder="$t('table.dataTable.search')"
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
+      <el-option v-for="item in options" :key="item.name" :value="item" :label="item.title.join(' > ')" />
     </el-select>
   </div>
 </template>
@@ -22,7 +22,8 @@
 // make search results more in line with expectations
 import Fuse from 'fuse.js'
 import path from 'path'
-import i18n from '@/lang'
+import { generateTitle } from '@/utils/i18n'
+// import i18n from '@/lang'
 
 export default {
   name: 'HeaderSearch',
@@ -36,6 +37,9 @@ export default {
     }
   },
   computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
     routes() {
       return this.$store.getters.permission_routes
     },
@@ -65,6 +69,7 @@ export default {
     this.searchPool = this.generateRoutes(this.routes)
   },
   methods: {
+    generateTitle,
     click() {
       this.show = !this.show
       if (this.show) {
@@ -77,7 +82,15 @@ export default {
       this.show = false
     },
     change(val) {
-      this.$router.push(val.path)
+      if (val.name) {
+        if (val.meta && val.meta.type === 'window') {
+          this.$router.push({ name: val.name, query: { tabParent: 0 }, params: { childs: val.meta.childs }})
+        } else {
+          this.$router.push({ name: val.name, params: { childs: val.meta.childs }})
+        }
+      } else {
+        this.$router.push({ path: val.path })
+      }
       this.search = ''
       this.options = []
       this.$nextTick(() => {
@@ -108,20 +121,19 @@ export default {
 
       for (const router of routes) {
         // skip hidden router
-        if (router.hidden) { continue }
-
+        // if (router.meta && router.meta.isIndex) { continue }
         const data = {
           path: path.resolve(basePath, router.path),
-          title: [...prefixTitle]
+          title: [...prefixTitle],
+          meta: router.meta,
+          name: router.name
         }
 
         if (router.meta && router.meta.title) {
           // generate internationalized title
-          const i18ntitle = i18n.t(`route.${router.meta.title}`)
-
+          const i18ntitle = this.generateTitle(router.meta.title)
           data.title = [...data.title, i18ntitle]
-
-          if (router.redirect !== 'noRedirect') {
+          if (router.redirect !== 'noRedirect' && router.name !== 'Report Viewer' && !router.meta.isIndex) {
             // only push the routes with title
             // special case: need to exclude parent router without redirect
             res.push(data)
@@ -182,7 +194,7 @@ export default {
 
   &.show {
     .header-search-select {
-      width: 210px;
+      width: 150px;
       margin-left: 10px;
     }
   }

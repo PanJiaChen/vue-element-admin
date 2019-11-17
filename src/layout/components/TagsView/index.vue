@@ -1,20 +1,44 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper">
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
-        :key="tag.path"
-        :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
-        class="tags-view-item"
-        @click.middle.native="closeSelectedTag(tag)"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
+      <draggable
+        v-if="!isMobile"
+        :list="visitedViews"
+        v-bind="$attrs"
+        :set-data="setData"
+        style="display: flex;"
       >
-        {{ generateTitle(tag.title) }}
-        <span v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
+        <router-link
+          v-for="tag in visitedViews"
+          ref="tag"
+          :key="tag.path"
+          :class="isActive(tag)?'active':''"
+          :to="{ name: tag.name, path: tag.path, query: tag.query, fullPath: tag.fullPath, params: tag.params }"
+          tag="span"
+          class="tags-view-item"
+          @click.middle.native="closeSelectedTag(tag)"
+          @contextmenu.prevent.native="openMenu(tag,$event)"
+        >
+          <div class="tag-title">{{ generateTitle(tag.title) }}</div>
+          <div v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </router-link>
+      </draggable>
+      <template v-else>
+        <router-link
+          v-for="tag in visitedViews"
+          ref="tag"
+          :key="tag.path"
+          :class="isActive(tag)?'active':''"
+          :to="{ name: tag.name, path: tag.path, query: tag.query, fullPath: tag.fullPath, params: tag.params }"
+          tag="span"
+          class="tags-view-item"
+          @click.middle.native="closeSelectedTag(tag)"
+          @contextmenu.prevent.native="openMenu(tag,$event)"
+        >
+          <div class="tag-title">{{ generateTitle(tag.title) }}</div>
+          <div v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </router-link>
+      </template>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">
@@ -38,9 +62,10 @@
 import ScrollPane from './ScrollPane'
 import { generateTitle } from '@/utils/i18n'
 import path from 'path'
+import draggable from 'vuedraggable'
 
 export default {
-  components: { ScrollPane },
+  components: { ScrollPane, draggable },
   data() {
     return {
       visible: false,
@@ -51,6 +76,9 @@ export default {
     }
   },
   computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
     visitedViews() {
       return this.$store.state.tagsView.visitedViews
     },
@@ -78,7 +106,15 @@ export default {
   methods: {
     generateTitle, // generateTitle by vue-i18n
     isActive(route) {
-      return route.path === this.$route.path
+      if (route.name === 'Report Viewer') {
+        if (route.params.processId === this.$route.params.processId) {
+          return route.params.processId === this.$route.params.processId
+        } else {
+          return route.path === this.$route.path
+        }
+      } else {
+        return route.name === this.$route.name
+      }
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
@@ -121,7 +157,15 @@ export default {
       const tags = this.$refs.tag
       this.$nextTick(() => {
         for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
+          if (this.$route.name === 'Report Viewer') {
+            if (this.$route.params && tag.to.params && tag.to.params.processId === this.$route.params.processId) {
+              this.$refs.scrollPane.moveToTarget(tag)
+            }
+          }
+          if (tag.to.name === this.$route.name) {
+            if (tag.to.query && tag.to.query.action && tag.to.query.action === this.$route.query.action) {
+              tag.to.params.isReadParameters = false
+            }
             this.$refs.scrollPane.moveToTarget(tag)
             // when query is different then update
             if (tag.to.fullPath !== this.$route.fullPath) {
@@ -143,6 +187,22 @@ export default {
       })
     },
     closeSelectedTag(view) {
+      if (view.meta && view.meta.uuid && view.meta.type) {
+        this.$store.dispatch('resetPanelToNew', {
+          parentUuid: view.meta.type !== 'window' ? undefined : view.meta.uuid,
+          containerUuid: view.meta.type === 'window' ? view.meta.tabUuid : view.meta.uuid,
+          panelType: view.meta.type,
+          isNewRecord: false
+        })
+        if (view.meta.type === 'window' || view.meta.type === 'browser') {
+          this.$store.dispatch('deleteRecordContainer', {
+            viewUuid: view.meta.uuid
+          })
+          if (view.meta.type === 'window') {
+            this.$store.dispatch('setWindowOldRoute')
+          }
+        }
+      }
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
           this.toLastView(visitedViews, view)
@@ -197,6 +257,11 @@ export default {
     },
     closeMenu() {
       this.visible = false
+    },
+    setData(dataTransfer) {
+      // to avoid Firefox bug
+      // Detail see : https://github.com/RubaXa/Sortable/issues/1012
+      dataTransfer.setData('Text', '')
     }
   }
 }
@@ -210,24 +275,30 @@ export default {
   border-bottom: 1px solid #d8dce5;
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
   .tags-view-wrapper {
+    width: 100%;
     .tags-view-item {
-      display: inline-block;
-      position: relative;
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      flex:none;
+      max-width: 32%;
       cursor: pointer;
       height: 26px;
       line-height: 26px;
       border: 1px solid #d8dce5;
       color: #495060;
       background: #fff;
-      padding: 0 8px;
+      padding: 0 7px;
       font-size: 12px;
       margin-left: 5px;
       margin-top: 4px;
+      div.tag-title{
+        width: -webkit-fill-available;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
       &:first-of-type {
         margin-left: 15px;
-      }
-      &:last-of-type {
-        margin-right: 15px;
       }
       &.active {
         background-color: #42b983;
@@ -235,8 +306,10 @@ export default {
         border-color: #42b983;
         &::before {
           content: '';
+          align-self: center;
           background: #fff;
           display: inline-block;
+          min-width: 8px;
           width: 8px;
           height: 8px;
           border-radius: 50%;
@@ -275,6 +348,8 @@ export default {
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
+      align-self: center;
+      min-width: 16px;
       width: 16px;
       height: 16px;
       vertical-align: 2px;

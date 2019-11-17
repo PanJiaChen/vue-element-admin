@@ -1,0 +1,14 @@
+
+export const ADDRESS_HOST = 'http://localhost'
+
+export const PORT_DICTIONARY = '8990'
+export const HOST_GRPC_DICTIONARY = ADDRESS_HOST + ':' + PORT_DICTIONARY
+
+export const PORT_DATA = '8991'
+export const HOST_GRPC_DATA = ADDRESS_HOST + ':' + PORT_DATA
+
+export const PORT_AUTHENTICATION = '8989'
+export const HOST_GRPC_AUTHENTICATION = ADDRESS_HOST + ':' + PORT_AUTHENTICATION
+
+export const PORT_ENROLLMENT = '8992'
+export const HOST_GRPC_ENROLLMENT = ADDRESS_HOST + ':' + PORT_ENROLLMENT

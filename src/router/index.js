@@ -71,27 +71,52 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/userEnrollment',
+    component: () => import('@/views/login/userEnrollment'),
+    hidden: true
+  },
+  {
+    path: '/forgotPassword',
+    component: () => import('@/views/login/forgotPassword'),
+    hidden: true
+  },
+  {
+    path: '/passwordReset',
+    name: 'passwordReset',
+    component: () => import('@/views/login/setPassword'),
+    hidden: true
+  },
+  {
+    path: '/createPassword',
+    name: 'createPassword',
+    component: () => import('@/views/login/setPassword'),
+    hidden: true
+  },
+  {
     path: '',
     component: Layout,
     redirect: 'dashboard',
+    meta: { title: 'dashboard', icon: 'dashboard', affix: true, breadcrumb: false },
     children: [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
         name: 'Dashboard',
-        meta: { title: 'dashboard', icon: 'dashboard', affix: true }
+        meta: { title: 'dashboard', icon: 'dashboard', affix: true, breadcrumb: false, isIndex: true }
       }
     ]
   },
   {
     path: '/documentation',
     component: Layout,
+    redirect: '/documentation/index',
+    meta: { title: 'documentation', icon: 'documentation', affix: true, breadcrumb: false },
     children: [
       {
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: 'documentation', icon: 'documentation', affix: true }
+        meta: { title: 'documentation', icon: 'documentation', affix: true, isIndex: true }
       }
     ]
   },
@@ -99,12 +124,13 @@ export const constantRoutes = [
     path: '/guide',
     component: Layout,
     redirect: '/guide/index',
+    meta: { title: 'guide', icon: 'guide', noCache: true, breadcrumb: false },
     children: [
       {
         path: 'index',
         component: () => import('@/views/guide/index'),
         name: 'Guide',
-        meta: { title: 'guide', icon: 'guide', noCache: true }
+        meta: { title: 'guide', icon: 'guide', noCache: true, isIndex: true }
       }
     ]
   },
