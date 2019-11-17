@@ -13,7 +13,7 @@
     <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Build Status">
   </a>
   <a href="https://github.com/adempiere/adempiere-vue/blob/master/LICENSE">
-    <img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt="license">
+    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="license">
   </a>
   <a href="https://github.com/adempiere/adempiere-vue/releases">
     <img src="https://img.shields.io/github/release/adempiere/adempiere-vue.svg" alt="GitHub release">
