@@ -206,7 +206,7 @@ const REFERENCES = [
   },
   {
     id: 36,
-    type: 'FieldText',
+    type: 'FieldTextLong',
     support: true,
     description: 'Text (Long) - Text > 2000 characters',
     alias: ['TextLong', 'Text Long']

@@ -11,7 +11,6 @@
     :precision="precision"
     controls-position="right"
     :class="'display-type-' + cssClass"
-    @blur="validateInput"
     @change="preHandleChange"
   />
 </template>
@@ -22,12 +21,6 @@ import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 export default {
   name: 'FieldNumber',
   mixins: [fieldMixin],
-  props: {
-    validateInput: {
-      type: Function,
-      default: () => undefined
-    }
-  },
   data() {
     return {
       pattern: undefined,

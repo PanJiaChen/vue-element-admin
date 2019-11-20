@@ -43,7 +43,7 @@ export default {
     typeTextBox() {
       // String, Url, FileName...
       var typeInput = 'text'
-      if (['Memo', 'Text', 'TextLong'].includes(this.metadata.referenceType)) {
+      if (['Memo', 'Text'].includes(this.metadata.referenceType)) {
         typeInput = 'textarea'
       }
       if (this.metadata.isEncrypted) {

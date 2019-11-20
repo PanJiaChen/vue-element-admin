@@ -162,6 +162,9 @@ export default {
       }
 
       if (this.panelType === 'window') {
+        if (this.field.componentPath === 'FieldTextLong') {
+          return sizeField
+        }
         // two columns if is mobile or desktop and show record navigation
         if (this.getWidth <= 768 || (this.getWidth >= 768 && this.getterIsShowedRecordNavigation)) {
           newSizes.xs = 12

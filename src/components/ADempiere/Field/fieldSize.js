@@ -81,13 +81,13 @@ export const FIELD_DISPLAY_SIZES = [
     }
   },
   {
-    type: 'FieldTextArea',
+    type: 'FieldTextLong',
     size: {
       xs: 24,
-      sm: 12,
-      md: 8,
-      lg: 6,
-      xl: 6
+      sm: 24,
+      md: 24,
+      lg: 24,
+      xl: 24
     }
   },
   {
