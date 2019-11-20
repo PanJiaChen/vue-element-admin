@@ -102,6 +102,35 @@ export const contextMixin = {
         isAdvancedQuery: this.$route.query.action === 'advancedQuery'
       })
     },
+    getterFieldList() {
+      return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
+    },
+    getterFieldListHeader() {
+      var header = this.getterFieldList.filter(fieldItem => {
+        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
+        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
+          return fieldItem.name
+        }
+      })
+      return header.map(fieldItem => {
+        return fieldItem.name
+      })
+    },
+    getterFieldListValue() {
+      var value = this.getterFieldList.filter(fieldItem => {
+        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
+        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
+          return fieldItem
+        }
+      })
+      return value.map(fieldItem => {
+        if (fieldItem.componentPath === 'FieldSelect') {
+          return 'DisplayColumn_' + fieldItem.columnName
+        } else {
+          return fieldItem.columnName
+        }
+      })
+    },
     getterDataLog() {
       if (this.panelType === 'window') {
         return this.$store.getters.getDataLog(this.containerUuid, this.recordUuid)
@@ -194,15 +223,20 @@ export const contextMixin = {
       }
     },
     exporBrowser() {
-      this.$store.dispatch('startProcess', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-        reportFormat: this.exportDefault
-      })
-        .catch(error => {
-          console.warn(error)
+        import('@/vendor/Export2Excel').then(excel => {
+          const tHeader = this.getterFieldListHeader
+          const filterVal = this.getterFieldListValue
+          const list = this.getDataSelection
+          const data = this.formatJson(filterVal, list)
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: ''
+          })
         })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
     },
     generateContextMenu() {
       this.metadataMenu = this.getterContextMenu
