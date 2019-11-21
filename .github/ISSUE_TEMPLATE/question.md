@@ -1,14 +1,40 @@
 ---
-name: Question（提问）
-about: Asking questions about use
+name: Custom issue template
+about: Describe this issue template's purpose here.
+title: "[Question]"
+labels: question
+assignees: ''
+
 ---
 
-## Question（提问）
+Question
+Asking questions about use
+
+## Question
 
 <!--
-    提问之前，请确定你已经过自己的努力，尝试解决过这个问题。
-    若是代码相关问题，请不要只截图，请提供在线 demo，以便节约彼此的时间。
-
     Before asking a question, please make sure that you have tried your best to solve this problem.
     If it's a code-related issue, please don't just take screenshots. Please provide an online demo to save each other's time.
 -->
+
+#### Steps to reproduce
+1. [xxx]
+2. [xxx]
+3. [xxxx]
+
+#### Screenshot or Gif
+
+
+#### Link to minimal reproduction
+
+<!--
+Please only use Codepen, JSFiddle, CodeSandbox or a github repo
+-->
+
+#### Other relevant information
+- Your OS:
+- Node.js version:
+- vue-element-admin version:
+
+#### Additional context
+Add any other context about the problem here.
