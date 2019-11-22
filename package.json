@@ -3,7 +3,7 @@
   "version": "4.1.0",
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
-  "license": "MIT",
+  "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
@@ -45,8 +45,8 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.1.6",
-    "@adempiere/grpc-data-client": "^1.7.3",
-    "@adempiere/grpc-dictionary-client": "^1.3.1",
+    "@adempiere/grpc-data-client": "^1.7.7",
+    "@adempiere/grpc-dictionary-client": "^1.3.2",
     "@adempiere/grpc-enrollment-client": "^1.0.6",
     "autoprefixer": "^9.5.1",
     "axios": "0.18.0",
