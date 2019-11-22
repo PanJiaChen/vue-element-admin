@@ -481,9 +481,10 @@ const panel = {
       }
 
       // the field has not changed, then the action is broken
-      if (params.newValue === field.value) {
+      if (params.newValue === field.value && isEmptyValue(displayColumn)) {
         return
       }
+
       commit('changeFieldValue', {
         field: field,
         newValue: params.newValue,
@@ -491,6 +492,7 @@ const panel = {
         displayColumn: displayColumn,
         isChangedOldValue: params.isChangedOldValue
       })
+
       //  Change Dependents
       var dependents = fieldList.filter(fieldItem => {
         return field.dependentFieldsList.includes(fieldItem.columnName)

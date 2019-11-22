@@ -30,31 +30,20 @@ export default {
   mixins: [fieldMixin],
   data() {
     return {
-      value: this.metadata.displayColumn,
       isLoading: false,
-      baseNumber: 10,
       options: [{
         label: ' ',
         key: undefined
       }],
-      othersOptions: [],
       blanckOption: {
         label: ' ',
         key: undefined
-      },
-      blancksValues: [null, -1, '', undefined]
+      }
     }
   },
   computed: {
     isPanelWindow() {
       return this.metadata.panelType === 'window'
-    },
-    getterValueSelec() {
-      var field = this.$store.getters.getFieldFromColumnName(this.metadata.containerUuid, this.metadata.columnName)
-      if (field) {
-        return this.validateValue(field.displayColumn)
-      }
-      return undefined
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -65,7 +54,7 @@ export default {
         containerUuid: this.metadata.containerUuid,
         directQuery: this.metadata.reference.directQuery,
         tableName: this.metadata.reference.tableName,
-        value: this.metadata.value
+        value: this.value
       })
     },
     getterLookupList() {
@@ -83,7 +72,7 @@ export default {
         query: this.metadata.reference.query,
         directQuery: this.metadata.reference.directQuery,
         tableName: this.metadata.reference.tableName,
-        value: this.metadata.value
+        value: this.value
       })
       if (allOptions.length && !allOptions[0].key) {
         allOptions.unshift(this.blanckOption)
@@ -92,56 +81,47 @@ export default {
     }
   },
   watch: {
-    'metadata.optionCRUD'(value) {
-      if (value === 'create-new') {
-        this.value = this.metadata.value
-        this.getDataLookupItem()
-      } else {
-        if (this.isEmptyValue(this.metadata.displayColumn)) {
-          this.value = this.getterValueSelec
-        } else {
-          this.value = this.validateValue(this.metadata.displayColumn)
+    valueModel(value) {
+      if (this.metadata.inTable) {
+        this.value = value
+      }
+    },
+    'metadata.value'(value) {
+      if (!this.metadata.inTable) {
+        this.value = value
+      }
+    },
+    'metadata.displayColumn'(value) {
+      if (!this.isEmptyValue(this.value)) {
+        // console.log('display wacth')
+        if (!this.isEmptyValue(value)) {
+          // verify if exists to add
+          if (!this.findLabel(this.value)) {
+            this.options.push({
+              key: this.value,
+              label: value
+            })
+          }
         }
       }
     }
   },
   beforeMount() {
     this.options = this.getterLookupAll
-    if (this.isEmptyValue(this.metadata.displayColumn)) {
-      this.value = this.getterValueSelec
-    } else {
-      this.value = this.validateValue(this.metadata.displayColumn)
-    }
-    // enable to dataTable records
-    // Evaluate values of the displayColumn with empty string or number at 0
-    if (!this.isEmptyValue(this.metadata.displayColumn)) {
-      var key = this.validateValue(this.metadata.value)
-      if (this.valueModel !== undefined && this.validateValue !== null) {
-        key = this.metadata.displayColumn
-      }
-      // verify if exists to add
-      if (!this.findLabel(key)) {
-        this.othersOptions.push({
-          key: key,
-          label: this.metadata.displayColumn
-        })
-      }
-      // join options in store with pased from props
-      // validate empty or duplicate data
-      const optionList = this.getterLookupAll.filter(lookup => {
-        if (lookup.key !== null) {
-          return lookup
+    if (!this.isEmptyValue(this.value) && this.metadata.panelType !== 'table') {
+      if (!this.findLabel(this.value)) {
+        if (!this.isEmptyValue(this.metadata.displayColumn)) {
+        // verify if exists to add
+          this.options.push({
+            key: this.value,
+            label: this.metadata.displayColumn
+          })
+        } else {
+          if (!this.isPanelWindow || (this.isPanelWindow &&
+            (this.isEmptyValue(this.metadata.optionCRUD) || this.metadata.optionCRUD === 'create-new'))) {
+            this.getDataLookupItem()
+          }
         }
-      })
-      this.options = optionList
-      this.value = key
-    } else if (!this.findLabel(this.value) && this.metadata.displayed) {
-      if (this.isPanelWindow) {
-        if (this.metadata.optionCRUD === 'create-new') {
-          this.value = this.metadata.value
-        }
-      } else {
-        this.value = this.validateValue(this.metadata.displayColumn)
       }
     }
   },
@@ -150,27 +130,8 @@ export default {
       const label = this.findLabel(this.value)
       this.handleChange(value, undefined, label)
     },
-    validateValue(value) {
-      if (this.isEmptyValue(value)) {
-        return undefined
-      }
-      // if (['TableDirect'].includes(this.metadata.referenceType)) {
-      //   return parseInt(value, 10)
-      // }
-      return value
-    },
-    validateBlanckOption() {
-      // TODO: Evaluate -1 when list is string key
-      if (this.options.length <= 0 || (this.options.length && this.isEmptyValue(this.options[0].key))) {
-        this.options.unshift(this.blanckOption)
-      }
-    },
     findLabel(value) {
-      var selected = this.options.find(item => item.key === value)
-      if (selected) {
-        return selected.label
-      }
-      selected = this.othersOptions.find(item => item.key === value)
+      const selected = this.options.find(item => item.key === value)
       if (selected) {
         return selected.label
       }
@@ -178,31 +139,29 @@ export default {
     },
     async getDataLookupItem() {
       this.isLoading = true
-      if (!this.isEmptyValue(this.value)) {
-        this.$store.dispatch('getLookupItemFromServer', {
-          parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
-          tableName: this.metadata.reference.tableName,
-          directQuery: this.metadata.reference.directQuery,
-          value: this.metadata.value
+      this.$store.dispatch('getLookupItemFromServer', {
+        parentUuid: this.metadata.parentUuid,
+        containerUuid: this.metadata.containerUuid,
+        tableName: this.metadata.reference.tableName,
+        directQuery: this.metadata.reference.directQuery,
+        value: this.metadata.value
+      })
+        .then(response => {
+          if (this.isPanelWindow) {
+            this.$store.dispatch('notifyFieldChangeDisplayColumn', {
+              containerUuid: this.metadata.containerUuid,
+              columnName: this.metadata.columnName,
+              displayColumn: response.label
+            })
+          }
+          this.options = this.getterLookupAll
+          if (this.options.length && !this.options[0].key) {
+            this.options.unshift(this.blanckOption)
+          }
         })
-          .then(response => {
-            if (this.isPanelWindow) {
-              this.$store.dispatch('notifyFieldChangeDisplayColumn', {
-                containerUuid: this.metadata.containerUuid,
-                columnName: this.metadata.columnName,
-                displayColumn: response.label
-              })
-            }
-            this.options = this.getterLookupAll
-            if (this.options.length && !this.options[0].key) {
-              this.options.unshift(this.blanckOption)
-            }
-          })
-          .finally(() => {
-            this.isLoading = false
-          })
-      }
+        .finally(() => {
+          this.isLoading = false
+        })
     },
     /**
      * @param {boolean} show triggers when the pull-down menu appears or disappears
