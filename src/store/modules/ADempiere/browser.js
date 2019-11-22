@@ -24,7 +24,6 @@ const browser = {
         getBrowserMetadata(browserUuid)
           .then(response => {
             const panelType = 'browser'
-            var fieldsList = response.getFieldsList()
             const query = response.getQuery()
             const whereClause = response.getWhereclause()
             const additionalAttributes = {
@@ -35,17 +34,17 @@ const browser = {
             }
 
             //  Convert from gRPC
-            var fieldsRangeList = []
+            const fieldsRangeList = []
             var isMandatoryParams = false
-            fieldsList = fieldsList.map((fieldItem, index) => {
+            var fieldsList = response.getFieldsList().map((fieldItem, index) => {
               const someAttributes = {
                 ...additionalAttributes,
                 fieldListIndex: index
               }
-              var field = convertField(fieldItem, someAttributes)
+              const field = convertField(fieldItem, someAttributes)
               // Add new field if is range number
-              if (field.isRange && field.componentPath === 'NumberBase') {
-                var fieldRange = convertField(fieldItem, someAttributes, true)
+              if (field.isRange && field.componentPath === 'FieldNumber') {
+                const fieldRange = convertField(fieldItem, someAttributes, true)
                 if (!isEmptyValue(fieldRange.value)) {
                   fieldRange.isShowedFromUser = true
                 }

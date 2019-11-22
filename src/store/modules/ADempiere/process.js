@@ -21,7 +21,7 @@ const process = {
         var processUuid = parameters.containerUuid
         getProcessMetadata(processUuid)
           .then(response => {
-            var panelType = 'process'
+            let panelType = 'process'
             if (response.getIsreport()) {
               panelType = 'report'
             }
@@ -34,16 +34,16 @@ const process = {
             }
 
             //  Convert from gRPC
-            var fieldsRangeList = []
+            const fieldsRangeList = []
             var fieldDefinitionList = response.getParametersList().map((fieldItem, index) => {
-              var someAttributes = {
+              const someAttributes = {
                 ...additionalAttributes,
                 fieldListIndex: index
               }
-              var field = convertField(fieldItem, someAttributes)
+              const field = convertField(fieldItem, someAttributes)
               // Add new field if is range number
-              if (field.isRange && field.componentPath === 'NumberBase') {
-                var fieldRange = convertField(fieldItem, someAttributes, true)
+              if (field.isRange && field.componentPath === 'FieldNumber') {
+                const fieldRange = convertField(fieldItem, someAttributes, true)
                 if (!isEmptyValue(fieldRange.value)) {
                   fieldRange.isShowedFromUser = true
                 }

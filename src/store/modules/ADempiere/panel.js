@@ -1175,10 +1175,10 @@ const panel = {
               }
             }
           }
-          // TODO: Evaluate if is only to fields type Time Date, DateTime
-          if (parameterItem.isRange) {
+          // only to fields type Time, Datea and DateTime
+          if (parameterItem.isRange && parameterItem.componentPath !== 'FieldNumber') {
             parametersRange.push({
-              columnName: parameterItem.columnName + '_To',
+              columnName: `${parameterItem.columnName}_To`,
               value: valueTo
             })
           }

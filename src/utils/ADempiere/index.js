@@ -235,7 +235,6 @@ export function convertField(fieldGRPC, moreAttributes = {}, typeRange = false) 
     field.defaultValue = field.defaultValueTo
     field.parsedDefaultValue = field.parsedDefaultValueTo
   }
-  // field.value = field.value === undefined ? null : field.value
 
   // hidden field type button
   const notShowedField = FIELD_NOT_SHOWED.find(itemField => {
