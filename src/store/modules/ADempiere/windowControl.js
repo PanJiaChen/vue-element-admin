@@ -516,7 +516,17 @@ const windowControl = {
      * @param {boolean} isLoadAllRecords, if main panel is updated with new response data
      */
     getDataListTab({ dispatch, rootGetters }, parameters) {
-      const { parentUuid, containerUuid, recordUuid, isRefreshPanel = false, isLoadAllRecords = false, columnName, value } = parameters
+      const {
+        parentUuid,
+        containerUuid,
+        recordUuid,
+        isRefreshPanel = false,
+        isLoadAllRecords = false,
+        isReference = false,
+        referenceWhereClause = '',
+        columnName,
+        value
+      } = parameters
       const tab = rootGetters.getTab(parentUuid, containerUuid)
 
       var parsedQuery = tab.query
@@ -536,6 +546,15 @@ const windowControl = {
           value: tab.whereClause
         }, true)
       }
+
+      if (isReference) {
+        if (!isEmptyValue(parsedWhereClause)) {
+          parsedWhereClause += ' AND ' + referenceWhereClause
+        } else {
+          parsedWhereClause += referenceWhereClause
+        }
+      }
+
       var conditions = []
       if (tab.isParentTab && !isEmptyValue(tab.tableName) && !isEmptyValue(value)) {
         conditions.push({
@@ -640,7 +659,11 @@ const windowControl = {
       return state.inCreate.find(item => item.containerUuid === containerUuid)
     },
     getReferencesList: (state) => (windowUuid, recordUuid) => {
-      return (state.references.find(item => item.windowUuid === windowUuid && item.recordUuid === recordUuid))
+      return state.references.find(item => item.windowUuid === windowUuid && item.recordUuid === recordUuid)
+    },
+    getReferencesInfo: (state, getters) => (windowUuid, recordUuid, referenceUuid) => {
+      const references = getters.getReferencesList(windowUuid, recordUuid)
+      return references.referencesList.find(item => item.uuid === referenceUuid)
     },
     getWindowRoute: (state) => (windowUuid) => {
       if (state.windowRoute && state.windowRoute.meta && state.windowRoute.meta.uuid === windowUuid) {

@@ -11,11 +11,9 @@
     <template slot="title">
       <svg-icon v-if="isMobile" icon-class="nested" /> {{ item.meta.title }}
     </template>
-    <!-- <el-scrollbar wrap-class="scroll"> -->
     <item v-for="(child, key) in item.children" :key="key" :item="child">
       {{ child.meta.title }}
     </item>
-    <!-- </el-scrollbar> -->
   </el-submenu>
 </template>
 

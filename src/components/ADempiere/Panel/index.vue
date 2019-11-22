@@ -392,10 +392,11 @@ export default {
         })
 
         if (route.query.action && route.query.action === 'reference') {
+          const referenceInfo = this.$store.getters.getReferencesInfo(route.query.windowUuid, route.query.recordUuid, route.query.referenceUuid)
           parameters.isLoadAllRecords = false
           parameters.isReference = true
-          parameters.referenceUuid = route.query.referenceUuid
-          parameters.referenceWhereClause = route.query.whereClause
+          parameters.referenceUuid = referenceInfo.uuid
+          parameters.referenceWhereClause = referenceInfo.whereClause
         } else if (route.query.action && route.query.action === 'create-new') {
           parameters.isNewRecord = true
         } else if (route.query.action && route.query.action !== 'create-new' && route.query.action !== 'reference' && route.query.action !== 'advancedQuery') {
@@ -458,6 +459,8 @@ export default {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
           isLoadAllRecords: parameters.isLoadAllRecords,
+          isReference: parameters.isReference,
+          referenceWhereClause: parameters.referenceWhereClause,
           columnName: parameters.columnName,
           value: parameters.value
         })
