@@ -51,7 +51,7 @@ export default {
         .join('-').toLowerCase()
     },
     precision() {
-      if (['Number', 'Amount'].includes()) {
+      if (['Amount', 'Costs+Prices', 'Number'].includes(this.metadata.referenceType)) {
         return 2
       }
       return undefined

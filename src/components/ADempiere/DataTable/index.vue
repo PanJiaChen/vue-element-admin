@@ -2,7 +2,7 @@
   <el-container v-if="isLoadPanel" label-position="top" style="height: inherit;">
     <el-main style="padding: 0px !important; overflow: hidden;">
       <el-container style="height: 100%;">
-        <el-header :style="isAdvancedQuery ? activeName ? { height: '55%', overflow: 'auto' } : { height: '18%', overflow: 'hidden' } : { height: '5%' }">
+        <el-header :style="isAdvancedQuery ? activeName ? { height: '55%', overflow: 'auto' } : { height: '10%', overflow: 'hidden' } : { height: '5%' }">
           <el-collapse
             v-if="isParent && isAdvancedQuery"
             v-show="isAdvancedQuery"
@@ -192,6 +192,8 @@
             element-loading-background="rgba(255, 255, 255, 0.8)"
             element-loading-spinner="el-icon-loading"
             cell-class-name="datatable-max-cell-height"
+            show-summary
+            :summary-method="getSummaries"
             @row-click="handleRowClick"
             @row-dblclick="handleRowDblClick"
             @select="handleSelection"
@@ -541,6 +543,11 @@ export default {
         }
         // replace number timestamp value for date
         return formatDate(cell, field.referenceType)
+      } else if (field.componentPath === 'FieldNumber') {
+        if (this.isEmptyValue(row[field.columnName])) {
+          return undefined
+        }
+        return this.formatNumber({ referenceType: field.referenceType, number: row[field.columnName] })
       }
       return row['DisplayColumn_' + field.columnName] || row[field.columnName]
     },
@@ -840,6 +847,43 @@ export default {
         })
       }
     },
+    getSummaries(param) {
+      const { columns, data } = param
+      const sums = []
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = 'Σ'
+          return
+        }
+        const field = this.fieldList.find(field => field.columnName === column.property)
+        if (field.componentPath !== 'FieldNumber') {
+          sums[index] = ''
+          return
+        }
+        const values = data.map(item => Number(item[column.property]))
+        if (values.every(value => isNaN(value))) {
+          sums[index] = ''
+        } else {
+          const total = values.reduce((prev, curr) => {
+            const value = Number(curr)
+            if (!isNaN(value)) {
+              return prev + curr
+            }
+            return prev
+          }, 0)
+          sums[index] = this.formatNumber({ referenceType: field.referenceType, number: total })
+        }
+      })
+
+      return sums
+    },
+    formatNumber({ referenceType, number }) {
+      let fixed = 0
+      if (['Amount', 'Costs+Prices', 'Number'].includes(referenceType)) {
+        fixed = 2
+      }
+      return new Intl.NumberFormat().format(number.toFixed(fixed))
+    },
     handleChangePage(newPage) {
       this.$store.dispatch('setPageNumber', {
         parentUuid: this.parentUuid,
@@ -913,7 +957,7 @@ export default {
     text-overflow: ellipsis;
     white-space: nowrap;
     word-break: break-all;
-    line-height: 50px;
+    line-height: 23px;
     padding-left: 10px;
     padding-right: 10px;
   }
