@@ -239,6 +239,26 @@ const processControl = {
               if (reportType !== 'pdf' && reportType !== 'html') {
                 link.click()
               }
+              // Print formats to context menu
+              var printFormatList = {
+                name: language.t('views.printFormat'),
+                type: 'summary',
+                action: '',
+                childs: [],
+                option: 'printFormat'
+              }
+              printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
+              if (!printFormatList.childs.length) {
+                dispatch('requestPrintFormats', {
+                  processUuid: processResult.processUuid
+                })
+                  .then(response => {
+                    printFormatList.childs = response
+                    // Get contextMenu metadata and concat print Format List with contextMenu actions
+                    var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                    contextMenuMetadata.actions.push(printFormatList)
+                  })
+              }
             }
             // assign new attributes
             Object.assign(processResult, {

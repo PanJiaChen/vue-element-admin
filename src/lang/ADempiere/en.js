@@ -154,7 +154,9 @@ export default {
     unsupportedSorry: 'Sorry',
     unsupportedHeadline: 'This view is currently unavailable',
     unsupportedInfo: 'Please check that the view is supported in this version, or click the button below to return to the homepage.',
-    unsupportedButton: 'Back to dashboard'
+    unsupportedButton: 'Back to dashboard',
+    printFormat: 'Print Format',
+    changePrintFormat: 'Change Print Format'
   },
   table: {
     ProcessActivity: {
