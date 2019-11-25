@@ -1,4 +1,4 @@
-import { runProcess, requestProcessActivity } from '@/api/ADempiere'
+import { runProcess, requestProcessActivity, requestReportViews } from '@/api/ADempiere'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { isEmptyValue, convertMapToArrayPairs } from '@/utils/ADempiere'
 import language from '@/lang'
@@ -14,7 +14,8 @@ const processControl = {
     process: [], // process to run finish
     sessionProcess: [],
     notificationProcess: [],
-    inRequestMetadata: []
+    inRequestMetadata: [],
+    reportViewList: []
   },
   mutations: {
     // Add process in execution
@@ -73,6 +74,9 @@ const processControl = {
       state.sessionProcess = []
       state.notificationProcess = []
       state.inRequestMetadata = []
+    },
+    setReportViewsList(state, payload) {
+      state.reportViewList.push(payload)
     }
   },
   actions: {
@@ -239,6 +243,28 @@ const processControl = {
               if (reportType !== 'pdf' && reportType !== 'html') {
                 link.click()
               }
+              
+              // Report views List to context menu
+              var reportViewList = {
+                name: language.t('views.reportView'),
+                type: 'summary',
+                action: '',
+                childs: [],
+                option: 'reportView'
+              }
+              reportViewList.childs = getters.getReportViewList(processResult.processUuid)
+              if (!reportViewList.childs.length) {
+                dispatch('requestReportViews', {
+                  processUuid: processResult.processUuid
+                })
+                  .then(response => {
+                    reportViewList.childs = response
+                    // Get contextMenu metadata and concat print report views with contextMenu actions
+                    var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                    contextMenuMetadata.actions.push(reportViewList)
+                  })
+              }
+
               // Print formats to context menu
               var printFormatList = {
                 name: language.t('views.printFormat'),
@@ -443,6 +469,27 @@ const processControl = {
     },
     clearProcessControl({ commit }) {
       commit('clearProcessControl')
+    },
+    requestReportViews({ commit }, parameters) {
+      return requestReportViews({ processUuid: parameters.processUuid })
+        .then(response => {
+          const reportViewList = response.getReportviewsList().map(reportView => {
+            return {
+              uuid: reportView.getUuid(),
+              name: reportView.getName(),
+              tableName: reportView.getTablename(),
+              description: reportView.getDescription()
+            }
+          })
+          commit('setReportViewsList', {
+            containerUuid: parameters.processUuid,
+            viewList: reportViewList
+          })
+          return reportViewList
+        })
+        .catch(error => {
+          console.error(error)
+        })
     }
   },
   getters: {
@@ -487,6 +534,13 @@ const processControl = {
       return state.reportList.find(
         item => item.instanceUuid === instanceUuid
       )
+    },
+    getReportViewList: (state) => (containerUuid) => {
+      var reportViewList = state.reportViewList.find(list => list.containerUuid === containerUuid)
+      if (reportViewList) {
+        return reportViewList.viewList
+      }
+      return []
     }
   }
 }

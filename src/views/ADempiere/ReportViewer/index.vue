@@ -86,9 +86,7 @@ export default {
       reportContent: '',
       reportHeader: '',
       isLoading: false,
-      reportResult: {},
-      printFormatList: [],
-      printFormat: null
+      reportResult: {}
     }
   },
   computed: {
