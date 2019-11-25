@@ -1,6 +1,7 @@
 import { showNotification } from '@/utils/ADempiere/notification'
 import Item from './items'
 import { convertFieldListToShareLink } from '@/utils/ADempiere/valueUtil'
+import ROUTES from '@/utils/ADempiere/zoomWindow'
 
 export const contextMixin = {
   components: {
@@ -56,7 +57,8 @@ export const contextMixin = {
       metadataMenu: {},
       recordUuid: this.$route.query.action,
       isReferencesLoaded: false,
-      exportDefault: 'xls'
+      exportDefault: 'xls',
+      ROUTES
     }
   },
   computed: {

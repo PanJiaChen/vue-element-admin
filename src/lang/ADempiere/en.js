@@ -124,6 +124,7 @@ export default {
     contextMenuRefresh: 'Refresh',
     contextMennuExport: 'Export Smart Browser',
     contextMennuWindowReport: 'Window Report ',
+    contextMenuPrintFormatSetup: 'Print Format Setup',
     dateStartPlaceholder: 'Start date',
     dateEndPlaceholder: 'End date',
     timePlaceholder: 'Select time',

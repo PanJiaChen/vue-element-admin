@@ -42,6 +42,7 @@ export default {
   },
   methods: {
     handleClick(item) {
+      console.log(item)
       this.$router.push({ name: item.name, query: { tabParent: 0 }})
     }
   }

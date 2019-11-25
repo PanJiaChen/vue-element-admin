@@ -35,6 +35,9 @@
               {{ $t('components.contextMenuDownload') }}
             </a>
           </el-menu-item>
+          <el-menu-item v-show="$route.name === 'Report Viewer'" index="9" @click="$router.push({ name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid })">
+            {{ $t('components.contextMenuPrintFormatSetup') }}
+          </el-menu-item>
           <el-menu-item v-if="getDataSelection.length > 0 && panelType === 'browser'" index="6" @click="exporBrowser">
             {{ $t('components.contextMennuExport') }}
           </el-menu-item>
