@@ -207,6 +207,7 @@ export default {
   profile: {
     aboutMe: 'Sobre Mi',
     recentItems: 'Artículos Recientes',
+    favorites: 'Favoritos',
     recentItemsName: 'Nombre Ítems Recientes',
     role: 'Rol',
     availableRoles: 'Roles disponibles',

@@ -1,19 +1,19 @@
 <template>
-  <el-collapse v-model="activeRecentItems" accordion>
-    <el-collapse-item name="recentItems">
+  <el-collapse v-model="activeFavorites" accordion>
+    <el-collapse-item name="favorites">
       <template slot="title">
-        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.recentItems') }}
+        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.favorites') }}
       </template>
       <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
         <div class="recent-items">
-          <el-table :data="search.length ? filterResult(search) : recentItems" max-height="455" @row-click="handleClick">
+          <el-table :data="search.length ? filterResult(search) : favorites" max-height="455" @row-click="handleClick">
             <el-table-column width="40">
               <template slot-scope="{row}">
                 <svg-icon :icon-class="row.icon" class="icon-window" />
               </template>
             </el-table-column>
             <el-table-column>
-              <template slot="header" slot-scope="scope" class="clearfix">
+              <template slot="header" slot-scope="scope">
                 <el-input
                   v-model="search"
                   size="mini"
@@ -22,10 +22,8 @@
                 />
               </template>
               <template slot-scope="{row}">
-                <span>{{ row.displayName }}</span>
+                <span>{{ row.name }}</span>
                 <el-tag class="action-tag">{{ $t(`views.${row.action}`) }}</el-tag>
-                <br>
-                <span class="time">{{ translateDate(row.updated) }}</span>
               </template>
             </el-table-column>
           </el-table>
@@ -36,65 +34,51 @@
 </template>
 
 <script>
-
 export default {
-  name: 'RecentItems',
+  name: 'Favorites',
   data() {
     return {
-      activeRecentItems: 'recentItems',
-      recentItems: [],
+      activeFavorites: 'favorites',
+      favorites: [],
       isLoaded: true,
       search: '',
       accentRegexp: /[\u0300-\u036f]/g
     }
   },
   computed: {
-    getterRecentItems() {
-      return this.$store.getters.getRecentItems
+    getterFavoritesList() {
+      return this.$store.getters.getFavoritesList
     },
     cachedViews() {
       return this.$store.getters.cachedViews
     }
   },
   mounted() {
-    this.getRecentItems()
+    this.getFavoritesList()
     this.subscribeChanges()
   },
   methods: {
-    checkOpened(uuid) {
-      return this.cachedViews.includes(uuid)
-    },
-    getRecentItems() {
-      var items = this.getterRecentItems
-      if (items === undefined || items.length < 1) {
-        this.$store.dispatch('getRecentItemsFromServer')
-          .then(response => {
-            this.recentItems = response
-            this.isLoaded = false
-          }).catch(error => {
-            console.log(error)
-          })
-      } else {
-        this.recentItems = items
-        this.isLoaded = false
-      }
-    },
-    handleClick(row) {
-      if (!this.isEmptyValue(row.uuidRecord)) {
-        this.$router.push({ name: row.menuUuid, query: { action: row.uuidRecord, tabParent: 0 }})
-      } else {
-        this.$router.push({ name: row.menuUuid })
-      }
+    getFavoritesList() {
+      this.$store.dispatch('getFavoritesFromServer')
+        .then(response => {
+          this.favorites = response
+          this.isLoaded = false
+        }).catch(error => {
+          console.log(error)
+        })
     },
     subscribeChanges() {
       this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'setRecentItems') {
-          this.recentItems = this.getterRecentItems
+        if (mutation.type === 'setFavorites') {
+          this.recentItems = this.getterFavoritesList
         }
       })
     },
+    handleClick(row) {
+      this.$router.push({ name: row.uuid })
+    },
     filterResult(search) {
-      return this.recentItems.filter(item => this.ignoreAccent(item.displayName).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
+      return this.favorites.filter(item => this.ignoreAccent(item.name).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
     },
     ignoreAccent(s) {
       if (!s) { return '' }

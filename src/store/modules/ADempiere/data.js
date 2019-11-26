@@ -6,6 +6,7 @@ import {
   getDefaultValueFromServer,
   convertValueFromGRPC,
   getContextInfoValueFromServer,
+  getFavoritesFromServer,
   requestPrintFormats
 } from '@/api/ADempiere'
 import { convertValuesMapToObject, isEmptyValue, showMessage, convertAction } from '@/utils/ADempiere'
@@ -16,6 +17,7 @@ const data = {
     recordSelection: [], // record data and selection
     recordDetail: [],
     recentItems: [],
+    favorites: [],
     inGetting: [],
     contextInfoField: [],
     printFormatList: []
@@ -61,6 +63,9 @@ const data = {
     },
     setRecentItems(state, payload) {
       state.recentItems = payload
+    },
+    setFavorites(state, payload) {
+      state.favorites = payload
     },
     setPageNumber(state, payload) {
       payload.data.pageNumber = payload.pageNumber
@@ -617,6 +622,29 @@ const data = {
           })
       })
     },
+    getFavoritesFromServer({ commit, rootGetters }) {
+      const userUuid = rootGetters['user/getUserUuid']
+      return new Promise((resolve, reject) => {
+        getFavoritesFromServer(userUuid)
+          .then(response => {
+            const favorites = response.getFavoritesList().map(favorite => {
+              return {
+                uuid: favorite.getMenuuuid(),
+                name: favorite.getMenuname(),
+                description: favorite.getMenudescription(),
+                referenceUuid: favorite.getReferenceuuid(),
+                action: convertAction(favorite.getAction()).name,
+                icon: convertAction(favorite.getAction()).icon
+              }
+            })
+            commit('setFavorites', favorites)
+            resolve(favorites)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
+    },
     /**
      * TODO: Add support to tab children
      * @param {object} objectParams
@@ -902,6 +930,9 @@ const data = {
     },
     getRecentItems: (state) => {
       return state.recentItems
+    },
+    getFavoritesList: (state) => {
+      return state.favorites
     },
     getLanguageList: (state) => (roleUuid) => {
       return state.recordSelection.find(

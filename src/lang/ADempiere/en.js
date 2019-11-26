@@ -232,6 +232,7 @@ export default {
   profile: {
     aboutMe: 'About Me',
     recentItems: 'Recent Items',
+    favorites: 'Favorites',
     recentItemsName: 'Name Recent Items',
     role: 'Role',
     availableRoles: 'Available roles',
