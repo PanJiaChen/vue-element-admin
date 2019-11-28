@@ -52,6 +52,13 @@
                   <el-menu-item index="available" @click="showAllAvailableColumns()">
                     {{ $t('table.dataTable.showAllAvailableColumns') }}
                   </el-menu-item>
+                  <el-menu-item
+                    v-if="['browser', 'window'].includes(panelType)"
+                    index="totals"
+                    @click="showTotals()"
+                  >
+                    {{ getterPanel.isShowedTotals ? $t('table.dataTable.hiddenTotal') : $t('table.dataTable.showTotal') }}
+                  </el-menu-item>
                 </el-submenu>
               </el-menu>
               <el-button
@@ -192,7 +199,7 @@
             element-loading-background="rgba(255, 255, 255, 0.8)"
             element-loading-spinner="el-icon-loading"
             cell-class-name="datatable-max-cell-height"
-            show-summary
+            :show-summary="getterPanel.isShowedTotals"
             :summary-method="getSummaries"
             @row-click="handleRowClick"
             @row-dblclick="handleRowDblClick"
@@ -512,6 +519,9 @@ export default {
     sortFields,
     handleChange(val) {
       val = !val
+    },
+    showTotals() {
+      this.$store.dispatch('showedTotals', this.containerUuid)
     },
     showOnlyMandatoryColumns() {
       this.$store.dispatch('showOnlyMandatoryColumns', {
@@ -848,9 +858,17 @@ export default {
         })
       }
     },
-    getSummaries(param) {
-      const { columns, data } = param
+    /**
+     * @param columns
+     * @param data
+     */
+    getSummaries(parameters) {
+      const { columns } = parameters
       const sums = []
+      if (!this.getterPanel.isShowedTotals) {
+        return
+      }
+
       columns.forEach((column, index) => {
         if (index === 0) {
           sums[index] = 'Σ'
@@ -861,7 +879,7 @@ export default {
           sums[index] = ''
           return
         }
-        const values = data.map(item => Number(item[column.property]))
+        const values = this.getDataSelection.map(item => Number(item[column.property]))
         if (values.every(value => isNaN(value))) {
           sums[index] = ''
         } else {

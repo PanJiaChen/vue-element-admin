@@ -271,7 +271,9 @@ const window = {
             isAdvancedQuery: isAdvancedQuery,
             fieldLinkColumnName: fieldLinkColumnName,
             fieldList: fieldsList,
-            panelType: panelType
+            panelType: panelType,
+            // app attributes
+            isShowedTotals: false
           }
 
           dispatch('addPanel', panel)

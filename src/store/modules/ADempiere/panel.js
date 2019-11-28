@@ -32,12 +32,7 @@ const panel = {
       state.panel = []
     },
     changePanel(state, payload) {
-      state = state.panel.map(item => {
-        if (payload.containerUuid === item.containerUuid) {
-          return payload.newPanel
-        }
-        return item
-      })
+      payload.panel = payload.newPanel
     },
     changeFieldList(state, payload) {
       payload.fieldList = payload.newFieldList
@@ -101,7 +96,8 @@ const panel = {
      * Used by components/fields/filterFields
      */
     changeFieldShowedFromUser({ commit, dispatch, getters }, params) {
-      var panel = getters.getPanel(params.containerUuid, params.isAdvancedQuery)
+      const panel = getters.getPanel(params.containerUuid, params.isAdvancedQuery)
+      var newPanel = panel
       var showsFieldsWithValue = false
       var hiddenFieldsWithValue = false
       var newFields = panel.fieldList.map(itemField => {
@@ -158,7 +154,8 @@ const panel = {
       panel.fieldList = newFields
       commit('changePanel', {
         containerUuid: params.containerUuid,
-        newPanel: panel
+        newPanel: newPanel,
+        panel: panel
       })
       if (showsFieldsWithValue || hiddenFieldsWithValue) {
         // Updated record result
@@ -724,6 +721,15 @@ const panel = {
           }
         })
       }
+    },
+    showedTotals({ commit, getters }, containerUuid) {
+      const panel = getters.getPanel(containerUuid)
+      const newPanel = panel
+      newPanel.isShowedTotals = !panel.isShowedTotals
+      commit('changePanel', {
+        panel: panel,
+        newPanel: newPanel
+      })
     },
     dictionaryResetCache({ commit }) {
       commit('dictionaryResetCache')

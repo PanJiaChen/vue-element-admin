@@ -18,7 +18,7 @@ const browser = {
     }
   },
   actions: {
-    getBrowserFromServer: ({ commit, dispatch }, parameters) => {
+    getBrowserFromServer({ commit, dispatch }, parameters) {
       return new Promise((resolve, reject) => {
         var browserUuid = parameters.containerUuid
         getBrowserMetadata(browserUuid)
@@ -112,7 +112,8 @@ const browser = {
               panelType: panelType,
               // app attributes
               isMandatoryParams: isMandatoryParams,
-              isShowedCriteria: Boolean(fieldsList.length && isMandatoryParams)
+              isShowedCriteria: Boolean(fieldsList.length && isMandatoryParams),
+              isShowedTotals: true
             }
             //  Convert from gRPC process list
             const process = response.getProcess()
@@ -162,7 +163,7 @@ const browser = {
           })
       })
     },
-    changeShowedCriteriaBrowser: ({ commit, getters }, { containerUuid, isShowedCriteria }) => {
+    changeShowedCriteriaBrowser({ commit, getters }, { containerUuid, isShowedCriteria }) {
       commit('changeShowedCriteriaBrowser', {
         browser: getters.getBrowser(containerUuid),
         isShowedCriteria: isShowedCriteria

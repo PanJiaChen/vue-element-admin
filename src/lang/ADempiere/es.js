@@ -179,7 +179,8 @@ export default {
       deleteSelection: 'Eliminar Registros Seleccionados',
       advancedQuery: 'Consulta Avanzada',
       showOnlyMandatoryColumns: 'Mostrar Solo Columnas Obligatorias',
-      showAllAvailableColumns: 'Mostrar Todas Columnas Disponibles'
+      showTotal: 'Mostrar Totales',
+      hiddenTotal: 'Ocultar Totales'
     },
     recentItems: {
       search: 'Filtrar por nombre, descripción o fecha',
