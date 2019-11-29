@@ -3,7 +3,8 @@
 </template>
 
 <script>
-import axios from 'axios'
+import load from './load'
+
 export default {
   data() {
     return {
@@ -27,10 +28,7 @@ export default {
         ? '111'
         : '96'
       const template = 'horizontal'
-      axios.get(`https://codefund.io/properties/${codefundId}/funder.html?template=${template}`)
-        .then(function(response) {
-          document.getElementById('codefund').innerHTML = response.data
-        })
+      load(`https://app.codefund.io/properties/${codefundId}/funder.js?template=${template}`)
     },
     isGitee() {
       const origin = window.location.origin
