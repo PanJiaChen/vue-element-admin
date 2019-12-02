@@ -122,6 +122,16 @@ const windowControl = {
               eventType: 'INSERT'
             })
 
+            const oldRoute = router.app._route
+            router.push({
+              name: oldRoute.name,
+              query: {
+                ...oldRoute.query,
+                action: response.getUuid()
+              }
+            })
+            dispatch('tagsView/delView', oldRoute, true)
+
             resolve({
               data: newValues,
               recordUuid: response.getUuid(),
