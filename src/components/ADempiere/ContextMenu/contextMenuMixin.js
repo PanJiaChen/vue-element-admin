@@ -1,6 +1,7 @@
 import { showNotification } from '@/utils/ADempiere/notification'
 import Item from './items'
 import { convertFieldListToShareLink } from '@/utils/ADempiere/valueUtil'
+import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
 
 export const contextMixin = {
@@ -51,6 +52,7 @@ export const contextMixin = {
   data() {
     return {
       actions: [],
+      option: supportedTypes,
       references: [],
       file: this.$store.getters.getProcessResult.download,
       downloads: this.$store.getters.getProcessResult.url,
@@ -132,6 +134,17 @@ export const contextMixin = {
           return fieldItem.columnName
         }
       })
+    },
+    getterDataRecordsAll() {
+      return this.$store.getters.getDataRecordAndSelection(this.containerUuid).record
+    },
+    getDataRecord() {
+      var record = this.getterDataRecordsAll.filter(fieldItem => {
+        if (this.recordUuid === fieldItem.UUID) {
+          return fieldItem
+        }
+      })
+      return record
     },
     getterDataLog() {
       if (this.panelType === 'window') {
@@ -224,18 +237,38 @@ export const contextMixin = {
         this.isReferencesLoaded = false
       }
     },
-    exporBrowser() {
-        import('@/vendor/Export2Excel').then(excel => {
-          const tHeader = this.getterFieldListHeader
-          const filterVal = this.getterFieldListValue
-          const list = this.getDataSelection
-          const data = this.formatJson(filterVal, list)
-          excel.export_json_to_excel({
-            header: tHeader,
-            data,
-            filename: ''
-          })
-        })
+    typeFormat(key) {
+      Object.keys(supportedTypes).forEach(type => {
+        if (type === key && (this.panelType === 'window')) {
+          this.exporWindow(key)
+        } else if (type === key && (this.panelType === 'browser')) {
+          this.exporBrowser(key)
+        }
+      })
+    },
+    exporBrowser(key) {
+      const tHeader = this.getterFieldListHeader
+      const filterVal = this.getterFieldListValue
+      const list = this.getDataSelection
+      const data = this.formatJson(filterVal, list)
+      exportFileFromJson({
+        header: tHeader,
+        data,
+        filename: '',
+        exportType: key
+      })
+    },
+    exporWindow(key) {
+      const tHeader = this.getterFieldListHeader
+      const filterVal = this.getterFieldListValue
+      const list = this.getDataRecord
+      const data = this.formatJson(filterVal, list)
+      exportFileFromJson({
+        header: tHeader,
+        data,
+        filename: '',
+        exportType: key
+      })
     },
     formatJson(filterVal, jsonData) {
       return jsonData.map(v => filterVal.map(j => v[j]))

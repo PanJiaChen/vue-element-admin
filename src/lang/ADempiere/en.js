@@ -123,7 +123,7 @@ export default {
     contextMenuShareLink: 'Share Link',
     contextMenuRefresh: 'Refresh',
     contextMennuExport: 'Export Smart Browser',
-    contextMennuWindowReport: 'Window Report ',
+    contextMennuWindowReport: 'Export Records',
     contextMenuPrintFormatSetup: 'Print Format Setup',
     dateStartPlaceholder: 'Start date',
     dateEndPlaceholder: 'End date',
@@ -159,6 +159,14 @@ export default {
     reportView: 'Report Views',
     printFormat: 'Print Formats'
   },
+  report: {
+    ExportXlsx: '(xlsx) Excel File Extension',
+    ExportXls: '(xls) Excel File',
+    ExporXml: '(xml) Extensible Markup Language File',
+    ExporCsv: '(csv) Archivo separado por coma',
+    ExportTxt: '(txt) Tab Delimited Text File',
+    ExportHtml: '(html) Hypertext Markup Language'
+  },
   table: {
     ProcessActivity: {
       name: 'Name',
@@ -180,6 +188,7 @@ export default {
       advancedQuery: 'Advanced Query',
       showOnlyMandatoryColumns: 'Show Only Mandatory Columns',
       showAllAvailableColumns: 'Show All Available Columns',
+      exportRecordTable: 'Export Selected Records',
       showTotal: 'Show Totals',
       hiddenTotal: 'Hidden Totals'
     },

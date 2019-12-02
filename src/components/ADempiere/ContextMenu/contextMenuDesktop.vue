@@ -1,6 +1,6 @@
 <template>
   <div class="container-submenu container-context-menu">
-    <el-menu :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened>
+    <el-menu :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened @select="typeFormat">
       <template>
         <el-submenu v-if="relations !== undefined && relations.length" class="el-menu-item" index="1">
           <template slot="title">
@@ -35,14 +35,33 @@
               {{ $t('components.contextMenuDownload') }}
             </a>
           </el-menu-item>
+          <el-submenu
+            v-if="getDataSelection.length > 0 && panelType === 'browser'"
+            :disabled="Boolean(getDataSelection.length < 1)"
+            index="xlsx"
+            @click.native="exporBrowser('xlsx')"
+          >
+            <template slot="title">{{ $t('components.contextMennuWindowReport') }}</template>
+            <template v-for="(format, index) in option">
+              <el-menu-item :key="index" :index="index">
+                {{ format }}
+              </el-menu-item>
+            </template>
+          </el-submenu>
+          <el-submenu
+            v-if="panelType === 'window'"
+            index="xlsx"
+            @click.native="exporWindow('xlsx')"
+          >
+            <template slot="title">{{ $t('components.contextMennuWindowReport') }}</template>
+            <template v-for="(format, index) in option">
+              <el-menu-item :key="index" :index="index">
+                {{ format }}
+              </el-menu-item>
+            </template>
+          </el-submenu>
           <el-menu-item v-show="$route.name === 'Report Viewer'" index="9" @click="$router.push({ name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid })">
             {{ $t('components.contextMenuPrintFormatSetup') }}
-          </el-menu-item>
-          <el-menu-item v-if="getDataSelection.length > 0 && panelType === 'browser'" index="6" @click="exporBrowser">
-            {{ $t('components.contextMennuExport') }}
-          </el-menu-item>
-          <el-menu-item v-if="panelType === 'window'" index="7" @click="exporBrowser">
-            {{ $t('components.contextMennuWindowReport') }}
           </el-menu-item>
           <el-menu-item v-if="panelType !== 'process'" index="8" @click="refreshData">
             {{ $t('components.contextMenuRefresh') }}

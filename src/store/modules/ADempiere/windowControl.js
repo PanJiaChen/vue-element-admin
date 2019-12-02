@@ -369,11 +369,10 @@ const windowControl = {
     deleteEntity({ dispatch, rootGetters }, parameters) {
       return new Promise((resolve, reject) => {
         const panel = rootGetters.getPanel(parameters.containerUuid)
-        const recordUuid = rootGetters.getUuid(parameters.containerUuid)
 
         deleteEntity({
           tableName: panel.tableName,
-          recordUuid: recordUuid
+          recordUuid: parameters.recordUuid
         })
           .then(response => {
             const oldRoute = router.app._route

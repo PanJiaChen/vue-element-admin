@@ -119,7 +119,7 @@ export default {
     contextMenuShareLink: 'Compartir Link',
     contextMenuRefresh: 'Actualizar',
     contextMennuExport: 'Exportar Smart Browser',
-    contextMennuWindowReport: 'Informe de Ventana',
+    contextMennuWindowReport: 'Exportar Registro',
     contextMenuPrintFormatSetup: 'Configurar Formato de Impresión',
     RunProcess: 'Ejecutar',
     ChangeParameters: 'Cambiar Parametros',
@@ -159,6 +159,14 @@ export default {
     reportView: 'Vistas de Reporte',
     printFormat: 'Formatos de Impresión'
   },
+  report: {
+    ExportXlsx: '(xlsx) Extencion de Archivo Excel',
+    ExportXls: '(xls)  Archivo Excel ',
+    ExporXml: '(xml)  Archivo Lenguaje de marcas Extensible',
+    ExporCsv: '(csv) Archivo Separado por Coma',
+    ExportTxt: '(txt) Archivo de Texto Delimitado por Tabuladores',
+    ExportHtml: '(html) Lenguaje de Marcas de Hipertexto'
+  },
   table: {
     ProcessActivity: {
       Name: 'Nombre',
@@ -179,6 +187,8 @@ export default {
       deleteSelection: 'Eliminar Registros Seleccionados',
       advancedQuery: 'Consulta Avanzada',
       showOnlyMandatoryColumns: 'Mostrar Solo Columnas Obligatorias',
+      showAllAvailableColumns: 'Mostrar Todas Columnas Disponibles',
+      exportRecordTable: 'Exportar Registros Seleccionados',
       showTotal: 'Mostrar Totales',
       hiddenTotal: 'Ocultar Totales'
     },

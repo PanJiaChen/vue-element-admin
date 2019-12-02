@@ -22,7 +22,7 @@
           </el-collapse>
           <div>
             <div v-if="!isMobile">
-              <el-menu :default-active="menuTable" :class="classTableMenu + ' menu-table-container'" mode="horizontal">
+              <el-menu :default-active="menuTable" :class="classTableMenu + ' menu-table-container'" mode="horizontal" @select="typeFormat">
                 <el-submenu index="2">
                   <template slot="title">
                     <i class="el-icon-more" />
@@ -43,6 +43,17 @@
                   >
                     {{ $t('table.dataTable.deleteSelection') }}
                   </el-menu-item>
+                  <el-submenu
+                    :disabled="Boolean(getDataSelection.length < 1)"
+                    index="xlsx"
+                  >
+                    <template slot="title">{{ $t('table.dataTable.exportRecordTable') }}</template>
+                    <template v-for="(format, index) in option">
+                      <el-menu-item :key="index" :index="index">
+                        {{ format }}
+                      </el-menu-item>
+                    </template>
+                  </el-submenu>
                   <el-menu-item index="optional" @click="optionalPanel()">
                     {{ $t('components.filterableItems') }}
                   </el-menu-item>
@@ -109,6 +120,18 @@
                     >
                       {{ $t('table.dataTable.deleteSelection') }}
                     </el-menu-item>
+                    <el-submenu
+                      v-if="isPanelWindow"
+                      :disabled="Boolean(getDataSelection.length < 1)"
+                      index="xlsx"
+                    >
+                      <template slot="title">{{ $t('table.dataTable.exportRecordTable') }}</template>
+                      <template v-for="(format, index) in option">
+                        <el-menu-item :key="index" :index="index">
+                          {{ format }}
+                        </el-menu-item>
+                      </template>
+                    </el-submenu>
                     <el-menu-item index="optional" @click="optionalPanel()">
                       {{ $t('components.filterableItems') }}
                     </el-menu-item>
@@ -185,6 +208,16 @@
           </div>
         </el-header>
         <el-main style="padding: 0px !important; overflow: hidden;">
+          <context-menu
+            v-if="isParent"
+            v-show="getShowContextMenuTable"
+            :style="{left:left+'px',top:top+'px'}"
+            class="contextmenu"
+            :container-uuid="containerUuid"
+            :parent-uuid="parentUuid"
+            :panel-type="panelType"
+            :is-option="isOption"
+          />
           <el-table
             ref="multipleTable"
             v-loading="$route.query.action !== 'create-new' && isLoaded"
@@ -205,6 +238,8 @@
             @row-dblclick="handleRowDblClick"
             @select="handleSelection"
             @select-all="handleSelectionAll"
+            @row-contextmenu="rowMenu"
+            @contextmenu.prevent.native="block"
           >
             <el-table-column
               v-if="isTableSelection"
@@ -282,12 +317,14 @@ import FieldDefinition from '@/components/ADempiere/Field'
 import Sortable from 'sortablejs'
 import FilterColumns from '@/components/ADempiere/DataTable/filterColumns'
 import FixedColumns from '@/components/ADempiere/DataTable/fixedColumns'
+import ContextMenu from '@/components/ADempiere/DataTable/contextMenu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere'
 import { FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
+import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
 import evaluator from '@/utils/ADempiere/evaluator'
 
 export default {
@@ -296,6 +333,7 @@ export default {
     FieldDefinition,
     FilterColumns,
     FixedColumns,
+    ContextMenu,
     IconElement,
     MainPanel
   },
@@ -335,8 +373,13 @@ export default {
   },
   data() {
     return {
+      top: 0,
+      left: 0,
+      isOption: {},
+      visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
       defaultMaxPagination: 100,
+      option: supportedTypes,
       menuTable: '1',
       activeName: '',
       isOptional: false,
@@ -352,6 +395,38 @@ export default {
     }
   },
   computed: {
+    getShowContextMenuTable() {
+      return this.$store.getters.getShowContextMenuTable
+    },
+    getterFieldList() {
+      return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
+    },
+    getterFieldListHeader() {
+      var header = this.getterFieldList.filter(fieldItem => {
+        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
+        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
+          return fieldItem.name
+        }
+      })
+      return header.map(fieldItem => {
+        return fieldItem.name
+      })
+    },
+    getterFieldListValue() {
+      var value = this.getterFieldList.filter(fieldItem => {
+        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
+        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
+          return fieldItem
+        }
+      })
+      return value.map(fieldItem => {
+        if (fieldItem.componentPath === 'FieldSelect') {
+          return 'DisplayColumn_' + fieldItem.columnName
+        } else {
+          return fieldItem.columnName
+        }
+      })
+    },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
@@ -504,6 +579,15 @@ export default {
       return false
     }
   },
+  watch: {
+    visible(value) {
+      if (value) {
+        document.body.addEventListener('click', this.closeMenu)
+      } else {
+        document.body.removeEventListener('click', this.closeMenu)
+      }
+    }
+  },
   created() {
     this.getPanel()
   },
@@ -516,6 +600,56 @@ export default {
     }
   },
   methods: {
+    closeMenu() {
+      this.$store.dispatch('showMenuTable', {
+        isShowedTable: false
+      })
+    },
+    block() {
+      return false
+    },
+    rowMenu(row, column, event) {
+      const menuMinWidth = 105
+      const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
+      const offsetWidth = this.$el.offsetWidth // container width
+      const maxLeft = offsetWidth - menuMinWidth // left boundary
+      const left = event.clientX - offsetLeft + 15 // 15: margin right
+
+      if (left > maxLeft) {
+        this.left = maxLeft
+      } else {
+        this.left = left
+      }
+
+      this.top = event.clientY - 100
+      this.isOption = row
+      this.visible = true
+      this.$store.dispatch('showMenuTable', {
+        isShowedTable: true
+      })
+    },
+    typeFormat(key, keyPath) {
+      Object.keys(supportedTypes).forEach(type => {
+        if (type === key) {
+          this.exporRecordTable(key)
+        }
+      })
+    },
+    exporRecordTable(key) {
+      const Header = this.getterFieldListHeader
+      const filterVal = this.getterFieldListValue
+      const list = this.getDataSelection
+      const data = this.formatJson(filterVal, list)
+      exportFileFromJson({
+        header: Header,
+        data,
+        filename: '',
+        exportType: key
+      })
+    },
+    formatJson(filterVal, jsonData) {
+      return jsonData.map(v => filterVal.map(j => v[j]))
+    },
     sortFields,
     handleChange(val) {
       val = !val
@@ -964,6 +1098,27 @@ export default {
 </script>
 
 <style lang="scss">
+ .contextmenu {
+    margin: 0;
+    background: #fff;
+    z-index: 3000;
+    position: absolute;
+    list-style-type: none;
+    padding: 5px 0;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #333;
+    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    li {
+      margin: 0;
+      padding: 7px 16px;
+      cursor: pointer;
+      &:hover {
+        background: #eee;
+      }
+    }
+  }
   .el-table-row {
     .hover-row {
       background-color: black;
