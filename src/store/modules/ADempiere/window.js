@@ -134,6 +134,26 @@ const window = {
               action: 'undoModifyData',
               uuidParent: newWindow.uuid,
               disabled: false
+            },
+            {
+              name: language.t('data.lockRecord'),
+              processName: language.t('data.lockRecord'),
+              type: 'dataAction',
+              action: 'lockRecord',
+              disabled: false,
+              hidden: true,
+              tableName: '',
+              recordId: null
+            },
+            {
+              name: language.t('data.unlockRecord'),
+              processName: language.t('data.unlockRecord'),
+              type: 'dataAction',
+              action: 'unlockRecord',
+              disabled: false,
+              hidden: true,
+              tableName: '',
+              recordId: null
             })
             const processList = tabItem.getProcessesList().map(processItem => {
               return {

@@ -322,7 +322,8 @@ const panel = {
         newValues: defaultAttributes,
         isSendToServer: false,
         // if isNewRecord active callouts, if window is closed no send callout
-        isSendCallout: isNewRecord
+        isSendCallout: isNewRecord,
+        isPrivateAccess: false
       })
     },
     /**
@@ -333,7 +334,7 @@ const panel = {
      * @param {object} newValues, values to set in panel
      * @param {boolean} isSendToServer, indicate if changes send to server
      */
-    notifyPanelChange({ dispatch, getters }, parameters) {
+    notifyPanelChange({ dispatch, getters, rootGetters }, parameters) {
       const {
         parentUuid,
         containerUuid,
@@ -343,7 +344,8 @@ const panel = {
         panelType = 'window',
         withOutColumnNames = [],
         isSendCallout = true,
-        isAdvancedQuery = false
+        isAdvancedQuery = false,
+        isPrivateAccess = true
       } = parameters
       var { fieldList = [] } = parameters
 
@@ -394,6 +396,14 @@ const panel = {
         dispatch('setIsloadContext', {
           containerUuid: containerUuid
         })
+        if (isPrivateAccess) {
+          var tableName = rootGetters.getTableNameFromTab(parentUuid, containerUuid)
+          dispatch('getPrivateAccessFromServer', {
+            tableName: tableName,
+            recordId: newValues[`${tableName}_ID`],
+            userUuid: rootGetters['user/getUserUuid']
+          })
+        }
       }
     },
     /**

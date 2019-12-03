@@ -26,7 +26,7 @@
                 {{ child.name }}
               </el-menu-item>
             </el-submenu>
-            <el-menu-item v-else :key="index" :index="action.name" :disabled="action.disabled" @click="runAction(action)">
+            <el-menu-item v-else v-show="!action.hidden" :key="index" :index="action.name" :disabled="action.disabled" @click="runAction(action)">
               {{ action.name }}
             </el-menu-item>
           </template>

@@ -6,6 +6,9 @@ import {
   getDefaultValueFromServer,
   convertValueFromGRPC,
   getContextInfoValueFromServer,
+  getPrivateAccessFromServer,
+  lockPrivateAccessFromServer,
+  unlockPrivateAccessFromServer,
   getFavoritesFromServer,
   getPendingDocumentsFromServer,
   requestPrintFormats
@@ -22,6 +25,7 @@ const data = {
     pendingDocuments: [],
     inGetting: [],
     contextInfoField: [],
+    recordPrivateAccess: {},
     printFormatList: []
   },
   mutations: {
@@ -101,6 +105,9 @@ const data = {
     },
     setContextInfoField(state, payload) {
       state.contextInfoField.push(payload)
+    },
+    setPrivateAccess(state, payload) {
+      state.recordPrivateAccess = payload
     },
     setPrintFormatList(state, payload) {
       state.printFormatList.push(payload)
@@ -836,6 +843,92 @@ const data = {
           console.warn(`Error ${error.code} getting context info value for field ${error.message}`)
         })
     },
+    getPrivateAccessFromServer({ commit, rootGetters }, parameters) {
+      const { tableName, recordId } = parameters
+      const userUuid = rootGetters['user/getUserUuid']
+      return getPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+        .then(privateAccess => {
+          if (privateAccess.getRecordid()) {
+            var recordPrivateAccess = {
+              isLocked: true,
+              tableName: privateAccess.getTablename(),
+              recordId: privateAccess.getRecordid(),
+              userUuid: privateAccess.getUseruuid()
+            }
+          } else {
+            recordPrivateAccess = {
+              isLocked: false,
+              tableName: parameters.tableName,
+              recordId: parameters.recordId,
+              userUuid: rootGetters['user/getUserUuid']
+            }
+          }
+          return recordPrivateAccess
+        })
+        .catch(error => {
+          console.error(error)
+        })
+    },
+    lockRecord({ commit, rootGetters }, parameters) {
+      const { tableName, recordId } = parameters
+      const userUuid = rootGetters['user/getUserUuid']
+      return lockPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+        .then(response => {
+          if (response.getRecordid()) {
+            const recordLocked = {
+              isPrivateAccess: true,
+              isLocked: true,
+              tableName: response.getTablename(),
+              recordId: response.getRecordid(),
+              userUuid: response.getUseruuid()
+            }
+            showMessage({
+              title: language.t('notifications.succesful'),
+              message: language.t('notifications.recordLocked'),
+              type: 'success'
+            })
+            return recordLocked
+          }
+        })
+        .catch(error => {
+          showMessage({
+            title: language.t('notifications.error'),
+            message: language.t('login.unexpectedError'),
+            type: 'error'
+          })
+          console.error(error)
+        })
+    },
+    unlockRecord({ commit, rootGetters, state }, parameters) {
+      const { tableName, recordId } = parameters
+      const userUuid = rootGetters['user/getUserUuid']
+      return unlockPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+        .then(response => {
+          if (response.getRecordid()) {
+            const recordUnlocked = {
+              isPrivateAccess: true,
+              isLocked: false,
+              tableName: response.getTablename(),
+              recordId: response.getRecordid(),
+              userUuid: response.getUseruuid()
+            }
+            showMessage({
+              title: language.t('notifications.succesful'),
+              message: language.t('notifications.recordUnlocked'),
+              type: 'success'
+            })
+            return recordUnlocked
+          }
+        })
+        .catch(error => {
+          showMessage({
+            title: language.t('notifications.error'),
+            message: language.t('login.unexpectedError'),
+            type: 'error'
+          })
+          console.error(error)
+        })
+    },
     requestPrintFormats({ commit }, parameters) {
       return requestPrintFormats({ processUuid: parameters.processUuid })
         .then(response => {
@@ -987,6 +1080,14 @@ const data = {
         info.contextInfoUuid === contextInfoUuid &&
         info.sqlStatement === sqlStatement
       )
+    },
+    getRecordPrivateAccess: (state) => (tableName, recordId) => {
+      if (!isEmptyValue(tableName) && !isEmptyValue(recordId)) {
+        if (state.recordPrivateAccess.tableName === tableName && state.recordPrivateAccess.recordId === recordId) {
+          return state.recordPrivateAccess
+        }
+        return undefined
+      }
     },
     getPrintFormatList: (state) => (containerUuid) => {
       var printFormatList = state.printFormatList.find(list => list.containerUuid === containerUuid)

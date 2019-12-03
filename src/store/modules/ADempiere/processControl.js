@@ -243,6 +243,7 @@ const processControl = {
               if (reportType !== 'pdf' && reportType !== 'html') {
                 link.click()
               }
+
               // Report views List to context menu
               var reportViewList = {
                 name: language.t('views.reportView'),

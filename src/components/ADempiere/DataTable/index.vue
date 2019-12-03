@@ -903,6 +903,10 @@ export default {
           query: {
             ...this.$route.query,
             action: row.UUID
+          },
+          params: {
+            tableName: this.getterPanel.tableName,
+            recordId: row[`${this.getterPanel.tableName}_ID`]
           }
         })
       } else {

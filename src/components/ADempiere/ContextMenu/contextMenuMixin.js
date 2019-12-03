@@ -275,6 +275,15 @@ export const contextMixin = {
     },
     generateContextMenu() {
       this.metadataMenu = this.getterContextMenu
+      this.$store.dispatch('getPrivateAccessFromServer', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+        .then(response => {
+          this.$nextTick(() => {
+            this.validatePrivateAccess(response)
+          })
+        })
       this.actions = this.metadataMenu.actions
 
       if (this.actions && this.actions.length) {
@@ -401,8 +410,15 @@ export const contextMixin = {
             containerUuid: this.containerUuid,
             recordUuid: this.recordUuid,
             panelType: this.panelType,
-            isNewRecord: action.action === 'resetPanelToNew'
+            isNewRecord: action.action === 'resetPanelToNew',
+            tableName: action.tableName,
+            recordId: action.recordId
           })
+            .then(response => {
+              if (response && response.isPrivateAccess) {
+                this.validatePrivateAccess(response)
+              }
+            })
         }
       } else if (action.type === 'reference') {
         this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: action.windowUuid })
@@ -483,6 +499,19 @@ export const contextMixin = {
         type: 'success',
         duration: 1500
       })
+    },
+    validatePrivateAccess(response) {
+      if (response.isLocked) {
+        this.actions.find(item => item.action === 'unlockRecord').hidden = false
+        this.actions.find(item => item.action === 'unlockRecord').tableName = response.tableName
+        this.actions.find(item => item.action === 'unlockRecord').recordId = response.recordId
+        this.actions.find(item => item.action === 'lockRecord').hidden = true
+      } else {
+        this.actions.find(item => item.action === 'lockRecord').hidden = false
+        this.actions.find(item => item.action === 'lockRecord').tableName = response.tableName
+        this.actions.find(item => item.action === 'lockRecord').recordId = response.recordId
+        this.actions.find(item => item.action === 'unlockRecord').hidden = true
+      }
     }
   }
 }

@@ -7,6 +7,7 @@ import { showMessage, convertMapToArrayPairs } from '@/utils/ADempiere'
 const state = {
   token: getToken(),
   name: '',
+  userUuid: '',
   avatar: '',
   introduction: '',
   rol: {}, // info current rol
@@ -37,6 +38,9 @@ const mutations = {
   },
   SET_ROL: (state, rol) => {
     state.rol = rol
+  },
+  SET_USER_UUID: (state, payload) => {
+    state.userUuid = payload
   },
   setIsSession(state, payload) {
     state.isSession = payload
@@ -91,6 +95,7 @@ const actions = {
         const userInfo = response.getUserinfo()
         commit('SET_NAME', userInfo.getName())
         commit('SET_INTRODUCTION', userInfo.getDescription())
+        commit('SET_USER_UUID', userInfo.getUuid())
 
         var defaultContext = convertMapToArrayPairs({
           toConvert: response.getDefaultcontextMap()
@@ -267,6 +272,9 @@ const getters = {
   },
   getIsSession: (state) => {
     return state.isSession
+  },
+  getUserUuid: (state) => {
+    return state.userUuid
   }
 }
 

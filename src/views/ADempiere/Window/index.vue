@@ -280,6 +280,13 @@ export default {
       return false
     }
   },
+  watch: {
+    'this.$route.params'(newValue, oldValue) {
+      if (!this.isEmptyValue(newValue)) {
+        this.getIsRecordLocked()
+      }
+    }
+  },
   created() {
     this.getWindow()
   },
@@ -353,6 +360,12 @@ export default {
         containerUuid: this.windowUuid, // act as parentUuid
         isShowedDetail: this.isShowedTabChildren
       })
+    },
+    getIsRecordLocked() {
+      if (this.$store.getters.getRecordPrivateAccess(this.$route.params.tableName, this.$route.params.recordId)) {
+        return true
+      }
+      return false
     }
   }
 }

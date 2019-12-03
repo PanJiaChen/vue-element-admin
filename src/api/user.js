@@ -51,6 +51,8 @@ export function getInfo(token) {
       const user = session.getUserinfo()
 
       const response = {
+        id: user.getId(),
+        uuid: user.getUuid(),
         name: user.getName(),
         comments: user.getComments(),
         description: user.getDescription(),
