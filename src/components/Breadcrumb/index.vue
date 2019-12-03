@@ -11,12 +11,10 @@
           </a>
         </el-breadcrumb-item>
         <el-breadcrumb-item key="1">
-          <el-dropdown placement="bottom" trigger="click" :hide-on-click="true" class="el-dropdown-link" @command="handleLink">
-            <i class="el-icon-more" />
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-for="(item, index) in dropdownList" :key="index" :command="item">{{ generateTitle(item.meta.title) }}</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
+          <el-popover placement="bottom" trigger="hover" class="breadcrumb-popover">
+            <el-dropdown-item v-for="(item, index) in dropdownList" :key="index" :command="item">{{ generateTitle(item.meta.title) }}</el-dropdown-item>
+            <i slot="reference" class="el-icon-more" />
+          </el-popover>
         </el-breadcrumb-item>
         <el-breadcrumb-item key="2">
           <span v-if="lastItem.redirect==='noRedirect'" class="no-redirect">
@@ -107,7 +105,7 @@ export default {
     color: #97a8be;
     cursor: text;
   }
-  .el-dropdown-link {
+  .breadcrumb-popover {
     cursor: pointer;
     .el-icon-more {
       transform: none;
