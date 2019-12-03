@@ -219,6 +219,7 @@ export default {
     aboutMe: 'Sobre Mi',
     recentItems: 'Artículos Recientes',
     favorites: 'Favoritos',
+    PendingDocuments: 'Documentos Pendientes',
     recentItemsName: 'Nombre Ítems Recientes',
     role: 'Rol',
     availableRoles: 'Roles disponibles',

@@ -16,6 +16,12 @@ const ROUTES = {
     action: undefined,
     tabParent: '0',
     tabChild: undefined
+  },
+  DOCUMENTS_WINDOW: {
+    uuid: '8e50d7c8-fb40-11e8-a479-7a0060f0aa01',
+    action: undefined,
+    tabParent: '0',
+    tabChild: undefined
   }
 }
 

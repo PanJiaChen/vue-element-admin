@@ -365,7 +365,8 @@ export default {
         isLoadAllRecords: true,
         isReference: false,
         isNewRecord: false,
-        isWindow: true
+        isWindow: true,
+        criteria: {}
       }
       if (this.isPanelWindow) {
         // TODO: use action notifyPanelChange with isShowedField in true
@@ -399,7 +400,14 @@ export default {
           parameters.referenceWhereClause = referenceInfo.whereClause
         } else if (route.query.action && route.query.action === 'create-new') {
           parameters.isNewRecord = true
-        } else if (route.query.action && route.query.action !== 'create-new' && route.query.action !== 'reference' && route.query.action !== 'advancedQuery') {
+        } else if (route.query.action && route.query.action === 'criteria') {
+          route.params.isReadParameters = true
+          Object.keys(route.params).forEach(param => {
+            if (!this.isEmptyValue(route.params[param])) {
+              parameters.criteria[param] = route.params[param]
+            }
+          })
+        } else if (route.query.action && route.query.action !== 'create-new' && route.query.action !== 'reference' && route.query.action !== 'advancedQuery' && route.query.action !== 'criteria') {
           parameters.isLoadAllRecords = false
           parameters.value = route.query.action
           parameters.tableName = this.metadata.tableName
@@ -462,7 +470,8 @@ export default {
           isReference: parameters.isReference,
           referenceWhereClause: parameters.referenceWhereClause,
           columnName: parameters.columnName,
-          value: parameters.value
+          value: parameters.value,
+          criteria: parameters.criteria
         })
           .then(response => {
             if (response.length && !parameters.isNewRecord) {
@@ -494,8 +503,8 @@ export default {
                 this.$router.push({
                   name: this.$route.name,
                   query: {
-                    action: this.dataRecords.UUID,
-                    ...this.$route.query
+                    ...this.$route.query,
+                    action: this.dataRecords.UUID
                   }
                 })
                 this.$store.dispatch('notifyPanelChange', {
@@ -606,7 +615,7 @@ export default {
       dataTransfer.setData('Text', '')
     },
     changePanelRecord(uuidRecord) {
-      if (uuidRecord !== 'create-new' && uuidRecord !== 'reference' && uuidRecord !== 'advancedQuery') {
+      if (uuidRecord !== 'create-new' && uuidRecord !== 'reference' && uuidRecord !== 'advancedQuery' && uuidRecord !== 'criteria') {
         var recordSelected = this.$store.getters.getDataRecordsList(this.containerUuid).find(record => record.UUID === uuidRecord)
         if (recordSelected) {
           this.dataRecords = recordSelected

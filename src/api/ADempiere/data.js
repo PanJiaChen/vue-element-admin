@@ -322,6 +322,9 @@ export function getContextInfoValueFromServer({ uuid, query }) {
 export function getFavoritesFromServer(userUuid) {
   return Instance.call(this).requestFavorites(userUuid)
 }
+export function getPendingDocumentsFromServer(userUuid, roleUuid) {
+  return Instance.call(this).requestPendingDocuments(userUuid, roleUuid)
+}
 
 export function requestReportViews({ tableName, processUuid }) {
   return Instance.call(this).requestReportViews({ tableName: tableName, processUuid: processUuid })

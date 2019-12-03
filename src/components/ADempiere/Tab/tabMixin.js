@@ -37,7 +37,7 @@ export const tabMixin = {
     // Current TabChildren
     currentTabChild(newValue, oldValue) {
       if (newValue !== oldValue) {
-        this.$router.push({ query: { ...this.$route.query, tabChild: String(newValue) }})
+        this.$router.push({ query: { ...this.$route.query, tabChild: String(newValue) }, params: { ...this.$route.params }})
       }
     },
     // Load parent tab context

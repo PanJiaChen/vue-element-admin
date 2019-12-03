@@ -534,7 +534,8 @@ const windowControl = {
         isReference = false,
         referenceWhereClause = '',
         columnName,
-        value
+        value,
+        criteria
       } = parameters
       const tab = rootGetters.getTab(parentUuid, containerUuid)
 
@@ -561,6 +562,14 @@ const windowControl = {
           parsedWhereClause += ' AND ' + referenceWhereClause
         } else {
           parsedWhereClause += referenceWhereClause
+        }
+      }
+
+      if (!isEmptyValue(criteria)) {
+        if (!isEmptyValue(parsedWhereClause)) {
+          parsedWhereClause += ' AND ' + criteria.whereClause
+        } else {
+          parsedWhereClause += criteria.whereClause
         }
       }
 

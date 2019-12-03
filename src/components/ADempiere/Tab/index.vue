@@ -58,6 +58,9 @@ export default {
           query: {
             ...this.$route.query,
             tabParent: String(newValue)
+          },
+          params: {
+            ...this.$route.params
           }
         })
         this.$route.meta.tabUuid = this.tabUuid
