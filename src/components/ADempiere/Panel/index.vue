@@ -424,13 +424,13 @@ export default {
             if (route.query.hasOwnProperty(fieldItem.columnName) && fieldItem.isAdvancedQuery) {
               fieldItem.isShowedFromUser = true
 
-              if (route.query.action === 'advancedQuery' === fieldItem.isAdvancedQuery) {
-                fieldItem.value = parsedValueComponent({
+              if (route.query.action === 'advancedQuery' && fieldItem.isAdvancedQuery) {
+                this.dataRecords[fieldItem.columnName] = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
                   value: route.query[fieldItem.columnName]
                 })
                 if (fieldItem.isRange && route.query[fieldItem.columnName + '_To']) {
-                  fieldItem.valueTo = parsedValueComponent({
+                  this.dataRecords[fieldItem.columnName] = parsedValueComponent({
                     fieldType: fieldItem.componentPath,
                     value: route.query[fieldItem.columnName + '_To']
                   })
@@ -439,6 +439,16 @@ export default {
             }
           })
           parameters.isWindow = false
+          this.$store.dispatch('notifyPanelChange', {
+            parentUuid: this.parentUuid,
+            containerUuid: this.containerUuid,
+            isAdvancedQuery: route.query.action === 'advancedQuery',
+            newValues: this.dataRecords,
+            isSendToServer: false,
+            isSendCallout: false,
+            fieldList: this.fieldList,
+            panelType: this.panelType
+          })
         } else if (this.panelType === 'process' || this.panelType === 'browser') {
           if (!this.isEmptyValue(route.query)) {
             this.$store.dispatch('notifyPanelChange', {

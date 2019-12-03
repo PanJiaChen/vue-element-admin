@@ -381,7 +381,7 @@ export default {
       defaultMaxPagination: 100,
       option: supportedTypes,
       menuTable: '1',
-      activeName: '',
+      activeName: this.$route.query.action === 'advancedQuery' ? '1' : '',
       isOptional: false,
       isFixed: false,
       isLoadPanelFromServer: false,
