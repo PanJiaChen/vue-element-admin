@@ -7,6 +7,7 @@
   <el-col
     v-if="!inTable"
     v-show="isDisplayed()"
+    key="panel-template"
     :xs="sizeFieldResponsive.xs"
     :sm="sizeFieldResponsive.sm"
     :md="sizeFieldResponsive.md"
@@ -57,6 +58,7 @@
   <component
     :is="componentRender"
     v-else
+    key="table-template"
     :class="classField"
     :metadata="{
       ...field,

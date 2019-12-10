@@ -1,5 +1,6 @@
 import { getBrowser as getBrowserMetadata } from '@/api/ADempiere/dictionary'
-import { convertField, isEmptyValue, showMessage } from '@/utils/ADempiere'
+import { isEmptyValue, showMessage } from '@/utils/ADempiere'
+import { generateField } from '@/utils/ADempiere/dictionaryUtils'
 import router from '@/router'
 import language from '@/lang'
 const browser = {
@@ -18,33 +19,36 @@ const browser = {
     }
   },
   actions: {
-    getBrowserFromServer({ commit, dispatch }, parameters) {
+    getBrowserFromServer({ commit, dispatch }, {
+      containerUuid,
+      routeToDelete
+    }) {
       return new Promise((resolve, reject) => {
-        var browserUuid = parameters.containerUuid
-        getBrowserMetadata(browserUuid)
-          .then(response => {
+        getBrowserMetadata(containerUuid)
+          .then(browserResponse => {
             const panelType = 'browser'
-            const query = response.getQuery()
-            const whereClause = response.getWhereclause()
             const additionalAttributes = {
-              browserUuid: response.getUuid(),
-              browserId: response.getId(),
-              containerUuid: response.getUuid(),
+              containerUuid: browserResponse.uuid,
               panelType: panelType
             }
+            const {
+              query,
+              whereClause,
+              process
+            } = browserResponse
 
             //  Convert from gRPC
             const fieldsRangeList = []
-            var isMandatoryParams = false
-            var fieldsList = response.getFieldsList().map((fieldItem, index) => {
+            let isMandatoryParams = false
+            let fieldsList = browserResponse.fieldsList.map((fieldItem, index) => {
               const someAttributes = {
                 ...additionalAttributes,
                 fieldListIndex: index
               }
-              const field = convertField(fieldItem, someAttributes)
+              const field = generateField(fieldItem, someAttributes)
               // Add new field if is range number
               if (field.isRange && field.componentPath === 'FieldNumber') {
-                const fieldRange = convertField(fieldItem, someAttributes, true)
+                const fieldRange = generateField(fieldItem, someAttributes, true)
                 if (!isEmptyValue(fieldRange.value)) {
                   fieldRange.isShowedFromUser = true
                 }
@@ -88,26 +92,8 @@ const browser = {
 
             //  Panel for save on store
             const newBrowser = {
-              id: response.getId(),
-              uuid: response.getUuid(),
-              containerUuid: response.getUuid(),
-              value: response.getValue(),
-              name: response.getName(),
-              description: response.getDescription(),
-              help: response.getHelp(),
-              // sql query
-              query: query,
-              whereClause: whereClause,
-              orderByClause: response.getOrderbyclause(),
-              //
-              isUpdateable: response.getIsupdateable(),
-              isDeleteable: response.getIsdeleteable(),
-              isSelectedByDefault: response.getIsselectedbydefault(),
-              isCollapsibleByDefault: response.getIscollapsiblebydefault(),
-              isExecutedQueryByDefault: response.getIsexecutedquerybydefault(),
-              isShowTotal: response.getIsshowtotal(),
-              isActive: response.getIsactive(),
-              viewUuid: response.getViewuuid(),
+              ...browserResponse,
+              containerUuid: browserResponse.uuid,
               fieldList: fieldsList,
               panelType: panelType,
               // app attributes
@@ -116,27 +102,21 @@ const browser = {
               isShowedTotals: true
             }
             //  Convert from gRPC process list
-            const process = response.getProcess()
-            var actions = []
+            const actions = []
             if (process) {
               actions.push({
-                name: process.getName(),
                 type: 'process',
-                uuid: process.getUuid(),
-                description: process.getDescription(),
-                help: process.getHelp(),
-                isReport: process.getIsreport(),
-                accessLevel: process.getAccesslevel(),
-                showHelp: process.getShowhelp(),
-                isDirectPrint: process.getIsdirectprint()
+                uuid: process.uuid,
+                name: process.name,
+                description: process.description,
+                isReport: process.isReport,
+                isDirectPrint: process.isDirectPrint
               })
-
-              // TODO: convert gRPC attributes from response.getProcess() to object
-              // Add process asociate in store
-              // var processStore = rootGetters.getProcess(process.getUuid())
-              // if (processStore === undefined) {
-              //   dispatch('getProcessFromServer', process.getUuid())
-              // }
+              // add process associated in vuex store
+              dispatch('addProcessAssociated', {
+                processToGenerate: process,
+                containerUuidAssociated: newBrowser.uuid
+              })
             }
 
             dispatch('addPanel', newBrowser)
@@ -144,7 +124,7 @@ const browser = {
 
             //  Add process menu
             dispatch('setContextMenu', {
-              containerUuid: response.getUuid(),
+              containerUuid: browserResponse.uuid,
               relations: [],
               actions: actions,
               references: []
@@ -153,17 +133,20 @@ const browser = {
           })
           .catch(error => {
             router.push({ path: '/dashboard' })
-            dispatch('tagsView/delView', parameters.routeToDelete)
+            dispatch('tagsView/delView', routeToDelete)
             showMessage({
               message: language.t('login.unexpectedError'),
               type: 'error'
             })
-            console.warn('Dictionary Browser - Error ' + error.code + ': ' + error.message)
+            console.warn(`Dictionary Browser - Error ${error.code}: ${error.message}`)
             reject(error)
           })
       })
     },
-    changeShowedCriteriaBrowser({ commit, getters }, { containerUuid, isShowedCriteria }) {
+    changeShowedCriteriaBrowser({ commit, getters }, {
+      containerUuid,
+      isShowedCriteria
+    }) {
       commit('changeShowedCriteriaBrowser', {
         browser: getters.getBrowser(containerUuid),
         isShowedCriteria: isShowedCriteria

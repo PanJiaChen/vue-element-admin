@@ -1,4 +1,4 @@
-import { parseContext } from '@/utils/ADempiere'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
 
 export const tabMixin = {
   props: {

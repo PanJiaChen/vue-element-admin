@@ -1,6 +1,6 @@
 import { showNotification } from '@/utils/ADempiere/notification'
 import Item from './items'
-import { convertFieldListToShareLink } from '@/utils/ADempiere/valueUtil'
+import { convertFieldListToShareLink } from '@/utils/ADempiere/valueUtils'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
 

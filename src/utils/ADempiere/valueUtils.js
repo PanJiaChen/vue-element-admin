@@ -207,3 +207,84 @@ export function convertFieldListToShareLink(fieldList) {
 
   return attributesListLink.slice(0, -1)
 }
+
+/**
+ *
+ * @param {*} param0
+ */
+export function parsedValueComponent({ fieldType, value, referenceType, isMandatory = false }) {
+  if (value === undefined || value === null) {
+    return undefined
+  }
+  var returnValue
+
+  switch (fieldType) {
+    // data type Number
+    case 'FieldNumber':
+      if (String(value).trim() === '') {
+        returnValue = undefined
+        if (isMandatory) {
+          returnValue = 0
+        }
+      } else if (typeof value === 'object' && value.hasOwnProperty('query')) {
+        returnValue = value
+      } else {
+        returnValue = Number(value)
+      }
+      break
+
+    // data type Boolean
+    case 'FieldYesNo':
+      if (value === 'false' || value === 'N') {
+        value = false
+      } else if (typeof value === 'object' && value.hasOwnProperty('query')) {
+        returnValue = value
+      }
+      returnValue = Boolean(value)
+      break
+
+    // data type String
+    case 'FieldText':
+    case 'FieldTextArea':
+      if (typeof value === 'object' && value.hasOwnProperty('query')) {
+        returnValue = value
+      }
+      returnValue = String(value)
+      break
+
+    // data type Date
+    case 'FieldDate':
+    case 'FieldTime ':
+      if (String(value).trim() === '') {
+        value = undefined
+      }
+      if (!isNaN(value)) {
+        value = Number(value)
+      }
+      if (typeof value === 'number') {
+        value = new Date(value)
+      }
+      if (typeof value === 'object' && value.hasOwnProperty('query')) {
+        returnValue = value
+      }
+      returnValue = value
+      break
+
+    case 'FieldSelect':
+      if (String(value).trim() === '') {
+        value = undefined
+      }
+      if (referenceType === 'TableDirect') {
+        if (value !== '' && value !== null && value !== undefined) {
+          value = Number(value)
+        }
+      } // Search or List
+      returnValue = value
+      break
+
+    default:
+      returnValue = value
+      break
+  }
+  return returnValue
+}

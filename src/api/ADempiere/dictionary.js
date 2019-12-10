@@ -13,19 +13,36 @@ function Instance() {
 }
 
 export function getWindow(uuid, childrenTabs = true) {
-  return Instance.call(this).requestWindow(uuid, childrenTabs)
+  return Instance.call(this).requestWindow({
+    uuid: uuid,
+    isWithTabs: childrenTabs,
+    isConvertedMetadata: true
+  })
 }
 
-export function getProcess(uuid) {
-  return Instance.call(this).requestProcess(uuid)
+export function getProcess(uuid, isConvert = true) {
+  return Instance.call(this).requestProcess({
+    uuid: uuid,
+    isConvertedMetadata: isConvert,
+    isConvertedFields: true
+  })
 }
 
-export function getBrowser(uuid) {
-  return Instance.call(this).requestBrowser(uuid)
+export function getBrowser(uuid, isConvert = true) {
+  return Instance.call(this).requestBrowser({
+    uuid: uuid,
+    isConvertedMetadata: isConvert,
+    isConvertedFields: true
+  })
 }
 
-export function getTab(uuid, childrenFields = true) {
-  return Instance.call(this).requestTab(uuid, childrenFields)
+export function getTab(uuid, childrenFields = true, isConvert = true) {
+  return Instance.call(this).requestTab({
+    uuid: uuid,
+    isWithFields: childrenFields,
+    isConvertedMetadata: isConvert,
+    isConvertedFields: true
+  })
 }
 
 export function getField(uuid) {

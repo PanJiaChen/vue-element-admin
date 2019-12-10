@@ -5,7 +5,10 @@
 // - Window: Just need storage tab and fields
 // - Process & Report: Always save a panel and parameters
 // - Smart Browser: Can have a search panel, table panel and process panel
-import evaluator, { assignedGroup, fieldIsDisplayed, isEmptyValue, parseContext, parsedValueComponent, showMessage } from '@/utils/ADempiere'
+import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
+import evaluator, { parseContext } from '@/utils/ADempiere/contextUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
+import { assignedGroup, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import router from '@/router'
 import language from '@/lang'
 

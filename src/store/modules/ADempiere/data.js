@@ -13,7 +13,9 @@ import {
   getPendingDocumentsFromServer,
   requestPrintFormats
 } from '@/api/ADempiere'
-import { convertValuesMapToObject, isEmptyValue, showMessage, convertAction } from '@/utils/ADempiere'
+import { convertValuesMapToObject, isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
+import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import language from '@/lang'
 
 const data = {
@@ -611,9 +613,10 @@ const data = {
         getRecentItems()
           .then(response => {
             const recentItems = response.getRecentitemsList().map(item => {
+              const actionConverted = convertAction(item.getAction())
               return {
-                action: convertAction(item.getAction()).name,
-                icon: convertAction(item.getAction()).icon,
+                action: actionConverted.name,
+                icon: actionConverted.icon,
                 displayName: item.getDisplayname(),
                 menuUuid: item.getMenuuuid(),
                 menuName: item.getMenuname(),
@@ -640,13 +643,14 @@ const data = {
         getFavoritesFromServer(userUuid)
           .then(response => {
             const favorites = response.getFavoritesList().map(favorite => {
+              const actionConverted = convertAction(favorite.getAction())
               return {
                 uuid: favorite.getMenuuuid(),
                 name: favorite.getMenuname(),
                 description: favorite.getMenudescription(),
                 referenceUuid: favorite.getReferenceuuid(),
-                action: convertAction(favorite.getAction()).name,
-                icon: convertAction(favorite.getAction()).icon
+                action: actionConverted.name,
+                icon: actionConverted.icon
               }
             })
             commit('setFavorites', favorites)

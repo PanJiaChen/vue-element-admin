@@ -2,9 +2,10 @@ import {
   getWindow as getWindowMetadata,
   getTab as getTabMetadata
 } from '@/api/ADempiere/dictionary'
-import { convertContextInfoFromGRPC, convertField, getFieldTemplate, showMessage } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere'
 import language from '@/lang'
 import router from '@/router'
+import { generateField, getFieldTemplate } from '@/utils/ADempiere/dictionaryUtils'
 
 const window = {
   state: {
@@ -34,89 +35,44 @@ const window = {
     }
   },
   actions: {
-    getWindowFromServer({ commit, state, dispatch }, params) {
-      return getWindowMetadata(params.windowUuid)
-        .then(response => {
-          var newWindow = {
-            id: response.getId(),
-            uuid: params.windowUuid,
-            name: response.getName(),
-            contextInfo: convertContextInfoFromGRPC(response.getContextinfo()),
-            windowType: response.getWindowtype(),
-            isShowedRecordNavigation: undefined,
-            firstTabUuid: response.getTabsList()[0].getUuid()
-          }
-          var tabs = response.getTabsList()
-          const firstTab = tabs[0].getTablename()
-          var childrenTabs = []
-          var parentTabs = []
+    getWindowFromServer({ commit, state, dispatch }, {
+      windowUuid,
+      routeToDelete
+    }) {
+      return getWindowMetadata(windowUuid)
+        .then(responseWindow => {
+          const firstTab = responseWindow.tabsList[0].tableName
+          const firstTabUuid = responseWindow.tabsList[0].uuid
+          const childrenTabs = []
+          const parentTabs = []
 
-          tabs = tabs.map((tabItem, index) => {
-            var group = {
-              groupName: '',
-              groupType: ''
-            }
-            if (tabItem.getFieldgroup()) {
-              group.groupName = tabItem.getFieldgroup().getName()
-              group.groupType = tabItem.getFieldgroup().getFieldgrouptype()
-            }
-
-            var tab = {
-              id: tabItem.getId(),
-              uuid: tabItem.getUuid(),
-              containerUuid: tabItem.getUuid(),
-              parentUuid: params.windowUuid,
-              windowUuid: params.windowUuid,
-              name: tabItem.getName(),
-              tabGroup: group,
-              firstTabUuid: newWindow.firstTabUuid,
-              //
-              displayLogic: tabItem.getDisplaylogic(),
-              isView: tabItem.getIsview(),
-              isDocument: tabItem.getIsdocument(),
-              isInsertRecord: tabItem.getIsinsertrecord(),
-              isSortTab: tabItem.getIssorttab(), // Tab type Order Tab
+          const tabs = responseWindow.tabsList.map((tabItem, index) => {
+            // let tab = tabItem
+            const tab = {
+              ...tabItem,
+              containerUuid: tabItem.uuid,
+              parentUuid: windowUuid,
+              windowUuid: windowUuid,
+              tabGroup: tabItem.fieldGroup,
+              firstTabUuid: firstTabUuid,
               // relations
-              isParentTab: Boolean(firstTab === tabItem.getTablename()),
-              sequence: tabItem.getSequence(),
-              tabLevel: tabItem.getTablevel(),
-              parentTabUuid: tabItem.getParenttabuuid(),
-              linkColumnName: tabItem.getLinkcolumnname(),
-              parentColumnName: tabItem.getParentcolumnname(),
-              //
-              contextInfo: convertContextInfoFromGRPC(tabItem.getContextinfo()),
-              isAdvancedTab: tabItem.getIsadvancedtab(),
-              isHasTree: tabItem.getIshastree(),
-              isInfoTab: tabItem.getIsinfotab(),
-              isTranslationTab: tabItem.getIstranslationtab(),
-              isReadOnly: tabItem.getIsreadonly(),
-              isDeleteable: tabItem.getIsdeleteable(),
-              accessLevel: tabItem.getAccesslevel(),
-              isSingleRow: tabItem.getIssinglerow(),
-              // conditionals
-              commitWarning: tabItem.getCommitwarning(),
-              // query db
-              tableName: tabItem.getTablename(),
-              query: tabItem.getQuery(),
-              whereClause: tabItem.getWhereclause(),
-              orderByClause: tabItem.getOrderbyclause(),
-              isChangeLog: tabItem.getIschangelog(),
+              isParentTab: Boolean(firstTab === tabItem.tableName),
               // app properties
-              isShowedRecordNavigation: !(tabItem.getIssinglerow()),
+              isShowedRecordNavigation: !(tabItem.isSingleRow),
               isLoadFieldList: false,
               index: index
             }
+            delete tab.processesList
 
-            // Convert from gRPC process list
             // action is dispatch used in vuex
-            var actions = []
+            let actions = []
             actions.push({
               // action to set default values and enable fields not isUpdateable
               name: language.t('window.newRecord'),
               processName: language.t('window.newRecord'),
               type: 'dataAction',
               action: 'resetPanelToNew',
-              uuidParent: newWindow.uuid,
+              uuidParent: responseWindow,
               disabled: !tab.isInsertRecord || tab.isReadOnly
             }, {
               // action to delete record selected
@@ -124,7 +80,7 @@ const window = {
               processName: language.t('window.deleteRecord'),
               type: 'dataAction',
               action: 'deleteEntity',
-              uuidParent: newWindow.uuid,
+              uuidParent: responseWindow,
               disabled: tab.isReadOnly
             }, {
               // action to undo create, update, delete record
@@ -132,10 +88,9 @@ const window = {
               processName: language.t('data.undo'),
               type: 'dataAction',
               action: 'undoModifyData',
-              uuidParent: newWindow.uuid,
+              uuidParent: responseWindow,
               disabled: false
-            },
-            {
+            }, {
               name: language.t('data.lockRecord'),
               processName: language.t('data.lockRecord'),
               type: 'dataAction',
@@ -144,8 +99,7 @@ const window = {
               hidden: true,
               tableName: '',
               recordId: null
-            },
-            {
+            }, {
               name: language.t('data.unlockRecord'),
               processName: language.t('data.unlockRecord'),
               type: 'dataAction',
@@ -155,21 +109,27 @@ const window = {
               tableName: '',
               recordId: null
             })
-            const processList = tabItem.getProcessesList().map(processItem => {
-              return {
-                name: processItem.getName(),
-                type: 'process',
-                uuid: processItem.getUuid(),
-                description: processItem.getDescription(),
-                help: processItem.getHelp(),
-                isReport: processItem.getIsreport(),
-                accessLevel: processItem.getAccesslevel(),
-                showHelp: processItem.getShowhelp(),
-                isDirectPrint: processItem.getIsdirectprint()
-              }
-            })
-            actions = actions.concat(processList)
 
+            // get processess associated in tab
+            if (tabItem.processesList && tabItem.processesList.length) {
+              const processList = tabItem.processesList.map(processItem => {
+                dispatch('addProcessAssociated', {
+                  processToGenerate: processItem,
+                  containerUuidAssociated: tabItem.uuid
+                })
+                return {
+                  id: processItem.id,
+                  uuid: processItem.uuid,
+                  name: processItem.name,
+                  type: 'process',
+                  description: processItem.description,
+                  help: processItem.help,
+                  isReport: processItem.isReport,
+                  isDirectPrint: processItem.isDirectPrint
+                }
+              })
+              actions = actions.concat(processList)
+            }
             //  Add process menu
             dispatch('setContextMenu', {
               containerUuid: tab.uuid,
@@ -191,7 +151,7 @@ const window = {
             return !(itemTab.isSortTab || itemTab.isTranslationTab)
           })
 
-          var tabProperties = {
+          const tabProperties = {
             tabsList: tabs,
             currentTab: parentTabs[0],
             tabsListParent: parentTabs,
@@ -201,9 +161,11 @@ const window = {
             currentTabUuid: parentTabs[0].uuid
           }
 
-          newWindow = {
-            ...newWindow,
+          const newWindow = {
+            ...responseWindow,
             ...tabProperties,
+            isShowedRecordNavigation: undefined,
+            firstTabUuid: firstTabUuid,
             windowIndex: state.windowIndex + 1
           }
           commit('addWindow', newWindow)
@@ -211,12 +173,12 @@ const window = {
         })
         .catch(error => {
           router.push({ path: '/dashboard' })
-          dispatch('tagsView/delView', params.routeToDelete)
+          dispatch('tagsView/delView', routeToDelete)
           showMessage({
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Dictionary Window (State Window) - Error ' + error.code + ': ' + error.message)
+          console.warn(`Dictionary Window (State Window) - Error ${error.code}: ${error.message}`)
         })
     },
     getTabAndFieldFromServer({ dispatch, getters }, {
@@ -226,36 +188,35 @@ const window = {
       isAdvancedQuery = false
     }) {
       return getTabMetadata(containerUuid)
-        .then(response => {
-          var fieldsList = response.getFieldsList()
+        .then(tabResponse => {
           const additionalAttributes = {
             parentUuid: parentUuid,
             containerUuid: containerUuid,
             isShowedFromUser: true,
             panelType: panelType,
-            tableName: response.getTablename(),
+            tableName: tabResponse.tableName,
             //
             isReadOnlyFromForm: false,
             isAdvancedQuery: isAdvancedQuery
           }
 
-          var fieldUuidsequence = 0
-          var fieldLinkColumnName
+          let fieldUuidsequence = 0
+          let fieldLinkColumnName
           //  Convert from gRPC
-          fieldsList = fieldsList.map((item, index) => {
-            item = convertField(item, {
+          const fieldsList = tabResponse.fieldsList.map((fieldItem, index) => {
+            fieldItem = generateField(fieldItem, {
               ...additionalAttributes,
               fieldListIndex: index
             })
-            if (item.sequence > fieldUuidsequence) {
-              fieldUuidsequence = item.sequence
+            if (fieldItem.sequence > fieldUuidsequence) {
+              fieldUuidsequence = fieldItem.sequence
             }
 
-            if (item.isParent) {
-              fieldLinkColumnName = item.columnName
+            if (fieldItem.isParent) {
+              fieldLinkColumnName = fieldItem.columnName
             }
 
-            return item
+            return fieldItem
           })
 
           //  Get dependent fields
@@ -273,7 +234,7 @@ const window = {
             })
 
           if (!fieldsList.find(field => field.columnName === 'UUID')) {
-            var attributesOverwrite = {
+            const attributesOverwrite = {
               panelType: panelType,
               sequence: (fieldUuidsequence + 10),
               name: 'UUID',
@@ -281,7 +242,7 @@ const window = {
               isAdvancedQuery: isAdvancedQuery,
               componentPath: 'FieldText'
             }
-            var field = getFieldTemplate(attributesOverwrite)
+            const field = getFieldTemplate(attributesOverwrite)
             fieldsList.push(field)
           }
 
@@ -308,11 +269,11 @@ const window = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Dictionary Tab (State Window) - Error ' + error.code + ': ' + error.message)
+          console.warn(`Dictionary Tab (State Window) - Error ${error.code}: ${error.message}`)
         })
     },
     changeShowedDetailWindow: ({ commit, state }, params) => {
-      var window = state.window.find(itemWindow => {
+      const window = state.window.find(itemWindow => {
         return itemWindow.uuid === params.containerUuid
       })
       commit('changeShowedDetailWindow', {
@@ -321,7 +282,7 @@ const window = {
       })
     },
     changeShowedRecordWindow: ({ commit, state }, params) => {
-      var window = state.window.find(itemWindow => {
+      const window = state.window.find(itemWindow => {
         return itemWindow.uuid === params.parentUuid
       })
       commit('changeShowedRecordWindow', {
