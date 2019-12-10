@@ -1,5 +1,5 @@
 import { enrollmentUser, forgotPassword, resetPasswordFromToken } from '@/api/ADempiere/enrollment'
-import { showMessage } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 import router from '@/router'
 
@@ -12,8 +12,12 @@ const enrollment = {
      * @param {string} userData.password
      */
     enrollmentUser({ commit }, userData) {
-      return enrollmentUser(userData)
-        .then(response => {
+      return enrollmentUser({
+        name: userData.name,
+        userName: userData.userName,
+        password: userData.password
+      })
+        .then(() => {
           showMessage({
             message: language.t('login.userEnrollmentSuccessful'),
             type: 'success'
@@ -27,7 +31,7 @@ const enrollment = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Enrollment User - Error ' + error.code + ': ' + error.message)
+          console.warn(`Enrollment User - Error ${error.code}: ${error.message}`)
         })
     },
     /**
@@ -35,8 +39,8 @@ const enrollment = {
      */
     forgotPassword({ commit }, eMailOrUserName) {
       return forgotPassword(eMailOrUserName)
-        .then(response => {
-          if (response.getResponsetype() === 0) {
+        .then(forgotPasswordResponse => {
+          if (forgotPasswordResponse.responseTypeStatus === 'OK') {
             showMessage({
               message: language.t('login.passwordResetSendLink') + eMailOrUserName,
               type: 'success'
@@ -50,14 +54,14 @@ const enrollment = {
               type: 'error'
             })
           }
-          return response
+          return forgotPasswordResponse
         })
         .catch(error => {
           showMessage({
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Forgot Password - Error ' + error.code + ': ' + error.message)
+          console.warn(`Forgot Password - Error ${error.code}: ${error.message}`)
         })
     },
     /**
@@ -66,10 +70,16 @@ const enrollment = {
      * @param {string} parameters.token
      * @param {string} parameters.password
      */
-    createPasswordFromToken({ commit }, parameters) {
-      return resetPasswordFromToken(parameters.token, parameters.password)
-        .then(response => {
-          if (response.getResponsetype() === 0) {
+    createPasswordFromToken({ commit }, {
+      token,
+      password
+    }) {
+      return resetPasswordFromToken({
+        token: token,
+        password: password
+      })
+        .then(createPasswordResponse => {
+          if (createPasswordResponse.responseTypeStatus === 'OK') {
             showMessage({
               message: language.t('login.createPasswordSuccessful'),
               type: 'success'
@@ -83,23 +93,31 @@ const enrollment = {
           router.push({
             path: 'login'
           })
+
+          return createPasswordResponse
         })
         .catch(error => {
           showMessage({
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Create Password - Error ' + error.code + ': ' + error.message)
+          console.warn(`Create Password - Error ${error.code}: ${error.message}`)
         })
     },
     /**
      * @param {string} parameters.token
      * @param {string} parameters.password
      */
-    resetPasswordFromToken({ commit }, parameters) {
-      return resetPasswordFromToken(parameters.token, parameters.password)
-        .then(response => {
-          if (response.getResponsetype() === 0) {
+    resetPasswordFromToken({ commit }, {
+      token,
+      password
+    }) {
+      return resetPasswordFromToken({
+        token: token,
+        password: password
+      })
+        .then(resetPasswordResponse => {
+          if (resetPasswordResponse.responseTypeStatus === 'OK') {
             showMessage({
               message: language.t('login.passwordResetSuccessful'),
               type: 'success'
@@ -113,13 +131,15 @@ const enrollment = {
           router.push({
             path: 'login'
           })
+
+          return resetPasswordResponse
         })
         .catch(error => {
           showMessage({
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn('Reset Password - Error ' + error.code + ': ' + error.message)
+          console.warn(`Reset Password - Error ${error.code}: ${error.message}`)
         })
     }
   }

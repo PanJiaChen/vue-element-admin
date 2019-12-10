@@ -16,8 +16,12 @@ function Instance() {
  * @param {string} userData.userName
  * @param {string} userData.password
  */
-export function enrollmentUser(userData) {
-  return Instance.call(this).enrollUser(userData)
+export function enrollmentUser({ name, userName, password }) {
+  return Instance.call(this).enrollUser({
+    name: name,
+    userName: userName,
+    password: password
+  })
 }
 
 /**
@@ -33,6 +37,6 @@ export function forgotPassword(eMailOrUserName) {
  * @param {string} token
  * @param {string} password
  */
-export function resetPasswordFromToken(token, password) {
-  return Instance.call(this).resetPasswordFromToken(token, password)
+export function resetPasswordFromToken({ token, password }) {
+  return Instance.call(this).resetPasswordFromToken({ token, password })
 }
