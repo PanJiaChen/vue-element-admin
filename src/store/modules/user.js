@@ -1,8 +1,7 @@
 import { login, logout, getInfo, getSessionInfo, changeRole } from '@/api/user'
-import { convertRoleFromGRPC } from '@/utils/ADempiere'
 import { getToken, setToken, removeToken, getCurrentRole, setCurrentRole, removeCurrentRole } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
-import { showMessage, convertMapToArrayPairs } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 const state = {
   token: getToken(),
@@ -56,22 +55,18 @@ const actions = {
     const { userName, password } = userInfo
     return new Promise((resolve, reject) => {
       login({ userName: userName.trim(), password: password })
-        .then(response => {
-          var data = {
-            id: response.getId(),
-            token: response.getUuid(),
-            name: response.getUserinfo().getName(),
-            avatar: 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4',
-            currentRole: convertRoleFromGRPC(response.getRole()),
-            isProcessed: response.getProcessed()
-          }
+        .then(logInResponse => {
+          const { uuid: token } = logInResponse
 
-          commit('SET_TOKEN', data.token)
-          commit('SET_ROL', data.currentRole)
+          logInResponse.avatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4'
+          logInResponse.name = logInResponse.userInfo.name
 
-          setToken(data.token)
-          setCurrentRole(data.currentRole.uuid)
-          resolve(data)
+          commit('SET_TOKEN', token)
+          commit('SET_ROL', logInResponse.role)
+
+          setToken(token)
+          setCurrentRole(logInResponse.role.uuid)
+          resolve(logInResponse)
         }).catch(error => {
           reject(error)
         })
@@ -83,45 +78,36 @@ const actions = {
       sessionUuid = getToken()
     }
     return getSessionInfo(sessionUuid)
-      .then(response => {
+      .then(responseGetInfo => {
         commit('setIsSession', true)
         commit('setSessionInfo', {
-          id: response.getId(),
-          uuid: response.getUuid(),
-          name: response.getName(),
-          isProcessed: response.getProcessed()
+          id: responseGetInfo.id,
+          uuid: responseGetInfo.uuid,
+          name: responseGetInfo.name,
+          processed: responseGetInfo.processed
         })
 
-        const userInfo = response.getUserinfo()
-        commit('SET_NAME', userInfo.getName())
-        commit('SET_INTRODUCTION', userInfo.getDescription())
-        commit('SET_USER_UUID', userInfo.getUuid())
+        const userInfo = responseGetInfo.userInfo
+        commit('SET_NAME', responseGetInfo.name)
+        commit('SET_INTRODUCTION', userInfo.description)
+        commit('SET_USER_UUID', responseGetInfo.uuid)
 
-        var defaultContext = convertMapToArrayPairs({
-          toConvert: response.getDefaultcontextMap()
-        })
-        // TODO: return request #Date as long data type Date (5)
-        // join column names without duplicating it
-        defaultContext = Array.from(new Set([
-          ...defaultContext,
-          ...[{
-            columnName: '#Date',
-            value: new Date()
-          }]
-        ]))
+        // TODO: return 'Y' or 'N' string values as data type Booelan (4)
+        // TODO: return #Date as long data type Date (5)
+        responseGetInfo.defaultContextMap.set('#Date', new Date())
         // set multiple context
-        dispatch('setMultipleContext', defaultContext, {
+        dispatch('setMultipleContextMap', responseGetInfo.defaultContextMap, {
           root: true
         })
 
         const sessionResponse = {
-          name: response.getName(),
-          defaultContext: defaultContext
+          name: responseGetInfo.name,
+          defaultContext: responseGetInfo.defaultContextMap
         }
         return sessionResponse
       })
       .catch(error => {
-        console.warn('Error gettin context', error.message)
+        console.warn(`Error getting context session ${error.message}`)
       })
       .finally(() => {
         dispatch('getUserInfoValue', sessionUuid)
@@ -133,25 +119,37 @@ const actions = {
       sessionUuid = getToken()
     }
     return new Promise((resolve, reject) => {
-      getInfo(sessionUuid).then(response => {
-        if (!response) {
+      getInfo(sessionUuid).then(responseGetInfo => {
+        if (!responseGetInfo) {
           reject('Verification failed, please Login again.')
         }
         // roles must be a non-empty array
-        if (!response.rolesList || response.rolesList.length <= 0) {
+        if (!responseGetInfo.rolesList || responseGetInfo.rolesList.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
-        var rol = response.rolesList.find(itemRol => {
+        const rol = responseGetInfo.rolesList.find(itemRol => {
           return itemRol.uuid === getCurrentRole()
         })
+        const rolesName = responseGetInfo.rolesList.map(rolItem => {
+          return rolItem.name
+        })
 
-        commit('SET_ROLES_LIST', response.rolesList)
-        commit('SET_ROLES', response.roles)
+        commit('SET_ROLES_LIST', responseGetInfo.rolesList)
+        commit('SET_ROLES', rolesName)
         commit('SET_ROL', rol)
-        commit('SET_AVATAR', response.avatar)
-        resolve(response)
+
+        // TODO: Add support from ADempiere
+        const avatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4'
+        commit('SET_AVATAR', avatar)
+
+        resolve({
+          ...responseGetInfo,
+          avatar: avatar,
+          roles: rolesName
+        })
       }).catch(error => {
+        console.warn(`Error getting user info value ${error.message}`)
         reject(error)
       })
     })
@@ -170,7 +168,7 @@ const actions = {
           root: true
         })
 
-        // dispatch('tagsView/delAllViews', null, {root:true})
+        // dispatch('tagsView/delAllViews', null, { root:true })
         removeToken()
         removeCurrentRole()
         resetRouter()
@@ -190,31 +188,25 @@ const actions = {
     })
   },
   // dynamically modify permissions
-  changeRoles({ commit, state, dispatch }, roleUuid) {
-    /**
-     * @param {string} attributes.sessionUuid
-     * @param {string} attributes.roleUuid
-     * @param {string} attributes.organizationUuid
-     * @param {string} attributes.warehouseUuid
-     */
+  changeRoles({ commit, dispatch }, roleUuid) {
     return changeRole({
       sessionUuid: getToken(),
       roleUuid: roleUuid,
       organizationUuid: null,
       warehouseUuid: null
     })
-      .then(response => {
-        var rol = convertRoleFromGRPC(response.getRole())
-        commit('SET_ROL', rol)
-        setCurrentRole(rol.uuid)
-        commit('SET_TOKEN', response.getUuid())
-        setToken(response.getUuid())
+      .then(changeRoleResponse => {
+        const { role } = changeRoleResponse
+        commit('SET_ROL', role)
+        setCurrentRole(role.uuid)
+        commit('SET_TOKEN', changeRoleResponse.uuid)
+        setToken(changeRoleResponse.uuid)
 
         // Update user info and context associated with session
-        dispatch('getInfo', response.getUuid())
+        dispatch('getInfo', changeRoleResponse.uuid)
           .then(() => {
-            var route = router.app._route
-            var selectedTag = {
+            const route = router.app._route
+            const selectedTag = {
               fullPath: route.fullPath,
               hash: route.hash,
               matched: route.matched,
@@ -235,8 +227,8 @@ const actions = {
         })
 
         return {
-          ...rol,
-          sessionUuid: response.getUuid()
+          ...role,
+          sessionUuid: changeRoleResponse.uuid
         }
       })
       .catch(error => {
@@ -244,7 +236,7 @@ const actions = {
           message: error.message,
           type: 'error'
         })
-        console.warn('Error change role:' + error.message + '. Code: ' + error.code)
+        console.warn(`Error change role: ${error.message}. Code: ${error.code}`)
       })
     //  return new Promise(async resolve => {
     //  const token = role

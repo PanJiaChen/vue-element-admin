@@ -7,6 +7,13 @@ const context = {
     context: {}
   },
   mutations: {
+    /**
+     * Set context in state
+     * @param {string} payload.parentUuid
+     * @param {string} payload.containerUuid
+     * @param {string} payload.columnName
+     * @param {mixed} payload.value
+     */
     setContext(state, payload) {
       var key = ''
       if (payload.parentUuid && !isEmptyValue(payload.value)) {
@@ -39,6 +46,25 @@ const context = {
     setMultipleContext: ({ commit }, valuesToSetter) => {
       valuesToSetter.forEach(itemToSetter => {
         commit('setContext', itemToSetter)
+      })
+    },
+    setMultipleContextObject: ({ commit }, valuesToSetter) => {
+      Object.keys(valuesToSetter).forEach(key => {
+        commit('setContext', {
+          columnName: key,
+          value: valuesToSetter[key]
+        })
+      })
+    },
+    setMultipleContextMap: ({ commit }, valuesToSetter) => {
+      return new Promise(resolve => {
+        valuesToSetter.forEach((value, key) => {
+          commit('setContext', {
+            columnName: key,
+            value: value
+          })
+        })
+        resolve()
       })
     },
     setInitialContext: ({ commit }, otherContext = {}) => {

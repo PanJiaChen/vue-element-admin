@@ -22,6 +22,8 @@ export function isEmptyValue(value) {
     return Boolean(!value.trim().length)
   } else if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean' || Object.prototype.toString.call(value) === '[object Date]') {
     return false
+  } else if (Object.prototype.toString.call(value) === '[object Map]' && value.size === 0) {
+    return true
   } else if (Array.isArray(value)) {
     return Boolean(!value.length)
   } else if (typeof value === 'object') {

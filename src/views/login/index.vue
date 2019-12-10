@@ -182,7 +182,6 @@ export default {
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
               this.$router.push({ path: this.redirect || '/' })
-              // this.loading = false
             })
             .catch(error => {
               if (error.code === 13) {
@@ -190,6 +189,8 @@ export default {
               } else {
                 this.$message.error(this.$t('login.unexpectedError'))
               }
+            })
+            .finally(() => {
               this.loading = false
             })
         } else {

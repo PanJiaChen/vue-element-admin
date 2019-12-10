@@ -13,59 +13,25 @@ function Instance() {
 
 // Make login by UserName and password, this function can return user data for show
 export function login(loginValues) {
-  if (loginValues.role !== undefined && loginValues.role.trim() !== '') {
-    return Instance.call(this).requestLogin(
-      loginValues.userName,
-      loginValues.password,
-      loginValues.role,
-      null,
-      loginValues.language
-    )
+  if (loginValues.role && loginValues.role.trim() !== '') {
+    return Instance.call(this).requestLogin({
+      userName: loginValues.userName,
+      userPass: loginValues.password,
+      role: loginValues.role,
+      language: getLanguage() || 'en_US'
+    })
   } else {
-    return Instance.call(this).requestLoginDefault(
-      loginValues.userName,
-      loginValues.password,
-      loginValues.language
-    )
+    return Instance.call(this).requestLoginDefault({
+      userName: loginValues.userName,
+      userPass: loginValues.password,
+      language: getLanguage() || 'en_US'
+    })
   }
 }
 
 // Get User Info from session Uuid or token
 export function getInfo(token) {
   return Instance.call(this).requestUserInfoFromSession(token)
-    .then(session => {
-      var roles = []
-      var rolesList = session.getRolesList().map(itemRol => {
-        roles.push(itemRol.getName())
-        return {
-          id: itemRol.getId(),
-          uuid: itemRol.getUuid(),
-          name: itemRol.getName(),
-          description: itemRol.getDescription(),
-          clientId: itemRol.getClientid(),
-          clientName: itemRol.getClientname(),
-          organizationList: itemRol.getOrganizationsList()
-        }
-      })
-      // TODO: Add user.id, user.level in request
-      const user = session.getUserinfo()
-
-      const response = {
-        id: user.getId(),
-        uuid: user.getUuid(),
-        name: user.getName(),
-        comments: user.getComments(),
-        description: user.getDescription(),
-        // TODO: Add from ADempiere
-        avatar: 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4',
-        roles: roles, // rol list names, used from app (src/permission.js, src/utils/permission.js)
-        rolesList: rolesList,
-        responseGrpc: session
-      }
-      return response
-    }).catch(error => {
-      console.log(error)
-    })
 }
 
 /**
@@ -78,7 +44,7 @@ export function getSessionInfo(sessionUuid) {
 
 // Logout from server
 export function logout(sessionUuid) {
-  return Instance.call(this).requestLogout(sessionUuid)
+  return Instance.call(this).requestLogOut(sessionUuid)
 }
 
 // Get User menu from server
