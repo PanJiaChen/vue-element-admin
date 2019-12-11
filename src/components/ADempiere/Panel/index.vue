@@ -333,7 +333,7 @@ export default {
         this.$store.dispatch('getPanelAndFields', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
-          type: this.panelType,
+          panelType: this.panelType,
           isAdvancedQuery: this.isAdvancedQuery
         }).then(() => {
           this.generatePanel(this.getterFieldList)

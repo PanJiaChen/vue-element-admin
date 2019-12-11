@@ -46,7 +46,30 @@ const window = {
           const childrenTabs = []
           const parentTabs = []
 
-          const tabs = responseWindow.tabsList.map((tabItem, index) => {
+          const tabsSequence = []
+          // TODO Add source tab on the server for tabs Translation and Sort
+          const tabs = responseWindow.tabsList.filter(itemTab => {
+            if (itemTab.isSortTab) {
+              // TODO: Add convert tab as process function
+              tabsSequence.push({
+                uuid: itemTab.uuid,
+                id: itemTab.id,
+                parentUuid: windowUuid,
+                containerUuid: itemTab.uuid,
+                parentTabUuid: itemTab.parentTabUuid,
+                panelType: 'window',
+                type: 'sequence',
+                isSortTab: itemTab.isSortTab,
+                name: itemTab.name,
+                description: itemTab.description,
+                tableName: itemTab.tableName,
+                sortOrderColumnName: itemTab.sortOrderColumnName, // order column
+                sortYesNoColumnName: itemTab.sortYesNoColumnName // included column
+              })
+            }
+            // TODO: Add support to isAdvancedTab, isTranslationTab and isHasTree
+            return !itemTab.isTranslationTab
+          }).map((tabItem, index, list) => {
             // let tab = tabItem
             const tab = {
               ...tabItem,
@@ -58,6 +81,7 @@ const window = {
               // relations
               isParentTab: Boolean(firstTab === tabItem.tableName),
               // app properties
+              isAssociatedTabSequence: false, // show modal with order tab
               isShowedRecordNavigation: !(tabItem.isSingleRow),
               isLoadFieldList: false,
               index: index
@@ -110,6 +134,32 @@ const window = {
               recordId: null
             })
 
+            if (tab.isSortTab) {
+              const tabParent = list.find(itemTab => itemTab.tableName === tab.tableName && !itemTab.isSortTab)
+              if (tabParent) {
+                tab.tabAssociatedUuid = tabParent.uuid // tab source uuid
+                tab.tabAssociatedName = tabParent.name // tab source name
+              }
+            } else {
+              // add tabs sequence associated as process in tab source
+              let orderTabs = tabsSequence.filter(itemTab => itemTab.tableName === tab.tableName)
+              if (orderTabs.length) {
+                orderTabs = orderTabs.map(itemTab => {
+                  return {
+                    ...itemTab,
+                    // appication attributes
+                    tabAssociatedUuid: tab.uuid, // tab source
+                    tabAssociatedName: tab.name, // tab source
+                    action: 'orderSequence',
+                    type: 'application'
+                  }
+                })
+                actions = actions.concat(orderTabs)
+                tab.isAssociatedTabSequence = true
+                tab.tabsOrder = orderTabs
+              }
+            }
+
             // get processess associated in tab
             if (tabItem.processesList && tabItem.processesList.length) {
               const processList = tabItem.processesList.map(processItem => {
@@ -138,17 +188,12 @@ const window = {
               references: []
             })
 
-            // TODO: Add support to isSortTab and isTranslationTab
-            if (!(tab.isSortTab || tab.isTranslationTab)) {
-              if (tab.isParentTab) {
-                parentTabs.push(tab)
-              } else {
-                childrenTabs.push(tab)
-              }
+            if (tab.isParentTab) {
+              parentTabs.push(tab)
+            } else {
+              childrenTabs.push(tab)
             }
             return tab
-          }).filter(itemTab => {
-            return !(itemTab.isSortTab || itemTab.isTranslationTab)
           })
 
           const tabProperties = {
@@ -272,35 +317,51 @@ const window = {
           console.warn(`Dictionary Tab (State Window) - Error ${error.code}: ${error.message}`)
         })
     },
-    changeShowedDetailWindow: ({ commit, state }, params) => {
+    changeShowedDetailWindow({ commit, state }, {
+      containerUuid,
+      isShowedDetail = true
+    }) {
       const window = state.window.find(itemWindow => {
-        return itemWindow.uuid === params.containerUuid
+        return itemWindow.uuid === containerUuid
       })
       commit('changeShowedDetailWindow', {
         window: window,
-        changeShowedDetail: params.isShowedDetail
+        changeShowedDetail: isShowedDetail
       })
     },
-    changeShowedRecordWindow: ({ commit, state }, params) => {
+    changeShowedRecordWindow({ commit, state }, {
+      parentUuid,
+      isShowedRecordNavigation = true
+    }) {
       const window = state.window.find(itemWindow => {
-        return itemWindow.uuid === params.parentUuid
+        return itemWindow.uuid === parentUuid
       })
       commit('changeShowedRecordWindow', {
         window: window,
-        isShowedRecordNavigation: params.isShowedRecordNavigation
+        isShowedRecordNavigation: isShowedRecordNavigation
       })
     },
     /**
-     * @param {string} parameters.parentUuid
-     * @param {string} parameters.containerUuid
+     * @param {string} parentUuid
+     * @param {string} containerUuid
      */
-    setCurrentTab: ({ commit, getters }, parameters) => {
+    setCurrentTab({ commit, getters }, {
+      parentUuid,
+      containerUuid
+    }) {
       commit('setCurrentTab', {
-        window: getters.getWindow(parameters.parentUuid),
-        tabUuid: parameters.containerUuid
+        window: getters.getWindow(parentUuid),
+        tabUuid: containerUuid
       })
     },
-    setTabIsLoadField: ({ commit, getters }, { parentUuid, containerUuid }) => {
+    /**
+     * Indicate if fields is load in tab (containerUuid)
+     * @param {string} parentUuid
+     * @param {string} containerUuid
+     */
+    setTabIsLoadField({ commit, getters }, {
+      parentUuid, containerUuid
+    }) {
       const tab = getters.getTab(parentUuid, containerUuid)
       commit('setTabIsLoadField', {
         tab: tab,
@@ -313,9 +374,6 @@ const window = {
       return state.window.find(
         item => item.uuid === windowUuid
       )
-    },
-    getIndexWindow: (state) => {
-      return state.windowIndex
     },
     getIsShowedRecordNavigation: (state, getters) => (windowUuid) => {
       const window = getters.getWindow(windowUuid)

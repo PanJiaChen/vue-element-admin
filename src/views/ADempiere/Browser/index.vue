@@ -153,7 +153,7 @@ export default {
       } else {
         this.$store.dispatch('getPanelAndFields', {
           containerUuid: this.browserUuid,
-          type: this.panelType,
+          panelType: this.panelType,
           routeToDelete: this.$route
         })
           .then(() => {

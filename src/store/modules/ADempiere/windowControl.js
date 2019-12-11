@@ -13,7 +13,10 @@ const windowControl = {
       fullPath: '',
       query: {}
     },
-    dataLog: {} // { containerUuid, recordId, tableName, eventType }
+    dataLog: {}, // { containerUuid, recordId, tableName, eventType }
+    tabSequenceRecord: [],
+    totalResponse: 0,
+    totalRequest: 0
   },
   mutations: {
     addInCreate(state, payload) {
@@ -42,6 +45,15 @@ const windowControl = {
     },
     setWindowOldRoute(state, payload) {
       state.windowOldRoute = payload
+    },
+    setTabSequenceRecord(state, payload) {
+      state.tabSequenceRecord = payload
+    },
+    setTotalResponse(state, payload) {
+      state.totalResponse = payload
+    },
+    setTotalRequest(state, payload) {
+      state.totalRequest = payload
     }
   },
   actions: {
@@ -526,20 +538,15 @@ const windowControl = {
      */
     getDataListTab({ dispatch, rootGetters }, parameters) {
       const {
-        parentUuid,
-        containerUuid,
-        recordUuid,
-        isRefreshPanel = false,
-        isLoadAllRecords = false,
-        isReference = false,
-        referenceWhereClause = '',
-        columnName,
-        value,
-        criteria
+        parentUuid, containerUuid, recordUuid,
+        referenceWhereClause = '', columnName, value, criteria,
+        isRefreshPanel = false, isLoadAllRecords = false, isReference = false,
+        isShowNotification = true
       } = parameters
+      let { isAddRecord = false } = parameters
       const tab = rootGetters.getTab(parentUuid, containerUuid)
 
-      var parsedQuery = tab.query
+      let parsedQuery = tab.query
       if (!isEmptyValue(parsedQuery) && parsedQuery.includes('@')) {
         parsedQuery = parseContext({
           parentUuid: parentUuid,
@@ -548,7 +555,7 @@ const windowControl = {
         }, true)
       }
 
-      var parsedWhereClause = tab.whereClause
+      let parsedWhereClause = tab.whereClause
       if (!isEmptyValue(parsedWhereClause) && parsedWhereClause.includes('@')) {
         parsedWhereClause = parseContext({
           parentUuid: parentUuid,
@@ -573,7 +580,7 @@ const windowControl = {
         }
       }
 
-      var conditions = []
+      const conditions = []
       if (tab.isParentTab && !isEmptyValue(tab.tableName) && !isEmptyValue(value)) {
         conditions.push({
           columnName: columnName,
@@ -589,7 +596,9 @@ const windowControl = {
         orderByClause: tab.orderByClause,
         // TODO: evaluate if overwrite values to conditions
         conditions: isLoadAllRecords ? [] : conditions,
-        isParentTab: tab.isParentTab
+        isParentTab: tab.isParentTab,
+        isAddRecord: isAddRecord,
+        isShowNotification: isShowNotification
       })
         .then(response => {
           if (isRefreshPanel && !isEmptyValue(recordUuid) && recordUuid !== 'create-new') {
@@ -614,6 +623,53 @@ const windowControl = {
         })
         .catch(error => {
           return error
+        })
+        .finally(() => {
+          const currentData = rootGetters.getDataRecordAndSelection(containerUuid)
+          const { originalNextPageToken, pageNumber, recordCount } = currentData
+          let nextPage = pageNumber
+          const isAdd = isAddRecord
+          if (originalNextPageToken && isAddRecord) {
+            const pageInToken = originalNextPageToken.substring(originalNextPageToken.length - 2)
+            if (pageInToken === '-1') {
+              isAddRecord = false
+            }
+            if (pageNumber === 1 && recordCount > 50) {
+              nextPage = nextPage + 1
+              isAddRecord = true
+            }
+          } else {
+            isAddRecord = false
+          }
+          if (recordCount <= 50) {
+            isAddRecord = false
+          }
+
+          if (isAddRecord) {
+            dispatch('setPageNumber', {
+              parentUuid: parentUuid,
+              containerUuid: containerUuid,
+              pageNumber: nextPage,
+              panelType: 'window',
+              isAddRecord: isAddRecord,
+              isShowNotification: false
+            })
+          }
+          if (isAdd && isAdd !== isAddRecord) {
+            if (tab.isSortTab) {
+              const record = rootGetters.getDataRecordsList(containerUuid)
+              const recordToTab = record
+                .map(itemRecord => {
+                  return {
+                    ...itemRecord
+                  }
+                })
+                .sort((itemA, itemB) => {
+                  return itemA[tab.sortOrderColumnName] - itemB[tab.sortOrderColumnName]
+                })
+              dispatch('setTabSequenceRecord', recordToTab)
+            }
+          }
         })
     },
     /**
@@ -670,6 +726,86 @@ const windowControl = {
     },
     setWindowOldRoute({ commit }, oldPath = { path: '', fullPath: '', query: {}}) {
       commit('setWindowOldRoute', oldPath)
+    },
+    setTabSequenceRecord({ commit }, record) {
+      commit('setTabSequenceRecord', record)
+    },
+    /**
+     * Update records in tab sort
+     * @param {string} containerUuid
+     * @param {string} parentUuid
+     */
+    updateSequence({ state, commit, dispatch, getters, rootGetters }, {
+      parentUuid,
+      containerUuid
+    }) {
+      const { tableName, sortOrderColumnName, sortYesNoColumnName, tabAssociatedUuid } = rootGetters.getTab(parentUuid, containerUuid)
+      const listSequenceToSet = getters.getTabSequenceRecord
+      const recordData = rootGetters.getDataRecordsList(containerUuid)
+
+      // scrolls through the logs and checks if there is a change to be sent to server
+      recordData.forEach(itemData => {
+        const dataSequence = listSequenceToSet.find(item => item.UUID === itemData.UUID)
+        if (itemData[sortOrderColumnName] === dataSequence[sortOrderColumnName]) {
+          return
+        }
+        const valuesToSend = [{
+          columnName: sortOrderColumnName,
+          value: dataSequence[sortOrderColumnName]
+        }]
+
+        if (itemData[sortYesNoColumnName] !== dataSequence[sortYesNoColumnName]) {
+          valuesToSend.push({
+            columnName: sortYesNoColumnName,
+            value: dataSequence[sortYesNoColumnName]
+          })
+        }
+
+        const countRequest = state.totalRequest + 1
+        commit('setTotalRequest', countRequest)
+
+        updateEntity({
+          tableName: tableName,
+          recordUuid: itemData.UUID,
+          attributesList: valuesToSend
+        })
+          .catch(error => {
+            showMessage({
+              message: error.message,
+              type: 'error'
+            })
+            console.warn(`Update Entity Table Error ${error.code}: ${error.message}`)
+          })
+          .finally(() => {
+            const countResponse = state.totalResponse + 1
+            commit('setTotalResponse', countResponse)
+            if (state.totalResponse === state.totalRequest) {
+              showMessage({
+                message: language.t('notifications.updateSuccessfully'),
+                type: 'success'
+              })
+              dispatch('setShowDialog', {
+                type: 'window',
+                action: undefined
+              })
+              commit('setTotalRequest', 0)
+              commit('setTotalResponse', 0)
+
+              dispatch('setRecordSelection', {
+                parentUuid: parentUuid,
+                containerUuid: containerUuid,
+                isLoaded: false
+              })
+              dispatch('setTabSequenceRecord', [])
+
+              // refresh record list in table source
+              dispatch('getDataListTab', {
+                parentUuid: parentUuid,
+                containerUuid: tabAssociatedUuid
+              })
+            }
+          })
+      })
     }
   },
   getters: {
@@ -687,6 +823,9 @@ const windowControl = {
       if (state.windowRoute && state.windowRoute.meta && state.windowRoute.meta.uuid === windowUuid) {
         return state.windowRoute
       }
+    },
+    getTabSequenceRecord: (state) => {
+      return state.tabSequenceRecord
     },
     getDataLog: (state) => (containerUuid, recordUuid) => {
       const current = state.dataLog

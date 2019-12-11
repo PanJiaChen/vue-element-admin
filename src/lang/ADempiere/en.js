@@ -38,6 +38,7 @@ export default {
     copyUnsuccessful: 'Error, unable to copy',
     mandatoryFieldMissing: 'Missing fill in the fields ',
     updateFields: 'The record is updated with the field ',
+    updateSuccessfully: 'Successfully made changes',
     invalidEmailFormat: 'Invalid email format',
     recordLocked: 'This record has been locked',
     recordUnlocked: 'This record has been unlocked'
@@ -274,5 +275,9 @@ export default {
     undo: 'Undo',
     lockRecord: 'Lock Record',
     unlockRecord: 'Unlock Record'
+  },
+  sequence: {
+    available: 'Available',
+    sequence: 'Sequence'
   }
 }

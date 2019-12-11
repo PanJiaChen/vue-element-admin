@@ -7,7 +7,7 @@ export const tabMixin = {
       default: ''
     },
     tabsList: {
-      type: [Array, Object],
+      type: Array,
       default: () => []
     }
   },
@@ -25,6 +25,9 @@ export const tabMixin = {
     },
     getterDataRecords() {
       return this.$store.getters.getDataRecordsList(this.tabUuid)
+    },
+    getTabsList() {
+      return this.tabsList.filter(tab => !tab.isSortTab)
     }
   },
   watch: {
@@ -32,12 +35,6 @@ export const tabMixin = {
     getDataSelection(value) {
       if (!value.isLoaded && this.getterIsLoadContextParent && this.getterIsLoadRecordParent) {
         this.getDataTable()
-      }
-    },
-    // Current TabChildren
-    currentTabChild(newValue, oldValue) {
-      if (newValue !== oldValue) {
-        this.$router.push({ query: { ...this.$route.query, tabChild: String(newValue) }, params: { ...this.$route.params }})
       }
     },
     // Load parent tab context
@@ -48,7 +45,8 @@ export const tabMixin = {
     }
   },
   created() {
-    this.tabUuid = this.tabsList[0].uuid
+    const tabs = this.tabsList.filter(item => !item.isSortTab)
+    this.tabUuid = tabs[0].uuid
   },
   methods: {
     parseContext,
@@ -66,11 +64,6 @@ export const tabMixin = {
       })
       this.$route.meta.tabUuid = this.tabUuid
     },
-    setCurrentTabChild() {
-      if (this.$route.query.tabChild === undefined && this.firstIndex) {
-        this.currentTabChild = this.firstIndex
-      }
-    },
     /**
      * @param {object} tabHTML DOM HTML the tab clicked
      */
@@ -81,7 +74,9 @@ export const tabMixin = {
       }
     },
     handleBeforeLeave(activeName) {
-      var metadataTab = this.tabsList.find(tab => tab.index === parseInt(activeName))
+      const metadataTab = this.tabsList
+        .filter(tab => !tab.isSortTab)
+        .find(tab => tab.index === parseInt(activeName))
       if (!this.isEmptyValue(metadataTab.whereClause) && metadataTab.whereClause.includes('@')) {
         metadataTab.whereClause = parseContext({
           parentUuid: metadataTab.parentUuid,

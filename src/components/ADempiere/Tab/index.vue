@@ -1,24 +1,23 @@
 <template>
   <el-tabs v-model="currentTab" type="border-card" :before-leave="handleBeforeLeave" @tab-click="handleClick">
-    <template v-for="(item, key) in tabsList">
+    <template v-for="(tabAttributes, key) in getTabsList">
       <el-tab-pane
         :key="key"
-        :label="item.name"
+        :label="tabAttributes.name"
         :windowuuid="windowUuid"
-        :tabuuid="item.uuid"
-        :position-tab="key"
-        :name="String(item.index)"
-        :lazy="true"
+        :tabuuid="tabAttributes.uuid"
+        :name="String(key)"
+        lazy
         :disabled="Boolean(key > 0 && isCreateNew)"
         :style="isShowedDetail ? { height: '100%', overflow: 'hidden' } : { height: '75vh', overflow: 'auto' }"
       >
         <main-panel
           :parent-uuid="windowUuid"
-          :container-uuid="item.uuid"
-          :metadata="item"
-          :group-tab="item.tabGroup"
+          :container-uuid="tabAttributes.uuid"
+          :metadata="tabAttributes"
+          :group-tab="tabAttributes.tabGroup"
           :panel-type="panelType"
-          :is-re-search="Boolean(key == 0 || (key > 0 && firstTableName != item.tableName))"
+          :is-re-search="Boolean(key == 0 || (key > 0 && firstTableName != tabAttributes.tableName))"
         />
       </el-tab-pane>
     </template>

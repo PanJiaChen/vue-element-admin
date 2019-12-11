@@ -58,16 +58,24 @@ const panel = {
     }
   },
   actions: {
-    addPanel({ commit, dispatch }, params) {
-      var keyColumn = ''
-      var selectionColumn = []
-      var count = 0
+    addPanel({ commit, dispatch, getters }, params) {
+      let keyColumn = ''
+      let selectionColumn = []
+      let identifierColumns = []
+      let count = 0
       params.fieldList.forEach(itemField => {
         if (itemField.isKey) {
           keyColumn = itemField.columnName
         }
         if (itemField.isSelectionColumn) {
           selectionColumn.push(itemField.columnName)
+        }
+        if (itemField.isIdentifier) {
+          identifierColumns.push({
+            columnName: itemField.columnName,
+            identifierSequence: itemField.identifierSequence,
+            componentPath: itemField.componentPath
+          })
         }
 
         if (params.panelType === 'table' || params.isAdvancedQuery) {
@@ -89,7 +97,19 @@ const panel = {
       })
 
       params.keyColumn = keyColumn
+      if (params.isSortTab) {
+        const panelParent = getters.getPanel(params.tabAssociatedUuid)
+        selectionColumn = selectionColumn.concat(panelParent.selectionColumn)
+        identifierColumns = identifierColumns.concat(panelParent.identifierColumns)
+        params.fieldLinkColumnName = panelParent.fieldLinkColumnName
+        params.keyColumn = panelParent.keyColumn
+      }
       params.selectionColumn = selectionColumn
+      params.identifierColumns = identifierColumns
+        .sort((itemA, itemB) => {
+          return itemA.identifierSequence - itemB.identifierSequence
+        })
+
       params.recordUuid = null
       params.fieldList = assignedGroup(params.fieldList)
 
@@ -683,7 +703,7 @@ const panel = {
       commit('changeFieldValue', newField)
     },
     getPanelAndFields({ dispatch }, parameters) {
-      if (parameters.type === 'process' || parameters.type === 'report') {
+      if (parameters.panelType === 'process' || parameters.panelType === 'report') {
         return dispatch('getProcessFromServer', parameters)
           .then(response => {
             return response
@@ -691,11 +711,11 @@ const panel = {
           .catch(error => {
             return {
               ...error,
-              moreInfo: `Dictionary getPanelAndFields ${parameters.type} (State Panel)`,
+              moreInfo: `Dictionary getPanelAndFields ${parameters.panelType} (State Panel)`,
               parameters: parameters
             }
           })
-      } else if (parameters.type === 'browser') {
+      } else if (parameters.panelType === 'browser') {
         return dispatch('getBrowserFromServer', parameters)
           .then(response => {
             return response
@@ -707,12 +727,12 @@ const panel = {
               parameters: parameters
             }
           })
-      } else if (parameters.type === 'window' || parameters.type === 'table') {
+      } else if (parameters.panelType === 'window' || parameters.panelType === 'table') {
         return dispatch('getTabAndFieldFromServer', {
           parentUuid: parameters.parentUuid,
           containerUuid: parameters.containerUuid,
           isAdvancedQuery: parameters.isAdvancedQuery,
-          panelType: parameters.type
+          panelType: parameters.panelType
         }).then(response => {
           return response
         }).catch(error => {

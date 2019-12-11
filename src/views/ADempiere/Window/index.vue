@@ -66,7 +66,6 @@
                       :container-uuid="windowMetadata.currentTabUuid"
                       :panel-type="panelType"
                       :is-insert-record="getterIsInsertRecord"
-                      :modal-metadata="windowMetadata"
                     />
                   </el-header>
                   <!-- das -->
@@ -87,7 +86,7 @@
                             (isMobile && !isShowedRecordNavigation || !isMobile)"
                           v-show="!isShowedTabChildren"
                           icon="el-icon-caret-top"
-                          :class="classIsMObile"
+                          :class="classIsMobile"
                           circle
                           @click="handleChangeShowedTabChildren()"
                         />
@@ -129,7 +128,6 @@
                       :window-uuid="windowUuid"
                       :tabs-list="windowMetadata.tabsListChildren"
                       :first-tab-uuid="windowMetadata.firstTabUuid"
-                      :first-index="String(windowMetadata.tabsListChildren[0].index)"
                       :style="{ 'height': getHeightPanelBottom + 'vh' }"
                     />
                   </el-header>
@@ -214,7 +212,7 @@ export default {
       return this.$store.state.app.device === 'mobile'
     },
     // convert ternary operator into computed property
-    classIsMObile() {
+    classIsMobile() {
       if (this.isMobile) {
         return 'open-table-detail-mobile'
       } else {

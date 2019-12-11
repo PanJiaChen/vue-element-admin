@@ -1,21 +1,20 @@
 <template>
   <el-tabs v-model="currentTabChild" type="border-card" @tab-click="handleClick">
-    <template v-for="(item, key) in tabsList">
+    <template v-for="(tabAttributes, key) in getTabsList">
       <!-- TODO: Add support to tabs isSortTab (sequence) -->
       <el-tab-pane
         :key="key"
-        :label="item.name"
+        :label="tabAttributes.name"
         :windowuuid="windowUuid"
-        :tabuuid="item.uuid"
-        :position-tab="key"
-        :name="String(item.index)"
-        :lazy="true"
+        :tabuuid="tabAttributes.uuid"
+        :name="String(key)"
+        lazy
         :disabled="isCreateNew"
       >
         <el-col :span="24">
           <data-table
             :parent-uuid="windowUuid"
-            :container-uuid="item.uuid"
+            :container-uuid="tabAttributes.uuid"
             :panel-type="panelType"
           />
         </el-col>
@@ -36,10 +35,6 @@ export default {
   mixins: [tabMixin],
   props: {
     firstTabUuid: {
-      type: String,
-      default: undefined
-    },
-    firstIndex: {
       type: String,
       default: undefined
     }
@@ -65,8 +60,33 @@ export default {
       return this.getterDataParentTab.isLoadedContext
     }
   },
+  watch: {
+    // Current TabChildren
+    currentTabChild(newValue, oldValue) {
+      if (newValue !== oldValue) {
+        this.$router.push({
+          query: {
+            ...this.$route.query,
+            tabChild: String(newValue)
+          },
+          params: {
+            ...this.$route.params
+          }
+        })
+      }
+    }
+  },
   mounted() {
     this.setCurrentTabChild()
+  },
+  methods: {
+    setCurrentTabChild() {
+      let activeTab = this.$route.query.tabChild
+      if (activeTab === undefined) {
+        activeTab = String(0)
+      }
+      this.currentTabChild = activeTab
+    }
   }
 }
 </script>

@@ -8,7 +8,6 @@
     :is-report="isReport"
     :last-parameter="lastParameter"
     :report-format="reportFormat"
-    :modal-metadata="modalMetadata"
     :is-insert-record="isInsertRecord"
   />
 </template>
@@ -46,10 +45,6 @@ export default {
     reportFormat: {
       type: String,
       default: undefined
-    },
-    modalMetadata: {
-      type: Object,
-      default: () => {}
     },
     // used only window
     isInsertRecord: {

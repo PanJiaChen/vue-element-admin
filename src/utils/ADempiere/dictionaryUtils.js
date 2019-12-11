@@ -455,39 +455,39 @@ export function convertAction(action) {
 
   switch (action) {
     case 'B':
-      actionAttributes.name = 'workbech'
+      actionAttributes.name = 'Workbech'
       actionAttributes.icon = 'peoples'
       break
     case 'F':
-      actionAttributes.name = 'workflow'
+      actionAttributes.name = 'Workflow'
       actionAttributes.icon = 'example'
       break
     case 'P':
-      actionAttributes.name = 'process'
+      actionAttributes.name = 'Process'
       actionAttributes.icon = 'component'
       actionAttributes.component = () => import('@/views/ADempiere/Process')
       break
     case 'R':
-      actionAttributes.name = 'report'
+      actionAttributes.name = 'Report'
       actionAttributes.icon = 'skill'
       actionAttributes.component = () => import('@/views/ADempiere/Process')
       break
     case 'S':
-      actionAttributes.name = 'browser'
+      actionAttributes.name = 'Browser'
       actionAttributes.icon = 'search'
       actionAttributes.component = () => import('@/views/ADempiere/Browser')
       break
     case 'T':
-      actionAttributes.name = 'task'
+      actionAttributes.name = 'Task'
       actionAttributes.icon = 'size'
       break
     case 'W':
-      actionAttributes.name = 'window'
+      actionAttributes.name = 'Window'
       actionAttributes.icon = 'tab'
       actionAttributes.component = () => import('@/views/ADempiere/Window')
       break
     case 'X':
-      actionAttributes.name = 'form'
+      actionAttributes.name = 'Form'
       actionAttributes.icon = 'form'
       break
     default:

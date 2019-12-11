@@ -38,6 +38,7 @@ export default {
     copyUnsuccessful: 'Error, no se puede copiar',
     mandatoryFieldMissing: 'Falta completar los campos ',
     updateFields: 'Se actualiza el registro con el campo ',
+    updateSuccessfully: 'Cambios realizados exitosamente',
     invalidEmailFormat: 'Formato de correo electronico invalido',
     recordLocked: 'Este registro ha sido bloqueado',
     recordUnlocked: 'Este registro ha sido desbloqueado'
@@ -249,5 +250,9 @@ export default {
     undo: 'Deshacer',
     lockRecord: 'Bloquear Registro',
     unlockRecord: 'Desbloquear Registro'
+  },
+  sequence: {
+    available: 'Disponibles',
+    sequence: 'Secuencia'
   }
 }

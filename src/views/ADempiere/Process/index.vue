@@ -94,7 +94,7 @@ export default {
       } else {
         this.$store.dispatch('getPanelAndFields', {
           containerUuid: this.processUuid,
-          type: this.panelType,
+          panelType: this.panelType,
           routeToDelete: this.$route
         }).then(() => {
           this.processMetadata = this.getterProcess

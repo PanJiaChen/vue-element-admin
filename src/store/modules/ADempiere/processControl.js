@@ -418,15 +418,31 @@ const processControl = {
      *
      * @param {object} params
      */
-    setShowDialog({ commit }, params) {
-      if (params.type === 'process' || params.type === 'report' || params.type === 'window') {
-        if (params.action) {
-          commit('setMetadata', params.action)
+    setShowDialog({ state, commit, dispatch, rootGetters }, params) {
+      const panels = ['process', 'report', 'window']
+      if (params.action && (panels.includes(params.type) || panels.includes(params.action.panelType))) {
+        if (params.action.containerUuid === state.metadata.containerUuid) {
           commit('setShowDialog', true)
-        } else {
-          commit('setShowDialog', false)
+          return
         }
+        const panel = rootGetters.getPanel(params.action.containerUuid)
+        if (!panel) {
+          dispatch('getPanelAndFields', {
+            parentUuid: params.action.parentUuid,
+            containerUuid: params.action.containerUuid,
+            panelType: params.action.panelType
+          })
+            .then(response => {
+              commit('setMetadata', response)
+              commit('setShowDialog', true)
+            })
+        } else {
+          commit('setMetadata', panel)
+          commit('setShowDialog', true)
+        }
+        return
       }
+      commit('setShowDialog', false)
     },
     finishProcess({ commit }, parameters) {
       var processMessage = {
