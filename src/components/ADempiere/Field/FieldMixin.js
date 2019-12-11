@@ -47,6 +47,11 @@ export const fieldMixin = {
     preHandleChange(value) {
       this.handleChange(value)
     },
+    /**
+     * @param {mixed} value, main value in component
+     * @param {mixed} valueTo, used in end value in range
+     * @param {string} label, or displayColumn to show in select
+     */
     handleChange(value, valueTo = undefined, label = undefined) {
       const sendParameters = {
         parentUuid: this.metadata.parentUuid,

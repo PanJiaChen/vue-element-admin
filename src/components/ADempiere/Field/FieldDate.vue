@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import { clientDateTime } from '@/utils/ADempiere'
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 
 export default {
@@ -44,7 +43,7 @@ export default {
           text: this.$t('components.date.Week'),
           onClick(picker) {
             const date = new Date()
-            var monthEndDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+            const monthEndDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
             picker.$emit('pick', monthEndDay)
           }
         }]
@@ -60,14 +59,13 @@ export default {
         }, {
           text: this.$t('components.date.Week'),
           onClick(picker) {
-            var start_date, end_date, date, currenDate, first, last
-            start_date = new Date()
+            const start_date = new Date()
             start_date.setHours(0, 0, 0, 0)
-            end_date = new Date()
-            date = null
-            currenDate = date ? new Date(date) : new Date()
-            first = currenDate.getDate() - currenDate.getDay('monday')
-            last = first - 7
+            const end_date = new Date()
+            const date = null
+            const currenDate = date ? new Date(date) : new Date()
+            const first = currenDate.getDate() - currenDate.getDay('monday')
+            const last = first - 7
             start_date.setDate(last)
             end_date.setDate(first - 1)
             picker.$emit('pick', [start_date, end_date])
@@ -75,17 +73,17 @@ export default {
         }, {
           text: this.$t('components.date.LastMonth'),
           onClick(picker) {
-            var date = new Date()
-            var monthEndDay = new Date(date.getFullYear(), date.getMonth(), 0)
-            var monthStartDay = new Date(date.getFullYear(), date.getMonth() - 1, 1)
+            const date = new Date()
+            const monthEndDay = new Date(date.getFullYear(), date.getMonth(), 0)
+            const monthStartDay = new Date(date.getFullYear(), date.getMonth() - 1, 1)
             picker.$emit('pick', [monthStartDay, monthEndDay])
           }
         }, {
           text: this.$t('components.date.CurrentMonth'),
           onClick(picker) {
-            var date = new Date()
-            var monthEndDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
-            var monthStartDay = new Date(date.getFullYear(), date.getMonth(), 1)
+            const date = new Date()
+            const monthEndDay = new Date(date.getFullYear(), date.getMonth() + 1, 0)
+            const monthStartDay = new Date(date.getFullYear(), date.getMonth(), 1)
             picker.$emit('pick', [monthStartDay, monthEndDay])
           }
         }]
@@ -143,15 +141,18 @@ export default {
     }
   },
   methods: {
-    clientDateTime,
     parsedDateValue(value) {
+      // not return undefined to v-model
+      if (this.isEmptyValue(value)) {
+        return null
+      }
+
+      // instance date from long value
       if (typeof value === 'number') {
         value = new Date(value).toUTCString()
       }
-      if (this.isEmptyValue(value)) {
-        value = undefined
-      }
 
+      // generate range value
       if (this.metadata.isRange) {
         let valueTo = this.metadata.valueTo
         if (typeof valueTo === 'number') {
@@ -162,26 +163,30 @@ export default {
         }
         value = [value, valueTo]
       }
+
       return value
     },
     // validate values before send values to store or server
     preHandleChange(value) {
-      var valueFirst, valueTo
-      valueFirst = value
+      let startValue, endValue
+      startValue = value
 
-      if ((this.metadata.isRange && !this.metadata.inTable) && Array.isArray(value)) {
-        valueFirst = value[0]
-        valueTo = value[1]
+      if (this.metadata.isRange && !this.metadata.inTable && Array.isArray(value)) {
+        startValue = value[0]
+        endValue = value[1]
       }
-      if (valueFirst === null) {
-        valueFirst = undefined
-        valueTo = undefined
+
+      if (startValue === null) {
+        startValue = undefined
+        endValue = undefined
       }
-      if (typeof valueFirst !== 'object' && valueFirst !== undefined) {
-        valueFirst = new Date(valueFirst)
-        valueTo = new Date(valueTo)
+
+      if (typeof startValue !== 'object' && startValue !== undefined) {
+        startValue = new Date(startValue)
+        endValue = new Date(endValue)
       }
-      this.handleChange(valueFirst, valueTo)
+
+      this.handleChange(startValue, endValue)
     }
   }
 }
