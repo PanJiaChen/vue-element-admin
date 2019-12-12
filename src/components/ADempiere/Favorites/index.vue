@@ -34,6 +34,8 @@
 </template>
 
 <script>
+import { getFavoritesFromServer } from '@/api/ADempiere'
+import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 export default {
   name: 'Favorites',
   data() {
@@ -59,18 +61,33 @@ export default {
   },
   methods: {
     getFavoritesList() {
-      this.$store.dispatch('getFavoritesFromServer')
-        .then(response => {
-          this.favorites = response
-          this.isLoaded = false
-        }).catch(error => {
-          console.log(error)
-        })
+      const userUuid = this.$store.getters['user/getUserUuid']
+      return new Promise((resolve, reject) => {
+        getFavoritesFromServer(userUuid)
+          .then(response => {
+            const favorites = response.getFavoritesList().map(favorite => {
+              const actionConverted = convertAction(favorite.getAction())
+              return {
+                uuid: favorite.getMenuuuid(),
+                name: favorite.getMenuname(),
+                description: favorite.getMenudescription(),
+                referenceUuid: favorite.getReferenceuuid(),
+                action: actionConverted.name,
+                icon: actionConverted.icon
+              }
+            })
+            this.favorites = favorites
+            resolve(favorites)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     subscribeChanges() {
       this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'setFavorites') {
-          this.recentItems = this.getterFavoritesList
+        if (mutation.type === 'notifyDashboardRefresh') {
+          this.getFavoritesList()
         }
       })
     },

@@ -32,6 +32,7 @@
 </template>
 
 <script>
+import { getPendingDocumentsFromServer } from '@/api/ADempiere'
 export default {
   name: 'PendingDocuments',
   data() {
@@ -42,9 +43,6 @@ export default {
     }
   },
   computed: {
-    getterPendingDocuments() {
-      return this.$store.getters.getPendingDocuments
-    },
     cachedViews() {
       return this.$store.getters.cachedViews
     },
@@ -58,17 +56,44 @@ export default {
   },
   methods: {
     getPendingDocuments() {
-      this.$store.dispatch('getPendingDocumentsFromServer')
-        .then(response => {
-          this.documents = response
-        }).catch(error => {
-          console.log(error)
-        })
+      const userUuid = this.$store.getters['user/getUserUuid']
+      const roleUuid = this.$store.getters.getRoleUuid
+      return new Promise((resolve, reject) => {
+        getPendingDocumentsFromServer(userUuid, roleUuid)
+          .then(response => {
+            const documentsList = response.getPendingdocumentsList().map(document => {
+              return {
+                formUuid: document.getFormuuid(),
+                name: document.getDocumentname(),
+                description: document.getDocumentdescription(),
+                criteria: {
+                  type: document.getCriteria().getConditionsList(),
+                  limit: document.getCriteria().getLimit(),
+                  orderbyclause: document.getCriteria().getOrderbyclause(),
+                  orderbycolumnList: document.getCriteria().getOrderbycolumnList(),
+                  query: document.getCriteria().getQuery(),
+                  referenceUuid: document.getCriteria().getReferenceuuid(),
+                  tableName: document.getCriteria().getTablename(),
+                  valuesList: document.getCriteria().getValuesList(),
+                  whereClause: document.getCriteria().getWhereclause()
+                },
+                recordCount: document.getRecordcount(),
+                sequence: document.getSequence(),
+                windowUuid: document.getWindowuuid()
+              }
+            })
+            this.documents = documentsList
+            resolve(documentsList)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     subscribeChanges() {
       this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'setPendingDocuments') {
-          this.recentItems = this.getterPendingDocuments
+        if (mutation.type === 'notifyDashboardRefresh') {
+          this.getPendingDocuments()
         }
       })
     },

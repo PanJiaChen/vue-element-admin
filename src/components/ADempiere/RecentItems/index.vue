@@ -36,7 +36,8 @@
 </template>
 
 <script>
-
+import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere'
+import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 export default {
   name: 'RecentItems',
   data() {
@@ -65,19 +66,34 @@ export default {
       return this.cachedViews.includes(uuid)
     },
     getRecentItems() {
-      var items = this.getterRecentItems
-      if (items === undefined || items.length < 1) {
-        this.$store.dispatch('getRecentItemsFromServer')
+      return new Promise((resolve, reject) => {
+        getRecentItemsFromServer()
           .then(response => {
-            this.recentItems = response
+            const recentItems = response.getRecentitemsList().map(item => {
+              const actionConverted = convertAction(item.getAction())
+              return {
+                action: actionConverted.name,
+                icon: actionConverted.icon,
+                displayName: item.getDisplayname(),
+                menuUuid: item.getMenuuuid(),
+                menuName: item.getMenuname(),
+                windowUuid: item.getWindowuuid(),
+                tableId: item.getTableid(),
+                recordId: item.getRecordid(),
+                uuidRecord: item.getRecorduuid(),
+                tabUuid: item.getTabuuid(),
+                updated: new Date(item.getUpdated()),
+                description: item.getMenudescription()
+              }
+            })
+            this.recentItems = recentItems
             this.isLoaded = false
-          }).catch(error => {
-            console.log(error)
+            resolve(recentItems)
           })
-      } else {
-        this.recentItems = items
-        this.isLoaded = false
-      }
+          .catch(error => {
+            reject(error)
+          })
+      })
     },
     handleClick(row) {
       if (!this.isEmptyValue(row.uuidRecord)) {
@@ -88,8 +104,8 @@ export default {
     },
     subscribeChanges() {
       this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'setRecentItems') {
-          this.recentItems = this.getterRecentItems
+        if (mutation.type === 'notifyDashboardRefresh') {
+          this.getRecentItems()
         }
       })
     },
