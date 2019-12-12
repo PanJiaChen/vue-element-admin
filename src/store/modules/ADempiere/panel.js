@@ -685,6 +685,19 @@ const panel = {
                 isEvaluateMandatory: false
               })
             })
+              .then(response => {
+                if (response && response.length) {
+                  dispatch('notifyPanelChange', {
+                    parentUuid: parentUuid,
+                    containerUuid: containerUuid,
+                    isAdvancedQuery: false,
+                    newValues: response[0],
+                    isSendToServer: false,
+                    isSendCallout: true,
+                    panelType: 'window'
+                  })
+                }
+              })
               .catch(error => {
                 console.warn('Error getting Advanced Query (notifyFieldChange):', error.message + '. Code: ', error.code)
               })
