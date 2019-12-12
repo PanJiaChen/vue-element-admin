@@ -18,7 +18,7 @@
               </div>
             </el-tooltip>
           </div>
-         </div>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="Element-UI Icons">
         <div class="grid">
@@ -33,7 +33,7 @@
               </div>
             </el-tooltip>
           </div>
-         </div>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -70,7 +70,7 @@ export default {
 .icons-container {
   margin: 10px 20px 0;
   overflow: hidden;
-  
+
   .grid {
     position: relative;
     display: grid;
