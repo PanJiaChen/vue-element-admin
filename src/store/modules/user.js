@@ -90,7 +90,7 @@ const actions = {
         const userInfo = responseGetInfo.userInfo
         commit('SET_NAME', responseGetInfo.name)
         commit('SET_INTRODUCTION', userInfo.description)
-        commit('SET_USER_UUID', responseGetInfo.uuid)
+        commit('SET_USER_UUID', userInfo.uuid)
 
         // TODO: return 'Y' or 'N' string values as data type Booelan (4)
         // TODO: return #Date as long data type Date (5)
