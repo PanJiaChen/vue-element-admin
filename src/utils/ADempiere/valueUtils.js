@@ -231,7 +231,11 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
       } else if (typeof value === 'object' && value.hasOwnProperty('query')) {
         returnValue = value
       } else {
-        returnValue = Number(value)
+        if (Array.isArray(value) && value.length) {
+          returnValue = value
+        } else {
+          returnValue = Number(value)
+        }
       }
       break
 

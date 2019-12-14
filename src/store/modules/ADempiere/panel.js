@@ -1201,6 +1201,11 @@ const panel = {
         .map(parameterItem => {
           var value = row ? row[parameterItem.columnName] : parameterItem.value
           var valueTo = row ? row[`${parameterItem.columnName}_To`] : parameterItem.valueTo
+          let values = []
+          if (Array.isArray(value)) {
+            values = value
+            value = undefined
+          }
 
           if (isConvertedDateToTimestamp) {
             if (['FieldDate', 'FieldTime'].includes(parameterItem.componentPath) &&
@@ -1221,7 +1226,8 @@ const panel = {
 
           return {
             columnName: parameterItem.columnName,
-            value: value
+            value: value,
+            values: values
           }
         })
 
