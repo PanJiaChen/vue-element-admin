@@ -25,6 +25,17 @@
 <script>
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 
+/**
+ * This component is a lookup type field, use as a replacement for fields:
+ * - Reference List
+ * - Table List
+ * - Table Direct
+ *
+ * TODO: ALL: Although in the future these will have different components, and
+ * are currently not supported is also displayed as a substitute for fields:
+ * - Locator (WH)
+ * - Search Field
+ */
 export default {
   name: 'FieldSelect',
   mixins: [fieldMixin],
@@ -36,6 +47,7 @@ export default {
         key: undefined
       }],
       blanckOption: {
+        // label with '' value is assumed to be undefined non-existent
         label: ' ',
         key: undefined
       }
@@ -49,6 +61,9 @@ export default {
       return this.$store.state.app.device === 'mobile'
     },
     getterLookupItem() {
+      if (this.isEmptyValue(this.metadata.reference.directQuery)) {
+        return this.blanckOption
+      }
       return this.$store.getters.getLookupItem({
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
@@ -58,6 +73,9 @@ export default {
       })
     },
     getterLookupList() {
+      if (this.isEmptyValue(this.metadata.reference.query)) {
+        return this.blanckOption
+      }
       return this.$store.getters.getLookupList({
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
@@ -66,7 +84,7 @@ export default {
       })
     },
     getterLookupAll() {
-      var allOptions = this.$store.getters.getLookupAll({
+      const allOptions = this.$store.getters.getLookupAll({
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
         query: this.metadata.reference.query,
@@ -74,7 +92,7 @@ export default {
         tableName: this.metadata.reference.tableName,
         value: this.value
       })
-      if (allOptions.length && !allOptions[0].key) {
+      if (allOptions && ((allOptions.length && allOptions[0].key !== this.blanckOption.key) || !allOptions.length)) {
         allOptions.unshift(this.blanckOption)
       }
       return allOptions
@@ -145,6 +163,9 @@ export default {
       return selected
     },
     async getDataLookupItem() {
+      if (this.isEmptyValue(this.metadata.reference.directQuery)) {
+        return
+      }
       this.isLoading = true
       this.$store.dispatch('getLookupItemFromServer', {
         parentUuid: this.metadata.parentUuid,
@@ -153,12 +174,12 @@ export default {
         directQuery: this.metadata.reference.directQuery,
         value: this.metadata.value
       })
-        .then(response => {
+        .then(responseLookupItem => {
           if (this.isPanelWindow) {
             this.$store.dispatch('notifyFieldChangeDisplayColumn', {
               containerUuid: this.metadata.containerUuid,
               columnName: this.metadata.columnName,
-              displayColumn: response.label
+              displayColumn: responseLookupItem.label
             })
           }
           this.options = this.getterLookupAll
@@ -175,12 +196,16 @@ export default {
      */
     getDataLookupList(showList) {
       if (showList) {
+        // TODO: Evaluate if length = 1 and this element key = blanckOption
         if (this.getterLookupList.length === 0) {
           this.remoteMethod()
         }
       }
     },
     remoteMethod() {
+      if (this.isEmptyValue(this.metadata.reference.query)) {
+        return
+      }
       this.isLoading = true
       this.$store.dispatch('getLookupListFromServer', {
         parentUuid: this.metadata.parentUuid,
@@ -188,13 +213,8 @@ export default {
         tableName: this.metadata.reference.tableName,
         query: this.metadata.reference.query
       })
-        .then(response => {
-          const list = this.getterLookupAll.filter(options => {
-            if (options.key !== undefined) {
-              return options
-            }
-          })
-          this.options = list
+        .then(responseLookupList => {
+          this.options = this.getterLookupAll
         })
         .finally(() => {
           this.isLoading = false
@@ -210,6 +230,7 @@ export default {
         value: this.metadata.value
       })
       // TODO: Evaluate if is number -1 or string '' (or default value)
+      this.options = this.getterLookupAll
       this.value = this.blanckOption.key
     }
   }
