@@ -421,15 +421,15 @@ const processControl = {
     setShowDialog({ state, commit, dispatch, rootGetters }, params) {
       const panels = ['process', 'report', 'window']
       if (params.action && (panels.includes(params.type) || panels.includes(params.action.panelType))) {
-        if (params.action.containerUuid === state.metadata.containerUuid) {
+        if (state.metadata && state.metadata.containerUuid === params.action.containerUuid) {
           commit('setShowDialog', true)
           return
         }
         const panel = rootGetters.getPanel(params.action.containerUuid)
-        if (!panel) {
+        if (panel === undefined) {
           dispatch('getPanelAndFields', {
             parentUuid: params.action.parentUuid,
-            containerUuid: params.action.containerUuid,
+            containerUuid: params.action.containerUuid || params.action.uuid,
             panelType: params.action.panelType
           })
             .then(response => {

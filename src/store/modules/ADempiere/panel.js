@@ -20,6 +20,9 @@ const panel = {
     addPanel(state, payload) {
       state.panel.push(payload)
     },
+    changePanel(state, payload) {
+      payload.panel = payload.newPanel
+    },
     changeFieldLogic(state, payload) {
       if (payload.isDisplayedFromLogic !== undefined) {
         payload.field.isDisplayedFromLogic = payload.isDisplayedFromLogic
@@ -33,9 +36,6 @@ const panel = {
     },
     dictionaryResetCache(state) {
       state.panel = []
-    },
-    changePanel(state, payload) {
-      payload.panel = payload.newPanel
     },
     changeFieldList(state, payload) {
       payload.fieldList = payload.newFieldList
@@ -63,38 +63,42 @@ const panel = {
       let selectionColumn = []
       let identifierColumns = []
       let count = 0
-      params.fieldList.forEach(itemField => {
-        if (itemField.isKey) {
-          keyColumn = itemField.columnName
-        }
-        if (itemField.isSelectionColumn) {
-          selectionColumn.push(itemField.columnName)
-        }
-        if (itemField.isIdentifier) {
-          identifierColumns.push({
-            columnName: itemField.columnName,
-            identifierSequence: itemField.identifierSequence,
-            componentPath: itemField.componentPath
-          })
-        }
 
-        if (params.panelType === 'table' || params.isAdvancedQuery) {
-          itemField.isShowedFromUser = false
-          if (count < 2 && itemField.isSelectionColumn && itemField.sequence >= 10) {
-            itemField.isShowedFromUser = true
-            count++
+      if (params.fieldList) {
+        params.fieldList.forEach(itemField => {
+          if (itemField.isKey) {
+            keyColumn = itemField.columnName
           }
-        } else {
-          if (params.isParentTab) {
-            dispatch('setContext', {
-              parentUuid: params.parentUuid,
-              containerUuid: params.uuid,
+          if (itemField.isSelectionColumn) {
+            selectionColumn.push(itemField.columnName)
+          }
+          if (itemField.isIdentifier) {
+            identifierColumns.push({
               columnName: itemField.columnName,
-              value: itemField.value
+              identifierSequence: itemField.identifierSequence,
+              componentPath: itemField.componentPath
             })
           }
-        }
-      })
+
+          if (params.panelType === 'table' || params.isAdvancedQuery) {
+            itemField.isShowedFromUser = false
+            if (count < 2 && itemField.isSelectionColumn && itemField.sequence >= 10) {
+              itemField.isShowedFromUser = true
+              count++
+            }
+          } else {
+            if (params.isParentTab) {
+              dispatch('setContext', {
+                parentUuid: params.parentUuid,
+                containerUuid: params.uuid,
+                columnName: itemField.columnName,
+                value: itemField.value
+              })
+            }
+          }
+        })
+        params.fieldList = assignedGroup(params.fieldList)
+      }
 
       params.keyColumn = keyColumn
       if (params.isSortTab) {
@@ -111,7 +115,6 @@ const panel = {
         })
 
       params.recordUuid = null
-      params.fieldList = assignedGroup(params.fieldList)
 
       commit('addPanel', params)
     },
@@ -715,47 +718,44 @@ const panel = {
       }
       commit('changeFieldValue', newField)
     },
-    getPanelAndFields({ dispatch }, parameters) {
-      if (parameters.panelType === 'process' || parameters.panelType === 'report') {
-        return dispatch('getProcessFromServer', parameters)
-          .then(response => {
-            return response
-          })
-          .catch(error => {
-            return {
-              ...error,
-              moreInfo: `Dictionary getPanelAndFields ${parameters.panelType} (State Panel)`,
-              parameters: parameters
-            }
-          })
-      } else if (parameters.panelType === 'browser') {
-        return dispatch('getBrowserFromServer', parameters)
-          .then(response => {
-            return response
-          })
-          .catch(error => {
-            return {
-              ...error,
-              moreInfo: 'Dictionary getPanelAndFields browser (State Panel)',
-              parameters: parameters
-            }
-          })
-      } else if (parameters.panelType === 'window' || parameters.panelType === 'table') {
-        return dispatch('getTabAndFieldFromServer', {
-          parentUuid: parameters.parentUuid,
-          containerUuid: parameters.containerUuid,
-          isAdvancedQuery: parameters.isAdvancedQuery,
-          panelType: parameters.panelType
-        }).then(response => {
-          return response
-        }).catch(error => {
+    getPanelAndFields({ dispatch }, {
+      parentUuid,
+      containerUuid,
+      panelType,
+      routeToDelete,
+      isAdvancedQuery = false
+    }) {
+      let executeAction
+      switch (panelType) {
+        case 'process':
+        case 'report':
+          executeAction = 'getProcessFromServer'
+          break
+        case 'browser':
+          executeAction = 'getBrowserFromServer'
+          break
+        case 'window':
+        case 'table':
+        default:
+          executeAction = 'getTabAndFieldFromServer'
+          break
+      }
+
+      return dispatch(executeAction, {
+        parentUuid,
+        containerUuid,
+        isAdvancedQuery,
+        routeToDelete
+      })
+        .then(panelResponse => {
+          return panelResponse
+        })
+        .catch(error => {
           return {
             ...error,
-            moreInfo: 'Dictionary getPanelAndFields Window (State Panel)',
-            parameters: parameters
+            moreInfo: `Dictionary getPanelAndFields ${panelType} (State Panel)`
           }
         })
-      }
     },
     showedTotals({ commit, getters }, containerUuid) {
       const panel = getters.getPanel(containerUuid)

@@ -320,7 +320,10 @@ export const contextMixin = {
       if (action.type === 'process') {
         this.$store.dispatch('setShowDialog', {
           type: action.type,
-          action: action
+          action: {
+            ...action,
+            containerUuid: action.uuid
+          }
         })
       }
     },

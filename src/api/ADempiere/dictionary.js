@@ -30,7 +30,7 @@ export function getProcess(uuid, isConvert = true) {
 
 export function getBrowser(uuid, isConvert = true) {
   return Instance.call(this).requestBrowser({
-    uuid: uuid,
+    uuid,
     isConvertedMetadata: isConvert,
     isConvertedFields: true
   })
@@ -38,7 +38,7 @@ export function getBrowser(uuid, isConvert = true) {
 
 export function getTab(uuid, childrenFields = true, isConvert = true) {
   return Instance.call(this).requestTab({
-    uuid: uuid,
+    uuid,
     isWithFields: childrenFields,
     isConvertedMetadata: isConvert,
     isConvertedFields: true

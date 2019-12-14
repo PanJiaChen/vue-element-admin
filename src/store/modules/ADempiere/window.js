@@ -151,6 +151,7 @@ const window = {
                     tabAssociatedUuid: tab.uuid, // tab source
                     tabAssociatedName: tab.name, // tab source
                     action: 'orderSequence',
+                    panelType: 'window',
                     type: 'application'
                   }
                 })
@@ -163,15 +164,18 @@ const window = {
             // get processess associated in tab
             if (tabItem.processesList && tabItem.processesList.length) {
               const processList = tabItem.processesList.map(processItem => {
-                dispatch('addProcessAssociated', {
-                  processToGenerate: processItem,
-                  containerUuidAssociated: tabItem.uuid
-                })
+                // TODO: No list of parameters
+                // // add process associated in vuex store
+                // dispatch('addProcessAssociated', {
+                //   processToGenerate: processItem,
+                //   containerUuidAssociated: tabItem.uuid
+                // })
                 return {
                   id: processItem.id,
                   uuid: processItem.uuid,
                   name: processItem.name,
                   type: 'process',
+                  panelType: 'process',
                   description: processItem.description,
                   help: processItem.help,
                   isReport: processItem.isReport,

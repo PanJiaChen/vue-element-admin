@@ -152,41 +152,45 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
   }
 
   //  Convert from gRPC
-  const fieldsRangeList = []
-  let fieldDefinitionList = processToGenerate.parametersList
-    .map(fieldItem => {
-      const field = generateField(fieldItem, additionalAttributes)
-      // Add new field if is range number
-      if (field.isRange && field.componentPath === 'FieldNumber') {
-        const fieldRange = generateField(fieldItem, additionalAttributes, true)
-        if (!isEmptyValue(fieldRange.value)) {
-          fieldRange.isShowedFromUser = true
+  let fieldDefinitionList
+  if (processToGenerate.parametersList) {
+    const fieldsRangeList = []
+
+    fieldDefinitionList = processToGenerate.parametersList
+      .map(fieldItem => {
+        const field = generateField(fieldItem, additionalAttributes)
+        // Add new field if is range number
+        if (field.isRange && field.componentPath === 'FieldNumber') {
+          const fieldRange = generateField(fieldItem, additionalAttributes, true)
+          if (!isEmptyValue(fieldRange.value)) {
+            fieldRange.isShowedFromUser = true
+          }
+          fieldsRangeList.push(fieldRange)
         }
-        fieldsRangeList.push(fieldRange)
-      }
 
-      // if field with value displayed in main panel
-      if (!isEmptyValue(field.value)) {
-        field.isShowedFromUser = true
-      }
-
-      return field
-    })
-  fieldDefinitionList = fieldDefinitionList.concat(fieldsRangeList)
-
-  //  Get dependent fields
-  fieldDefinitionList
-    .filter(field => field.parentFieldsList && field.isActive)
-    .forEach((field, index, list) => {
-      field.parentFieldsList.forEach(parentColumnName => {
-        var parentField = list.find(parentField => {
-          return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
-        })
-        if (parentField) {
-          parentField.dependentFieldsList.push(field.columnName)
+        // if field with value displayed in main panel
+        if (!isEmptyValue(field.value)) {
+          field.isShowedFromUser = true
         }
+
+        return field
       })
-    })
+    fieldDefinitionList = fieldDefinitionList.concat(fieldsRangeList)
+
+    //  Get dependent fields
+    fieldDefinitionList
+      .filter(field => field.parentFieldsList && field.isActive)
+      .forEach((field, index, list) => {
+        field.parentFieldsList.forEach(parentColumnName => {
+          var parentField = list.find(parentField => {
+            return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+          })
+          if (parentField) {
+            parentField.dependentFieldsList.push(field.columnName)
+          }
+        })
+      })
+  }
 
   //  Default Action
   const actions = []
@@ -225,6 +229,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     isReport: processToGenerate.isReport,
     isDirectPrint: processToGenerate.isDirectPrint
   }
+
   processToGenerate.reportExportTypeList.forEach(actionValue => {
     //  Push values
     summaryAction.childs.push({
@@ -240,6 +245,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
       reportExportType: actionValue.reportExportType
     })
   })
+
   //  Add summary Actions
   actions.push(summaryAction)
 
@@ -455,39 +461,39 @@ export function convertAction(action) {
 
   switch (action) {
     case 'B':
-      actionAttributes.name = 'Workbech'
+      actionAttributes.name = 'workbech'
       actionAttributes.icon = 'peoples'
       break
     case 'F':
-      actionAttributes.name = 'Workflow'
+      actionAttributes.name = 'workflow'
       actionAttributes.icon = 'example'
       break
     case 'P':
-      actionAttributes.name = 'Process'
+      actionAttributes.name = 'process'
       actionAttributes.icon = 'component'
       actionAttributes.component = () => import('@/views/ADempiere/Process')
       break
     case 'R':
-      actionAttributes.name = 'Report'
+      actionAttributes.name = 'report'
       actionAttributes.icon = 'skill'
       actionAttributes.component = () => import('@/views/ADempiere/Process')
       break
     case 'S':
-      actionAttributes.name = 'Browser'
+      actionAttributes.name = 'browser'
       actionAttributes.icon = 'search'
       actionAttributes.component = () => import('@/views/ADempiere/Browser')
       break
     case 'T':
-      actionAttributes.name = 'Task'
+      actionAttributes.name = 'task'
       actionAttributes.icon = 'size'
       break
     case 'W':
-      actionAttributes.name = 'Window'
+      actionAttributes.name = 'window'
       actionAttributes.icon = 'tab'
       actionAttributes.component = () => import('@/views/ADempiere/Window')
       break
     case 'X':
-      actionAttributes.name = 'Form'
+      actionAttributes.name = 'form'
       actionAttributes.icon = 'form'
       break
     default:

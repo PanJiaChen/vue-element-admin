@@ -106,17 +106,19 @@ const browser = {
             if (process) {
               actions.push({
                 type: 'process',
+                panelType: 'process',
                 uuid: process.uuid,
                 name: process.name,
                 description: process.description,
                 isReport: process.isReport,
                 isDirectPrint: process.isDirectPrint
               })
-              // add process associated in vuex store
-              dispatch('addProcessAssociated', {
-                processToGenerate: process,
-                containerUuidAssociated: newBrowser.uuid
-              })
+              // TODO: No list of parameters
+              // // add process associated in vuex store
+              // dispatch('addProcessAssociated', {
+              //   processToGenerate: process,
+              //   containerUuidAssociated: newBrowser.uuid
+              // })
             }
 
             dispatch('addPanel', newBrowser)
