@@ -319,7 +319,7 @@ export default {
           const tempData = Object.assign({}, this.temp)
           tempData.timestamp = +new Date(tempData.timestamp) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
           updateArticle(tempData).then(() => {
-            for (const v of this.list) {
+            for (const v of this.list) { // 这个for循环没有意义啊,直接 const index = this.list.indexOf(v) this.list.splice(index, 1, this.temp)
               if (v.id === this.temp.id) {
                 const index = this.list.indexOf(v)
                 this.list.splice(index, 1, this.temp)
