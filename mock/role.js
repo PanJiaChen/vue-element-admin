@@ -1,8 +1,5 @@
 import Mock from 'mockjs'
-import { deepClone } from '../../src/utils/index.js'
-import { asyncRoutes, constantRoutes } from './routes.js'
-
-const routes = deepClone([...constantRoutes, ...asyncRoutes])
+import { routes } from './route'
 
 const roles = [
   {
@@ -36,18 +33,6 @@ const roles = [
 ]
 
 export default [
-  // mock get all routes form server
-  {
-    url: '/routes',
-    type: 'get',
-    response: _ => {
-      return {
-        code: 20000,
-        data: routes
-      }
-    }
-  },
-
   // mock get all roles form server
   {
     url: '/roles',

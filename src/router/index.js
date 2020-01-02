@@ -395,6 +395,26 @@ const createRouter = () => new Router({
 
 const router = createRouter()
 
+if (process.env.NODE_ENV === 'development') {
+  router.addRoutes([
+    {
+      path: '/',
+      component: Layout,
+      redirect: '/dashboard',
+      children: [
+        {
+          path: 'route',
+          component: () => import('@/views/permission/route'),
+          name: 'Route',
+          meta: {
+            title: 'Route',
+            roles: ['admin']
+          }
+        }
+      ]
+    }])
+}
+
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
   const newRouter = createRouter()
