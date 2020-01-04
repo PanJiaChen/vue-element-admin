@@ -14,7 +14,7 @@ import store from './store'
 import router from './router'
 
 import './icons' // icon
-import './permission' // permission control
+import './permission' // 权限控制
 import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
@@ -24,11 +24,11 @@ import * as filters from './filters' // global filters
  * you want to use MockJs for mock api
  * you can execute: mockXHR()
  *
- * Currently MockJs will be used in the production environment,
+ * Currently MockJs will be used in the production|development environment,
  * please remove it before going online! ! !
  */
 import { mockXHR } from '../mock'
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === 'development') {
   mockXHR()
 }
 
