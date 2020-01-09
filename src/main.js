@@ -28,9 +28,8 @@ import * as filters from './filters' // global filters
  * please remove it before going online ! ! !
  */
 if (process.env.NODE_ENV === 'production') {
-  import('../mock').then(({ mockXHR }) => {
-    mockXHR()
-  })
+  const { mockXHR } = require('../mock')
+  mockXHR()
 }
 
 Vue.use(Element, {
