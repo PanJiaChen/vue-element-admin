@@ -57,7 +57,7 @@ export function mockXHR() {
 // for mock server
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    url: new RegExp(`${process.env.VUE_APP_BASE_API}/vue-element-admin${url}`),
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path)
