@@ -13,7 +13,8 @@ const state = {
 
 const mutations = {
   CHANGE_SETTING: (state, { key, value }) => {
-    if (state.hasOwnProperty(key)) {
+    // https://eslint.org/docs/rules/no-prototype-builtins
+    if (Object.prototype.hasOwnProperty.call(state, key)) {
       state[key] = value
     }
   }
