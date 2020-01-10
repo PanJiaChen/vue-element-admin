@@ -204,7 +204,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     description: processToGenerate.description,
     isReport: processToGenerate.isReport,
     isDirectPrint: processToGenerate.isDirectPrint,
-    reportExportType: undefined
+    reportExportType: 'html'
   }, {
     name: language.t('components.ChangeParameters'),
     processName: processToGenerate.name,

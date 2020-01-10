@@ -161,7 +161,8 @@ export default {
     unsupportedInfo: 'Verifique que la vista sea compatible con esta versión, o haga clic en el botón a continuación para volver a la página de inicio.',
     unsupportedButton: 'Volver al Panel de control',
     reportView: 'Vistas de Reporte',
-    printFormat: 'Formatos de Impresión'
+    printFormat: 'Formatos de Impresión',
+    drillTable: 'Entrar en Detalle'
   },
   report: {
     ExportXlsx: '(xlsx) Extencion de Archivo Excel',

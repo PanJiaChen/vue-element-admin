@@ -22,9 +22,11 @@
               <template slot="title">
                 {{ action.name }}
               </template>
-              <el-menu-item v-for="(child, key) in action.childs" :key="key" :index="child.uuid" @click="runAction(child)">
-                {{ child.name }}
-              </el-menu-item>
+              <el-scrollbar wrap-class="scroll-child">
+                <el-menu-item v-for="(child, key) in action.childs" :key="key" :index="child.uuid" @click="runAction(child)">
+                  {{ child.name }}
+                </el-menu-item>
+              </el-scrollbar>
             </el-submenu>
             <el-menu-item v-else v-show="!action.hidden" :key="index" :index="action.name" :disabled="action.disabled" @click="runAction(action)">
               {{ action.name }}
@@ -60,7 +62,7 @@
               </el-menu-item>
             </template>
           </el-submenu>
-          <el-menu-item v-show="$route.name === 'Report Viewer'" index="9" @click="$router.push({ name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid })">
+          <el-menu-item v-show="$route.name === 'Report Viewer'" index="9" @click="redirect">
             {{ $t('components.contextMenuPrintFormatSetup') }}
           </el-menu-item>
           <el-menu-item v-if="panelType !== 'process'" index="8" @click="refreshData">

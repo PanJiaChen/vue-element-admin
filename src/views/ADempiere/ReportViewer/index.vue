@@ -105,10 +105,10 @@ export default {
     showNotification,
     displayReport(reportResult) {
       if (!reportResult.isError) {
-        this.reportFormat = reportResult.output.reportType
-        this.reportContent = reportResult.output.output
-        this.reportHeader = reportResult.output.name
-        this.name = reportResult.output.fileName
+        this.reportFormat = this.isEmptyValue(reportResult.output.reportType) ? reportResult.reportType : reportResult.output.reportType
+        this.reportContent = this.isEmptyValue(reportResult.output.output) ? reportResult.output : reportResult.output.output
+        this.reportHeader = this.isEmptyValue(reportResult.output.name) ? reportResult.processName : reportResult.output.name
+        this.name = this.isEmptyValue(reportResult.output.fileName) ? reportResult.fileName : reportResult.output.fileName
         this.isLoading = true
       }
     },

@@ -161,7 +161,8 @@ export default {
     unsupportedInfo: 'Please check that the view is supported in this version, or click the button below to return to the homepage.',
     unsupportedButton: 'Back to dashboard',
     reportView: 'Report Views',
-    printFormat: 'Print Formats'
+    printFormat: 'Print Formats',
+    drillTable: 'Drill Down'
   },
   report: {
     ExportXlsx: '(xlsx) Excel File Extension',

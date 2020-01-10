@@ -159,6 +159,9 @@ export const contextMixin = {
         }
       }
       return false
+    },
+    metadataReport() {
+      return this.$store.getters.getCachedReport(this.$route.params.instanceUuid)
     }
   },
   watch: {
@@ -424,6 +427,38 @@ export const contextMixin = {
             }
           })
         }
+      } else if (action.type === 'updateReport') {
+        var updateReportParams = {
+          instanceUuid: action.instanceUuid,
+          processUuid: action.processUuid,
+          tableName: action.tableName,
+          processId: action.processId,
+          printFormatUuid: action.printFormatUuid,
+          reportViewUuid: action.reportViewUuid,
+          isSummary: false,
+          reportName: this.$store.getters.getProcessResult.name,
+          reportType: this.$store.getters.getReportType,
+          option: action.option
+        }
+        this.$store.dispatch('getReportOutputFromServer', updateReportParams)
+          .then(response => {
+            if (!response.isError) {
+              var link = {
+                href: undefined,
+                download: undefined
+              }
+
+              const blob = new Blob([response.outputStream], { type: response.mimeType })
+              link = document.createElement('a')
+              link.href = window.URL.createObjectURL(blob)
+              link.download = response.fileName
+              if (response.reportType !== 'pdf' && response.reportType !== 'html') {
+                link.click()
+              }
+              response.url = link.href
+            }
+            this.$store.dispatch('finishProcess', { processOutput: response, routeToDelete: this.$route })
+          })
       }
     },
     setShareLink() {
@@ -487,6 +522,15 @@ export const contextMixin = {
         message: message,
         type: 'success',
         duration: 1500
+      })
+    },
+    redirect() {
+      this.$router.push({
+        name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid,
+        query: {
+          action: this.metadataReport.output.printFormatUuid,
+          tabParent: ROUTES.PRINT_FORMAT_SETUP_WINDOW.tabParent
+        }
       })
     },
     validatePrivateAccess(response) {

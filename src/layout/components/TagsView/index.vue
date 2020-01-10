@@ -107,7 +107,7 @@ export default {
     generateTitle, // generateTitle by vue-i18n
     isActive(route) {
       if (route.name === 'Report Viewer') {
-        if (route.params.processId === this.$route.params.processId) {
+        if (route.params.processId === this.$route.params.processId && route.params.tableName === this.$route.params.tableName) {
           return route.params.processId === this.$route.params.processId
         } else {
           return route.path === this.$route.path
@@ -158,7 +158,7 @@ export default {
       this.$nextTick(() => {
         for (const tag of tags) {
           if (this.$route.name === 'Report Viewer') {
-            if (this.$route.params && tag.to.params && tag.to.params.processId === this.$route.params.processId) {
+            if (this.$route.params && tag.to.params && tag.to.params.processId === this.$route.params.processId && tag.to.params.tableName === this.$route.params.tableName) {
               this.$refs.scrollPane.moveToTarget(tag)
             }
           }

@@ -6,12 +6,11 @@ import {
   getDefaultValueFromServer,
   convertValueFromGRPC,
   getContextInfoValueFromServer,
+  getFavoritesFromServer,
   getPrivateAccessFromServer,
   lockPrivateAccessFromServer,
   unlockPrivateAccessFromServer,
-  getFavoritesFromServer,
-  getPendingDocumentsFromServer,
-  requestPrintFormats
+  getPendingDocumentsFromServer
 } from '@/api/ADempiere'
 import { convertValuesMapToObject, isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
@@ -27,8 +26,7 @@ const data = {
     pendingDocuments: [],
     inGetting: [],
     contextInfoField: [],
-    recordPrivateAccess: {},
-    printFormatList: []
+    recordPrivateAccess: {}
   },
   mutations: {
     addInGetting(state, payload) {
@@ -115,9 +113,6 @@ const data = {
     },
     setPrivateAccess(state, payload) {
       state.recordPrivateAccess = payload
-    },
-    setPrintFormatList(state, payload) {
-      state.printFormatList.push(payload)
     }
   },
   actions: {
@@ -987,29 +982,6 @@ const data = {
           })
           console.error(error)
         })
-    },
-    requestPrintFormats({ commit }, parameters) {
-      return requestPrintFormats({
-        processUuid: parameters.processUuid
-      })
-        .then(response => {
-          const printFormatList = response.getPrintformatsList().map(printFormat => {
-            return {
-              uuid: printFormat.getUuid(),
-              name: printFormat.getName(),
-              description: printFormat.getDescription(),
-              isDefault: printFormat.getIsdefault()
-            }
-          })
-          commit('setPrintFormatList', {
-            containerUuid: parameters.processUuid,
-            printFormatList: printFormatList
-          })
-          return printFormatList
-        })
-        .catch(error => {
-          console.error(error)
-        })
     }
   },
   getters: {
@@ -1153,13 +1125,6 @@ const data = {
         }
         return undefined
       }
-    },
-    getPrintFormatList: (state) => (containerUuid) => {
-      var printFormatList = state.printFormatList.find(list => list.containerUuid === containerUuid)
-      if (printFormatList) {
-        return printFormatList.printFormatList
-      }
-      return []
     }
   }
 }

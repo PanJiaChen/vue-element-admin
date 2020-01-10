@@ -1,4 +1,4 @@
-import { runProcess, requestProcessActivity, requestReportViews } from '@/api/ADempiere'
+import { runProcess, requestProcessActivity } from '@/api/ADempiere'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { isEmptyValue, convertMapToArrayPairs } from '@/utils/ADempiere'
 import language from '@/lang'
@@ -14,8 +14,7 @@ const processControl = {
     process: [], // process to run finish
     sessionProcess: [],
     notificationProcess: [],
-    inRequestMetadata: [],
-    reportViewList: []
+    inRequestMetadata: []
   },
   mutations: {
     // Add process in execution
@@ -57,7 +56,12 @@ const processControl = {
     },
     setReportValues(state, payload) {
       state.reportObject = payload
-      state.reportList.push(payload)
+      if (state.reportList.some(report => report.instanceUuid === payload.instanceUuid)) {
+        var reportIndex = state.reportList.findIndex(report => report.instanceUuid === payload.instanceUuid)
+        state.reportList.splice(reportIndex, 1, payload)
+      } else {
+        state.reportList.push(payload)
+      }
     },
     setSessionProcess(state, payload) {
       state.sessionProcess = payload.processList
@@ -74,9 +78,6 @@ const processControl = {
       state.sessionProcess = []
       state.notificationProcess = []
       state.inRequestMetadata = []
-    },
-    setReportViewsList(state, payload) {
-      state.reportViewList.push(payload)
     }
   },
   actions: {
@@ -208,7 +209,7 @@ const processControl = {
               outputStream: '',
               reportType: ''
             }
-            if (response.getOutput()) {
+            if (response.hasOutput()) {
               const responseOutput = response.getOutput()
               output = {
                 uuid: responseOutput.getUuid(),
@@ -218,7 +219,14 @@ const processControl = {
                 mimeType: responseOutput.getMimetype(),
                 output: responseOutput.getOutput(),
                 outputStream: responseOutput.getOutputstream(),
-                reportType: responseOutput.getReporttype()
+                reportType: responseOutput.getReporttype(),
+                dataCols: responseOutput.getDatacols(),
+                dataRows: responseOutput.getDatarows(),
+                footerName: responseOutput.getFootername(),
+                headerName: responseOutput.getHeadername(),
+                printFormatUuid: responseOutput.getPrintformatuuid(),
+                reportViewUuid: responseOutput.getReportviewuuid(),
+                tableName: responseOutput.getTablename()
               }
             }
             var logList = []
@@ -253,15 +261,22 @@ const processControl = {
                 option: 'reportView'
               }
               reportViewList.childs = getters.getReportViewList(processResult.processUuid)
-              if (!reportViewList.childs.length) {
+              if (reportViewList && !reportViewList.childs.length) {
                 dispatch('requestReportViews', {
-                  processUuid: processResult.processUuid
+                  processUuid: processResult.processUuid,
+                  instanceUuid: response.getInstanceuuid(),
+                  processId: processDefinition.id,
+                  tableName: output.tableName,
+                  printFormatUuid: output.printFormatUuid,
+                  reportViewUuid: output.reportViewUuid
                 })
                   .then(response => {
                     reportViewList.childs = response
-                    // Get contextMenu metadata and concat print report views with contextMenu actions
-                    var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                    contextMenuMetadata.actions.push(reportViewList)
+                    if (reportViewList.childs.length) {
+                      // Get contextMenu metadata and concat print report views with contextMenu actions
+                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                      contextMenuMetadata.actions.push(reportViewList)
+                    }
                   })
               }
 
@@ -274,16 +289,53 @@ const processControl = {
                 option: 'printFormat'
               }
               printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
-              if (!printFormatList.childs.length) {
+              if (printFormatList && !printFormatList.childs.length) {
                 dispatch('requestPrintFormats', {
-                  processUuid: processResult.processUuid
+                  processUuid: processResult.processUuid,
+                  instanceUuid: response.getInstanceuuid(),
+                  processId: processDefinition.id,
+                  tableName: output.tableName,
+                  printFormatUuid: output.printFormatUuid,
+                  reportViewUuid: output.reportViewUuid
                 })
                   .then(response => {
                     printFormatList.childs = response
-                    // Get contextMenu metadata and concat print Format List with contextMenu actions
-                    var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                    contextMenuMetadata.actions.push(printFormatList)
+                    if (printFormatList.childs.length) {
+                      // Get contextMenu metadata and concat print Format List with contextMenu actions
+                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                      contextMenuMetadata.actions.push(printFormatList)
+                    }
                   })
+              }
+
+              // Drill Tables to context menu
+              var drillTablesList = {
+                name: language.t('views.drillTable'),
+                type: 'summary',
+                action: '',
+                childs: [],
+                option: 'drillTable'
+              }
+              if (!isEmptyValue(output.tableName)) {
+                drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
+                if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
+                  dispatch('requestDrillTables', {
+                    processUuid: processResult.processUuid,
+                    instanceUuid: response.getInstanceuuid(),
+                    processId: processDefinition.id,
+                    tableName: output.tableName,
+                    printFormatUuid: output.printFormatUuid,
+                    reportViewUuid: output.reportViewUuid
+                  })
+                    .then(response => {
+                      drillTablesList.childs = response
+                      if (drillTablesList.childs.length) {
+                        // Get contextMenu metadata and concat print Format List with contextMenu actions
+                        var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                        contextMenuMetadata.actions.push(drillTablesList)
+                      }
+                    })
+                }
               }
             }
             // assign new attributes
@@ -294,7 +346,7 @@ const processControl = {
               isError: response.getIserror(),
               isProcessing: response.getIsprocessing(),
               summary: response.getSummary(),
-              ResultTableName: response.getResulttablename(),
+              resultTableName: response.getResulttablename(),
               lastRun: response.getLastrun(),
               logs: logList,
               output: output
@@ -463,13 +515,24 @@ const processControl = {
       }
       if (parameters.processOutput.isReport && !parameters.processOutput.isError) {
         // open report viewer with report response
+        if (isEmptyValue(parameters.processOutput.menuParentUuid)) {
+          parameters.processOutput.menuParentUuid = parameters.processOutput.processUuid
+        }
+
+        var tableName
+        if (parameters.processOutput.option && !isEmptyValue(parameters.processOutput.option)) {
+          if (parameters.processOutput.option === 'drillTable') {
+            tableName = parameters.processOutput.tableName
+          }
+        }
         router.push({
           name: 'Report Viewer',
           params: {
             processId: parameters.processOutput.processId,
             instanceUuid: parameters.processOutput.instanceUuid,
-            fileName: parameters.processOutput.output.fileName,
-            menuParentUuid: parameters.processOutput.menuParentUuid
+            fileName: isEmptyValue(parameters.processOutput.output.fileName) ? parameters.processOutput.fileName : parameters.processOutput.output.fileName,
+            menuParentUuid: parameters.processOutput.menuParentUuid,
+            tableName: tableName
           }
         })
       }
@@ -485,27 +548,6 @@ const processControl = {
     },
     clearProcessControl({ commit }) {
       commit('clearProcessControl')
-    },
-    requestReportViews({ commit }, parameters) {
-      return requestReportViews({ processUuid: parameters.processUuid })
-        .then(response => {
-          const reportViewList = response.getReportviewsList().map(reportView => {
-            return {
-              uuid: reportView.getUuid(),
-              name: reportView.getName(),
-              tableName: reportView.getTablename(),
-              description: reportView.getDescription()
-            }
-          })
-          commit('setReportViewsList', {
-            containerUuid: parameters.processUuid,
-            viewList: reportViewList
-          })
-          return reportViewList
-        })
-        .catch(error => {
-          console.error(error)
-        })
     }
   },
   getters: {
@@ -550,13 +592,6 @@ const processControl = {
       return state.reportList.find(
         item => item.instanceUuid === instanceUuid
       )
-    },
-    getReportViewList: (state) => (containerUuid) => {
-      var reportViewList = state.reportViewList.find(list => list.containerUuid === containerUuid)
-      if (reportViewList) {
-        return reportViewList.viewList
-      }
-      return []
     }
   }
 }

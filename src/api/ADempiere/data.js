@@ -334,6 +334,7 @@ export function unlockPrivateAccessFromServer({ tableName: tableName, recordId: 
 export function getFavoritesFromServer(userUuid) {
   return Instance.call(this).requestFavorites(userUuid)
 }
+
 export function getPendingDocumentsFromServer(userUuid, roleUuid) {
   return Instance.call(this).requestPendingDocuments(userUuid, roleUuid)
 }
@@ -344,4 +345,36 @@ export function requestReportViews({ tableName, processUuid }) {
 
 export function requestPrintFormats({ tableName, reportViewUuid, processUuid }) {
   return Instance.call(this).requestPrintFormats({ tableName: tableName, reportViewUuid: reportViewUuid, processUuid: processUuid })
+}
+
+export function requestDrillTables(tableName) {
+  return Instance.call(this).requestDrillTables(tableName)
+}
+
+export function getReportOutput({
+  criteria: criteria,
+  printFormatUuid: printFormatUuid,
+  reportViewUuid: reportViewUuid,
+  isSummary: isSummary,
+  reportName: reportName,
+  reportType: reportType,
+  tableName: tableName
+}) {
+  const criteriaForReport = getCriteria(tableName)
+  if (criteria && criteria.length) {
+    criteria.forEach(parameter => {
+      var isAddCodition = true
+      if (parameter.isRange && criteria.some(param => param.columnName === `${parameter.columnName}_To`)) {
+        parameter.valueTo = criteria.find(param => param.columnName === `${parameter.columnName}_To`).value
+      }
+      const convertedParameter = Instance.call(this).convertCondition(parameter)
+      if (parameter.isRange && !parameter.hasOwnProperty('valueTo')) {
+        isAddCodition = false
+      }
+      if (isAddCodition) {
+        criteriaForReport.addConditions(convertedParameter)
+      }
+    })
+  }
+  return Instance.call(this).getReportOutput({ criteria: criteriaForReport, printFormatUuid: printFormatUuid, reportViewUuid: reportViewUuid, isSummary: isSummary, reportName: reportName, reportType: reportType })
 }
