@@ -204,6 +204,9 @@ export default {
         return 50
       }
       if (this.isShowedRecordNavigation) {
+        if (this.isMobile) {
+          return 100
+        }
         return 50
       }
       return -1

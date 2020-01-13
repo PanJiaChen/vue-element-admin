@@ -295,9 +295,21 @@
                       @keyup.enter.native="confirmEdit(scope.row)"
                     />
                   </template>
-                  <span v-else :style="getFieldDefinition(fieldAttributes.fieldDefinition, scope.row)">
-                    {{ displayedValue(scope.row, fieldAttributes) }}
-                  </span>
+                  <template
+                    v-else
+                  >
+                    <el-tag
+                      v-if="fieldAttributes.columnName === 'DocStatus' || (fieldAttributes.columnName === 'O_DocStatus')"
+                      :style="getFieldDefinition(fieldAttributes.fieldDefinition, scope.row)"
+                      :type="fieldAttributes.columnName === 'DocStatus' ? tagStatus(scope.row.DocStatus) : tagStatus(scope.row.O_DocStatus)"
+                      disable-transitions
+                    >
+                      {{ displayedValue(scope.row, fieldAttributes) }}
+                    </el-tag>
+                    <span v-else :style="getFieldDefinition(fieldAttributes.fieldDefinition, scope.row)">
+                      {{ displayedValue(scope.row, fieldAttributes) }}
+                    </span>
+                  </template>
                 </template>
               </el-table-column>
             </template>
@@ -697,6 +709,52 @@ export default {
         return '* ' + field.name
       }
       return field.name
+    },
+    /**
+     * add a tab depending on the status of the document
+     * @param {string} tag, document status key
+     */
+    tagStatus(tag) {
+      var type
+      switch (tag) {
+        case 'VO':
+          type = 'danger'
+          break
+        case 'AP':
+          type = 'success'
+          break
+        case 'DR':
+          type = 'info'
+          break
+        case 'CL':
+          type = 'primary'
+          break
+        case 'CO':
+          type = 'success'
+          break
+        case '??':
+          type = 'info'
+          break
+        case 'IP':
+          type = 'warning'
+          break
+        case 'WC':
+          type = 'warning'
+          break
+        case 'WP':
+          type = 'warning'
+          break
+        case 'NA':
+          type = 'danger'
+          break
+        case 'IN':
+          type = 'danger'
+          break
+        case 'RE':
+          type = 'danger'
+          break
+      }
+      return type
     },
     /**
      * @param {object} row, row data
