@@ -25,7 +25,13 @@ export default {
   name: 'FieldDate',
   mixins: [fieldMixin],
   data() {
+    // value render
+    let value = this.metadata.value
+    if (this.metadata.inTable) {
+      value = this.valueModel
+    }
     return {
+      value: value,
       pickerOptionsDate: {
         shortcuts: [{
           text: this.$t('components.date.Today'),

@@ -93,6 +93,12 @@ export default {
     },
     windowRecordSelected() {
       return this.$store.state.window.recordSelected
+    },
+    getterDataRecordsAndSelection() {
+      return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
+    },
+    getDataSelection() {
+      return this.getterDataRecordsAndSelection.selection
     }
   },
   watch: {
@@ -140,17 +146,35 @@ export default {
         const fieldNotReady = this.$store.getters.isNotReadyForSubmit(action.uuid)
         if (!fieldNotReady) {
           this.closeDialog()
-          this.$store.dispatch('startProcess', {
-            action: action, // process metadata
-            parentUuid: this.parentUuid,
-            containerUuid: this.containerUuid,
-            panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-            reportFormat: this.reportExportType,
-            routeToDelete: this.$route
-          })
-            .catch(error => {
-              console.warn(error)
+          const porcesTabla = this.$store.getters.getProcessSelect.processTablaSelection
+          const selection = this.$store.getters.getProcessSelect
+          if (porcesTabla) {
+            // selection.forEach(element => {
+            this.$store.dispatch('SelectionProcess', {
+              action: action, // process metadata
+              parentUuid: this.parentUuid,
+              containerUuid: this.containerUuid,
+              panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+              reportFormat: this.reportExportType,
+              recordUuidSelection: selection,
+              isProcessTableSelection: true,
+              routeToDelete: this.$route
             })
+            // })
+          } else {
+            this.$store.dispatch('startProcess', {
+              action: action, // process metadata
+              parentUuid: this.parentUuid,
+              isProcessTableSelection: false,
+              containerUuid: this.containerUuid,
+              panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+              reportFormat: this.reportExportType,
+              routeToDelete: this.$route
+            })
+              .catch(error => {
+                console.warn(error)
+              })
+          }
         } else {
           this.showNotification({
             type: 'warning',

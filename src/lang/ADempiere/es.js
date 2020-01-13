@@ -16,9 +16,10 @@ export default {
     // simplex
     completed: 'Completado',
     loading: 'Cargando',
-    succesful: 'Exitoso',
-    error: 'Error',
+    succesful: ' Exitoso ',
+    error: ' Error ',
     opened: 'Abierto',
+    totalProcess: 'Total de Registros Procesador ',
     // search
     searching: 'Buscando registros en el servidor',
     succcessSearch: 'La búsqueda se ha realizado',

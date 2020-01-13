@@ -22,70 +22,16 @@
           </el-collapse>
           <div>
             <div v-if="!isMobile">
-              <el-menu :default-active="menuTable" :class="classTableMenu + ' menu-table-container'" mode="horizontal" @select="typeFormat">
-                <el-submenu index="2">
-                  <template slot="title">
-                    <i class="el-icon-more" />
-                  </template>
-                  <el-menu-item
-                    v-if="!isParent && isPanelWindow"
-                    :disabled="isDisabledAddNew"
-                    index="new"
-                    @click="addNewRow()"
-                  >
-                    {{ $t('window.newRecord') }}
-                  </el-menu-item>
-                  <template v-if="isPanelWindow && getterPanel.isAssociatedTabSequence">
-                    <el-menu-item
-                      v-for="(actionSequence, key) in getterPanel.tabsOrder"
-                      :key="key"
-                      :disabled="$route.query.action === 'create-new'"
-                      index="sort"
-                      @click="sortTab(actionSequence)"
-                    >
-                      {{ actionSequence.name }}
-                    </el-menu-item>
-                  </template>
-                  <el-menu-item
-                    v-if="isPanelWindow"
-                    :disabled="Boolean(getDataSelection.length < 1 || (isReadOnlyParent && !isParent))"
-                    index="delete"
-                    @click="deleteSelection()"
-                  >
-                    {{ $t('table.dataTable.deleteSelection') }}
-                  </el-menu-item>
-                  <el-submenu
-                    :disabled="Boolean(getDataSelection.length < 1)"
-                    index="xlsx"
-                  >
-                    <template slot="title">{{ $t('table.dataTable.exportRecordTable') }}</template>
-                    <template v-for="(format, index) in option">
-                      <el-menu-item :key="index" :index="index">
-                        {{ format }}
-                      </el-menu-item>
-                    </template>
-                  </el-submenu>
-                  <el-menu-item v-if="!isPanelWindow" :disabled="Boolean(getDataSelection.length < 1)" index="zoom-record" @click="zoomRecord()">
-                    {{ $t('table.ProcessActivity.zoomIn') }}
-                  </el-menu-item>
-                  <el-menu-item index="optional" @click="optionalPanel()">
-                    {{ $t('components.filterableItems') }}
-                  </el-menu-item>
-                  <el-menu-item index="mandatory" @click="showOnlyMandatoryColumns()">
-                    {{ $t('table.dataTable.showOnlyMandatoryColumns') }}
-                  </el-menu-item>
-                  <el-menu-item index="available" @click="showAllAvailableColumns()">
-                    {{ $t('table.dataTable.showAllAvailableColumns') }}
-                  </el-menu-item>
-                  <el-menu-item
-                    v-if="['browser', 'window'].includes(panelType)"
-                    index="totals"
-                    @click="showTotals()"
-                  >
-                    {{ getterPanel.isShowedTotals ? $t('table.dataTable.hiddenTotal') : $t('table.dataTable.showTotal') }}
-                  </el-menu-item>
-                </el-submenu>
-              </el-menu>
+              <table-menu
+                :container-uuid="containerUuid"
+                :parent-uuid="parentUuid"
+                :panel-type="panelType"
+                :is-parent="isParent"
+                :is-panel-window="isPanelWindow"
+                :is-process-menu="getterContextMenu"
+                :is-mobile="isMobile"
+                :is-panel="getterPanel"
+              />
               <el-button
                 v-if="!isParent && isPanelWindow"
                 type="text"
@@ -107,7 +53,6 @@
                 :panel-type="panelType"
                 class="field-optional"
               />
-              <!-- <i class="el-icon-circle-plus-outline" /> -->
               <div :class="{ 'show': showTableSearch }" class="table-search">
                 <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
                 <el-input
@@ -121,53 +66,6 @@
             </div>
             <div v-else>
               <div v-if="!isParent">
-                <el-menu :default-active="menuTable" :class="classTableMenu + ' menu-table-container'" mode="horizontal">
-                  <el-submenu index="2">
-                    <template slot="title">
-                      <i class="el-icon-more" />
-                    </template>
-                    <el-menu-item
-                      v-if="isPanelWindow"
-                      :disabled="Boolean(getDataSelection.length < 1 || (isReadOnlyParent && !isParent))"
-                      index="delete"
-                      @click="deleteSelection()"
-                    >
-                      {{ $t('table.dataTable.deleteSelection') }}
-                    </el-menu-item>
-                    <el-submenu
-                      v-if="isPanelWindow"
-                      :disabled="Boolean(getDataSelection.length < 1)"
-                      index="xlsx"
-                    >
-                      <template slot="title">{{ $t('table.dataTable.exportRecordTable') }}</template>
-                      <template v-for="(format, index) in option">
-                        <el-menu-item :key="index" :index="index">
-                          {{ format }}
-                        </el-menu-item>
-                      </template>
-                    </el-submenu>
-                    <el-menu-item index="optional" @click="optionalPanel()">
-                      {{ $t('components.filterableItems') }}
-                    </el-menu-item>
-                    <el-menu-item index="fixed" @click="fixedPanel()">
-                      {{ $t('components.fixedleItems') }}
-                    </el-menu-item>
-                    <el-menu-item index="mandatory" @click="showOnlyMandatoryColumns()">
-                      {{ $t('table.dataTable.showOnlyMandatoryColumns') }}
-                    </el-menu-item>
-                    <el-menu-item index="available" @click="showAllAvailableColumns()">
-                      {{ $t('table.dataTable.showAllAvailableColumns') }}
-                    </el-menu-item>
-                    <el-menu-item
-                      v-if="!isParent && isPanelWindow"
-                      :disabled="isDisabledAddNew"
-                      index="new"
-                      @click="addNewRow()"
-                    >
-                      {{ $t('window.newRecord') }}
-                    </el-menu-item>
-                  </el-submenu>
-                </el-menu>
                 <fixed-columns
                   :container-uuid="containerUuid"
                   :panel-type="panelType"
@@ -231,6 +129,24 @@
             :parent-uuid="parentUuid"
             :panel-type="panelType"
             :is-option="isOption"
+            :is-panel-window="isPanelWindow"
+            :is-process-menu="getterContextMenu"
+            :is-mobile="isMobile"
+            :is-panel="getterPanel"
+          />
+          <context-menu
+            v-if="!isParent"
+            v-show="getShowContextMenuTabChildren"
+            :style="{left:left+'px',top:top+'px'}"
+            class="contextmenu"
+            :container-uuid="containerUuid"
+            :parent-uuid="parentUuid"
+            :panel-type="panelType"
+            :is-option="isOption"
+            :is-panel-window="isPanelWindow"
+            :is-process-menu="getterContextMenu"
+            :is-mobile="isMobile"
+            :is-panel="getterPanel"
           />
           <el-table
             ref="multipleTable"
@@ -343,7 +259,8 @@ import FieldDefinition from '@/components/ADempiere/Field'
 import Sortable from 'sortablejs'
 import FilterColumns from '@/components/ADempiere/DataTable/filterColumns'
 import FixedColumns from '@/components/ADempiere/DataTable/fixedColumns'
-import ContextMenu from '@/components/ADempiere/DataTable/contextMenu'
+import ContextMenu from '@/components/ADempiere/DataTable/menu/contextMenu'
+import TableMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
@@ -361,7 +278,8 @@ export default {
     FixedColumns,
     ContextMenu,
     IconElement,
-    MainPanel
+    MainPanel,
+    TableMenu
   },
   props: {
     parentUuid: {
@@ -421,8 +339,22 @@ export default {
     }
   },
   computed: {
+    getterContextMenu() {
+      var process = this.$store.getters.getContextMenu(this.containerUuid).actions
+      if (process) {
+        return process.filter(menu => {
+          if (menu.type === 'process') {
+            return menu
+          }
+        })
+      }
+      return false
+    },
     getShowContextMenuTable() {
       return this.$store.getters.getShowContextMenuTable
+    },
+    getShowContextMenuTabChildren() {
+      return this.$store.getters.getShowContextMenuTabChildren
     },
     getterFieldList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
@@ -641,6 +573,9 @@ export default {
       this.$store.dispatch('showMenuTable', {
         isShowedTable: false
       })
+      this.$store.dispatch('showMenuTabChildren', {
+        isShowedTabChildren: false
+      })
     },
     block() {
       return false
@@ -657,13 +592,27 @@ export default {
       } else {
         this.left = left
       }
-
-      this.top = event.clientY - 100
-      this.isOption = row
-      this.visible = true
-      this.$store.dispatch('showMenuTable', {
-        isShowedTable: true
-      })
+      if (this.isParent) {
+        this.top = event.clientY - 100
+        this.isOption = row
+        this.visible = true
+        this.$store.dispatch('showMenuTable', {
+          isShowedTable: true
+        })
+        this.$store.dispatch('showMenuTabChildren', {
+          isShowedTabChildren: false
+        })
+      } else {
+        this.top = event.clientY - event.screenY
+        this.isOption = row
+        this.visible = true
+        this.$store.dispatch('showMenuTabChildren', {
+          isShowedTabChildren: true
+        })
+        this.$store.dispatch('showMenuTable', {
+          isShowedTable: false
+        })
+      }
     },
     typeFormat(key, keyPath) {
       Object.keys(supportedTypes).forEach(type => {

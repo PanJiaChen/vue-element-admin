@@ -52,7 +52,7 @@
               </el-popover>
               <!-- show only when bring logs -->
               <el-popover
-                v-else-if="activity.logs.length > 0"
+                v-else-if="activity.logs.length > 0 || activity.summary"
                 placement="right"
                 width="500"
                 trigger="hover"
@@ -90,9 +90,18 @@
                   {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
                 </el-tag>
               </el-popover>
-              <el-tag v-else :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
-                {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
-              </el-tag>
+              <el-popover
+                v-else
+                placement="top-start"
+                :title="$t('table.ProcessActivity.Logs')"
+                width="200"
+                trigger="hover"
+                :content="activity.summary"
+              >
+                <el-tag slot="reference" :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
+                  {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
+                </el-tag>
+              </el-popover>
             </el-form-item>
           </el-form>
         </el-card>
