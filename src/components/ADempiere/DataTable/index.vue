@@ -2,7 +2,7 @@
   <el-container v-if="isLoadPanel" label-position="top" style="height: inherit;">
     <el-main style="padding: 0px !important; overflow: hidden;">
       <el-container style="height: 100%;">
-        <el-header :style="isAdvancedQuery ? activeName ? { height: '55%', overflow: 'auto' } : { height: '10%', overflow: 'hidden' } : { height: '5%' }">
+        <el-header :style="tableHeaderStyle">
           <el-collapse
             v-if="isParent && isAdvancedQuery"
             v-show="isAdvancedQuery"
@@ -16,7 +16,7 @@
                 :metadata="getterPanel"
                 panel-type="table"
                 is-advanced-query
-                :class="!activeName ? 'collapse_item' : 'collapse_item_wrap'"
+                :class="isEmptyValue(activeName) ? 'collapse_item' : 'collapse_item_wrap'"
               />
             </el-collapse-item>
           </el-collapse>
@@ -360,13 +360,12 @@ export default {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
     getterFieldListHeader() {
-      var header = this.getterFieldList.filter(fieldItem => {
+      return this.getterFieldList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem.name
         }
-      })
-      return header.map(fieldItem => {
+      }).map(fieldItem => {
         return fieldItem.name
       })
     },
@@ -442,12 +441,29 @@ export default {
     getterHeight() {
       return this.$store.getters.getHeigth
     },
+    tableHeaderStyle() {
+      if (this.isAdvancedQuery) {
+        if (!this.isEmptyValue(this.activeName)) {
+          return {
+            height: '55%',
+            overflow: 'auto'
+          }
+        }
+        return {
+          height: '17%',
+          overflow: 'hidden'
+        }
+      }
+      return {
+        height: '5%'
+      }
+    },
     getHeigthTable() {
       if (this.isPanelWindow) {
         // table record navigation
         if (this.isParent) {
           if (this.isAdvancedQuery) {
-            if (!this.activeName) {
+            if (this.isEmptyValue(this.activeName)) {
               return this.getterHeight - 220
             } else {
               return this.getterHeight - 420
