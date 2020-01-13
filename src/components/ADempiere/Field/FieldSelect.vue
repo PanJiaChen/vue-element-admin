@@ -99,13 +99,6 @@ export default {
     }
   },
   watch: {
-    isLoading(value) {
-      if (value) {
-        this.value = ''
-      } else {
-        this.value = this.metadata.displayColumn
-      }
-    },
     valueModel(value) {
       if (this.metadata.inTable) {
         this.value = value
@@ -192,10 +185,10 @@ export default {
         })
     },
     /**
-     * @param {boolean} show triggers when the pull-down menu appears or disappears
+     * @param {boolean} isShowList triggers when the pull-down menu appears or disappears
      */
-    getDataLookupList(showList) {
-      if (showList) {
+    getDataLookupList(isShowList) {
+      if (isShowList) {
         // TODO: Evaluate if length = 1 and this element key = blanckOption
         if (this.getterLookupList.length === 0) {
           this.remoteMethod()

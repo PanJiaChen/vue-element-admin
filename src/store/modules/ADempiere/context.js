@@ -102,10 +102,10 @@ const context = {
       state.context
     },
     getContextClientId: (state) => {
-      return state.context['#AD_Client_ID']
+      return parseInt(state.context['#AD_Client_ID'], 10)
     },
     getContextOrgId: (state) => {
-      return state.context['#AD_Org_ID']
+      return parseInt(state.context['#AD_Org_ID'], 10)
     },
     // Using to read only in data tables
     getContextIsActive: (state) => (parentUuid) => {
