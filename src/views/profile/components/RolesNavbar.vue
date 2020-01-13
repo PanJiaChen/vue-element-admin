@@ -29,7 +29,7 @@ export default {
       value: '',
       options: [],
       languageList: [],
-      language: ''
+      language: getLanguage()
     }
   },
   computed: {
@@ -43,7 +43,12 @@ export default {
       return getLanguage()
     },
     getterLanguageList() {
-      return this.$store.getters.getLanguageList(this.getRol.uuid)
+      return this.$store.getters.getLanguageList.map(language => {
+        return {
+          value: language.languageIso,
+          label: language.languageName
+        }
+      })
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -100,21 +105,12 @@ export default {
       }
     },
     getLanguageData() {
-      var tableLanguage = 'AD_Language'
-      this.$store.dispatch('getObjectListFromCriteria', {
-        containerUuid: this.getRol.uuid,
-        tableName: tableLanguage,
-        conditions: [{
-          columnName: 'LanguageIso',
-          value: this.languageCookie
-        }],
-        isShowNotification: false
-      })
+      this.$store.dispatch('getLanguagesFromServer')
         .then(response => {
           this.languageList = response.map(language => {
             return {
-              value: language.AD_Language,
-              label: language.Name
+              value: language.languageIso,
+              label: language.languageName
             }
           })
         })

@@ -347,6 +347,10 @@ export function requestPrintFormats({ tableName, reportViewUuid, processUuid }) 
   return Instance.call(this).requestPrintFormats({ tableName: tableName, reportViewUuid: reportViewUuid, processUuid: processUuid })
 }
 
+export function requestLanguages() {
+  return Instance.call(this).requestLanguages()
+}
+
 export function requestDrillTables(tableName) {
   return Instance.call(this).requestDrillTables(tableName)
 }

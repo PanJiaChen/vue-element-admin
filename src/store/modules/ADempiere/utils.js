@@ -1,4 +1,5 @@
 
+import { requestLanguages } from '@/api/ADempiere'
 const utils = {
   state: {
     width: 0,
@@ -10,6 +11,8 @@ const utils = {
     oldAction: undefined,
     reportType: '',
     isShowedTable: false,
+    recordUuidTable: 0,
+    languageList: [],
     isShowedTabChildren: false,
     recordTable: 0,
     selectionProcess: []
@@ -50,6 +53,9 @@ const utils = {
     },
     setReportTypeToShareLink(state, payload) {
       state.reportType = payload
+    },
+    setLanguageList(state, payload) {
+      state.languageList = payload
     }
   },
   actions: {
@@ -97,6 +103,31 @@ const utils = {
     },
     setReportTypeToShareLink({ commit }, value) {
       commit('setReportTypeToShareLink', value)
+    },
+    getLanguagesFromServer({ commit }) {
+      return new Promise((resolve, reject) => {
+        requestLanguages()
+          .then(response => {
+            const languageList = response.getLanguagesList().map(item => {
+              return {
+                language: item.getLanguage(),
+                languageName: item.getLanguagename(),
+                languageIso: item.getLanguageiso(),
+                countryCode: item.getCountrycode(),
+                isBaseLanguage: item.getIsbaselanguage(),
+                isSystemLanguage: item.getIssystemlanguage(),
+                isDecimalPoint: item.getIsdecimalpoint(),
+                datePattern: item.getDatepattern(),
+                timePattern: item.getTimepattern()
+              }
+            })
+            commit('setLanguageList', languageList)
+            resolve(languageList)
+          })
+          .catch(error => {
+            reject(error)
+          })
+      })
     }
   },
   getters: {
@@ -147,6 +178,17 @@ const utils = {
     },
     getReportType: (state) => {
       return state.reportType
+    },
+    getLanguageList: (state) => {
+      return state.languageList
+    },
+    getLanguageByParameter: (state) => (parameter) => {
+      var list = state.languageList
+      list.forEach(language => {
+        if (language.hasOwnProperty(parameter)) {
+          return language
+        }
+      })
     }
   }
 }

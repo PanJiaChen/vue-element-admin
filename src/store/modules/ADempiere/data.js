@@ -1107,11 +1107,6 @@ const data = {
     getPendingDocuments: (state) => {
       return state.pendingDocuments
     },
-    getLanguageList: (state) => (roleUuid) => {
-      return state.recordSelection.find(
-        record => record.containerUuid === roleUuid
-      ) || []
-    },
     getContextInfoField: (state) => (contextInfoUuid, sqlStatement) => {
       return state.contextInfoField.find(info =>
         info.contextInfoUuid === contextInfoUuid &&
