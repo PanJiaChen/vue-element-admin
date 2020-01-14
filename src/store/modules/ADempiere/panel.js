@@ -121,22 +121,27 @@ const panel = {
     /**
      * Used by components/fields/filterFields
      */
-    changeFieldShowedFromUser({ commit, dispatch, getters }, params) {
-      const panel = getters.getPanel(params.containerUuid, params.isAdvancedQuery)
+    changeFieldShowedFromUser({ commit, dispatch, getters }, {
+      containerUuid,
+      isAdvancedQuery,
+      fieldsUser,
+      groupField
+    }) {
+      const panel = getters.getPanel(containerUuid, isAdvancedQuery)
       var newPanel = panel
       var showsFieldsWithValue = false
       var hiddenFieldsWithValue = false
       var newFields = panel.fieldList.map(itemField => {
         const isMandatory = itemField.isMandatory || itemField.isMandatoryFromLogic
         if (!isMandatory && fieldIsDisplayed(itemField)) {
-          if (itemField.groupAssigned === params.groupField) {
-            if (params.fieldsUser.length && params.fieldsUser.includes(itemField.columnName)) {
+          if (itemField.groupAssigned === groupField) {
+            if (fieldsUser.length && fieldsUser.includes(itemField.columnName)) {
               // if it isShowedFromUser it is false, and it has some value, it means
               // that it is going to show, therefore the SmartBrowser must be searched
               if (!isEmptyValue(itemField.value) && !itemField.isShowedFromUser) {
                 showsFieldsWithValue = true
               }
-              if (params.isAdvancedQuery) {
+              if (isAdvancedQuery) {
                 itemField.isShowedFromUser = false
               }
               itemField.isShowedFromUser = true
@@ -147,20 +152,20 @@ const panel = {
             if (!isEmptyValue(itemField.value) && itemField.isShowedFromUser) {
               hiddenFieldsWithValue = true
             }
-            if (params.isAdvancedQuery) {
+            if (isAdvancedQuery) {
               itemField.isShowedFromUser = false
             }
             itemField.isShowedFromUser = false
           }
         } else {
-          if (itemField.groupAssigned === params.groupField) {
-            if (params.fieldsUser.length && params.fieldsUser.includes(itemField.columnName)) {
+          if (itemField.groupAssigned === groupField) {
+            if (fieldsUser.length && fieldsUser.includes(itemField.columnName)) {
               // if it isShowedFromUser it is false, and it has some value, it means
               // that it is going to show, therefore the SmartBrowser must be searched
               if (!isEmptyValue(itemField.value) && !itemField.isShowedFromUser) {
                 showsFieldsWithValue = true
               }
-              if (params.isAdvancedQuery) {
+              if (isAdvancedQuery) {
                 itemField.isShowedFromUser = false
               }
               itemField.isShowedFromUser = true
@@ -169,7 +174,7 @@ const panel = {
             if (!isEmptyValue(itemField.value) && itemField.isShowedFromUser) {
               hiddenFieldsWithValue = true
             }
-            if (params.isAdvancedQuery) {
+            if (isAdvancedQuery) {
               itemField.isShowedFromUser = false
             }
             itemField.isShowedFromUser = false
@@ -179,9 +184,9 @@ const panel = {
       })
       panel.fieldList = newFields
       commit('changePanel', {
-        containerUuid: params.containerUuid,
-        newPanel: newPanel,
-        panel: panel
+        containerUuid,
+        newPanel,
+        panel
       })
       if (showsFieldsWithValue || hiddenFieldsWithValue) {
         // Updated record result
@@ -198,13 +203,13 @@ const panel = {
             query: panel.query,
             whereClause: panel.whereClause,
             conditions: getters.getParametersToServer({
-              containerUuid: params.containerUuid,
+              containerUuid,
               isAdvancedQuery: true,
               isEvaluateMandatory: false
             })
           })
             .catch(error => {
-              console.warn('Error getting Advanced Query (changeFieldShowedFromUser):', error.message + '. Code: ', error.code)
+              console.warn(`Error getting Advanced Query (changeFieldShowedFromUser): ${error.message}. Code: ${error.code}`)
             })
         }
       }
@@ -274,9 +279,10 @@ const panel = {
      * @param {string}  containerUuid
      * @param {array}   fieldList
      */
-    showAllAvailableColumns({ dispatch, getters }, parameters) {
-      const { containerUuid } = parameters
-      var { fieldList = [] } = parameters
+    showAllAvailableColumns({ dispatch, getters }, {
+      containerUuid,
+      fieldList = []
+    }) {
       if (fieldList.length <= 0) {
         fieldList = getters.getFieldsListFromPanel(containerUuid)
       }
@@ -289,7 +295,7 @@ const panel = {
       })
 
       dispatch('changeFieldAttributesBoolean', {
-        containerUuid: containerUuid,
+        containerUuid,
         fieldsIncludes: fieldsExcludes,
         attribute: 'isShowedTableFromUser',
         valueAttribute: true
@@ -297,17 +303,23 @@ const panel = {
     },
     /**
      * Set default values to panel
-     * @param {string} containerUuid
-     * @param {string} panelType
+     * @param {string}  parentUuid
+     * @param {string}  containerUuid
+     * @param {string}  panelType
+     * @param {boolean} isNewRecord
+     * @param {array}   fieldList
      * TODO: Evaluate if it is necessary to parse the default values
      */
-    resetPanelToNew({ commit, dispatch, getters }, parameters) {
-      const { parentUuid, containerUuid, panelType = 'window', isNewRecord = false } = parameters
-      var { fieldList = [] } = parameters
-
+    resetPanelToNew({ commit, dispatch, getters }, {
+      parentUuid,
+      containerUuid,
+      panelType = 'window',
+      isNewRecord = false,
+      fieldList = []
+    }) {
       const defaultAttributes = getters.getParsedDefaultValues({
-        parentUuid: parentUuid,
-        containerUuid: containerUuid
+        parentUuid,
+        containerUuid
       })
       if (panelType === 'window' && isNewRecord) {
         // redirect to create new record
@@ -342,9 +354,9 @@ const panel = {
         })
       }
       dispatch('notifyPanelChange', {
-        parentUuid: parentUuid,
-        containerUuid: containerUuid,
-        panelType: panelType,
+        parentUuid,
+        containerUuid,
+        panelType,
         newValues: defaultAttributes,
         isSendToServer: false,
         // if isNewRecord active callouts, if window is closed no send callout
@@ -360,25 +372,23 @@ const panel = {
      * @param {object} newValues, values to set in panel
      * @param {boolean} isSendToServer, indicate if changes send to server
      */
-    notifyPanelChange({ dispatch, getters, rootGetters }, parameters) {
-      const {
-        parentUuid,
-        containerUuid,
-        newValues = {},
-        isSendToServer = true,
-        isShowedField = false,
-        panelType = 'window',
-        withOutColumnNames = [],
-        isSendCallout = true,
-        isAdvancedQuery = false,
-        isPrivateAccess = true
-      } = parameters
-      var { fieldList = [] } = parameters
-
+    notifyPanelChange({ dispatch, getters, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      newValues = {},
+      isSendToServer = true,
+      isShowedField = false,
+      panelType = 'window',
+      withOutColumnNames = [],
+      isSendCallout = true,
+      isAdvancedQuery = false,
+      isPrivateAccess = true,
+      fieldList = []
+    }) {
       if (!fieldList.length) {
         fieldList = getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery)
       }
-      var fieldsShowed = []
+      let fieldsShowed = []
       fieldList.forEach(actionField => {
         if (actionField.isShowedFromUser) {
           fieldsShowed.push(actionField.columnName)
@@ -389,19 +399,19 @@ const panel = {
           return
         }
         dispatch('notifyFieldChange', {
-          isSendToServer: isSendToServer,
-          isSendCallout: isSendCallout,
-          isAdvancedQuery: isAdvancedQuery,
-          panelType: panelType,
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
+          isSendToServer,
+          isSendCallout,
+          isAdvancedQuery,
+          panelType,
+          parentUuid,
+          containerUuid,
           columnName: actionField.columnName,
-          displayColumn: newValues['DisplayColumn_' + actionField.columnName],
+          displayColumn: newValues[`DisplayColumn_${actionField.columnName}`],
           newValue: newValues[actionField.columnName],
-          valueTo: newValues[actionField.columnName + '_To'],
-          fieldList: fieldList,
+          valueTo: newValues[`${actionField.columnName}_To`],
+          fieldList,
           field: actionField,
-          withOutColumnNames: withOutColumnNames,
+          withOutColumnNames,
           isChangedOldValue: true // defines if set oldValue with newValue instead of current value
         })
       })
@@ -413,8 +423,8 @@ const panel = {
         ]))
 
         dispatch('changeFieldAttributesBoolean', {
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
+          parentUuid,
+          containerUuid,
           attribute: 'isShowedFromUser',
           valueAttribute: true,
           fieldsIncludes: fieldsShowed
@@ -422,12 +432,12 @@ const panel = {
       }
       if (panelType === 'window') {
         dispatch('setIsloadContext', {
-          containerUuid: containerUuid
+          containerUuid
         })
         if (isPrivateAccess) {
-          var tableName = rootGetters.getTableNameFromTab(parentUuid, containerUuid)
+          const tableName = rootGetters.getTableNameFromTab(parentUuid, containerUuid)
           dispatch('getPrivateAccessFromServer', {
-            tableName: tableName,
+            tableName,
             recordId: newValues[`${tableName}_ID`],
             userUuid: rootGetters['user/getUserUuid']
           })
@@ -436,24 +446,23 @@ const panel = {
     },
     /**
      * TODO: Add fieldAttributes
-     * @param {string} parentUuid
-     * @param {string} containerUuid
-     * @param {string} panelType
+     * @param {string}  parentUuid
+     * @param {string}  containerUuid
+     * @param {string}  panelType
      * @param {boolean} isAdvancedQuery
-     * @param {string} columnName
-     * @param {mixin} newValue
-     * @param {mixin} valueTo
-     * @param {string} displayColumn, only used for lookup
+     * @param {string}  columnName
+     * @param {mixin}   newValue
+     * @param {mixin}   valueTo
+     * @param {string}  displayColumn, only used for lookup
      * @param {boolean} isSendToServer
      * @param {boolean} isSendCallout
-     * @param {boolean} isSendToQuery
      * @param {boolean} isChangedOldValue
-     * @param {array} withOutColumnNames
+     * @param {array}   withOutColumnNames
      */
     notifyFieldChange({ commit, dispatch, getters }, {
       parentUuid, containerUuid, panelType = 'window', isAdvancedQuery = false, columnName,
       newValue, valueTo, displayColumn,
-      isSendToServer = true, isSendCallout = true, isSendToQuery = true,
+      isSendToServer = true, isSendCallout = true,
       isChangedOldValue = false, withOutColumnNames = []
     }) {
       const panel = getters.getPanel(containerUuid, isAdvancedQuery)
@@ -478,9 +487,9 @@ const panel = {
       if (!(panelType === 'table' || isAdvancedQuery)) {
         //  Call context management
         dispatch('setContext', {
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
-          columnName: columnName,
+          parentUuid,
+          containerUuid,
+          columnName,
           value: newValue
         })
 
@@ -493,9 +502,9 @@ const panel = {
               isSQL = true
             }
             sqlStatement = parseContext({
-              parentUuid: parentUuid,
-              containerUuid: containerUuid,
-              columnName: columnName,
+              parentUuid,
+              containerUuid,
+              columnName,
               value: sqlStatement,
               isSQL: isSQL
             })
@@ -504,8 +513,8 @@ const panel = {
             }
           }
           dispatch('getContextInfoValueFromServer', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             contextInfoUuid: field.contextInfo.uuid,
             columnName: columnName,
             sqlStatement: sqlStatement
@@ -526,11 +535,11 @@ const panel = {
       }
 
       commit('changeFieldValue', {
-        field: field,
-        newValue: newValue,
-        valueTo: valueTo,
-        displayColumn: displayColumn,
-        isChangedOldValue: isChangedOldValue
+        field,
+        newValue,
+        valueTo,
+        displayColumn,
+        isChangedOldValue
       })
 
       //  Change Dependents
@@ -544,8 +553,8 @@ const panel = {
         if (dependent.displayLogic.trim() !== '') {
           isDisplayedFromLogic = evaluator.evaluateLogic({
             context: getters,
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             logic: dependent.displayLogic,
             type: 'displayed'
           })
@@ -554,8 +563,8 @@ const panel = {
         if (dependent.mandatoryLogic.trim() !== '') {
           isMandatoryFromLogic = evaluator.evaluateLogic({
             context: getters,
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             logic: dependent.mandatoryLogic
           })
         }
@@ -563,16 +572,16 @@ const panel = {
         if (dependent.readOnlyLogic.trim() !== '') {
           isReadOnlyFromLogic = evaluator.evaluateLogic({
             context: getters,
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             logic: dependent.readOnlyLogic
           })
         }
         commit('changeFieldLogic', {
           field: dependent,
-          isDisplayedFromLogic: isDisplayedFromLogic,
-          isMandatoryFromLogic: isMandatoryFromLogic,
-          isReadOnlyFromLogic: isReadOnlyFromLogic
+          isDisplayedFromLogic,
+          isMandatoryFromLogic,
+          isReadOnlyFromLogic
         })
       })
 
@@ -581,14 +590,14 @@ const panel = {
         if (!withOutColumnNames.includes(field.columnName) && !isEmptyValue(newValue) && !isEmptyValue(field.callout)) {
           withOutColumnNames.push(field.columnName)
           dispatch('getCallout', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             tableName: panel.tableName,
             columnName: field.columnName,
             callout: field.callout,
             value: newValue,
             oldValue: field.oldValue,
-            withOutColumnNames: withOutColumnNames
+            withOutColumnNames
           })
         }
       }
@@ -598,7 +607,7 @@ const panel = {
         if (!getters.isNotReadyForSubmit(containerUuid)) {
           if (field.panelType === 'browser' && fieldIsDisplayed(field)) {
             dispatch('getBrowserSearch', {
-              containerUuid: containerUuid,
+              containerUuid,
               isClearSelection: true
             })
           }
@@ -606,16 +615,16 @@ const panel = {
             var uuid = getters.getUuid(containerUuid)
             if (isEmptyValue(uuid)) {
               dispatch('createNewEntity', {
-                parentUuid: parentUuid,
-                containerUuid: containerUuid
+                parentUuid,
+                containerUuid
               })
                 .then(() => {
                   // change old value so that it is not send in the next update
                   commit('changeFieldValue', {
-                    field: field,
-                    newValue: newValue,
-                    valueTo: valueTo,
-                    displayColumn: displayColumn,
+                    field,
+                    newValue,
+                    valueTo,
+                    displayColumn,
                     isChangedOldValue: true
                   })
                 })
@@ -624,11 +633,11 @@ const panel = {
                     message: error.message,
                     type: 'error'
                   })
-                  console.warn('Create Entity Error ' + error.code + ': ' + error.message)
+                  console.warn(`Create Entity Error ${error.code}: ${error.message}`)
                 })
             } else {
               dispatch('updateCurrentEntity', {
-                containerUuid: containerUuid,
+                containerUuid,
                 recordUuid: uuid
               })
                 .then(response => {
@@ -638,16 +647,16 @@ const panel = {
                     type: 'success'
                   })
                   commit('changeFieldValue', {
-                    field: field,
-                    newValue: newValue,
-                    valueTo: valueTo,
-                    displayColumn: displayColumn,
+                    field,
+                    newValue,
+                    valueTo,
+                    displayColumn,
                     isChangedOldValue: true
                   })
 
                   // change value in table
                   dispatch('notifyRowTableChange', {
-                    containerUuid: containerUuid,
+                    containerUuid,
                     row: response,
                     isEdit: false,
                     isParent: true
@@ -657,7 +666,7 @@ const panel = {
           }
         } else {
           const fieldsEmpty = getters.getFieldListEmptyMandatory({
-            containerUuid: containerUuid
+            containerUuid
           })
           showMessage({
             message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
@@ -677,13 +686,13 @@ const panel = {
               })
             }
             dispatch('getObjectListFromCriteria', {
-              parentUuid: parentUuid,
-              containerUuid: containerUuid,
+              parentUuid,
+              containerUuid,
               tableName: panel.tableName,
               query: panel.query,
               whereClause: panel.whereClause,
               conditions: getters.getParametersToServer({
-                containerUuid: containerUuid,
+                containerUuid,
                 isAdvancedQuery: true,
                 isEvaluateMandatory: false
               })
@@ -691,8 +700,8 @@ const panel = {
               .then(response => {
                 if (response && response.length) {
                   dispatch('notifyPanelChange', {
-                    parentUuid: parentUuid,
-                    containerUuid: containerUuid,
+                    parentUuid,
+                    containerUuid,
                     isAdvancedQuery: false,
                     newValues: response[0],
                     isSendToServer: false,
@@ -702,21 +711,24 @@ const panel = {
                 }
               })
               .catch(error => {
-                console.warn('Error getting Advanced Query (notifyFieldChange):', error.message + '. Code: ', error.code)
+                console.warn(`Error getting Advanced Query (notifyFieldChange): ${error.message}. Code: ${error.code}`)
               })
           }
         }
       }
     },
-    notifyFieldChangeDisplayColumn({ commit, getters }, parameters) {
-      var field = getters.getFieldFromColumnName(parameters.containerUuid, parameters.columnName)
-      var newField = {
+    notifyFieldChangeDisplayColumn({ commit, getters }, {
+      containerUuid,
+      columnName,
+      displayColumn
+    }) {
+      const field = getters.getFieldFromColumnName(containerUuid, columnName)
+      commit('changeFieldValue', {
         field: field,
         newValue: field.value,
         valueTo: field.valueTo,
-        displayColumn: parameters.displayColumn
-      }
-      commit('changeFieldValue', newField)
+        displayColumn
+      })
     },
     getPanelAndFields({ dispatch }, {
       parentUuid,
@@ -1121,16 +1133,16 @@ const panel = {
 
         if (isEvaluateEmptyDisplayed && isEmptyFieldDisplayed) {
           return {
-            fields: fields,
+            fields,
             params: [],
-            fieldsMandatory: fieldsMandatory
+            fieldsMandatory
           }
         }
       }
       return {
-        fields: fields,
-        params: params,
-        fieldsMandatory: fieldsMandatory
+        fields,
+        params,
+        fieldsMandatory
       }
     },
     /**

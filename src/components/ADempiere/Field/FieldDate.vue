@@ -31,7 +31,7 @@ export default {
       value = this.valueModel
     }
     return {
-      value: value,
+      value: this.parsedDateValue(value),
       pickerOptionsDate: {
         shortcuts: [{
           text: this.$t('components.date.Today'),

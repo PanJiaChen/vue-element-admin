@@ -338,7 +338,7 @@ export default {
         }).then(() => {
           this.generatePanel(this.getterFieldList)
         }).catch(error => {
-          console.warn('Field Load Error ' + error.code + ': ' + error.message)
+          console.warn(`Field Load Error ${error.code}: ${error.message}`)
         })
       }
     },
@@ -382,10 +382,10 @@ export default {
                 fieldType: fieldItem.componentPath,
                 value: route.query[fieldItem.columnName]
               })
-              if (fieldItem.isRange && this.$route.query[fieldItem.columnName + '_To']) {
+              if (fieldItem.isRange && this.$route.query[`${fieldItem.columnName}_To`]) {
                 fieldItem.valueTo = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
-                  value: route.query[fieldItem.columnName + '_To']
+                  value: route.query[`${fieldItem.columnName}_To`]
                 })
               }
             }
@@ -429,10 +429,10 @@ export default {
                   fieldType: fieldItem.componentPath,
                   value: route.query[fieldItem.columnName]
                 })
-                if (fieldItem.isRange && route.query[fieldItem.columnName + '_To']) {
+                if (fieldItem.isRange && route.query[`${fieldItem.columnName}_To`]) {
                   this.dataRecords[fieldItem.columnName] = parsedValueComponent({
                     fieldType: fieldItem.componentPath,
-                    value: route.query[fieldItem.columnName + '_To']
+                    value: route.query[`${fieldItem.columnName}_To`]
                   })
                 }
               }
@@ -459,11 +459,6 @@ export default {
               panelType: this.panelType
             })
             parameters.isWindow = false
-          } else {
-            this.$store.dispatch('resetPanelToNew', {
-              containerUuid: this.containerUuid,
-              panelType: this.panelType
-            })
           }
         }
       }

@@ -332,10 +332,9 @@ const data = {
     },
     /**
      * Is load context in true when panel is set context
-     * @param {string}  parameters.containerUuid
+     * @param {string}  containerUuid
      */
-    setIsloadContext({ commit, state }, parameters) {
-      const { containerUuid } = parameters
+    setIsloadContext({ commit, state }, { containerUuid }) {
       const dataStore = state.recordSelection.find(recordItem => {
         return recordItem.containerUuid === containerUuid
       })
@@ -356,7 +355,7 @@ const data = {
      * @param {string}  parameters.nextPageToken
      * @param {string}  parameters.panelType
      */
-    setRecordSelection({ state, commit, rootGetters, dispatch }, parameters) {
+    setRecordSelection({ state, commit }, parameters) {
       const {
         parentUuid, containerUuid, panelType = 'window', record = [],
         query, whereClause, orderByClause,
@@ -411,11 +410,15 @@ const data = {
     },
     /**
      * Delete record result in container
-     * @param {string} viewUuid // As parentUuid in window
-     * @param {array} withOut
+     * @param {string}  viewUuid // As parentUuid in window
+     * @param {array}   withOut
+     * @param {boolean} isNew
      */
-    deleteRecordContainer({ commit, state, dispatch }, parameters) {
-      const { viewUuid, withOut = [], isNew = false } = parameters
+    deleteRecordContainer({ commit, state, dispatch }, {
+      viewUuid,
+      withOut = [],
+      isNew = false
+    }) {
       var setNews = []
       const record = state.recordSelection.filter(itemRecord => {
         // ignore this uuid
