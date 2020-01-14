@@ -119,7 +119,6 @@ export default {
               })
               this.$router.addRoutes(response)
             })
-          this.$store.dispatch('getRecentItemsFromServer')
         })
     },
     changeLanguage(languageValue) {

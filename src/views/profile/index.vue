@@ -13,9 +13,6 @@
               <el-tab-pane :label="$t('profile.role')" name="role">
                 <role />
               </el-tab-pane>
-              <el-tab-pane :label="$t('profile.recentItems')" name="recentItems">
-                <recent-items />
-              </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
@@ -28,12 +25,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
-import RecentItems from '@/views/profile/components/recentItems'
 import Role from '@/views/profile/components/role'
 
 export default {
   name: 'Profile',
-  components: { UserCard, Role, RecentItems },
+  components: { UserCard, Role },
   data() {
     return {
       user: {},
