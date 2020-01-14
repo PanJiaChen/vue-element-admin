@@ -529,25 +529,15 @@ const panel = {
         }
       }
 
-      // the field has not changed, then the action is broken
-      if (newValue === field.value && isEmptyValue(displayColumn)) {
-        return
-      }
-
-      commit('changeFieldValue', {
-        field,
-        newValue,
-        valueTo,
-        displayColumn,
-        isChangedOldValue
-      })
-
       //  Change Dependents
-      const dependents = fieldList.filter(fieldItem => {
-        return field.dependentFieldsList.includes(fieldItem.columnName)
-      })
+      let dependentsList = []
+      if (field.dependentFieldsList.length) {
+        dependentsList = fieldList.filter(fieldItem => {
+          return field.dependentFieldsList.includes(fieldItem.columnName)
+        })
+      }
       //  Iterate for change logic
-      dependents.forEach(dependent => {
+      dependentsList.forEach(dependent => {
         //  isDisplayed Logic
         let isDisplayedFromLogic, isMandatoryFromLogic, isReadOnlyFromLogic
         if (dependent.displayLogic.trim() !== '') {
@@ -583,6 +573,19 @@ const panel = {
           isMandatoryFromLogic,
           isReadOnlyFromLogic
         })
+      })
+
+      // the field has not changed, then the action is broken
+      if (newValue === field.value && isEmptyValue(displayColumn)) {
+        return
+      }
+
+      commit('changeFieldValue', {
+        field,
+        newValue,
+        valueTo,
+        displayColumn,
+        isChangedOldValue
       })
 
       // request callouts
@@ -838,9 +841,8 @@ const panel = {
       var fieldList = getters.getFieldsListFromPanel(containerUuid).filter(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (isMandatory) {
-          const isDisplayed = fieldIsDisplayed(fieldItem)
           if (evaluateShowed) {
-            return isDisplayed
+            return fieldIsDisplayed(fieldItem)
           }
           return isMandatory
         }
@@ -859,15 +861,18 @@ const panel = {
         return fieldItem.name
       })
     },
-    // all available fields not mandatory to show, used in components panel/filterFields.vue
-    getFieldsListNotMandatory: (state, getters) => (containerUuid, evaluateShowed = true) => {
+    /**
+     * Show all available fields not mandatory to show, used in components panel/filterFields.vue
+     * @param {string} containerUuid
+     * @param {boolean} isEvaluateShowed
+     */
+    getFieldsListNotMandatory: (state, getters) => ({ containerUuid, isEvaluateShowed = true }) => {
       // all optionals (not mandatory) fields
       return getters.getFieldsListFromPanel(containerUuid).filter(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (!isMandatory) {
-          const isDisplayed = fieldIsDisplayed(fieldItem)
-          if (evaluateShowed) {
-            return isDisplayed
+          if (isEvaluateShowed) {
+            return fieldIsDisplayed(fieldItem)
           }
           return !isMandatory
         }

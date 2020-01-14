@@ -57,13 +57,13 @@ export default {
           })
       } else if (this.panelType === 'window') {
         // compare group fields to window
-        return this.$store.getters.getFieldsListNotMandatory(this.containerUuid)
+        return this.$store.getters.getFieldsListNotMandatory({ containerUuid: this.containerUuid })
           .filter(fieldItem => {
             return fieldItem.groupAssigned === this.groupField
           })
       }
       // get fields not mandatory
-      return this.$store.getters.getFieldsListNotMandatory(this.containerUuid)
+      return this.$store.getters.getFieldsListNotMandatory({ containerUuid: this.containerUuid })
     },
     getFieldSelected() {
       return this.getterFieldListOptional

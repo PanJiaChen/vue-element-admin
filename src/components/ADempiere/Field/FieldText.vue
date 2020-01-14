@@ -9,7 +9,7 @@
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
     :maxlength="maxLength"
-    :show-password="metadata.isEncrypted ? true : false"
+    :show-password="Boolean(metadata.isEncrypted)"
     @change="preHandleChange"
   />
 </template>
