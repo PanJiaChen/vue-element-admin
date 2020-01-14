@@ -246,8 +246,39 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     })
   })
 
+  const printFormats = {
+    name: language.t('views.printFormat'),
+    processName: processToGenerate.name,
+    type: 'summary',
+    action: '',
+    childs: [],
+    uuid: processToGenerate.uuid,
+    id: processToGenerate.id,
+    description: processToGenerate.description,
+    isReport: processToGenerate.isReport,
+    isDirectPrint: processToGenerate.isDirectPrint,
+    process: processToGenerate
+  }
+
+  processToGenerate.printFormatsAvailable.forEach(actionValue => {
+    //  Push values
+    printFormats.childs.push({
+      name: actionValue.name,
+      processName: processToGenerate.name,
+      type: 'action',
+      action: 'startProcess',
+      uuid: processToGenerate.uuid,
+      id: processToGenerate.id,
+      description: actionValue.description,
+      isReport: processToGenerate.isReport,
+      isDirectPrint: processToGenerate.isDirectPrint,
+      reportExportType: undefined,
+      printFormatUuid: actionValue.printFormatUuid
+    })
+  })
   //  Add summary Actions
   actions.push(summaryAction)
+  actions.push(printFormats)
 
   const processDefinition = {
     ...processToGenerate,

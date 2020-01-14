@@ -352,12 +352,22 @@ export const contextMixin = {
               href: window.location.href
             })
           }
+          var reportFormat = action.reportExportType
+          if (this.isEmptyValue(reportFormat)) {
+            if (!this.isEmptyValue(this.$route.query.reportType)) {
+              reportFormat = this.$route.query.reportType
+            } else if (!this.isEmptyValue(this.$route.meta.reportFormat)) {
+              reportFormat = this.$route.meta.reportFormat
+            } else {
+              reportFormat = 'html'
+            }
+          }
           this.$store.dispatch(action.action, {
             action: action,
             parentUuid: this.containerUuid,
             containerUuid: containerParams, // EVALUATE IF IS action.uuid
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-            reportFormat: this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
+            reportFormat: reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
             menuParentUuid: parentMenu, // to load relations in context menu (report view)
             routeToDelete: this.$route
           })

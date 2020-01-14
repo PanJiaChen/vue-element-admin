@@ -217,6 +217,9 @@ export function runProcess(process) {
     })
   }
 
+  if (process.printFormatUuid) {
+    processRequest.setPrintformatuuid(process.printFormatUuid)
+  }
   //  Run Process
   return Instance.call(this).requestProcess(processRequest)
 }

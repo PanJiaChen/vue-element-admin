@@ -100,6 +100,7 @@ export default {
   },
   mounted() {
     this.getCachedReport()
+    this.$route.meta.reportFormat = this.reportFormat
   },
   methods: {
     showNotification,

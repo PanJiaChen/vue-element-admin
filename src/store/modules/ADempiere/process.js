@@ -26,9 +26,15 @@ const process = {
       containerUuid,
       routeToDelete
     }) {
+      var printFormatsAvailable
+      dispatch('requestPrintFormats', { processUuid: containerUuid })
+        .then(response => {
+          printFormatsAvailable = response
+        })
       return new Promise((resolve, reject) => {
         getProcessMetadata(containerUuid)
           .then(responseProcess => {
+            responseProcess.printFormatsAvailable = printFormatsAvailable
             const { processDefinition, actions } = generateProcess({
               processToGenerate: responseProcess
             })

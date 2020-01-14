@@ -178,6 +178,7 @@ const processControl = {
           panelType: params.panelType,
           menuParentUuid: params.menuParentUuid,
           processIdPath: params.routeToDelete.path,
+          printFormatUuid: params.action.printFormatUuid,
           // process attributes
           lastRun: timeInitialized,
           action: processDefinition.name,
@@ -240,7 +241,6 @@ const processControl = {
                 selection: selection,
                 tableName: windowSelectionProcess.tableName,
                 recordId: selection[windowSelectionProcess.tableName]
-
               })
                 .then(response => {
                   var output = {
@@ -439,6 +439,7 @@ const processControl = {
                     recordId: itemLog.getRecordid()
                   }
                 })
+              }
               reportViewList.childs = getters.getReportViewList(processResult.processUuid)
               if (reportViewList && !reportViewList.childs.length) {
                 dispatch('requestReportViews', {
@@ -463,23 +464,27 @@ const processControl = {
                 href: undefined,
                 download: undefined
               }
-              printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
-              if (printFormatList && !printFormatList.childs.length) {
-                dispatch('requestPrintFormats', {
-                  processUuid: processResult.processUuid,
-                  instanceUuid: response.getInstanceuuid(),
-                  processId: processDefinition.id,
-                  tableName: output.tableName,
-                  printFormatUuid: output.printFormatUuid,
-                  reportViewUuid: output.reportViewUuid
-                })
-                  .then(response => {
-                    printFormatList.childs = response
-                    if (printFormatList.childs.length) {
-                      // Get contextMenu metadata and concat print Format List with contextMenu actions
-                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                      contextMenuMetadata.actions.push(printFormatList)
-                    }
+              if (processDefinition.isReport) {
+                const blob = new Blob([output.outputStream], { type: output.mimeType })
+                link = document.createElement('a')
+                link.href = window.URL.createObjectURL(blob)
+                link.download = output.fileName
+                if (reportType !== 'pdf' && reportType !== 'html') {
+                  link.click()
+                }
+
+                // Report views List to context menu
+                var reportViewList = {
+                  name: language.t('views.reportView'),
+                  type: 'summary',
+                  action: '',
+                  childs: [],
+                  option: 'reportView'
+                }
+                reportViewList.childs = getters.getReportViewList(processResult.processUuid)
+                if (!reportViewList.childs.length) {
+                  dispatch('requestReportViews', {
+                    processUuid: processResult.processUuid
                   })
                     .then(response => {
                       reportViewList.childs = response
@@ -509,50 +514,52 @@ const processControl = {
                       contextMenuMetadata.actions.push(printFormatList)
                     })
                 }
-              }
 
-              // Drill Tables to context menu
-              var drillTablesList = {
-                name: language.t('views.drillTable'),
-                type: 'summary',
-                action: '',
-                childs: [],
-                option: 'drillTable'
-              }
-              if (!isEmptyValue(output.tableName)) {
-                drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
-                if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
-                  dispatch('requestDrillTables', {
-                    processUuid: processResult.processUuid,
-                    instanceUuid: response.getInstanceuuid(),
-                    processId: processDefinition.id,
-                    tableName: output.tableName,
-                    printFormatUuid: output.printFormatUuid,
-                    reportViewUuid: output.reportViewUuid
-                  })
-                    .then(response => {
-                      drillTablesList.childs = response
-                      if (drillTablesList.childs.length) {
-                        // Get contextMenu metadata and concat print Format List with contextMenu actions
-                        var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                        contextMenuMetadata.actions.push(drillTablesList)
-                      }
+                // Drill Tables to context menu
+                var drillTablesList = {
+                  name: language.t('views.drillTable'),
+                  type: 'summary',
+                  action: '',
+                  childs: [],
+                  option: 'drillTable'
+                }
+                if (!isEmptyValue(output.tableName)) {
+                  drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
+                  if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
+                    dispatch('requestDrillTables', {
+                      processUuid: processResult.processUuid,
+                      instanceUuid: response.getInstanceuuid(),
+                      processId: processDefinition.id,
+                      tableName: output.tableName,
+                      printFormatUuid: output.printFormatUuid,
+                      reportViewUuid: output.reportViewUuid
                     })
+                      .then(response => {
+                        drillTablesList.childs = response
+                        if (drillTablesList.childs.length) {
+                          // Get contextMenu metadata and concat print Format List with contextMenu actions
+                          var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                          contextMenuMetadata.actions.push(drillTablesList)
+                        }
+                      })
+                  }
                 }
               }
-            }),
-            // assign new attributes
-            Object.assign(processResult, {
-              instanceUuid: response.getInstanceuuid(),
-              url: link.href,
-              download: link.download,
-              isError: response.getIserror(),
-              isProcessing: response.getIsprocessing(),
-              summary: response.getSummary(),
-              resultTableName: response.getResulttablename(),
-              lastRun: response.getLastrun(),
-              logs: logList,
-              output: output
+              // assign new attributes
+              Object.assign(processResult, {
+                instanceUuid: response.getInstanceuuid(),
+                url: link.href,
+                download: link.download,
+                isError: response.getIserror(),
+                isProcessing: response.getIsprocessing(),
+                summary: response.getSummary(),
+                resultTableName: response.getResulttablename(),
+                lastRun: response.getLastrun(),
+                logs: logList,
+                output: output
+              })
+              dispatch('setReportTypeToShareLink', processResult.output.reportType)
+              resolve(processResult)
             })
             .catch(error => {
               Object.assign(processResult, {
@@ -586,6 +593,11 @@ const processControl = {
                 processOutput: processResult,
                 routeToDelete: params.routeToDelete
               })
+
+              commit('deleteInExecution', {
+                containerUuid: params.containerUuid
+              })
+
               dispatch('setProcessTable', {
                 valueRecord: 0,
                 tableName: '',
@@ -593,9 +605,6 @@ const processControl = {
               })
               dispatch('setProcessSelect', {
                 finish: true
-              })
-              commit('deleteInExecution', {
-                containerUuid: params.containerUuid
               })
             })
         }
