@@ -1,5 +1,7 @@
 import { getBrowserSearch } from '@/api/ADempiere/data'
-import { convertValuesMapToObject, isEmptyValue, parseContext, showMessage } from '@/utils/ADempiere'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 
 const browserControl = {
@@ -9,8 +11,10 @@ const browserControl = {
      * @param {string}  containerUuid, browser to search record data
      * @param {boolean} isClearSelection, clear selection after search
      */
-    getBrowserSearch({ dispatch, rootGetters }, parameters) {
-      const { containerUuid, isClearSelection = false } = parameters
+    getBrowserSearch({ dispatch, rootGetters }, {
+      containerUuid,
+      isClearSelection = false
+    }) {
       showMessage({
         title: language.t('notifications.loading'),
         message: language.t('notifications.searching'),
@@ -25,27 +29,27 @@ const browserControl = {
       const browser = rootGetters.getBrowser(containerUuid)
       // parameters isQueryCriteria
       const finalParameters = rootGetters.getParametersToServer({
-        containerUuid: containerUuid,
+        containerUuid,
         fieldList: browser.fieldList
       })
 
-      var parsedQuery = browser.query
+      let parsedQuery = browser.query
       if (!isEmptyValue(parsedQuery) && parsedQuery.includes('@')) {
         parsedQuery = parseContext({
-          containerUuid: containerUuid,
+          containerUuid,
           value: parsedQuery
         }, true)
       }
 
-      var parsedWhereClause = browser.whereClause
+      let parsedWhereClause = browser.whereClause
       if (!isEmptyValue(parsedWhereClause) && parsedWhereClause.includes('@')) {
         parsedWhereClause = parseContext({
-          containerUuid: containerUuid,
+          containerUuid,
           value: parsedWhereClause
         }, true)
       }
 
-      var nextPageToken
+      let nextPageToken
       if (!isEmptyValue(allData.nextPageToken)) {
         nextPageToken = allData.nextPageToken + '-' + allData.pageNumber
       }
@@ -59,35 +63,34 @@ const browserControl = {
         parameters: finalParameters,
         nextPageToken: nextPageToken
       })
-        .then(response => {
-          const recordList = response.getRecordsList()
-          const record = recordList.map(itemRecord => {
-            var values = convertValuesMapToObject(itemRecord.getValuesMap())
-
-            // datatables attribute
-            values.isNew = false
-            values.isEdit = false
-            values.isSelected = false
-            values.isReadOnlyFromRow = false
-            return values
+        .then(browserSearchResponse => {
+          const recordsList = browserSearchResponse.recordsList.map(itemRecord => {
+            return {
+              ...itemRecord.values,
+              // datatables attributes
+              isNew: false,
+              isEdit: false,
+              isSelected: false,
+              isReadOnlyFromRow: false
+            }
           })
 
-          var selection = allData.selection
+          let selection = allData.selection
           if (isClearSelection) {
             selection = []
           }
 
-          var token = response.getNextPageToken()
+          let token = browserSearchResponse.nextPageToken
           if (token !== undefined) {
             token = token.slice(0, -2)
           }
 
           dispatch('setRecordSelection', {
-            containerUuid: containerUuid,
-            record: record,
+            containerUuid,
+            record: recordsList,
             pageNumber: rootGetters.getPageNumber(containerUuid),
             selection: selection,
-            recordCount: response.getRecordcount(),
+            recordCount: browserSearchResponse.recordCount,
             nextPageToken: token
           })
           showMessage({
@@ -95,13 +98,13 @@ const browserControl = {
             message: language.t('notifications.succcessSearch'),
             type: 'success'
           })
-          return record
+          return recordsList
         })
         .catch(error => {
           // Set default registry values so that the table does not say loading,
           // there was already a response from the server
           dispatch('setRecordSelection', {
-            containerUuid: containerUuid,
+            containerUuid,
             panelType: 'browser'
           })
 
@@ -111,7 +114,7 @@ const browserControl = {
             summary: error.message,
             type: 'error'
           })
-          console.warn('Error getting browser search: ' + error.message + '. Code: ' + error.code)
+          console.warn(`Error getting browser search: ${error.message}. Code: ${error.code}`)
         })
     }
   }

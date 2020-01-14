@@ -2,7 +2,8 @@
   <el-collapse v-model="activeRecentItems" accordion>
     <el-collapse-item name="recentItems">
       <template slot="title">
-        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.recentItems') }}
+        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" />
+        {{ $t('profile.recentItems') }}
       </template>
       <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
         <div class="recent-items">
@@ -69,21 +70,17 @@ export default {
       return new Promise((resolve, reject) => {
         getRecentItemsFromServer()
           .then(response => {
-            const recentItems = response.getRecentitemsList().map(item => {
-              const actionConverted = convertAction(item.getAction())
+            const recentItems = response.recentItemsList.map(item => {
+              const actionConverted = convertAction(item.action)
               return {
+                ...item,
                 action: actionConverted.name,
                 icon: actionConverted.icon,
-                displayName: item.getDisplayname(),
-                menuUuid: item.getMenuuuid(),
-                menuName: item.getMenuname(),
-                windowUuid: item.getWindowuuid(),
-                tableId: item.getTableid(),
-                recordId: item.getRecordid(),
-                uuidRecord: item.getRecorduuid(),
-                tabUuid: item.getTabuuid(),
-                updated: new Date(item.getUpdated()),
-                description: item.getMenudescription()
+                uuidRecord: item.recordUuid,
+                updated: new Date(item.updated),
+                uuid: item.menuUuid,
+                name: item.menuName,
+                description: item.menuDescription
               }
             })
             this.recentItems = recentItems
@@ -91,7 +88,7 @@ export default {
             resolve(recentItems)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`Error getting recent items: ${error.message}. Code: ${error.code}.`)
           })
       })
     },

@@ -2,7 +2,8 @@
   <el-collapse v-model="activeDocuments" accordion>
     <el-collapse-item name="documents">
       <template slot="title">
-        <i class="el-icon-document" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.PendingDocuments') }}
+        <i class="el-icon-document" style="margin-right: 4px;margin-left: 10px;" />
+        {{ $t('profile.PendingDocuments') }}
       </template>
       <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
         <div class="recent-items">
@@ -32,7 +33,8 @@
 </template>
 
 <script>
-import { getPendingDocumentsFromServer } from '@/api/ADempiere'
+import { getPendingDocumentsFromServer } from '@/api/ADempiere/data'
+
 export default {
   name: 'PendingDocuments',
   data() {
@@ -59,34 +61,20 @@ export default {
       const userUuid = this.$store.getters['user/getUserUuid']
       const roleUuid = this.$store.getters.getRoleUuid
       return new Promise((resolve, reject) => {
-        getPendingDocumentsFromServer(userUuid, roleUuid)
+        getPendingDocumentsFromServer({ userUuid, roleUuid })
           .then(response => {
-            const documentsList = response.getPendingdocumentsList().map(document => {
+            const documentsList = response.pendingDocumentsList.map(documentItem => {
               return {
-                formUuid: document.getFormuuid(),
-                name: document.getDocumentname(),
-                description: document.getDocumentdescription(),
-                criteria: {
-                  type: document.getCriteria().getConditionsList(),
-                  limit: document.getCriteria().getLimit(),
-                  orderbyclause: document.getCriteria().getOrderbyclause(),
-                  orderbycolumnList: document.getCriteria().getOrderbycolumnList(),
-                  query: document.getCriteria().getQuery(),
-                  referenceUuid: document.getCriteria().getReferenceuuid(),
-                  tableName: document.getCriteria().getTablename(),
-                  valuesList: document.getCriteria().getValuesList(),
-                  whereClause: document.getCriteria().getWhereclause()
-                },
-                recordCount: document.getRecordcount(),
-                sequence: document.getSequence(),
-                windowUuid: document.getWindowuuid()
+                ...documentItem,
+                name: documentItem.documentName,
+                description: documentItem.documentDescription
               }
             })
             this.documents = documentsList
             resolve(documentsList)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`Error getting pending documents: ${error.message}. Code: ${error.code}.`)
           })
       })
     },

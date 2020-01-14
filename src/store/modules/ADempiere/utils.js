@@ -107,22 +107,9 @@ const utils = {
     getLanguagesFromServer({ commit }) {
       return new Promise((resolve, reject) => {
         requestLanguages()
-          .then(response => {
-            const languageList = response.getLanguagesList().map(item => {
-              return {
-                language: item.getLanguage(),
-                languageName: item.getLanguagename(),
-                languageIso: item.getLanguageiso(),
-                countryCode: item.getCountrycode(),
-                isBaseLanguage: item.getIsbaselanguage(),
-                isSystemLanguage: item.getIssystemlanguage(),
-                isDecimalPoint: item.getIsdecimalpoint(),
-                datePattern: item.getDatepattern(),
-                timePattern: item.getTimepattern()
-              }
-            })
-            commit('setLanguageList', languageList)
-            resolve(languageList)
+          .then(languageResponse => {
+            commit('setLanguageList', languageResponse.languagesList)
+            resolve(languageResponse.languagesList)
           })
           .catch(error => {
             reject(error)

@@ -1,52 +1,60 @@
 import { runCallOutRequest } from '@/api/ADempiere/data'
-import { convertValuesMapToObject, showMessage } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 const callOutControl = {
   actions: {
-    getCallout({ rootGetters, dispatch }, parameters) {
-      const window = rootGetters.getWindow(parameters.parentUuid)
-      var finalParameters = []
-      if (parameters.inTable) {
-        finalParameters = rootGetters.getParametersToServer({
-          containerUuid: parameters.containerUuid,
-          row: parameters.row
+    getCallout({ rootGetters, dispatch }, {
+      parentUuid,
+      containerUuid,
+      callout,
+      tableName,
+      columnName,
+      withOutColumnNames = [],
+      inTable = false,
+      row,
+      value,
+      oldValue
+    }) {
+      const window = rootGetters.getWindow(parentUuid)
+      let attributesList = []
+      if (inTable) {
+        attributesList = rootGetters.getParametersToServer({
+          containerUuid,
+          row
         })
       } else {
-        finalParameters = rootGetters.getParametersToServer({
-          containerUuid: parameters.containerUuid
+        attributesList = rootGetters.getParametersToServer({
+          containerUuid
         })
       }
 
       return runCallOutRequest({
-        windowUuid: parameters.parentUuid,
-        tabUuid: parameters.containerUuid,
-        tableName: parameters.tableName,
-        columnName: parameters.columnName,
-        value: parameters.value,
-        oldValue: parameters.oldValue,
-        callout: parameters.callout,
-        attributesList: finalParameters,
+        windowUuid: parentUuid,
+        tabUuid: containerUuid,
+        tableName,
+        columnName,
+        value,
+        oldValue,
+        callout,
+        attributesList,
         windowNo: window.windowIndex
       })
-        .then(response => {
-          const values = convertValuesMapToObject(
-            response.getValuesMap()
-          )
-          if (parameters.inTable) {
+        .then(calloutResponse => {
+          if (inTable) {
             dispatch('notifyRowTableChange', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid,
-              row: values,
+              parentUuid,
+              containerUuid,
+              row: calloutResponse.values,
               isEdit: true
             })
           } else {
             dispatch('notifyPanelChange', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid,
+              parentUuid,
+              containerUuid,
               panelType: 'window',
-              newValues: values,
+              newValues: calloutResponse.values,
               isSendToServer: false,
-              withOutColumnNames: parameters.withOutColumnNames,
+              withOutColumnNames,
               isSendCallout: false
             })
           }
@@ -56,7 +64,7 @@ const callOutControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn(`Field ${parameters.name} error callout`, error.message)
+          console.warn(`Field ${columnName} error callout`, error.message)
         })
     }
   }

@@ -219,7 +219,7 @@ export const contextMixin = {
             containerUuid: this.containerUuid,
             recordUuid: this.recordUuid
           })
-            .then(response => {
+            .then(() => {
               this.references = this.$store.getters.getReferencesList(this.parentUuid, this.recordUuid)
               if (this.references.referencesList.length) {
                 this.isReferencesLoaded = true

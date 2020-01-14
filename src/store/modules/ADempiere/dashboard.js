@@ -1,8 +1,11 @@
 // Default store for handle dashboard refresh and other functionalities
-import { requestLisDashboards } from '@/api/ADempiere/data'
+import { requestLisDashboards, getRecentItems } from '@/api/ADempiere/data'
+import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+
 const dashboard = {
   state: {
-    dashboard: []
+    dashboard: [],
+    recentItems: []
   },
   mutations: {
     addDashboard(state, payload) {
@@ -10,41 +13,49 @@ const dashboard = {
     },
     notifyDashboardRefresh: (state, payload) => {
 
+    },
+    setRecentItems(state, payload) {
+      state.recentItems = payload
     }
   },
   actions: {
-    refreshDashboard({ commit, getters }, parameters) {
+    refreshDashboard({ commit }, parameters) {
       commit('notifyDashboardRefresh', parameters)
     },
     listDashboard({ commit }, roleUuid) {
       return new Promise((resolve, reject) => {
         requestLisDashboards(roleUuid)
-          .then(response => {
-            const dashboards = response.getDashboardsList().map(item => {
-              return {
-                windowUuid: item.getWindowuuid(),
-                browserUuid: item.getBrowseruuid(),
-                dashboardName: item.getDashboardname(),
-                dashboardDescription: item.getDashboarddescription(),
-                dashboardHtml: item.getDashboardhtml(),
-                columnNo: item.getColumnno(),
-                lineNo: item.getLineno(),
-                isCollapsible: item.getIscollapsible(),
-                isOpenByDefault: item.getIsopenbydefault(),
-                isEventRequired: item.getIseventrequired(),
-                fileName: item.getFilename()
-              }
-            })
+          .then(dashboardResponse => {
             const roleDashboards = {
               roleUuid: roleUuid,
-              recordCount: response.getRecordcount(),
-              dashboardList: dashboards,
-              nextPageToken: response.getNextPageToken()
+              ...dashboardResponse
             }
             commit('addDashboard', roleDashboards)
             resolve(roleDashboards)
           })
           .catch(error => {
+            reject(error)
+          })
+      })
+    },
+    getRecentItemsFromServer({ commit }) {
+      return new Promise((resolve, reject) => {
+        getRecentItems()
+          .then(recentItemsResponse => {
+            const recentItems = recentItemsResponse.recentItemsList.map(item => {
+              const actionConverted = convertAction(item.action)
+              return {
+                ...item,
+                originalAction: item.action,
+                action: actionConverted.name,
+                icon: actionConverted.icon
+              }
+            })
+            commit('setRecentItems', recentItems)
+            resolve(recentItems)
+          })
+          .catch(error => {
+            console.warn(`Error gettin recent items: ${error.message}. Code: ${error.code}`)
             reject(error)
           })
       })
@@ -60,6 +71,9 @@ const dashboard = {
       return state.dashboard.find(
         item => item.roleUuid === roleUuid
       )
+    },
+    getRecentItems: (state) => {
+      return state.recentItems
     }
   }
 }

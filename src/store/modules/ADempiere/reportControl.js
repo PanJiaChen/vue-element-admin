@@ -22,85 +22,93 @@ const contextMenu = {
     }
   },
   actions: {
-    requestPrintFormats({ commit }, parameters) {
-      return requestPrintFormats({ processUuid: parameters.processUuid })
-        .then(response => {
-          const printFormatList = response.getPrintformatsList().map(printFormat => {
+    requestPrintFormats({ commit }, {
+      processId,
+      processUuid,
+      instanceUuid
+    }) {
+      return requestPrintFormats({ processUuid })
+        .then(printFormatResponse => {
+          const printFormatList = printFormatResponse.printFormatsList.map(printFormatItem => {
             return {
-              printFormatUuid: printFormat.getUuid(),
-              name: printFormat.getName(),
-              description: printFormat.getDescription(),
-              isDefault: printFormat.getIsdefault(),
-              tableName: printFormat.getTablename(),
-              reportViewUuid: printFormat.getReportviewuuid(),
+              ...printFormatItem,
               type: 'updateReport',
               option: 'printFormat',
-              instanceUuid: parameters.instanceUuid,
-              processUuid: parameters.processUuid,
-              processId: parameters.processId
+              instanceUuid,
+              processUuid,
+              processId
             }
           })
           commit('setReportFormatsList', {
-            containerUuid: parameters.processUuid,
-            printFormatList: printFormatList
+            containerUuid: processUuid,
+            printFormatList
           })
           return printFormatList
         })
         .catch(error => {
-          console.error(error)
+          console.warn(`Error getting print formats: ${error.message}. Code: ${error.code}`)
         })
     },
-    requestReportViews({ commit }, parameters) {
-      return requestReportViews({ processUuid: parameters.processUuid })
-        .then(response => {
-          const reportViewList = response.getReportviewsList().map(reportView => {
+    requestReportViews({ commit }, {
+      processId,
+      processUuid,
+      instanceUuid,
+      printFormatUuid
+    }) {
+      return requestReportViews({ processUuid })
+        .then(reportViewResponse => {
+          const reportViewList = reportViewResponse.reportViewsList.map(reportViewItem => {
             return {
-              reportViewUuid: reportView.getUuid(),
-              name: reportView.getName(),
-              tableName: reportView.getTablename(),
-              description: reportView.getDescription(),
+              ...reportViewItem,
               type: 'updateReport',
               option: 'reportView',
-              instanceUuid: parameters.instanceUuid,
-              printFormatUuid: parameters.printFormatUuid,
-              processUuid: parameters.processUuid,
-              processId: parameters.processId
+              instanceUuid,
+              printFormatUuid,
+              processUuid,
+              processId
             }
           })
           commit('setReportViewsList', {
-            containerUuid: parameters.processUuid,
+            containerUuid: processUuid,
             viewList: reportViewList
           })
           return reportViewList
         })
         .catch(error => {
-          console.error(error)
+          console.warn(`Error getting report views: ${error.message}. Code: ${error.code}`)
         })
     },
-    requestDrillTables({ commit }, parameters) {
-      return requestDrillTables(parameters.tableName)
-        .then(response => {
-          const drillTablesList = response.getDrilltablesList().map(drillTable => {
+    requestDrillTables({ commit }, {
+      processId,
+      processUuid,
+      instanceUuid,
+      printFormatUuid,
+      tableName,
+      reportViewUuid
+    }) {
+      return requestDrillTables(tableName)
+        .then(responseDrillTables => {
+          const drillTablesList = responseDrillTables.drillTablesList.map(drillTableItem => {
             return {
-              name: drillTable.getPrintname(),
-              tableName: drillTable.getTablename(),
+              ...drillTableItem,
+              name: drillTableItem.printName,
               type: 'updateReport',
               option: 'drillTable',
-              instanceUuid: parameters.instanceUuid,
-              printFormatUuid: parameters.printFormatUuid,
-              reportViewUuid: parameters.reportViewUuid,
-              processUuid: parameters.processUuid,
-              processId: parameters.processId
+              instanceUuid,
+              printFormatUuid,
+              reportViewUuid,
+              processUuid,
+              processId
             }
           })
           commit('setDrillTablesList', {
-            containerUuid: parameters.processUuid,
-            drillTablesList: drillTablesList
+            containerUuid: processUuid,
+            drillTablesList
           })
           return drillTablesList
         })
         .catch(error => {
-          console.error(error)
+          console.warn(`Error getting drill tables: ${error.message}. Code: ${error.code}`)
         })
     },
     getReportOutputFromServer({ commit, getters, rootGetters }, parameters) {
@@ -119,33 +127,19 @@ const contextMenu = {
         instanceUuid,
         option
       } = parameters
-      const processParameters = rootGetters.getParametersToServer({ containerUuid: processUuid })
+      const parametersList = rootGetters.getParametersToServer({ containerUuid: processUuid })
       return getReportOutput({
-        criteria: processParameters,
-        printFormatUuid: printFormatUuid,
-        reportViewUuid: reportViewUuid,
-        isSummary: isSummary,
-        reportName: reportName,
-        reportType: reportType,
-        tableName: tableName
+        parametersList,
+        printFormatUuid,
+        reportViewUuid,
+        isSummary,
+        reportName,
+        reportType,
+        tableName
       })
         .then(response => {
           const reportOutput = {
-            uuid: response.getUuid(),
-            processName: response.getName(),
-            description: response.getDescription(),
-            fileName: response.getFilename(),
-            output: response.getOutput(),
-            mimeType: response.getMimetype(),
-            dataCols: response.getDatacols(),
-            dataRows: response.getDatarows(),
-            headerName: response.getHeadername(),
-            footerName: response.getFootername(),
-            printFormatUuid: response.getPrintformatuuid(),
-            reportViewUuid: response.getReportviewuuid(),
-            tableName: response.getTablename(),
-            outputStream: response.getOutputstream(),
-            reportType: response.getReporttype(),
+            ...response,
             processId: processId,
             processUuid: processUuid,
             isError: false,
@@ -180,7 +174,7 @@ const contextMenu = {
             isReport: true,
             option: ''
           }
-          console.error(error)
+          console.warn(`Error getting report output: ${error.message}. Code: ${error.code}`)
           return reportOutput
         })
     }

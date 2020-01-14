@@ -2,11 +2,16 @@
   <el-collapse v-model="activeRecentItems" accordion>
     <el-collapse-item name="recentItems">
       <template slot="title">
-        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.recentItems') }}
+        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" />
+        {{ $t('profile.recentItems') }}
       </template>
       <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
         <div class="recent-items">
-          <el-table :data="search.length ? filterResult(search) : recentItems" max-height="455" @row-click="handleClick">
+          <el-table
+            :data="search.length ? filterResult(search) : recentItems"
+            max-height="455"
+            @row-click="handleClick"
+          >
             <el-table-column width="40">
               <template slot-scope="{row}">
                 <svg-icon :icon-class="row.icon" class="icon-window" />
@@ -36,8 +41,6 @@
 </template>
 
 <script>
-import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere'
-import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 export default {
   name: 'RecentItems',
   data() {
@@ -66,40 +69,24 @@ export default {
       return this.cachedViews.includes(uuid)
     },
     getRecentItems() {
-      return new Promise((resolve, reject) => {
-        getRecentItemsFromServer()
-          .then(response => {
-            const recentItems = response.getRecentitemsList().map(item => {
-              const actionConverted = convertAction(item.getAction())
-              return {
-                action: actionConverted.name,
-                icon: actionConverted.icon,
-                displayName: item.getDisplayname(),
-                menuUuid: item.getMenuuuid(),
-                menuName: item.getMenuname(),
-                windowUuid: item.getWindowuuid(),
-                tableId: item.getTableid(),
-                recordId: item.getRecordid(),
-                uuidRecord: item.getRecorduuid(),
-                tabUuid: item.getTabuuid(),
-                updated: new Date(item.getUpdated()),
-                description: item.getMenudescription()
-              }
-            })
-            this.recentItems = recentItems
-            this.isLoaded = false
-            resolve(recentItems)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
+      this.$store.dispatch('getRecentItemsFromServer')
+        .then(recentItemsResponse => {
+          this.recentItems = recentItemsResponse
+        })
     },
     handleClick(row) {
-      if (!this.isEmptyValue(row.uuidRecord)) {
-        this.$router.push({ name: row.menuUuid, query: { action: row.uuidRecord, tabParent: 0 }})
+      if (this.isEmptyValue(row.uuidRecord)) {
+        this.$router.push({
+          name: row.menuUuid
+        })
       } else {
-        this.$router.push({ name: row.menuUuid })
+        this.$router.push({
+          name: row.menuUuid,
+          query: {
+            action: row.uuidRecord,
+            tabParent: 0
+          }
+        })
       }
     },
     subscribeChanges() {

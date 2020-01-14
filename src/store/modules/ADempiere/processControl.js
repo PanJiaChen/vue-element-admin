@@ -1,6 +1,9 @@
-import { runProcess, requestProcessActivity } from '@/api/ADempiere'
+import {
+  runProcess,
+  requestProcessActivity
+} from '@/api/ADempiere/data'
 import { showNotification } from '@/utils/ADempiere/notification'
-import { isEmptyValue, convertMapToArrayPairs } from '@/utils/ADempiere'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 import router from '@/router'
 
@@ -117,9 +120,11 @@ const processControl = {
             message: `In this process (${samePocessInExecution.name}) there is already an execution in progress.`
           })
         }
-        var selection = []
-        var allData = {}
-        var tab, tableName, recordId
+
+        // additional attributes to send server, selection to browser, or table name and record id to window
+        let selection = []
+        let allData = {}
+        let tab, tableName, recordId
         if (params.panelType) {
           if (params.panelType === 'browser') {
             allData = getters.getDataRecordAndSelection(params.containerUuid)
@@ -160,7 +165,7 @@ const processControl = {
         }
         // get info metadata process
         const processDefinition = rootGetters.getProcess(params.action.uuid)
-        var reportType = params.reportFormat
+        let reportType = params.reportFormat
         const finalParameters = rootGetters.getParametersToServer({ containerUuid: processDefinition.uuid })
 
         showNotification({
@@ -242,46 +247,22 @@ const processControl = {
                 tableName: windowSelectionProcess.tableName,
                 recordId: selection[windowSelectionProcess.tableName]
               })
-                .then(response => {
-                  var output = {
-                    uuid: '',
-                    name: '',
-                    description: '',
-                    fileName: '',
-                    mimeType: '',
-                    output: '',
-                    outputStream: '',
-                    reportType: ''
-                  }
-                  if (response.getOutput()) {
-                    const responseOutput = response.getOutput()
-                    output = {
-                      uuid: responseOutput.getUuid(),
-                      name: responseOutput.getName(),
-                      description: responseOutput.getDescription(),
-                      fileName: responseOutput.getFilename(),
-                      mimeType: responseOutput.getMimetype(),
-                      output: responseOutput.getOutput(),
-                      outputStream: responseOutput.getOutputstream(),
-                      reportType: responseOutput.getReporttype()
-                    }
-                  }
-                  var logList = []
-                  if (response.getLogsList()) {
-                    logList = response.getLogsList().map(itemLog => {
-                      return {
-                        log: itemLog.getLog(),
-                        recordId: itemLog.getRecordid()
-                      }
-                    })
+                .then(runProcessResponse => {
+                  const { instanceUuid, output } = runProcessResponse
+                  let logList = []
+                  if (runProcessResponse.logsList) {
+                    logList = runProcessResponse.logsList
                   }
 
-                  var link = {
+                  let link = {
                     href: undefined,
                     download: undefined
                   }
                   if (processDefinition.isReport) {
-                    const blob = new Blob([output.outputStream], { type: output.mimeType })
+                    const blob = new Blob(
+                      [output.outputStream],
+                      { type: output.mimeType }
+                    )
                     link = document.createElement('a')
                     link.href = window.URL.createObjectURL(blob)
                     link.download = output.fileName
@@ -290,7 +271,7 @@ const processControl = {
                     }
 
                     // Report views List to context menu
-                    var reportViewList = {
+                    const reportViewList = {
                       name: language.t('views.reportView'),
                       type: 'summary',
                       action: '',
@@ -298,20 +279,27 @@ const processControl = {
                       option: 'reportView'
                     }
                     reportViewList.childs = getters.getReportViewList(processResult.processUuid)
-                    if (!reportViewList.childs.length) {
+                    if (reportViewList && isEmptyValue(reportViewList.childs)) {
                       dispatch('requestReportViews', {
-                        processUuid: processResult.processUuid
+                        processUuid: processResult.processUuid,
+                        instanceUuid,
+                        processId: processDefinition.id,
+                        tableName: output.tableName,
+                        printFormatUuid: output.printFormatUuid,
+                        reportViewUuid: output.reportViewUuid
                       })
-                        .then(response => {
-                          reportViewList.childs = response
-                          // Get contextMenu metadata and concat print report views with contextMenu actions
-                          var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                          contextMenuMetadata.actions.push(reportViewList)
+                        .then(responseReportView => {
+                          reportViewList.childs = responseReportView
+                          if (reportViewList.childs.length) {
+                            // Get contextMenu metadata and concat print report views with contextMenu actions
+                            const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                            contextMenuMetadata.actions.push(reportViewList)
+                          }
                         })
                     }
 
                     // Print formats to context menu
-                    var printFormatList = {
+                    const printFormatList = {
                       name: language.t('views.printFormat'),
                       type: 'summary',
                       action: '',
@@ -319,30 +307,62 @@ const processControl = {
                       option: 'printFormat'
                     }
                     printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
-                    if (!printFormatList.childs.length) {
+                    if (printFormatList && isEmptyValue(printFormatList.childs.length)) {
                       dispatch('requestPrintFormats', {
-                        processUuid: processResult.processUuid
+                        processUuid: processResult.processUuid,
+                        instanceUuid,
+                        processId: processDefinition.id,
+                        tableName: output.tableName,
+                        printFormatUuid: output.printFormatUuid,
+                        reportViewUuid: output.reportViewUuid
                       })
-                        .then(response => {
-                          printFormatList.childs = response
-                          // Get contextMenu metadata and concat print Format List with contextMenu actions
-                          var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                          contextMenuMetadata.actions.push(printFormatList)
+                        .then(printFormarResponse => {
+                          printFormatList.childs = printFormarResponse
+                          if (printFormatList.childs.length) {
+                            // Get contextMenu metadata and concat print Format List with contextMenu actions
+                            const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                            contextMenuMetadata.actions.push(printFormatList)
+                          }
                         })
+                    }
+
+                    // Drill Tables to context menu
+                    const drillTablesList = {
+                      name: language.t('views.drillTable'),
+                      type: 'summary',
+                      action: '',
+                      childs: [],
+                      option: 'drillTable'
+                    }
+                    if (!isEmptyValue(output.tableName)) {
+                      drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
+                      if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
+                        dispatch('requestDrillTables', {
+                          processUuid: processResult.processUuid,
+                          instanceUuid,
+                          processId: processDefinition.id,
+                          tableName: output.tableName,
+                          printFormatUuid: output.printFormatUuid,
+                          reportViewUuid: output.reportViewUuid
+                        })
+                          .then(drillTablesResponse => {
+                            drillTablesList.childs = drillTablesResponse
+                            if (drillTablesList.childs.length) {
+                              // Get contextMenu metadata and concat drill tables list with contextMenu actions
+                              const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                              contextMenuMetadata.actions.push(drillTablesList)
+                            }
+                          })
+                      }
                     }
                   }
                   // assign new attributes
                   Object.assign(processResult, {
-                    instanceUuid: response.getInstanceuuid(),
+                    ...runProcessResponse,
                     url: link.href,
                     download: link.download,
-                    isError: response.getIserror(),
-                    isProcessing: response.getIsprocessing(),
-                    summary: response.getSummary(),
-                    ResultTableName: response.getResulttablename(),
-                    lastRun: response.getLastrun(),
                     logs: logList,
-                    output: output
+                    output
                   })
                   dispatch('setReportTypeToShareLink', processResult.output.reportType)
                   commit('addNotificationProcess', processResult)
@@ -354,7 +374,7 @@ const processControl = {
                     message: error.message,
                     isProcessing: false
                   })
-                  console.log('Error running the process', error)
+                  console.warn(`Error running the process ${error}`)
                   reject(error)
                 })
                 .finally(() => {
@@ -373,7 +393,7 @@ const processControl = {
                     //   message: language.t('notifications.totalProcess') + countResponse + language.t('notifications.error') + state.errorSelection + language.t('notifications.succesful') + state.successSelection + language.t('notifications.processExecuted'),
                     //   type: 'success'
                     // })
-                    var processMessage = {
+                    const processMessage = {
                       title: language.t('notifications.succesful'),
                       message: language.t('notifications.totalProcess') + countResponse + language.t('notifications.error') + state.errorSelection + language.t('notifications.succesful') + state.successSelection + language.t('notifications.processExecuted'),
                       type: 'success'
@@ -401,71 +421,28 @@ const processControl = {
           runProcess({
             uuid: processDefinition.uuid,
             id: processDefinition.id,
-            reportType: reportType,
+            reportType,
             parameters: finalParameters,
-            selection: selection,
-            tableName: tableName,
-            recordId: recordId
+            selection,
+            tableName,
+            recordId
           })
-            .then(response => {
-              var output = {
-                uuid: '',
-                name: '',
-                description: '',
-                fileName: '',
-                mimeType: '',
-                output: '',
-                outputStream: '',
-                reportType: ''
-              }
-              if (response.getOutput()) {
-                const responseOutput = response.getOutput()
-                output = {
-                  uuid: responseOutput.getUuid(),
-                  name: responseOutput.getName(),
-                  description: responseOutput.getDescription(),
-                  fileName: responseOutput.getFilename(),
-                  mimeType: responseOutput.getMimetype(),
-                  output: responseOutput.getOutput(),
-                  outputStream: responseOutput.getOutputstream(),
-                  reportType: responseOutput.getReporttype()
-                }
-              }
-              var logList = []
-              if (response.getLogsList()) {
-                logList = response.getLogsList().map(itemLog => {
-                  return {
-                    log: itemLog.getLog(),
-                    recordId: itemLog.getRecordid()
-                  }
-                })
-              }
-              reportViewList.childs = getters.getReportViewList(processResult.processUuid)
-              if (reportViewList && !reportViewList.childs.length) {
-                dispatch('requestReportViews', {
-                  processUuid: processResult.processUuid,
-                  instanceUuid: response.getInstanceuuid(),
-                  processId: processDefinition.id,
-                  tableName: output.tableName,
-                  printFormatUuid: output.printFormatUuid,
-                  reportViewUuid: output.reportViewUuid
-                })
-                  .then(response => {
-                    reportViewList.childs = response
-                    if (reportViewList.childs.length) {
-                      // Get contextMenu metadata and concat print report views with contextMenu actions
-                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                      contextMenuMetadata.actions.push(reportViewList)
-                    }
-                  })
+            .then(runProcessResponse => {
+              const { instanceUuid, output } = runProcessResponse
+              let logList = []
+              if (runProcessResponse.logsList) {
+                logList = runProcessResponse.logsList
               }
 
-              var link = {
+              let link = {
                 href: undefined,
                 download: undefined
               }
               if (processDefinition.isReport) {
-                const blob = new Blob([output.outputStream], { type: output.mimeType })
+                const blob = new Blob(
+                  [output.outputStream],
+                  { type: output.mimeType }
+                )
                 link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
                 link.download = output.fileName
@@ -474,7 +451,7 @@ const processControl = {
                 }
 
                 // Report views List to context menu
-                var reportViewList = {
+                const reportViewList = {
                   name: language.t('views.reportView'),
                   type: 'summary',
                   action: '',
@@ -482,20 +459,27 @@ const processControl = {
                   option: 'reportView'
                 }
                 reportViewList.childs = getters.getReportViewList(processResult.processUuid)
-                if (!reportViewList.childs.length) {
+                if (reportViewList && !reportViewList.childs.length) {
                   dispatch('requestReportViews', {
-                    processUuid: processResult.processUuid
+                    processUuid: processResult.processUuid,
+                    instanceUuid,
+                    processId: processDefinition.id,
+                    tableName: output.tableName,
+                    printFormatUuid: output.printFormatUuid,
+                    reportViewUuid: output.reportViewUuid
                   })
-                    .then(response => {
-                      reportViewList.childs = response
-                      // Get contextMenu metadata and concat print report views with contextMenu actions
-                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                      contextMenuMetadata.actions.push(reportViewList)
+                    .then(responseReportView => {
+                      reportViewList.childs = responseReportView
+                      if (reportViewList.childs.length) {
+                        // Get contextMenu metadata and concat print report views with contextMenu actions
+                        const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                        contextMenuMetadata.actions.push(reportViewList)
+                      }
                     })
                 }
 
                 // Print formats to context menu
-                var printFormatList = {
+                const printFormatList = {
                   name: language.t('views.printFormat'),
                   type: 'summary',
                   action: '',
@@ -503,20 +487,27 @@ const processControl = {
                   option: 'printFormat'
                 }
                 printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
-                if (!printFormatList.childs.length) {
+                if (printFormatList && !printFormatList.childs.length) {
                   dispatch('requestPrintFormats', {
-                    processUuid: processResult.processUuid
+                    processUuid: processResult.processUuid,
+                    instanceUuid,
+                    processId: processDefinition.id,
+                    tableName: output.tableName,
+                    printFormatUuid: output.printFormatUuid,
+                    reportViewUuid: output.reportViewUuid
                   })
-                    .then(response => {
-                      printFormatList.childs = response
-                      // Get contextMenu metadata and concat print Format List with contextMenu actions
-                      var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                      contextMenuMetadata.actions.push(printFormatList)
+                    .then(printFormarResponse => {
+                      printFormatList.childs = printFormarResponse
+                      if (printFormatList.childs.length) {
+                        // Get contextMenu metadata and concat print Format List with contextMenu actions
+                        const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                        contextMenuMetadata.actions.push(printFormatList)
+                      }
                     })
                 }
 
                 // Drill Tables to context menu
-                var drillTablesList = {
+                const drillTablesList = {
                   name: language.t('views.drillTable'),
                   type: 'summary',
                   action: '',
@@ -528,17 +519,17 @@ const processControl = {
                   if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
                     dispatch('requestDrillTables', {
                       processUuid: processResult.processUuid,
-                      instanceUuid: response.getInstanceuuid(),
+                      instanceUuid,
                       processId: processDefinition.id,
                       tableName: output.tableName,
                       printFormatUuid: output.printFormatUuid,
                       reportViewUuid: output.reportViewUuid
                     })
-                      .then(response => {
-                        drillTablesList.childs = response
+                      .then(drillTablesResponse => {
+                        drillTablesList.childs = drillTablesResponse
                         if (drillTablesList.childs.length) {
                           // Get contextMenu metadata and concat print Format List with contextMenu actions
-                          var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
+                          const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
                           contextMenuMetadata.actions.push(drillTablesList)
                         }
                       })
@@ -547,16 +538,11 @@ const processControl = {
               }
               // assign new attributes
               Object.assign(processResult, {
-                instanceUuid: response.getInstanceuuid(),
+                ...runProcessResponse,
                 url: link.href,
                 download: link.download,
-                isError: response.getIserror(),
-                isProcessing: response.getIsprocessing(),
-                summary: response.getSummary(),
-                resultTableName: response.getResulttablename(),
-                lastRun: response.getLastrun(),
                 logs: logList,
-                output: output
+                output
               })
               dispatch('setReportTypeToShareLink', processResult.output.reportType)
               resolve(processResult)
@@ -567,7 +553,7 @@ const processControl = {
                 message: error.message,
                 isProcessing: false
               })
-              console.log('Error running the process', error)
+              console.warn(`Error running the process ${error.message}. Code: ${error.code}`)
               reject(error)
             })
             .finally(() => {
@@ -715,7 +701,10 @@ const processControl = {
                   download: undefined
                 }
                 if (processDefinition.isReport) {
-                  const blob = new Blob([output.outputStream], { type: output.mimeType })
+                  const blob = new Blob(
+                    [output.outputStream],
+                    { type: output.mimeType }
+                  )
                   link = document.createElement('a')
                   link.href = window.URL.createObjectURL(blob)
                   link.download = output.fileName
@@ -796,7 +785,7 @@ const processControl = {
                   message: error.message,
                   isProcessing: false
                 })
-                console.log('Error running the process', error)
+                console.warn(`Error running the process ${error}`)
               })
           }
         })
@@ -808,63 +797,31 @@ const processControl = {
     getSessionProcessFromServer({ commit, dispatch, getters, rootGetters }) {
       // process Activity
       return requestProcessActivity()
-        .then(response => {
-          var responseList = response.getResponsesList().map(responseItem => {
-            var uuid = responseItem.getUuid()
-            var responseOutput = responseItem.getOutput()
-            var output
-            if (responseOutput !== undefined) {
-              output = {
-                uuid: uuid,
-                name: responseOutput.getName(),
-                description: responseOutput.getDescription(),
-                fileName: responseOutput.getFilename(),
-                mimeType: responseOutput.getMimetype(),
-                output: responseOutput.getOutput(),
-                outputStream: responseOutput.getOutputstream(),
-                outputStream_asB64: responseOutput.getOutputstream_asB64(),
-                outputStream_asU8: responseOutput.getOutputstream_asU8(),
-                reportType: responseOutput.getReporttype()
-              }
-            }
-            var logList = responseItem.getLogsList().map(log => {
-              return {
-                recordId: log.getRecordid(),
-                log: log.getLog()
-              }
-            })
-            var processMetadata = rootGetters.getProcess(uuid)
+        .then(processActivityResponse => {
+          const responseList = processActivityResponse.responsesList.map(businessProcessItem => {
+            const processMetadata = rootGetters.getProcess(businessProcessItem.uuid)
             // if no exists metadata process in store and no request progess
-            if (processMetadata === undefined && getters.getInRequestMetadata(uuid) === undefined) {
-              commit('addInRequestMetadata', uuid)
-              dispatch('getProcessFromServer', { containerUuid: uuid })
+            if (processMetadata === undefined && getters.getInRequestMetadata(businessProcessItem.uuid) === undefined) {
+              commit('addInRequestMetadata', businessProcessItem.uuid)
+              dispatch('getProcessFromServer', {
+                containerUuid: businessProcessItem.uuid
+              })
                 .finally(() => {
-                  commit('deleteInRequestMetadata', uuid)
+                  commit('deleteInRequestMetadata', businessProcessItem.uuid)
                 })
             }
 
-            var process = {
-              processUuid: responseItem.getUuid(),
-              instanceUuid: responseItem.getInstanceuuid(),
-              isError: responseItem.getIserror(),
-              isProcessing: responseItem.getIsprocessing(),
-              logs: logList,
-              output: output,
-              lastRun: responseItem.getLastrun(),
-              parametersMap: responseItem.getParametersMap(),
-              parameters: convertMapToArrayPairs(
-                responseItem.getParametersMap()
-              ),
-              ResultTableName: responseItem.getResulttablename(),
-              summary: responseItem.getSummary()
+            const process = {
+              ...businessProcessItem,
+              processUuid: businessProcessItem.uuid
             }
             return process
           })
 
-          var processResponseList = {
-            recordCount: response.getRecordcount(),
+          const processResponseList = {
+            recordCount: processActivityResponse.recordCount,
             processList: responseList,
-            nextPageToken: response.getNextPageToken()
+            nextPageToken: processActivityResponse.nextPageToken
           }
           commit('setSessionProcess', processResponseList)
           return processResponseList
@@ -875,17 +832,19 @@ const processControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn('Error getting process activity:' + error.message + '. Code: ' + error.code)
+          console.warn(`Error getting process activity: ${error.message}. Code: ${error.code}`)
         })
     },
     /**
-     *
+     * Show modal dialog with process/report, tab (sequence) metadata
      * @param {object} params
      */
     setShowDialog({ state, commit, dispatch, rootGetters }, params) {
       const panels = ['process', 'report', 'window']
       if (params.action && (panels.includes(params.type) || panels.includes(params.action.panelType))) {
-        if (state.metadata && state.metadata.containerUuid === params.action.containerUuid) {
+        // show some process loaded in store
+        if (state.metadata && !isEmptyValue(state.metadata.containerUuid) &&
+        state.metadata.containerUuid === params.action.containerUuid) {
           commit('setShowDialog', true)
           return
         }
@@ -893,7 +852,7 @@ const processControl = {
         if (panel === undefined) {
           dispatch('getPanelAndFields', {
             parentUuid: params.action.parentUuid,
-            containerUuid: params.action.containerUuid || params.action.uuid,
+            containerUuid: isEmptyValue(params.action.uuid) ? params.action.containerUuid : params.action.uuid,
             panelType: params.action.panelType
           })
             .then(response => {
@@ -917,7 +876,7 @@ const processControl = {
         logs: parameters.processOutput.logs,
         summary: parameters.processOutput.summary
       }
-      var errorMessage = !isEmptyValue(parameters.processOutput.message) ? parameters.processOutput.message : language.t('login.error')
+      var errorMessage = !isEmptyValue(parameters.processOutput.message) ? parameters.processOutput.message : language.t('notifications.error')
       // TODO: Add isReport to type always 'success'
       if (parameters.processOutput.isError || isEmptyValue(parameters.processOutput.processId) || isEmptyValue(parameters.processOutput.instanceUuid)) {
         processMessage.title = language.t('notifications.error')
@@ -931,7 +890,7 @@ const processControl = {
           parameters.processOutput.menuParentUuid = parameters.processOutput.processUuid
         }
 
-        var tableName
+        let tableName
         if (parameters.processOutput.option && !isEmptyValue(parameters.processOutput.option)) {
           if (parameters.processOutput.option === 'drillTable') {
             tableName = parameters.processOutput.tableName

@@ -1,5 +1,7 @@
 import { createEntity, updateEntity, deleteEntity, getReferencesList, rollbackEntity } from '@/api/ADempiere/data'
-import { convertObjectToArrayPairs, convertValuesMapToObject, isEmptyValue, parseContext, showMessage } from '@/utils/ADempiere'
+import { convertObjectToArrayPairs, isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 import router from '@/router'
 
@@ -69,36 +71,39 @@ const windowControl = {
         newValues: oldAttributes
       })
     },
-    createNewEntity({ commit, dispatch, getters, rootGetters }, parameters) {
+    createNewEntity({ commit, dispatch, getters, rootGetters }, {
+      parentUuid,
+      containerUuid
+    }) {
       return new Promise((resolve, reject) => {
         // exists some call to create new record with container uuid
-        if (getters.getInCreate(parameters.containerUuid)) {
+        if (getters.getInCreate(containerUuid)) {
           return reject({
             error: 0,
-            message: `In this panel (${parameters.containerUuid}) is a create new record in progress`
+            message: `In this panel (${containerUuid}) is a create new record in progress`
           })
         }
 
-        const panel = rootGetters.getPanel(parameters.containerUuid)
+        const { tableName, fieldList } = rootGetters.getPanel(containerUuid)
         // delete key from attributes
         const finalAttributes = rootGetters.getColumnNamesAndValues({
-          containerUuid: parameters.containerUuid,
+          containerUuid,
           propertyName: 'value',
           isEvaluateValues: true,
           isAddDisplayColumn: true
         })
 
         commit('addInCreate', {
-          containerUuid: parameters.containerUuid,
-          tableName: panel.tableName,
+          containerUuid,
+          tableName,
           attributesList: finalAttributes
         })
         createEntity({
-          tableName: panel.tableName,
+          tableName,
           attributesList: finalAttributes
         })
-          .then(response => {
-            var newValues = convertValuesMapToObject(response.getValuesMap())
+          .then(createEntityResponse => {
+            const newValues = createEntityResponse.values
             finalAttributes.forEach(element => {
               if (element.columnName.includes('DisplayColumn')) {
                 newValues[element.columnName] = element.value
@@ -112,23 +117,23 @@ const windowControl = {
 
             // update fields with new values
             dispatch('notifyPanelChange', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid,
-              newValues: newValues,
+              parentUuid,
+              containerUuid,
+              newValues,
               isSendToServer: false
             })
             dispatch('addNewRow', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid,
+              parentUuid,
+              containerUuid,
               isPanelValues: true,
               isEdit: false
             })
 
             // set data log to undo action
-            const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+            const fieldId = fieldList.find(itemField => itemField.isKey)
             dispatch('setDataLog', {
-              containerUuid: parameters.containerUuid,
-              tableName: panel.tableName,
+              containerUuid,
+              tableName,
               recordId: fieldId.value, // TODO: Verify performance with tableName_ID
               recordUuid: newValues.UUID,
               eventType: 'INSERT'
@@ -139,16 +144,16 @@ const windowControl = {
               name: oldRoute.name,
               query: {
                 ...oldRoute.query,
-                action: response.getUuid()
+                action: createEntityResponse.uuid
               }
             })
             dispatch('tagsView/delView', oldRoute, true)
 
             resolve({
               data: newValues,
-              recordUuid: response.getUuid(),
-              recordId: response.getId(),
-              tableName: response.getTablename()
+              recordUuid: createEntityResponse.uuid,
+              recordId: createEntityResponse.id,
+              tableName: createEntityResponse.tableName
             })
           })
           .catch(error => {
@@ -156,20 +161,23 @@ const windowControl = {
               message: error.message,
               type: 'error'
             })
-            console.warn('Create Entity error: ' + error.message)
+            console.warn(`Create Entity error: ${error.message}`)
             reject(error)
           })
           .finally(() => {
             commit('deleteInCreate', {
-              containerUuid: parameters.containerUuid,
-              tableName: panel.tableName,
+              containerUuid,
+              tableName,
               attributesList: finalAttributes
             })
           })
       })
     },
-    createEntityFromTable({ commit, getters, rootGetters }, parameters) {
-      const { containerUuid, row } = parameters
+    createEntityFromTable({ commit, getters, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      row
+    }) {
       // exists some call to create new record with container uuid
       if (getters.getInCreate(containerUuid)) {
         return {
@@ -177,13 +185,13 @@ const windowControl = {
           message: `In this panel (${containerUuid}) is a create new record in progress.`
         }
       }
-      const panel = rootGetters.getPanel(containerUuid)
+      const { tableName, isParentTab } = rootGetters.getPanel(containerUuid)
 
       // TODO: Add support to Binary columns (BinaryData)
       const columnsToDontSend = ['BinaryData', 'isSendServer', 'isEdit']
 
       // attributes or fields
-      var finalAttributes = convertObjectToArrayPairs(row)
+      let finalAttributes = convertObjectToArrayPairs(row)
       finalAttributes = finalAttributes.filter(itemAttribute => {
         if (isEmptyValue(itemAttribute.value)) {
           return false
@@ -195,56 +203,51 @@ const windowControl = {
       })
 
       commit('addInCreate', {
-        containerUuid: parameters.containerUuid,
-        tableName: panel.tableName,
+        containerUuid,
+        tableName,
         attributesList: finalAttributes
       })
       return createEntity({
-        tableName: panel.tableName,
+        tableName,
         attributesList: finalAttributes
       })
-        .then(response => {
-          const newValues = convertValuesMapToObject(response.getValuesMap())
-
-          const result = {
-            data: newValues,
-            recordUuid: response.getUuid(),
-            recordId: response.getId(),
-            tableName: response.getTablename()
-          }
+        .then(createEntityResponse => {
           showMessage({
             message: language.t('data.createRecordSuccessful'),
             type: 'success'
           })
-          if (panel.isParentTab) {
+          if (isParentTab) {
             // redirect to create new record
             const oldRoute = router.app._route
             router.push({
               name: oldRoute.name,
               query: {
                 ...oldRoute.query,
-                action: result.recordUuid
+                action: createEntityResponse.recordUuid
               }
             })
           }
-          return result
+          return {
+            data: createEntityResponse.values,
+            ...createEntityResponse
+          }
         })
         .catch(error => {
           showMessage({
             message: error.message,
             type: 'error'
           })
-          console.warn('Create Entity Table Error ' + error.code + ': ' + error.message)
+          console.warn(`Create Entity Table Error ${error.code}: ${error.message}`)
         })
         .finally(() => {
           commit('deleteInCreate', {
-            containerUuid: containerUuid,
-            tableName: panel.tableName,
+            containerUuid,
+            tableName,
             attributesList: finalAttributes
           })
         })
     },
-    updateCurrentEntity({ commit, dispatch, rootGetters }, {
+    updateCurrentEntity({ dispatch, rootGetters }, {
       containerUuid,
       recordUuid = null
     }) {
@@ -257,7 +260,7 @@ const windowControl = {
       const columnsToDontSend = ['Account_Acct']
 
       // attributes or fields
-      var finalAttributes = rootGetters.getColumnNamesAndValues({
+      let finalAttributes = rootGetters.getColumnNamesAndValues({
         containerUuid: containerUuid,
         isEvaluatedChangedValue: true
       })
@@ -275,29 +278,38 @@ const windowControl = {
 
       return updateEntity({
         tableName: panel.tableName,
-        recordUuid: recordUuid,
+        recordUuid,
         attributesList: finalAttributes
       })
-        .then(response => {
-          const newValues = convertValuesMapToObject(response.getValuesMap())
-          const responseConvert = {
-            data: newValues,
-            id: response.getId(),
-            uuid: recordUuid,
-            tableName: panel.tableName
-          }
+        .then(updateEntityResponse => {
+          const newValues = updateEntityResponse.values
 
           // set data log to undo action
-          const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+          // TODO: Verify performance with tableName_ID
+          let recordId = updateEntityResponse.id
+          if (isEmptyValue(recordId)) {
+            recordId = newValues[`${panel.tableName}_ID`]
+          }
+          if (isEmptyValue(recordId)) {
+            const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+            recordId = fieldId.value
+          }
+
+          if (isEmptyValue(recordUuid)) {
+            recordUuid = updateEntityResponse.uuid
+          }
+          if (isEmptyValue(recordUuid)) {
+            recordUuid = newValues.UUID
+          }
+
           dispatch('setDataLog', {
-            containerUuid: containerUuid,
+            containerUuid,
             tableName: panel.tableName,
-            recordId: fieldId.value, // TODO: Verify performance with tableName_ID
-            recordUuid: newValues.UUID,
+            recordId,
+            recordUuid,
             eventType: 'UPDATE'
           })
 
-          commit('setRecordDetail', responseConvert)
           return newValues
         })
         .catch(error => {
@@ -305,22 +317,26 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn('Update Entity Error ' + error.code + ': ' + error.message)
+          console.warn(`Update Entity Error ${error.code}: ${error.message}`)
         })
     },
-    updateCurrentEntityFromTable({ rootGetters }, parameters) {
-      const panel = rootGetters.getPanel(parameters.containerUuid)
+    updateCurrentEntityFromTable({ rootGetters }, {
+      parentUuid,
+      containerUuid,
+      row
+    }) {
+      const { tableName, fieldList } = rootGetters.getPanel(containerUuid)
 
       // TODO: Add support to Binary columns (BinaryData)
       const columnsToDontSend = ['BinaryData', 'isSendServer', 'isEdit']
 
       // attributes or fields
-      var finalAttributes = convertObjectToArrayPairs(parameters.row)
+      let finalAttributes = convertObjectToArrayPairs(row)
       finalAttributes = finalAttributes.filter(itemAttribute => {
         if (columnsToDontSend.includes(itemAttribute.columnName) || itemAttribute.columnName.includes('DisplayColumn')) {
           return false
         }
-        const field = panel.fieldList.find(itemField => itemField.columnName === itemAttribute.columnName)
+        const field = fieldList.find(itemField => itemField.columnName === itemAttribute.columnName)
         if (!field || !field.isUpdateable || !field.isDisplayed) {
           return false
         }
@@ -328,8 +344,8 @@ const windowControl = {
       })
 
       return updateEntity({
-        tableName: panel.tableName,
-        recordUuid: parameters.row.UUID,
+        tableName,
+        recordUuid: row.UUID,
         attributesList: finalAttributes
       })
         .then(response => {
@@ -340,39 +356,42 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn('Update Entity Table Error ' + error.code + ': ' + error.message)
+          console.warn(`Update Entity Table Error ${error.code}: ${error.message}`)
         })
     },
     /**
      * Update record after run process associated with window
-     * @param {object} parameters
-     * @param {string} parameters.parentUuid
-     * @param {string} parameters.containerUuid
-     * @param {object} parameters.tab
+     * @param {string} parentUuid
+     * @param {string} containerUuid
+     * @param {object} tab
      */
-    updateRecordAfterRunProcess({ dispatch, rootGetters }, parameters) {
-      const recordUuid = rootGetters.getUuid(parameters.containerUuid)
+    updateRecordAfterRunProcess({ dispatch, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      tab
+    }) {
+      const recordUuid = rootGetters.getUuid(containerUuid)
       // get new values
       dispatch('getEntity', {
-        parentUuid: parameters.parentUuid,
-        containerUuid: parameters.containerUuid,
-        tableName: parameters.tab.tableName,
+        parentUuid,
+        containerUuid,
+        tableName: tab.tableName,
         recordUuid: recordUuid
       })
         .then(response => {
           // update panel
-          if (parameters.tab.isParentTab) {
+          if (tab.isParentTab) {
             dispatch('notifyPanelChange', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid,
+              parentUuid,
+              containerUuid,
               newValues: response,
               isSendToServer: false
             })
           }
           // update row in table
           dispatch('notifyRowTableChange', {
-            parentUuid: parameters.parentUuid,
-            containerUuid: parameters.containerUuid,
+            parentUuid,
+            containerUuid,
             row: response,
             isEdit: false
           })
@@ -386,7 +405,7 @@ const windowControl = {
           tableName: panel.tableName,
           recordUuid: parameters.recordUuid
         })
-          .then(response => {
+          .then(responseDeleteEntity => {
             const oldRoute = router.app._route
 
             // refresh record list
@@ -394,9 +413,9 @@ const windowControl = {
               parentUuid: parameters.parentUuid,
               containerUuid: parameters.containerUuid
             })
-              .then(response => {
+              .then(responseDataList => {
                 // if response is void, go to new record
-                if (response.length <= 0) {
+                if (responseDataList.length <= 0) {
                   dispatch('resetPanelToNew', {
                     parentUuid: parameters.parentUuid,
                     containerUuid: parameters.containerUuid,
@@ -409,7 +428,7 @@ const windowControl = {
                     name: oldRoute.name,
                     query: {
                       ...oldRoute.query,
-                      action: response[0].UUID
+                      action: responseDataList[0].UUID
                     }
                   })
                 }
@@ -429,14 +448,14 @@ const windowControl = {
               eventType: 'DELETE'
             })
 
-            resolve(response)
+            resolve(responseDeleteEntity)
           })
           .catch(error => {
             showMessage({
               message: language.t('data.deleteRecordError'),
               type: 'error'
             })
-            console.warn('Delete Entity - Error ', error.message, ', Code:', error.code)
+            console.warn(`Delete Entity - Error ${error.message}, Code: ${error.code}`)
             reject(error)
           })
       })
@@ -446,11 +465,13 @@ const windowControl = {
      * @param {string} containerUuid
      * @param {string} parentUuid
      */
-    deleteSelectionDataList({ dispatch, rootGetters }, parameters) {
-      const { parentUuid, containerUuid } = parameters
-      const tab = rootGetters.getTab(parentUuid, containerUuid)
-      var allData = rootGetters.getDataRecordAndSelection(containerUuid)
-      var selectionLength = allData.selection.length
+    deleteSelectionDataList({ dispatch, rootGetters }, {
+      parentUuid,
+      containerUuid
+    }) {
+      const { tableName, isParentTab } = rootGetters.getTab(parentUuid, containerUuid)
+      const allData = rootGetters.getDataRecordAndSelection(containerUuid)
+      let selectionLength = allData.selection.length
 
       allData.selection.forEach((record, index) => {
         // validate if the registry row has no uuid before sending to the server
@@ -459,17 +480,17 @@ const windowControl = {
           console.warn(`This row does not contain a record with UUID`, record)
           // refresh record list
           dispatch('getDataListTab', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid
+            parentUuid,
+            containerUuid
           })
           return
         }
         deleteEntity({
-          tableName: tab.tableName,
+          tableName,
           recordUuid: record.UUID
         })
           .then(() => {
-            if (tab.isParentTab) {
+            if (isParentTab) {
               // redirect to create new record
               const oldRoute = router.app._route
               if (record.UUID === oldRoute.query.action) {
@@ -482,8 +503,8 @@ const windowControl = {
                 })
                 // clear fields with default values
                 dispatch('resetPanelToNew', {
-                  parentUuid: parentUuid,
-                  containerUuid: containerUuid
+                  parentUuid,
+                  containerUuid
                 })
                 // delete view with uuid record delete
                 dispatch('tagsView/delView', oldRoute, true)
@@ -493,8 +514,8 @@ const windowControl = {
             if ((index + 1) >= selectionLength) {
               // refresh record list
               dispatch('getDataListTab', {
-                parentUuid: parentUuid,
-                containerUuid: containerUuid
+                parentUuid,
+                containerUuid
               })
               showMessage({
                 message: language.t('data.deleteRecordSuccessful'),
@@ -504,11 +525,12 @@ const windowControl = {
           })
       })
     },
-    undoModifyData({ getters }, parameters) {
-      const { containerUuid, recordUuid } = parameters
+    undoModifyData({ getters }, {
+      containerUuid,
+      recordUuid
+    }) {
       return rollbackEntity(getters.getDataLog(containerUuid, recordUuid))
         .then(response => {
-          console.log('rollback successfull', response)
           return response
         })
         .catch(error => {
@@ -516,7 +538,7 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn('Rollback Entity error: ' + error.message)
+          console.warn(`Rollback Entity error: ${error.message}`)
         })
     },
     setDataLog({ commit }, parameters) {
@@ -674,41 +696,39 @@ const windowControl = {
     },
     /**
      * Get references asociate to record
-     * @param {string} parameters.parentUuid
-     * @param {string} parameters.containerUuid
-     * @param {string} parameters.recordUuid
+     * @param {string} parentUuid
+     * @param {string} containerUuid
+     * @param {string} recordUuid
      */
-    getReferencesListFromServer({ commit, rootGetters }, parameters) {
+    getReferencesListFromServer({ commit, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      recordUuid
+    }) {
       // TODO: check if you get better performance search only the window and get the current tab
-      const tab = rootGetters.getTab(parameters.parentUuid, parameters.containerUuid)
+      const { tableName } = rootGetters.getTab(parentUuid, containerUuid)
       return new Promise((resolve, reject) => {
         getReferencesList({
-          windowUuid: parameters.parentUuid,
-          tableName: tab.tableName,
-          recordUuid: parameters.recordUuid
+          windowUuid: parentUuid,
+          tableName,
+          recordUuid
         })
-          .then(response => {
-            const referencesList = response.getReferencesList().map(item => {
+          .then(referenceResponse => {
+            const referencesList = referenceResponse.referencesList.map(item => {
               return {
-                uuid: item.getUuid(),
-                windowUuid: item.getWindowuuid(),
-                displayName: item.getDisplayname(),
-                tableName: item.getTablename(),
-                whereClause: item.getWhereclause(),
-                recordCount: item.getRecordcount(),
-                recordUuid: parameters.recordUuid,
+                ...item,
+                recordUuid,
                 type: 'reference'
               }
             })
             const references = {
-              windowUuid: parameters.parentUuid,
-              recordUuid: parameters.recordUuid,
-              recordCount: response.getRecordcount(),
-              referencesList: referencesList,
-              nextPageToken: response.getNextPageToken()
+              ...referenceResponse,
+              windowUuid: parentUuid,
+              recordUuid,
+              referencesList: referencesList
             }
             commit('addReferencesList', references)
-            resolve(response)
+            resolve(referenceResponse)
           })
           .catch(error => {
             reject(error)

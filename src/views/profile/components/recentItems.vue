@@ -58,8 +58,6 @@ export default {
         this.$store.dispatch('getRecentItemsFromServer')
           .then(response => {
             this.recentItems = response
-          }).catch(error => {
-            console.log(error)
           })
       } else {
         this.recentItems = items

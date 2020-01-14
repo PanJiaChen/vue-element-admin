@@ -1,5 +1,7 @@
-import { getLookup, getLookupList, convertValueFromGRPC } from '@/api/ADempiere/data'
-import { isEmptyValue, getCurrentRole, parseContext } from '@/utils/ADempiere'
+import { getLookup, getLookupList } from '@/api/ADempiere/data'
+import { getCurrentRole } from '@/utils/ADempiere/auth'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
 
 const lookup = {
   state: {
@@ -33,24 +35,22 @@ const lookup = {
       let parsedDirectQuery = directQuery
       if (parsedDirectQuery.includes('@')) {
         parsedDirectQuery = parseContext({
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
+          parentUuid,
+          containerUuid,
           value: directQuery
         }, true)
       }
 
       return getLookup({
-        tableName: tableName,
+        tableName,
         directQuery: parsedDirectQuery,
         value: value
       })
         .then(response => {
-          const map = response.getValuesMap()
-          const label = convertValueFromGRPC(map.get('DisplayColumn'))
+          const label = response.values.DisplayColumn
           const option = {
             label: isEmptyValue(label) ? ' ' : label,
-            // key: convertValueFromGRPC(map.get('KeyColumn'))
-            key: value
+            key: value // response.values.KeyColumn
           }
 
           commit('addLoockupItem', {
@@ -64,7 +64,7 @@ const lookup = {
           return option
         })
         .catch(error => {
-          console.warn('Get Lookup, Select Base - Error ' + error.code + ': ' + error.message)
+          console.warn(`Get Lookup, Select Base - Error ${error.code}: ${error.message}`)
         })
     },
     /**
@@ -83,40 +83,35 @@ const lookup = {
       let parsedQuery = query
       if (parsedQuery.includes('@')) {
         parsedQuery = parseContext({
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
+          parentUuid,
+          containerUuid,
           value: query
         }, true)
       }
 
       return getLookupList({
-        tableName: tableName,
+        tableName,
         query: parsedQuery
       })
         .then(response => {
-          const recordList = response.getRecordsList()
-          const options = []
-          recordList.forEach(element => {
-            const map = element.getValuesMap()
-            const name = convertValueFromGRPC(map.get('DisplayColumn'))
-            const key = convertValueFromGRPC(map.get('KeyColumn'))
-            options.push({
-              label: isEmptyValue(name) ? ' ' : name,
-              key: isEmptyValue(key) ? -1 : isNaN(key) ? key : parseInt(key)
-            })
+          const options = response.recordsList.map(itemLookup => {
+            return {
+              label: itemLookup.values.DisplayColumn,
+              key: itemLookup.values.KeyColumn
+            }
           })
 
           commit('addLoockupList', {
             list: options,
-            tableName: tableName,
-            parsedQuery: parsedQuery,
+            tableName,
+            parsedQuery,
             roleUuid: getCurrentRole(),
             clientId: rootGetters.getContextClientId
           })
           return options
         })
         .catch(error => {
-          console.warn('Get Lookup List, Select Base - Error ' + error.code + ': ' + error.message)
+          console.warn(`Get Lookup List, Select Base - Error ${error.code}: ${error.message}`)
         })
     },
     deleteLookupList({ commit, state }, {

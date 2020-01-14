@@ -2,7 +2,8 @@
   <el-collapse v-model="activeFavorites" accordion>
     <el-collapse-item name="favorites">
       <template slot="title">
-        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" /> {{ $t('profile.favorites') }}
+        <i class="el-icon-time" style="margin-right: 4px;margin-left: 10px;" />
+        {{ $t('profile.favorites') }}
       </template>
       <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
         <div class="recent-items">
@@ -34,8 +35,9 @@
 </template>
 
 <script>
-import { getFavoritesFromServer } from '@/api/ADempiere'
+import { getFavoritesFromServer } from '@/api/ADempiere/data'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+
 export default {
   name: 'Favorites',
   data() {
@@ -48,9 +50,6 @@ export default {
     }
   },
   computed: {
-    getterFavoritesList() {
-      return this.$store.getters.getFavoritesList
-    },
     cachedViews() {
       return this.$store.getters.cachedViews
     }
@@ -65,13 +64,13 @@ export default {
       return new Promise((resolve, reject) => {
         getFavoritesFromServer(userUuid)
           .then(response => {
-            const favorites = response.getFavoritesList().map(favorite => {
-              const actionConverted = convertAction(favorite.getAction())
+            const favorites = response.favoritesList.map(favoriteElement => {
+              const actionConverted = convertAction(favoriteElement.action)
               return {
-                uuid: favorite.getMenuuuid(),
-                name: favorite.getMenuname(),
-                description: favorite.getMenudescription(),
-                referenceUuid: favorite.getReferenceuuid(),
+                ...favoriteElement,
+                uuid: favoriteElement.menuUuid,
+                name: favoriteElement.menuName,
+                description: favoriteElement.menuDescription,
                 action: actionConverted.name,
                 icon: actionConverted.icon
               }
@@ -80,7 +79,7 @@ export default {
             resolve(favorites)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`Error getting favorites: ${error.message}. Code: ${error.code}.`)
           })
       })
     },

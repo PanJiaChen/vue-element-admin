@@ -1,29 +1,20 @@
 import Vue from 'vue'
 import {
-  getObject,
-  getObjectListFromCriteria,
-  getRecentItems,
+  getEntity,
+  getEntitiesList,
   getDefaultValueFromServer,
-  convertValueFromGRPC,
   getContextInfoValueFromServer,
-  getFavoritesFromServer,
   getPrivateAccessFromServer,
   lockPrivateAccessFromServer,
-  unlockPrivateAccessFromServer,
-  getPendingDocumentsFromServer
-} from '@/api/ADempiere'
-import { convertValuesMapToObject, isEmptyValue } from '@/utils/ADempiere/valueUtils'
+  unlockPrivateAccessFromServer
+} from '@/api/ADempiere/data'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
-import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import language from '@/lang'
 
 const data = {
   state: {
     recordSelection: [], // record data and selection
-    recordDetail: [],
-    recentItems: [],
-    favorites: [],
-    pendingDocuments: [],
     inGetting: [],
     contextInfoField: [],
     recordPrivateAccess: {}
@@ -72,35 +63,11 @@ const data = {
     notifyRowTableChange: (state, payload) => {
       Object.assign(payload.row, payload.newRow)
     },
-    setRecentItems(state, payload) {
-      state.recentItems = payload
-    },
-    setFavorites(state, payload) {
-      state.favorites = payload
-    },
-    setPendingDocuments(state, payload) {
-      state.pendingDocuments = payload
-    },
     setPageNumber(state, payload) {
       payload.data.pageNumber = payload.pageNumber
     },
     setIsloadContext(state, payload) {
       payload.data.isLoadedContext = payload.isLoadedContext
-    },
-    setRecordDetail(state, payload) {
-      var isFinded = false
-      state.recordDetail = state.recordDetail.map(itemData => {
-        if (itemData.uuid === payload.uuid) {
-          isFinded = true
-          var newValues = Object.assign(itemData.data, payload.data)
-          payload.data = newValues
-          return payload
-        }
-        return itemData
-      })
-      if (!isFinded) {
-        state.recordDetail.push(payload)
-      }
     },
     addNewRow(state, payload) {
       payload.data = payload.data.unshift(payload.values)
@@ -162,7 +129,7 @@ const data = {
      */
     addNewRow({ commit, getters, rootGetters, dispatch }, parameters) {
       const { parentUuid, containerUuid, isPanelValues = false, isEdit = true, isNew = true } = parameters
-      var { fieldList = [] } = parameters
+      let { fieldList = [] } = parameters
 
       const tabPanel = rootGetters.getPanel(containerUuid)
 
@@ -170,7 +137,7 @@ const data = {
         fieldList = tabPanel.fieldList
       }
 
-      var values = {}
+      let values = {}
       // add row with default values to create new record
       if (isPanelValues) {
         // add row with values used from record in panel
@@ -450,22 +417,21 @@ const data = {
     /**
      * @param {string} tableName
      * @param {string} recordUuid
+     * @param {number} recordId
      */
-    getEntity({ commit }, parameters) {
+    getEntity({ commit }, {
+      tableName,
+      recordUuid,
+      recordId
+    }) {
       return new Promise((resolve, reject) => {
-        getObject(parameters.tableName, parameters.recordUuid)
-          .then(response => {
-            var map = response.getValuesMap()
-            var newValues = convertValuesMapToObject(map)
-            const responseConvert = {
-              data: newValues,
-              id: response.getId(),
-              uuid: response.getUuid(),
-              tableName: parameters.tableName
-            }
-
-            commit('setRecordDetail', responseConvert)
-            resolve(newValues)
+        getEntity({
+          tableName,
+          recordUuid,
+          recordId
+        })
+          .then(responseGetEntity => {
+            resolve(responseGetEntity.values)
           })
           .catch(error => {
             reject(error)
@@ -523,20 +489,17 @@ const data = {
         containerUuid: containerUuid,
         isGetServer: false
       })
-      return getObjectListFromCriteria({
-        tableName: tableName,
-        query: query,
-        whereClause: whereClause,
-        conditions: conditions,
-        orderByClause: orderByClause,
-        nextPageToken: nextPageToken
+      return getEntitiesList({
+        tableName,
+        query,
+        whereClause,
+        conditions,
+        orderByClause,
+        nextPageToken
       })
-        .then(response => {
-          const recordList = response.getRecordsList()
-          const record = recordList.map(itemRecord => {
-            const values = convertValuesMapToObject(
-              itemRecord.getValuesMap()
-            )
+        .then(dataResponse => {
+          const recordsList = dataResponse.recordsList.map(itemRecord => {
+            const values = itemRecord.values
 
             // datatables attributes
             values.isNew = false
@@ -556,7 +519,7 @@ const data = {
             }
           })
 
-          const originalNextPageToken = response.getNextPageToken()
+          const originalNextPageToken = dataResponse.nextPageToken
           let token = originalNextPageToken
           if (isEmptyValue(token)) {
             token = dataStore.nextPageToken
@@ -568,7 +531,7 @@ const data = {
           }
           if (isShowNotification) {
             let searchMessage = 'searchWithOutRecords'
-            if (record.length) {
+            if (recordsList.length) {
               searchMessage = 'succcessSearch'
             }
             showMessage({
@@ -578,20 +541,20 @@ const data = {
             })
           }
           dispatch('setRecordSelection', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
-            record: record,
+            parentUuid,
+            containerUuid,
+            record: recordsList,
             selection: dataStore.selection,
-            recordCount: response.getRecordcount(),
+            recordCount: dataResponse.recordCount,
             nextPageToken: token,
             originalNextPageToken: originalNextPageToken,
-            isAddRecord: isAddRecord,
+            isAddRecord,
             pageNumber: dataStore.pageNumber,
-            tableName: tableName,
-            query: query,
-            whereClause: whereClause
+            tableName,
+            query,
+            whereClause
           })
-          return record
+          return recordsList
         })
         .catch(error => {
           // Set default registry values so that the table does not say loading,
@@ -612,18 +575,19 @@ const data = {
         })
         .finally(() => {
           commit('deleteInGetting', {
-            containerUuid: containerUuid,
-            tableName: tableName
+            containerUuid,
+            tableName
           })
         })
     },
     getRecordBySQL({ dispatch }, parameters) {
       const { query, field } = parameters
+      // TODO: Change to promise all
       return new Promise((resolve, reject) => {
         getDefaultValueFromServer(query)
-          .then(response => {
-            var valueToReturn = {}
-            valueToReturn['key'] = convertValueFromGRPC(response)
+          .then(defaultValueResponse => {
+            const valueToReturn = {}
+            valueToReturn.key = defaultValueResponse
             // add display Column for table
             if (field.componentPath === 'FieldSelect') {
               dispatch('getLookupItemFromServer', {
@@ -634,7 +598,7 @@ const data = {
                 value: valueToReturn.key
               })
                 .then(responseLookup => {
-                  valueToReturn['label'] = responseLookup.label
+                  valueToReturn.label = responseLookup.label
                   dispatch('addDisplayColumn', {
                     containerUuid: field.containerUuid,
                     columnName: field.columnName,
@@ -649,94 +613,6 @@ const data = {
           })
       })
     },
-    getRecentItemsFromServer({ commit }) {
-      return new Promise((resolve, reject) => {
-        getRecentItems()
-          .then(response => {
-            const recentItems = response.getRecentitemsList().map(item => {
-              const actionConverted = convertAction(item.getAction())
-              return {
-                action: actionConverted.name,
-                icon: actionConverted.icon,
-                displayName: item.getDisplayname(),
-                menuUuid: item.getMenuuuid(),
-                menuName: item.getMenuname(),
-                windowUuid: item.getWindowuuid(),
-                tableId: item.getTableid(),
-                recordId: item.getRecordid(),
-                uuidRecord: item.getRecorduuid(),
-                tabUuid: item.getTabuuid(),
-                updated: new Date(item.getUpdated()),
-                description: item.getMenudescription()
-              }
-            })
-            commit('setRecentItems', recentItems)
-            resolve(recentItems)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    getFavoritesFromServer({ commit, rootGetters }) {
-      const userUuid = rootGetters['user/getUserUuid']
-      return new Promise((resolve, reject) => {
-        getFavoritesFromServer(userUuid)
-          .then(response => {
-            const favorites = response.getFavoritesList().map(favorite => {
-              const actionConverted = convertAction(favorite.getAction())
-              return {
-                uuid: favorite.getMenuuuid(),
-                name: favorite.getMenuname(),
-                description: favorite.getMenudescription(),
-                referenceUuid: favorite.getReferenceuuid(),
-                action: actionConverted.name,
-                icon: actionConverted.icon
-              }
-            })
-            commit('setFavorites', favorites)
-            resolve(favorites)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
-    getPendingDocumentsFromServer({ commit, getters, rootGetters }) {
-      const userUuid = rootGetters['user/getUserUuid']
-      const roleUuid = getters.getRoleUuid
-      return new Promise((resolve, reject) => {
-        getPendingDocumentsFromServer(userUuid, roleUuid)
-          .then(response => {
-            const documentsList = response.getPendingdocumentsList().map(document => {
-              return {
-                formUuid: document.getFormuuid(),
-                name: document.getDocumentname(),
-                description: document.getDocumentdescription(),
-                criteria: {
-                  type: document.getCriteria().getConditionsList(),
-                  limit: document.getCriteria().getLimit(),
-                  orderbyclause: document.getCriteria().getOrderbyclause(),
-                  orderbycolumnList: document.getCriteria().getOrderbycolumnList(),
-                  query: document.getCriteria().getQuery(),
-                  referenceUuid: document.getCriteria().getReferenceuuid(),
-                  tableName: document.getCriteria().getTablename(),
-                  valuesList: document.getCriteria().getValuesList(),
-                  whereClause: document.getCriteria().getWhereclause()
-                },
-                recordCount: document.getRecordcount(),
-                sequence: document.getSequence(),
-                windowUuid: document.getWindowuuid()
-              }
-            })
-            commit('setPendingDocuments', documentsList)
-            resolve(documentsList)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
-    },
     /**
      * TODO: Add support to tab children
      * @param {object} objectParams
@@ -745,7 +621,7 @@ const data = {
      * @param {objec}  objectParams.isEdit, if the row displayed to edit mode
      * @param {objec}  objectParams.isNew, if insert data to new row
      */
-    notifyRowTableChange({ commit, state, getters, rootGetters }, objectParams) {
+    notifyRowTableChange({ commit, getters, rootGetters }, objectParams) {
       const { parentUuid, containerUuid, isEdit = true } = objectParams
       var currentValues = {}
       if (objectParams.hasOwnProperty('values')) {
@@ -797,18 +673,18 @@ const data = {
         return itemRecord[keyColumn] === rowKey
       })
       commit('notifyCellTableChange', {
-        row: row,
+        row,
         value: newValue,
-        columnName: columnName,
-        displayColumn: displayColumn
+        columnName,
+        displayColumn
       })
 
       if (panelType === 'browser') {
         commit('notifyCellSelectionChange', {
           row: rowSelection,
           value: newValue,
-          columnName: columnName,
-          displayColumn: displayColumn
+          columnName,
+          displayColumn
         })
       } else if (panelType === 'window') {
         // request callouts
@@ -816,14 +692,14 @@ const data = {
           !isEmptyValue(newValue) && !isEmptyValue(field.callout)) {
           withOutColumnNames.push(field.columnName)
           dispatch('getCallout', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             tableName: field.tableName,
             columnName: field.columnName,
             callout: field.callout,
             value: newValue,
-            withOutColumnNames: withOutColumnNames,
-            row: row,
+            withOutColumnNames,
+            row,
             inTable: true
           })
         }
@@ -833,28 +709,28 @@ const data = {
           if (!fieldNotReady) {
             if (!isEmptyValue(row.UUID)) {
               dispatch('updateCurrentEntityFromTable', {
-                parentUuid: parentUuid,
-                containerUuid: containerUuid,
-                row: row
+                parentUuid,
+                containerUuid,
+                row
               })
             } else {
               dispatch('createEntityFromTable', {
-                parentUuid: parentUuid,
-                containerUuid: containerUuid,
-                row: row
+                parentUuid,
+                containerUuid,
+                row
               })
                 .then(() => {
                   // refresh record list
                   dispatch('getDataListTab', {
-                    parentUuid: parentUuid,
-                    containerUuid: containerUuid
+                    parentUuid,
+                    containerUuid
                   })
                 })
             }
           } else {
             const fieldsEmpty = rootGetters.getFieldListEmptyMandatory({
-              containerUuid: containerUuid,
-              row: row
+              containerUuid,
+              row
             })
             showMessage({
               message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
@@ -864,76 +740,80 @@ const data = {
         }
       }
     },
-    getContextInfoValueFromServer({ commit, getters }, parameters) {
-      var { sqlStatement, contextInfoUuid } = parameters
-      var contextInforField = getters.getContextInfoField(contextInfoUuid, sqlStatement)
+    getContextInfoValueFromServer({ commit, getters }, {
+      contextInfoUuid,
+      sqlStatement
+    }) {
+      const contextInforField = getters.getContextInfoField(contextInfoUuid, sqlStatement)
       if (contextInforField) {
         return contextInforField
       }
-      return getContextInfoValueFromServer({ uuid: contextInfoUuid, query: sqlStatement })
-        .then(response => {
-          const contextInfo = {
-            messageText: response.getMessagetext(),
-            messageTip: response.getMessagetip()
-          }
+      return getContextInfoValueFromServer({
+        uuid: contextInfoUuid,
+        query: sqlStatement
+      })
+        .then(contextInfoResponse => {
           commit('setContextInfoField', {
-            contextInfoUuid: contextInfoUuid,
-            sqlStatement: sqlStatement,
-            messageText: contextInfo.messageText,
-            messageTip: contextInfo.messageTip
+            contextInfoUuid,
+            sqlStatement,
+            ...contextInfoResponse
           })
-          return contextInfo
+          return contextInfoResponse
         })
         .catch(error => {
           console.warn(`Error ${error.code} getting context info value for field ${error.message}`)
         })
     },
-    getPrivateAccessFromServer({ commit, rootGetters }, parameters) {
-      const { tableName, recordId } = parameters
-      const userUuid = rootGetters['user/getUserUuid']
+    getPrivateAccessFromServer({ rootGetters }, {
+      tableName,
+      recordId,
+      userUuid
+    }) {
+      if (isEmptyValue(userUuid)) {
+        userUuid = rootGetters['user/getUserUuid']
+      }
       return getPrivateAccessFromServer({
-        tableName: tableName,
-        recordId: recordId,
-        userUuid: userUuid
+        tableName,
+        recordId,
+        userUuid
       })
-        .then(privateAccess => {
-          if (privateAccess.getRecordid()) {
-            var recordPrivateAccess = {
-              isLocked: true,
-              tableName: privateAccess.getTablename(),
-              recordId: privateAccess.getRecordid(),
-              userUuid: privateAccess.getUseruuid()
-            }
-          } else {
-            recordPrivateAccess = {
+        .then(privateAccessResponse => {
+          if (isEmptyValue(privateAccessResponse.recordId)) {
+            return {
               isLocked: false,
-              tableName: parameters.tableName,
-              recordId: parameters.recordId,
-              userUuid: rootGetters['user/getUserUuid']
+              tableName,
+              recordId,
+              userUuid
             }
           }
-          return recordPrivateAccess
+          return {
+            ...privateAccessResponse,
+            isLocked: true
+          }
         })
         .catch(error => {
-          console.error(error)
+          console.warn(`Error get private access: ${error.message}. Code: ${error.code}:`)
         })
     },
-    lockRecord({ commit, rootGetters }, parameters) {
-      const { tableName, recordId } = parameters
-      const userUuid = rootGetters['user/getUserUuid']
+    lockRecord({ rootGetters }, {
+      tableName,
+      recordId,
+      userUuid
+    }) {
+      if (isEmptyValue(userUuid)) {
+        userUuid = rootGetters['user/getUserUuid']
+      }
       return lockPrivateAccessFromServer({
-        tableName: tableName,
-        recordId: recordId,
-        userUuid: userUuid
+        tableName,
+        recordId,
+        userUuid
       })
-        .then(response => {
-          if (response.getRecordid()) {
+        .then(privateAccessResponse => {
+          if (!isEmptyValue(privateAccessResponse.recordId)) {
             const recordLocked = {
               isPrivateAccess: true,
               isLocked: true,
-              tableName: response.getTablename(),
-              recordId: response.getRecordid(),
-              userUuid: response.getUseruuid()
+              ...privateAccessResponse
             }
             showMessage({
               title: language.t('notifications.succesful'),
@@ -949,25 +829,28 @@ const data = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.error(error)
+          console.warn(`Error lock private access: ${error.message}. Code: ${error.code}:`)
         })
     },
-    unlockRecord({ commit, rootGetters, state }, parameters) {
-      const { tableName, recordId } = parameters
-      const userUuid = rootGetters['user/getUserUuid']
+    unlockRecord({ rootGetters }, {
+      tableName,
+      recordId,
+      userUuid
+    }) {
+      if (isEmptyValue(userUuid)) {
+        userUuid = rootGetters['user/getUserUuid']
+      }
       return unlockPrivateAccessFromServer({
-        tableName: tableName,
-        recordId: recordId,
-        userUuid: userUuid
+        tableName,
+        recordId,
+        userUuid
       })
-        .then(response => {
-          if (response.getRecordid()) {
+        .then(privateAccessResponse => {
+          if (!isEmptyValue(privateAccessResponse.recordId)) {
             const recordUnlocked = {
               isPrivateAccess: true,
               isLocked: false,
-              tableName: response.getTablename(),
-              recordId: response.getRecordid(),
-              userUuid: response.getUseruuid()
+              ...privateAccessResponse
             }
             showMessage({
               title: language.t('notifications.succesful'),
@@ -983,7 +866,7 @@ const data = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.error(error)
+          console.warn(`Error unlock private access: ${error.message}. Code: ${error.code}:`)
         })
     }
   },
@@ -1036,55 +919,34 @@ const data = {
       })
     },
     /**
-     * @returns {object}
-     */
-    getRecordDetail: (state) => (parameters) => {
-      return state.recordDetail.find(itemData => {
-        if (itemData.uuid === parameters.recordUuid) {
-          return true
-        }
-      }) || {}
-    },
-    /**
      * Getter converter selection data record in format
      * @param {string} containerUuid
-     * [
-     *  {
+     * @param {array}  selection
+     * [{
      *    selectionId: keyColumn Value,
-     *    selectionValues: [
-     *      { columname, value },
-     *      { columname, value },
-     *      { columname, value }
-     *    ]
-     *  },
-     *  {
-     *    selectionId: keyColumn Value,
-     *    selectionValues: [
-     *      { columname, value },
-     *      { columname, value }
-     *    ]
-     *  }
-     * ]
+     *    selectionValues: [{ columname, value }]
+     * }]
      */
-    getSelectionToServer: (state, getters, rootState, rootGetters) => (parameters) => {
-      var { containerUuid, selection = [] } = parameters
-      var selectionToServer = []
+    getSelectionToServer: (state, getters, rootState, rootGetters) => ({ containerUuid, selection = [] }) => {
+      const selectionToServer = []
       const withOut = ['isEdit', 'isSelected', 'isSendToServer']
 
       if (selection.length <= 0) {
         selection = getters.getDataRecordSelection(containerUuid)
       }
       if (selection.length) {
-        const panel = rootGetters.getPanel(containerUuid)
+        const { fieldList, keyColumn } = rootGetters.getPanel(containerUuid)
+        // reduce list
+        const fieldsList = fieldList.filter(itemField => itemField.isIdentifier || itemField.isUpdateable)
 
         selection.forEach(itemRow => {
-          var records = []
+          const records = []
 
           Object.keys(itemRow).forEach(key => {
             if (!key.includes('DisplayColumn') && !withOut.includes(key)) {
               // evaluate metadata attributes before to convert
-              const field = panel.fieldList.find(itemField => itemField.columnName === key)
-              if (field && (field.isIdentifier || field.isUpdateable)) {
+              const field = fieldsList.find(itemField => itemField.columnName === key)
+              if (field) {
                 records.push({
                   columnName: key,
                   value: itemRow[key]
@@ -1094,21 +956,12 @@ const data = {
           })
 
           selectionToServer.push({
-            selectionId: itemRow[panel.keyColumn],
+            selectionId: itemRow[keyColumn],
             selectionValues: records
           })
         })
       }
       return selectionToServer
-    },
-    getRecentItems: (state) => {
-      return state.recentItems
-    },
-    getFavoritesList: (state) => {
-      return state.favorites
-    },
-    getPendingDocuments: (state) => {
-      return state.pendingDocuments
     },
     getContextInfoField: (state) => (contextInfoUuid, sqlStatement) => {
       return state.contextInfoField.find(info =>

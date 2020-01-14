@@ -26,239 +26,164 @@ export function convertValueFromGRPC(grpcValue) {
  * @param {string}  parameters.tableName
  * @param {array}   parameters.attributesList
  */
-export function createEntity(parameters) {
-  var entityRequest = Instance.call(this).getCreateEntityRequest()
-  entityRequest.setTablename(parameters.tableName)
-  if (parameters.attributesList && parameters.attributesList.length) {
-    parameters.attributesList.forEach(attribute => {
-      const convertedAttribute = Instance.call(this).convertParameter(attribute)
-      entityRequest.addAttributes(convertedAttribute)
-    })
-  }
-  //  Create Entity
-  return Instance.call(this).createEntity(entityRequest)
+export function createEntity({ tableName, attributesList }) {
+  return Instance.call(this).createEntity({
+    tableName,
+    attributesList
+  })
 }
 
 /**
  * Update entity
- * @param {string}  parameters.tableName
- * @param {integer} parameters.recordId
- * @param {string}  parameters.recordUuid
- * @param {array}   parameters.attributesList
+ * @param {string}  tableName
+ * @param {number}  recordId
+ * @param {string}  recordUuid
+ * @param {array}   attributesList
  */
-export function updateEntity(parameters) {
-  var entityRequest = Instance.call(this).getUpdateEntityRequest()
-  entityRequest.setTablename(parameters.tableName)
-  if (parameters.recordId) {
-    entityRequest.setRecordid(parameters.recordId)
-  }
-  entityRequest.setUuid(parameters.recordUuid)
-  if (parameters.attributesList && parameters.attributesList.length) {
-    parameters.attributesList.forEach(attribute => {
-      const convertedAttribute = Instance.call(this).convertParameter(attribute)
-      entityRequest.addAttributes(convertedAttribute)
-    })
-  }
-  //  Update Entity
-  return Instance.call(this).updateEntity(entityRequest)
+export function updateEntity({ tableName, recordId, recordUuid, attributesList }) {
+  return Instance.call(this).updateEntity({
+    tableName,
+    recordId,
+    recordUuid,
+    attributesList
+  })
 }
 
 /**
  * Delete entity
- * @param {string}  parameters.tableName
- * @param {integer} parameters.recordId
- * @param {string}  parameters.recordUuid
- * @param {array}   parameters.attributesList
+ * @param {string}  tableName
+ * @param {number}  recordId
+ * @param {string}  recordUuid
  */
-export function deleteEntity(parameters) {
-  var entityRequest = Instance.call(this).getUpdateEntityRequest()
-  entityRequest.setTablename(parameters.tableName)
-  if (parameters.recordId) {
-    entityRequest.setRecordid(parameters.recordId)
-  }
-  entityRequest.setUuid(parameters.recordUuid)
-
-  //  Delete Entity
-  return Instance.call(this).deleteEntity(entityRequest)
+export function deleteEntity({ tableName, recordId, recordUuid }) {
+  return Instance.call(this).deleteEntity({
+    tableName,
+    recordId,
+    recordUuid
+  })
 }
 
-export function getCriteria(tableName) {
-  return Instance.call(this).getCriteria(tableName)
-}
-
-export function getObject(table, uuid = false, id = false) {
-  return Instance.call(this).getEntity(
-    Instance.call(this).getEntityRequest(table, uuid, id)
-  )
+export function getEntity({ tableName, recordId, recordUuid }) {
+  return Instance.call(this).requestEntity({
+    tableName,
+    recordId,
+    recordUuid
+  })
 }
 
 /**
  * Object List from window
- * @param {string} object.tableName
- * @param {string} object.query
- * @param {string} object.whereClause
- * @param {string} object.orderByClause
+ * @param {string} tableName
+ * @param {string} query
+ * @param {string} whereClause
+ * @param {array}  conditions
+ * @param {string} orderByClause
+ * @param {string} nextPageToken
  */
-export function getObjectListFromCriteria(object) {
-  const criteriaForList = getCriteria(object.tableName)
-
-  criteriaForList.setQuery(object.query)
-
-  if (object.whereClause) {
-    criteriaForList.setWhereclause(object.whereClause)
-  }
-  if (object.orderByClause) {
-    criteriaForList.setOrderbyclause(object.orderByClause)
-  }
-
-  // add conditions
-  if (object.conditions && object.conditions.length) {
-    object.conditions.forEach(itemCondition => {
-      const convertCondition = Instance.call(this).convertCondition(itemCondition)
-      criteriaForList.addConditions(convertCondition)
-    })
-  }
-
-  var nextPageToken
-  if (object.nextPageToken) {
-    nextPageToken = object.nextPageToken
-  }
-  return Instance.call(this).requestObjectListFromCriteria(criteriaForList, nextPageToken)
+export function getEntitiesList({ tableName, query, whereClause, conditions = [], orderByClause, nextPageToken }) {
+  return Instance.call(this).requestEntitiesList({
+    tableName,
+    query,
+    whereClause,
+    conditionsList: conditions,
+    orderByClause,
+    nextPageToken
+  })
 }
 
 /**
  * Rollback entity (Create, Update, Delete)
- * @param {string} parametersRollback.tableName
- * @param {integer} parametersRollback.recordId
- * @param {string} parametersRollback.eventType
+ * @param {string} tableName
+ * @param {number} recordId
+ * @param {string} eventType
  */
-export function rollbackEntity(parametersRollback) {
-  var rollbackRequest = Instance.call(this).getRollbackEntityRequest()
-  rollbackRequest.setTablename(parametersRollback.tableName)
-  rollbackRequest.setRecordid(parametersRollback.recordId)
-
-  // set event type
-  var eventType = Instance.call(this).getEventType()
-  eventType = eventType[parametersRollback.eventType]
-  rollbackRequest.setEventtype(eventType)
-
-  return Instance.call(this).rollbackEntityRequest(rollbackRequest)
-}
-
-/**
- * Request a Lookup list data from Reference
- * The main attributes that function hope are:
- * @param {string} reference.tableName
- * @param {string} reference.query
- */
-export function getLookupList(reference) {
-  return Instance.call(this).requestLookupListFromReference(reference)
+export function rollbackEntity({ tableName, recordId, eventType }) {
+  return Instance.call(this).rollbackEntityRequest({
+    tableName,
+    recordId,
+    eventTypeExecuted: eventType
+  })
 }
 
 /**
  * Request a Lookup data from Reference
  * The main attributes that function hope are:
- * @param {string} reference.tableName
- * @param {string} reference.directQuery
+ * @param {string} tableName
+ * @param {string} directQuery
  * @param {string|number} value
  */
-export function getLookup(reference) {
+export function getLookup({ tableName, directQuery, value }) {
   return Instance.call(this).requestLookupFromReference({
-    tableName: reference.tableName,
-    directQuery: reference.directQuery
-  }, reference.value)
+    tableName,
+    directQuery,
+    value
+  })
+}
+
+/**
+ * Request a Lookup list data from Reference
+ * The main attributes that function hope are:
+ * @param {string} tableName
+ * @param {string} query
+ */
+export function getLookupList({ tableName, query }) {
+  return Instance.call(this).requestLookupListFromReference({
+    tableName,
+    query
+  })
 }
 
 /**
  * Request a process
  * This function allows follow structure:
- * @param {object}  process
- * @param {string}  process.uuid, uuid from process to run
- * @param {integer} process.tableName, table name of tab, used only window
- * @param {integer} process.recordId, record identifier, used only window
- * @param {array}   process.parameters, parameters from process
-      [ { columnName, value } ]
- * @param {array}   process.selection, selection records, used only browser
-      [ {
+ * @param {string}  uuid, uuid from process to run
+ * @param {number}  reportType
+ * @param {number}  tableName, table name of tab, used only window
+ * @param {number}  recordId, record identifier, used only window
+ * @param {array}   parameters, parameters from process [{ columnName, value }]
+ * @param {array}   selection, selection records, used only browser
+      [{
           selectionId,
-          selectionValues [
-            { columnName, value }
-          ]
-      } ]
+          selectionValues: [{ columnName, value }]
+      }]
+ * @param {string}  printFormatUuid
  */
-export function runProcess(process) {
-  var processRequest = Instance.call(this).getProcessRequest()
-  //  Fill Request process
-  processRequest.setUuid(process.uuid)
-  // report export type
-  if (process.reportType) {
-    processRequest.setReporttype(process.reportType)
-  }
-  // process params
-  if (process.parameters && process.parameters.length) {
-    process.parameters.forEach(parameter => {
-      const convertedParameter = Instance.call(this).convertParameter(parameter)
-      processRequest.addParameters(convertedParameter)
-    })
-  }
-
-  // record in window
-  if (process.tableName) {
-    processRequest.setTablename(process.tableName)
-    processRequest.setRecordid(process.recordId)
-  }
-
-  // browser selection list records
-  if (process.selection && process.selection.length) {
-    process.selection.forEach(record => {
-      // selection format = { selectionId: integer, selectionValues: array }
-      const convertedRecord = Instance.call(this).convertSelection(record)
-      processRequest.addSelections(convertedRecord)
-    })
-  }
-
-  if (process.printFormatUuid) {
-    processRequest.setPrintformatuuid(process.printFormatUuid)
-  }
+export function runProcess({ uuid, reportType, tableName, recordId, parameters: parametersList = [], selection = [], printFormatUuid }) {
   //  Run Process
-  return Instance.call(this).requestProcess(processRequest)
+  return Instance.call(this).requestRunProcess({
+    uuid,
+    reportType,
+    tableName,
+    recordId,
+    parametersList,
+    selectionsList: selection,
+    printFormatUuid
+  })
 }
 
 /**
  * Request a browser search
- * This function allows follow structure:
- * @param {string} browser.uuid
- * @param {string} browser.query
- * @param {string} browser.whereClause
- * @param {string} browser.orderByClause
- * @param {array}  browser.parameters
+ * @param {string} uuid
+ * @param {string} query
+ * @param {string} whereClause
+ * @param {string} orderByClause
+ * @param {string} nextPageToken
+ * @param {array}  parameters, This allows follow structure:
  * [{
  *     columnName,
  *     value
  * }]
  */
-export function getBrowserSearch(browser) {
-  var browserRequest = Instance.call(this).getBrowserRequest()
-  var criteria = Instance.call(this).getCriteria('')
-  //  Fill Request browser
-  browserRequest.setUuid(browser.uuid)
-  criteria.setQuery(browser.query)
-  criteria.setWhereclause(browser.whereClause)
-  criteria.setOrderbyclause(browser.orderByClause)
-
-  if (browser.nextPageToken) {
-    browserRequest.setPageToken(browser.nextPageToken)
-  }
-  browserRequest.setCriteria(criteria)
-  /* isQueryCriteria fields parameters */
-  if (browser.parameters !== undefined) {
-    browser.parameters.forEach(parameter => {
-      const convertedParameter = Instance.call(this).convertParameter(parameter)
-      browserRequest.addParameters(convertedParameter)
-    })
-  }
+export function getBrowserSearch({ uuid, parameters: parametersList = [], query, whereClause, orderByClause, nextPageToken }) {
   //  Run browser
-  return Instance.call(this).requestBrowser(browserRequest)
+  return Instance.call(this).requestBrowserSearch({
+    uuid,
+    parametersList,
+    query,
+    whereClause,
+    orderByClause,
+    nextPageToken
+  })
 }
 
 // Request a Process Activity list
@@ -270,48 +195,48 @@ export function requestProcessActivity() {
 export function getRecentItems() {
   return Instance.call(this).requestRecentItems()
 }
-/**
- * forget password
- * @param {string} parameters.forgetPassword
- */
-export function getForgetPassword(parameters) {
-  return Instance.call(this).requestForgetPassword(parameters)
-}
 
 /**
  * Reference List from Window
- * @param {string}  parameters.tableName
- * @param {string}  parameters.windowUuid
- * @param {string}  parameters.recordUuid
- * @param {integer} parameters.recordId
+ * @param {string}  tableName
+ * @param {string}  windowUuid
+ * @param {string}  recordUuid
+ * @param {number}  recordId
  */
-export function getReferencesList(parameters) {
-  var requestReference = Instance.call(this).getReferencesRequest()
-  requestReference.setWindowuuid(parameters.windowUuid)
-  requestReference.setTablename(parameters.tableName)
-  requestReference.setUuid(parameters.recordUuid)
-  if (parameters.recordId) {
-    requestReference.setRecordid(parameters.recordId)
-  }
-
-  return Instance.call(this).listReferencesRequest(requestReference)
+export function getReferencesList({ windowUuid, tableName, recordId, recordUuid }) {
+  return Instance.call(this).listReferencesRequest({
+    windowUuid,
+    tableName,
+    recordId,
+    recordUuid
+  })
 }
 
 /**
  * Run callout request
- * @param {string}  parametersCallout.windowUuid
- * @param {integer} parametersCallout.windowNo
- * @param {string}  parametersCallout.tabUuid
- * @param {string}  parametersCallout.tableName
- * @param {string}  parametersCallout.columnName
- * @param {mixed}   parametersCallout.value
- * @param {mixed}   parametersCallout.oldValue
- * @param {string}  parametersCallout.callout
- * @param {array}   parametersCallout.attributesList
+ * @param {string}  windowUuid
+ * @param {number}  windowNo
+ * @param {string}  tabUuid
+ * @param {string}  tableName
+ * @param {string}  columnName
+ * @param {mixed}   value
+ * @param {mixed}   oldValue
+ * @param {string}  callout
+ * @param {array}   attributesList
  * @returns {Map} Entity
  */
-export function runCallOutRequest(parametersCallout) {
-  return Instance.call(this).runCalloutRequest(parametersCallout)
+export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [] }) {
+  return Instance.call(this).runCalloutRequest({
+    windowUuid,
+    windowNo,
+    tabUuid,
+    tableName,
+    columnName,
+    value,
+    oldValue,
+    callout,
+    attributesList
+  })
 }
 
 export function getDefaultValueFromServer(query) {
@@ -322,32 +247,63 @@ export function getContextInfoValueFromServer({ uuid, query }) {
   return Instance.call(this).getContextInfoValue({ uuid: uuid, query: query })
 }
 
-export function getPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid }) {
-  return Instance.call(this).getPrivateAccess({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+export function getPrivateAccessFromServer({ tableName, recordId, userUuid }) {
+  return Instance.call(this).getPrivateAccess({
+    tableName,
+    recordId,
+    userUuid
+  })
 }
 
-export function lockPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid }) {
-  return Instance.call(this).lockPrivateAccess({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+export function lockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
+  return Instance.call(this).lockPrivateAccess({
+    tableName,
+    recordId,
+    userUuid
+  })
 }
 
-export function unlockPrivateAccessFromServer({ tableName: tableName, recordId: recordId, userUuid: userUuid }) {
-  return Instance.call(this).unlockPrivateAccess({ tableName: tableName, recordId: recordId, userUuid: userUuid })
+export function unlockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
+  return Instance.call(this).unlockPrivateAccess({
+    tableName,
+    recordId,
+    userUuid
+  })
 }
 
+/**
+ * Request Favorites List
+ * @param {string} userUuid
+ */
 export function getFavoritesFromServer(userUuid) {
   return Instance.call(this).requestFavorites(userUuid)
 }
 
-export function getPendingDocumentsFromServer(userUuid, roleUuid) {
-  return Instance.call(this).requestPendingDocuments(userUuid, roleUuid)
+export function getPendingDocumentsFromServer({ userUuid, roleUuid }) {
+  return Instance.call(this).requestPendingDocuments({
+    userUuid,
+    roleUuid
+  })
 }
 
+/**
+ * Request Pending Documents List
+ * @param {string} tableName
+ * @param {string} processUuid
+ */
 export function requestReportViews({ tableName, processUuid }) {
-  return Instance.call(this).requestReportViews({ tableName: tableName, processUuid: processUuid })
+  return Instance.call(this).requestReportViews({
+    tableName,
+    processUuid
+  })
 }
 
 export function requestPrintFormats({ tableName, reportViewUuid, processUuid }) {
-  return Instance.call(this).requestPrintFormats({ tableName: tableName, reportViewUuid: reportViewUuid, processUuid: processUuid })
+  return Instance.call(this).requestPrintFormats({
+    tableName,
+    reportViewUuid,
+    processUuid
+  })
 }
 
 export function requestLisDashboards(roleUuid) {
@@ -363,29 +319,21 @@ export function requestDrillTables(tableName) {
 }
 
 export function getReportOutput({
-  criteria: criteria,
-  printFormatUuid: printFormatUuid,
-  reportViewUuid: reportViewUuid,
-  isSummary: isSummary,
-  reportName: reportName,
-  reportType: reportType,
-  tableName: tableName
+  parametersList,
+  tableName,
+  printFormatUuid,
+  reportViewUuid,
+  isSummary,
+  reportName,
+  reportType
 }) {
-  const criteriaForReport = getCriteria(tableName)
-  if (criteria && criteria.length) {
-    criteria.forEach(parameter => {
-      var isAddCodition = true
-      if (parameter.isRange && criteria.some(param => param.columnName === `${parameter.columnName}_To`)) {
-        parameter.valueTo = criteria.find(param => param.columnName === `${parameter.columnName}_To`).value
-      }
-      const convertedParameter = Instance.call(this).convertCondition(parameter)
-      if (parameter.isRange && !parameter.hasOwnProperty('valueTo')) {
-        isAddCodition = false
-      }
-      if (isAddCodition) {
-        criteriaForReport.addConditions(convertedParameter)
-      }
-    })
-  }
-  return Instance.call(this).getReportOutput({ criteria: criteriaForReport, printFormatUuid: printFormatUuid, reportViewUuid: reportViewUuid, isSummary: isSummary, reportName: reportName, reportType: reportType })
+  return Instance.call(this).getReportOutput({
+    parametersList,
+    tableName,
+    printFormatUuid,
+    reportViewUuid,
+    isSummary,
+    reportName,
+    reportType
+  })
 }

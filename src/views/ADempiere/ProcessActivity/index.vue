@@ -8,7 +8,7 @@
         placement="top"
         type="primary"
         size="large"
-        :color="checkStatus(activity.isError, activity.isProcessing, activity.isReport).color"
+        :color="checkStatus(activity).color"
       >
         <el-card>
           <div slot="header" class="clearfix">
@@ -39,6 +39,7 @@
               <!-- show only when it is error -->
               <el-popover
                 v-if="activity.isError && !activity.summary && !activity.isReport"
+                v-key="is-error"
                 placement="right"
                 width="700"
                 trigger="hover"
@@ -46,13 +47,14 @@
                 <div>
                   {{ activity.message }}
                 </div>
-                <el-tag slot="reference" :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
-                  {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
+                <el-tag slot="reference" :type="checkStatus(activity).type">
+                  {{ checkStatus(activity).text }}
                 </el-tag>
               </el-popover>
               <!-- show only when bring logs -->
               <el-popover
                 v-else-if="activity.logs.length > 0 || activity.summary"
+                v-key="is-logs"
                 placement="right"
                 width="500"
                 trigger="hover"
@@ -61,18 +63,19 @@
                 <ul>
                   <li @click="zoomIn(activity)"> {{ activity.summary }} </li>
                   <el-scrollbar wrap-class="popover-scroll">
-                    <li v-for="(item, key) in activity.logs" :key="key" @click="zoomIn(activity)">
-                      {{ item.log }}
+                    <li v-for="(logItem, key) in activity.logsList" :key="key" @click="zoomIn(activity)">
+                      {{ logItem.log }}
                     </li>
                   </el-scrollbar>
                 </ul>
-                <el-tag slot="reference" :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
-                  {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
+                <el-tag slot="reference" :type="checkStatus(activity).type">
+                  {{ checkStatus(activity).text }}
                 </el-tag>
               </el-popover>
               <!-- show only when bring output -->
               <el-popover
                 v-else-if="activity.isReport"
+                v-key="is-output"
                 placement="right"
                 width="700"
                 trigger="hover"
@@ -86,20 +89,21 @@
                     {{ $t('components.contextMenuDownload') }} <i class="el-icon-download" />
                   </a>
                 </div>
-                <el-tag slot="reference" :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
-                  {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
+                <el-tag slot="reference" :type="checkStatus(activity).type">
+                  {{ checkStatus(activity).text }}
                 </el-tag>
               </el-popover>
               <el-popover
                 v-else
+                v-key="is-other"
                 placement="top-start"
                 :title="$t('table.ProcessActivity.Logs')"
                 width="200"
                 trigger="hover"
                 :content="activity.summary"
               >
-                <el-tag slot="reference" :type="checkStatus(activity.isError, activity.isProcessing, activity.isReport).type">
-                  {{ checkStatus(activity.isError, activity.isProcessing, activity.isReport).text }}
+                <el-tag slot="reference" :type="checkStatus(activity).type">
+                  {{ checkStatus(activity).text }}
                 </el-tag>
               </el-popover>
             </el-form-item>
@@ -190,10 +194,11 @@ export default {
           }
         })
       } else {
-        if (activity.parameters && activity.parameters.length) {
-          activity.parameters.forEach(param => {
-            this.$route.query[param.columnName] = param.value
-          })
+        if (!this.isEmptyValue(activity.parametersList)) {
+          this.$route.query = {
+            ...this.$route.query,
+            ...activity.parametersList
+          }
         }
         this.$router.push({
           path: activity.processIdPath,
@@ -203,8 +208,8 @@ export default {
         })
       }
     },
-    checkStatus(isError, isProcessing, isReport) {
-      var status = {
+    checkStatus({ isError, isProcessing, isReport }) {
+      const status = {
         text: this.$t('notifications.completed'),
         type: 'success',
         color: '#67C23A'
