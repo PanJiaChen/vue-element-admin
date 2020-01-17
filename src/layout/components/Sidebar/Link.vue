@@ -3,6 +3,7 @@
   <!-- eslint-disable vue/require-component-is -->
   <component v-bind="linkProps(to)">
     <slot />
+    <slot name="title" />
   </component>
 </template>
 
