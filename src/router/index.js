@@ -98,6 +98,18 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/hotel',
+    component: Layout,
+    children: [
+      {
+        path: 'hotel',
+        component: () => import('@/views/hotel/index'),
+        name: 'Hotel',
+        meta: { title: '酒店管理', icon: 'hotel' }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
