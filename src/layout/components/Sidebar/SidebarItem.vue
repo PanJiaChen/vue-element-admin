@@ -7,9 +7,14 @@
     :index="resolvePath(item.path)"
     popper-append-to-body
   >
-    <app-link v-if="appLinkShow" :to="resolvePath(onlyOneChild.path)">
-      <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="onlyOneChild.meta.title" />
-    </app-link>
+    <template v-if="appLinkShow">
+      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path)">
+        <item
+          :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
+          :title="onlyOneChild.meta.title"
+        />
+      </app-link>
+    </template>
     <template v-else>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
