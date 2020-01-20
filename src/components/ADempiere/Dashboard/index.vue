@@ -25,7 +25,7 @@ export default {
     // load the component that is indicated in the attributes of received property
     renderDashboard() {
       // TODO: Add support to this list of currently unsupported dashboards
-      const unsupportedDashboards = ['activities', 'views', 'calendar', 'performance']
+      const unsupportedDashboards = ['activities', 'views', 'performance']
       if (unsupportedDashboards.includes(this.metadata.fileName)) {
         return
       }

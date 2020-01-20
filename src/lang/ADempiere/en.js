@@ -1,6 +1,7 @@
 export default {
   route: {
     dashboard: 'Dashboard',
+    calendar: 'Calendar',
     documentation: 'Documentation',
     guide: 'Guide',
     forgotPassword: 'Forgot Password?',

@@ -2,6 +2,7 @@ export default {
   route: {
     dashboard: 'Panel de control',
     documentation: 'Documentación',
+    calendar: 'Calendario',
     forgotPassword: '¿Olvidó su Contraseña?',
     userEnrollment: 'Registrarse',
     guide: 'Guía',
