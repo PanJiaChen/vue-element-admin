@@ -57,7 +57,7 @@ export default {
       return this.$store.state.app.device === 'mobile'
     },
     templateDevice() {
-      var template = 'contextMenuDesktop'
+      let template = 'contextMenuDesktop'
       if (this.isMobile) {
         template = 'contextMenuMobile'
       }
@@ -67,7 +67,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .el-submenu .el-menu-item {
     height: 50px;
     line-height: 50px;
@@ -79,7 +79,12 @@ export default {
     text-overflow: ellipsis;
   }
 </style>
-<style>
+<style lang="scss">
+  // this forces to show the arrow icon when the main menu is hidden
+  #app .hideSidebar .el-submenu > .el-submenu__title .el-submenu__icon-arrow {
+    display: initial;
+  }
+
   .Run-Report {
     position: absolute;
     right: 102%;
