@@ -6,8 +6,9 @@
           <el-collapse
             v-if="isParent && isAdvancedQuery"
             v-show="isAdvancedQuery"
-            v-model="activeName"
-            accordion
+            v-model="activeNames"
+            v-shortkey="{f6: ['f6'], ctrlf: ['ctrl', 'f']}"
+            @shortkey.native="actionAdvancedQuery()"
           >
             <el-collapse-item :title="$t('table.dataTable.advancedQuery')" name="1">
               <main-panel
@@ -151,11 +152,13 @@
           <el-table
             ref="multipleTable"
             v-loading="$route.query.action !== 'create-new' && isLoaded"
+            v-shortkey="{up: ['arrowup'], down: ['arrowdown'], left: ['arrowleft'], right: ['arrowright']}"
             :height="getHeigthTable"
             style="width: 100%"
             border
             :row-key="getterPanel.keyColumn"
             reserve-selection
+            highlight-current-row
             :row-style="rowStyle"
             :data="showTableSearch ? filterResult() : getterDataRecords"
             :element-loading-text="$t('notifications.loading')"
@@ -164,6 +167,7 @@
             cell-class-name="datatable-max-cell-height"
             :show-summary="getterPanel.isShowedTotals"
             :summary-method="getSummaries"
+            @shortkey.native="theAction"
             @row-click="handleRowClick"
             @row-dblclick="handleRowDblClick"
             @select="handleSelection"
@@ -320,6 +324,10 @@ export default {
       top: 0,
       left: 0,
       isOption: {},
+      activeNames: ['0'],
+      focusTable: false,
+      currentRow: null,
+      currentTable: 0,
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
       defaultMaxPagination: 100,
@@ -577,6 +585,31 @@ export default {
     }
   },
   methods: {
+    actionAdvancedQuery() {
+      if (this.activeNames < 1) {
+        this.activeNames = '1'
+      } else {
+        this.activeNames = '0'
+      }
+    },
+    setCurrent(row) {
+      this.$refs.multipleTable.setCurrentRow(row)
+    },
+    setCurrentParent(row) {
+      this.$refs.Parent.setCurrentRow(row)
+    },
+    theAction(event) {
+      switch (event.srcKey) {
+        case 'up':
+          this.currentTable = this.currentTable - 1
+          break
+        case 'down':
+          this.currentTable = this.currentTable + 1
+          break
+      }
+      this.handleRowClick(this.getterDataRecords[this.currentTable])
+      return this.setCurrent(this.getterDataRecords[this.currentTable])
+    },
     sortTab(actionSequence) {
       // TODO: Refactor and remove redundant dispatchs
       this.$store.dispatch('setShowDialog', {
@@ -941,6 +974,7 @@ export default {
       row.isEdit = false
     },
     handleRowClick(row, column, event) {
+      this.currentTable = this.getterDataRecords.findIndex(item => item.UUID === row.UUID)
       if (this.isShowedPanelRecord && this.isParent) {
         if (this.uuidCurrentRecordSelected !== row.UUID) {
           this.uuidCurrentRecordSelected = row.UUID

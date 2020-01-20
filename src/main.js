@@ -52,6 +52,8 @@ Object.keys(globalMethods).forEach(key => {
 
 Vue.config.productionTip = false
 
+Vue.use(require('vue-shortkey'))
+
 new Vue({
   el: '#app',
   router,

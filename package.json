@@ -75,6 +75,7 @@
     "vue-i18n": "7.3.2",
     "vue-multipane": "^0.9.5",
     "vue-router": "3.0.4",
+    "vue-shortkey": "^3.1.7",
     "vue-split-panel": "^1.0.4",
     "vue-splitpane": "1.0.4",
     "vuedraggable": "^2.23.2",

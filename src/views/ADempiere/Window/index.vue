@@ -56,7 +56,7 @@
           </template>
           <template slot="paneR">
             <el-container style="height: 86vh;">
-              <Split direction="vertical" @onDrag="onDrag">
+              <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation">
                 <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
                   <el-header style="height: 39px;">
                     <context-menu

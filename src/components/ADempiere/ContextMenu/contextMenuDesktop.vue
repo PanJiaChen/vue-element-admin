@@ -1,6 +1,6 @@
 <template>
   <div class="container-submenu container-context-menu">
-    <el-menu :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened @select="typeFormat">
+    <el-menu v-shortkey="{f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd']}" :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened @select="typeFormat" @shortkey.native="actionContextMenu">
       <template>
         <el-submenu v-if="relations !== undefined && relations.length" class="el-menu-item" index="1">
           <template slot="title">
