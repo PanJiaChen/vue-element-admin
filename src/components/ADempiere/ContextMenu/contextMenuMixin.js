@@ -161,6 +161,9 @@ export const contextMixin = {
     },
     metadataReport() {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid)
+    },
+    isPersonalLock() {
+      return this.$store.getters['user/getIsPersonalLock']
     }
   },
   watch: {

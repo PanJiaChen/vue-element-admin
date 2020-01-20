@@ -778,7 +778,7 @@ const data = {
         userUuid
       })
         .then(privateAccessResponse => {
-          if (isEmptyValue(privateAccessResponse.recordId)) {
+          if (isEmptyValue(privateAccessResponse.recordId) || privateAccessResponse !== recordId) {
             return {
               isLocked: false,
               tableName,

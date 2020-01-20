@@ -267,6 +267,9 @@ const getters = {
   },
   getUserUuid: (state) => {
     return state.userUuid
+  },
+  getIsPersonalLock: (state) => {
+    return state.rol.isPersonalLock
   }
 }
 
