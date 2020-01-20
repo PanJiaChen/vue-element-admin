@@ -2,7 +2,9 @@
   <div class="user-profi">
     <router-link to="/profile/index">
       <img v-if="logo" :src="logo" class="sidebar-logo">
-      <p style="float: right;max-width: 150px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">{{ getRol.clientName }}</p>
+      <p style="float: right;max-width: 150px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
+        {{ getRol.clientName }}
+      </p>
     </router-link>
     <roles-navbar />
   </div>

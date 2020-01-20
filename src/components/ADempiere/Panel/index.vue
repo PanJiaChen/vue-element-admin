@@ -40,7 +40,7 @@
                     :container-uuid="containerUuid"
                     :metadata-field="{
                       ...fieldAttributes,
-                      optionCRUD: optionCRUD
+                      optionCRUD
                     }"
                     :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                     :panel-type="panelType"
@@ -97,7 +97,7 @@
                           :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
-                            optionCRUD: optionCRUD
+                            optionCRUD
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                           :panel-type="panelType"
@@ -149,7 +149,7 @@
                           :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
-                            optionCRUD: optionCRUD
+                            optionCRUD
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                           :panel-type="panelType"
@@ -339,7 +339,7 @@ export default {
         }).then(() => {
           this.generatePanel(this.getterFieldList)
         }).catch(error => {
-          console.warn(`Field Load Error ${error.code}: ${error.message}`)
+          console.warn(`Field Load Error: ${error.message}. Code: ${error.code}.`)
         })
       }
     },
@@ -349,7 +349,7 @@ export default {
       if (fieldsList.length) {
         this.fieldGroups = this.sortAndGroup(fieldsList)
       }
-      var firstGroup
+      let firstGroup
       if (this.fieldGroups[0] && this.fieldGroups[0].groupFinal === '') {
         firstGroup = this.fieldGroups[0]
         this.fieldGroups.shift()

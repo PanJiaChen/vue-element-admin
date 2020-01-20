@@ -1,5 +1,4 @@
 
-import { requestLanguages } from '@/api/ADempiere'
 const utils = {
   state: {
     width: 0,
@@ -12,7 +11,6 @@ const utils = {
     reportType: '',
     isShowedTable: false,
     recordUuidTable: 0,
-    languageList: [],
     isShowedTabChildren: false,
     recordTable: 0,
     selectionProcess: []
@@ -53,9 +51,6 @@ const utils = {
     },
     setReportTypeToShareLink(state, payload) {
       state.reportType = payload
-    },
-    setLanguageList(state, payload) {
-      state.languageList = payload
     }
   },
   actions: {
@@ -103,18 +98,6 @@ const utils = {
     },
     setReportTypeToShareLink({ commit }, value) {
       commit('setReportTypeToShareLink', value)
-    },
-    getLanguagesFromServer({ commit }) {
-      return new Promise((resolve, reject) => {
-        requestLanguages()
-          .then(languageResponse => {
-            commit('setLanguageList', languageResponse.languagesList)
-            resolve(languageResponse.languagesList)
-          })
-          .catch(error => {
-            reject(error)
-          })
-      })
     }
   },
   getters: {
@@ -165,17 +148,6 @@ const utils = {
     },
     getReportType: (state) => {
       return state.reportType
-    },
-    getLanguageList: (state) => {
-      return state.languageList
-    },
-    getLanguageByParameter: (state) => (parameter) => {
-      var list = state.languageList
-      list.forEach(language => {
-        if (language.hasOwnProperty(parameter)) {
-          return language
-        }
-      })
     }
   }
 }

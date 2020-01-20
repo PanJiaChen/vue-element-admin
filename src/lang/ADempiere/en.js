@@ -1,4 +1,5 @@
 export default {
+  language: 'Language',
   route: {
     dashboard: 'Dashboard',
     calendar: 'Calendar',

@@ -1,4 +1,5 @@
 export default {
+  language: 'Idioma',
   route: {
     dashboard: 'Panel de control',
     documentation: 'Documentación',

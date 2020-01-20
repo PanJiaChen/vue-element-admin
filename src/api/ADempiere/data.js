@@ -80,12 +80,12 @@ export function getEntity({ tableName, recordId, recordUuid }) {
  * @param {string} orderByClause
  * @param {string} nextPageToken
  */
-export function getEntitiesList({ tableName, query, whereClause, conditions = [], orderByClause, nextPageToken }) {
+export function getEntitiesList({ tableName, query, whereClause, conditions: conditionsList = [], orderByClause, nextPageToken }) {
   return Instance.call(this).requestEntitiesList({
     tableName,
     query,
     whereClause,
-    conditionsList: conditions,
+    conditionsList,
     orderByClause,
     nextPageToken
   })
@@ -148,7 +148,7 @@ export function getLookupList({ tableName, query }) {
       }]
  * @param {string}  printFormatUuid
  */
-export function runProcess({ uuid, reportType, tableName, recordId, parameters: parametersList = [], selection = [], printFormatUuid }) {
+export function runProcess({ uuid, reportType, tableName, recordId, parameters: parametersList = [], selection: selectionsList = [], printFormatUuid }) {
   //  Run Process
   return Instance.call(this).requestRunProcess({
     uuid,
@@ -156,7 +156,7 @@ export function runProcess({ uuid, reportType, tableName, recordId, parameters: 
     tableName,
     recordId,
     parametersList,
-    selectionsList: selection,
+    selectionsList,
     printFormatUuid
   })
 }
@@ -244,7 +244,7 @@ export function getDefaultValueFromServer(query) {
 }
 
 export function getContextInfoValueFromServer({ uuid, query }) {
-  return Instance.call(this).getContextInfoValue({ uuid: uuid, query: query })
+  return Instance.call(this).getContextInfoValue({ uuid, query })
 }
 
 export function getPrivateAccessFromServer({ tableName, recordId, userUuid }) {
@@ -312,6 +312,22 @@ export function requestLisDashboards(roleUuid) {
 
 export function requestLanguages() {
   return Instance.call(this).requestLanguages()
+}
+
+/**
+ * Request translations
+ * @param {string} tableName
+ * @param {string} language
+ * @param {string} recordUuid
+ * @param {integer} recordId
+ */
+export function requestTranslations({ tableName, language, recordUuid, recordId }) {
+  return Instance.call(this).requestTranslations({
+    tableName,
+    recordUuid,
+    recordId,
+    language
+  })
 }
 
 export function requestDrillTables(tableName) {

@@ -30,7 +30,7 @@
     </el-form-item>
     <el-form-item :label="$t('profile.changeLanguage')">
       <el-select
-        v-model="language"
+        v-model="currentLanguage"
         :filterable="true"
         value-key="key"
         :placeholder="$t('profile.changeLanguagePlaceholder')"
@@ -38,10 +38,10 @@
         @change="changeLanguage"
       >
         <el-option
-          v-for="item in languageList"
+          v-for="item in getterLanguageList"
           :key="item.value"
-          :label="item.label"
-          :value="item.value"
+          :label="item.languageName"
+          :value="item.languageISO"
         />
       </el-select>
     </el-form-item>
@@ -59,8 +59,7 @@ export default {
     return {
       valueRol: '',
       options: [],
-      languageList: [],
-      language: getLanguage()
+      currentLanguage: getLanguage()
     }
   },
   computed: {
@@ -70,16 +69,8 @@ export default {
     getRolesList() {
       return this.$store.getters['user/getRoles']
     },
-    languageCookie() {
-      return getLanguage()
-    },
     getterLanguageList() {
-      return this.$store.getters.getLanguageList.map(language => {
-        return {
-          value: language.languageIso,
-          label: language.languageName
-        }
-      })
+      return this.$store.getters.getLanguagesList
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -122,30 +113,20 @@ export default {
         })
     },
     changeLanguage(languageValue) {
-      this.language = languageValue
+      this.currentLanguage = languageValue
     },
     getLanguageList(open) {
       if (open) {
-        if (this.getterLanguageList.length) {
-          this.languageList = this.getterLanguageList
-        } else {
-          this.getLanguageData()
-        }
+        this.getLanguageData()
       }
     },
     getLanguageData() {
-      this.$store.dispatch('getLanguagesFromServer')
-        .then(response => {
-          this.languageList = response.map(language => {
-            return {
-              value: language.languageIso,
-              label: language.languageName
-            }
+      if (this.isEmptyValue(this.getterLanguageList)) {
+        this.$store.dispatch('getLanguagesFromServer')
+          .catch(error => {
+            console.warn(`Error getting languages list: ${error.message}. Code: ${error.code}.`)
           })
-        })
-        .catch(error => {
-          console.warn('Error getting language list:', error.message + '. Code: ', error.code)
-        })
+      }
     }
   }
 }
