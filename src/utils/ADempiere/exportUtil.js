@@ -1,4 +1,5 @@
 import { export_json_to_excel } from '@/vendor/Export2Excel'
+import { export_txt_to_zip } from '@/vendor/Export2Zip'
 import language from '@/lang'
 
 export const supportedTypes = {
@@ -28,4 +29,24 @@ export function exportFileFromJson({
     filename: '',
     bookType: exportType
   })
+}
+
+export function exportFileZip({
+  header,
+  data,
+  title
+}) {
+  var Json = data.map(dataJson => {
+    Object.keys(dataJson).forEach(key => {
+      if (typeof dataJson[key] === 'boolean') {
+        dataJson[key] = dataJson[key] ? language.t('components.switchActiveText') : language.t('components.switchInactiveText')
+      }
+    })
+    return dataJson
+  })
+  export_txt_to_zip(
+    header,
+    Json,
+    title
+  )
 }

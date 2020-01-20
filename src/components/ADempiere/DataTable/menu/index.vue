@@ -28,6 +28,11 @@
       >
         {{ process.name }}
       </el-menu-item>
+      <el-menu-item
+        @click="exporZipRecordTable"
+      >
+        {{ $t('table.dataTable.exportZip') }}
+      </el-menu-item>
       <el-submenu
         :disabled="Boolean(getDataSelection.length < 1)"
         index="xlsx"

@@ -271,7 +271,7 @@ import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere'
 import { FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
+import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
 import evaluator from '@/utils/ADempiere/evaluator'
 
 export default {
@@ -669,6 +669,18 @@ export default {
           this.exporRecordTable(key)
         }
       })
+    },
+    exporZipRecordTable() {
+      const Header = this.getterFieldListHeader
+      const filterVal = this.getterFieldListValue
+      const list = this.getDataSelection
+      const data = this.formatJson(filterVal, list)
+      const filename = 'prueba'
+      exportFileZip(
+        Header,
+        data,
+        filename
+      )
     },
     exporRecordTable(key) {
       const Header = this.getterFieldListHeader

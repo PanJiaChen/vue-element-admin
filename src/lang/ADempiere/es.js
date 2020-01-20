@@ -193,6 +193,7 @@ export default {
       selected: 'Seleccionados',
       deleteSelection: 'Eliminar Registros Seleccionados',
       advancedQuery: 'Consulta Avanzada',
+      exportZip: 'Exportar Zip',
       showOnlyMandatoryColumns: 'Mostrar Solo Columnas Obligatorias',
       showAllAvailableColumns: 'Mostrar Todas Columnas Disponibles',
       exportRecordTable: 'Exportar Registros Seleccionados',

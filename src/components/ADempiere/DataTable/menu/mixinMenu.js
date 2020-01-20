@@ -1,4 +1,4 @@
-import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
+import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
 import { showNotification } from '@/utils/ADempiere/notification'
 
 export const menuTableMixin = {
@@ -297,6 +297,24 @@ export const menuTableMixin = {
         data,
         filename: '',
         exportType: key
+      })
+    },
+    exporZipRecordTable() {
+      const Header = this.getterFieldListHeader
+      const filterVal = this.getterFieldListValue
+      var list
+      if (!this.isOption) {
+        list = this.getDataSelection
+      } else {
+        list = this.gettersRecordContextMenu
+      }
+
+      const data = this.formatJson(filterVal, list)
+      exportFileZip({
+        header: Header,
+        data,
+        filename: '',
+        exportType: 'zip'
       })
     },
     formatJson(filterVal, jsonData) {
