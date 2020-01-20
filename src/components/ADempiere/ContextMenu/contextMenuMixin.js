@@ -135,12 +135,11 @@ export const contextMixin = {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid).record
     },
     getDataRecord() {
-      var record = this.getterDataRecordsAll.filter(fieldItem => {
+      return this.getterDataRecordsAll.filter(fieldItem => {
         if (this.recordUuid === fieldItem.UUID) {
           return fieldItem
         }
       })
-      return record
     },
     getterDataLog() {
       if (this.panelType === 'window') {
@@ -326,15 +325,25 @@ export const contextMixin = {
     },
     generateContextMenu() {
       this.metadataMenu = this.getterContextMenu
+
+      // the function is broken avoiding that an error is generated when closing
+      // session being in a window, since the store of vuex is cleaned, being
+      // this.metadataMenu with value undefined
+      if (this.isEmptyValue(this.metadataMenu)) {
+        return
+      }
+
       if (this.panelType === 'window') {
         this.$store.dispatch('getPrivateAccessFromServer', {
           tableName: this.$route.params.tableName,
           recordId: this.$route.params.recordId
         })
-          .then(response => {
-            this.$nextTick(() => {
-              this.validatePrivateAccess(response)
-            })
+          .then(privateAccessResponse => {
+            if (!this.isEmptyValue(privateAccessResponse)) {
+              this.$nextTick(() => {
+                this.validatePrivateAccess(privateAccessResponse)
+              })
+            }
           })
       }
       this.actions = this.metadataMenu.actions
@@ -605,17 +614,41 @@ export const contextMixin = {
         }
       })
     },
-    validatePrivateAccess(response) {
-      if (response.isLocked) {
-        this.actions.find(item => item.action === 'unlockRecord').hidden = false
-        this.actions.find(item => item.action === 'unlockRecord').tableName = response.tableName
-        this.actions.find(item => item.action === 'unlockRecord').recordId = response.recordId
-        this.actions.find(item => item.action === 'lockRecord').hidden = true
+    validatePrivateAccess({ isLocked, tableName, recordId }) {
+      if (isLocked) {
+        this.actions = this.actions.map(actionItem => {
+          if (actionItem.action === 'unlockRecord') {
+            return {
+              ...actionItem,
+              hidden: false,
+              tableName,
+              recordId
+            }
+          } else if (actionItem.action === 'lockRecord') {
+            return {
+              ...actionItem,
+              hidden: true
+            }
+          }
+          return actionItem
+        })
       } else {
-        this.actions.find(item => item.action === 'lockRecord').hidden = false
-        this.actions.find(item => item.action === 'lockRecord').tableName = response.tableName
-        this.actions.find(item => item.action === 'lockRecord').recordId = response.recordId
-        this.actions.find(item => item.action === 'unlockRecord').hidden = true
+        this.actions = this.actions.map(actionItem => {
+          if (actionItem.action === 'lockRecord') {
+            return {
+              ...actionItem,
+              hidden: false,
+              tableName,
+              recordId
+            }
+          } else if (actionItem.action === 'unlockRecord') {
+            return {
+              ...actionItem,
+              hidden: true
+            }
+          }
+          return actionItem
+        })
       }
     }
   }
