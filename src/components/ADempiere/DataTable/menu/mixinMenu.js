@@ -57,6 +57,7 @@ export const menuTableMixin = {
   },
   computed: {
     isProcessTable() {
+      console.log(this.$route)
       if (this.isProcessMenu) {
         return true
       }
@@ -215,13 +216,6 @@ export const menuTableMixin = {
       }
     },
     tableProcess(process) {
-      // if (!this.isOption) {
-      //   if (this.getDataSelection.length <= 1) {
-      //     this.showModal(process)
-      //   }
-      // } else {
-      //   this.showModal(process)
-      // }
       this.showModal(process)
     },
     showTotals() {
@@ -313,7 +307,7 @@ export const menuTableMixin = {
       exportFileZip({
         header: Header,
         data,
-        filename: '',
+        title: this.$route.meta.title,
         exportType: 'zip'
       })
     },

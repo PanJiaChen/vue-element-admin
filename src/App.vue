@@ -26,10 +26,6 @@ export default {
     },
     getWindowHeight(event) {
       this.$store.dispatch('setHeight', document.documentElement.clientHeight)
-    },
-    theAction(event) {
-      console.log(event)
-      alert('ok', event)
     }
   }
 }
