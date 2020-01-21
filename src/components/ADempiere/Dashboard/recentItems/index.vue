@@ -59,16 +59,16 @@ export default {
     }
   },
   mounted() {
-    this.getRecentItems()
+    this.getRecentItems({ pageToken: undefined, pageSize: undefined })
     this.subscribeChanges()
   },
   methods: {
     checkOpened(uuid) {
       return this.cachedViews.includes(uuid)
     },
-    getRecentItems() {
+    getRecentItems({ pageToken, pageSize }) {
       return new Promise((resolve, reject) => {
-        getRecentItemsFromServer()
+        getRecentItemsFromServer({ pageToken, pageSize })
           .then(response => {
             const recentItems = response.recentItemsList.map(item => {
               const actionConverted = convertAction(item.action)

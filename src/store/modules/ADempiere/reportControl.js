@@ -46,7 +46,7 @@ const contextMenu = {
           return printFormatList
         })
         .catch(error => {
-          console.warn(`Error getting print formats: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting print formats: ${error.message}. Code: ${error.code}.`)
         })
     },
     requestReportViews({ commit }, {
@@ -75,7 +75,7 @@ const contextMenu = {
           return reportViewList
         })
         .catch(error => {
-          console.warn(`Error getting report views: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting report views: ${error.message}. Code: ${error.code}.`)
         })
     },
     requestDrillTables({ commit }, {
@@ -86,7 +86,7 @@ const contextMenu = {
       tableName,
       reportViewUuid
     }) {
-      return requestDrillTables(tableName)
+      return requestDrillTables({ tableName })
         .then(responseDrillTables => {
           const drillTablesList = responseDrillTables.drillTablesList.map(drillTableItem => {
             return {
@@ -108,7 +108,7 @@ const contextMenu = {
           return drillTablesList
         })
         .catch(error => {
-          console.warn(`Error getting drill tables: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting drill tables: ${error.message}. Code: ${error.code}.`)
         })
     },
     getReportOutputFromServer({ commit, getters, rootGetters }, parameters) {
@@ -174,7 +174,7 @@ const contextMenu = {
             isReport: true,
             option: ''
           }
-          console.warn(`Error getting report output: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting report output: ${error.message}. Code: ${error.code}.`)
           return reportOutput
         })
     }

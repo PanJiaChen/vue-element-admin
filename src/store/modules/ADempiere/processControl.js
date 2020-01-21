@@ -553,7 +553,7 @@ const processControl = {
                 message: error.message,
                 isProcessing: false
               })
-              console.warn(`Error running the process ${error.message}. Code: ${error.code}`)
+              console.warn(`Error running the process ${error.message}. Code: ${error.code}.`)
               reject(error)
             })
             .finally(() => {
@@ -597,7 +597,7 @@ const processControl = {
       })
     },
     // Supported to process selection
-    SelectionProcess({ commit, state, dispatch, getters, rootGetters }, params) {
+    selectionProcess({ commit, state, dispatch, getters, rootGetters }, params) {
       // get info metadata process
       const processDefinition = rootGetters.getProcess(params.action.uuid)
       var reportType = 'pdf'
@@ -785,7 +785,7 @@ const processControl = {
                   message: error.message,
                   isProcessing: false
                 })
-                console.warn(`Error running the process ${error}`)
+                console.warn(`Error running the process ${error}.`)
               })
           }
         })
@@ -798,7 +798,7 @@ const processControl = {
       // process Activity
       return requestProcessActivity()
         .then(processActivityResponse => {
-          const responseList = processActivityResponse.responsesList.map(businessProcessItem => {
+          const responseList = processActivityResponse.processLogsList.map(businessProcessItem => {
             const processMetadata = rootGetters.getProcess(businessProcessItem.uuid)
             // if no exists metadata process in store and no request progess
             if (processMetadata === undefined && getters.getInRequestMetadata(businessProcessItem.uuid) === undefined) {
@@ -832,7 +832,7 @@ const processControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn(`Error getting process activity: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting process activity: ${error.message}. Code: ${error.code}.`)
         })
     },
     /**

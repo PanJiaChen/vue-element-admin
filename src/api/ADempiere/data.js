@@ -80,14 +80,23 @@ export function getEntity({ tableName, recordId, recordUuid }) {
  * @param {string} orderByClause
  * @param {string} nextPageToken
  */
-export function getEntitiesList({ tableName, query, whereClause, conditions: conditionsList = [], orderByClause, nextPageToken }) {
+export function getEntitiesList({
+  tableName,
+  query,
+  whereClause,
+  conditions: conditionsList = [],
+  orderByClause,
+  nextPageToken: pageToken,
+  pageSize
+}) {
   return Instance.call(this).requestEntitiesList({
     tableName,
     query,
     whereClause,
     conditionsList,
     orderByClause,
-    nextPageToken
+    pageToken,
+    pageSize
   })
 }
 
@@ -97,7 +106,11 @@ export function getEntitiesList({ tableName, query, whereClause, conditions: con
  * @param {number} recordId
  * @param {string} eventType
  */
-export function rollbackEntity({ tableName, recordId, eventType }) {
+export function rollbackEntity({
+  tableName,
+  recordId,
+  eventType
+}) {
   return Instance.call(this).rollbackEntityRequest({
     tableName,
     recordId,
@@ -112,7 +125,11 @@ export function rollbackEntity({ tableName, recordId, eventType }) {
  * @param {string} directQuery
  * @param {string|number} value
  */
-export function getLookup({ tableName, directQuery, value }) {
+export function getLookup({
+  tableName,
+  directQuery,
+  value
+}) {
   return Instance.call(this).requestLookupFromReference({
     tableName,
     directQuery,
@@ -126,10 +143,17 @@ export function getLookup({ tableName, directQuery, value }) {
  * @param {string} tableName
  * @param {string} query
  */
-export function getLookupList({ tableName, query }) {
-  return Instance.call(this).requestLookupListFromReference({
+export function getLookupList({
+  tableName,
+  query,
+  pageToken,
+  pageSize
+}) {
+  return Instance.call(this).requestListLookupFromReference({
     tableName,
-    query
+    query,
+    pageToken,
+    pageSize
   })
 }
 
@@ -174,26 +198,27 @@ export function runProcess({ uuid, reportType, tableName, recordId, parameters: 
  *     value
  * }]
  */
-export function getBrowserSearch({ uuid, parameters: parametersList = [], query, whereClause, orderByClause, nextPageToken }) {
+export function getBrowserSearch({ uuid, parameters: parametersList = [], query, whereClause, orderByClause, nextPageToken: pageToken, pageSize }) {
   //  Run browser
-  return Instance.call(this).requestBrowserSearch({
+  return Instance.call(this).requestListBrowserSearch({
     uuid,
     parametersList,
     query,
     whereClause,
     orderByClause,
-    nextPageToken
+    pageToken,
+    pageSize
   })
 }
 
 // Request a Process Activity list
-export function requestProcessActivity() {
+export function requestProcessActivity({ pageToken, pageSize }) {
   //  Get Process Activity
-  return Instance.call(this).requestProcessActivity()
+  return Instance.call(this).requestListProcessesLogs({ pageToken, pageSize })
 }
 
-export function getRecentItems() {
-  return Instance.call(this).requestRecentItems()
+export function getRecentItems({ pageToken, pageSize }) {
+  return Instance.call(this).requestListRecentItems({ pageToken, pageSize })
 }
 
 /**
@@ -203,12 +228,14 @@ export function getRecentItems() {
  * @param {string}  recordUuid
  * @param {number}  recordId
  */
-export function getReferencesList({ windowUuid, tableName, recordId, recordUuid }) {
-  return Instance.call(this).listReferencesRequest({
+export function getReferencesList({ windowUuid, tableName, recordId, recordUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListReferences({
     windowUuid,
     tableName,
     recordId,
-    recordUuid
+    recordUuid,
+    pageToken,
+    pageSize
   })
 }
 
@@ -275,14 +302,16 @@ export function unlockPrivateAccessFromServer({ tableName, recordId, userUuid })
  * Request Favorites List
  * @param {string} userUuid
  */
-export function getFavoritesFromServer(userUuid) {
-  return Instance.call(this).requestFavorites(userUuid)
+export function getFavoritesFromServer({ userUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListFavorites({ userUuid, pageToken, pageSize })
 }
 
-export function getPendingDocumentsFromServer({ userUuid, roleUuid }) {
-  return Instance.call(this).requestPendingDocuments({
+export function getPendingDocumentsFromServer({ userUuid, roleUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListPendingDocuments({
     userUuid,
-    roleUuid
+    roleUuid,
+    pageToken,
+    pageSize
   })
 }
 
@@ -291,27 +320,35 @@ export function getPendingDocumentsFromServer({ userUuid, roleUuid }) {
  * @param {string} tableName
  * @param {string} processUuid
  */
-export function requestReportViews({ tableName, processUuid }) {
-  return Instance.call(this).requestReportViews({
+export function requestReportViews({ tableName, processUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListReportViews({
     tableName,
-    processUuid
+    processUuid,
+    pageToken,
+    pageSize
   })
 }
 
-export function requestPrintFormats({ tableName, reportViewUuid, processUuid }) {
-  return Instance.call(this).requestPrintFormats({
+export function requestPrintFormats({ tableName, reportViewUuid, processUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListPrintFormats({
     tableName,
     reportViewUuid,
-    processUuid
+    processUuid,
+    pageToken,
+    pageSize
   })
 }
 
-export function requestLisDashboards(roleUuid) {
-  return Instance.call(this).requestDashboards(roleUuid)
+export function requestLisDashboards({ roleUuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListDashboards({
+    roleUuid,
+    pageToken,
+    pageSize
+  })
 }
 
-export function requestLanguages() {
-  return Instance.call(this).requestLanguages()
+export function requestLanguages({ pageToken, pageSize }) {
+  return Instance.call(this).requestListLanguages({ pageToken, pageSize })
 }
 
 /**
@@ -321,17 +358,23 @@ export function requestLanguages() {
  * @param {string} recordUuid
  * @param {integer} recordId
  */
-export function requestTranslations({ tableName, language, recordUuid, recordId }) {
+export function requestTranslations({ tableName, language, recordUuid, recordId, pageToken, pageSize }) {
   return Instance.call(this).requestTranslations({
     tableName,
     recordUuid,
     recordId,
-    language
+    language,
+    pageToken,
+    pageSize
   })
 }
 
-export function requestDrillTables(tableName) {
-  return Instance.call(this).requestDrillTables(tableName)
+export function requestDrillTables({ tableName, pageToken, pageSize }) {
+  return Instance.call(this).requestListDrillTables({
+    tableName,
+    pageToken,
+    pageSize
+  })
 }
 
 export function getReportOutput({
@@ -351,5 +394,33 @@ export function getReportOutput({
     isSummary,
     reportName,
     reportType
+  })
+}
+
+export function requestListRecordsLogs({
+  tableName,
+  recordId,
+  pageToken,
+  pageSize
+}) {
+  return Instance.call(this).requestListRecordsLogs({
+    tableName,
+    recordId,
+    pageToken,
+    pageSize
+  })
+}
+
+export function requestListWorkflowsLogs({
+  tableName,
+  recordId,
+  pageToken,
+  pageSize
+}) {
+  return Instance.call(this).requestListWorkflowsLogs({
+    tableName,
+    recordId,
+    pageToken,
+    pageSize
   })
 }

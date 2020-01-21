@@ -24,7 +24,7 @@ const dashboard = {
     },
     listDashboard({ commit }, roleUuid) {
       return new Promise((resolve, reject) => {
-        requestLisDashboards(roleUuid)
+        requestLisDashboards({ roleUuid })
           .then(dashboardResponse => {
             const roleDashboards = {
               roleUuid: roleUuid,
@@ -40,7 +40,7 @@ const dashboard = {
     },
     getRecentItemsFromServer({ commit }) {
       return new Promise((resolve, reject) => {
-        getRecentItems()
+        getRecentItems({ pageToken: undefined, pageSize: undefined })
           .then(recentItemsResponse => {
             const recentItems = recentItemsResponse.recentItemsList.map(item => {
               const actionConverted = convertAction(item.action)
@@ -55,7 +55,7 @@ const dashboard = {
             resolve(recentItems)
           })
           .catch(error => {
-            console.warn(`Error gettin recent items: ${error.message}. Code: ${error.code}`)
+            console.warn(`Error gettin recent items: ${error.message}. Code: ${error.code}.`)
             reject(error)
           })
       })

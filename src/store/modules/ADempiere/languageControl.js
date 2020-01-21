@@ -30,7 +30,7 @@ const languageControl = {
   actions: {
     getLanguagesFromServer({ commit }) {
       return new Promise((resolve, reject) => {
-        requestLanguages()
+        requestLanguages({ pageToke: undefined, pageSize: undefined })
           .then(languageResponse => {
             commit('setlanguagesList', languageResponse.languagesList)
             resolve(languageResponse.languagesList)
