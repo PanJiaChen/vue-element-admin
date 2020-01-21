@@ -395,6 +395,7 @@ export default {
 
         if (route.query.action && route.query.action === 'reference') {
           const referenceInfo = this.$store.getters.getReferencesInfo(route.query.windowUuid, route.query.recordUuid, route.query.referenceUuid)
+          route.params.isReadParameters = true
           parameters.isLoadAllRecords = false
           parameters.isReference = true
           parameters.referenceUuid = referenceInfo.uuid
