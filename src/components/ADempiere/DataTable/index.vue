@@ -330,7 +330,7 @@ export default {
       currentTable: 0,
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
-      defaultMaxPagination: 100,
+      defaultMaxPagination: 50,
       option: supportedTypes,
       menuTable: '1',
       activeName: this.$route.query.action === 'advancedQuery' ? '1' : '',
