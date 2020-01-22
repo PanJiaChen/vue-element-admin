@@ -252,6 +252,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     type: 'summary',
     action: '',
     childs: [],
+    option: 'printFormat',
     uuid: processToGenerate.uuid,
     id: processToGenerate.id,
     description: processToGenerate.description,

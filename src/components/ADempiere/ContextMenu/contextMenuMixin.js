@@ -518,6 +518,12 @@ export const contextMixin = {
           reportType: this.$store.getters.getReportType,
           option: action.option
         }
+        if (this.isEmptyValue(updateReportParams.instanceUuid)) {
+          updateReportParams.instanceUuid = this.$route.params.instanceUuid
+        }
+        if (this.isEmptyValue(updateReportParams.processId)) {
+          updateReportParams.processId = this.$route.params.processId
+        }
         this.$store.dispatch('getReportOutputFromServer', updateReportParams)
           .then(response => {
             if (!response.isError) {

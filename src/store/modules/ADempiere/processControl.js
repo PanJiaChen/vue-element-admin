@@ -449,7 +449,7 @@ const processControl = {
                 if (reportType !== 'pdf' && reportType !== 'html') {
                   link.click()
                 }
-
+                const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
                 // Report views List to context menu
                 const reportViewList = {
                   name: language.t('views.reportView'),
@@ -472,7 +472,6 @@ const processControl = {
                       reportViewList.childs = responseReportView
                       if (reportViewList.childs.length) {
                         // Get contextMenu metadata and concat print report views with contextMenu actions
-                        const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
                         contextMenuMetadata.actions.push(reportViewList)
                       }
                     })
@@ -500,10 +499,14 @@ const processControl = {
                       printFormatList.childs = printFormarResponse
                       if (printFormatList.childs.length) {
                         // Get contextMenu metadata and concat print Format List with contextMenu actions
-                        const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
                         contextMenuMetadata.actions.push(printFormatList)
                       }
                     })
+                } else {
+                  var index = contextMenuMetadata.actions.findIndex(action => action.option === 'printFormat')
+                  if (index !== -1) {
+                    contextMenuMetadata.actions[index] = printFormatList
+                  }
                 }
 
                 // Drill Tables to context menu
@@ -529,7 +532,6 @@ const processControl = {
                         drillTablesList.childs = drillTablesResponse
                         if (drillTablesList.childs.length) {
                           // Get contextMenu metadata and concat print Format List with contextMenu actions
-                          const contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
                           contextMenuMetadata.actions.push(drillTablesList)
                         }
                       })
