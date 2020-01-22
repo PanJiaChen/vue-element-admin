@@ -115,6 +115,8 @@ const panel = {
         })
 
       params.recordUuid = null
+      // show/hidden optionals columns to table
+      params.isShowedTableOptionalColumns = false
 
       commit('addPanel', params)
     },
@@ -772,10 +774,18 @@ const panel = {
           }
         })
     },
-    showedTotals({ commit, getters }, containerUuid) {
+    changePanelAttributesBoolean({ commit, getters }, {
+      containerUuid,
+      attributeName,
+      attributeValue
+    }) {
       const panel = getters.getPanel(containerUuid)
       const newPanel = panel
-      newPanel.isShowedTotals = !panel.isShowedTotals
+      if (isEmptyValue(attributeValue)) {
+        newPanel[attributeName] = !panel[attributeName]
+      } else {
+        newPanel[attributeName] = attributeValue
+      }
       commit('changePanel', {
         panel: panel,
         newPanel: newPanel

@@ -44,7 +44,7 @@
           </el-menu-item>
         </template>
       </el-submenu>
-      <el-menu-item index="optional" @click="optionalPanel()">
+      <el-menu-item index="optional" @click="showOptionalColums()">
         {{ $t('components.filterableItems') }}
       </el-menu-item>
       <el-menu-item index="mandatory" @click="showOnlyMandatoryColumns()">

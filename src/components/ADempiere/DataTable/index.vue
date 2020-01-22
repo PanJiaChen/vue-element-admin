@@ -49,7 +49,7 @@
                 />
               </icon-element>
               <filter-columns
-                v-if="isOptional"
+                v-if="isShowOptionalColumns"
                 :container-uuid="containerUuid"
                 :panel-type="panelType"
                 class="field-optional"
@@ -73,7 +73,7 @@
                   class="header-search-input"
                 />
                 <filter-columns
-                  v-if="isOptional"
+                  v-if="isShowOptionalColumns"
                   :container-uuid="containerUuid"
                   :panel-type="panelType"
                   class="field-optional"
@@ -334,7 +334,6 @@ export default {
       option: supportedTypes,
       menuTable: '1',
       activeName: this.$route.query.action === 'advancedQuery' ? '1' : '',
-      isOptional: false,
       isFixed: false,
       isLoadPanelFromServer: false,
       rowStyle: { height: '52px' },
@@ -405,6 +404,9 @@ export default {
     },
     getterPanel() {
       return this.$store.getters.getPanel(this.containerUuid)
+    },
+    isShowOptionalColumns() {
+      return this.getterPanel.isShowedTableOptionalColumns
     },
     getterDataRecordsAndSelection() {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
@@ -701,9 +703,6 @@ export default {
     handleChange(val) {
       val = !val
     },
-    showTotals() {
-      this.$store.dispatch('showedTotals', this.containerUuid)
-    },
     showOnlyMandatoryColumns() {
       this.$store.dispatch('showOnlyMandatoryColumns', {
         containerUuid: this.containerUuid
@@ -889,10 +888,6 @@ export default {
           type: 'info'
         })
       }
-    },
-    optionalPanel() {
-      this.showTableSearch = false
-      this.isOptional = !this.isOptional
     },
     fixedPanel() {
       this.showTableSearch = false
@@ -1144,7 +1139,6 @@ export default {
       })
     },
     click() {
-      this.isOptional = false
       this.showTableSearch = !this.showTableSearch
       if (this.showTableSearch) {
         this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.focus()
