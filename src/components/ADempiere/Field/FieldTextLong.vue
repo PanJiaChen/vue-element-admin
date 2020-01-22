@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      mode: 'markdown', // or wysiwyg
+      mode: 'markdown', // 'markdown' or 'wysiwyg'
       height: '200px',
       editor: null
     }
@@ -43,7 +43,8 @@ export default {
       const options = {
         previewStyle: 'vertical',
         useCommandShortcut: true,
-        usageStatistics: false
+        usageStatistics: false, // send hostname to google analytics
+        hideModeSwitch: this.isDisabled
       }
       options.initialEditType = this.mode
       options.height = this.height
@@ -52,27 +53,41 @@ export default {
     }
   },
   watch: {
-    valueModel(value) {
+    valueModel(value, oldValue) {
       if (this.metadata.inTable) {
         if (this.isEmptyValue(value)) {
           value = ''
         }
         this.value = String(value)
-        this.editor.setValue(value)
+
+        if (this.isDisabled) {
+          this.editor.setValue(value)
+        } else {
+          this.editor.setValue(oldValue)
+        }
       }
     },
-    'metadata.value'(value) {
+    'metadata.value'(value, oldValue) {
       if (!this.metadata.inTable) {
         if (this.isEmptyValue(value)) {
           value = ''
         }
         this.value = String(value)
-        this.editor.setValue(value)
+
+        if (this.isDisabled) {
+          this.editor.setValue(value)
+        } else {
+          this.editor.setValue(oldValue)
+        }
       }
     },
     value(newValue, oldValue) {
-      if (newValue !== oldValue && newValue !== this.editor.getValue()) {
-        this.editor.setValue(newValue)
+      if (newValue !== this.editor.getValue()) {
+        if (this.isDisabled) {
+          this.editor.setValue(newValue)
+        } else {
+          this.editor.setValue(oldValue)
+        }
       }
     },
     language(langValue) {
@@ -81,6 +96,10 @@ export default {
     },
     height(heightValue) {
       this.editor.height(heightValue)
+    },
+    isDisabled(value) {
+      this.destroyEditor()
+      this.initEditor()
     }
   },
   mounted() {
@@ -98,15 +117,42 @@ export default {
       if (!this.isEmptyValue(this.value)) {
         this.editor.setValue(this.value)
       }
+      this.setEvents()
+    },
+    setEvents() {
+      if (this.isDisabled) {
+        this.removeEventSendValues()
+        this.addReanOnlyChanges()
+      } else {
+        this.addEventSendValues()
+        this.removeReadOnlyChanges()
+      }
+    },
+    addEventSendValues() {
+      // with change event send multiple request to server
       this.editor.on('blur', () => {
-        this.preHandleChange(this.editor.getValue())
+        if (!this.isDisabled) {
+          this.preHandleChange(this.editor.getValue())
+        }
       })
+    },
+    addReanOnlyChanges() {
+      this.editor.on('change', () => {
+        this.editor.setValue(this.value)
+      })
+    },
+    removeEventSendValues() {
+      this.editor.off('blur')
+    },
+    removeReadOnlyChanges() {
+      this.editor.off('change')
     },
     destroyEditor() {
       if (!this.editor) {
         return
       }
-      this.editor.off('change')
+      this.removeEventSendValues()
+      this.removeReadOnlyChanges()
       this.editor.remove()
     },
     setHtml(value) {
