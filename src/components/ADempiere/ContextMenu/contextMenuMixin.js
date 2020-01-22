@@ -612,40 +612,42 @@ export const contextMixin = {
       })
     },
     validatePrivateAccess({ isLocked, tableName, recordId }) {
-      if (isLocked) {
-        this.actions = this.actions.map(actionItem => {
-          if (actionItem.action === 'unlockRecord') {
-            return {
-              ...actionItem,
-              hidden: false,
-              tableName,
-              recordId
+      if (this.isPersonalLock) {
+        if (isLocked) {
+          this.actions = this.actions.map(actionItem => {
+            if (actionItem.action === 'unlockRecord') {
+              return {
+                ...actionItem,
+                hidden: false,
+                tableName,
+                recordId
+              }
+            } else if (actionItem.action === 'lockRecord') {
+              return {
+                ...actionItem,
+                hidden: true
+              }
             }
-          } else if (actionItem.action === 'lockRecord') {
-            return {
-              ...actionItem,
-              hidden: true
+            return actionItem
+          })
+        } else {
+          this.actions = this.actions.map(actionItem => {
+            if (actionItem.action === 'lockRecord') {
+              return {
+                ...actionItem,
+                hidden: false,
+                tableName,
+                recordId
+              }
+            } else if (actionItem.action === 'unlockRecord') {
+              return {
+                ...actionItem,
+                hidden: true
+              }
             }
-          }
-          return actionItem
-        })
-      } else {
-        this.actions = this.actions.map(actionItem => {
-          if (actionItem.action === 'lockRecord') {
-            return {
-              ...actionItem,
-              hidden: false,
-              tableName,
-              recordId
-            }
-          } else if (actionItem.action === 'unlockRecord') {
-            return {
-              ...actionItem,
-              hidden: true
-            }
-          }
-          return actionItem
-        })
+            return actionItem
+          })
+        }
       }
     }
   }
