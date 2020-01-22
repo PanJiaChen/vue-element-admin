@@ -27,7 +27,7 @@ export function convertValueFromGRPC(grpcValue) {
  * @param {array}   parameters.attributesList
  */
 export function createEntity({ tableName, attributesList }) {
-  return Instance.call(this).createEntity({
+  return Instance.call(this).requestCreateEntity({
     tableName,
     attributesList
   })
@@ -41,7 +41,7 @@ export function createEntity({ tableName, attributesList }) {
  * @param {array}   attributesList
  */
 export function updateEntity({ tableName, recordId, recordUuid, attributesList }) {
-  return Instance.call(this).updateEntity({
+  return Instance.call(this).requestUpdateEntity({
     tableName,
     recordId,
     recordUuid,
@@ -56,7 +56,7 @@ export function updateEntity({ tableName, recordId, recordUuid, attributesList }
  * @param {string}  recordUuid
  */
 export function deleteEntity({ tableName, recordId, recordUuid }) {
-  return Instance.call(this).deleteEntity({
+  return Instance.call(this).requestDeleteEntity({
     tableName,
     recordId,
     recordUuid
@@ -64,7 +64,7 @@ export function deleteEntity({ tableName, recordId, recordUuid }) {
 }
 
 export function getEntity({ tableName, recordId, recordUuid }) {
-  return Instance.call(this).requestEntity({
+  return Instance.call(this).requestGetEntity({
     tableName,
     recordId,
     recordUuid
@@ -89,7 +89,7 @@ export function getEntitiesList({
   nextPageToken: pageToken,
   pageSize
 }) {
-  return Instance.call(this).requestEntitiesList({
+  return Instance.call(this).requestListEntities({
     tableName,
     query,
     whereClause,
@@ -111,7 +111,7 @@ export function rollbackEntity({
   recordId,
   eventType
 }) {
-  return Instance.call(this).rollbackEntityRequest({
+  return Instance.call(this).requestRollbackEntity({
     tableName,
     recordId,
     eventTypeExecuted: eventType
@@ -253,7 +253,7 @@ export function getReferencesList({ windowUuid, tableName, recordId, recordUuid,
  * @returns {Map} Entity
  */
 export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [] }) {
-  return Instance.call(this).runCalloutRequest({
+  return Instance.call(this).requestRunCallout({
     windowUuid,
     windowNo,
     tabUuid,
@@ -271,11 +271,11 @@ export function getDefaultValueFromServer(query) {
 }
 
 export function getContextInfoValueFromServer({ uuid, query }) {
-  return Instance.call(this).getContextInfoValue({ uuid, query })
+  return Instance.call(this).requestGetContextInfoValue({ uuid, query })
 }
 
 export function getPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).getPrivateAccess({
+  return Instance.call(this).requestGetPrivateAccess({
     tableName,
     recordId,
     userUuid
@@ -283,7 +283,7 @@ export function getPrivateAccessFromServer({ tableName, recordId, userUuid }) {
 }
 
 export function lockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).lockPrivateAccess({
+  return Instance.call(this).requestLockPrivateAccess({
     tableName,
     recordId,
     userUuid
@@ -291,7 +291,7 @@ export function lockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
 }
 
 export function unlockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).unlockPrivateAccess({
+  return Instance.call(this).requestUnlockPrivateAccess({
     tableName,
     recordId,
     userUuid
@@ -386,7 +386,7 @@ export function getReportOutput({
   reportName,
   reportType
 }) {
-  return Instance.call(this).getReportOutput({
+  return Instance.call(this).requestGetReportOutput({
     parametersList,
     tableName,
     printFormatUuid,
@@ -420,6 +420,34 @@ export function requestListWorkflowsLogs({
   return Instance.call(this).requestListWorkflowsLogs({
     tableName,
     recordId,
+    pageToken,
+    pageSize
+  })
+}
+
+/**
+ * @param {string}  tableName
+ * @param {integer} recordId
+ * @param {string}  pageToken
+ * @param {string}  pageSize
+ */
+export function requestListRecordChats({ tableName, recordId, pageToken, pageSize }) {
+  return Instance.call(this).requestListRecordChats({
+    tableName,
+    recordId,
+    pageToken,
+    pageSize
+  })
+}
+
+/**
+ * @param {string} uuid
+ * @param {string} pageToken
+ * @param {string} pageSize
+ */
+export function requestListChatEntries({ uuid, pageToken, pageSize }) {
+  return Instance.call(this).requestListChatEntries({
+    uuid,
     pageToken,
     pageSize
   })
