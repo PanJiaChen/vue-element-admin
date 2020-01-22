@@ -1,5 +1,9 @@
 <template>
-  <el-menu :collapse="isCollapse" class="el-menu-demo" @select="typeFormat">
+  <el-menu
+    :collapse="isCollapse"
+    class="el-menu-demo"
+    @select="typeFormat"
+  >
     <el-submenu
       index="xlsx"
     >
@@ -24,7 +28,7 @@
       {{ $t('window.deleteRecord') }}
     </el-menu-item>
     <el-menu-item
-      v-for="(process, key) in isProcessMenu"
+      v-for="(process, key) in processMenu"
       :key="key"
       index="process"
       @click="tableProcess(process)"
@@ -33,8 +37,10 @@
     </el-menu-item>
   </el-menu>
 </template>
+
 <script>
 import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/mixinMenu'
+
 export default {
   name: 'ContextMenu',
   mixins: [menuTableMixin]

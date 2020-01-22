@@ -55,7 +55,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: 'Costs + Prices (minimum currency precision but if exists more)',
-    alias: ['CostsPrices', 'Costs+Prices', 'Cost Prices']
+    alias: ['Costs+Prices', 'CostsPrices', 'Cost Prices']
   },
   {
     id: 15,
@@ -244,9 +244,9 @@ export const FIELD_RANGE = [
   },
   {
     id: 37,
-    type: 'CostsPrices',
+    type: 'Costs+Prices',
     description: 'Costs + Prices (minimum currency precision but if exists more)',
-    alias: ['CostsPrices', 'Costs+Prices', 'Cost Prices']
+    alias: ['Costs+Prices', 'CostsPrices', 'Cost Prices']
   },
   {
     id: 15,
@@ -327,3 +327,7 @@ export const FIELD_READ_ONLY_FORM = [
     isChangedAllForm: true
   }
 ]
+
+export const FIELDS_FLOATS = ['Amount', 'Costs+Prices', 'Number']
+
+export const FIELDS_QUANTITY = ['Amount', 'Costs+Prices', 'Integer', 'Number', 'Quantity']

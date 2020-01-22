@@ -19,6 +19,7 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   }
 
   const componentReference = evalutateTypeField(fieldToGenerate.displayType, true)
+  const referenceType = componentReference.alias[0]
 
   let parsedDefaultValue = fieldToGenerate.defaultValue
   if (String(parsedDefaultValue).includes('@')) {
@@ -34,7 +35,7 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   parsedDefaultValue = parsedValueComponent({
     fieldType: componentReference.type,
     value: parsedDefaultValue,
-    referenceType: componentReference.alias[0],
+    referenceType,
     isMandatory: fieldToGenerate.isMandatory
   })
 
@@ -49,7 +50,7 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   parsedDefaultValueTo = parsedValueComponent({
     fieldType: componentReference.type,
     value: parsedDefaultValueTo,
-    referenceType: componentReference.alias[0],
+    referenceType,
     isMandatory: fieldToGenerate.isMandatory
   })
   fieldToGenerate.reference.zoomWindowList = fieldToGenerate.reference.windowsList
@@ -59,14 +60,14 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     // displayed attributes
     componentPath: componentReference.type,
     isSupport: componentReference.support,
-    referenceType: componentReference.alias[0],
+    referenceType,
     displayColumn: undefined, // link to value from selects and table
     // value attributes
     value: String(parsedDefaultValue).trim() === '' ? undefined : parsedDefaultValue,
     oldValue: parsedDefaultValue,
     valueTo: parsedDefaultValueTo,
-    parsedDefaultValue: parsedDefaultValue,
-    parsedDefaultValueTo: parsedDefaultValueTo,
+    parsedDefaultValue,
+    parsedDefaultValueTo,
     // logics to app
     isDisplayedFromLogic: fieldToGenerate.isDisplayed,
     isReadOnlyFromLogic: undefined,
@@ -76,7 +77,7 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     dependentFieldsList: [],
     // TODO: Add support on server
     // app attributes
-    isShowedFromUser: isShowedFromUser,
+    isShowedFromUser,
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
     isFixedTableColumn: false
   }
@@ -148,7 +149,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     processId: processToGenerate.id,
     processName: processToGenerate.name,
     containerUuid: processToGenerate.uuid,
-    panelType: panelType
+    panelType
   }
 
   //  Convert from gRPC
@@ -283,15 +284,15 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
 
   const processDefinition = {
     ...processToGenerate,
-    panelType: panelType,
+    panelType,
     isAssociated: Boolean(containerUuidAssociated),
-    containerUuidAssociated: containerUuidAssociated,
+    containerUuidAssociated,
     fieldList: fieldDefinitionList
   }
 
   return {
-    processDefinition: processDefinition,
-    actions: actions
+    processDefinition,
+    actions
   }
 }
 

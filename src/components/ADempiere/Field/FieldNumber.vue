@@ -16,6 +16,7 @@
 
 <script>
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import { FIELDS_FLOATS } from '@/components/ADempiere/Field/references'
 
 export default {
   name: 'FieldNumber',
@@ -51,7 +52,8 @@ export default {
         .join('-').toLowerCase()
     },
     precision() {
-      if (['Amount', 'Costs+Prices', 'Number'].includes(this.metadata.referenceType)) {
+      // Amount, Costs+Prices, Number
+      if (FIELDS_FLOATS.includes(this.metadata.referenceType)) {
         return 2
       }
       return undefined

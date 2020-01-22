@@ -6,8 +6,8 @@
           <el-collapse
             v-if="isParent && isAdvancedQuery"
             v-show="isAdvancedQuery"
-            v-model="activeNames"
-            v-shortkey="{f6: ['f6'], ctrlf: ['ctrl', 'f']}"
+            v-model="activeName"
+            v-shortkey="{ f6: ['f6'], ctrlf: ['ctrl', 'f'] }"
             @shortkey.native="actionAdvancedQuery()"
           >
             <el-collapse-item :title="$t('table.dataTable.advancedQuery')" name="1">
@@ -29,9 +29,9 @@
                 :panel-type="panelType"
                 :is-parent="isParent"
                 :is-panel-window="isPanelWindow"
-                :is-process-menu="getterContextMenu"
+                :process-menu="getterContextMenu"
                 :is-mobile="isMobile"
-                :is-panel="getterPanel"
+                :panel-metadata="getterPanel"
               />
               <el-button
                 v-if="!isParent && isPanelWindow"
@@ -54,7 +54,7 @@
                 :panel-type="panelType"
                 class="field-optional"
               />
-              <div :class="{ 'show': showTableSearch }" class="table-search">
+              <div :class="{ show: showTableSearch }" class="table-search">
                 <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
                 <el-input
                   ref="headerSearchSelect"
@@ -78,7 +78,7 @@
                   :panel-type="panelType"
                   class="field-optional"
                 />
-                <div :class="{ 'show' :showTableSearch }" class="table-search">
+                <div :class="{ show: showTableSearch }" class="table-search">
                   <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
                   <el-input
                     ref="headerSearchSelect"
@@ -91,7 +91,7 @@
                 </div>
               </div>
               <div v-else class="panel-expand">
-                <div :class="{ 'show': showTableSearch }" class="table-search">
+                <div :class="{ show: showTableSearch }" class="table-search">
                   <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
                   <el-input
                     ref="headerSearchSelect"
@@ -122,37 +122,22 @@
         </el-header>
         <el-main style="padding: 0px !important; overflow: hidden;">
           <context-menu
-            v-if="isParent"
-            v-show="getShowContextMenuTable"
-            :style="{left:left+'px',top:top+'px'}"
+            v-show="isParent ? getShowContextMenuTable : getShowContextMenuTabChildren"
+            :style="{ left: left + 'px', top: top + 'px' }"
             class="contextmenu"
             :container-uuid="containerUuid"
             :parent-uuid="parentUuid"
             :panel-type="panelType"
             :is-option="isOption"
             :is-panel-window="isPanelWindow"
-            :is-process-menu="getterContextMenu"
+            :process-menu="getterContextMenu"
             :is-mobile="isMobile"
-            :is-panel="getterPanel"
-          />
-          <context-menu
-            v-if="!isParent"
-            v-show="getShowContextMenuTabChildren"
-            :style="{left:left+'px',top:top+'px'}"
-            class="contextmenu"
-            :container-uuid="containerUuid"
-            :parent-uuid="parentUuid"
-            :panel-type="panelType"
-            :is-option="isOption"
-            :is-panel-window="isPanelWindow"
-            :is-process-menu="getterContextMenu"
-            :is-mobile="isMobile"
-            :is-panel="getterPanel"
+            :panel-metadata="getterPanel"
           />
           <el-table
             ref="multipleTable"
             v-loading="$route.query.action !== 'create-new' && isLoaded"
-            v-shortkey="{up: ['arrowup'], down: ['arrowdown'], left: ['arrowleft'], right: ['arrowright']}"
+            v-shortkey="{ up: ['arrowup'], down: ['arrowdown'], left: ['arrowleft'], right: ['arrowright'] }"
             :height="getHeigthTable"
             style="width: 100%"
             border
@@ -238,21 +223,21 @@
       </el-container>
     </el-main>
     <el-footer style="height: 30px;">
-      <div>
-        <div style="float: right;">
-          <el-pagination
-            small
-            layout="slot, total, prev, pager, next"
-            :current-page="currentPage"
-            :page-size="defaultMaxPagination"
-            :total="getterRecordCount"
-            @current-change="handleChangePage"
-          >
-            <template v-slot>
-              <span>{{ $t('table.dataTable.selected') }}: {{ getDataSelection.length }} / </span>
-            </template>
-          </el-pagination>
-        </div>
+      <div style="float: right;">
+        <el-pagination
+          small
+          layout="slot, total, prev, pager, next"
+          :current-page="currentPage"
+          :page-size="defaultMaxPagination"
+          :total="getterRecordCount"
+          @current-change="handleChangePage"
+        >
+          <template v-slot>
+            <span>
+              {{ $t('table.dataTable.selected') }}: {{ getDataSelection.length }} /
+            </span>
+          </template>
+        </el-pagination>
       </div>
     </el-footer>
   </el-container>
@@ -268,10 +253,9 @@ import TableMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
-import { sortFields } from '@/utils/ADempiere'
-import { FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
+import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
+import { FIELDS_FLOATS, FIELDS_QUANTITY, FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
 import evaluator from '@/utils/ADempiere/evaluator'
 
 export default {
@@ -324,21 +308,18 @@ export default {
       top: 0,
       left: 0,
       isOption: {},
-      activeNames: ['0'],
       focusTable: false,
       currentRow: null,
       currentTable: 0,
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
       defaultMaxPagination: 50,
-      option: supportedTypes,
       menuTable: '1',
-      activeName: this.$route.query.action === 'advancedQuery' ? '1' : '',
+      activeName: this.$route.query.action === 'advancedQuery' ? ['1'] : [],
       isFixed: false,
       isLoadPanelFromServer: false,
       rowStyle: { height: '52px' },
       sortable: null,
-      isExpand: false,
       currentPage: 1,
       uuidCurrentRecordSelected: '',
       showTableSearch: false,
@@ -347,7 +328,7 @@ export default {
   },
   computed: {
     getterContextMenu() {
-      var process = this.$store.getters.getContextMenu(this.containerUuid).actions
+      const process = this.$store.getters.getContextMenu(this.containerUuid).actions
       if (process) {
         return process.filter(menu => {
           if (menu.type === 'process') {
@@ -366,41 +347,8 @@ export default {
     getterFieldList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
-    getterFieldListHeader() {
-      return this.getterFieldList.filter(fieldItem => {
-        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
-        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
-          return fieldItem.name
-        }
-      }).map(fieldItem => {
-        return fieldItem.name
-      })
-    },
-    getterFieldListValue() {
-      var value = this.getterFieldList.filter(fieldItem => {
-        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
-        if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
-          return fieldItem
-        }
-      })
-      return value.map(fieldItem => {
-        if (fieldItem.componentPath === 'FieldSelect') {
-          return 'DisplayColumn_' + fieldItem.columnName
-        } else {
-          return fieldItem.columnName
-        }
-      })
-    },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
-    },
-    classTableMenu() {
-      if (this.isMobile) {
-        return 'menu-table-mobile'
-      } else if (this.$store.state.app.sidebar.opened) {
-        return 'menu-table'
-      }
-      return 'menu-table'
     },
     getterPanel() {
       return this.$store.getters.getPanel(this.containerUuid)
@@ -419,7 +367,7 @@ export default {
     },
     getterNewRecords() {
       if (this.isPanelWindow && !this.isParent) {
-        var newRecordTable = this.getterDataRecordsAndSelection.record.filter(recordItem => {
+        const newRecordTable = this.getterDataRecordsAndSelection.record.filter(recordItem => {
           return recordItem.isNew
         })
         return newRecordTable.length
@@ -439,7 +387,7 @@ export default {
       return this.$store.getters.getFieldsIsDisplayed(this.containerUuid)
     },
     getterIsShowedCriteria() {
-      var browser = this.$store.getters.getBrowser(this.containerUuid)
+      const browser = this.$store.getters.getBrowser(this.containerUuid)
       if (browser) {
         return browser.isShowedCriteria
       }
@@ -469,35 +417,38 @@ export default {
       }
     },
     getHeigthTable() {
+      let totalRow = 0
+      if (this.getterPanel.isShowedTotals) {
+        totalRow = 27
+      }
+
       if (this.isPanelWindow) {
         // table record navigation
         if (this.isParent) {
           if (this.isAdvancedQuery) {
             if (this.isEmptyValue(this.activeName)) {
-              return this.getterHeight - 220
-            } else {
-              return this.getterHeight - 420
+              return this.getterHeight - 220 - totalRow
             }
-          } else {
-            return this.getterHeight - 180
+            return this.getterHeight - 420 - totalRow
           }
+          return this.getterHeight - 180 - totalRow
         }
-        if (!this.isExpand) {
-          return this.getHeightPanelBottom + 'vh'
+        if (!this.activeName.length) {
+          return (this.getHeightPanelBottom - 7) + 'vh'
         }
-        return this.getterHeight - 220
+        return this.getterHeight - 220 - totalRow
       } else if (this.panelType === 'browser') {
         // open browser criteria
         if (this.getterIsShowedCriteria) {
           // showed some field query criteria
           if (this.getterFieldIsDisplayed.isDisplayed) {
-            return this.getterHeight - 495
+            return this.getterHeight - 495 - totalRow
           }
-          return this.getterHeight - 415
+          return this.getterHeight - 415 - totalRow
         }
-        return this.getterHeight - 290
+        return this.getterHeight - 290 - totalRow
       }
-      return this.getterHeight - 300
+      return this.getterHeight - 300 - totalRow
     },
     fieldList() {
       if (this.getterPanel && this.getterPanel.fieldList) {
@@ -588,10 +539,10 @@ export default {
   },
   methods: {
     actionAdvancedQuery() {
-      if (this.activeNames < 1) {
-        this.activeNames = '1'
+      if (this.activeName.length) {
+        this.activeName = []
       } else {
-        this.activeNames = '0'
+        this.activeName = ['1']
       }
     },
     setCurrent(row) {
@@ -638,80 +589,28 @@ export default {
       const maxLeft = offsetWidth - menuMinWidth // left boundary
       const left = event.clientX - offsetLeft + 15 // 15: margin right
 
+      this.left = left
       if (left > maxLeft) {
         this.left = maxLeft
-      } else {
-        this.left = left
       }
+
+      this.top = event.clientY - event.screenY
       if (this.isParent) {
         this.top = event.clientY - 100
-        this.isOption = row
-        this.visible = true
-        this.$store.dispatch('showMenuTable', {
-          isShowedTable: true
-        })
-        this.$store.dispatch('showMenuTabChildren', {
-          isShowedTabChildren: false
-        })
-      } else {
-        this.top = event.clientY - event.screenY
-        this.isOption = row
-        this.visible = true
-        this.$store.dispatch('showMenuTabChildren', {
-          isShowedTabChildren: true
-        })
-        this.$store.dispatch('showMenuTable', {
-          isShowedTable: false
-        })
       }
-    },
-    typeFormat(key, keyPath) {
-      Object.keys(supportedTypes).forEach(type => {
-        if (type === key) {
-          this.exporRecordTable(key)
-        }
+
+      this.isOption = row
+      this.visible = true
+      this.$store.dispatch('showMenuTable', {
+        isShowedTable: this.isParent
       })
-    },
-    exporZipRecordTable() {
-      const Header = this.getterFieldListHeader
-      const filterVal = this.getterFieldListValue
-      const list = this.getDataSelection
-      const data = this.formatJson(filterVal, list)
-      const filename = 'prueba'
-      exportFileZip(
-        Header,
-        data,
-        filename
-      )
-    },
-    exporRecordTable(key) {
-      const Header = this.getterFieldListHeader
-      const filterVal = this.getterFieldListValue
-      const list = this.getDataSelection
-      const data = this.formatJson(filterVal, list)
-      exportFileFromJson({
-        header: Header,
-        data,
-        filename: '',
-        exportType: key
+      this.$store.dispatch('showMenuTabChildren', {
+        isShowedTabChildren: !this.isParent
       })
-    },
-    formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
     },
     sortFields,
     handleChange(val) {
       val = !val
-    },
-    showOnlyMandatoryColumns() {
-      this.$store.dispatch('showOnlyMandatoryColumns', {
-        containerUuid: this.containerUuid
-      })
-    },
-    showAllAvailableColumns() {
-      this.$store.dispatch('showAllAvailableColumns', {
-        containerUuid: this.containerUuid
-      })
     },
     headerLabel(field) {
       if (field.isMandatory || field.isMandatoryFromLogic) {
@@ -724,7 +623,7 @@ export default {
      * @param {string} tag, document status key
      */
     tagStatus(tag) {
-      var type
+      let type
       switch (tag) {
         case 'VO':
           type = 'danger'
@@ -784,7 +683,10 @@ export default {
         if (this.isEmptyValue(row[field.columnName])) {
           return undefined
         }
-        return this.formatNumber({ referenceType: field.referenceType, number: row[field.columnName] })
+        return this.formatNumber({
+          referenceType: field.referenceType,
+          number: row[field.columnName]
+        })
       }
       return row['DisplayColumn_' + field.columnName] || row[field.columnName]
     },
@@ -821,7 +723,7 @@ export default {
         // })
         // // columnName: Processed, Processing
         // if (fieldReadOnlyAllForm.length) {
-        //   var isReadOnlyAllRow = Boolean(fieldReadOnlyAllForm.find(item => row[item.columnName] === item.valueIsReadOnlyForm))
+        //   const isReadOnlyAllRow = Boolean(fieldReadOnlyAllForm.find(item => row[item.columnName] === item.valueIsReadOnlyForm))
         //   return isReadOnlyAllRow
         // }
 
@@ -830,7 +732,7 @@ export default {
           return row.hasOwnProperty(item.columnName) && !item.isChangedAllForm
         })
         if (fieldReadOnlyForm) {
-          var isReadOnlyRow = row[fieldReadOnlyForm.columnName] === fieldReadOnlyForm.valueIsReadOnlyForm && field.columnName !== fieldReadOnlyForm.columnName
+          const isReadOnlyRow = row[fieldReadOnlyForm.columnName] === fieldReadOnlyForm.valueIsReadOnlyForm && field.columnName !== fieldReadOnlyForm.columnName
           return isReadOnlyRow
         }
       }
@@ -893,9 +795,6 @@ export default {
       this.showTableSearch = false
       this.isFixed = !this.isFixed
     },
-    expandPanel() {
-      this.isExpand = !this.isExpand
-    },
     async getList() {
       this.oldgetDataDetail = this.getterDataRecords.map(v => v.id)
       this.newgetDataDetail = this.oldgetDataDetail.slice()
@@ -925,14 +824,13 @@ export default {
       }
     },
     changeOrder() {
-      var reversed = this.getterDataRecords.reverse()
-      return reversed
+      return this.getterDataRecords.reverse()
     },
     /**
      * @param {object} field
      */
     cellClass(field) {
-      var classReturn = ''
+      let classReturn = ''
       if (field.isReadOnly) {
         classReturn += 'cell-no-edit'
       }
@@ -1002,7 +900,7 @@ export default {
         if (!row.isEdit) {
           row.isEdit = true
           /*
-          var inSelection = this.getDataSelection.some(item => {
+          const inSelection = this.getDataSelection.some(item => {
             return JSON.stringify(item) === JSON.stringify(row)
           })
           if (inSelection) {
@@ -1025,13 +923,13 @@ export default {
     },
     isAllSelected(selection = 0) {
       if (selection > 0) {
-        var data = this.getterDataRecords
+        const data = this.getterDataRecords
         return data.length === selection
       }
       return false
     },
     handleSelectionAll(rowsSelection) {
-      // var selectAll = false
+      // let selectAll = false
       // if (this.isAllSelected(rowsSelection.length)) {
       //   selectAll = true
       // }
@@ -1044,8 +942,7 @@ export default {
       // })
     },
     filterResult() {
-      var data = []
-      data = this.getterDataRecords.filter(rowItem => {
+      const data = this.getterDataRecords.filter(rowItem => {
         if (this.searchTable.trim().length) {
           let find = false
           Object.keys(rowItem).forEach(key => {
@@ -1064,7 +961,7 @@ export default {
      * Verify is displayed field in column table
      */
     isDisplayed(field) {
-      var isDisplayed = field.isDisplayed && field.isDisplayedFromLogic && field.isShowedTableFromUser && !field.isKey
+      const isDisplayed = field.isDisplayed && field.isDisplayedFromLogic && field.isShowedTableFromUser && !field.isKey
       //  Verify for displayed and is active
       return field.isActive && isDisplayed
     },
@@ -1081,7 +978,7 @@ export default {
         }).then(response => {
           this.isLoadPanelFromServer = true
         }).catch(error => {
-          console.warn('FieldList Load Error ' + error.code + ': ' + error.message)
+          console.warn(`FieldList Load Error ${error.code}: ${error.message}.`)
         })
       }
     },
@@ -1096,19 +993,19 @@ export default {
         return
       }
 
-      columns.forEach((column, index) => {
+      columns.forEach((columnItem, index) => {
         if (index === 0) {
           sums[index] = 'Σ'
           return
         }
-        const field = this.fieldList.find(field => field.columnName === column.property)
-        if (field.componentPath !== 'FieldNumber') {
+        const field = this.fieldList.find(field => field.columnName === columnItem.property)
+        if (!FIELDS_QUANTITY.includes(field.referenceType)) {
           sums[index] = ''
           return
         }
-        const values = this.getDataSelection.map(item => Number(item[column.property]))
+        const values = this.getDataSelection.map(item => Number(item[columnItem.property]))
         if (values.every(value => isNaN(value))) {
-          sums[index] = ''
+          sums[index] = 0
         } else {
           const total = values.reduce((prev, curr) => {
             const value = Number(curr)
@@ -1117,7 +1014,10 @@ export default {
             }
             return prev
           }, 0)
-          sums[index] = this.formatNumber({ referenceType: field.referenceType, number: total })
+          sums[index] = this.formatNumber({
+            referenceType: field.referenceType,
+            number: total
+          })
         }
       })
 
@@ -1125,7 +1025,8 @@ export default {
     },
     formatNumber({ referenceType, number }) {
       let fixed = 0
-      if (['Amount', 'Costs+Prices', 'Number'].includes(referenceType)) {
+      // Amount, Costs+Prices, Number
+      if (FIELDS_FLOATS.includes(referenceType)) {
         fixed = 2
       }
       return new Intl.NumberFormat().format(number.toFixed(fixed))
@@ -1156,7 +1057,7 @@ export default {
         })
       }
       if (!value) {
-        var oldAction = this.$store.getters.getOldAction
+        const oldAction = this.$store.getters.getOldAction
         this.$router.push({
           query: {
             ...this.$route.query,
@@ -1166,11 +1067,11 @@ export default {
       }
     },
     getFieldDefinition(fieldDefinition, row) {
-      var styleSheet = ''
+      let styleSheet = ''
       if (fieldDefinition && (fieldDefinition.id !== null || fieldDefinition.conditionsList.length)) {
         fieldDefinition.conditionsList.forEach(condition => {
-          var columns = evaluator.parseDepends(condition.condition)
-          var conditionLogic = condition.condition
+          const columns = evaluator.parseDepends(condition.condition)
+          let conditionLogic = condition.condition
           columns.forEach(column => {
             conditionLogic = conditionLogic.replace(/@/g, '')
             conditionLogic = conditionLogic.replace(column, row[column])
@@ -1197,8 +1098,11 @@ export default {
         }
       })
 
-      this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: browserMetadata.window.uuid })
-      var windowRoute = this.$store.getters.getWindowRoute(browserMetadata.window.uuid)
+      this.$store.dispatch('getWindowByUuid', {
+        routes: this.permissionRoutes,
+        windowUuid: browserMetadata.window.uuid
+      })
+      const windowRoute = this.$store.getters.getWindowRoute(browserMetadata.window.uuid)
       this.$router.push({
         name: windowRoute.name,
         query: {
