@@ -576,7 +576,7 @@ const panel = {
       })
 
       // the field has not changed, then the action is broken
-      if (newValue === field.value && isEmptyValue(displayColumn)) {
+      if (newValue === field.value && isEmptyValue(displayColumn) && !isAdvancedQuery) {
         return
       }
 

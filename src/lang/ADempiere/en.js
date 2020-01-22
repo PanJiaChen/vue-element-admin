@@ -44,7 +44,8 @@ export default {
     updateSuccessfully: 'Successfully made changes',
     invalidEmailFormat: 'Invalid email format',
     recordLocked: 'This record has been locked',
-    recordUnlocked: 'This record has been unlocked'
+    recordUnlocked: 'This record has been unlocked',
+    noRoleAccess: 'With your current role and settings, you cannot view this information.'
   },
   navbar: {
     badge: {

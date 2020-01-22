@@ -44,7 +44,8 @@ export default {
     updateSuccessfully: 'Cambios realizados exitosamente',
     invalidEmailFormat: 'Formato de correo electronico invalido',
     recordLocked: 'Este registro ha sido bloqueado',
-    recordUnlocked: 'Este registro ha sido desbloqueado'
+    recordUnlocked: 'Este registro ha sido desbloqueado',
+    noRoleAccess: 'Con su rol y configuración actuales, no puede ver esta información.'
   },
   navbar: {
     badge: {

@@ -20,7 +20,6 @@
       v-if="(field.contextInfo && field.contextInfo.isActive) || field.reference.zoomWindowList.length"
       ref="contextOptions"
       placement="top"
-      :title="isFieldOnly()"
       width="300"
       trigger="click"
     >
@@ -28,8 +27,13 @@
         class="pre-formatted"
         v-html="field.contextInfo.messageText.msgText"
       />
-      <div class="el-popover__title">
-        {{ $t('table.ProcessActivity.zoomIn') }}
+      <div>
+        <span class="custom-tittle-popover">
+          {{ field.name }}
+        </span>
+        <template v-if="!isEmptyValue(field.help)">
+          : {{ field.help }}
+        </template>
       </div>
       <template v-for="(zoomItem, index) in field.reference.zoomWindowList">
         <el-button
@@ -37,7 +41,7 @@
           type="text"
           @click="redirect({ window: zoomItem, columnName: field.columnName, value: field.value })"
         >
-          {{ zoomItem.name }}
+          {{ $t('table.ProcessActivity.zoomIn') }}
         </el-button>
       </template>
     </el-popover>
@@ -99,6 +103,7 @@ import FieldTranslated from '@/components/ADempiere/Field/fieldTranslated'
 import { FIELD_ONLY } from '@/components/ADempiere/Field/references'
 import { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 /**
  * This is the base component for linking the components according to the
@@ -260,6 +265,7 @@ export default {
     this.field = this.metadataField
   },
   methods: {
+    showMessage,
     isDisplayed() {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
@@ -334,25 +340,33 @@ export default {
       }
     },
     redirect({ window, columnName, value }) {
-      this.$store.dispatch('getWindowByUuid', {
-        routes: this.permissionRoutes,
-        windowUuid: window.uuid
-      })
-      const windowRoute = this.$store.getters.getWindowRoute(window.uuid)
-      this.$router.push({
-        name: windowRoute.name,
-        query: {
-          action: 'advancedQuery',
-          tabParent: 0,
-          [columnName]: value
-        }
-      })
+      this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: window.uuid })
+      var windowRoute = this.$store.getters.getWindowRoute(window.uuid)
+      if (windowRoute) {
+        this.$router.push({
+          name: windowRoute.name,
+          query: {
+            action: 'advancedQuery',
+            tabParent: 0,
+            [columnName]: value
+          }
+        })
+      } else {
+        this.showMessage({
+          type: 'error',
+          message: this.$t('notifications.noRoleAccess')
+        })
+      }
     }
   }
 }
 </script>
 
 <style lang="scss">
+  .custom-tittle-popover {
+    font-size: 14px;
+    font-weight: bold;
+  }
   /**
    * Separation between elements (item) of the form
    */
