@@ -57,7 +57,6 @@ export const menuTableMixin = {
   },
   computed: {
     isProcessTable() {
-      console.log(this.$route)
       if (this.isProcessMenu) {
         return true
       }
@@ -85,6 +84,9 @@ export const menuTableMixin = {
     },
     getDataSelection() {
       return this.getterDataRecordsAndSelection.selection
+    },
+    getDataAllRecord() {
+      return this.getterDataRecordsAndSelection.record
     },
     fieldList() {
       if (this.isPanel && this.isPanel.fieldList) {
@@ -297,12 +299,11 @@ export const menuTableMixin = {
       const Header = this.getterFieldListHeader
       const filterVal = this.getterFieldListValue
       var list
-      if (!this.isOption) {
-        list = this.getDataSelection
+      if (this.getDataSelection.length <= 0) {
+        list = this.getDataAllRecord
       } else {
-        list = this.gettersRecordContextMenu
+        list = this.getDataSelection
       }
-
       const data = this.formatJson(filterVal, list)
       exportFileZip({
         header: Header,
