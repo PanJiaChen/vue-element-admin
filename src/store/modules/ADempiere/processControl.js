@@ -1,6 +1,6 @@
 import {
   runProcess,
-  requestProcessActivity
+  requestListProcessesLogs
 } from '@/api/ADempiere/data'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
@@ -794,26 +794,26 @@ const processControl = {
     /**
      * TODO: Add date time in which the process/report was executed
      */
-    getSessionProcessFromServer({ commit, dispatch, getters, rootGetters }) {
+    getSessionProcessFromServer({ commit, dispatch, getters, rootGetters }, parameters) {
       // process Activity
-      return requestProcessActivity()
+      const { pageToken, pageSize } = parameters
+      return requestListProcessesLogs({ pageToken, pageSize })
         .then(processActivityResponse => {
-          const responseList = processActivityResponse.processLogsList.map(businessProcessItem => {
-            const processMetadata = rootGetters.getProcess(businessProcessItem.uuid)
+          const responseList = processActivityResponse.processLogsList.map(processLogItem => {
+            const processMetadata = rootGetters.getProcess(processLogItem.uuid)
             // if no exists metadata process in store and no request progess
-            if (processMetadata === undefined && getters.getInRequestMetadata(businessProcessItem.uuid) === undefined) {
-              commit('addInRequestMetadata', businessProcessItem.uuid)
+            if (processMetadata === undefined && getters.getInRequestMetadata(processLogItem.uuid) === undefined) {
+              commit('addInRequestMetadata', processLogItem.uuid)
               dispatch('getProcessFromServer', {
-                containerUuid: businessProcessItem.uuid
+                containerUuid: processLogItem.uuid
               })
                 .finally(() => {
-                  commit('deleteInRequestMetadata', businessProcessItem.uuid)
+                  commit('deleteInRequestMetadata', processLogItem.uuid)
                 })
             }
-
             const process = {
-              ...businessProcessItem,
-              processUuid: businessProcessItem.uuid
+              ...processLogItem,
+              processUuid: processLogItem.uuid
             }
             return process
           })

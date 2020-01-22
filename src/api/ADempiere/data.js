@@ -212,7 +212,7 @@ export function getBrowserSearch({ uuid, parameters: parametersList = [], query,
 }
 
 // Request a Process Activity list
-export function requestProcessActivity({ pageToken, pageSize }) {
+export function requestListProcessesLogs({ pageToken, pageSize }) {
   //  Get Process Activity
   return Instance.call(this).requestListProcessesLogs({ pageToken, pageSize })
 }

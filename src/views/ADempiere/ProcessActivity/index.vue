@@ -53,15 +53,14 @@
               </el-popover>
               <!-- show only when bring logs -->
               <el-popover
-                v-else-if="activity.logs.length > 0 || activity.summary"
-                v-key="is-logs"
+                v-else-if="activity.logsList.length > 0 || activity.summary"
                 placement="right"
                 width="500"
                 trigger="hover"
               >
                 <b>{{ $t('table.ProcessActivity.Logs') }}</b><br>
                 <ul>
-                  <li @click="zoomIn(activity)"> {{ activity.summary }} </li>
+                  <li @click="handleCommand({ ...activity, command: 'zoomIn' })"> {{ activity.summary }} </li>
                   <el-scrollbar wrap-class="popover-scroll">
                     <li v-for="(logItem, key) in activity.logsList" :key="key" @click="zoomIn(activity)">
                       {{ logItem.log }}
@@ -123,7 +122,9 @@ export default {
   data() {
     return {
       processActivity: [],
-      recordCount: 0
+      recordCount: 0,
+      pageToken: '',
+      pageSize: 50
     }
   },
   computed: {
@@ -151,7 +152,7 @@ export default {
           infoMetadata = {}
         }
         Object.assign(processMetadataReturned, element, infoMetadata)
-
+        processMetadataReturned.parametersList = element.parametersList
         var indexRepeat = processAllReturned.findIndex(item => item.instanceUuid === element.instanceUuid && !this.isEmptyValue(element.instanceUuid))
         if (indexRepeat > -1) {
           // update attributes in exists process to return
@@ -171,15 +172,23 @@ export default {
     },
     language() {
       return this.$store.getters.language
+    },
+    permissionRoutes() {
+      return this.$store.getters.permission_routes
     }
   },
   beforeMount() {
-    this.$store.dispatch('getSessionProcessFromServer')
+    this.$store.dispatch('getSessionProcessFromServer', {
+      pageToken: this.pageToken,
+      pageSize: this.pageSize
+    })
+      .then(response => {
+        if (response.nextPageToken !== this.pageToken) {
+          this.pageToken = response.nextPageToken
+        }
+      })
   },
   methods: {
-    zoomIn(activity) {
-      this.$router.push({ path: activity.processIdPath })
-    },
     getProcessMetadata(uuid) {
       return this.$store.getters.getProcess(uuid)
     },
@@ -193,19 +202,18 @@ export default {
             fileName: activity.output.fileName
           }
         })
-      } else {
-        if (!this.isEmptyValue(activity.parametersList)) {
-          this.$route.query = {
-            ...this.$route.query,
-            ...activity.parametersList
-          }
+      } else if (activity.command === 'zoomIn') {
+        this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: activity.uuid })
+        const processRoute = this.$store.getters.getWindowRoute(activity.uuid)
+        if (!this.isEmptyValue(processRoute)) {
+          this.$router.push({
+            name: processRoute.name,
+            query: {
+              ...this.$route.query,
+              ...activity.parametersList
+            }
+          })
         }
-        this.$router.push({
-          path: activity.processIdPath,
-          query: {
-            ...this.$route.query
-          }
-        })
       }
     },
     checkStatus({ isError, isProcessing, isReport }) {
