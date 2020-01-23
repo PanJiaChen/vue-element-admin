@@ -414,6 +414,7 @@ export default {
           parameters.value = route.query.action
           parameters.tableName = this.metadata.tableName
           parameters.columnName = 'UUID'
+          route.params.isReadParameters = true
         }
         // Only call get data if panel type is window
         if (!route.params.hasOwnProperty('isReadParameters') || route.params.isReadParameters) {
