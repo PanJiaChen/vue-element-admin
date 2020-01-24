@@ -67,6 +67,9 @@
       >
         {{ panelMetadata.isShowedTotals ? $t('table.dataTable.hiddenTotal') : $t('table.dataTable.showTotal') }}
       </el-menu-item>
+      <el-menu-item v-if="!isPanelWindow" :disabled="Boolean(getDataSelection.length < 1)" index="zoom-record" @click="zoomRecord()">
+        {{ $t('table.ProcessActivity.zoomIn') }}
+      </el-menu-item>
     </el-submenu>
   </el-menu>
 </template>
