@@ -40,11 +40,17 @@ const callOutControl = {
         windowNo: window.windowIndex
       })
         .then(calloutResponse => {
+          const newValues = {}
+          Object.keys(calloutResponse.values).forEach(key => {
+            if (calloutResponse.values[key] !== undefined) {
+              newValues[key] = calloutResponse.values[key]
+            }
+          })
           if (inTable) {
             dispatch('notifyRowTableChange', {
               parentUuid,
               containerUuid,
-              row: calloutResponse.values,
+              row: newValues,
               isEdit: true
             })
           } else {
@@ -52,7 +58,7 @@ const callOutControl = {
               parentUuid,
               containerUuid,
               panelType: 'window',
-              newValues: calloutResponse.values,
+              newValues,
               isSendToServer: false,
               withOutColumnNames,
               isSendCallout: false

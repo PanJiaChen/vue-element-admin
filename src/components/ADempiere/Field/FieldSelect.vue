@@ -49,7 +49,7 @@ export default {
       blanckOption: {
         // label with '' value is assumed to be undefined non-existent
         label: ' ',
-        key: undefined
+        key: undefined || -1
       }
     }
   },
@@ -106,6 +106,10 @@ export default {
     },
     'metadata.value'(value) {
       if (!this.metadata.inTable) {
+        if (!this.options.some(option => option.key === value)) {
+          this.value = value
+          this.getDataLookupItem()
+        }
         this.value = value
       }
     },
