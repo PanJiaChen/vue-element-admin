@@ -179,7 +179,10 @@ const window = {
                   description: processItem.description,
                   help: processItem.help,
                   isReport: processItem.isReport,
-                  isDirectPrint: processItem.isDirectPrint
+                  isDirectPrint: processItem.isDirectPrint,
+                  containerUuidAssociated: tabItem.uuid,
+                  parentUuidAssociated: windowUuid,
+                  panelTypeAssociated: 'window'
                 }
               })
               actions = actions.concat(processList)

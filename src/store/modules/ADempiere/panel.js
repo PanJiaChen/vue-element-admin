@@ -33,6 +33,9 @@ const panel = {
       if (payload.isReportFromLogic !== undefined) {
         payload.field.isReportFromLogic = payload.isReportFromLogic
       }
+      if (payload.parsedDefaultValue !== undefined) {
+        payload.field.parsedDefaultValue = payload.parsedDefaultValue
+      }
     },
     dictionaryResetCache(state) {
       state.panel = []
@@ -87,7 +90,8 @@ const panel = {
               count++
             }
           } else {
-            if (params.isParentTab) {
+            if (['browser', 'process', 'report'].includes(params.panelType) ||
+              params.panelType === 'window' && params.isParentTab) {
               dispatch('setContext', {
                 parentUuid: params.parentUuid,
                 containerUuid: params.uuid,
@@ -509,7 +513,7 @@ const panel = {
               columnName,
               value: sqlStatement,
               isSQL: isSQL
-            })
+            }).value
             if (isSQL && String(sqlStatement) === '[object Object]') {
               sqlStatement = sqlStatement.query
             }
@@ -532,49 +536,12 @@ const panel = {
       }
 
       //  Change Dependents
-      let dependentsList = []
-      if (field.dependentFieldsList.length) {
-        dependentsList = fieldList.filter(fieldItem => {
-          return field.dependentFieldsList.includes(fieldItem.columnName)
-        })
-      }
-      //  Iterate for change logic
-      dependentsList.forEach(dependent => {
-        //  isDisplayed Logic
-        let isDisplayedFromLogic, isMandatoryFromLogic, isReadOnlyFromLogic
-        if (dependent.displayLogic.trim() !== '') {
-          isDisplayedFromLogic = evaluator.evaluateLogic({
-            context: getters,
-            parentUuid,
-            containerUuid,
-            logic: dependent.displayLogic,
-            type: 'displayed'
-          })
-        }
-        //  Mandatory Logic
-        if (dependent.mandatoryLogic.trim() !== '') {
-          isMandatoryFromLogic = evaluator.evaluateLogic({
-            context: getters,
-            parentUuid,
-            containerUuid,
-            logic: dependent.mandatoryLogic
-          })
-        }
-        //  Read Only Logic
-        if (dependent.readOnlyLogic.trim() !== '') {
-          isReadOnlyFromLogic = evaluator.evaluateLogic({
-            context: getters,
-            parentUuid,
-            containerUuid,
-            logic: dependent.readOnlyLogic
-          })
-        }
-        commit('changeFieldLogic', {
-          field: dependent,
-          isDisplayedFromLogic,
-          isMandatoryFromLogic,
-          isReadOnlyFromLogic
-        })
+      dispatch('changeDependentFieldsList', {
+        parentUuid,
+        containerUuid,
+        dependentFieldsList: field.dependentFieldsList,
+        fieldsList: fieldList,
+        isSendToServer
       })
 
       // the field has not changed, then the action is broken
@@ -722,6 +689,90 @@ const panel = {
         }
       }
     },
+    changeDependentFieldsList({ commit, dispatch, getters }, {
+      parentUuid,
+      containerUuid,
+      dependentFieldsList = [],
+      fieldsList = [],
+      isSendToServer
+    }) {
+      if (isEmptyValue(dependentFieldsList)) {
+        // breaks if there are no field dependencies
+        return
+      }
+
+      if (!fieldsList.length) {
+        fieldsList = getters.getFieldsListFromPanel(containerUuid)
+      }
+
+      const dependentsList = fieldsList.filter(fieldItem => {
+        return dependentFieldsList.includes(fieldItem.columnName)
+      })
+
+      //  Iterate for change logic
+      dependentsList.forEach(fieldDependent => {
+        //  isDisplayed Logic
+        let isDisplayedFromLogic, isMandatoryFromLogic, isReadOnlyFromLogic, defaultValue
+        if (fieldDependent.displayLogic.trim() !== '') {
+          isDisplayedFromLogic = evaluator.evaluateLogic({
+            context: getters,
+            parentUuid,
+            containerUuid,
+            logic: fieldDependent.displayLogic,
+            type: 'displayed'
+          })
+        }
+        //  Mandatory Logic
+        if (fieldDependent.mandatoryLogic.trim() !== '') {
+          isMandatoryFromLogic = evaluator.evaluateLogic({
+            context: getters,
+            parentUuid,
+            containerUuid,
+            logic: fieldDependent.mandatoryLogic
+          })
+        }
+        //  Read Only Logic
+        if (fieldDependent.readOnlyLogic.trim() !== '') {
+          isReadOnlyFromLogic = evaluator.evaluateLogic({
+            context: getters,
+            parentUuid,
+            containerUuid,
+            logic: fieldDependent.readOnlyLogic
+          })
+        }
+        //  Default Value
+        if (fieldDependent.defaultValue.trim() !== '' &&
+          fieldDependent.defaultValue.includes('@')) {
+          defaultValue = parseContext({
+            parentUuid,
+            containerUuid,
+            value: fieldDependent.defaultValue
+          }).value
+          if (isSendToServer && defaultValue !== fieldDependent.defaultValue) {
+            dispatch('getRecordBySQL', {
+              field: fieldDependent,
+              query: defaultValue
+            })
+              .then(response => {
+                dispatch('notifyFieldChange', {
+                  parentUuid,
+                  containerUuid,
+                  panelType: fieldDependent.panelType,
+                  columnName: fieldDependent.columnName,
+                  newValue: response.key
+                })
+              })
+          }
+        }
+        commit('changeFieldLogic', {
+          field: fieldDependent,
+          isDisplayedFromLogic,
+          isMandatoryFromLogic,
+          isReadOnlyFromLogic,
+          parsedDefaultValue: defaultValue
+        })
+      })
+    },
     notifyFieldChangeDisplayColumn({ commit, getters }, {
       containerUuid,
       columnName,
@@ -770,7 +821,7 @@ const panel = {
         .catch(error => {
           return {
             ...error,
-            moreInfo: `Dictionary getPanelAndFields ${panelType} (State Panel)`
+            moreInfo: `Dictionary getPanelAndFields ${panelType} (State Panel).`
           }
         })
     },
@@ -1010,8 +1061,8 @@ const panel = {
               containerUuid: containerUuid,
               columnName: fieldItem.columnName,
               value: fieldItem.defaultValue,
-              isSQL: isSQL
-            })
+              isSQL
+            }).value
           }
 
           valueToReturn = parsedValueComponent({
@@ -1024,7 +1075,7 @@ const panel = {
 
           // add display column to default
           if (fieldItem.componentPath === 'FieldSelect' && fieldItem.value === valueToReturn) {
-            attributesObject['DisplayColumn_' + fieldItem.columnName] = fieldItem.displayColumn
+            attributesObject[`DisplayColumn_${fieldItem.columnName}`] = fieldItem.displayColumn
           }
 
           return {

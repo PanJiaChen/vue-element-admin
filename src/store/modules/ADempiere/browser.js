@@ -111,7 +111,9 @@ const browser = {
                 name: process.name,
                 description: process.description,
                 isReport: process.isReport,
-                isDirectPrint: process.isDirectPrint
+                isDirectPrint: process.isDirectPrint,
+                containerUuidAssociated: newBrowser.uuid,
+                panelTypeAssociated: panelType
               })
               // TODO: No list of parameters
               // // add process associated in vuex store

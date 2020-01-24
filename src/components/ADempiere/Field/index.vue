@@ -340,8 +340,11 @@ export default {
       }
     },
     redirect({ window, columnName, value }) {
-      this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: window.uuid })
-      var windowRoute = this.$store.getters.getWindowRoute(window.uuid)
+      this.$store.dispatch('getWindowByUuid', {
+        routes: this.permissionRoutes,
+        windowUuid: window.uuid
+      })
+      const windowRoute = this.$store.getters.getWindowRoute(window.uuid)
       if (windowRoute) {
         this.$router.push({
           name: windowRoute.name,

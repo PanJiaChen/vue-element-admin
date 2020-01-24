@@ -38,7 +38,7 @@ const browserControl = {
         parsedQuery = parseContext({
           containerUuid,
           value: parsedQuery
-        }, true)
+        }).value
       }
 
       let parsedWhereClause = browser.whereClause
@@ -46,7 +46,7 @@ const browserControl = {
         parsedWhereClause = parseContext({
           containerUuid,
           value: parsedWhereClause
-        }, true)
+        }).value
       }
 
       let nextPageToken
@@ -114,7 +114,7 @@ const browserControl = {
             summary: error.message,
             type: 'error'
           })
-          console.warn(`Error getting browser search: ${error.message}. Code: ${error.code}`)
+          console.warn(`Error getting browser search: ${error.message}. Code: ${error.code}.`)
         })
     }
   }

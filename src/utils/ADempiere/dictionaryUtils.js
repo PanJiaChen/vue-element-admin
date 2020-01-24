@@ -1,6 +1,6 @@
 import evaluator from '@/utils/ADempiere/evaluator'
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
-import { getParentFields, parseContext } from '@/utils/ADempiere/contextUtils'
+import { getParentFields, getPreference, parseContext } from '@/utils/ADempiere/contextUtils'
 import REFERENCES, { FIELD_NOT_SHOWED } from '@/components/ADempiere/Field/references'
 import { FIELD_DISPLAY_SIZES, DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import language from '@/lang'
@@ -22,15 +22,28 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   const referenceType = componentReference.alias[0]
 
   let parsedDefaultValue = fieldToGenerate.defaultValue
-  if (String(parsedDefaultValue).includes('@')) {
-    if (String(parsedDefaultValue).includes('@SQL=')) {
-      parsedDefaultValue.replace('@SQL=', '')
+  if (isEmptyValue(parsedDefaultValue)) {
+    parsedDefaultValue = getPreference({
+      parentUuid: fieldToGenerate.parentUuid,
+      containerUuid: fieldToGenerate.containerUuid,
+      columnName: fieldToGenerate.columnName
+    })
+    if (isEmptyValue(parsedDefaultValue)) {
+      parsedDefaultValue = getPreference({
+        parentUuid: fieldToGenerate.parentUuid,
+        containerUuid: fieldToGenerate.containerUuid,
+        columnName: fieldToGenerate.elementName
+      })
     }
+  } else if (String(parsedDefaultValue).includes('@')) {
+    // if (String(parsedDefaultValue).includes('@SQL=')) {
+    //   parsedDefaultValue.replace('@SQL=', '')
+    // }
     parsedDefaultValue = parseContext({
       ...moreAttributes,
       columnName: fieldToGenerate.columnName,
       value: parsedDefaultValue
-    })
+    }).value
   }
   parsedDefaultValue = parsedValueComponent({
     fieldType: componentReference.type,
@@ -40,12 +53,28 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   })
 
   let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
-  if (String(parsedDefaultValueTo).includes('@')) {
+  if (isEmptyValue(parsedDefaultValueTo)) {
+    parsedDefaultValueTo = getPreference({
+      parentUuid: fieldToGenerate.parentUuid,
+      containerUuid: fieldToGenerate.containerUuid,
+      columnName: `${fieldToGenerate.columnName}_To`
+    })
+    if (isEmptyValue()) {
+      parsedDefaultValueTo = getPreference({
+        parentUuid: fieldToGenerate.parentUuid,
+        containerUuid: fieldToGenerate.containerUuid,
+        columnName: `${fieldToGenerate.elementName}_To`
+      })
+    }
+  } else if (String(parsedDefaultValueTo).includes('@')) {
+    // if (String(parsedDefaultValueTo).includes('@SQL=')) {
+    //   parsedDefaultValueTo.replace('@SQL=', '')
+    // }
     parsedDefaultValueTo = parseContext({
       ...moreAttributes,
       columnName: fieldToGenerate.columnName,
       value: fieldToGenerate.defaultValueTo
-    })
+    }).value
   }
   parsedDefaultValueTo = parsedValueComponent({
     fieldType: componentReference.type,
@@ -53,6 +82,7 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     referenceType,
     isMandatory: fieldToGenerate.isMandatory
   })
+
   fieldToGenerate.reference.zoomWindowList = fieldToGenerate.reference.windowsList
   const field = {
     ...fieldToGenerate,

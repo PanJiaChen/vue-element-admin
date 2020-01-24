@@ -81,8 +81,9 @@ export const tabMixin = {
         metadataTab.whereClause = parseContext({
           parentUuid: metadataTab.parentUuid,
           containerUuid: metadataTab.uuid,
-          value: metadataTab.whereClause
-        }, true)
+          value: metadataTab.whereClause,
+          isBoolToString: true
+        }).value
       }
     }
   }

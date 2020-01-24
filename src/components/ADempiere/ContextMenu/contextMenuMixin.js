@@ -357,28 +357,22 @@ export const contextMixin = {
 
       if (this.actions && this.actions.length) {
         this.actions.forEach(itemAction => {
-          // if no exists set prop with value
-          itemAction.disabled = false
-          if (this.$route.name !== 'Report Viewer' && itemAction.action === 'changeParameters') {
-            itemAction.disabled = true
-          }
           if (this.$route.meta.type === 'report' && itemAction.action === 'startProcess') {
             itemAction.reportExportType = 'html'
           }
-          if (this.$route.meta.type === 'process' && itemAction.type === 'summary') {
+
+          // if no exists set prop with value
+          itemAction.disabled = false
+          if ((this.$route.name !== 'Report Viewer' && itemAction.action === 'changeParameters') ||
+             (this.$route.meta.type === 'process' && itemAction.type === 'summary')) {
             itemAction.disabled = true
           }
 
           if (this.$route.meta.type === 'window') {
-            if (this.recordUuid === 'create-new') {
+            if (this.recordUuid === 'create-new' || !this.isInsertRecord) {
               itemAction.disabled = true
-            } else {
-              if (this.isInsertRecord) {
-                itemAction.disabled = false
-              } else {
-                itemAction.disabled = true
-              }
             }
+            // rollback
             if (itemAction.action === 'undoModifyData') {
               itemAction.disabled = Boolean(!this.getterDataLog && !this.getterWindowOldRoute)
             }
@@ -389,6 +383,21 @@ export const contextMixin = {
     showModal(action) {
       // TODO: Refactor and remove redundant dispatchs
       if (action.type === 'process') {
+        // Add context from view open in process to opening
+        if (action.parentUuidAssociated || action.containerUuidAssociated) {
+          const contextValues = this.$store.getters.getContextView({
+            parentUuid: action.parentUuidAssociated,
+            containerUuid: action.containerUuidAssociated
+          })
+          if (!this.isEmptyValue(contextValues)) {
+            this.$store.dispatch('setMultipleContextView', {
+              containerUuid: action.uuid,
+              values: contextValues
+            })
+          }
+        }
+
+        // open modal dialog with metadata
         this.$store.dispatch('setShowDialog', {
           type: action.type,
           action: {
@@ -459,13 +468,6 @@ export const contextMixin = {
       } else if (action.type === 'process') {
         // run process associate with view (window or browser)
         this.showModal(action)
-        if (this.panelType === 'process' || this.panelType === 'browser' || this.panelType === 'report') {
-          this.$store.dispatch('resetPanelToNew', {
-            parentUuid: this.parentUuid,
-            containerUuid: this.containerUuid,
-            panelType: this.panelType
-          })
-        }
       } else if (action.type === 'dataAction') {
         if (action.action === 'undoModifyData' && Boolean(!this.getterDataLog) && this.getterWindowOldRoute) {
           this.$router.push({
@@ -491,7 +493,10 @@ export const contextMixin = {
             })
         }
       } else if (action.type === 'reference') {
-        this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: action.windowUuid })
+        this.$store.dispatch('getWindowByUuid', {
+          routes: this.permissionRoutes,
+          windowUuid: action.windowUuid
+        })
         if (action.windowUuid && action.recordUuid) {
           var windowRoute = this.$store.getters.getWindowRoute(action.windowUuid)
           this.$router.push({
@@ -541,7 +546,10 @@ export const contextMixin = {
               }
               response.url = link.href
             }
-            this.$store.dispatch('finishProcess', { processOutput: response, routeToDelete: this.$route })
+            this.$store.dispatch('finishProcess', {
+              processOutput: response,
+              routeToDelete: this.$route
+            })
           })
       }
     },

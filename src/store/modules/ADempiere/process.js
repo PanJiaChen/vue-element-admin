@@ -26,8 +26,10 @@ const process = {
       containerUuid,
       routeToDelete
     }) {
-      var printFormatsAvailable
-      dispatch('requestPrintFormats', { processUuid: containerUuid })
+      let printFormatsAvailable
+      dispatch('requestPrintFormats', {
+        processUuid: containerUuid
+      })
         .then(response => {
           printFormatsAvailable = response
         })
@@ -51,13 +53,15 @@ const process = {
             resolve(processDefinition)
           })
           .catch(error => {
-            router.push({ path: '/dashboard' })
+            router.push({
+              path: '/dashboard'
+            })
             dispatch('tagsView/delView', routeToDelete)
             showMessage({
               message: language.t('login.unexpectedError'),
               type: 'error'
             })
-            console.warn(`Dictionary Process (State) - Error ${error.message}`)
+            console.warn(`Dictionary Process (State) - Error ${error.message}.`)
             reject(error)
           })
       })

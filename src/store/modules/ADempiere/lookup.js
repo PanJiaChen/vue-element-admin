@@ -38,7 +38,7 @@ const lookup = {
           parentUuid,
           containerUuid,
           value: directQuery
-        }, true)
+        }).value
       }
 
       return getLookup({
@@ -86,7 +86,7 @@ const lookup = {
           parentUuid,
           containerUuid,
           value: query
-        }, true)
+        }).value
       }
 
       return getLookupList({
@@ -128,7 +128,7 @@ const lookup = {
           parentUuid,
           containerUuid,
           value: parsedDirectQuery
-        }, true)
+        }).value
       }
       const lookupItem = state.lookupItem.filter(itemLookup => {
         return itemLookup.parsedDirectQuery !== parsedDirectQuery &&
@@ -143,7 +143,7 @@ const lookup = {
           parentUuid: parentUuid,
           containerUuid: containerUuid,
           value: parsedQuery
-        }, true)
+        }).value
       }
       const lookupList = state.lookupList.filter(itemLookup => {
         return itemLookup.parsedQuery !== parsedQuery &&
@@ -170,7 +170,7 @@ const lookup = {
           parentUuid,
           containerUuid,
           value: parsedDirectQuery
-        }, true)
+        }).value
       }
       const lookupItem = state.lookupItem.find(itemLookup => {
         return itemLookup.parsedDirectQuery === parsedDirectQuery &&
@@ -196,7 +196,7 @@ const lookup = {
           parentUuid,
           containerUuid,
           value: parsedQuery
-        }, true)
+        }).value
       }
       const lookupList = state.lookupList.find(itemLookup => {
         return itemLookup.parsedQuery === parsedQuery &&
