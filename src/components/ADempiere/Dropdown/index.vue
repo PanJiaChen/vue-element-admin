@@ -131,11 +131,13 @@ export default {
     height: 100%;
     font-size: 13px;
   }
-  .el-collapse-item__header {
-    height: 60px;
-    font-weight: bold;
-    font-size: 16px;
-    text-align: center;
+  .collapse-item {
+    .el-collapse-item__header {
+      height: 60px;
+      font-weight: bold;
+      font-size: 16px;
+      text-align: center;
+    }
   }
   .three-dots{
     margin-top: 0 !important;

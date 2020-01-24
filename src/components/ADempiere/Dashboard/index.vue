@@ -1,9 +1,24 @@
 <template>
-  <component
-    :is="renderDashboard"
-    :ref="dashboard.dashboardName"
-    :metadata="dashboard"
-  />
+  <el-collapse
+    v-if="!unsupportedDashboards.includes(dashboard.fileName)"
+    v-model="activeDashboard"
+    accordion
+  >
+    <el-collapse-item
+      :name="dashboard.dashboardName"
+      :disabled="!dashboard.isCollapsible"
+      class="custom-collapse-item"
+    >
+      <template slot="title">
+        <span class="custom-title"> {{ dashboard.dashboardName }}</span>
+      </template>
+      <component
+        :is="renderDashboard"
+        :ref="dashboard.dashboardName"
+        :metadata="dashboard"
+      />
+    </el-collapse-item>
+  </el-collapse>
 </template>
 
 <script>
@@ -18,15 +33,16 @@ export default {
   },
   data() {
     return {
-      dashboard: this.metadata
+      dashboard: this.metadata,
+      unsupportedDashboards: ['activities', 'views', 'performance'],
+      activeDashboard: this.metadata.isOpenByDefault ? this.metadata.dashboardName : undefined
     }
   },
   computed: {
     // load the component that is indicated in the attributes of received property
     renderDashboard() {
       // TODO: Add support to this list of currently unsupported dashboards
-      const unsupportedDashboards = ['activities', 'views', 'performance']
-      if (unsupportedDashboards.includes(this.metadata.fileName)) {
+      if (this.unsupportedDashboards.includes(this.metadata.fileName)) {
         return
       }
       if (this.metadata.fileName === 'userfavorites') {
@@ -39,6 +55,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .custom-title {
+    padding: 10px;
+  }
   .dashboard-editor-container {
     padding: 32px;
     background-color: rgb(240, 242, 245);
@@ -55,6 +74,11 @@ export default {
       background: #fff;
       padding: 16px 16px 0;
       margin-bottom: 32px;
+    }
+  }
+  .custom-collapse-item.is-disabled {
+    .custom-title {
+      color: #303133;
     }
   }
 </style>
