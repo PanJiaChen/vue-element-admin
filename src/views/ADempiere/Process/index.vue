@@ -98,8 +98,6 @@ export default {
           routeToDelete: this.$route
         }).then(() => {
           this.processMetadata = this.getterProcess
-        }).catch(error => {
-          console.log('Dictionary Process - Error ' + error.code + ': ' + error.message)
         }).finally(() => {
           this.isLoadedMetadata = true
         })

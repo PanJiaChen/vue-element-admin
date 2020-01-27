@@ -163,9 +163,6 @@ export default {
           .finally(() => {
             this.isLoaded = true
           })
-          .catch(error => {
-            console.warn('Dictionary Browser - Error ' + error.code + ': ' + error.message)
-          })
       }
     },
     defaultSearch() {

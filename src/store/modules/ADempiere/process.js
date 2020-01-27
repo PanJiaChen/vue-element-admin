@@ -33,7 +33,7 @@ const process = {
         .then(response => {
           printFormatsAvailable = response
         })
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getProcessMetadata(containerUuid)
           .then(responseProcess => {
             responseProcess.printFormatsAvailable = printFormatsAvailable
@@ -61,8 +61,7 @@ const process = {
               message: language.t('login.unexpectedError'),
               type: 'error'
             })
-            console.warn(`Dictionary Process (State) - Error ${error.message}.`)
-            reject(error)
+            console.warn(`Dictionary Process - Error ${error.message}.`)
           })
       })
     },

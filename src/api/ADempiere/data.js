@@ -267,7 +267,7 @@ export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, co
 }
 
 export function getDefaultValueFromServer(query) {
-  return Instance.call(this).getDefaultValue(query)
+  return Instance.call(this).requestGetDefaultValue(query)
 }
 
 export function getContextInfoValueFromServer({ uuid, query }) {

@@ -23,7 +23,7 @@ const browser = {
       containerUuid,
       routeToDelete
     }) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getBrowserMetadata(containerUuid)
           .then(browserResponse => {
             const panelType = 'browser'
@@ -142,8 +142,7 @@ const browser = {
               message: language.t('login.unexpectedError'),
               type: 'error'
             })
-            console.warn(`Dictionary Browser - Error ${error.code}: ${error.message}`)
-            reject(error)
+            console.warn(`Dictionary Browser - Error ${error.code}: ${error.message}.`)
           })
       })
     },

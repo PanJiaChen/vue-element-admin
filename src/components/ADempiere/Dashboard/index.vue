@@ -10,7 +10,9 @@
       class="custom-collapse-item"
     >
       <template slot="title">
-        <span class="custom-title"> {{ dashboard.dashboardName }}</span>
+        <span class="custom-title">
+          {{ dashboard.dashboardName }}
+        </span>
       </template>
       <component
         :is="renderDashboard"

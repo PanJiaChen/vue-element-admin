@@ -104,7 +104,7 @@ export function parseContext({
     const secondIndexTag = inStr.indexOf('@') // next @
     // no exists second tag
     if (secondIndexTag < 0) {
-      console.log(`No second tag: ${inStr}`)
+      console.info(`No second tag: ${inStr}`)
       return {
         value: undefined,
         isError: true,

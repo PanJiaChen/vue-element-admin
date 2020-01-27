@@ -26,9 +26,9 @@ const containerInfo = {
     listWorkflowLogs({ commit, state }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
-      const page_size = 0
-      const page_token = 0
-      return requestListWorkflowsLogs({ tableName, recordId, page_size, page_token })
+      const pageSize = 0
+      const pageToken = 0
+      return requestListWorkflowsLogs({ tableName, recordId, pageSize, pageToken })
         .then(response => {
           commit('addListWorkflow', response)
         })
@@ -39,9 +39,9 @@ const containerInfo = {
     listRecordLogs({ commit, state }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
-      const page_size = 0
-      const page_token = 0
-      return requestListRecordsLogs({ tableName, recordId, page_size, page_token })
+      const pageSize = 0
+      const pageToken = 0
+      return requestListRecordsLogs({ tableName, recordId, pageSize, pageToken })
         .then(response => {
           var listRecord = {
             recordCount: response.recordCount,
@@ -53,27 +53,25 @@ const containerInfo = {
           console.warn(`Error getting List Record Logs: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listChatEntries({ commit, state }, params) {
+    listChatEntries({ commit }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
-      const page_size = 0
-      const page_token = 0
-      return requestListRecordChats({ tableName, recordId, page_size, page_token })
+      const pageSize = 0
+      const pageToken = 0
+      return requestListRecordChats({ tableName, recordId, pageSize, pageToken })
         .then(response => {
-          console.log('requestListRecordChats response =>', response)
           commit('addListChatEntries', response)
         })
         .catch(error => {
           console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listRecordChat({ commit, state }, params) {
+    listRecordChat({ commit }, params) {
       const uuid = params.uuid
-      const page_size = 0
-      const page_token = 0
-      return requestListChatEntries({ uuid, page_size, page_token })
+      const pageSize = 0
+      const pageToken = 0
+      return requestListChatEntries({ uuid, pageSize, pageToken })
         .then(response => {
-          console.log('requestListChatEntries response =>', response)
           commit('addListChatEntries', response)
         })
         .catch(error => {
@@ -88,7 +86,7 @@ const containerInfo = {
     getRecordLogs: (state) => {
       const recordLogs = state.listRecordLogs.recorLogs
       if (isEmptyValue(recordLogs)) {
-        var listRecord = [{
+        const listRecord = [{
           columnName: 'Compañía',
           description: 'Compañía',
           displayColumnName: 'Compañía',
@@ -127,9 +125,8 @@ const containerInfo = {
           userUuid: ''
         }]
         return listRecord
-      } else {
-        return state.listRecordLogs
       }
+      return state.listRecordLogs
     },
     getChatEntries: (state) => {
       return state.listChatEntries

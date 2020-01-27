@@ -123,9 +123,6 @@ export default {
     getLanguageData() {
       if (this.isEmptyValue(this.getterLanguageList)) {
         this.$store.dispatch('getLanguagesFromServer')
-          .catch(error => {
-            console.warn(`Error getting languages list: ${error.message}. Code: ${error.code}.`)
-          })
       }
     }
   }

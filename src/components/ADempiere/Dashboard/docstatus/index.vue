@@ -57,7 +57,7 @@ export default {
     getPendingDocuments() {
       const userUuid = this.$store.getters['user/getUserUuid']
       const roleUuid = this.$store.getters.getRoleUuid
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getPendingDocumentsFromServer({ userUuid, roleUuid })
           .then(response => {
             const documentsList = response.pendingDocumentsList.map(documentItem => {

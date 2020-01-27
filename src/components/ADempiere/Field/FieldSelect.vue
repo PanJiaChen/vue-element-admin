@@ -115,7 +115,6 @@ export default {
     },
     'metadata.displayColumn'(value) {
       if (!this.isEmptyValue(this.value)) {
-        // console.log('display wacth')
         if (!this.isEmptyValue(value)) {
           // verify if exists to add
           if (!this.findLabel(this.value)) {

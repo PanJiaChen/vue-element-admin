@@ -79,9 +79,6 @@ export default {
     },
     getLanguageData() {
       this.$store.dispatch('getLanguagesFromServer')
-        .catch(error => {
-          console.warn(`Error getting language list: ${error.message}. Code: ${error.code}.`)
-        })
     }
   }
 }

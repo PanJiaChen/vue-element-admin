@@ -64,7 +64,7 @@ export default {
       return this.cachedViews.includes(uuid)
     },
     getRecentItems({ pageToken, pageSize }) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getRecentItemsFromServer({ pageToken, pageSize })
           .then(response => {
             const recentItems = response.recentItemsList.map(item => {

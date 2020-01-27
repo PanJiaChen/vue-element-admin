@@ -58,7 +58,7 @@ export default {
   methods: {
     getFavoritesList() {
       const userUuid = this.$store.getters['user/getUserUuid']
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getFavoritesFromServer({ userUuid })
           .then(response => {
             const favorites = response.favoritesList.map(favoriteElement => {
