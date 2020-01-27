@@ -275,7 +275,12 @@ const windowControl = {
         }
         return true
       })
-
+      // if (rootGetters.getShowContainerInfo) {
+      //   dispatch('listRecordLogs', {
+      //     tableName: panel.tableName,
+      //     recordId
+      //   })
+      // }
       return updateEntity({
         tableName: panel.tableName,
         recordUuid,
@@ -283,7 +288,6 @@ const windowControl = {
       })
         .then(updateEntityResponse => {
           const newValues = updateEntityResponse.values
-
           // set data log to undo action
           // TODO: Verify performance with tableName_ID
           let recordId = updateEntityResponse.id
@@ -309,7 +313,12 @@ const windowControl = {
             recordUuid,
             eventType: 'UPDATE'
           })
-
+          // if (containerInfo) {
+          dispatch('listRecordLogs', {
+            tableName: panel.tableName,
+            recordId
+          })
+          // }
           return newValues
         })
         .catch(error => {

@@ -13,7 +13,8 @@ const utils = {
     recordUuidTable: 0,
     isShowedTabChildren: false,
     recordTable: 0,
-    selectionProcess: []
+    selectionProcess: [],
+    isContainerInfo: false
   },
   mutations: {
     setWidth(state, width) {
@@ -30,6 +31,9 @@ const utils = {
     },
     showMenuTable(state, isShowedTable) {
       state.isShowedTable = isShowedTable
+    },
+    showContainerInfo(state, isContainerInfo) {
+      state.isContainerInfo = isContainerInfo
     },
     showMenuTabChildren(state, isShowedTabChildren) {
       state.isShowedTabChildren = isShowedTabChildren
@@ -65,6 +69,9 @@ const utils = {
     },
     showMenuTable({ commit }, isShowedTable) {
       commit('showMenuTable', isShowedTable)
+    },
+    showContainerInfo({ commit, state }, isContainerInfo) {
+      commit('showContainerInfo', isContainerInfo)
     },
     showMenuTabChildren({ commit }, isShowedTabChildren) {
       commit('showMenuTabChildren', isShowedTabChildren)
@@ -125,6 +132,10 @@ const utils = {
     getShowContextMenuTable: (state) => {
       const menu = state.isShowedTable.isShowedTable
       return menu
+    },
+    getShowContainerInfo: (state) => {
+      const showInfo = state.isContainerInfo
+      return showInfo
     },
     getShowContextMenuTabChildren: (state) => {
       const menu = state.isShowedTabChildren.isShowedTabChildren

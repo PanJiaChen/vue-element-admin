@@ -4,139 +4,217 @@
     key="window-loaded"
   >
     <el-container style="height: 86vh;">
-      <el-main>
-        <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
-          <template>
-            <!-- this slot is 'paneL' (with 'L' in uppercase) do not change -->
-            <div slot="paneL" class="left-container">
-              <el-aside v-show="isShowedRecordNavigation" width="100%">
-                <div class="small-4 columns">
-                  <div class="w">
-                    <div class="open-left" />
-                    <div class="open-datatable-aside">
-                      <el-button
-                        v-show="!isPanel"
-                        :icon="iconIsShowedRecordNavigation"
-                        circle
-                        style="margin-left: 10px;"
-                        @click="handleChangeShowedRecordNavigation()"
-                      />
-                      <el-button
-                        v-show="!isPanel"
-                        :icon="iconIsShowedAside"
-                        circle
-                        @click="handleChangeShowedPanel()"
-                      />
-                    </div>
-                    <data-table
-                      :parent-uuid="windowUuid"
-                      :container-uuid="windowMetadata.currentTab.uuid"
-                      :table-name="windowMetadata.currentTab.tableName"
-                      :is-showed-panel-record="true"
-                      :is-parent="true"
-                    />
-                    <div class="close-datatable">
-                      <el-button
-                        v-show="isPanel"
-                        icon="el-icon-caret-left"
-                        circle
-                        @click="handleChangeShowedPanel()"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <i
-                  v-if="isMobile"
-                  class="el-icon-close"
-                  style="position: fixed;padding-top: 15px; color: #000000;font-size: 121%;font-weight: 615!important;padding-left: 9px;"
-                  @click="handleChangeShowedRecordNavigation()"
-                />
-              </el-aside>
-            </div>
-          </template>
-          <template slot="paneR">
-            <el-container style="height: 86vh;">
-              <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation">
-                <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
-                  <el-header style="height: 39px;">
-                    <context-menu
-                      v-show="!isShowedRecordPanel"
-                      :menu-parent-uuid="$route.meta.parentUuid"
-                      :parent-uuid="windowUuid"
-                      :container-uuid="windowMetadata.currentTabUuid"
-                      :panel-type="panelType"
-                      :is-insert-record="getterIsInsertRecord"
-                    />
-                  </el-header>
-                  <!-- das -->
-                  <el-main :style="styleMainIsShowedTabChildren">
-                    <tab-parent
-                      :window-uuid="windowUuid"
-                      :tabs-list="windowMetadata.tabsListParent"
-                      class="tab-window"
-                    />
-                    <div class="small-4 columns">
-                      <div class="wrapper">
-                        <div
-                          v-show="windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
-                          class="open-detail"
-                        />
-                        <el-button
-                          v-if="windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length &&
-                            (isMobile && !isShowedRecordNavigation || !isMobile)"
-                          v-show="!isShowedTabChildren"
-                          icon="el-icon-caret-top"
-                          :class="classIsMobile"
-                          circle
-                          @click="handleChangeShowedTabChildren()"
-                        />
-                      </div>
-                    </div>
-                    <modal-dialog
-                      :parent-uuid="windowUuid"
-                      :container-uuid="windowMetadata.currentTabUuid"
-                    />
+      <Split>
+        <SplitArea :size="!show ? 100 : 70" :min-size="100">
+          <el-aside width="100%">
+            <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
+              <template>
+                <!-- this slot is 'paneL' (with 'L' in uppercase) do not change -->
+                <div slot="paneL" class="left-container">
+                  <el-aside v-show="isShowedRecordNavigation" width="100%">
                     <div class="small-4 columns">
                       <div class="w">
                         <div class="open-left" />
-                        <el-button
-                          v-show="!isShowedRecordNavigation"
-                          :icon="iconIsShowedRecordNavigation"
-                          class="open-navegation"
-                          circle
-                          @click="handleChangeShowedRecordNavigation()"
+                        <div class="open-datatable-aside">
+                          <el-button
+                            v-show="!isPanel"
+                            :icon="iconIsShowedRecordNavigation"
+                            circle
+                            style="margin-left: 10px;"
+                            @click="handleChangeShowedRecordNavigation()"
+                          />
+                          <el-button
+                            v-show="!isPanel"
+                            :icon="iconIsShowedAside"
+                            circle
+                            @click="handleChangeShowedPanel()"
+                          />
+                        </div>
+                        <data-table
+                          :parent-uuid="windowUuid"
+                          :container-uuid="windowMetadata.currentTab.uuid"
+                          :table-name="windowMetadata.currentTab.tableName"
+                          :is-showed-panel-record="true"
+                          :is-parent="true"
                         />
+                        <div class="close-datatable">
+                          <el-button
+                            v-show="isPanel"
+                            icon="el-icon-caret-left"
+                            circle
+                            @click="handleChangeShowedPanel()"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </el-main>
-                </SplitArea>
-                <SplitArea v-show="isShowedTabChildren" :size="50">
-                  <el-header
-                    v-if="isShowedTabChildren && windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
-                    style="height: auto; padding-right: 35px !important;padding-bottom: 33px;"
-                  >
-                    <div class="w-33">
-                      <div class="center">
-                        <el-button
-                          icon="el-icon-caret-bottom"
-                          circle
-                          @click="handleChangeShowedTabChildren()"
-                        />
-                      </div>
-                    </div>
-                    <tab-children
-                      :window-uuid="windowUuid"
-                      :tabs-list="windowMetadata.tabsListChildren"
-                      :first-tab-uuid="windowMetadata.firstTabUuid"
-                      :style="{ 'height': getHeightPanelBottom + 'vh' }"
+                    <i
+                      v-if="isMobile"
+                      class="el-icon-close"
+                      style="position: fixed;padding-top: 15px; color: #000000;font-size: 121%;font-weight: 615!important;padding-left: 9px;"
+                      @click="handleChangeShowedRecordNavigation()"
                     />
-                  </el-header>
-                </SplitArea>
-              </Split>
-            </el-container>
-          </template>
-        </split-pane>
-      </el-main>
+                  </el-aside>
+                </div>
+              </template>
+              <template slot="paneR">
+                <el-container style="height: 86vh;">
+                  <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation">
+                    <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
+                      <el-header style="height: 39px;">
+                        <context-menu
+                          v-show="!isShowedRecordPanel"
+                          :menu-parent-uuid="$route.meta.parentUuid"
+                          :parent-uuid="windowUuid"
+                          :container-uuid="windowMetadata.currentTabUuid"
+                          :panel-type="panelType"
+                          :is-insert-record="getterIsInsertRecord"
+                        />
+                      </el-header>
+                      <el-main :style="styleMainIsShowedTabChildren">
+                        <tab-parent
+                          :window-uuid="windowUuid"
+                          :tabs-list="windowMetadata.tabsListParent"
+                          class="tab-window"
+                        />
+                        <div style="right: 0%;top: 40%;position: absolute;">
+                          <el-button v-show="!show" type="info" icon="el-icon-info" circle style="float: right;" @click="conteInfo" />
+                        </div>
+                        <div class="small-4 columns">
+                          <div class="wrapper">
+                            <div
+                              v-show="windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
+                              class="open-detail"
+                            />
+                            <el-button
+                              v-if="windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length &&
+                                (isMobile && !isShowedRecordNavigation || !isMobile)"
+                              v-show="!isShowedTabChildren"
+                              icon="el-icon-caret-top"
+                              :class="classIsMobile"
+                              circle
+                              @click="handleChangeShowedTabChildren()"
+                            />
+                          </div>
+                        </div>
+                        <modal-dialog
+                          :parent-uuid="windowUuid"
+                          :container-uuid="windowMetadata.currentTabUuid"
+                        />
+                        <div class="small-4 columns">
+                          <div class="w">
+                            <div class="open-left" />
+                            <el-button
+                              v-show="!isShowedRecordNavigation"
+                              :icon="iconIsShowedRecordNavigation"
+                              class="open-navegation"
+                              circle
+                              @click="handleChangeShowedRecordNavigation()"
+                            />
+                          </div>
+                        </div>
+                      </el-main>
+                    </SplitArea>
+                    <SplitArea v-show="isShowedTabChildren" :size="50">
+                      <el-header
+                        v-if="isShowedTabChildren && windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
+                        style="height: auto; padding-right: 35px !important;padding-bottom: 33px;"
+                      >
+                        <div class="w-33">
+                          <div class="center">
+                            <el-button
+                              icon="el-icon-caret-bottom"
+                              circle
+                              @click="handleChangeShowedTabChildren()"
+                            />
+                          </div>
+                        </div>
+                        <tab-children
+                          :window-uuid="windowUuid"
+                          :tabs-list="windowMetadata.tabsListChildren"
+                          :first-tab-uuid="windowMetadata.firstTabUuid"
+                          :style="{ 'height': getHeightPanelBottom + 'vh' }"
+                        />
+                      </el-header>
+                    </SplitArea>
+                  </Split>
+                </el-container>
+              </template>
+            </split-pane>
+          </el-aside>
+        </SplitArea>
+        <SplitArea :size="show ? 30 : 0">
+          <el-main>
+            <div style="top: 40%;position: absolute;">
+              <el-button v-show="show" type="info" icon="el-icon-info" circle style="float: right;" @click="conteInfo" />
+            </div>
+            <div id="example-1">
+              <transition name="slide-fade">
+                <p v-if="show">
+                  <el-card class="box-card">
+                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                      <el-tab-pane
+                        :label="$t('window.containerInfo.changeLog')"
+                        name="listRecordLogs"
+                        style="overflow: auto;max-height: 74vh;"
+                      >
+                        <span slot="label"><svg-icon icon-class="tree-table" /> {{ $t('window.containerInfo.changeLog') }} </span>
+                        <el-card
+                          v-for="(listLogs, index) in getTypeLogs"
+                          :key="index"
+                        >
+                          <el-timeline>
+                            <el-timeline-item
+                              v-for="(evenType, key) in listLogs.logs"
+                              :key="key"
+                              :timestamp="translateDate(evenType.logDate)"
+                              placement="top"
+                              :color="listLogs.eventTypeName === 'UPDATE' ? 'rgb(22, 130, 230)' : '#52c384'"
+                            >
+                              <el-card shadow="hover" @click.native="changeField(evenType)">
+                                <div>
+                                  <span>{{ evenType.userName }}</span>
+                                  <el-dropdown style="float: right;">
+                                    <span class="el-dropdown-link" style="color: #1682e6" @click="showkey(key)">
+                                      {{ $t('window.containerInfo.changeDetail') }}
+                                    </span>
+                                  </el-dropdown>
+                                </div>
+                                <br>
+                                <el-collapse-transition>
+                                  <div v-show="currentKey === key" :key="key" class="text item">
+                                    <span><p><b><i> {{ evenType.displayColumnName }}:  </i></b> <strike>{{ evenType.oldDisplayValue }} </strike>     {{ evenType.newDisplayValue }}</p></span>
+                                  </div>
+                                </el-collapse-transition>
+                              </el-card>
+                            </el-timeline-item>
+                          </el-timeline>
+                        </el-card>
+                      </el-tab-pane>
+                      <el-tab-pane
+                        name="listWorkflowLogs"
+                      >
+
+                        <span slot="label"><i class="el-icon-s-help" /> {{ $t('window.containerInfo.workflowLog') }} </span>
+                        <el-card
+                          class="box-card"
+                          style="overflow: auto;height: 50vh;"
+                        >
+                          {{ gettersrecorCount }}
+                        </el-card>
+                      </el-tab-pane>
+                      <el-tab-pane
+                        name="listChatEntries"
+                      >
+                        <span slot="label"><i class="el-icon-s-comment" /> {{ $t('window.containerInfo.notes') }} </span>
+                      </el-tab-pane>
+                    </el-tabs>
+                  </el-card>
+                </p>
+              </transition>
+            </div>
+          </el-main>
+        </SplitArea>
+      </Split>
     </el-container>
   </div>
   <div
@@ -177,14 +255,19 @@ export default {
       panelType: 'window',
       isLoaded: false,
       isPanel: false,
+      activeName: 'listRecordLogs',
+      show: false,
       isLoadingFromServer: false,
       listRecordNavigation: 0,
+      show3: false,
+      currentKey: 100,
       isShowedTabChildren: true,
       isShowedRecordPanel: false,
       isShowedRecordNavigation: this.$route.query.action === 'advancedQuery'
     }
   },
   beforeRouteUpdate(to, from, next) {
+    // this.activeName = this.$t('window.containerInfo.changeLog')
     this.$store.dispatch('setWindowOldRoute', {
       path: from.path,
       fullPath: from.fullPath,
@@ -279,6 +362,37 @@ export default {
         return tab.isInsertRecord
       }
       return false
+    },
+    gettersListRecordLogs() {
+      return this.$store.getters.getRecordLogs.recorLogs
+    },
+    getTypeLogs() {
+      const reducer = this.gettersListRecordLogs.reduce((reducer, item) => {
+        if (!reducer.includes(item.eventTypeName)) {
+          reducer.push(item.eventTypeName)
+        }
+        return reducer
+      }, [])
+        .map(i => {
+          // agrup for logId
+          return {
+            logs: this.gettersListRecordLogs.filter(b => b.eventTypeName === i),
+            eventTypeName: i
+          }
+        })
+      return reducer
+    },
+    gettersListWorkflow() {
+      return this.$store.getters.getWorkflow
+    },
+    gettersrecorCount() {
+      return 1
+    },
+    language() {
+      return this.$store.getters.language
+    },
+    getterShowContainerInfo() {
+      return this.$store.getters.getShowContainerInfo
     }
   },
   watch: {
@@ -292,6 +406,58 @@ export default {
     this.getWindow()
   },
   methods: {
+    showkey(key) {
+      if (key === this.currentKey) {
+        this.currentKey = 1000
+      } else {
+        this.currentKey = key
+      }
+      this.show3 = !this.show3
+    },
+    changeField(log) {
+      this.$store.dispatch('notifyPanelChange', {
+        newValues: log.oldDisplayValue,
+        isSendToServer: false,
+        isSendCallout: false,
+        isPrivateAccess: false
+      })
+    },
+    translateDate(value) {
+      return this.$d(new Date(value), 'long', this.language)
+    },
+    conteInfo() {
+      this.show = !this.show
+      this.$store.dispatch('listRecordChat', {
+        uuid: this.$route.query.action
+      })
+      this.$store.dispatch('listChatEntries', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+      this.$store.dispatch('showContainerInfo', !this.getterShowContainerInfo)
+      if (this.show) {
+        this.$store.dispatch('listRecordLogs', {
+          tableName: this.$route.params.tableName,
+          recordId: this.$route.params.recordId
+        })
+      }
+    },
+    handleClick(tab, event) {
+      if (tab.name === 'listChatEntries') {
+        this.$store.dispatch('listRecordChat', {
+          uuid: this.$route.query.action
+        })
+        this.$store.dispatch(tab.name, {
+          tableName: this.$route.params.tableName,
+          recordId: this.$route.params.recordId
+        })
+      } else {
+        this.$store.dispatch(tab.name, {
+          tableName: this.$route.params.tableName,
+          recordId: this.$route.params.recordId
+        })
+      }
+    },
     // callback new size
     onDrag(size) {
       var bottomPanel = size[1]
@@ -373,6 +539,19 @@ export default {
 </script>
 
 <style scoped>
+  /* Enter and leave animations can use different */
+  /* durations and timing functions.              */
+  .slide-fade-enter-active {
+    transition: all .2s ease;
+  }
+  .slide-fade-leave-active {
+    transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  }
+  .slide-fade-enter, .slide-fade-leave-to
+  /* .slide-fade-leave-active below version 2.1.8 */ {
+    transform: translateX(10px);
+    opacity: 0;
+  }
   .el-tabs__content {
     overflow: hidden;
     position: relative;

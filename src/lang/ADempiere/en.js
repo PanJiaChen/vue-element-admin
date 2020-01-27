@@ -268,7 +268,21 @@ export default {
   window: {
     newRecord: 'New Record',
     deleteRecord: 'Delete Record',
-    undoNew: 'Undo New Record'
+    undoNew: 'Undo New Record',
+    containerInfo: {
+      notes: 'Notes',
+      changeLog: 'Change Log',
+      workflowLog: 'Workflow Log',
+      changeDetail: 'Detalle del cambio',
+      eventType: {
+        insert: 'Insert',
+        update: 'Update',
+        delete: 'Delete',
+        field: 'The Fiel',
+        newValue: 'New Value',
+        oldValue: 'Old Value'
+      }
+    }
   },
   data: {
     emtpyTableName: 'Error: Table Name is not defined',

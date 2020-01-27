@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" />
+  <div :id="id" :class="classDisable" />
 </template>
 
 <script>
@@ -32,6 +32,12 @@ export default {
     }
   },
   computed: {
+    classDisable() {
+      if (this.isDisabled) {
+        return 'isdisable'
+      }
+      return ''
+    },
     language() {
       // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
       if (this.isEmptyValue(getLanguage())) {
@@ -98,6 +104,7 @@ export default {
       this.editor.height(heightValue)
     },
     isDisabled(value) {
+      this.classDisable
       this.destroyEditor()
       this.initEditor()
     }
@@ -164,3 +171,8 @@ export default {
   }
 }
 </script>
+<style>
+  .isdisable {
+    background: #F5F7FA;
+  }
+</style>
