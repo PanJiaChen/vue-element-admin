@@ -340,7 +340,7 @@ export const contextMixin = {
         return
       }
 
-      if (this.panelType === 'window') {
+      if (this.panelType === 'window' && !this.isEmptyValue(this.$route.params.tableName)) {
         this.$store.dispatch('getPrivateAccessFromServer', {
           tableName: this.$route.params.tableName,
           recordId: this.$route.params.recordId
