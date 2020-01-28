@@ -62,6 +62,7 @@ export default {
       })
       this.$store.dispatch('user/changeRoles', valueSelected)
         .then(response => {
+          this.$store.dispatch('listDashboard', response.uuid)
           this.showMessage({
             message: this.$t('notifications.successChangeRole'),
             type: 'success'

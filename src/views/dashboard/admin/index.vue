@@ -28,6 +28,14 @@ export default {
   computed: {
     getterDashboard() {
       return this.$store.getters.getDashboardByRole(this.roleUuid)
+    },
+    getterRol() {
+      return this.$store.getters.getRoleUuid
+    }
+  },
+  watch: {
+    getterRol(value) {
+      this.getDashboardListFromServer()
     }
   },
   mounted() {
@@ -35,14 +43,11 @@ export default {
   },
   methods: {
     getDashboardListFromServer() {
-      if (this.getterDashboard) {
-        this.dashboardList = this.getterDashboard.dashboardList
-      } else {
-        this.$store.dispatch('listDashboard', this.roleUuid)
-          .then(response => {
-            this.dashboardList = response.dashboardsList
-          })
-      }
+      this.$store.dispatch('listDashboard')
+        .then(response => {
+          this.dashboardList = response.dashboardsList
+          this.$forceUpdate()
+        })
     }
   }
 }
