@@ -376,17 +376,20 @@ export default {
             fieldItem.isShowedFromUser = true
             fieldItem.value = parsedValueComponent({
               fieldType: fieldItem.componentPath,
-              value: route.query[fieldItem.columnName]
+              value: route.query[fieldItem.columnName],
+              referenceType: fieldItem.referenceType
             })
             if (String(route.query.isAdvancedQuery) === String(fieldItem.isAdvancedQuery)) {
               fieldItem.value = parsedValueComponent({
                 fieldType: fieldItem.componentPath,
-                value: route.query[fieldItem.columnName]
+                value: route.query[fieldItem.columnName],
+                referenceType: fieldItem.referenceType
               })
               if (fieldItem.isRange && this.$route.query[`${fieldItem.columnName}_To`]) {
                 fieldItem.valueTo = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
-                  value: route.query[`${fieldItem.columnName}_To`]
+                  value: route.query[`${fieldItem.columnName}_To`],
+                  referenceType: fieldItem.referenceType
                 })
               }
             }
