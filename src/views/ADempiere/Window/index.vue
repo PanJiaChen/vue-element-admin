@@ -151,11 +151,9 @@
               <transition name="slide-fade">
                 <p v-if="show">
                   <el-card class="box-card">
-                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tabs v-model="activeInfo" @tab-click="handleClick">
                       <el-tab-pane
-                        :label="$t('window.containerInfo.changeLog')"
                         name="listRecordLogs"
-                        style="overflow: auto;max-height: 74vh;"
                       >
                         <span slot="label"><svg-icon icon-class="tree-table" /> {{ $t('window.containerInfo.changeLog') }} </span>
                         <div
@@ -165,32 +163,30 @@
                             v-for="(listLogs, index) in getTypeLogs"
                             :key="index"
                           >
-                            <el-timeline>
-                              <el-timeline-item
-                                v-for="(evenType, key) in listLogs.logs"
-                                :key="key"
-                                :timestamp="translateDate(evenType.logDate)"
-                                placement="top"
-                                :color="listLogs.eventType === 1 ? 'rgb(22, 130, 230)' : 'rgba(67, 147, 239, 1)'"
-                              >
-                                <el-card shadow="hover" @click.native="changeField(evenType)">
-                                  <div>
-                                    <span>{{ evenType.userName }}</span>
-                                    <el-dropdown style="float: right;">
-                                      <span class="el-dropdown-link" style="color: #1682e6" @click="showkey(key)">
-                                        {{ $t('window.containerInfo.changeDetail') }}
-                                      </span>
-                                    </el-dropdown>
-                                  </div>
-                                  <br>
-                                  <el-collapse-transition>
-                                    <div v-show="currentKey === key" :key="key" class="text item">
-                                      <span><p><b><i> {{ evenType.displayColumnName }}:  </i></b> <strike>{{ evenType.oldDisplayValue }} </strike>     {{ evenType.newDisplayValue }}</p></span>
+                            <el-scrollbar wrap-class="scroll">
+                              <el-timeline>
+                                <el-timeline-item
+                                  v-for="(evenType, key) in listLogs.logs"
+                                  :key="key"
+                                  :timestamp="translateDate(evenType.logDate)"
+                                  placement="top"
+                                  :color="listLogs.eventType === 1 ? 'rgb(22, 130, 230)' : 'rgba(67, 147, 239, 1)'"
+                                >
+                                  <el-card shadow="hover" @click.native="changeField(evenType)">
+                                    <div>
+                                      <span>{{ evenType.userName }}</span>
+                                      <el-link type="primary" style="float: right;" @click="showkey(key, index)"> {{ $t('window.containerInfo.changeDetail') }} </el-link>
                                     </div>
-                                  </el-collapse-transition>
-                                </el-card>
-                              </el-timeline-item>
-                            </el-timeline>
+                                    <br>
+                                    <el-collapse-transition>
+                                      <div v-show="(currentKey === key) && (typeAction === index)" :key="key" class="text item">
+                                        <span><p><b><i> {{ evenType.displayColumnName }}:  </i></b> <strike>{{ evenType.oldDisplayValue }} </strike>     {{ evenType.newDisplayValue }}</p></span>
+                                      </div>
+                                    </el-collapse-transition>
+                                  </el-card>
+                                </el-timeline-item>
+                              </el-timeline>
+                            </el-scrollbar>
                           </el-card>
                         </div>
                         <div
@@ -337,11 +333,11 @@ export default {
       panelType: 'window',
       isLoaded: false,
       isPanel: false,
-      activeName: 'listRecordLogs',
+      activeInfo: 'listRecordLogs',
       show: false,
+      typeAction: 0,
       isLoadingFromServer: false,
       listRecordNavigation: 0,
-      show3: false,
       currentKey: 100,
       isShowedTabChildren: true,
       isShowedRecordPanel: false,
@@ -472,21 +468,20 @@ export default {
       }
     },
     getTypeLogs() {
-      const reducer = this.gettersListRecordLogs.reduce((reducer, item) => {
-        if (!reducer.includes(item.logId)) {
-          reducer.push(item.logId)
+      const groupLog = this.gettersListRecordLogs.reduce((groupLog, item) => {
+        if (!groupLog.includes(item.eventType)) {
+          groupLog.push(item.eventType)
         }
-        return reducer
+        return groupLog
       }, [])
         .map(i => {
           // agrup for logId
           return {
-            logs: this.gettersListRecordLogs.filter(b => b.logId === i),
-            logId: i
+            logs: this.gettersListRecordLogs.filter(b => b.eventType === i),
+            eventType: i
           }
         })
-      return reducer
-      // }
+      return groupLog
     },
     gettersLischat() {
       return this.$store.getters.getChatEntries.chatEntriesList
@@ -518,13 +513,13 @@ export default {
     this.getWindow()
   },
   methods: {
-    showkey(key) {
-      if (key === this.currentKey) {
+    showkey(key, index) {
+      if (key === this.currentKey && index === this.typeAction) {
         this.currentKey = 1000
       } else {
         this.currentKey = key
+        this.typeAction = index
       }
-      this.show3 = !this.show3
     },
     changeField(log) {
       this.$store.dispatch('notifyPanelChange', {
@@ -645,6 +640,9 @@ export default {
 </script>
 
 <style scoped>
+  .scroll {
+    max-height: 60vh;
+  }
   /* Enter and leave animations can use different */
   /* durations and timing functions.              */
   .slide-fade-enter-active {
