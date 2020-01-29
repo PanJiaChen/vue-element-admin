@@ -273,7 +273,13 @@ export default {
       notes: 'Notes',
       changeLog: 'Change Log',
       workflowLog: 'Workflow Log',
-      changeDetail: 'Detalle del cambio'
+      changeDetail: 'Detalle del cambio',
+      logWorkflow: {
+        message: 'Message',
+        responsible: 'Responsible',
+        workflowName: 'Name of Workflow Status',
+        timeElapsed: 'Time Elapsed'
+      }
     }
   },
   data: {

@@ -248,7 +248,13 @@ export default {
       notes: 'Notas',
       changeLog: 'Histórico de Cambios',
       workflowLog: 'Histórico de Flujo de Trabajo',
-      changeDetail: 'Detalle del cambio'
+      changeDetail: 'Detalle del cambio',
+      logWorkflow: {
+        message: 'Mensaje',
+        responsible: 'Responsable',
+        workflowName: 'Nombre de estado del flujo de trabajo',
+        timeElapsed: 'Tiempo transcurrido'
+      }
     }
   },
   data: {

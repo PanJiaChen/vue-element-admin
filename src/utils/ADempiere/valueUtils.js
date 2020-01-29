@@ -205,6 +205,77 @@ export function convertFieldListToShareLink(fieldList) {
 
   return attributesListLink.slice(0, -1)
 }
+/**
+ * Find element in an array recursively
+ * @param {object|array} treeData
+ * @param {string} attributeName, key to get value, default id
+ * @param {mixed}  attributeValue, value to compare with search
+ * @param {string} attributeChilds, childs list into element
+ */
+export const recursiveTreeSearch = ({
+  treeData,
+  attributeValue,
+  attributeName = 'id',
+  secondAttribute = false,
+  attributeChilds = 'childsList',
+  isParent = false
+}) => {
+  if (Array.isArray(treeData)) {
+    let index = 0
+    const length = treeData.length
+    while (index < length) {
+      let value = treeData[index]
+      if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
+        value = value[attributeName]
+      }
+      if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
+        value = value[secondAttribute]
+      }
+
+      // compare item to search
+      if (value === attributeValue) {
+        return treeData[index]
+      }
+
+      if (treeData[index] && treeData[index][attributeChilds]) {
+        const found = recursiveTreeSearch({
+          treeData: treeData[index][attributeChilds],
+          attributeValue,
+          attributeName,
+          secondAttribute,
+          attributeChilds,
+          isParent
+        })
+        if (found) {
+          return found
+        }
+      }
+      index++
+    }
+  } else {
+    let value = treeData
+    if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
+      value = value[attributeName]
+    }
+    if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
+      value = value[secondAttribute]
+    }
+
+    // compare item to search
+    if (value === attributeValue) {
+      return treeData
+    }
+
+    const found = recursiveTreeSearch({
+      treeData: treeData[attributeChilds],
+      attributeValue,
+      attributeName,
+      secondAttribute,
+      attributeChilds
+    })
+    return found
+  }
+}
 
 /**
  *
@@ -289,77 +360,4 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
       break
   }
   return returnValue
-}
-
-/**
- * Find element in an array recursively
- * @param {object|array} treeData
- * @param {string} attributeName, key to get value, default id
- * @param {mixed}  attributeValue, value to compare with search
- * @param {string} attributeChilds, childs list into element
- */
-export const recursiveTreeSearch = ({
-  treeData,
-  attributeValue,
-  attributeName = 'id',
-  secondAttribute = false,
-  attributeChilds = 'childsList',
-  isParent = false
-}) => {
-  if (Array.isArray(treeData)) {
-    let index = 0
-    const length = treeData.length
-    while (index < length) {
-      // ESTA MIERDA NO SIRVE PORQUE LOS ATRIBTO
-      let value = treeData[index]
-      if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
-        value = value[attributeName]
-      }
-      if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
-        value = value[secondAttribute]
-      }
-
-      // compare item to search
-      if (value === attributeValue) {
-        return treeData[index]
-      }
-
-      if (treeData[index] && treeData[index][attributeChilds]) {
-        const found = recursiveTreeSearch({
-          treeData: treeData[index][attributeChilds],
-          attributeValue,
-          attributeName,
-          secondAttribute,
-          attributeChilds,
-          isParent
-        })
-        if (found) {
-          return found
-        }
-      }
-      index++
-    }
-  } else {
-    let value = treeData
-    if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
-      value = value[attributeName]
-    }
-    if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
-      value = value[secondAttribute]
-    }
-
-    // compare item to search
-    if (value === attributeValue) {
-      return treeData
-    }
-
-    const found = recursiveTreeSearch({
-      treeData: treeData[attributeChilds],
-      attributeValue,
-      attributeName,
-      secondAttribute,
-      attributeChilds
-    })
-    return found
-  }
 }

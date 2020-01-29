@@ -53,7 +53,6 @@ const containerInfo = {
       const pageToken = 0
       return requestListWorkflows({ tableName, pageSize, pageToken })
         .then(response => {
-          console.log(response)
           commit('addListWorkflows', response)
         })
         .catch(error => {
