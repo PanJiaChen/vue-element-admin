@@ -647,7 +647,7 @@ const panel = {
         }
       } else {
         if (panelType === 'table' || isAdvancedQuery) {
-          if (field.isShowedFromUser) {
+          if (field.isShowedFromUser && field.oldValue !== field.value) {
             // change action to advanced query on field value is changed in this panel
             if (router.currentRoute.query.action !== 'advancedQuery') {
               router.push({
