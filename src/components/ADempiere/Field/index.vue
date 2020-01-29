@@ -20,12 +20,8 @@
       <template slot="label">
         <field-context-info
           v-if="(field.contextInfo && field.contextInfo.isActive) || field.reference.zoomWindowList.length"
-          :name="field.name"
+          :field-attributes="fieldAttributes"
           :field-value="field.value"
-          :help="field.help"
-          :context-info="field.contextInfo"
-          :reference="field.reference"
-          :column-name="field.columnName"
         />
         <template v-else>
           {{ isFieldOnly() }}
@@ -43,17 +39,7 @@
       <component
         :is="componentRender"
         :ref="field.columnName"
-        :metadata="{
-          ...field,
-          panelType,
-          inTable,
-          isAdvancedQuery,
-          // DOM properties
-          required: isMandatory(),
-          readonly: isReadOnly(),
-          displayed: isDisplayed(),
-          disabled: !field.isActive
-        }"
+        :metadata="fieldAttributes"
         :value-model="recordDataFields"
       />
     </el-form-item>
@@ -63,15 +49,7 @@
     v-else
     key="table-template"
     :class="classField"
-    :metadata="{
-      ...field,
-      panelType,
-      inTable,
-      // DOM properties
-      required: isMandatory(),
-      readonly: isReadOnly(),
-      disabled: !field.isActive
-    }"
+    :metadata="fieldAttributes"
     :value-model="recordDataFields"
   />
 </template>
@@ -143,6 +121,19 @@ export default {
     // load the component that is indicated in the attributes of received property
     componentRender() {
       return () => import(`@/components/ADempiere/Field/${this.field.componentPath}`)
+    },
+    fieldAttributes() {
+      return {
+        ...this.field,
+        panelType: this.panelType,
+        inTable: this.inTable,
+        isAdvancedQuery: this.isAdvancedQuery,
+        // DOM properties
+        required: this.isMandatory(),
+        readonly: this.isReadOnly(),
+        displayed: this.isDisplayed(),
+        disabled: !this.field.isActive
+      }
     },
     getWidth() {
       return this.$store.getters.getWidthLayout

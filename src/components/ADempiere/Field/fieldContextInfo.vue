@@ -1,7 +1,7 @@
 <template>
   <span>
     <el-popover
-      v-if="(contextInfo && contextInfo.isActive) || reference.zoomWindowList.length"
+      v-if="(fieldAttributes.contextInfo && fieldAttributes.contextInfo.isActive) || fieldAttributes.reference.zoomWindowList.length"
       ref="contextInfoField"
       placement="top"
       width="300"
@@ -9,17 +9,17 @@
     >
       <p
         class="pre-formatted"
-        v-html="contextInfo.messageText.msgText"
+        v-html="fieldAttributes.contextInfo.messageText.msgText"
       />
       <div>
         <span class="custom-tittle-popover">
-          {{ name }}
+          {{ fieldAttributes.name }}
         </span>
-        <template v-if="!isEmptyValue(help)">
-          : {{ help }}
+        <template v-if="!isEmptyValue(fieldAttributes.help)">
+          : {{ fieldAttributes.help }}
         </template>
       </div>
-      <template v-for="(zoomItem, index) in reference.zoomWindowList">
+      <template v-for="(zoomItem, index) in fieldAttributes.reference.zoomWindowList">
         <el-button
           :key="index"
           type="text"
@@ -31,36 +31,21 @@
       </template>
     </el-popover>
     <span v-popover:contextInfoField>
-      {{ name }}
+      {{ fieldAttributes.name }}
     </span>
   </span>
 </template>
 
 <script>
 import { showMessage } from '@/utils/ADempiere/notification'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 
 export default {
   name: 'FieldContextInfo',
   props: {
-    contextInfo: {
+    fieldAttributes: {
       type: Object,
       required: true
-    },
-    reference: {
-      type: Object,
-      required: true
-    },
-    columnName: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    help: {
-      type: String,
-      default: undefined
     },
     fieldValue: {
       type: [Number, String, Boolean, Array, Object, Date],
@@ -85,18 +70,21 @@ export default {
   methods: {
     showMessage,
     redirect({ window }) {
-      this.$store.dispatch('getWindowByUuid', {
-        routes: this.permissionRoutes,
-        windowUuid: window.uuid
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: window.uuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
       })
-      const windowRoute = this.$store.getters.getWindowRoute(window.uuid)
-      if (windowRoute) {
+
+      if (viewSearch) {
         this.$router.push({
-          name: windowRoute.name,
+          name: viewSearch.name,
           query: {
             action: 'advancedQuery',
             tabParent: 0,
-            [this.columnName]: this.value
+            [this.fieldAttributes.columnName]: this.value
           }
         })
       } else {
