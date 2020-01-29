@@ -1,10 +1,20 @@
 <template>
   <div class="container-submenu-mobile container-context-menu">
     <right-menu>
-      <el-menu :default-active="activeMenu" :router="false" class="el-menu-demo" mode="vertical" menu-trigger="hover" unique-opened style="width: 258px; float: right;">
+      <el-menu
+        v-shortkey="{ f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd'] }"
+        :default-active="activeMenu"
+        :router="false"
+        class="el-menu-demo"
+        mode="vertical"
+        menu-trigger="hover"
+        unique-opened
+        style="width: 258px; float: right;"
+      >
         <el-submenu index="1">
           <template slot="title">
-            <svg-icon icon-class="tree" /> {{ $t('components.contextMenuRelations') }}
+            <svg-icon icon-class="tree" />
+            {{ $t('components.contextMenuRelations') }}
           </template>
           <el-menu-item-group>
             <el-scrollbar wrap-class="scroll">
@@ -14,7 +24,8 @@
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
-            <svg-icon icon-class="link" />{{ $t('components.contextMenuActions') }}
+            <svg-icon icon-class="link" />
+            {{ $t('components.contextMenuActions') }}
           </template>
           <el-menu-item-group>
             <el-scrollbar wrap-class="scroll">
@@ -28,7 +39,8 @@
                   </el-menu-item>
                 </el-submenu>
                 <el-menu-item v-else :key="index" :index="action.name" :disabled="action.disabled" @click="runAction(action)">
-                  <svg-icon v-if="action.type === 'process'" icon-class="component" /> {{ action.name }}
+                  <svg-icon v-if="action.type === 'process'" icon-class="component" />
+                  {{ action.name }}
                 </el-menu-item>
               </template>
               <el-menu-item v-show="isReport" index="4">

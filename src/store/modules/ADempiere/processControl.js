@@ -157,7 +157,10 @@ const processControl = {
               } else {
                 tab = rootGetters.getTab(params.parentUuid, params.containerUuid)
                 tableName = tab.tableName
-                const field = rootGetters.getFieldFromColumnName(params.containerUuid, tableName + '_ID')
+                const field = rootGetters.getFieldFromColumnName({
+                  containerUuid: params.containerUuid,
+                  columnName: `${tableName}_ID`
+                })
                 recordId = field.value
               }
             }

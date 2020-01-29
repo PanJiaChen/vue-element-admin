@@ -775,10 +775,11 @@ const panel = {
     },
     notifyFieldChangeDisplayColumn({ commit, getters }, {
       containerUuid,
+      isAdvancedQuery,
       columnName,
       displayColumn
     }) {
-      const field = getters.getFieldFromColumnName(containerUuid, columnName)
+      const field = getters.getFieldFromColumnName({ containerUuid, isAdvancedQuery, columnName })
       commit('changeFieldValue', {
         field: field,
         newValue: field.value,
@@ -864,8 +865,10 @@ const panel = {
       }
       return panel.fieldList
     },
-    getFieldFromColumnName: (state, getters) => (containerUuid, columnName) => {
-      return getters.getFieldsListFromPanel(containerUuid).find(itemField => itemField.columnName === columnName)
+    getFieldFromColumnName: (state, getters) => ({ containerUuid, isAdvancedQuery, columnName }) => {
+      return getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery).find(itemField => {
+        return itemField.columnName === columnName
+      })
     },
     /**
      * Determinate if panel is ready fron send, all fiedls mandatory and displayed with values

@@ -23,7 +23,11 @@ export const fieldMixin = {
   },
   computed: {
     getterValue() {
-      const field = this.$store.getters.getFieldFromColumnName(this.metadata.containerUuid, this.metadata.columnName)
+      const field = this.$store.getters.getFieldFromColumnName({
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        isAdvancedQuery: this.metadata.isAdvancedQuery
+      })
       if (field) {
         return field.value
       }

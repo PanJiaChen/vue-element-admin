@@ -174,6 +174,7 @@ export default {
           if (this.isPanelWindow) {
             this.$store.dispatch('notifyFieldChangeDisplayColumn', {
               containerUuid: this.metadata.containerUuid,
+              isAdvancedQuery: this.metadata.isAdvancedQuery,
               columnName: this.metadata.columnName,
               displayColumn: responseLookupItem.label
             })

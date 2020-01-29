@@ -54,7 +54,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { userName, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ userName: userName.trim(), password: password })
+      login({ userName, password })
         .then(logInResponse => {
           const { uuid: token } = logInResponse
 
@@ -236,7 +236,7 @@ const actions = {
           message: error.message,
           type: 'error'
         })
-        console.warn(`Error change role: ${error.message}. Code: ${error.code}`)
+        console.warn(`Error change role: ${error.message}. Code: ${error.code}.`)
       })
     //  return new Promise(async resolve => {
     //  const token = role

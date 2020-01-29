@@ -1,6 +1,16 @@
 <template>
   <div class="container-submenu container-context-menu">
-    <el-menu v-shortkey="{f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd']}" :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened @select="typeFormat" @shortkey.native="actionContextMenu">
+    <el-menu
+      v-shortkey="{ f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd'] }"
+      :default-active="activeMenu"
+      :router="false"
+      class="el-menu-demo"
+      mode="horizontal"
+      menu-trigger="hover"
+      unique-opened
+      @select="typeFormat"
+      @shortkey.native="actionContextMenu"
+    >
       <template>
         <el-submenu v-if="relationsList !== undefined && relationsList.length" class="el-menu-item" index="1">
           <template slot="title">
@@ -55,7 +65,9 @@
             index="xlsx"
             @click.native="exporWindow('xlsx')"
           >
-            <template slot="title">{{ $t('components.contextMennuWindowReport') }}</template>
+            <template slot="title">
+              {{ $t('components.contextMennuWindowReport') }}
+            </template>
             <template v-for="(format, index) in option">
               <el-menu-item :key="index" :index="index">
                 {{ format }}

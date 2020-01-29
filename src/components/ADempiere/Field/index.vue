@@ -165,7 +165,7 @@ export default {
       }
 
       const sizeField = this.field.sizeFieldFromType.size
-      var newSizes = {}
+      const newSizes = {}
 
       // in table set max width, used by browser result and tab children of window
       if (this.inTable) {
@@ -243,6 +243,7 @@ export default {
     this.field = this.metadataField
   },
   methods: {
+    showMessage,
     isDisplayed() {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
@@ -347,6 +348,7 @@ export default {
   .custom-tittle-popover {
     font-size: 14px;
     font-weight: bold;
+    float: left;
   }
   /**
    * Separation between elements (item) of the form
