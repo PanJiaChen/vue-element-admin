@@ -10,7 +10,7 @@ export default {
     page401: '401',
     page404: '404',
     profile: 'Profile',
-    ProcessActivity: 'Process Activity',
+    ProcessActivity: 'Process Logs',
     Role: 'Role',
     ReportViewer: 'Report Viewer'
   },
@@ -29,7 +29,7 @@ export default {
     errorSearch: 'The search has not been completed',
     // process
     processing: 'Processing',
-    processExecuted: 'Executed, see process activity',
+    processExecuted: 'Executed, see process logs',
     processError: 'Was not executed',
     //
     emptyValues: 'Parameter(s) empty value',
@@ -50,7 +50,7 @@ export default {
   navbar: {
     badge: {
       Notifications: 'Notifications',
-      link: 'go to ProccesActivity'
+      link: 'Go to Procces Logs'
     },
     dashboard: 'Dashboard',
     github: 'Github',

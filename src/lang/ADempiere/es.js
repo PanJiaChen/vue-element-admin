@@ -10,7 +10,7 @@ export default {
     page401: '401',
     page404: '404',
     profile: 'Perfil',
-    ProcessActivity: 'Actividad de Procesos',
+    ProcessActivity: 'Histórico Procesos',
     Role: 'Rol',
     ReportViewer: 'Visor de Reportes'
   },
@@ -29,7 +29,7 @@ export default {
     errorSearch: 'La búsqueda no se ha completado.',
     // process
     processing: 'Procesando',
-    processExecuted: 'Ejecutado, ver actividad de proceso',
+    processExecuted: 'Ejecutado, ver histórico de procesos',
     processError: 'No fue ejecutado',
     //
     emptyValues: 'Parametro(s) con valores vacios',
@@ -50,7 +50,7 @@ export default {
   navbar: {
     badge: {
       Notifications: 'Notificaciones',
-      link: 'ir a actividad de proceso'
+      link: 'Ir a Histórico de Procesos'
     },
     logOut: 'Salir',
     dashboard: 'Panel de control',
