@@ -15,7 +15,8 @@ const enrollment = {
       return enrollmentUser({
         name: userData.name,
         userName: userData.userName,
-        password: userData.password
+        password: userData.password,
+        eMail: userData.eMail
       })
         .then(() => {
           showMessage({

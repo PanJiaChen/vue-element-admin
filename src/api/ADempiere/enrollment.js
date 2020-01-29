@@ -16,11 +16,12 @@ function Instance() {
  * @param {string} userData.userName
  * @param {string} userData.password
  */
-export function enrollmentUser({ name, userName, password }) {
+export function enrollmentUser({ name, userName, password, eMail }) {
   return Instance.call(this).enrollUser({
     name: name,
     userName: userName,
-    password: password
+    password: password,
+    eMail: eMail
   })
 }
 
