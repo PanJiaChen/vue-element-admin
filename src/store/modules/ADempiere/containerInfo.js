@@ -1,16 +1,19 @@
-import { requestListRecordsLogs, requestListWorkflowsLogs, requestListRecordChats, requestListChatEntries } from '@/api/ADempiere/data'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { requestListRecordsLogs, requestListWorkflowsLogs, requestListWorkflows, requestListRecordChats, requestListChatEntries } from '@/api/ADempiere/data'
 
 const containerInfo = {
   state: {
     listworkflowLog: [],
     listRecordLogs: [],
     listRecordChats: [],
-    listChatEntries: []
+    listChatEntries: [],
+    ListWorkflows: []
   },
   mutations: {
     addListWorkflow(state, payload) {
       state.listworkflowLog = payload
+    },
+    addListWorkflows(state, payload) {
+      state.listworkflows = payload
     },
     addListRecordLogs(state, payload) {
       state.listRecordLogs = payload
@@ -23,14 +26,35 @@ const containerInfo = {
     }
   },
   actions: {
-    listWorkflowLogs({ commit, state }, params) {
+    listWorkflowLogs({ commit, state, dispatch }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
       const pageSize = 0
       const pageToken = 0
+      dispatch('listWorkflows', {
+        tableName: tableName
+      })
       return requestListWorkflowsLogs({ tableName, recordId, pageSize, pageToken })
         .then(response => {
-          commit('addListWorkflow', response)
+          var workflowLog = {
+            recordCount: response.recordCount,
+            workflowLogsList: response.workflowLogsList,
+            nextPageToken: response.nextPageToken
+          }
+          commit('addListWorkflow', workflowLog)
+        })
+        .catch(error => {
+          console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
+        })
+    },
+    listWorkflows({ commit, state }, params) {
+      const tableName = params.tableName
+      const pageSize = 0
+      const pageToken = 0
+      return requestListWorkflows({ tableName, pageSize, pageToken })
+        .then(response => {
+          console.log(response)
+          commit('addListWorkflows', response)
         })
         .catch(error => {
           console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
@@ -53,26 +77,39 @@ const containerInfo = {
           console.warn(`Error getting List Record Logs: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listChatEntries({ commit }, params) {
+    listChatEntries({ commit, state, dispatch }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
       const pageSize = 0
       const pageToken = 0
       return requestListRecordChats({ tableName, recordId, pageSize, pageToken })
         .then(response => {
-          commit('addListChatEntries', response)
+          var listRecordChats = {
+            recordChatsList: response.recordChatsList,
+            recordCount: response.recordCount,
+            nextPageToken: response.nextPageToken
+          }
+          dispatch('listRecordChat', {
+            chatUuid: response.recordChatsList[0].chatUuid
+          })
+          commit('addListRecordChats', listRecordChats)
         })
         .catch(error => {
           console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listRecordChat({ commit }, params) {
-      const uuid = params.uuid
+    listRecordChat({ commit, state }, params) {
+      const uuid = params.chatUuid
       const pageSize = 0
       const pageToken = 0
       return requestListChatEntries({ uuid, pageSize, pageToken })
         .then(response => {
-          commit('addListChatEntries', response)
+          var lisChat = {
+            chatEntriesList: response.chatEntriesList,
+            recordCount: response.recordCount,
+            nextPageToken: response.nextPageToken
+          }
+          commit('addListChatEntries', lisChat)
         })
         .catch(error => {
           console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)
@@ -84,49 +121,10 @@ const containerInfo = {
       return state.listworkflowLog.workflowLogsList
     },
     getRecordLogs: (state) => {
-      const recordLogs = state.listRecordLogs.recorLogs
-      if (isEmptyValue(recordLogs)) {
-        const listRecord = [{
-          columnName: 'Compañía',
-          description: 'Compañía',
-          displayColumnName: 'Compañía',
-          eventType: 0,
-          eventTypeName: 'INSERT',
-          logDate: 0,
-          logUuid: 'e0c976cc-b49e-40fd-b52b-f2f5020436f6',
-          newDisplayValue: '',
-          newValue: '',
-          oldDisplayValue: '',
-          oldValue: '',
-          recordId: 100000,
-          sessionUuid: '',
-          tableName: '',
-          transactionName: '',
-          userName: '',
-          userUuid: ''
-        },
-        {
-          columnName: 'Compañía',
-          description: 'Compañía',
-          displayColumnName: 'Compañía',
-          eventType: 0,
-          eventTypeName: 'INSERT',
-          logDate: 0,
-          logUuid: 'e0c976cc-b49e-40fd-b52b-f2f5020436f6',
-          newDisplayValue: '',
-          newValue: '',
-          oldDisplayValue: '',
-          oldValue: '',
-          recordId: 100000,
-          sessionUuid: '',
-          tableName: '',
-          transactionName: '',
-          userName: '',
-          userUuid: ''
-        }]
-        return listRecord
-      }
       return state.listRecordLogs
+    },
+    getListRecordChats: (state) => {
+      return state.listRecordChats
     },
     getChatEntries: (state) => {
       return state.listChatEntries

@@ -425,6 +425,17 @@ export function requestListWorkflowsLogs({
   })
 }
 
+export function requestListWorkflows({
+  tableName,
+  pageToken,
+  pageSize
+}) {
+  return Instance.call(this).requestListWorkflows({
+    tableName,
+    pageToken,
+    pageSize
+  })
+}
 /**
  * @param {string}  tableName
  * @param {integer} recordId

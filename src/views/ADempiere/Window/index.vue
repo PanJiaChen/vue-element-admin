@@ -158,54 +158,136 @@
                         style="overflow: auto;max-height: 74vh;"
                       >
                         <span slot="label"><svg-icon icon-class="tree-table" /> {{ $t('window.containerInfo.changeLog') }} </span>
-                        <el-card
-                          v-for="(listLogs, index) in getTypeLogs"
-                          :key="index"
+                        <div
+                          v-if="getIsChangeLog"
                         >
-                          <el-timeline>
-                            <el-timeline-item
-                              v-for="(evenType, key) in listLogs.logs"
-                              :key="key"
-                              :timestamp="translateDate(evenType.logDate)"
-                              placement="top"
-                              :color="listLogs.eventTypeName === 'UPDATE' ? 'rgb(22, 130, 230)' : '#52c384'"
-                            >
-                              <el-card shadow="hover" @click.native="changeField(evenType)">
-                                <div>
-                                  <span>{{ evenType.userName }}</span>
-                                  <el-dropdown style="float: right;">
-                                    <span class="el-dropdown-link" style="color: #1682e6" @click="showkey(key)">
-                                      {{ $t('window.containerInfo.changeDetail') }}
-                                    </span>
-                                  </el-dropdown>
-                                </div>
-                                <br>
-                                <el-collapse-transition>
-                                  <div v-show="currentKey === key" :key="key" class="text item">
-                                    <span><p><b><i> {{ evenType.displayColumnName }}:  </i></b> <strike>{{ evenType.oldDisplayValue }} </strike>     {{ evenType.newDisplayValue }}</p></span>
+                          <el-card
+                            v-for="(listLogs, index) in getTypeLogs"
+                            :key="index"
+                          >
+                            <el-timeline>
+                              <el-timeline-item
+                                v-for="(evenType, key) in listLogs.logs"
+                                :key="key"
+                                :timestamp="translateDate(evenType.logDate)"
+                                placement="top"
+                                :color="listLogs.eventType === 1 ? 'rgb(22, 130, 230)' : 'rgba(67, 147, 239, 1)'"
+                              >
+                                <el-card shadow="hover" @click.native="changeField(evenType)">
+                                  <div>
+                                    <span>{{ evenType.userName }}</span>
+                                    <el-dropdown style="float: right;">
+                                      <span class="el-dropdown-link" style="color: #1682e6" @click="showkey(key)">
+                                        {{ $t('window.containerInfo.changeDetail') }}
+                                      </span>
+                                    </el-dropdown>
                                   </div>
-                                </el-collapse-transition>
-                              </el-card>
-                            </el-timeline-item>
-                          </el-timeline>
-                        </el-card>
+                                  <br>
+                                  <el-collapse-transition>
+                                    <div v-show="currentKey === key" :key="key" class="text item">
+                                      <span><p><b><i> {{ evenType.displayColumnName }}:  </i></b> <strike>{{ evenType.oldDisplayValue }} </strike>     {{ evenType.newDisplayValue }}</p></span>
+                                    </div>
+                                  </el-collapse-transition>
+                                </el-card>
+                              </el-timeline-item>
+                            </el-timeline>
+                          </el-card>
+                        </div>
+                        <div
+                          v-else
+                          v-loading="true"
+                          :element-loading-text="$t('notifications.loading')"
+                          element-loading-spinner="el-icon-loading"
+                          element-loading-background="rgba(255, 255, 255, 0.8)"
+                          class="loading-window"
+                        />
                       </el-tab-pane>
                       <el-tab-pane
                         name="listWorkflowLogs"
                       >
-
                         <span slot="label"><i class="el-icon-s-help" /> {{ $t('window.containerInfo.workflowLog') }} </span>
-                        <el-card
-                          class="box-card"
-                          style="overflow: auto;height: 50vh;"
+                        <div
+                          v-if="getIsWorkflowLog"
                         >
-                          {{ gettersrecorCount }}
-                        </el-card>
+                          <el-card
+                            class="box-card"
+                          >
+                            <el-timeline>
+                              <el-timeline-item
+                                v-for="(workflow,index) in gettersListWorkflow"
+                                :key="index"
+                                :timestamp="translateDate(workflow.logDate)"
+                                placement="top"
+                              >
+                                <el-card shadow="hover">
+                                  <div slot="header" class="clearfix">
+                                    <span> {{ workflow.workflowName }} </span>
+                                  </div>
+                                  <div>
+                                    <el-steps
+                                      :space="200"
+                                      :active="workflow.workflowState"
+                                      align-center
+                                      process-status="process"
+                                    >
+                                      <el-step
+                                        v-for="(nodeList, key) in workflow.workflowEventsList"
+                                        :key="key"
+                                        :title="nodeList.nodeName"
+                                        :description="$t('login.userName')+ '' + nodeList.userName"
+                                      />
+                                    </el-steps>
+                                  </div>
+                                </el-card>
+                              </el-timeline-item>
+                            </el-timeline>
+                          </el-card>
+                        </div>
+                        <div
+                          v-else
+                          v-loading="true"
+                          :element-loading-text="$t('notifications.loading')"
+                          element-loading-spinner="el-icon-loading"
+                          element-loading-background="rgba(255, 255, 255, 0.8)"
+                          class="loading-window"
+                        />
                       </el-tab-pane>
                       <el-tab-pane
                         name="listChatEntries"
                       >
                         <span slot="label"><i class="el-icon-s-comment" /> {{ $t('window.containerInfo.notes') }} </span>
+                        <div
+                          v-if="getIsChat"
+                        >
+                          <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                              <span>{{ $t('window.containerInfo.notes') }} {{ gettersLisRecordChats[0].description }} </span>
+                            </div>
+                            <el-timeline>
+                              <el-timeline-item
+                                v-for="(chats, key) in gettersLischat"
+                                :key="key"
+                                :timestamp="translateDate(chats.logDate)"
+                                placement="top"
+                              >
+                                <el-card shadow="hover">
+                                  <div>
+                                    <span>{{ chats.userName }}</span>
+                                    <span>{{ chats.characterData }}</span>
+                                  </div>
+                                </el-card>
+                              </el-timeline-item>
+                            </el-timeline>
+                          </el-card>
+                        </div>
+                        <div
+                          v-else
+                          v-loading="true"
+                          :element-loading-text="$t('notifications.loading')"
+                          element-loading-spinner="el-icon-loading"
+                          element-loading-background="rgba(255, 255, 255, 0.8)"
+                          class="loading-window"
+                        />
                       </el-tab-pane>
                     </el-tabs>
                   </el-card>
@@ -366,21 +448,49 @@ export default {
     gettersListRecordLogs() {
       return this.$store.getters.getRecordLogs.recorLogs
     },
+    getIsChangeLog() {
+      if (this.isEmptyValue(this.gettersListRecordLogs)) {
+        return false
+      } else {
+        return true
+      }
+    },
+    getIsWorkflowLog() {
+      if (this.isEmptyValue(this.gettersListWorkflow)) {
+        return false
+      } else {
+        return true
+      }
+    },
+    getIsChat() {
+      if (this.isEmptyValue(this.gettersLischat)) {
+        return false
+      } else {
+        return true
+      }
+    },
     getTypeLogs() {
       const reducer = this.gettersListRecordLogs.reduce((reducer, item) => {
-        if (!reducer.includes(item.eventTypeName)) {
-          reducer.push(item.eventTypeName)
+        if (!reducer.includes(item.logId)) {
+          reducer.push(item.logId)
         }
         return reducer
       }, [])
         .map(i => {
           // agrup for logId
           return {
-            logs: this.gettersListRecordLogs.filter(b => b.eventTypeName === i),
-            eventTypeName: i
+            logs: this.gettersListRecordLogs.filter(b => b.logId === i),
+            logId: i
           }
         })
       return reducer
+      // }
+    },
+    gettersLischat() {
+      return this.$store.getters.getChatEntries.chatEntriesList
+    },
+    gettersLisRecordChats() {
+      return this.$store.getters.getListRecordChats.recordChatsList
     },
     gettersListWorkflow() {
       return this.$store.getters.getWorkflow
@@ -427,9 +537,6 @@ export default {
     },
     conteInfo() {
       this.show = !this.show
-      this.$store.dispatch('listRecordChat', {
-        uuid: this.$route.query.action
-      })
       this.$store.dispatch('listChatEntries', {
         tableName: this.$route.params.tableName,
         recordId: this.$route.params.recordId
@@ -444,9 +551,6 @@ export default {
     },
     handleClick(tab, event) {
       if (tab.name === 'listChatEntries') {
-        this.$store.dispatch('listRecordChat', {
-          uuid: this.$route.query.action
-        })
         this.$store.dispatch(tab.name, {
           tableName: this.$route.params.tableName,
           recordId: this.$route.params.recordId

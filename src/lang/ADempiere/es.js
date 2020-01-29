@@ -248,15 +248,7 @@ export default {
       notes: 'Notas',
       changeLog: 'Histórico de Cambios',
       workflowLog: 'Histórico de Flujo de Trabajo',
-      changeDetail: 'Detalle del cambio',
-      eventType: {
-        insert: 'Se Creo',
-        update: 'Se Actualizo',
-        delete: 'Eliminar',
-        field: 'El Campo',
-        newValue: 'Nuevo Valor',
-        oldValue: 'Antiguo Valor'
-      }
+      changeDetail: 'Detalle del cambio'
     }
   },
   data: {
