@@ -8,7 +8,7 @@
       <el-table
         :data="getRecordNotification"
         :highlight-current-row="true"
-        @row-click="handleCurrentChange"
+        @cell-click="handleCurrentChange"
       >
         <el-table-column prop="name" :label="$t('navbar.badge.Notifications')" />
         <el-table-column
@@ -33,12 +33,11 @@
         </el-table-column>
         <el-table-column
           width="50"
+          class-name="procesActivity"
         >
-          <router-link :to="{ name: 'ProcessActivity' }">
-            <el-tooltip effect="dark" :content="$t('navbar.badge.link')" placement="top-start">
-              <svg-icon icon-class="tree-table" />
-            </el-tooltip>
-          </router-link>
+          <el-tooltip effect="dark" :content="$t('navbar.badge.link')" placement="top-start">
+            <svg-icon icon-class="tree-table" />
+          </el-tooltip>
         </el-table-column>
       </el-table>
       <el-button slot="reference" type="text" icon="el-icon-bell" style="float: left;color: #000000;font-size: 121%;font-weight: 615!important;padding-top: 14px;" />
@@ -75,7 +74,7 @@ export default {
     },
     handleCurrentChange(getRecordNotification, val, index, rows) {
       if (val !== null) {
-        if (getRecordNotification && getRecordNotification.isReport) {
+        if (getRecordNotification && getRecordNotification.isReport && val.className !== 'procesActivity') {
           this.$router.push({
             name: 'Report Viewer',
             params: {

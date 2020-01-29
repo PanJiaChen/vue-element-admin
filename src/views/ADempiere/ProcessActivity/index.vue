@@ -1,5 +1,5 @@
 <template>
-  <div v-if="getRunProcessAll.length" class="app-container">
+  <div v-if="getRunProcessAll.length" key="with-process" class="app-container">
     <el-timeline>
       <el-timeline-item
         v-for="(activity, index) in getRunProcessAll"
@@ -39,7 +39,7 @@
               <!-- show only when it is error -->
               <el-popover
                 v-if="activity.isError && !activity.summary && !activity.isReport"
-                v-key="is-error"
+                :key="index + 'is-error'"
                 placement="right"
                 width="700"
                 trigger="hover"
@@ -54,6 +54,7 @@
               <!-- show only when bring logs -->
               <el-popover
                 v-else-if="activity.logsList.length > 0 || activity.summary"
+                :key="index + 'is-summary'"
                 placement="right"
                 width="500"
                 trigger="hover"
@@ -74,7 +75,7 @@
               <!-- show only when bring output -->
               <el-popover
                 v-else-if="activity.isReport"
-                v-key="is-output"
+                :key="index + 'is-output'"
                 placement="right"
                 width="700"
                 trigger="hover"
@@ -94,7 +95,7 @@
               </el-popover>
               <el-popover
                 v-else
-                v-key="is-other"
+                :key="index + 'is-other'"
                 placement="top-start"
                 :title="$t('table.ProcessActivity.Logs')"
                 width="200"
@@ -111,7 +112,7 @@
       </el-timeline-item>
     </el-timeline>
   </div>
-  <div v-else>
+  <div v-else key="without-process">
     <h1 class="text-center">{{ $t('views.noProcess') }}</h1>
   </div>
 </template>
