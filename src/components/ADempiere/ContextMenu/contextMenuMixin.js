@@ -1,6 +1,6 @@
 import { showNotification } from '@/utils/ADempiere/notification'
 import Item from './items'
-import { convertFieldListToShareLink } from '@/utils/ADempiere/valueUtils'
+import { convertFieldListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
 
@@ -71,17 +71,6 @@ export const contextMixin = {
     getDataSelection() {
       return this.$store.getters.getDataRecordSelection(this.containerUuid)
     },
-    relations() {
-      if (this.$route.params.menuParentUuid !== undefined) {
-        return this.$store.getters.getRelations(this.$route.params.menuParentUuid)
-      } else {
-        return this.$store.getters.getRelations(this.menuParentUuid).filter(relations => {
-          if (!relations.hidden) {
-            return relations
-          }
-        })
-      }
-    },
     getterContextMenu() {
       return this.$store.getters.getContextMenu(this.containerUuid)
     },
@@ -97,6 +86,14 @@ export const contextMixin = {
       }
       return []
     },
+    relationsList() {
+      let menuUuid = this.$route.params.menuParentUuid
+      if (this.isEmptyValue(menuUuid)) {
+        menuUuid = this.menuParentUuid
+      }
+      const relations = this.$store.getters.getRelations(menuUuid)
+      return relations.children
+    },
     permissionRoutes() {
       return this.$store.getters.permission_routes
     },
@@ -111,7 +108,7 @@ export const contextMixin = {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
     getterFieldListHeader() {
-      var header = this.getterFieldList.filter(fieldItem => {
+      const header = this.getterFieldList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem.name
@@ -122,7 +119,7 @@ export const contextMixin = {
       })
     },
     getterFieldListValue() {
-      var value = this.getterFieldList.filter(fieldItem => {
+      const value = this.getterFieldList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem
@@ -412,7 +409,7 @@ export const contextMixin = {
         // run process or report
         const fieldNotReady = this.$store.getters.isNotReadyForSubmit(this.$route.meta.uuid)
         if (!fieldNotReady) {
-          var containerParams = this.$route.meta.uuid
+          let containerParams = this.$route.meta.uuid
           if (this.lastParameter !== undefined) {
             containerParams = this.lastParameter
           }
@@ -429,7 +426,7 @@ export const contextMixin = {
               href: window.location.href
             })
           }
-          var reportFormat = action.reportExportType
+          let reportFormat = action.reportExportType
           if (this.isEmptyValue(reportFormat)) {
             if (!this.isEmptyValue(this.$route.query.reportType)) {
               reportFormat = this.$route.query.reportType
@@ -445,7 +442,7 @@ export const contextMixin = {
             containerUuid: containerParams, // EVALUATE IF IS action.uuid
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
             reportFormat: reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
-            menuParentUuid: parentMenu, // to load relations in context menu (report view)
+            menuParentUuid: parentMenu, // to load relationsList in context menu (report view)
             routeToDelete: this.$route
           })
             .catch(error => {
@@ -493,22 +490,26 @@ export const contextMixin = {
             })
         }
       } else if (action.type === 'reference') {
-        this.$store.dispatch('getWindowByUuid', {
-          routes: this.permissionRoutes,
-          windowUuid: action.windowUuid
-        })
         if (action.windowUuid && action.recordUuid) {
-          var windowRoute = this.$store.getters.getWindowRoute(action.windowUuid)
-          this.$router.push({
-            name: windowRoute.name,
-            query: {
-              action: action.type,
-              referenceUuid: action.uuid,
-              recordUuid: action.recordUuid,
-              windowUuid: this.parentUuid,
-              tabParent: 0
-            }
+          const viewSearch = recursiveTreeSearch({
+            treeData: this.permissionRoutes,
+            attributeValue: action.windowUuid,
+            attributeName: 'meta',
+            secondAttribute: 'uuid',
+            attributeChilds: 'children'
           })
+          if (viewSearch) {
+            this.$router.push({
+              name: viewSearch.name,
+              query: {
+                action: action.type,
+                referenceUuid: action.uuid,
+                recordUuid: action.recordUuid,
+                windowUuid: this.parentUuid,
+                tabParent: 0
+              }
+            })
+          }
         }
       } else if (action.type === 'updateReport') {
         var updateReportParams = {
@@ -532,12 +533,15 @@ export const contextMixin = {
         this.$store.dispatch('getReportOutputFromServer', updateReportParams)
           .then(response => {
             if (!response.isError) {
-              var link = {
+              let link = {
                 href: undefined,
                 download: undefined
               }
 
-              const blob = new Blob([response.outputStream], { type: response.mimeType })
+              const blob = new Blob(
+                [response.outputStream],
+                { type: response.mimeType }
+              )
               link = document.createElement('a')
               link.href = window.URL.createObjectURL(blob)
               link.download = response.fileName
@@ -554,10 +558,10 @@ export const contextMixin = {
       }
     },
     setShareLink() {
-      var shareLink = this.panelType === 'window' || window.location.href.includes('?') ? `${window.location.href}&` : `${window.location.href}?`
+      let shareLink = this.panelType === 'window' || window.location.href.includes('?') ? `${window.location.href}&` : `${window.location.href}?`
       if (this.$route.name === 'Report Viewer') {
-        var processParameters = convertFieldListToShareLink(this.processParametersExecuted)
-        var reportFormat = this.$store.getters.getReportType
+        const processParameters = convertFieldListToShareLink(this.processParametersExecuted)
+        const reportFormat = this.$store.getters.getReportType
         shareLink = this.$store.getters.getTempShareLink
         if (String(processParameters).length) {
           shareLink += '?' + processParameters
@@ -576,20 +580,17 @@ export const contextMixin = {
       }
     },
     fallbackCopyTextToClipboard(text) {
-      var textArea = document.createElement('textarea')
+      const textArea = document.createElement('textarea')
       textArea.value = text
       document.body.appendChild(textArea)
       textArea.focus()
       textArea.select()
       try {
-        var successful = document.execCommand('copy')
-        if (successful) {
-          var message = this.$t('notifications.copySuccessful')
-          this.clipboardMessage(message)
+        if (document.execCommand('copy')) {
+          this.clipboardMessage(this.$t('notifications.copySuccessful'))
         }
       } catch (err) {
-        message = this.$t('notifications.copyUnsuccessful')
-        this.clipboardMessage(message)
+        this.clipboardMessage(this.$t('notifications.copyUnsuccessful'))
       }
       document.body.removeChild(textArea)
     },
@@ -600,12 +601,10 @@ export const contextMixin = {
       }
       navigator.clipboard.writeText(text)
         .then(() => {
-          var message = this.$t('notifications.copySuccessful')
-          this.clipboardMessage(message)
+          this.clipboardMessage(this.$t('notifications.copySuccessful'))
         })
         .catch(() => {
-          var message = this.$t('notifications.copyUnsuccessful')
-          this.clipboardMessage(message)
+          this.clipboardMessage(this.$t('notifications.copyUnsuccessful'))
         })
       navigator.clipboard.writeText(text)
     },

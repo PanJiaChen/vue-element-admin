@@ -31,6 +31,7 @@
 <script>
 import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+
 export default {
   name: 'RecentItems',
   props: {
@@ -91,7 +92,13 @@ export default {
     },
     handleClick(row) {
       if (!this.isEmptyValue(row.uuidRecord)) {
-        this.$router.push({ name: row.menuUuid, query: { action: row.uuidRecord, tabParent: 0 }})
+        this.$router.push({
+          name: row.menuUuid,
+          query: {
+            action: row.uuidRecord,
+            tabParent: 0
+          }
+        })
       } else {
         this.$router.push({ name: row.menuUuid })
       }

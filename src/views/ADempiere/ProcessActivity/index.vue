@@ -117,6 +117,8 @@
 </template>
 
 <script>
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+
 export default {
   name: 'ProcessActivity',
   data() {
@@ -203,11 +205,16 @@ export default {
           }
         })
       } else if (activity.command === 'zoomIn') {
-        this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: activity.uuid })
-        const processRoute = this.$store.getters.getWindowRoute(activity.uuid)
-        if (!this.isEmptyValue(processRoute)) {
+        const viewSearch = recursiveTreeSearch({
+          treeData: this.permissionRoutes,
+          attributeValue: activity.uuid,
+          attributeName: 'meta',
+          secondAttribute: 'uuid',
+          attributeChilds: 'children'
+        })
+        if (viewSearch) {
           this.$router.push({
-            name: processRoute.name,
+            name: viewSearch.name,
             query: {
               ...this.$route.query,
               ...activity.parametersList

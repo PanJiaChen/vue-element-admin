@@ -56,29 +56,31 @@ const staticRoutes = [
 
 // Get Menu from server
 export function loadMainMenu() {
-  return getMenu(getToken()).then(menu => {
-    const asyncRoutesMap = []
-    menu.childsList.forEach(menu => {
-      const optionMenu = getRouteFromMenuItem(menu)
-      if (menu.isSummary) {
-        menu.childsList.forEach(menu => {
-          const childsSumaryConverted = getChildFromAction(menu, 0)
+  return new Promise(resolve => {
+    getMenu(getToken()).then(menuResponse => {
+      const asyncRoutesMap = []
+      menuResponse.childsList.forEach(menu => {
+        const optionMenu = getRouteFromMenuItem(menu)
+        if (menu.isSummary) {
+          menu.childsList.forEach(menu => {
+            const childsSumaryConverted = getChildFromAction(menu, 0)
 
-          optionMenu.children.push(childsSumaryConverted)
-          optionMenu.children[0].meta.childs.push(childsSumaryConverted)
-          optionMenu.meta.childs.push(childsSumaryConverted)
-        })
-      } else {
-        const childsConverted = getChildFromAction(menu)
+            optionMenu.children.push(childsSumaryConverted)
+            optionMenu.children[0].meta.childs.push(childsSumaryConverted)
+            optionMenu.meta.childs.push(childsSumaryConverted)
+          })
+        } else {
+          const childsConverted = getChildFromAction(menu)
 
-        optionMenu.children.push(childsConverted)
-        optionMenu.meta.childs.push(childsConverted)
-      }
-      asyncRoutesMap.push(optionMenu)
+          optionMenu.children.push(childsConverted)
+          optionMenu.meta.childs.push(childsConverted)
+        }
+        asyncRoutesMap.push(optionMenu)
+      })
+      resolve(staticRoutes.concat(asyncRoutesMap))
+    }).catch(error => {
+      console.warn(`Error getting menu: ${error.message}. Code: ${error.code}.`)
     })
-    return staticRoutes.concat(asyncRoutesMap)
-  }).catch(error => {
-    console.warn(`Error getting menu: ${error.message}. Code: ${error.code}`)
   })
 }
 

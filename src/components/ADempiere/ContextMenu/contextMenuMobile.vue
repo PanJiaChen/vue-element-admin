@@ -8,7 +8,7 @@
           </template>
           <el-menu-item-group>
             <el-scrollbar wrap-class="scroll">
-              <item v-for="(relation, index) in relations" :key="index" :item="relation" />
+              <item v-for="(relation, index) in relationsList" :key="index" :item="relation" />
             </el-scrollbar>
           </el-menu-item-group>
         </el-submenu>

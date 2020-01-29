@@ -2,12 +2,12 @@
   <div class="container-submenu container-context-menu">
     <el-menu v-shortkey="{f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd']}" :default-active="activeMenu" :router="false" class="el-menu-demo" mode="horizontal" menu-trigger="hover" unique-opened @select="typeFormat" @shortkey.native="actionContextMenu">
       <template>
-        <el-submenu v-if="relations !== undefined && relations.length" class="el-menu-item" index="1">
+        <el-submenu v-if="relationsList !== undefined && relationsList.length" class="el-menu-item" index="1">
           <template slot="title">
             {{ $t('components.contextMenuRelations') }}
           </template>
           <el-scrollbar wrap-class="scroll">
-            <item v-for="(relation, index) in relations" :key="index" :item="relation" />
+            <item v-for="(relation, index) in relationsList" :key="index" :item="relation" />
           </el-scrollbar>
         </el-submenu>
         <el-menu-item v-else disabled index="1">

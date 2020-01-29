@@ -104,6 +104,7 @@ import { FIELD_ONLY } from '@/components/ADempiere/Field/references'
 import { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import { showMessage } from '@/utils/ADempiere/notification'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 
 /**
  * This is the base component for linking the components according to the
@@ -340,14 +341,16 @@ export default {
       }
     },
     redirect({ window, columnName, value }) {
-      this.$store.dispatch('getWindowByUuid', {
-        routes: this.permissionRoutes,
-        windowUuid: window.uuid
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: window.uuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
       })
-      const windowRoute = this.$store.getters.getWindowRoute(window.uuid)
-      if (windowRoute) {
+      if (viewSearch) {
         this.$router.push({
-          name: windowRoute.name,
+          name: viewSearch.name,
           query: {
             action: 'advancedQuery',
             tabParent: 0,

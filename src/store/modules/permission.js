@@ -16,10 +16,10 @@ const mutations = {
 const actions = {
   generateRoutes({ commit }) {
     return new Promise(resolve => {
-      return loadMainMenu().then(menu => {
-        commit('SET_ROUTES', menu)
-        resolve(menu)
-      }).catch(err => console.log(err))
+      loadMainMenu().then(menuResponse => {
+        commit('SET_ROUTES', menuResponse)
+        resolve(menuResponse)
+      })
     })
   }
 }

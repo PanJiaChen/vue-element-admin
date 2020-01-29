@@ -1,3 +1,4 @@
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component
 // See structure:
@@ -32,23 +33,17 @@ const contextMenu = {
     getContextMenu: (state) => (containerUuid) => {
       return state.contextMenu.find(item => item.containerUuid === containerUuid)
     },
-    getRelations: (state, getters, rootState) => (containerUuid) => {
-      var menuRelations
-      rootState.permission.addRoutes.forEach(route => {
-        if (route.name === containerUuid) {
-          menuRelations = route.children
-        } else if (route.name !== containerUuid && route.children) {
-          route.children.forEach(child => {
-            if (child.name === containerUuid) {
-              menuRelations = route.children
-            }
-          })
-        }
+    getRelations: (state, getters, rootState, rootGetters) => (containerUuid) => {
+      const dataTree = rootGetters.permission_routes
+      return recursiveTreeSearch({
+        treeData: dataTree,
+        attributeName: 'name',
+        attributeValue: containerUuid,
+        attributeChilds: 'children'
       })
-      return menuRelations
     },
     getActions: (state) => (containerUuid) => {
-      var menu = state.contextMenu.find(
+      const menu = state.contextMenu.find(
         item => item.containerUuid === containerUuid
       )
       if (menu === undefined) {

@@ -26,6 +26,7 @@
 
 <script>
 import { getPendingDocumentsFromServer } from '@/api/ADempiere/data'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 
 export default {
   name: 'PendingDocuments',
@@ -83,17 +84,24 @@ export default {
       })
     },
     handleClick(row) {
-      this.$store.dispatch('getWindowByUuid', { routes: this.permissionRoutes, windowUuid: row.windowUuid })
-      var windowRoute = this.$store.getters.getWindowRoute(row.windowUuid)
-      this.$router.push({
-        name: windowRoute.name,
-        params: {
-          ...row.criteria
-        },
-        query: {
-          action: 'criteria'
-        }
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: row.windowUuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
       })
+      if (viewSearch) {
+        this.$router.push({
+          name: viewSearch.name,
+          params: {
+            ...row.criteria
+          },
+          query: {
+            action: 'criteria'
+          }
+        })
+      }
       // conditions for the registration amount (operador: row.criteria.whereClause)
     },
     filterResult(search) {

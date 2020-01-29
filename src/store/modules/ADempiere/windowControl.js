@@ -9,7 +9,6 @@ const windowControl = {
   state: {
     inCreate: [],
     references: [],
-    windowRoute: {},
     windowOldRoute: {
       path: '',
       fullPath: '',
@@ -38,9 +37,6 @@ const windowControl = {
         }
         return true
       })
-    },
-    addWindowRoute(state, payload) {
-      state.windowRoute = payload
     },
     setDataLog(state, payload) {
       state.dataLog = payload
@@ -407,7 +403,7 @@ const windowControl = {
         })
     },
     deleteEntity({ dispatch, rootGetters }, parameters) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         const panel = rootGetters.getPanel(parameters.containerUuid)
 
         deleteEntity({
@@ -464,8 +460,7 @@ const windowControl = {
               message: language.t('data.deleteRecordError'),
               type: 'error'
             })
-            console.warn(`Delete Entity - Error ${error.message}, Code: ${error.code}`)
-            reject(error)
+            console.warn(`Delete Entity - Error ${error.message}, Code: ${error.code}.`)
           })
       })
     },
@@ -547,7 +542,7 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn(`Rollback Entity error: ${error.message}`)
+          console.warn(`Rollback Entity error: ${error.message}. Code: ${error.code}.`)
         })
     },
     setDataLog({ commit }, parameters) {
@@ -597,7 +592,7 @@ const windowControl = {
 
       if (isReference) {
         if (!isEmptyValue(parsedWhereClause)) {
-          parsedWhereClause += ' AND ' + referenceWhereClause
+          parsedWhereClause += ` AND ${referenceWhereClause}`
         } else {
           parsedWhereClause += referenceWhereClause
         }
@@ -605,7 +600,7 @@ const windowControl = {
 
       if (!isEmptyValue(criteria)) {
         if (!isEmptyValue(parsedWhereClause)) {
-          parsedWhereClause += ' AND ' + criteria.whereClause
+          parsedWhereClause += ` AND ${criteria.whereClause}`
         } else {
           parsedWhereClause += criteria.whereClause
         }
@@ -744,15 +739,6 @@ const windowControl = {
           })
       })
     },
-    getWindowByUuid({ dispatch, commit }, parameters) {
-      parameters.routes.forEach((routeItem) => {
-        if (routeItem.meta && routeItem.meta.uuid === parameters.windowUuid) {
-          commit('addWindowRoute', routeItem)
-        } else if (routeItem.meta && routeItem.meta.childs && routeItem.meta.childs.length > 0) {
-          dispatch('getWindowByUuid', { routes: routeItem.meta.childs, windowUuid: parameters.windowUuid })
-        }
-      })
-    },
     setWindowOldRoute({ commit }, oldPath = { path: '', fullPath: '', query: {}}) {
       commit('setWindowOldRoute', oldPath)
     },
@@ -847,11 +833,6 @@ const windowControl = {
     getReferencesInfo: (state, getters) => (windowUuid, recordUuid, referenceUuid) => {
       const references = getters.getReferencesList(windowUuid, recordUuid)
       return references.referencesList.find(item => item.uuid === referenceUuid)
-    },
-    getWindowRoute: (state) => (windowUuid) => {
-      if (state.windowRoute && state.windowRoute.meta && state.windowRoute.meta.uuid === windowUuid) {
-        return state.windowRoute
-      }
     },
     getTabSequenceRecord: (state) => {
       return state.tabSequenceRecord

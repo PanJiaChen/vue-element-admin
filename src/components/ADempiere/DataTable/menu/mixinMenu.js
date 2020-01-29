@@ -1,5 +1,6 @@
 import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
 import { showNotification } from '@/utils/ADempiere/notification'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 import { FIELDS_QUANTITY } from '@/components/ADempiere/Field/references'
 
 export const menuTableMixin = {
@@ -324,28 +325,32 @@ export const menuTableMixin = {
     },
     zoomRecord() {
       const browserMetadata = this.$store.getters.getBrowser(this.$route.meta.uuid)
-      const elementName = browserMetadata.fieldList.find(field => field.columnName === browserMetadata.keyColumn).elementName
+      const { elementName } = browserMetadata.fieldList.find(field => field.columnName === browserMetadata.keyColumn)
       const records = []
       this.getDataSelection.forEach(record => {
-        if (!isNaN(record[browserMetadata.keyColumn])) {
-          records.push(Number(record[browserMetadata.keyColumn]))
-        } else {
+        if (isNaN(record[browserMetadata.keyColumn])) {
           records.push(record[browserMetadata.keyColumn])
+        } else {
+          records.push(Number(record[browserMetadata.keyColumn]))
         }
       })
 
-      this.$store.dispatch('getWindowByUuid', {
-        routes: this.permissionRoutes,
-        windowUuid: browserMetadata.window.uuid
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: browserMetadata.window.uuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
       })
-      const windowRoute = this.$store.getters.getWindowRoute(browserMetadata.window.uuid)
-      this.$router.push({
-        name: windowRoute.name,
-        query: {
-          action: 'advancedQuery',
-          [elementName]: records
-        }
-      })
+      if (viewSearch) {
+        this.$router.push({
+          name: viewSearch.name,
+          query: {
+            action: 'advancedQuery',
+            [elementName]: records
+          }
+        })
+      }
     }
   }
 }
