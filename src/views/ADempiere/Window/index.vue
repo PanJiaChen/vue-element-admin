@@ -183,7 +183,7 @@
                                   <el-collapse-transition>
                                     <div v-show="(currentKey === key)">
                                       <span v-for="(list, index) in listLogs.changeLogs" :key="index">
-                                        <p><b> {{ list.displayColumnName }} :</b> <strike> {{ list.oldDisplayValue }} </strike> {{ list.newDisplayValue }} </p>
+                                        <p><b> {{ list.displayColumnName }} :</b> <strike> <el-link type="danger"> {{ list.oldDisplayValue }} </el-link> </strike> <el-link type="success"> {{ list.newDisplayValue }} </el-link> </p>
                                       </span>
                                     </div>
                                   </el-collapse-transition>
@@ -270,11 +270,11 @@
                       >
                         <span slot="label"><i class="el-icon-s-comment" /> {{ $t('window.containerInfo.notes') }} </span>
                         <div
-                          v-if="getIsChat"
+                          v-if="!gettersLisRecordChats.epale"
                         >
                           <el-card class="box-card">
                             <div slot="header" class="clearfix">
-                              <span>{{ $t('window.containerInfo.notes') }} {{ gettersLisRecordChats[0].description }} </span>
+                              <span>{{ $t('window.containerInfo.notes') }}</span>
                             </div>
                             <el-scrollbar wrap-class="scroll-window-log-chat">
                               <el-timeline>
@@ -295,14 +295,20 @@
                             </el-scrollbar>
                           </el-card>
                         </div>
-                        <div
-                          v-else
-                          v-loading="true"
-                          :element-loading-text="$t('notifications.loading')"
-                          element-loading-spinner="el-icon-loading"
-                          element-loading-background="rgba(255, 255, 255, 0.8)"
-                          class="loading-window"
-                        />
+                        <div>
+                          <el-card class="box-card">
+                            <div slot="header" class="clearfix">
+                              {{ $t('window.containerInfo.logWorkflow.addNote') }}
+                            </div>
+                            <el-input
+                              v-model="chatNote"
+                              type="chatNote"
+                              :rows="2"
+                              placeholder="Please input"
+                              @keyup.enter.native="sendComment(chatNote)"
+                            />
+                          </el-card>
+                        </div>
                       </el-tab-pane>
                     </el-tabs>
                   </el-card>
@@ -354,6 +360,7 @@ export default {
       isPanel: false,
       activeInfo: 'listRecordLogs',
       show: false,
+      chatNote: '',
       typeAction: 0,
       isLoadingFromServer: false,
       listRecordNavigation: 0,
@@ -468,23 +475,20 @@ export default {
     getIsChangeLog() {
       if (this.isEmptyValue(this.gettersListRecordLogs)) {
         return false
-      } else {
-        return true
       }
+      return true
     },
     getIsWorkflowLog() {
       if (this.isEmptyValue(this.gettersListWorkflow)) {
         return false
-      } else {
-        return true
       }
+      return true
     },
     getIsChat() {
-      if (this.isEmptyValue(this.gettersLischat)) {
+      if (this.isEmptyValue(this.gettersLisRecordChats)) {
         return false
-      } else {
-        return true
       }
+      return true
     },
     getTypeLogs() {
       const groupLog = this.gettersListRecordLogs.reduce((groupLog, item) => {
@@ -506,7 +510,7 @@ export default {
       return this.$store.getters.getChatEntries.chatEntriesList
     },
     gettersLisRecordChats() {
-      return this.$store.getters.getListRecordChats.recordChatsList
+      return this.$store.getters.getListRecordChats
     },
     gettersListWorkflow() {
       return this.$store.getters.getWorkflow
@@ -522,6 +526,12 @@ export default {
     }
   },
   watch: {
+    $route(value) {
+      this.$store.dispatch('listChatEntries', {
+        tableName: value.params.tableName,
+        recordId: value.params.recordId
+      })
+    },
     'this.$route.params'(newValue, oldValue) {
       if (!this.isEmptyValue(newValue)) {
         this.getIsRecordLocked()
@@ -532,6 +542,14 @@ export default {
     this.getWindow()
   },
   methods: {
+    sendComment(comment) {
+      this.$store.dispatch('createChatEntry', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId,
+        comment: comment
+      })
+      this.chatNote = ''
+    },
     showkey(key, index) {
       if (key === this.currentKey && index === this.typeAction) {
         this.currentKey = 1000
@@ -566,17 +584,24 @@ export default {
       }
     },
     handleClick(tab, event) {
-      if (tab.name === 'listChatEntries') {
-        this.$store.dispatch(tab.name, {
-          tableName: this.$route.params.tableName,
-          recordId: this.$route.params.recordId
-        })
-      } else {
-        this.$store.dispatch(tab.name, {
-          tableName: this.$route.params.tableName,
-          recordId: this.$route.params.recordId
-        })
-      }
+      this.$store.dispatch(tab.name, {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+    },
+    refres() {
+      this.$store.dispatch('listWorkflowLogs', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+      this.$store.dispatch('listRecordLogs', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+      this.$store.dispatch('listChatEntries', {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
     },
     // callback new size
     onDrag(size) {
@@ -825,7 +850,7 @@ export default {
     max-height: 68vh !important;
   }
   .scroll-window-log-chat {
-    max-height: 68vh !important;
+    max-height: 45vh !important;
   }
   .el-card__header {
     background: rgba(245, 247, 250, 0.75);

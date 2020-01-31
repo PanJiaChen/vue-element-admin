@@ -278,7 +278,8 @@ export default {
         message: 'Message',
         responsible: 'Responsible',
         workflowName: 'Name of Workflow Status',
-        timeElapsed: 'Time Elapsed'
+        timeElapsed: 'Time Elapsed',
+        addNote: 'Notas'
       }
     }
   },

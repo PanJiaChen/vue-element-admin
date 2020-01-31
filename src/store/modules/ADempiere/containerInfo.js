@@ -1,4 +1,5 @@
-import { requestListRecordsLogs, requestListWorkflowsLogs, requestListWorkflows, requestListRecordChats, requestListChatEntries } from '@/api/ADempiere/data'
+import { requestListRecordsLogs, requestListWorkflowsLogs, requestListWorkflows, requestListRecordChats, requestListChatEntries, requestCreateChatEntry } from '@/api/ADempiere/data'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const containerInfo = {
   state: {
@@ -6,7 +7,8 @@ const containerInfo = {
     listRecordLogs: [],
     listRecordChats: [],
     listChatEntries: [],
-    ListWorkflows: []
+    listWorkflows: [],
+    note: []
   },
   mutations: {
     addListWorkflow(state, payload) {
@@ -23,9 +25,25 @@ const containerInfo = {
     },
     addListChatEntries(state, payload) {
       state.listChatEntries = payload
+    },
+    addNote(state, payload) {
+      state.note = payload
     }
   },
   actions: {
+    createChatEntry({ commit, dispatch }, params) {
+      const tableName = params.tableName
+      const recordId = params.recordId
+      const comment = params.comment
+      return requestCreateChatEntry({ tableName, recordId, comment })
+        .then(response => {
+          dispatch('listChatEntries', {
+            tableName: params.tableName,
+            recordId: params.recordId
+          })
+          commit('addNote', response)
+        })
+    },
     listWorkflowLogs({ commit, state, dispatch }, params) {
       const tableName = params.tableName
       const recordId = params.recordId
@@ -68,7 +86,8 @@ const containerInfo = {
         .then(response => {
           var listRecord = {
             recordCount: response.recordCount,
-            recorLogs: response.recordLogsList
+            recorLogs: response.recordLogsList,
+            epale: true
           }
           commit('addListRecordLogs', listRecord)
         })
@@ -83,15 +102,16 @@ const containerInfo = {
       const pageToken = 0
       return requestListRecordChats({ tableName, recordId, pageSize, pageToken })
         .then(response => {
-          var listRecordChats = {
+          var listRecord = {
             recordChatsList: response.recordChatsList,
             recordCount: response.recordCount,
+            epale: isEmptyValue(response.recordChatsList),
             nextPageToken: response.nextPageToken
           }
           dispatch('listRecordChat', {
             chatUuid: response.recordChatsList[0].chatUuid
           })
-          commit('addListRecordChats', listRecordChats)
+          commit('addListRecordChats', listRecord)
         })
         .catch(error => {
           console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)

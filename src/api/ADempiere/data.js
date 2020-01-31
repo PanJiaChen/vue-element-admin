@@ -484,3 +484,15 @@ export function requestListChatEntries({ uuid, pageToken, pageSize }) {
     pageSize
   })
 }
+/**
+ * @param {string} tableName
+ * @param {string} recordId
+ * @param {string} comment
+ */
+export function requestCreateChatEntry({ tableName, recordId, comment }) {
+  return Instance.call(this).requestCreateChatEntry({
+    tableName,
+    recordId,
+    comment
+  })
+}

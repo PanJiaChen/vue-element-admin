@@ -253,7 +253,8 @@ export default {
         message: 'Mensaje',
         responsible: 'Responsable',
         workflowName: 'Nombre de estado del flujo de trabajo',
-        timeElapsed: 'Tiempo transcurrido'
+        timeElapsed: 'Tiempo transcurrido',
+        addNote: 'Notas'
       }
     }
   },
