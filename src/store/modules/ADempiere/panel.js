@@ -140,7 +140,7 @@ const panel = {
       var newFields = panel.fieldList.map(itemField => {
         const isMandatory = itemField.isMandatory || itemField.isMandatoryFromLogic
         if (!isMandatory && fieldIsDisplayed(itemField)) {
-          if (itemField.groupAssigned === groupField) {
+          if (isAdvancedQuery || itemField.groupAssigned === groupField) {
             if (fieldsUser.length && fieldsUser.includes(itemField.columnName)) {
               // if it isShowedFromUser it is false, and it has some value, it means
               // that it is going to show, therefore the SmartBrowser must be searched
