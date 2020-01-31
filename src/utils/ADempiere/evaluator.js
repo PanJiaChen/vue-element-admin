@@ -4,7 +4,7 @@
 // logic := {|}|{&}<br>
 // context := any global or window context <br>
 // value := strings or numbers<br>
-// logic operators	:= AND or OR with the previous result from left to right <br>
+// logic operators  := AND or OR with the previous result from left to right <br>
 // operand := eq{=}, gt{&gt;}, le{&lt;}, not{~^!} <br>
 // Examples: <br>
 // @AD_Table_ID@=14 | @Language@!GERGER <br>
@@ -17,7 +17,7 @@ class evaluator {
    * @param {string} parentUuid Parent (Window / Process / Smart Browser)
    */
   static evaluateLogic(objectToEvaluate) {
-    var defaultUndefined = false
+    let defaultUndefined = false
     if (objectToEvaluate.type === 'displayed') {
       defaultUndefined = true
     }
@@ -27,22 +27,19 @@ class evaluator {
       objectToEvaluate.logic.trim() === '') {
       return defaultUndefined
     }
-    var st = objectToEvaluate.logic.trim().replace('\n', '')
+    let st = objectToEvaluate.logic.trim().replace('\n', '')
     st = st.replace('|', '~')
-    var expr = /(~|&)/
-    var stList = st.split(expr)
-    var it = stList.length
+    const expr = /(~|&)/
+    const stList = st.split(expr)
+    const it = stList.length
 
     if (((it / 2) - ((it + 1) / 2)) === 0) {
-      console.info(
-        'Logic does not comply with format "<expression> [<logic> <expression>]"' +
-        '  -->  ' + objectToEvaluate.logic
-      )
+      console.info(`Logic does not comply with format "<expression> [<logic> <expression>]"  -->  ${objectToEvaluate.logic}`)
       return defaultUndefined
     }
 
-    var retValue = null
-    var logOp = ''
+    let retValue = null
+    let logOp = ''
     stList.forEach(function(element) {
       if (element === '~' || element === '&') {
         logOp = element
@@ -63,7 +60,7 @@ class evaluator {
             conditional: element
           })
         } else {
-          console.info("Logic operant '|' or '&' expected  -->  " + objectToEvaluate.logic)
+          console.info(`Logic operant '|' or '&' expected  -->  ${objectToEvaluate.logic}`)
           return defaultUndefined
         }
       }
@@ -78,83 +75,74 @@ class evaluator {
    * @return {boolean}
    */
   static evaluateLogicTuples(objectToEvaluate) {
-    var _defaultUndefined = false
+    let _defaultUndefined = false
     if (objectToEvaluate.type === 'displayed') {
       _defaultUndefined = true
     }
-    var logic = objectToEvaluate.conditional
+    const logic = objectToEvaluate.conditional
     // not context info, not logic
     if (logic === undefined) {
       return _defaultUndefined
     }
-    var expr = /^(['"@#$a-zA-Z0-9\-_\s]){0,}((!*={1})|(!{1})|(<{1})|(>{1}))([\s"'@#$a-zA-Z0-9\-_]){0,}$/i
-    var st = expr.test(logic)
+    let expr = /^(['"@#$a-zA-Z0-9\-_\s]){0,}((<>|<=|<|=|>=|>|!=|!|\^){1,2})([\s"'@#$a-zA-Z0-9\-_]){0,}$/i
+    let st = expr.test(logic)
 
     if (!st) {
-      console.info(
-        ".Logic tuple does not comply with format '@context@=value' where operand" +
-        " could be one of '=!^><'  -->  " + logic
-      )
+      console.info(`.Logic tuple does not comply with format '@context@=value' where operand could be one of '=!^><'  -->  ${logic}`)
       return _defaultUndefined
     }
-    expr = /(!{1}|={1})/
+
+    expr = /(<>|<=|<|=|>=|>|!=|!|\^){1,2}/i
     st = logic.split(expr)
-    if (st.length === 1) {
-      expr = /(<{1})/
-      st = logic.split(expr)
-    }
-    if (st.length === 1) {
-      expr = /(>)/
-      st = logic.split(expr)
-    }
+
     // First Part (or column name)
-    var first = st[0].trim()
-    var firstEval = first
+    let first = st[0].trim()
+    let firstEval = first
+    let isCountable = false
+    let isGlobal = false
     expr = /@/
     if (expr.test(first)) {
       first = first.replace(/@/g, '').trim()
-      var isGlobal = first.startsWith('#')
-      var isCountable = first.startsWith('$')
-      var value = objectToEvaluate.context.getContext({
+      isGlobal = first.startsWith('#')
+      isCountable = first.startsWith('$')
+      const value = objectToEvaluate.context.getContext({
         parentUuid: (isGlobal || isCountable) ? '' : objectToEvaluate.parentUuid,
         containerUuid: (isGlobal || isCountable) ? '' : objectToEvaluate.containerUuid,
         columnName: first
       })
       // in context exists this column name
       if (value === null || value === undefined) {
-        console.info(
-          '.The column ' + first + ' not exists in context.'
-        )
+        console.info(`.The column ${first} not exists in context.`)
         return _defaultUndefined
       }
-      firstEval = value	// replace with it's value
+      firstEval = value // replace with it's value
     }
 
     if (firstEval === null || firstEval === undefined) {
       return _defaultUndefined
     }
     if (typeof firstEval === 'string') {
-      firstEval = firstEval.replace(/['"]/g, '').trim()	// strip ' and "
+      firstEval = firstEval.replace(/['"]/g, '').trim() // strip ' and "
     }
 
-    //	Operator
-    var operand = st[1]
-    //	Second Part
-    var second = st[2].trim()
-    var secondEval = second.trim()
+    //  Operator
+    const operand = st[1]
+    //  Second Part
+    let second = st[2].trim()
+    let secondEval = second.trim()
     if (expr.test(second)) {
       second = second.replace(/@/g, ' ').trim() // strip tag
       secondEval = objectToEvaluate.context.getContext({
         parentUuid: (isGlobal || isCountable) ? null : objectToEvaluate.parentUuid,
         containerUuid: (isGlobal || isCountable) ? null : objectToEvaluate.containerUuid,
         columnName: first
-      })	//	replace with it's value
+      }) //  replace with it's value
     }
     if (typeof secondEval === 'string') {
-      secondEval = secondEval.replace(/['"]/g, '').trim()	//	strip ' and " for string values
+      secondEval = secondEval.replace(/['"]/g, '').trim() //  strip ' and " for string values
     }
 
-    //	Handling of ID compare (null => 0)
+    //  Handling of ID compare (null => 0)
     if (first.includes('_ID') && firstEval.length === 0) {
       firstEval = '0'
     }
@@ -162,8 +150,8 @@ class evaluator {
       secondEval = '0'
     }
 
-    //	Logical Comparison
-    var result = this.evaluateLogicTuple(firstEval, operand, secondEval)
+    //  Logical Comparison
+    const result = this.evaluateLogicTuple(firstEval, operand, secondEval)
 
     return result
   }
@@ -190,19 +178,42 @@ class evaluator {
       value2 = false
     }
 
-    if (value1 == null || operand == null || value2 == null) {
+    if ([value1, operand, value2].includes(null)) {
       return false
     }
-    if (operand === '=') {
-      return value1 === value2
-    } else if (operand === '<') {
-      return value1 < value2
-    } else if (operand === '>') {
-      return value1 > value2
-    } else {
-      //	interpreted as not
-      return value1 !== value2
+
+    let isValueLogic
+    // TODO: Add '^' operand comparison
+    switch (operand) {
+      case '=':
+      case '==':
+        isValueLogic = value1 === value2
+        break
+
+      case '<':
+        isValueLogic = value1 < value2
+        break
+
+      case '<=':
+        isValueLogic = value1 <= value2
+        break
+
+      case '>':
+        isValueLogic = value1 > value2
+        break
+
+      case '>=':
+        isValueLogic = value1 >= value2
+        break
+
+      case '!':
+      case '!=':
+      case '<>':
+      default:
+        isValueLogic = value1 !== value2
+        break
     }
+    return isValueLogic
   }
 
   /**
@@ -211,7 +222,7 @@ class evaluator {
    * @return {array}
    */
   static parseDepends(parseString) {
-    var listFields = []
+    const listFields = []
     if (parseString === null || parseString === undefined) {
       // return array empty
       return listFields
@@ -228,7 +239,7 @@ class evaluator {
       pos = string.indexOf('@')
       if (pos === -1) {
         continue
-      }	//	error number of @@ not correct
+      } //  error number of @@ not correct
 
       // remove second @: ExampleColumn@ = ExampleColumn
       const value = string.substring(0, pos)
