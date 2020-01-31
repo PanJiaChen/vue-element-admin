@@ -334,7 +334,7 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
       if (!isNaN(value)) {
         value = Number(value)
       }
-      if (typeof value === 'number') {
+      if (typeof value === 'number' || typeof value === 'string') {
         value = new Date(value)
       }
       if (typeof value === 'object' && value.hasOwnProperty('query')) {

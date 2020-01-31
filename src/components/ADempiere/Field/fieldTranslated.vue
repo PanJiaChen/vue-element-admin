@@ -9,10 +9,10 @@
     >
       <div>
         <span class="custom-tittle-popover">
-          {{ name }}
+          {{ fieldAttributes.name }}
         </span>
-        <template v-if="!isEmptyValue(help)">
-          : {{ help }}
+        <template v-if="!isEmptyValue(fieldAttributes.help)">
+          : {{ fieldAttributes.help }}
         </template>
       </div>
       <el-form-item
@@ -66,29 +66,13 @@ import { getLanguage } from '@/lang/index'
 export default {
   name: 'FieldTranslated',
   props: {
-    containerUuid: {
-      type: String,
+    fieldAttributes: {
+      type: Object,
       required: true
-    },
-    columnName: {
-      type: String,
-      required: true
-    },
-    name: {
-      type: String,
-      default: undefined
-    },
-    help: {
-      type: String,
-      default: undefined
     },
     recordUuid: {
       type: String,
       default: undefined
-    },
-    tableName: {
-      type: String,
-      required: true
     }
   },
   data() {
@@ -112,7 +96,7 @@ export default {
     },
     getterTranslationValues() {
       const values = this.$store.getters.getTranslationByLanguage({
-        containerUuid: this.containerUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
         language: this.langValue,
         recordUuid: this.recordUuid
       })
@@ -126,7 +110,7 @@ export default {
       if (this.isEmptyValue(values)) {
         return undefined
       }
-      return values[this.columnName]
+      return values[this.fieldAttributes.columnName]
     }
   },
   watch: {
@@ -154,9 +138,9 @@ export default {
     getTranslationsFromServer() {
       this.isLoading = true
       this.$store.dispatch('getTranslationsFromServer', {
-        containerUuid: this.containerUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
         recordUuid: this.recordUuid,
-        tableName: this.tableName,
+        tableName: this.fieldAttributes.tableName,
         language: this.langValue
       })
         .finally(() => {
@@ -165,9 +149,9 @@ export default {
     },
     changeTranslationValue(value) {
       this.$store.dispatch('changeTranslationValue', {
-        containerUuid: this.containerUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
         language: this.langValue,
-        columnName: this.columnName,
+        columnName: this.fieldAttributes.columnName,
         value
       })
     }

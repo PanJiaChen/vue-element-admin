@@ -76,7 +76,7 @@ export function getEntity({ tableName, recordId, recordUuid }) {
  * @param {string} tableName
  * @param {string} query
  * @param {string} whereClause
- * @param {array}  conditions
+ * @param {array}  conditionsList
  * @param {string} orderByClause
  * @param {string} nextPageToken
  */
@@ -84,7 +84,7 @@ export function getEntitiesList({
   tableName,
   query,
   whereClause,
-  conditions: conditionsList = [],
+  conditionsList = [],
   orderByClause,
   nextPageToken: pageToken,
   pageSize
@@ -98,6 +98,27 @@ export function getEntitiesList({
     pageToken,
     pageSize
   })
+}
+
+/**
+ * Get all operator or get key value type from value
+ * @param {number} keyToFind
+		EQUAL = 0;
+		NOT_EQUAL = 1;
+		LIKE = 2;
+		NOT_LIKE = 3;
+		GREATER = 4;
+		GREATER_EQUAL = 5;
+		LESS = 6;
+		LESS_EQUAL = 7;
+		BETWEEN = 8;
+		NOT_NULL = 9;
+		NULL = 10;
+		IN = 11;
+		NOT_IN = 12;
+ */
+export function getConditionOperators(keyToFind) {
+  return Instance.call(this).getConditionOperators(keyToFind)
 }
 
 /**

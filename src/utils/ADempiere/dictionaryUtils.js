@@ -109,7 +109,11 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     // app attributes
     isShowedFromUser,
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
-    isFixedTableColumn: false
+    isFixedTableColumn: false,
+    // Advanced query
+    operator: 'EQUAL', // current operator
+    oldOperator: undefined, // old operator
+    defaultOperator: 'EQUAL'
   }
 
   // evaluate simple logics without context

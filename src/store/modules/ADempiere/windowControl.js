@@ -606,9 +606,10 @@ const windowControl = {
         }
       }
 
-      const conditions = []
-      if (tab.isParentTab && !isEmptyValue(tab.tableName) && !isEmptyValue(value)) {
-        conditions.push({
+      const conditionsList = []
+      // TODO: evaluate if overwrite values to conditions
+      if (!isLoadAllRecords && tab.isParentTab && !isEmptyValue(tab.tableName) && !isEmptyValue(value)) {
+        conditionsList.push({
           columnName: columnName,
           value: value
         })
@@ -620,8 +621,7 @@ const windowControl = {
         query: parsedQuery,
         whereClause: parsedWhereClause,
         orderByClause: tab.orderByClause,
-        // TODO: evaluate if overwrite values to conditions
-        conditions: isLoadAllRecords ? [] : conditions,
+        conditionsList,
         isParentTab: tab.isParentTab,
         isAddRecord: isAddRecord,
         isShowNotification: isShowNotification

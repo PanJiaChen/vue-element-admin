@@ -6,8 +6,11 @@
     :placeholder="metadata.help"
     :loading="isLoading"
     value-key="key"
-    class="select-base"
+    :class="classStyle"
     clearable
+    :multiple="isSelectMultiple"
+    :allow-create="metadata.isSelectCreated"
+    :collapse-tags="!isSelectMultiple"
     :disabled="isDisabled"
     @change="preHandleChange"
     @visible-change="getDataLookupList"
@@ -60,6 +63,16 @@ export default {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
+    isSelectMultiple() {
+      return ['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery
+    },
+    classStyle() {
+      let styleClass = 'custom-field-select'
+      if (this.isSelectMultiple) {
+        styleClass += ' custom-field-select-multiple'
+      }
+      return styleClass
+    },
     getterLookupItem() {
       if (this.isEmptyValue(this.metadata.reference.directQuery)) {
         return this.blanckOption
@@ -99,6 +112,23 @@ export default {
     }
   },
   watch: {
+    isSelectMultiple(isMultiple) {
+      if (isMultiple) {
+        const valueInArray = []
+        if (!this.isEmptyValue(this.value)) {
+          valueInArray.push(this.value)
+        }
+        this.value = valueInArray
+      } else {
+        if (Array.isArray(this.value)) {
+          if (this.value.length) {
+            this.value = this.value[0]
+          } else {
+            this.value = undefined
+          }
+        }
+      }
+    },
     valueModel(value) {
       if (this.metadata.inTable) {
         this.value = value
@@ -159,7 +189,8 @@ export default {
       return selected
     },
     async getDataLookupItem() {
-      if (this.isEmptyValue(this.metadata.reference.directQuery)) {
+      if (this.isEmptyValue(this.metadata.reference.directQuery) ||
+        (this.metadata.isAdvancedQuery && this.isSelectMultiple)) {
         return
       }
       this.isLoading = true
@@ -234,8 +265,16 @@ export default {
 }
 </script>
 
-<style scoped>
-  .select-base {
+<style lang="scss">
+  .custom-field-select {
     width: 100%;
+  }
+
+  .custom-field-select-multiple {
+    overflow: auto;
+    max-height: 100px;
+    .el-select__tags {
+      max-height: 100px;
+    }
   }
 </style>

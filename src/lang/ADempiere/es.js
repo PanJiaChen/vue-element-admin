@@ -273,5 +273,21 @@ export default {
   sequence: {
     available: 'Disponibles',
     sequence: 'Secuencia'
+  },
+  operators: {
+    operator: 'Operador de comparación',
+    EQUAL: 'Igual a "="',
+    NOT_EQUAL: 'Diferente a "<>"',
+    LIKE: 'Contiene "~"',
+    NOT_LIKE: 'No contiene "!~"',
+    GREATER: 'Mayor que ">"',
+    GREATER_EQUAL: 'Mayor o igual que ">="',
+    LESS: 'Menor que "<"',
+    LESS_EQUAL: 'Menor o igual que "<="',
+    BETWEEN: 'Entre ">-<"',
+    NULL: 'No tiene valor',
+    NOT_NULL: 'Tiene un valor',
+    IN: 'Incluye',
+    NOT_IN: 'No incluye'
   }
 }

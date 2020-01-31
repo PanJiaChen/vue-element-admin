@@ -98,15 +98,18 @@ export default {
   },
   computed: {
     typePicker() {
-      let range = ''
-      let time = ''
-      if (String(this.metadata.displayType) === String(16)) {
-        time = 'time'
+      let picker = 'date'
+      if (['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery) {
+        picker += 's'
+        return picker
+      }
+      if (this.metadata.displayType === 16) {
+        picker += 'time'
       }
       if (this.metadata.isRange && !this.metadata.inTable) {
-        range = 'range'
+        picker += 'range'
       }
-      return 'date' + time + range
+      return picker
     },
     /**
      * Parse the date format to be compatible with element-ui
@@ -150,7 +153,28 @@ export default {
     parsedDateValue(value) {
       // not return undefined to v-model
       if (this.isEmptyValue(value)) {
+        if (['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery) {
+          return []
+        }
         return null
+      }
+
+      if (['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery) {
+        if (Array.isArray(value)) {
+          value = value.map(itemValue => {
+            if (typeof itemValue === 'object') {
+              return itemValue.toUTCString()
+            }
+            return itemValue
+          })
+        } else {
+          const tempValue = []
+          if (!this.isEmptyValue(value)) {
+            tempValue.push(value)
+          }
+          value = tempValue
+        }
+        return value
       }
 
       // instance date from long value
@@ -176,6 +200,14 @@ export default {
     preHandleChange(value) {
       let startValue, endValue
       startValue = value
+
+      if (this.typePicker === 'dates') {
+        if (Array.isArray(value)) {
+          value = value.map(itemValue => new Date(itemValue))
+        }
+        this.handleChange(value)
+        return
+      }
 
       if (this.metadata.isRange && !this.metadata.inTable && Array.isArray(value)) {
         startValue = value[0]

@@ -450,12 +450,12 @@ const data = {
      * @param {string} query, criteria to search record data
      * @param {string} whereClause, criteria to search record data
      * @param {string} orderByClause, criteria to search record data
-     * @param {array}  conditions, conditions to criteria
+     * @param {array}  conditionsList, conditions list to criteria
      */
     getObjectListFromCriteria({ commit, dispatch, getters, rootGetters }, parameters) {
       const {
         parentUuid, containerUuid,
-        tableName, query, whereClause, orderByClause, conditions = [],
+        tableName, query, whereClause, orderByClause, conditionsList = [],
         isShowNotification = true, isParentTab = true, isAddRecord = false
       } = parameters
       if (isShowNotification) {
@@ -483,7 +483,7 @@ const data = {
       commit('addInGetting', {
         containerUuid,
         tableName,
-        conditions
+        conditionsList
       })
 
       // gets the default value of the fields (including whether it is empty or undefined)
@@ -496,7 +496,7 @@ const data = {
         tableName,
         query,
         whereClause,
-        conditions,
+        conditionsList,
         orderByClause,
         nextPageToken
       })
