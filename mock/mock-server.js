@@ -2,22 +2,10 @@ const chokidar = require('chokidar')
 const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
+const Mock = require('mockjs')
 
 const mockDir = path.join(process.cwd(), 'mock')
 
-const Mock = require('mockjs')
-
-/**
- * 修订说明：把mock文件夹下面的文件功能进行梳理
- *
- * 1. /mock/index.js输出mockXHR()函数，使用改写
- * XMLHttpRequest对象的方式，在浏览器中拦截请求，返回响应
- *
- * 2. /mock/mock-server.js引用/mock/index.js中导出的
- * mocks数据（未经responseFake转换），自行加工后作为
- * devServer启动的express应用的路由，从而实现真正的后台
- * api服务
- */
 function registerRoutes(app) {
   let mockLastIndex
   const { default: mocks } = require('./index.js')
@@ -54,6 +42,7 @@ const responseFake = (url, type, respond) => {
     }
   }
 }
+
 module.exports = app => {
   // es6 polyfill
   require('@babel/register')
