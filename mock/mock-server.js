@@ -5,14 +5,30 @@ const path = require('path')
 
 const mockDir = path.join(process.cwd(), 'mock')
 
+const Mock = require('mockjs')
+
+/**
+ * 修订说明：把mock文件夹下面的文件功能进行梳理
+ *
+ * 1. /mock/index.js输出mockXHR()函数，使用改写
+ * XMLHttpRequest对象的方式，在浏览器中拦截请求，返回响应
+ *
+ * 2. /mock/mock-server.js引用/mock/index.js中导出的
+ * mocks数据（未经responseFake转换），自行加工后作为
+ * devServer启动的express应用的路由，从而实现真正的后台
+ * api服务
+ */
 function registerRoutes(app) {
   let mockLastIndex
   const { default: mocks } = require('./index.js')
-  for (const mock of mocks) {
+  const mocksForServer = mocks.map(route => {
+    return responseFake(route.url, route.type, route.response)
+  })
+  for (const mock of mocksForServer) {
     app[mock.type](mock.url, mock.response)
     mockLastIndex = app._router.stack.length
   }
-  const mockRoutesLength = Object.keys(mocks).length
+  const mockRoutesLength = Object.keys(mocksForServer).length
   return {
     mockRoutesLength: mockRoutesLength,
     mockStartIndex: mockLastIndex - mockRoutesLength
@@ -27,6 +43,17 @@ function unregisterRoutes() {
   })
 }
 
+// for mock server
+const responseFake = (url, type, respond) => {
+  return {
+    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    type: type || 'get',
+    response(req, res) {
+      console.log('request invoke:' + req.path)
+      res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
+    }
+  }
+}
 module.exports = app => {
   // es6 polyfill
   require('@babel/register')
