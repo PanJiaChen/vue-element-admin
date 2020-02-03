@@ -15,6 +15,36 @@ const name = defaultSettings.title || 'vue Element Admin' // page title
 // port = 9527 npm run dev OR npm run dev --port = 9527
 const port = process.env.port || process.env.npm_config_port || 9527 // dev port
 
+/** mock-server开关,该环境变量定义在文件`.env.development`中*/
+const enableMockServer = process.env.VUE_APP_MOCK === 'Mock_Server'
+const mockServerContext = process.env.VUE_APP_MOCK_SERVER_CONTEXT
+const mockProxy = {
+  /**
+   * dev-api/login => mock/login
+   * 本对象是express的代理插件http-proxy-middlewaredre
+   * (https://github.com/chimurai/http-proxy-middleware)
+   * 当方法是POST时，数据无法从原始请求传到代理请求，见下帖
+   * https://github.com/chimurai/http-proxy-middleware/issues/40
+   * 解决办法是在它的onProxyReq事件中，手动把请求的body数据搬运到代理请求中
+   *
+   * target是指匹配该路径的主机。见https://webpack.js.org/configuration/dev-server/#devserverproxy
+   */
+  [process.env.VUE_APP_BASE_API]: {
+    target: `http://localhost:${port}`,
+    changeOrigin: true,
+    ws: true, // proxy websockets
+    pathRewrite: { ['^' + process.env.VUE_APP_BASE_API]: mockServerContext },
+    /** 在POST方法下，直接把body数据以JSON形式搬运到代理请求对象proxyRequest中去 */
+    onProxyReq: (proxyRequest, request, response, options) => {
+      if (request.method === 'POST' && request.body) {
+        const bodyData = JSON.stringify(request.body)
+        proxyRequest.setHeader('Content-Type', 'application/json')
+        proxyRequest.setHeader('Content-Length', Buffer.byteLength(bodyData))
+        proxyRequest.write(bodyData)
+      }
+    }
+  }}
+
 // All configuration item explanations can be find in https://cli.vuejs.org/config/
 module.exports = () => {
   return {
@@ -37,7 +67,12 @@ module.exports = () => {
         warnings: false,
         errors: true
       },
-      before: require('./mock/mock-server.js').default
+
+      proxy: enableMockServer ? mockProxy : undefined,
+      /** 启动mock服务器 */
+      /** @link https://webpack.js.org/configuration/dev-server/#devserverbefore*/
+      /** before定义为function (app)。其中app指的是express的app */
+      before: enableMockServer ? require('./mock/mock-server.js').default : undefined
     },
     configureWebpack: {
       // provide the app's title in webpack's name field, so that
