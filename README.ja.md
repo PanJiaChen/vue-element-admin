@@ -30,7 +30,7 @@
 
 ## 概要
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) は管理画面のフロントエンドのインタフェース，[vue](https://github.com/vuejs/vue) と [element-ui](https://github.com/ElemeFE/element)を使っています。i18nの多言語対応、可変ルート、権限、典型的なビジネスアプリテンプレートであり、豊富なコンポーネントを提供しています、素早くビジネス用の管理画面の現型を構築に役立ちます。
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) は管理画面のフロントエンドのインタフェースで、[vue](https://github.com/vuejs/vue) と [element-ui](https://github.com/ElemeFE/element)を使っています。i18nの多言語対応、可変ルート、権限、典型的なビジネスアプリテンプレートであり、豊富なコンポーネントを提供しています。素早くビジネス用の管理画面の現型を構築に役立ちます。
 
 - [デモページ](https://panjiachen.github.io/vue-element-admin)
 
@@ -44,18 +44,18 @@
 
 - おすすめシンプルテンプレート: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - デスクトップバージョン: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
-- Typescriptバージョン: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
+- Typescriptバージョン: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (感謝: [@Armour](https://github.com/Armour))
 - [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-**After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
+**バージョン`v4.1.0+`以降について、デフォルトのmasterブランチではi18nをサポートしていません。masterブランチと共にアップデートされる[i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n)を使用してください。 **
 
-**現在のバージョン `v4.0+` は `vue-cli` で構築，バグ報告は[issue](https://github.com/PanJiaChen/vue-element-admin/issues/new)のissueでお願いします。旧バージョン[tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0)もあります。`vue-cli`に依存しないです。**
+**現在のバージョン `v4.0+` は `vue-cli` で構築していて、バグ報告は[issue](https://github.com/PanJiaChen/vue-element-admin/issues/new)のissueでお願いします。旧バージョン[tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0)もあります。こちらは`vue-cli`に依存しないです。**
 
 **低いバージョンのブラウザはサーポートしないです(例えば ie)，必要があれば polyfill を追加してください。 [詳細はこちら](https://github.com/PanJiaChen/vue-element-admin/wiki#babel-polyfill)**
 
 ## 前準備
 
-ローカル環境に [node](http://nodejs.org/) と [git](https://git-scm.com/)をインストールが必要です。[ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[vue-cli](https://github.com/vuejs/vue-cli) 、[axios](https://github.com/axios/axios) 和 [element-ui](https://github.com/ElemeFE/element)で開発しています。Requestは[Mock.js](https://github.com/nuysoft/Mock)のモックデータを使っています。
+ローカル環境に [node](http://nodejs.org/) と [git](https://git-scm.com/)のインストールが必要です。[ES2015+](http://es6.ruanyifeng.com/)、[vue](https://cn.vuejs.org/index.html)、[vuex](https://vuex.vuejs.org/zh-cn/)、[vue-router](https://router.vuejs.org/zh-cn/) 、[vue-cli](https://github.com/vuejs/vue-cli) 、[axios](https://github.com/axios/axios) と [element-ui](https://github.com/ElemeFE/element)で開発しています。Requestは[Mock.js](https://github.com/nuysoft/Mock)のモックデータを使っています。
 
 **バグ修正や新規機能追加のissue と pull requestは大歓迎です。**
 
@@ -87,9 +87,9 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - 多言語切替
   - テーマ切替
   - サイトメニュー（ルートから生成）
-  - Breadcrumb Navigation
-  - Tag Navigation
-  - Svg Sprite Icon
+  - パンくずリストナビゲーション
+  - タブナビゲーション
+  - Svg Sprite アイコン
   - ローカル/バックエンド モック データ
   - Screenfull
 
@@ -104,33 +104,33 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - リード
   - Zip
 
-- Table
-  - Dynamic Table
-  - Drag And Drop Table
-  - Inline Edit Table
+- テーブル
+  - ダイナミックテーブル
+  - ドラッグアンドドロップテーブル
+  - インラインエディットテーブル
 
-- Error Page
+- エラーページ
   - 401
   - 404
 
 - コンポーネント
-  - Avatar Upload
-  - Back To Top
-  - Drag Dialog
-  - Drag Select
-  - Drag Kanban
-  - Drag List
-  - SplitPane
+  - アバターアップロード
+  - トップに戻る
+  - ドラッグダイアログ
+  - ドラッグ選択
+  - ドラッグKanban
+  - ドラッグリスト
+  - ペインの分割
   - Dropzone
-  - Sticky
+  - スティッキー
   - CountTo
 
-- Advanced Example
-- Error Log
-- Dashboard
-- Guide Page
+- 高度なサンプル
+- エラーログ
+- ダッシュボード
+- ガイドページ
 - ECharts
-- Clipboard
+- クリップボード
 - Markdown to html
 ```
 
@@ -150,7 +150,7 @@ npm install
 npm run dev
 ```
 
-This will automatically open http://localhost:9527
+http://localhost:9527 が自動的に開きます。
 
 ## Build
 
@@ -178,11 +178,11 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
+詳細は [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) を参照してください。
 
 ## Changelog
 
-Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
+各リリースの詳細は [release notes](https://github.com/PanJiaChen/vue-element-admin/releases) にあります。
 
 ## Online Demo
 
