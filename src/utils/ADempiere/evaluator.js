@@ -27,9 +27,8 @@ class evaluator {
       objectToEvaluate.logic.trim() === '') {
       return defaultUndefined
     }
-    let st = objectToEvaluate.logic.trim().replace('\n', '')
-    st = st.replace('|', '~')
-    const expr = /(~|&)/
+    const st = objectToEvaluate.logic.trim().replace('\n', '')
+    const expr = /(\||&)/
     const stList = st.split(expr)
     const it = stList.length
 
@@ -41,7 +40,7 @@ class evaluator {
     let retValue = null
     let logOp = ''
     stList.forEach(function(element) {
-      if (element === '~' || element === '&') {
+      if (element.trim() === '|' || element.trim() === '&') {
         logOp = element
       } else if (retValue === null) {
         retValue = evaluator.evaluateLogicTuples({
@@ -49,12 +48,12 @@ class evaluator {
           conditional: element
         })
       } else {
-        if (logOp === '&' && logOp !== '') {
+        if (logOp.trim() === '&') {
           retValue = retValue & evaluator.evaluateLogicTuples({
             ...objectToEvaluate,
             conditional: element
           })
-        } else if (logOp === '~' && logOp !== '') {
+        } else if (logOp.trim() === '|') {
           retValue = retValue | evaluator.evaluateLogicTuples({
             ...objectToEvaluate,
             conditional: element
@@ -66,7 +65,7 @@ class evaluator {
       }
     })
     return Boolean(retValue)
-  } //  evaluateLogic
+  } // evaluateLogic
 
   /**
    * Evaluate Logic Tuples
@@ -84,7 +83,7 @@ class evaluator {
     if (logic === undefined) {
       return _defaultUndefined
     }
-    let expr = /^(['"@#$a-zA-Z0-9\-_\s]){0,}((<>|<=|<|=|>=|>|!=|!|\^){1,2})([\s"'@#$a-zA-Z0-9\-_]){0,}$/i
+    let expr = /^(['"@#$a-zA-Z0-9\-_\s]){0,}((<>|<=|<|==|=|>=|>|!=|!|\^){1,2})([\s"'@#$a-zA-Z0-9\-_]){0,}$/i
     let st = expr.test(logic)
 
     if (!st) {
@@ -92,7 +91,7 @@ class evaluator {
       return _defaultUndefined
     }
 
-    expr = /(<>|<=|<|=|>=|>|!=|!|\^){1,2}/i
+    expr = /(<>|<=|<|==|=|>=|>|!=|!|\^){1,2}/i
     st = logic.split(expr)
 
     // First Part (or column name)
@@ -125,9 +124,9 @@ class evaluator {
       firstEval = firstEval.replace(/['"]/g, '').trim() // strip ' and "
     }
 
-    //  Operator
+    // Operator
     const operand = st[1]
-    //  Second Part
+    // Second Part
     let second = st[2].trim()
     let secondEval = second.trim()
     if (expr.test(second)) {
@@ -136,13 +135,13 @@ class evaluator {
         parentUuid: (isGlobal || isCountable) ? null : objectToEvaluate.parentUuid,
         containerUuid: (isGlobal || isCountable) ? null : objectToEvaluate.containerUuid,
         columnName: first
-      }) //  replace with it's value
+      }) // replace with it's value
     }
     if (typeof secondEval === 'string') {
-      secondEval = secondEval.replace(/['"]/g, '').trim() //  strip ' and " for string values
+      secondEval = secondEval.replace(/['"]/g, '').trim() // strip ' and " for string values
     }
 
-    //  Handling of ID compare (null => 0)
+    // Handling of ID compare (null => 0)
     if (first.includes('_ID') && firstEval.length === 0) {
       firstEval = '0'
     }
@@ -150,7 +149,7 @@ class evaluator {
       secondEval = '0'
     }
 
-    //  Logical Comparison
+    // Logical Comparison
     const result = this.evaluateLogicTuple(firstEval, operand, secondEval)
 
     return result
@@ -229,7 +228,7 @@ class evaluator {
     }
 
     let string = parseString.replace('@SQL=', '')
-    //  while we have variables
+    // while we have variables
 
     while (string.includes('@')) {
       let pos = string.indexOf('@')
@@ -239,7 +238,7 @@ class evaluator {
       pos = string.indexOf('@')
       if (pos === -1) {
         continue
-      } //  error number of @@ not correct
+      } // error number of @@ not correct
 
       // remove second @: ExampleColumn@ = ExampleColumn
       const value = string.substring(0, pos)
