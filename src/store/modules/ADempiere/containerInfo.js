@@ -8,7 +8,8 @@ const containerInfo = {
     listRecordChats: [],
     listChatEntries: [],
     listWorkflows: [],
-    note: []
+    note: [],
+    isNote: false
   },
   mutations: {
     addListWorkflow(state, payload) {
@@ -28,6 +29,9 @@ const containerInfo = {
     },
     addNote(state, payload) {
       state.note = payload
+    },
+    isNote(state, payload) {
+      state.isNote = payload
     }
   },
   actions: {
@@ -37,11 +41,15 @@ const containerInfo = {
       const comment = params.comment
       return requestCreateChatEntry({ tableName, recordId, comment })
         .then(response => {
+          commit('isNote', true)
           dispatch('listChatEntries', {
-            tableName: params.tableName,
-            recordId: params.recordId
+            tableName: tableName,
+            recordId: recordId
           })
           commit('addNote', response)
+        })
+        .catch(error => {
+          console.warn(`Error getting epale error en guardar: ${error.message}. Code: ${error.code}.`)
         })
     },
     listWorkflowLogs({ commit, state, dispatch }, params) {
@@ -64,6 +72,9 @@ const containerInfo = {
         .catch(error => {
           console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
         })
+    },
+    isNote({ commit }, params) {
+      commit('isNote', params)
     },
     listWorkflows({ commit, state }, params) {
       const tableName = params.tableName
@@ -105,9 +116,9 @@ const containerInfo = {
           var listRecord = {
             recordChatsList: response.recordChatsList,
             recordCount: response.recordCount,
-            epale: isEmptyValue(response.recordChatsList),
             nextPageToken: response.nextPageToken
           }
+          commit('isNote', !isEmptyValue(response.recordChatsList))
           dispatch('listRecordChat', {
             chatUuid: response.recordChatsList[0].chatUuid
           })
@@ -143,10 +154,16 @@ const containerInfo = {
       return state.listRecordLogs
     },
     getListRecordChats: (state) => {
-      return state.listRecordChats
+      return state.listRecordChats.recordChatsList
     },
     getChatEntries: (state) => {
       return state.listChatEntries
+    },
+    getAddNote: (state) => {
+      return state.note
+    },
+    getIsNote: (state) => {
+      return state.isNote
     }
   }
 }

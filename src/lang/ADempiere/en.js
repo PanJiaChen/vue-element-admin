@@ -271,7 +271,7 @@ export default {
     undoNew: 'Undo New Record',
     containerInfo: {
       notes: 'Notes',
-      changeLog: 'Change Log',
+      changeLog: 'ACtivity',
       workflowLog: 'Workflow Log',
       changeDetail: 'Change detail',
       logWorkflow: {
@@ -279,7 +279,7 @@ export default {
         responsible: 'Responsible',
         workflowName: 'Name of Workflow Status',
         timeElapsed: 'Time Elapsed',
-        addNote: 'Notas'
+        addNote: 'Add Note'
       }
     }
   },

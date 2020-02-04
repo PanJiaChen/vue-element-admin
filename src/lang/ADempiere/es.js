@@ -246,7 +246,7 @@ export default {
     undoNew: 'Descartar Nuevo Registro',
     containerInfo: {
       notes: 'Notas',
-      changeLog: 'Histórico de Cambios',
+      changeLog: 'Actividad',
       workflowLog: 'Histórico de Flujo de Trabajo',
       changeDetail: 'Detalle del cambio',
       logWorkflow: {
@@ -254,7 +254,7 @@ export default {
         responsible: 'Responsable',
         workflowName: 'Nombre de estado del flujo de trabajo',
         timeElapsed: 'Tiempo transcurrido',
-        addNote: 'Notas'
+        addNote: 'Agregar Nota'
       }
     }
   },
