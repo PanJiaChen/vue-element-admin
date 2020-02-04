@@ -22,28 +22,28 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   const referenceType = componentReference.alias[0]
 
   let parsedDefaultValue = fieldToGenerate.defaultValue
-  if (isEmptyValue(parsedDefaultValue)) {
-    parsedDefaultValue = getPreference({
-      parentUuid: fieldToGenerate.parentUuid,
-      containerUuid: fieldToGenerate.containerUuid,
-      columnName: fieldToGenerate.columnName
-    })
+  if (!moreAttributes.isAdvancedQuery) {
+    if (String(parsedDefaultValue).includes('@')) {
+      parsedDefaultValue = parseContext({
+        ...moreAttributes,
+        columnName: fieldToGenerate.columnName,
+        value: parsedDefaultValue
+      }).value
+    }
     if (isEmptyValue(parsedDefaultValue)) {
+      parsedDefaultValue = getPreference({
+        parentUuid: fieldToGenerate.parentUuid,
+        containerUuid: fieldToGenerate.containerUuid,
+        columnName: fieldToGenerate.columnName
+      })
+    }
+    if (isEmptyValue(parsedDefaultValue) && !isEmptyValue(fieldToGenerate.elementName)) {
       parsedDefaultValue = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
         columnName: fieldToGenerate.elementName
       })
     }
-  } else if (String(parsedDefaultValue).includes('@')) {
-    // if (String(parsedDefaultValue).includes('@SQL=')) {
-    //   parsedDefaultValue.replace('@SQL=', '')
-    // }
-    parsedDefaultValue = parseContext({
-      ...moreAttributes,
-      columnName: fieldToGenerate.columnName,
-      value: parsedDefaultValue
-    }).value
   }
   parsedDefaultValue = parsedValueComponent({
     fieldType: componentReference.type,
@@ -53,28 +53,30 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   })
 
   let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
-  if (isEmptyValue(parsedDefaultValueTo)) {
-    parsedDefaultValueTo = getPreference({
-      parentUuid: fieldToGenerate.parentUuid,
-      containerUuid: fieldToGenerate.containerUuid,
-      columnName: `${fieldToGenerate.columnName}_To`
-    })
-    if (isEmptyValue()) {
+  if (!moreAttributes.isAdvancedQuery) {
+    // if (String(parsedDefaultValueTo).includes('@SQL=')) {
+    //   parsedDefaultValueTo.replace('@SQL=', '')
+    if (String(parsedDefaultValueTo).includes('@')) {
+      parsedDefaultValueTo = parseContext({
+        ...moreAttributes,
+        columnName: `${fieldToGenerate.columnName}_To`,
+        value: parsedDefaultValueTo
+      }).value
+    }
+    if (isEmptyValue(parsedDefaultValueTo)) {
+      parsedDefaultValueTo = getPreference({
+        parentUuid: fieldToGenerate.parentUuid,
+        containerUuid: fieldToGenerate.containerUuid,
+        columnName: `${fieldToGenerate.columnName}_To`
+      })
+    }
+    if (isEmptyValue(parsedDefaultValueTo) && !isEmptyValue(fieldToGenerate.elementName)) {
       parsedDefaultValueTo = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
         columnName: `${fieldToGenerate.elementName}_To`
       })
     }
-  } else if (String(parsedDefaultValueTo).includes('@')) {
-    // if (String(parsedDefaultValueTo).includes('@SQL=')) {
-    //   parsedDefaultValueTo.replace('@SQL=', '')
-    // }
-    parsedDefaultValueTo = parseContext({
-      ...moreAttributes,
-      columnName: fieldToGenerate.columnName,
-      value: fieldToGenerate.defaultValueTo
-    }).value
   }
   parsedDefaultValueTo = parsedValueComponent({
     fieldType: componentReference.type,

@@ -75,16 +75,16 @@ const window = {
               ...tabItem,
               containerUuid: tabItem.uuid,
               parentUuid: windowUuid,
-              windowUuid: windowUuid,
+              windowUuid,
               tabGroup: tabItem.fieldGroup,
-              firstTabUuid: firstTabUuid,
+              firstTabUuid,
               // relations
               isParentTab: Boolean(firstTab === tabItem.tableName),
               // app properties
               isAssociatedTabSequence: false, // show modal with order tab
               isShowedRecordNavigation: !(tabItem.isSingleRow),
               isLoadFieldList: false,
-              index: index
+              index
             }
             delete tab.processesList
 
@@ -217,7 +217,7 @@ const window = {
             ...responseWindow,
             ...tabProperties,
             isShowedRecordNavigation: undefined,
-            firstTabUuid: firstTabUuid,
+            firstTabUuid,
             windowIndex: state.windowIndex + 1
           }
           commit('addWindow', newWindow)
@@ -242,14 +242,14 @@ const window = {
       return getTabMetadata(containerUuid)
         .then(tabResponse => {
           const additionalAttributes = {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid,
+            parentUuid,
+            containerUuid,
             isShowedFromUser: true,
-            panelType: panelType,
+            panelType,
             tableName: tabResponse.tableName,
             //
             isReadOnlyFromForm: false,
-            isAdvancedQuery: isAdvancedQuery
+            isAdvancedQuery
           }
 
           let fieldUuidsequence = 0
@@ -291,7 +291,7 @@ const window = {
               sequence: (fieldUuidsequence + 10),
               name: 'UUID',
               columnName: 'UUID',
-              isAdvancedQuery: isAdvancedQuery,
+              isAdvancedQuery,
               componentPath: 'FieldText'
             }
             const field = getFieldTemplate(attributesOverwrite)
@@ -301,18 +301,18 @@ const window = {
           //  Panel for save on store
           const panel = {
             ...getters.getTab(parentUuid, containerUuid),
-            isAdvancedQuery: isAdvancedQuery,
+            isAdvancedQuery,
             fieldLinkColumnName: fieldLinkColumnName,
             fieldList: fieldsList,
-            panelType: panelType,
+            panelType,
             // app attributes
             isShowedTotals: false
           }
 
           dispatch('addPanel', panel)
           dispatch('setTabIsLoadField', {
-            parentUuid: parentUuid,
-            containerUuid: containerUuid
+            parentUuid,
+            containerUuid
           })
           return panel
         })

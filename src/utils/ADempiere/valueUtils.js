@@ -282,7 +282,10 @@ export const recursiveTreeSearch = ({
  * @param {*} param0
  */
 export function parsedValueComponent({ fieldType, value, referenceType, isMandatory = false }) {
-  if (value === undefined || value === null) {
+  if ((value === undefined || value === null) && !isMandatory) {
+    if (fieldType === 'FieldYesNo') {
+      return Boolean(value)
+    }
     return undefined
   }
   var returnValue
@@ -290,7 +293,7 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
   switch (fieldType) {
     // data type Number
     case 'FieldNumber':
-      if (String(value).trim() === '') {
+      if (String(value).trim() === '' || value === undefined || value === null) {
         returnValue = undefined
         if (isMandatory) {
           returnValue = 0
@@ -322,7 +325,7 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
       if (typeof value === 'object' && value.hasOwnProperty('query')) {
         returnValue = value
       }
-      returnValue = String(value)
+      returnValue = value ? String(value) : undefined
       break
 
     // data type Date

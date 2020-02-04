@@ -784,7 +784,9 @@ export default {
           isSendServer: false
         })
       } else {
-        const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({ containerUuid: this.containerUuid })
+        const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({
+          containerUuid: this.containerUuid
+        })
         this.$message({
           message: this.$t('notifications.mandatoryFieldMissing') + fieldsEmpty,
           type: 'info'

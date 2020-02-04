@@ -647,7 +647,8 @@ const panel = {
           }
         } else {
           const fieldsEmpty = getters.getFieldListEmptyMandatory({
-            containerUuid
+            containerUuid,
+            fieldsList: fieldList
           })
           showMessage({
             message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
@@ -930,37 +931,37 @@ const panel = {
 
       return field
     },
-    getEmptyMandatory: (state, getters) => (containerUuid) => {
-      return getters.getFieldsListFromPanel(containerUuid).find(itemField => {
-        if ((itemField.isMandatory || itemField.isMandatoryFromLogic) && isEmptyValue(itemField.value)) {
-          return true
-        }
-      })
-    },
     // Obtain empty obligatory fields
-    getFieldListEmptyMandatory: (state, getters) => (parameters) => {
-      const { containerUuid, evaluateShowed = true, row } = parameters
+    getFieldListEmptyMandatory: (state, getters) => ({
+      containerUuid,
+      fieldsList = [],
+      isEvaluateShowed = true,
+      row
+    }) => {
+      if (fieldsList.length <= 0) {
+        fieldsList = getters.getFieldsListFromPanel(containerUuid)
+      }
+
       // all optionals (not mandatory) fields
-      var fieldList = getters.getFieldsListFromPanel(containerUuid).filter(fieldItem => {
+      fieldsList = fieldsList.filter(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (isMandatory) {
-          if (evaluateShowed) {
+          if (isEvaluateShowed) {
             return fieldIsDisplayed(fieldItem)
           }
           return isMandatory
         }
       })
-      fieldList = fieldList.filter(fieldItem => {
-        var value = fieldItem.value
+      fieldsList = fieldsList.filter(fieldItem => {
+        let value = fieldItem.value
         // used when evaluate data in table
         if (row) {
           value = row[fieldItem.columnName]
         }
-        if (isEmptyValue(value)) {
-          return true
-        }
+        return isEmptyValue(value)
       })
-      return fieldList.map(fieldItem => {
+
+      return fieldsList.map(fieldItem => {
         return fieldItem.name
       })
     },
