@@ -16,7 +16,7 @@
           :to="{ name: tag.name, path: tag.path, query: tag.query, fullPath: tag.fullPath, params: tag.params }"
           tag="span"
           class="tags-view-item"
-          @click.middle.native="closeSelectedTag(tag)"
+          @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
           @contextmenu.prevent.native="openMenu(tag,$event)"
         >
           <div class="tag-title">{{ generateTitle(tag.title) }}</div>
@@ -32,11 +32,11 @@
           :to="{ name: tag.name, path: tag.path, query: tag.query, fullPath: tag.fullPath, params: tag.params }"
           tag="span"
           class="tags-view-item"
-          @click.middle.native="closeSelectedTag(tag)"
+          @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"
           @contextmenu.prevent.native="openMenu(tag,$event)"
         >
           <div class="tag-title">{{ generateTitle(tag.title) }}</div>
-          <div v-if="!tag.meta.affix" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+          <div v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
         </router-link>
       </template>
     </scroll-pane>
@@ -44,7 +44,7 @@
       <li @click="refreshSelectedTag(selectedTag)">
         {{ $t('tagsView.refresh') }}
       </li>
-      <li v-if="!(selectedTag.meta&&selectedTag.meta.affix)" @click="closeSelectedTag(selectedTag)">
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
         {{
           $t('tagsView.close') }}
       </li>
@@ -115,6 +115,9 @@ export default {
       } else {
         return route.name === this.$route.name
       }
+    },
+    isAffix(tag) {
+      return tag.meta && tag.meta.affix
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
