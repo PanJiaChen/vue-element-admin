@@ -577,7 +577,8 @@ const windowControl = {
         parsedQuery = parseContext({
           parentUuid: parentUuid,
           containerUuid: containerUuid,
-          value: tab.query
+          value: tab.query,
+          isBooleanToString: true
         }).value
       }
 
@@ -586,7 +587,8 @@ const windowControl = {
         parsedWhereClause = parseContext({
           parentUuid: parentUuid,
           containerUuid: containerUuid,
-          value: tab.whereClause
+          value: tab.whereClause,
+          isBooleanToString: true
         }).value
       }
 

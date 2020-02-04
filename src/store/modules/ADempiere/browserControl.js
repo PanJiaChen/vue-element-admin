@@ -37,7 +37,8 @@ const browserControl = {
       if (!isEmptyValue(parsedQuery) && parsedQuery.includes('@')) {
         parsedQuery = parseContext({
           containerUuid,
-          value: parsedQuery
+          value: parsedQuery,
+          isBooleanToString: true
         }).value
       }
 
@@ -45,7 +46,8 @@ const browserControl = {
       if (!isEmptyValue(parsedWhereClause) && parsedWhereClause.includes('@')) {
         parsedWhereClause = parseContext({
           containerUuid,
-          value: parsedWhereClause
+          value: parsedWhereClause,
+          isBooleanToString: true
         }).value
       }
 

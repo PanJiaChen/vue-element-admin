@@ -82,7 +82,7 @@ export const tabMixin = {
           parentUuid: metadataTab.parentUuid,
           containerUuid: metadataTab.uuid,
           value: metadataTab.whereClause,
-          isBoolToString: true
+          isBooleanToString: true
         }).value
       }
     }

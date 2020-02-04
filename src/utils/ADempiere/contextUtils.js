@@ -63,16 +63,17 @@ export function getParentFields({ displayLogic, mandatoryLogic, readOnlyLogic, d
  * @param {string} parentUuid: (REQUIRED from Window) UUID Window
  * @param {string} containerUuid: (REQUIRED) UUID Tab, Process, SmartBrowser, Report and Form
  * @param {string} columnName: (Optional if exists in value) Column name to search in context
- * @param {boolean} isBoolToString, convert boolean values to string
+ * @param {boolean} isBooleanToString, convert boolean values to string
  */
 export function parseContext({
   parentUuid,
   containerUuid,
   columnName,
   value,
-  isSQL = false
+  isSQL = false,
+  isBooleanToString = false
 }) {
-  const isBooleanToString = value.includes('@SQL=')
+  // const isBooleanToString = value.includes('@SQL=')
   let isError = false
   const errorsList = []
   value = String(value)
