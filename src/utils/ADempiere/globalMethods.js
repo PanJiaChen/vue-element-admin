@@ -1,5 +1,6 @@
 
 export {
   isEmptyValue,
-  zeroPad
+  zeroPad,
+  tagStatus
 } from '@/utils/ADempiere/valueUtils.js'

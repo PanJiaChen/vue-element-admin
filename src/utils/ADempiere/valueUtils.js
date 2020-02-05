@@ -364,3 +364,49 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
   }
   return returnValue
 }
+/**
+ * add a tab depending on the status of the document
+ * @param {string} tag, document status key
+ */
+export function tagStatus(tag) {
+  let type
+  switch (tag) {
+    case 'VO':
+      type = 'danger'
+      break
+    case 'AP':
+      type = 'success'
+      break
+    case 'DR':
+      type = 'info'
+      break
+    case 'CL':
+      type = 'primary'
+      break
+    case 'CO':
+      type = 'success'
+      break
+    case '??':
+      type = 'info'
+      break
+    case 'IP':
+      type = 'warning'
+      break
+    case 'WC':
+      type = 'warning'
+      break
+    case 'WP':
+      type = 'warning'
+      break
+    case 'NA':
+      type = 'danger'
+      break
+    case 'IN':
+      type = 'danger'
+      break
+    case 'RE':
+      type = 'danger'
+      break
+  }
+  return type
+}

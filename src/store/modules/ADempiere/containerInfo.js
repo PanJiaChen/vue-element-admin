@@ -97,8 +97,7 @@ const containerInfo = {
         .then(response => {
           var listRecord = {
             recordCount: response.recordCount,
-            recorLogs: response.recordLogsList,
-            epale: true
+            recorLogs: response.recordLogsList
           }
           commit('addListRecordLogs', listRecord)
         })
