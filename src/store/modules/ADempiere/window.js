@@ -230,7 +230,7 @@ const window = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn(`Dictionary Window (State Window) - Error ${error.code}: ${error.message}`)
+          console.warn(`Dictionary Window (State Window) - Error ${error.code}: ${error.message}.`)
         })
     },
     getTabAndFieldFromServer({ dispatch, getters }, {
@@ -271,19 +271,21 @@ const window = {
             return fieldItem
           })
 
-          //  Get dependent fields
-          fieldsList
-            .filter(field => field.parentFieldsList && field.isActive)
-            .forEach((field, index, list) => {
-              field.parentFieldsList.forEach(parentColumnName => {
-                var parentField = list.find(parentField => {
-                  return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+          if (!isAdvancedQuery) {
+            //  Get dependent fields
+            fieldsList
+              .filter(field => field.parentFieldsList && field.isActive)
+              .forEach((field, index, list) => {
+                field.parentFieldsList.forEach(parentColumnName => {
+                  const parentField = list.find(parentField => {
+                    return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+                  })
+                  if (parentField) {
+                    parentField.dependentFieldsList.push(field.columnName)
+                  }
                 })
-                if (parentField) {
-                  parentField.dependentFieldsList.push(field.columnName)
-                }
               })
-            })
+          }
 
           if (!fieldsList.find(field => field.columnName === 'UUID')) {
             const attributesOverwrite = {
@@ -321,7 +323,7 @@ const window = {
             message: language.t('login.unexpectedError'),
             type: 'error'
           })
-          console.warn(`Dictionary Tab (State Window) - Error ${error.code}: ${error.message}`)
+          console.warn(`Dictionary Tab (State Window) - Error ${error.code}: ${error.message}.`)
         })
     },
     changeShowedDetailWindow({ commit, state }, {

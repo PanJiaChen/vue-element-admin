@@ -4,8 +4,8 @@
     v-model="value"
     :inactive-text="$t('components.switchInactiveText')"
     :active-text="$t('components.switchActiveText')"
-    true-value="true"
-    false-value="false"
+    :true-value="true"
+    :false-value="false"
     :disabled="isDisabled"
     @change="preHandleChange"
   />
@@ -42,6 +42,9 @@ export default {
     },
     value(value, oldValue) {
       if (typeof value !== 'boolean') {
+        if (value === 'N' || value === 'n') {
+          value = false
+        }
         this.value = Boolean(value)
       }
       this.preHandleChange('NotSend')
@@ -58,16 +61,21 @@ export default {
       }
     },
     isReadOnlyForm(value) {
-      var fieldReadOnlyForm = FIELD_READ_ONLY_FORM.find(item => item.columnName === this.metadata.columnName)
+      const fieldReadOnlyForm = FIELD_READ_ONLY_FORM.find(item => item.columnName === this.metadata.columnName)
       // columnName: IsActive, Processed, Processing
       if (fieldReadOnlyForm && fieldIsDisplayed(this.metadata)) {
+        const fieldsExcludes = []
+        // if isChangedAllForm it does not exclude anything, otherwise it excludes this columnName
+        if (fieldReadOnlyForm.isChangedAllForm) {
+          fieldsExcludes.push(this.metadata.columnName)
+        }
+
         this.$store.dispatch('changeFieldAttributesBoolean', {
           containerUuid: this.metadata.containerUuid,
           fieldsIncludes: [],
           attribute: 'isReadOnlyFromForm',
           valueAttribute: Boolean(fieldReadOnlyForm.valueIsReadOnlyForm !== value),
-          // if isChangedAllForm it does not exclude anything, otherwise it excludes this columnName
-          fieldsExcludes: fieldReadOnlyForm.isChangedAllForm ? [] : [this.metadata.columnName],
+          fieldsExcludes,
           currenValue: value
         })
       }

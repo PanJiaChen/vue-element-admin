@@ -278,10 +278,13 @@ export default {
         }
 
         // edit mode is diferent to create new
-        const editMode = (!this.inTable && this.field.optionCRUD !== 'create-new') || (this.inTable && !this.isEmptyValue(this.field.recordUuid))
-        return (!this.field.isUpdateable && editMode) || (isUpdateableAllFields || this.field.isReadOnlyFromForm)
-      }
-      if (this.panelType === 'browser') {
+        let isWithRecord = this.field.optionCRUD !== 'create-new'
+        if (this.inTable) {
+          isWithRecord = !this.isEmptyValue(this.field.recordUuid)
+        }
+
+        return (!this.field.isUpdateable && isWithRecord) || (isUpdateableAllFields || this.field.isReadOnlyFromForm)
+      } else if (this.panelType === 'browser') {
         if (this.inTable) {
           // browser result
           return this.field.isReadOnly

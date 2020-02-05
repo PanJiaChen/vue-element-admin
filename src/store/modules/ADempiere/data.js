@@ -498,7 +498,7 @@ const data = {
         whereClause,
         conditionsList,
         orderByClause,
-        nextPageToken
+        pageToken: nextPageToken
       })
         .then(dataResponse => {
           const recordsList = dataResponse.recordsList.map(itemRecord => {

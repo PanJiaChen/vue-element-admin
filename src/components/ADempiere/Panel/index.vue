@@ -53,9 +53,10 @@
           </div>
         </div>
       </template>
-      <div :class="cards()">
+      <div :class="classCards">
         <draggable
           v-if="!isMobile"
+          key="draggable-loaded"
           :list="fieldGroups"
           v-bind="$attrs"
           :set-data="setData"
@@ -283,12 +284,20 @@ export default {
         }
       }
       return false
+    },
+    classCards() {
+      if (this.isMobile || this.fieldGroups.length < 2 || this.getterIsShowedRecordNavigation) {
+        return 'cards-not-group'
+      }
+      return 'cards-in-group'
     }
   },
   watch: {
     // used only panel modal (process associated in browser or window)
     containerUuid() {
-      this.generatePanel(this.metadata.fieldList)
+      if (['report', 'process'].includes(this.panelType)) {
+        this.generatePanel(this.metadata.fieldList)
+      }
     },
     // used if the first load contains a uuid
     isLoadRecord(value) {
@@ -317,12 +326,6 @@ export default {
     this.getPanel()
   },
   methods: {
-    cards() {
-      if (this.isMobile || this.fieldGroups.length < 2 || this.getterIsShowedRecordNavigation) {
-        return 'cards-not-group'
-      }
-      return 'cards-in-group'
-    },
     /**
      * Get the tab object with all its attributes as well as the fields it contains
      */
@@ -564,31 +567,31 @@ export default {
     /**
      * Group the arrangement into groups of columns that they contain, it must
      * be grouped after having the order
-     * @param {array} array
-     * @return {array} res
+     * @param {array} fieldsList
+     * @return {array} groupsList
      */
-    sortAndGroup(arr) {
-      if (arr === undefined) {
+    sortAndGroup(fieldsList) {
+      if (this.isEmptyValue(fieldsList)) {
         return
       }
-      let res = [{
+      let groupsList = [{
         groupFinal: '',
-        metadataFields: arr
+        metadataFields: fieldsList
       }]
 
       // reduce, create array with number groupAssigned element comun
       if (this.isPanelWindow) {
-        res = arr
-          .reduce((res, currentValue) => {
-            if (!res.includes(currentValue.groupAssigned)) {
-              res.push(currentValue.groupAssigned)
+        groupsList = fieldsList
+          .reduce((groupsList, currentValue) => {
+            if (!groupsList.includes(currentValue.groupAssigned)) {
+              groupsList.push(currentValue.groupAssigned)
             }
-            return res
+            return groupsList
           }, [])
           .map(itemGroup => {
             return {
               groupFinal: itemGroup,
-              metadataFields: arr.filter(itemField => {
+              metadataFields: fieldsList.filter(itemField => {
                 return itemField.groupAssigned === itemGroup
               })
             }
@@ -596,26 +599,21 @@ export default {
       }
 
       // count and add the field numbers according to your group
-      Object.keys(res).forEach(key => {
-        let count = 0
-        const typeG = res[key].metadataFields[0].typeGroupAssigned
-        res[key].numberFields = res[key].metadataFields.length
-        res[key].typeGroup = typeG
-        res[key].numberFields = res[key].metadataFields.length
+      groupsList.forEach(groupFields => {
+        const typeG = groupFields.metadataFields[0].typeGroupAssigned
+        groupFields.typeGroup = typeG
 
-        res[key].metadataFields.forEach((element, index) => {
-          if (element.isDisplayed) {
-            count++
-          }
+        const fieldsDisplayed = groupFields.metadataFields.filter(field => {
+          return fieldIsDisplayed(field)
         })
 
-        if ((this.groupTab.groupType === 'T' && this.groupTab.groupName === res[key].groupFinal) ||
-          (this.groupTab.groupType !== 'T' && res[key].typeGroup !== 'T')) {
+        if ((this.groupTab.groupType === 'T' && this.groupTab.groupName === groupFields.groupFinal) ||
+          (this.groupTab.groupType !== 'T' && groupFields.typeGroup !== 'T')) {
           this.groupsView = this.groupsView + 1
         }
-        res[key].activeFields = count
+        groupFields.activeFields = fieldsDisplayed.length
       })
-      return res
+      return groupsList
     },
     setTagsViewTitle(actionValue) {
       if (actionValue === 'create-new' || actionValue === '') {
@@ -623,7 +621,7 @@ export default {
       } else if (actionValue === 'advancedQuery') {
         this.tagTitle.action = this.$t('tagsView.advancedQuery')
       } else {
-        var field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
+        const field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
         if (field) {
           if (this.dataRecords[field.columnName]) {
             this.tagTitle.action = this.dataRecords[field.columnName]
@@ -635,7 +633,7 @@ export default {
         }
       }
       if (this.isPanelWindow) {
-        var tempRoute = Object.assign({}, this.$route, { title: `${this.tagTitle.base} - ${this.tagTitle.action}` })
+        const tempRoute = Object.assign({}, this.$route, { title: `${this.tagTitle.base} - ${this.tagTitle.action}` })
         this.$store.dispatch('tagsView/updateVisitedView', tempRoute)
       }
     },
@@ -645,8 +643,8 @@ export default {
       dataTransfer.setData('Text', '')
     },
     changePanelRecord(uuidRecord) {
-      if (uuidRecord !== 'create-new' && uuidRecord !== 'reference' && uuidRecord !== 'advancedQuery' && uuidRecord !== 'criteria') {
-        var recordSelected = this.$store.getters.getDataRecordsList(this.containerUuid).find(record => record.UUID === uuidRecord)
+      if (!['create-new', 'reference', 'advancedQuery', 'criteria'].includes(uuidRecord)) {
+        const recordSelected = this.$store.getters.getDataRecordsList(this.containerUuid).find(record => record.UUID === uuidRecord)
         if (recordSelected) {
           this.dataRecords = recordSelected
           this.$store.dispatch('notifyPanelChange', {

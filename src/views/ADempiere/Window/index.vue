@@ -5,7 +5,7 @@
   >
     <el-container style="height: 86vh;">
       <Split>
-        <SplitArea :size="!show ? 100 : 50" :min-size="100">
+        <SplitArea :size="show ? 50 : 100" :min-size="100">
           <el-aside width="100%">
             <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
               <template>
@@ -53,7 +53,7 @@
                     <i
                       v-if="isMobile"
                       class="el-icon-close"
-                      style="position: fixed;padding-top: 15px; color: #000000;font-size: 121%;font-weight: 615!important;padding-left: 9px;"
+                      style="position: fixed; padding-top: 15px; color: #000000; font-size: 121%; font-weight: 615 !important; padding-left: 9px;"
                       @click="handleChangeShowedRecordNavigation()"
                     />
                   </el-aside>
@@ -79,7 +79,7 @@
                           :tabs-list="windowMetadata.tabsListParent"
                           class="tab-window"
                         />
-                        <div style="right: 0%;top: 40%;position: absolute;">
+                        <div style="right: 0%; top: 40%; position: absolute;">
                           <el-button v-show="!show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
                         </div>
                         <div class="small-4 columns">
@@ -122,7 +122,7 @@
                     <SplitArea v-show="isShowedTabChildren" :size="50">
                       <el-header
                         v-if="isShowedTabChildren && windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
-                        style="height: auto; padding-right: 35px !important;padding-bottom: 33px;"
+                        style="height: auto; padding-right: 35px !important; padding-bottom: 33px;"
                       >
                         <div class="w-33">
                           <div class="center">
@@ -150,7 +150,7 @@
         </SplitArea>
         <SplitArea :size="show ? 50 : 0">
           <el-main>
-            <div style="top: 40%;position: absolute;">
+            <div style="top: 40%; position: absolute;">
               <el-button v-show="show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
             </div>
             <div id="example-1">
@@ -161,7 +161,10 @@
                       <el-tab-pane
                         name="listChatEntries"
                       >
-                        <span slot="label"><i class="el-icon-s-comment" /> {{ $t('window.containerInfo.notes') }} </span>
+                        <span slot="label">
+                          <i class="el-icon-s-comment" />
+                          {{ $t('window.containerInfo.notes') }}
+                        </span>
                         <div
                           v-if="getIsChat"
                         >
@@ -206,9 +209,13 @@
                       <el-tab-pane
                         name="listRecordLogs"
                       >
-                        <span slot="label"><svg-icon icon-class="tree-table" /> {{ $t('window.containerInfo.changeLog') }} </span>
+                        <span slot="label">
+                          <svg-icon icon-class="tree-table" />
+                          {{ $t('window.containerInfo.changeLog') }}
+                        </span>
                         <div
                           v-if="getIsChangeLog"
+                          key="change-log-loaded"
                         >
                           <el-scrollbar wrap-class="scroll-window-log-change">
                             <el-timeline>
@@ -240,6 +247,7 @@
                         </div>
                         <div
                           v-else
+                          key="change-log-loading"
                           v-loading="true"
                           :element-loading-text="$t('notifications.loading')"
                           element-loading-spinner="el-icon-loading"
@@ -251,9 +259,13 @@
                         v-if="getIsWorkflowLog"
                         name="listWorkflowLogs"
                       >
-                        <span slot="label"><i class="el-icon-s-help" /> {{ $t('window.containerInfo.workflowLog') }} </span>
+                        <span slot="label">
+                          <i class="el-icon-s-help" />
+                          {{ $t('window.containerInfo.workflowLog') }}
+                        </span>
                         <div
                           v-if="getIsWorkflowLog"
+                          key="workflow-log-loaded"
                         >
                           <el-card
                             class="box-card"
@@ -287,11 +299,25 @@
                                               trigger="hover"
                                             >
                                               <p><b> {{ $t('login.userName') }}:</b> {{ nodeList.userName }} </p>
-                                              <p v-if="!isEmptyValue(nodeList.textMessage)"><b> {{ $t('window.containerInfo.logWorkflow.message') }}:</b> {{ nodeList.textMessage }} </p>
-                                              <p><b> {{ $t('window.containerInfo.logWorkflow.responsible') }}:</b>  {{ nodeList.responsibleName }} </p>
-                                              <p><b> {{ $t('window.containerInfo.logWorkflow.workflowName') }}:</b>  {{ nodeList.workflowStateName }} </p>
-                                              <p><b> {{ $t('window.containerInfo.logWorkflow.timeElapsed') }}:</b>  {{ nodeList.timeElapsed }} </p>
-                                              <el-button slot="reference" type="text"> {{ nodeList.nodeName }} </el-button>
+                                              <p v-if="!isEmptyValue(nodeList.textMessage)">
+                                                <b> {{ $t('window.containerInfo.logWorkflow.message') }}:</b>
+                                                {{ nodeList.textMessage }}
+                                              </p>
+                                              <p>
+                                                <b> {{ $t('window.containerInfo.logWorkflow.responsible') }}:</b>
+                                                {{ nodeList.responsibleName }}
+                                              </p>
+                                              <p>
+                                                <b> {{ $t('window.containerInfo.logWorkflow.workflowName') }}:</b>
+                                                {{ nodeList.workflowStateName }}
+                                              </p>
+                                              <p>
+                                                <b> {{ $t('window.containerInfo.logWorkflow.timeElapsed') }}:</b>
+                                                {{ nodeList.timeElapsed }}
+                                              </p>
+                                              <el-button slot="reference" type="text">
+                                                {{ nodeList.nodeName }}
+                                              </el-button>
                                             </el-popover>
                                           </span>
                                         </el-step>
@@ -305,6 +331,7 @@
                         </div>
                         <div
                           v-else
+                          key="workflow-log-loading"
                           v-loading="true"
                           :element-loading-text="$t('notifications.loading')"
                           element-loading-spinner="el-icon-loading"
@@ -409,9 +436,8 @@ export default {
     classIsMobile() {
       if (this.isMobile) {
         return 'open-table-detail-mobile'
-      } else {
-        return 'open-table-detail'
       }
+      return 'open-table-detail'
     },
     getterIsShowedRecordNavigation() {
       return this.$store.getters.getIsShowedRecordNavigation(this.windowUuid)
@@ -419,37 +445,42 @@ export default {
     iconIsShowedRecordNavigation() {
       if (this.isShowedRecordNavigation) {
         return 'el-icon-caret-left'
-      } else {
-        return 'el-icon-caret-right'
       }
+      return 'el-icon-caret-right'
     },
     iconIsShowedAside() {
       if (this.isShowedRecordPanel) {
         return 'el-icon-caret-left'
-      } else {
-        return 'el-icon-caret-right'
       }
+      return 'el-icon-caret-right'
     },
     styleMainIsShowedTabChildren() {
       if (this.isShowedTabChildren) {
-        return { height: 'initial', overflow: 'auto' }
-      } else {
-        return { height: 'initial', overflow: 'hidden' }
+        return {
+          height: 'initial',
+          overflow: 'auto'
+        }
+      }
+      return {
+        height: 'initial',
+        overflow: 'hidden'
       }
     },
     splitAreaStyle() {
       if (this.isShowedTabChildren) {
-        return { overflow: 'auto' }
-      } else {
-        return { overflow: 'hidden' }
+        return {
+          overflow: 'auto'
+        }
+      }
+      return {
+        overflow: 'hidden'
       }
     },
     sizeAreaStyle() {
       if (this.isShowedTabChildren) {
         return 50
-      } else {
-        return 100
       }
+      return 100
     },
     //
     getterWindow() {
@@ -920,7 +951,7 @@ export default {
 .splitter-pane-resizer.vertical {
     width: 11px;
     height: 100%;
-    background: gray!important;
+    background: gray !important;
     margin-left: -5px;
     border-left: 5px solid hsla(0,0%,100%,0);
     border-right: 5px solid hsla(0,0%,100%,0);

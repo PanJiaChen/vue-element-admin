@@ -101,11 +101,11 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     parsedDefaultValue,
     parsedDefaultValueTo,
     // logics to app
-    isDisplayedFromLogic: fieldToGenerate.isDisplayed,
-    isReadOnlyFromLogic: undefined,
-    isMandatoryFromLogic: undefined,
+    isDisplayedFromLogic: Boolean(fieldToGenerate.isDisplayed),
+    isReadOnlyFromLogic: Boolean(fieldToGenerate.isReadOnly),
+    isMandatoryFromLogic: Boolean(fieldToGenerate.isMandatory),
     //
-    parentFieldsList: getParentFields(fieldToGenerate),
+    parentFieldsList: [],
     dependentFieldsList: [],
     // TODO: Add support on server
     // app attributes
@@ -124,21 +124,28 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
   }
 
   // evaluate simple logics without context
-  if (field.displayLogic.trim() !== '' && !field.displayLogic.includes('@')) {
-    field.isDisplayedFromLogic = evaluator.evaluateLogic({
-      type: 'displayed',
-      logic: field.displayLogic
-    })
-  }
-  if (field.mandatoryLogic.trim() !== '' && !field.mandatoryLogic.includes('@')) {
-    field.isMandatoryFromLogic = evaluator.evaluateLogic({
-      logic: field.mandatoryLogic
-    })
-  }
-  if (field.readOnlyLogic.trim() !== '' && !field.readOnlyLogic.includes('@')) {
-    field.isReadOnlyFromLogic = evaluator.evaluateLogic({
-      logic: field.readOnlyLogic
-    })
+  if (!field.isAdvancedQuery) {
+    field.parentFieldsList = getParentFields(fieldToGenerate)
+
+    if (field.displayLogic.trim() !== '' && !field.displayLogic.includes('@')) {
+      field.isDisplayedFromLogic = evaluator.evaluateLogic({
+        type: 'displayed',
+        logic: field.displayLogic
+      })
+      field.isDisplayedFromLogic = Boolean(field.isDisplayedFromLogic)
+    }
+    if (field.mandatoryLogic.trim() !== '' && !field.mandatoryLogic.includes('@')) {
+      field.isMandatoryFromLogic = evaluator.evaluateLogic({
+        logic: field.mandatoryLogic
+      })
+      field.isMandatoryFromLogic = Boolean(field.isMandatoryFromLogic)
+    }
+    if (field.readOnlyLogic.trim() !== '' && !field.readOnlyLogic.includes('@')) {
+      field.isReadOnlyFromLogic = evaluator.evaluateLogic({
+        logic: field.readOnlyLogic
+      })
+      field.isReadOnlyFromLogic = Boolean(field.isReadOnlyFromLogic)
+    }
   }
 
   // Sizes from panel and groups

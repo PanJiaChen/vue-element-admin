@@ -71,7 +71,6 @@ export const fieldMixin = {
         isSendCallout = false
       }
       if (this.metadata.isAdvancedQuery) {
-        isSendToServer = false
         isSendCallout = false
       }
 

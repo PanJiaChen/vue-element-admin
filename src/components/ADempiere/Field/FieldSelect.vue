@@ -136,41 +136,47 @@ export default {
     },
     'metadata.value'(value) {
       if (!this.metadata.inTable) {
-        if (!this.options.some(option => option.key === value)) {
-          this.value = value
-          this.getDataLookupItem()
+        if (this.metadata.displayed) {
+          if (!this.options.some(option => option.key === value)) {
+            this.value = value
+            this.getDataLookupItem()
+          }
         }
         this.value = value
       }
     },
     'metadata.displayColumn'(value) {
-      if (!this.isEmptyValue(this.value)) {
-        if (!this.isEmptyValue(value)) {
-          // verify if exists to add
-          if (!this.findLabel(this.value)) {
-            this.options.push({
-              key: this.value,
-              label: value
-            })
+      if (this.metadata.displayed) {
+        if (!this.isEmptyValue(this.value)) {
+          if (!this.isEmptyValue(value)) {
+            // verify if exists to add
+            if (!this.findLabel(this.value)) {
+              this.options.push({
+                key: this.value,
+                label: value
+              })
+            }
           }
         }
       }
     }
   },
   beforeMount() {
-    this.options = this.getterLookupAll
-    if (!this.isEmptyValue(this.value) && this.metadata.panelType !== 'table') {
-      if (!this.findLabel(this.value)) {
-        if (!this.isEmptyValue(this.metadata.displayColumn)) {
-        // verify if exists to add
-          this.options.push({
-            key: this.value,
-            label: this.metadata.displayColumn
-          })
-        } else {
-          if (!this.isPanelWindow || (this.isPanelWindow &&
-            (this.isEmptyValue(this.metadata.optionCRUD) || this.metadata.optionCRUD === 'create-new'))) {
-            this.getDataLookupItem()
+    if (this.metadata.displayed) {
+      this.options = this.getterLookupAll
+      if (!this.isEmptyValue(this.value) && this.metadata.panelType !== 'table') {
+        if (!this.findLabel(this.value)) {
+          if (!this.isEmptyValue(this.metadata.displayColumn)) {
+          // verify if exists to add
+            this.options.push({
+              key: this.value,
+              label: this.metadata.displayColumn
+            })
+          } else {
+            if (!this.isPanelWindow || (this.isPanelWindow &&
+              (this.isEmptyValue(this.metadata.optionCRUD) || this.metadata.optionCRUD === 'create-new'))) {
+              this.getDataLookupItem()
+            }
           }
         }
       }

@@ -24,18 +24,10 @@ const panel = {
       payload.panel = payload.newPanel
     },
     changeFieldLogic(state, payload) {
-      if (payload.isDisplayedFromLogic !== undefined) {
-        payload.field.isDisplayedFromLogic = payload.isDisplayedFromLogic
-      }
-      if (payload.isMandatoryFromLogic !== undefined) {
-        payload.field.isMandatoryFromLogic = payload.isMandatoryFromLogic
-      }
-      if (payload.isReportFromLogic !== undefined) {
-        payload.field.isReportFromLogic = payload.isReportFromLogic
-      }
-      if (payload.parsedDefaultValue !== undefined) {
-        payload.field.parsedDefaultValue = payload.parsedDefaultValue
-      }
+      payload.field.isDisplayedFromLogic = Boolean(payload.isDisplayedFromLogic)
+      payload.field.isMandatoryFromLogic = Boolean(payload.isMandatoryFromLogic)
+      payload.field.isReportFromLogic = Boolean(payload.isReportFromLogic)
+      payload.field.parsedDefaultValue = payload.parsedDefaultValue
     },
     dictionaryResetCache(state) {
       state.panel = []
@@ -550,8 +542,57 @@ const panel = {
       }
 
       if (isSendToServer) {
-        // TODO: refactory for it and change for a standard method
-        if (!getters.isNotReadyForSubmit(containerUuid)) {
+        if (panelType === 'table' || isAdvancedQuery) {
+          if (field.isShowedFromUser && (field.oldValue !== field.value ||
+            ['NULL', 'NOT_NULL'].includes(field.operator) ||
+            field.operator !== field.oldOperator)) {
+            // change action to advanced query on field value is changed in this panel
+            if (router.currentRoute.query.action !== 'advancedQuery') {
+              router.push({
+                query: {
+                  ...router.currentRoute.query,
+                  action: 'advancedQuery'
+                }
+              })
+            }
+            dispatch('getObjectListFromCriteria', {
+              parentUuid,
+              containerUuid,
+              tableName: panel.tableName,
+              query: panel.query,
+              whereClause: panel.whereClause,
+              conditionsList: getters.getParametersToServer({
+                containerUuid,
+                isAdvancedQuery: true,
+                isEvaluateMandatory: false
+              })
+            })
+              .then(response => {
+                commit('changeField', {
+                  field,
+                  newField: {
+                    ...field,
+                    oldOperator: field.operator
+                  }
+                })
+                if (response && response.length) {
+                  dispatch('notifyPanelChange', {
+                    parentUuid,
+                    containerUuid,
+                    isAdvancedQuery: false,
+                    newValues: response[0],
+                    isSendToServer: false,
+                    isSendCallout: true,
+                    panelType: 'window'
+                  })
+                }
+              })
+              .catch(error => {
+                console.warn(`Error getting Advanced Query (notifyFieldChange): ${error.message}. Code: ${error.code}.`)
+              })
+          }
+        } else if (!getters.isNotReadyForSubmit(containerUuid)) {
+          // TODO: refactory for it and change for a standard method
           if (field.panelType === 'browser' && fieldIsDisplayed(field)) {
             dispatch('getBrowserSearch', {
               containerUuid,
@@ -620,57 +661,6 @@ const panel = {
             message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
             type: 'info'
           })
-        }
-      } else {
-        if (panelType === 'table' || isAdvancedQuery) {
-          if (field.isShowedFromUser && (field.oldValue !== field.value ||
-            ['NULL', 'NOT_NULL'].includes(field.operator) ||
-            field.operator !== field.oldOperator)) {
-            // change action to advanced query on field value is changed in this panel
-            if (router.currentRoute.query.action !== 'advancedQuery') {
-              router.push({
-                query: {
-                  ...router.currentRoute.query,
-                  action: 'advancedQuery'
-                }
-              })
-            }
-            dispatch('getObjectListFromCriteria', {
-              parentUuid,
-              containerUuid,
-              tableName: panel.tableName,
-              query: panel.query,
-              whereClause: panel.whereClause,
-              conditionsList: getters.getParametersToServer({
-                containerUuid,
-                isAdvancedQuery: true,
-                isEvaluateMandatory: false
-              })
-            })
-              .then(response => {
-                commit('changeField', {
-                  field,
-                  newField: {
-                    ...field,
-                    oldOperator: field.operator
-                  }
-                })
-                if (response && response.length) {
-                  dispatch('notifyPanelChange', {
-                    parentUuid,
-                    containerUuid,
-                    isAdvancedQuery: false,
-                    newValues: response[0],
-                    isSendToServer: false,
-                    isSendCallout: true,
-                    panelType: 'window'
-                  })
-                }
-              })
-              .catch(error => {
-                console.warn(`Error getting Advanced Query (notifyFieldChange): ${error.message}. Code: ${error.code}.`)
-              })
-          }
         }
       }
     },

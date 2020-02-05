@@ -304,19 +304,21 @@ export default {
     }
   },
   data() {
+    const activeName = []
+    if (this.$route.query.action) {
+      activeName.push('1')
+    }
     return {
       top: 0,
       left: 0,
       isOption: {},
-      focusTable: false,
       currentRow: null,
       currentTable: 0,
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
       defaultMaxPagination: 50,
       menuTable: '1',
-      activeName: this.$route.query.action === 'advancedQuery' ? ['1'] : [],
-      isFixed: false,
+      activeName,
       isLoadPanelFromServer: false,
       rowStyle: { height: '52px' },
       sortable: null,
@@ -552,11 +554,11 @@ export default {
   },
   methods: {
     actionAdvancedQuery() {
-      if (this.activeName.length) {
-        this.activeName = []
-      } else {
-        this.activeName = ['1']
+      const activeNames = []
+      if (!this.activeName.length) {
+        activeNames.push('1')
       }
+      this.activeName = activeNames
     },
     setCurrent(row) {
       this.$refs.multipleTable.setCurrentRow(row)
@@ -625,9 +627,6 @@ export default {
       })
     },
     sortFields,
-    handleChange(val) {
-      val = !val
-    },
     headerLabel(field) {
       if (field.isMandatory || field.isMandatoryFromLogic) {
         return '* ' + field.name
@@ -763,10 +762,6 @@ export default {
         })
       }
     },
-    fixedPanel() {
-      this.showTableSearch = false
-      this.isFixed = !this.isFixed
-    },
     async getList() {
       this.oldgetDataDetail = this.getterDataRecords.map(v => v.id)
       this.newgetDataDetail = this.oldgetDataDetail.slice()
@@ -807,7 +802,7 @@ export default {
         classReturn += 'cell-no-edit'
       }
       if (field.componentPath === 'FieldNumber') {
-        classReturn += 'cell-align-right'
+        classReturn += ' cell-align-right'
       }
       // return 'cell-edit'
       return classReturn

@@ -78,7 +78,7 @@ export function getEntity({ tableName, recordId, recordUuid }) {
  * @param {string} whereClause
  * @param {array}  conditionsList
  * @param {string} orderByClause
- * @param {string} nextPageToken
+ * @param {string} pageToken
  */
 export function getEntitiesList({
   tableName,
@@ -86,7 +86,7 @@ export function getEntitiesList({
   whereClause,
   conditionsList = [],
   orderByClause,
-  nextPageToken: pageToken,
+  pageToken,
   pageSize
 }) {
   return Instance.call(this).requestListEntities({
