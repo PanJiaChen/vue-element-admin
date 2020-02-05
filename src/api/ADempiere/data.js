@@ -464,7 +464,6 @@ export function requestListWorkflows({
  * @param {string}  pageSize
  */
 export function requestListRecordChats({ tableName, recordId, pageToken, pageSize }) {
-  console.log(tableName, recordId, Instance.call(this).requestListRecordChats({ tableName, recordId, pageToken, pageSize }))
   return Instance.call(this).requestListRecordChats({
     tableName,
     recordId,
@@ -479,7 +478,6 @@ export function requestListRecordChats({ tableName, recordId, pageToken, pageSiz
  * @param {string} pageSize
  */
 export function requestListChatEntries({ uuid, pageToken, pageSize }) {
-  console.log(uuid, Instance.call(this).requestListChatEntries({ uuid, pageToken, pageSize }))
   return Instance.call(this).requestListChatEntries({
     uuid,
     pageToken,

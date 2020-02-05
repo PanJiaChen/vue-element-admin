@@ -136,7 +136,7 @@ const REFERENCES = [
   },
   {
     id: 34,
-    type: 'FieldText',
+    type: 'FieldTextLong',
     support: true,
     description: 'Reference List',
     alias: ['Memo']

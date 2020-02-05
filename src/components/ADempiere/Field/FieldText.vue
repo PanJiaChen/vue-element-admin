@@ -42,8 +42,8 @@ export default {
     },
     typeTextBox() {
       // String, Url, FileName...
-      var typeInput = 'text'
-      if (['Memo', 'Text'].includes(this.metadata.referenceType)) {
+      let typeInput = 'text'
+      if (this.metadata.referenceType === 'Text') {
         typeInput = 'textarea'
       }
       if (this.metadata.isEncrypted) {
@@ -79,7 +79,7 @@ export default {
   methods: {
     validateUrl(e) {
       // Entry pattern, in this case only accepts numbers and letters
-      var _Pattern = /^(http[s]?:\/\/(www\.)?|ftp:\/\/(www\.)?|www\.){1}([0-9A-Za-z-\.@:%_\+~#=]+)+((\.[a-zA-Z]{1,5})+)(\/(.)*)?(\?(.)*)?/g
+      const _Pattern = /^(http[s]?:\/\/(www\.)?|ftp:\/\/(www\.)?|www\.){1}([0-9A-Za-z-\.@:%_\+~#=]+)+((\.[a-zA-Z]{1,5})+)(\/(.)*)?(\?(.)*)?/g
       var rex = RegExp(_Pattern)
       var value = e.target.value
       if (rex.test(value) && value.trim() !== '') {

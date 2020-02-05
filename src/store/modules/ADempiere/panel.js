@@ -479,7 +479,7 @@ const panel = {
       isChangedOldValue = false, withOutColumnNames = []
     }) {
       const panel = getters.getPanel(containerUuid, isAdvancedQuery)
-      const fieldList = panel.fieldList
+      const { fieldList } = panel
       // get field
       const field = fieldList.find(fieldItem => fieldItem.columnName === columnName)
 
@@ -544,14 +544,16 @@ const panel = {
         }
       }
 
-      //  Change Dependents
-      dispatch('changeDependentFieldsList', {
-        parentUuid,
-        containerUuid,
-        dependentFieldsList: field.dependentFieldsList,
-        fieldsList: fieldList,
-        isSendToServer
-      })
+      if (!isAdvancedQuery) {
+        //  Change Dependents
+        dispatch('changeDependentFieldsList', {
+          parentUuid,
+          containerUuid,
+          dependentFieldsList: field.dependentFieldsList,
+          fieldsList: fieldList,
+          isSendToServer
+        })
+      }
 
       // the field has not changed, then the action is broken
       if (newValue === field.value && isEmptyValue(displayColumn) && !isAdvancedQuery) {

@@ -65,12 +65,6 @@ export default {
           value = ''
         }
         this.value = String(value)
-
-        if (this.isDisabled) {
-          this.editor.setValue(value)
-        } else {
-          this.editor.setValue(oldValue)
-        }
       }
     },
     'metadata.value'(value, oldValue) {
@@ -79,21 +73,15 @@ export default {
           value = ''
         }
         this.value = String(value)
-
-        if (this.isDisabled) {
-          this.editor.setValue(value)
-        } else {
-          this.editor.setValue(oldValue)
-        }
       }
     },
     value(newValue, oldValue) {
-      if (newValue !== this.editor.getValue()) {
-        if (this.isDisabled) {
-          this.editor.setValue(newValue)
-        } else {
-          this.editor.setValue(oldValue)
-        }
+      if (this.isDisabled) {
+        // not changed value
+        this.value = oldValue
+        this.editor.setValue(oldValue)
+      } else {
+        this.editor.setValue(newValue)
       }
     },
     language(langValue) {
