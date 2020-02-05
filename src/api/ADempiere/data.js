@@ -380,7 +380,7 @@ export function requestLanguages({ pageToken, pageSize }) {
  * @param {integer} recordId
  */
 export function requestTranslations({ tableName, language, recordUuid, recordId, pageToken, pageSize }) {
-  return Instance.call(this).requestTranslations({
+  return Instance.call(this).requestListTranslations({
     tableName,
     recordUuid,
     recordId,
@@ -457,6 +457,7 @@ export function requestListWorkflows({
     pageSize
   })
 }
+
 /**
  * @param {string}  tableName
  * @param {integer} recordId
@@ -484,6 +485,7 @@ export function requestListChatEntries({ uuid, pageToken, pageSize }) {
     pageSize
   })
 }
+
 /**
  * @param {string} tableName
  * @param {string} recordId
@@ -494,5 +496,27 @@ export function requestCreateChatEntry({ tableName, recordId, comment }) {
     tableName,
     recordId,
     comment
+  })
+}
+
+/**
+ * Request Document Actions List
+ * @param {string} tableName
+ * @param {number} recordId
+ * @param {string} recordUuid
+ * @param {string} documentStatus
+ * @param {string} documentAction
+ * @param {number} pageSize
+ * @param {string} pageToken
+ */
+export function requestListDocumentActions({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken }) {
+  return Instance.call(this).requestListDocumentActions({
+    tableName,
+    recordId,
+    recordUuid,
+    documentStatus,
+    documentAction,
+    pageSize,
+    pageToken
   })
 }
