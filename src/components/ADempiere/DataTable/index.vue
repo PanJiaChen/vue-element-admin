@@ -515,6 +515,19 @@ export default {
     },
     permissionRoutes() {
       return this.$store.getters.permission_routes
+    },
+    keyUp() {
+      if (this.currentTable < 1) {
+        return this.currentTable
+      }
+      return this.currentTable - 1
+    },
+    keyDow() {
+      const maxDown = this.getterDataRecords.length - 1
+      if (maxDown === this.currentTable) {
+        return this.currentTable
+      }
+      return this.currentTable + 1
     }
   },
   watch: {
@@ -548,16 +561,19 @@ export default {
     setCurrent(row) {
       this.$refs.multipleTable.setCurrentRow(row)
     },
-    setCurrentParent(row) {
-      this.$refs.Parent.setCurrentRow(row)
+    logArrayElements(element, index, array) {
+      if (index === this.currentTable) {
+        this.handleRowClick(this.getterDataRecords[index])
+        return this.setCurrent(this.getterDataRecords[index])
+      }
     },
     theAction(event) {
       switch (event.srcKey) {
         case 'up':
-          this.currentTable = this.currentTable - 1
+          this.currentTable = this.keyUp
           break
         case 'down':
-          this.currentTable = this.currentTable + 1
+          this.currentTable = this.keyDow
           break
       }
       this.handleRowClick(this.getterDataRecords[this.currentTable])
