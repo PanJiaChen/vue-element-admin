@@ -138,77 +138,41 @@ const panel = {
     }) {
       const panel = getters.getPanel(containerUuid, isAdvancedQuery)
       const newPanel = panel
-      let showsFieldsWithValue = false
-      let hiddenFieldsWithValue = false
+      let isChangedDisplayedWithValue = false
       newPanel.fieldList = panel.fieldList.map(itemField => {
-        const isMandatory = itemField.isMandatory || itemField.isMandatoryFromLogic
-        if (!isMandatory && fieldIsDisplayed(itemField)) {
-          if (isAdvancedQuery || itemField.groupAssigned === groupField) {
-            if (fieldsUser.length && fieldsUser.includes(itemField.columnName)) {
-              // if it isShowedFromUser it is false, and it has some value, it means
-              // that it is going to show, therefore the SmartBrowser must be searched
-              if ((!isEmptyValue(itemField.value) && !itemField.isShowedFromUser) ||
-                (isAdvancedQuery && ['NULL', 'NOT_NULL'].includes(itemField.operator))) {
-                showsFieldsWithValue = true
-              }
-              if (isAdvancedQuery) {
-                itemField.isShowedFromUser = false
-              }
-              itemField.isShowedFromUser = true
-              return itemField
-            }
-            // if it isShowedFromUser it is true, and it has some value, it means
-            // that it is going to hidden, therefore the SmartBrowser must be searched
-            if ((!isEmptyValue(itemField.value) && itemField.isShowedFromUser) ||
-              (isAdvancedQuery && ['NULL', 'NOT_NULL'].includes(itemField.operator))) {
-              hiddenFieldsWithValue = true
-            }
-            if (isAdvancedQuery) {
-              itemField.isShowedFromUser = false
-            }
-            itemField.isShowedFromUser = false
+        const isShowedOriginal = itemField.isShowedFromUser
+        if (groupField === itemField.groupAssigned) {
+          itemField.isShowedFromUser = false
+          if (fieldsUser.includes(itemField.columnName)) {
+            itemField.isShowedFromUser = true
           }
-        } else {
-          if (itemField.groupAssigned === groupField) {
-            if (fieldsUser.length && fieldsUser.includes(itemField.columnName)) {
-              // if it isShowedFromUser it is false, and it has some value, it means
-              // that it is going to show, therefore the SmartBrowser must be searched
-              if ((!isEmptyValue(itemField.value) && !itemField.isShowedFromUser) ||
-                (isAdvancedQuery && ['NULL', 'NOT_NULL'].includes(itemField.operator))) {
-                showsFieldsWithValue = true
-              }
-              if (isAdvancedQuery) {
-                itemField.isShowedFromUser = false
-              }
-              itemField.isShowedFromUser = true
-              return itemField
-            }
-            if ((!isEmptyValue(itemField.value) && itemField.isShowedFromUser) ||
-              (isAdvancedQuery && ['NULL', 'NOT_NULL'].includes(itemField.operator))) {
-              hiddenFieldsWithValue = true
-            }
-            if (isAdvancedQuery) {
-              itemField.isShowedFromUser = false
-            }
-            itemField.isShowedFromUser = false
+        }
+
+        if (!isChangedDisplayedWithValue) {
+          // if isShowedFromUser was changed, and field has some value, the SmartBrowser
+          // or AdvancedQuery  must send the parameters to update the search result
+          if ((isShowedOriginal !== itemField.isShowedFromUser && !isEmptyValue(itemField.value)) ||
+            (isAdvancedQuery && ['NULL', 'NOT_NULL'].includes(itemField.operator))) {
+            isChangedDisplayedWithValue = true
           }
         }
         return itemField
       })
+
       commit('changePanel', {
         containerUuid,
         panel,
         newPanel
       })
 
-      if (showsFieldsWithValue || hiddenFieldsWithValue) {
+      if (isChangedDisplayedWithValue) {
         // Updated record result
         if (panel.panelType === 'browser') {
           dispatch('getBrowserSearch', {
             containerUuid,
             isClearSelection: true
           })
-        } else if (panel.panelType === 'table' && panel.isAdvancedQuery) {
+        } else if (panel.panelType === 'table' || panel.isAdvancedQuery) {
           dispatch('getObjectListFromCriteria', {
             parentUuid: panel.parentUuid,
             containerUuid,
@@ -837,6 +801,7 @@ const panel = {
       return dispatch(executeAction, {
         parentUuid,
         containerUuid,
+        panelType,
         isAdvancedQuery,
         routeToDelete
       })

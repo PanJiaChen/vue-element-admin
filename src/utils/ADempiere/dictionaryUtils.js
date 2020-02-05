@@ -118,6 +118,11 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     defaultOperator: 'EQUAL'
   }
 
+  if (moreAttributes.isAdvancedQuery && ['FieldText', 'FieldTextLong'].includes(field.componentPath)) {
+    field.operator = 'LIKE'
+    field.defaultOperator = 'LIKE'
+  }
+
   // evaluate simple logics without context
   if (field.displayLogic.trim() !== '' && !field.displayLogic.includes('@')) {
     field.isDisplayedFromLogic = evaluator.evaluateLogic({
