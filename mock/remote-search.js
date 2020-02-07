@@ -13,7 +13,7 @@ NameList.push({ name: 'mock-Pan' })
 export default [
   // username search
   {
-    url: '/search/user',
+    url: '/vue-element-admin/search/user',
     type: 'get',
     response: config => {
       const { name } = config.query
@@ -30,7 +30,7 @@ export default [
 
   // transaction list
   {
-    url: '/transaction/list',
+    url: '/vue-element-admin/transaction/list',
     type: 'get',
     response: _ => {
       return {
