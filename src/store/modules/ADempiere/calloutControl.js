@@ -61,7 +61,8 @@ const callOutControl = {
               newValues,
               isSendToServer: false,
               withOutColumnNames,
-              isSendCallout: false
+              isSendCallout: false,
+              isChangeFromCallout: true
             })
           }
         })

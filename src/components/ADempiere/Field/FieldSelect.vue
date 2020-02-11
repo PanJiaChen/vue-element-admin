@@ -138,8 +138,11 @@ export default {
       if (!this.metadata.inTable) {
         if (this.metadata.displayed) {
           if (!this.options.some(option => option.key === value)) {
+            this.options.push({
+              key: value,
+              label: this.findLabel(value)
+            })
             this.value = value
-            this.getDataLookupItem()
           }
         }
         this.value = value

@@ -362,7 +362,8 @@ const panel = {
       isSendCallout = true,
       isAdvancedQuery = false,
       isPrivateAccess = false,
-      fieldList = []
+      fieldList = [],
+      isChangeFromCallout = false
     }) {
       if (!fieldList.length) {
         fieldList = getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery)
@@ -376,6 +377,46 @@ const panel = {
         // Evaluate with hasOwnProperty if exits this value
         if (!newValues.hasOwnProperty(actionField.columnName)) {
           return
+        }
+
+        if (isChangeFromCallout && actionField.componentPath === 'FieldSelect' && !newValues.hasOwnProperty(`DisplayColumn_${actionField.columnName}`)) {
+          const lookup = getters.getLookupItem({
+            parentUuid: parentUuid,
+            containerUuid: containerUuid,
+            directQuery: actionField.reference.directQuery,
+            tableName: actionField.reference.tableName,
+            value: newValues[actionField.columnName]
+          })
+
+          if (isEmptyValue(lookup)) {
+            dispatch('getLookupItemFromServer', {
+              parentUuid: parentUuid,
+              containerUuid: containerUuid,
+              tableName: actionField.reference.tableName,
+              directQuery: actionField.reference.parsedDirectQuery,
+              value: newValues[actionField.columnName]
+            })
+              .then(response => {
+                dispatch('notifyFieldChange', {
+                  isSendToServer,
+                  isSendCallout,
+                  isAdvancedQuery,
+                  panelType,
+                  parentUuid,
+                  containerUuid,
+                  columnName: actionField.columnName,
+                  displayColumn: response.label,
+                  newValue: newValues[actionField.columnName],
+                  valueTo: newValues[`${actionField.columnName}_To`],
+                  fieldList,
+                  field: actionField,
+                  withOutColumnNames,
+                  isChangedOldValue: true // defines if set oldValue with newValue instead of current value
+                })
+              })
+          } else {
+            newValues[`DisplayColumn_${actionField.columnName}`] = lookup.label
+          }
         }
         dispatch('notifyFieldChange', {
           isSendToServer,
