@@ -731,7 +731,8 @@ const panel = {
         }
         //  Default Value
         if (fieldDependent.defaultValue.trim() !== '' &&
-          fieldDependent.defaultValue.includes('@')) {
+          fieldDependent.defaultValue.includes('@') &&
+          String(fieldDependent.defaultValue).trim() !== '-1') {
           defaultValue = parseContext({
             parentUuid,
             containerUuid,

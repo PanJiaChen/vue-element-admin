@@ -30,19 +30,21 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
         value: parsedDefaultValue
       }).value
     }
-    if (isEmptyValue(parsedDefaultValue)) {
+    if (isEmptyValue(parsedDefaultValue) && String(parsedDefaultValue).trim() !== '-1') {
       parsedDefaultValue = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
         columnName: fieldToGenerate.columnName
       })
-    }
-    if (isEmptyValue(parsedDefaultValue) && !isEmptyValue(fieldToGenerate.elementName)) {
-      parsedDefaultValue = getPreference({
-        parentUuid: fieldToGenerate.parentUuid,
-        containerUuid: fieldToGenerate.containerUuid,
-        columnName: fieldToGenerate.elementName
-      })
+
+      // search value preference with elementName
+      if (isEmptyValue(parsedDefaultValue) && !isEmptyValue(fieldToGenerate.elementName)) {
+        parsedDefaultValue = getPreference({
+          parentUuid: fieldToGenerate.parentUuid,
+          containerUuid: fieldToGenerate.containerUuid,
+          columnName: fieldToGenerate.elementName
+        })
+      }
     }
   }
   parsedDefaultValue = parsedValueComponent({
@@ -63,19 +65,21 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
         value: parsedDefaultValueTo
       }).value
     }
-    if (isEmptyValue(parsedDefaultValueTo)) {
+    if (isEmptyValue(parsedDefaultValueTo) && String(parsedDefaultValueTo).trim() !== '-1') {
       parsedDefaultValueTo = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
         columnName: `${fieldToGenerate.columnName}_To`
       })
-    }
-    if (isEmptyValue(parsedDefaultValueTo) && !isEmptyValue(fieldToGenerate.elementName)) {
-      parsedDefaultValueTo = getPreference({
-        parentUuid: fieldToGenerate.parentUuid,
-        containerUuid: fieldToGenerate.containerUuid,
-        columnName: `${fieldToGenerate.elementName}_To`
-      })
+
+      // search value preference with elementName
+      if (isEmptyValue(parsedDefaultValueTo) && !isEmptyValue(fieldToGenerate.elementName)) {
+        parsedDefaultValueTo = getPreference({
+          parentUuid: fieldToGenerate.parentUuid,
+          containerUuid: fieldToGenerate.containerUuid,
+          columnName: `${fieldToGenerate.elementName}_To`
+        })
+      }
     }
   }
   parsedDefaultValueTo = parsedValueComponent({
@@ -101,9 +105,9 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
     parsedDefaultValue,
     parsedDefaultValueTo,
     // logics to app
-    isDisplayedFromLogic: Boolean(fieldToGenerate.isDisplayed),
-    isReadOnlyFromLogic: Boolean(fieldToGenerate.isReadOnly),
-    isMandatoryFromLogic: Boolean(fieldToGenerate.isMandatory),
+    isDisplayedFromLogic: fieldToGenerate.isDisplayed,
+    isReadOnlyFromLogic: false,
+    isMandatoryFromLogic: false,
     //
     parentFieldsList: [],
     dependentFieldsList: [],

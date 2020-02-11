@@ -10,7 +10,7 @@ import { convertValueFromGRPC } from '@/api/ADempiere/data'
 export function isEmptyValue(value) {
   if (value === undefined || value == null) {
     return true
-  } else if (value === -1 || value === '-1') {
+  } else if (value === -1 || String(value).trim() === '-1') {
     return true
   } else if (typeof value === 'string') {
     return Boolean(!value.trim().length)
