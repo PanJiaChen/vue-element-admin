@@ -195,6 +195,9 @@ const data = {
             // overwrite value with column link
             if (!isEmptyValue(linkColumnName) && linkColumnName === itemField.columnName) {
               valueGetDisplayColumn = valueLink
+              if (isEmptyValue(values[itemField.columnName])) {
+                values[itemField.columnName] = valueGetDisplayColumn
+              }
             }
 
             // break this itineration if is empty
@@ -209,7 +212,7 @@ const data = {
                 valueGetDisplayColumn = parseInt(valueGetDisplayColumn, 10)
               }
             }
-            if (!isEmptyValue(valueGetDisplayColumn) && String(valueGetDisplayColumn) === '[object Object]') {
+            if (!isEmptyValue(valueGetDisplayColumn) && String(valueGetDisplayColumn) === '[object Object]' && valueGetDisplayColumn.isSQL) {
               // get value from direct Query
               dispatch('getRecordBySQL', {
                 query: valueGetDisplayColumn.query,
@@ -226,7 +229,7 @@ const data = {
                       containerUuid,
                       isNew,
                       isEdit,
-                      values
+                      row: values
                     })
                   }
                 })
@@ -246,6 +249,9 @@ const data = {
             // if there is a lookup option, assign the display column with the label
             if (option) {
               values[`DisplayColumn_${itemField.columnName}`] = option.label
+              if (isEmptyValue(option.label) && !itemField.isMandatory) {
+                values[itemField.columnName] = undefined
+              }
               return
             }
             if (linkColumnName === itemField.columnName) {
@@ -629,8 +635,8 @@ const data = {
     notifyRowTableChange({ commit, getters, rootGetters }, objectParams) {
       const { parentUuid, containerUuid, isEdit = true } = objectParams
       var currentValues = {}
-      if (objectParams.hasOwnProperty('values')) {
-        currentValues = objectParams.values
+      if (objectParams.hasOwnProperty('row')) {
+        currentValues = objectParams.row
       } else {
         currentValues = rootGetters.getColumnNamesAndValues({
           parentUuid,

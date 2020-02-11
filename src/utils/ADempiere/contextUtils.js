@@ -73,7 +73,6 @@ export function parseContext({
   isSQL = false,
   isBooleanToString = false
 }) {
-  // const isBooleanToString = value.includes('@SQL=')
   let isError = false
   const errorsList = []
   value = String(value)
@@ -94,74 +93,78 @@ export function parseContext({
   // }
 
   var token
-  var inStr = value
-  var outStr = ''
+  var inString = value
+  var outString = ''
 
-  let firstIndexTag = inStr.indexOf('@')
+  let firstIndexTag = inString.indexOf('@')
 
   while (firstIndexTag !== -1) {
-    outStr = outStr + inStr.substring(0, firstIndexTag) // up to @
-    inStr = inStr.substring(firstIndexTag + 1, inStr.length) // from first @
-    const secondIndexTag = inStr.indexOf('@') // next @
+    outString = outString + inString.substring(0, firstIndexTag) // up to @
+    inString = inString.substring(firstIndexTag + 1, inString.length) // from first @
+    const secondIndexTag = inString.indexOf('@') // next @
     // no exists second tag
     if (secondIndexTag < 0) {
-      console.info(`No second tag: ${inStr}`)
+      console.info(`No second tag: ${inString}`)
       return {
         value: undefined,
         isError: true,
-        errorsList
+        errorsList,
+        isSQL
       }
     }
 
-    token = inStr.substring(0, secondIndexTag)
+    token = inString.substring(0, secondIndexTag)
     columnName = token
 
-    var ctxInfo = getContext({
+    var contextInfo = getContext({
       parentUuid,
       containerUuid,
       columnName
     }) // get context
-    if (isBooleanToString && typeof ctxInfo === 'boolean') {
-      ctxInfo = 'N'
-      if (ctxInfo) {
-        ctxInfo = 'Y'
+    if (isBooleanToString && typeof contextInfo === 'boolean') {
+      if (contextInfo) {
+        contextInfo = 'Y'
+      } else {
+        contextInfo = 'N'
       }
     }
 
-    if ((ctxInfo === undefined || ctxInfo.length === 0) &&
+    if ((contextInfo === undefined || contextInfo.length === 0) &&
       (token.startsWith('#') || token.startsWith('$'))) {
-      ctxInfo = getContext({
+      contextInfo = getContext({
         columnName
       }) // get global context
     }
-    if (ctxInfo === undefined || ctxInfo.length === 0) {
+    if (contextInfo === undefined || contextInfo.length === 0) {
       console.info(`No Context for: ${token}`)
       isError = true
       errorsList.push(token)
     } else {
-      if (typeof ctxInfo === 'object') {
-        outStr = ctxInfo
+      if (typeof contextInfo === 'object') {
+        outString = contextInfo
       } else {
-        outStr = outStr + ctxInfo // replace context with Context
+        outString = outString + contextInfo // replace context with Context
       }
     }
 
-    inStr = inStr.substring(secondIndexTag + 1, inStr.length) // from second @
-    firstIndexTag = inStr.indexOf('@')
+    inString = inString.substring(secondIndexTag + 1, inString.length) // from second @
+    firstIndexTag = inString.indexOf('@')
   }
-  if (typeof ctxInfo !== 'object') {
-    outStr = outStr + inStr // add the rest of the string
+  if (typeof contextInfo !== 'object') {
+    outString = outString + inString // add the rest of the string
   }
   if (isSQL) {
     return {
-      query: outStr,
-      value: ctxInfo
+      query: outString,
+      value: contextInfo,
+      isSQL
     }
   }
   return {
-    value: outStr,
+    value: outString,
     isError,
-    errorsList
+    errorsList,
+    isSQL
   }
 } // parseContext
 

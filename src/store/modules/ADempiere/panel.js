@@ -1073,14 +1073,14 @@ const panel = {
               columnName: fieldItem.columnName,
               value: fieldItem.defaultValue,
               isSQL
-            }).value
+            })
           }
 
           valueToReturn = parsedValueComponent({
             fieldType: fieldItem.componentPath,
             referenceType: fieldItem.referenceType,
             isMandatory: fieldItem.isMandatory,
-            value: valueToReturn
+            value: String(valueToReturn) === '[object Object]' && valueToReturn.isSQL ? valueToReturn : String(valueToReturn) === '[object Object]' ? valueToReturn.value : valueToReturn
           })
           attributesObject[fieldItem.columnName] = valueToReturn
 
