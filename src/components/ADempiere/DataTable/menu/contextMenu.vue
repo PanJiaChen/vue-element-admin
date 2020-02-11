@@ -12,7 +12,7 @@
       >
         {{ $t('components.contextMennuWindowReport') }}
       </template>
-      <template v-for="(format, index) in option">
+      <template v-for="(format, index) in supportedTypes">
         <el-menu-item
           :key="index"
           :index="index"
@@ -31,7 +31,7 @@
       v-for="(process, key) in processMenu"
       :key="key"
       index="process"
-      @click="tableProcess(process)"
+      @click="showModalTable(process)"
     >
       {{ process.name }}
     </el-menu-item>

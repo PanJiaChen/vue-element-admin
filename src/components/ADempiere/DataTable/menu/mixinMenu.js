@@ -44,20 +44,12 @@ export const menuTableMixin = {
   },
   data() {
     return {
-      option: supportedTypes,
-      typoFormatExport: [],
+      supportedTypes,
       menuTable: '1',
-      isCollapse: true,
-      visible: false
+      isCollapse: true
     }
   },
   computed: {
-    isProcessTable() {
-      if (this.processMenu) {
-        return true
-      }
-      return false
-    },
     classTableMenu() {
       if (this.isMobile) {
         return 'menu-table-mobile'
@@ -160,11 +152,6 @@ export const menuTableMixin = {
         return fieldItem.columnName
       })
     },
-    gettersRecordContextMenu() {
-      const record = []
-      record.push(this.isOption)
-      return record
-    },
     permissionRoutes() {
       return this.$store.getters.permission_routes
     }
@@ -179,7 +166,7 @@ export const menuTableMixin = {
         isShowedTabChildren: false
       })
     },
-    showModal(process) {
+    showModalTable(process) {
       const processData = this.$store.getters.getProcess(process.uuid)
       if (!this.isOption) {
         this.$store.dispatch('setProcessSelect', {
@@ -221,9 +208,6 @@ export const menuTableMixin = {
           action: processData
         })
       }
-    },
-    tableProcess(process) {
-      this.showModal(process)
     },
     showTotals() {
       this.$store.dispatch('changePanelAttributesBoolean', {
@@ -276,10 +260,6 @@ export const menuTableMixin = {
         containerUuid: this.containerUuid,
         attributeName: 'isShowedTableOptionalColumns'
       })
-    },
-    fixedPanel() {
-      this.showTableSearch = false
-      this.isFixed = !this.isFixed
     },
     typeFormat(key, keyPath) {
       Object.keys(supportedTypes).forEach(type => {

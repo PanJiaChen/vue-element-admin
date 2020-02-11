@@ -28,7 +28,7 @@
               />
             </div>
             <el-card
-              :shadow="isMobile ? 'never' : 'hover'"
+              :shadow="shadowGroup"
               :body-style="{ padding: '10px' }"
             >
               <el-row :gutter="gutterRow">
@@ -40,7 +40,8 @@
                     :container-uuid="containerUuid"
                     :metadata-field="{
                       ...fieldAttributes,
-                      optionCRUD
+                      optionCRUD,
+                      recordUuid: uuidRecord
                     }"
                     :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                     :panel-type="panelType"
@@ -72,7 +73,7 @@
                   class="card"
                 >
                   <el-card
-                    :shadow="isMobile ? 'never' : 'hover'"
+                    :shadow="shadowGroup"
                     :body-style="{ padding: '10px' }"
                   >
                     <div slot="header" class="clearfix">
@@ -98,7 +99,8 @@
                           :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
-                            optionCRUD
+                            optionCRUD,
+                            recordUuid: uuidRecord
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                           :panel-type="panelType"
@@ -125,7 +127,7 @@
                   class="card"
                 >
                   <el-card
-                    :shadow="isMobile ? 'never' : 'hover'"
+                    :shadow="shadowGroup"
                     :body-style="{ padding: '10px' }"
                   >
                     <div slot="header" class="clearfix">
@@ -150,7 +152,8 @@
                           :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
-                            optionCRUD
+                            optionCRUD,
+                            recordUuid: uuidRecord
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
                           :panel-type="panelType"
@@ -239,6 +242,12 @@ export default {
     }
   },
   computed: {
+    shadowGroup() {
+      if (this.isMobile) {
+        return 'never'
+      }
+      return 'hover'
+    },
     optionCRUD() {
       return this.isEmptyValue(this.uuidRecord) ? 'create-new' : this.uuidRecord
     },
@@ -251,12 +260,14 @@ export default {
       }
       return false
     },
+    getterPanel() {
+      return this.$store.getters.getPanel(this.containerUuid, this.isAdvancedQuery)
+    },
     getterFieldList() {
-      const panel = this.$store.getters.getPanel(this.containerUuid, this.isAdvancedQuery)
-      if (panel) {
-        return panel.fieldList
+      if (this.getterPanel) {
+        return this.getterPanel.fieldList
       }
-      return panel
+      return undefined
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -271,19 +282,8 @@ export default {
         record: []
       }
     },
-    getterTotalDataRecordCount() {
-      return this.getterDataStore.recordCount
-    },
     getterIsLoadedRecord() {
       return this.getterDataStore.isLoaded
-    },
-    getterRowData() {
-      if (this.isPanelWindow) {
-        if (!this.isEmptyValue(this.uuidRecord) && this.uuidRecord !== 'create-new') {
-          return this.$store.getters.getRowData(this.containerUuid, this.uuidRecord)
-        }
-      }
-      return false
     },
     classCards() {
       if (this.isMobile || this.fieldGroups.length < 2 || this.getterIsShowedRecordNavigation) {
@@ -299,14 +299,6 @@ export default {
         this.generatePanel(this.metadata.fieldList)
       }
     },
-    // used if the first load contains a uuid
-    isLoadRecord(value) {
-      // TODO: Validate UUID value
-      if (value && this.isPanelWindow && this.uuidRecord !== 'create-new' &&
-        !this.isEmptyValue(this.uuidRecord)) {
-        this.setTagsViewTitle(this.uuidRecord)
-      }
-    },
     '$route.query.action'(newValue, oldValue) {
       // used in field, if uuid record or different create-new, field is read only
       this.uuidRecord = newValue
@@ -317,7 +309,7 @@ export default {
     },
     isLoadPanel(value) {
       if (value) {
-        this.readParameters(this.$route)
+        this.readParameters()
       }
     }
   },
@@ -364,7 +356,7 @@ export default {
     /**
      * TODO: Delete route parameters after reading them
      */
-    readParameters(route) {
+    readParameters() {
       var parameters = {
         isLoadAllRecords: true,
         isReference: false,
@@ -372,6 +364,7 @@ export default {
         isWindow: true,
         criteria: {}
       }
+      const route = this.$route
       if (this.isPanelWindow) {
         // TODO: use action notifyPanelChange with isShowedField in true
         this.getterFieldList.forEach(fieldItem => {
@@ -415,7 +408,8 @@ export default {
               parameters.criteria[param] = route.params[param]
             }
           })
-        } else if (route.query.action && route.query.action !== 'create-new' && route.query.action !== 'reference' && route.query.action !== 'advancedQuery' && route.query.action !== 'criteria') {
+        } else if (!this.isEmptyValue(route.query.action) &&
+          !['create-new', 'reference', 'advancedQuery', 'criteria'].includes(route.query.action)) {
           parameters.isLoadAllRecords = false
           parameters.value = route.query.action
           parameters.tableName = this.metadata.tableName
@@ -458,7 +452,7 @@ export default {
             fieldList: this.fieldList,
             panelType: this.panelType
           })
-        } else if (this.panelType === 'process' || this.panelType === 'browser') {
+        } else if (['process', 'browser'].includes(this.panelType)) {
           if (!this.isEmptyValue(route.query)) {
             this.$store.dispatch('notifyPanelChange', {
               containerUuid: this.containerUuid,
@@ -495,9 +489,10 @@ export default {
                   name: this.$route.name,
                   query: {
                     ...this.$route.query,
-                    action: this.dataRecordsq
+                    action: this.dataRecords
                   },
                   params: {
+                    ...this.$route.params,
                     tableName: this.metadata.tableName,
                     recordId: this.dataRecords[`${this.metadata.tableName}_ID`]
                   }
@@ -560,7 +555,6 @@ export default {
                 }
               })
             }
-            this.setFocus()
           })
       }
     },
@@ -616,16 +610,17 @@ export default {
       return groupsList
     },
     setTagsViewTitle(actionValue) {
-      if (actionValue === 'create-new' || actionValue === '') {
+      if (actionValue === 'create-new' || this.isEmptyValue(actionValue)) {
         this.tagTitle.action = this.$t('tagsView.newRecord')
       } else if (actionValue === 'advancedQuery') {
         this.tagTitle.action = this.$t('tagsView.advancedQuery')
       } else {
-        const field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
-        if (field) {
-          if (this.dataRecords[field.columnName]) {
-            this.tagTitle.action = this.dataRecords[field.columnName]
+        const { identifierColumns } = this.getterPanel
+        if (!this.isEmptyValue(identifierColumns)) {
+          if (this.dataRecords[identifierColumns[0]]) {
+            this.tagTitle.action = this.dataRecords[identifierColumns[0]]
           } else {
+            const field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
             this.tagTitle.action = field.value
           }
         } else {
@@ -644,7 +639,7 @@ export default {
     },
     changePanelRecord(uuidRecord) {
       if (!['create-new', 'reference', 'advancedQuery', 'criteria'].includes(uuidRecord)) {
-        const recordSelected = this.$store.getters.getDataRecordsList(this.containerUuid).find(record => record.UUID === uuidRecord)
+        const recordSelected = this.getterDataStore.record.find(record => record.UUID === uuidRecord)
         if (recordSelected) {
           this.dataRecords = recordSelected
           this.$store.dispatch('notifyPanelChange', {
@@ -656,11 +651,13 @@ export default {
             fieldList: this.fieldList,
             panelType: this.panelType
           }).then(() => {
-            // delete records tabs children when change record uuid
-            this.$store.dispatch('deleteRecordContainer', {
-              viewUuid: this.parentUuid,
-              withOut: [this.containerUuid]
-            })
+            if (this.getterPanel.isTabsChildren) {
+              // delete records tabs children when change record uuid
+              this.$store.dispatch('deleteRecordContainer', {
+                viewUuid: this.parentUuid,
+                withOut: [this.containerUuid]
+              })
+            }
           })
         }
       }

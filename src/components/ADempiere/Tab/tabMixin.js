@@ -22,31 +22,10 @@ export const tabMixin = {
   computed: {
     isCreateNew() {
       return Boolean(this.$route.query.action === 'create-new')
-    },
-    getterDataRecords() {
-      return this.$store.getters.getDataRecordsList(this.tabUuid)
-    },
-    getTabsList() {
-      return this.tabsList.filter(tab => !tab.isSortTab)
-    }
-  },
-  watch: {
-    // Refrest the records of the TabChildren
-    getDataSelection(value) {
-      if (!value.isLoaded && this.getterIsLoadContextParent && this.getterIsLoadRecordParent) {
-        this.getDataTable()
-      }
-    },
-    // Load parent tab context
-    getterIsLoadContextParent(value) {
-      if (value && !this.getDataSelection.isLoaded && this.getterIsLoadRecordParent) {
-        this.getDataTable()
-      }
     }
   },
   created() {
-    const tabs = this.tabsList.filter(item => !item.isSortTab)
-    this.tabUuid = tabs[0].uuid
+    this.tabUuid = this.tabsList[0].uuid
   },
   methods: {
     parseContext,
@@ -74,9 +53,7 @@ export const tabMixin = {
       }
     },
     handleBeforeLeave(activeName) {
-      const metadataTab = this.tabsList
-        .filter(tab => !tab.isSortTab)
-        .find(tab => tab.index === parseInt(activeName))
+      const metadataTab = this.tabsList.find(tab => tab.index === parseInt(activeName), 10)
       if (!this.isEmptyValue(metadataTab.whereClause) && metadataTab.whereClause.includes('@')) {
         metadataTab.whereClause = parseContext({
           parentUuid: metadataTab.parentUuid,

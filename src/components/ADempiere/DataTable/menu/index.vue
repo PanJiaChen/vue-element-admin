@@ -29,7 +29,7 @@
         :key="key"
         :disabled="Boolean(getDataSelection.length < 1)"
         index="process"
-        @click="tableProcess(process)"
+        @click="showModalTable(process)"
       >
         {{ process.name }}
       </el-menu-item>
@@ -45,7 +45,7 @@
         <template slot="title">
           {{ $t('table.dataTable.exportRecordTable') }}
         </template>
-        <template v-for="(format, index) in option">
+        <template v-for="(format, index) in supportedTypes">
           <el-menu-item :key="index" :index="index">
             {{ format }}
           </el-menu-item>

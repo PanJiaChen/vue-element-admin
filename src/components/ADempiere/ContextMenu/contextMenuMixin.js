@@ -336,6 +336,7 @@ export const contextMixin = {
         return
       }
 
+      // TODO: Add store attribute to avoid making repeated requests
       if (this.panelType === 'window' && !this.isEmptyValue(this.$route.params.tableName)) {
         this.$store.dispatch('getPrivateAccessFromServer', {
           tableName: this.$route.params.tableName,
@@ -447,12 +448,6 @@ export const contextMixin = {
             .catch(error => {
               console.warn(error)
             })
-          if (this.panelType === 'process') {
-            // TODO: Verify use
-            this.$store.dispatch('deleteRecordContainer', {
-              viewUuid: this.$route
-            })
-          }
         } else {
           this.showNotification({
             type: 'warning',

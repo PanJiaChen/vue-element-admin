@@ -1,6 +1,6 @@
 <template>
   <el-tabs v-model="currentTab" type="border-card" :before-leave="handleBeforeLeave" @tab-click="handleClick">
-    <template v-for="(tabAttributes, key) in getTabsList">
+    <template v-for="(tabAttributes, key) in tabsList">
       <el-tab-pane
         :key="key"
         :label="tabAttributes.name"
@@ -9,7 +9,7 @@
         :name="String(key)"
         lazy
         :disabled="Boolean(key > 0 && isCreateNew)"
-        :style="isShowedDetail ? { height: '100%', overflow: 'hidden' } : { height: '75vh', overflow: 'auto' }"
+        :style="tabParentStyle"
       >
         <main-panel
           :parent-uuid="windowUuid"
@@ -17,7 +17,6 @@
           :metadata="tabAttributes"
           :group-tab="tabAttributes.tabGroup"
           :panel-type="panelType"
-          :is-re-search="Boolean(key == 0 || (key > 0 && firstTableName != tabAttributes.tableName))"
         />
       </el-tab-pane>
     </template>
@@ -35,19 +34,30 @@ export default {
   },
   mixins: [tabMixin],
   computed: {
+    getWindow() {
+      return this.$store.getters.getWindow(this.windowUuid)
+    },
     // if tabs children is showed or closed
-    isShowedDetail() {
-      const window = this.$store.getters.getWindow(this.windowUuid)
-      if (window) {
-        return window.isShowedDetail
+    isShowedTabsChildren() {
+      return this.getWindow.isShowedTabsChildren
+    },
+    tabParentStyle() {
+      if (this.isShowedTabsChildren) {
+        return {
+          height: '100%',
+          overflow: 'hidden'
+        }
       }
-      return undefined
+      return {
+        height: '75vh',
+        overflow: 'auto'
+      }
     }
   },
   watch: {
     // TODO: Remove watchers of action, and pased as props from window
     '$route.query.action'(actionValue) {
-      if (actionValue === 'create-new') {
+      if (this.isEmptyValue(actionValue) || actionValue === 'create-new') {
         this.currentTab = '0'
       }
     },

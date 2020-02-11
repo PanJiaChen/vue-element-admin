@@ -19,12 +19,30 @@
               trigger="hover"
             >
               <div v-html="processMetadata.help" />
-              <el-button slot="reference" type="text" class="title">{{ processMetadata.name }}</el-button>
+              <el-button slot="reference" type="text" class="title">
+                {{ processMetadata.name }}
+              </el-button>
             </el-popover>
           </h3>
-          <iframe v-if="reportFormat === 'pdf'" key="report-content-pdf" class="content-api" :src="url" width="100%" height="100%" />
-          <div v-else-if="collectionReportFormat.includes(reportFormat)" key="report-content-all" class="content-api" :src="url" />
-          <div v-else-if="reportFormat === 'html'" key="report-content-html" class="content-txt">
+          <iframe
+            v-if="reportFormat === 'pdf'"
+            key="report-content-pdf"
+            class="content-api"
+            :src="url"
+            width="100%"
+            height="100%"
+          />
+          <div
+            v-else-if="collectionReportFormat.includes(reportFormat)"
+            key="report-content-all"
+            class="content-api"
+            :src="url"
+          />
+          <div
+            v-else-if="reportFormat === 'html'"
+            key="report-content-html"
+            class="content-txt"
+          >
             <el-container class="sub-content-html">
               <el-main style="padding: 0;">
                 <div
@@ -69,7 +87,6 @@ export default {
   data() {
     return {
       panelType: 'process',
-      url: this.$store.getters.getProcessResult.url,
       name: [],
       reportFormat: '',
       collectionReportFormat: [
@@ -93,6 +110,9 @@ export default {
     // TODO: Add get metadata from server to open report view from link
     processMetadata() {
       return this.$store.getters.getProcessById(this.$route.params.processId)
+    },
+    url() {
+      return this.$store.getters.getProcessResult.url
     },
     getterCachedReport() {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid)

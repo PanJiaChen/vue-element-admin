@@ -2,7 +2,8 @@ import {
   getWindow as getWindowMetadata,
   getTab as getTabMetadata
 } from '@/api/ADempiere/dictionary'
-import { showMessage } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 import router from '@/router'
 import { generateField, getFieldTemplate } from '@/utils/ADempiere/dictionaryUtils'
@@ -21,11 +22,8 @@ const window = {
       state.window = []
       state.windowIndex = 0
     },
-    changeShowedDetailWindow(state, payload) {
-      payload.window.isShowedDetail = payload.changeShowedDetail
-    },
-    changeShowedRecordWindow(state, payload) {
-      payload.window.isShowedRecordNavigation = payload.isShowedRecordNavigation
+    changeWindow(state, payload) {
+      payload.window = payload.newWindow
     },
     setCurrentTab(state, payload) {
       payload.window.currentTabUuid = payload.tabUuid
@@ -197,9 +195,9 @@ const window = {
 
             if (tab.isParentTab) {
               parentTabs.push(tab)
-            } else {
-              childrenTabs.push(tab)
+              return tab
             }
+            childrenTabs.push(tab)
             return tab
           })
 
@@ -209,16 +207,18 @@ const window = {
             tabsListParent: parentTabs,
             tabsListChildren: childrenTabs,
             // app attributes
-            isShowedDetail: Boolean(childrenTabs.length),
             currentTabUuid: parentTabs[0].uuid
           }
 
           const newWindow = {
             ...responseWindow,
             ...tabProperties,
-            isShowedRecordNavigation: undefined,
             firstTabUuid,
-            windowIndex: state.windowIndex + 1
+            windowIndex: state.windowIndex + 1,
+            // App properties
+            isShowedTabsChildren: Boolean(childrenTabs.length),
+            isShowedRecordNavigation: undefined,
+            isShowedAdvancedQuery: false
           }
           commit('addWindow', newWindow)
           return newWindow
@@ -300,6 +300,7 @@ const window = {
             fieldsList.push(field)
           }
 
+          const window = getters.getWindow(parentUuid)
           //  Panel for save on store
           const panel = {
             ...getters.getTab(parentUuid, containerUuid),
@@ -308,7 +309,8 @@ const window = {
             fieldList: fieldsList,
             panelType,
             // app attributes
-            isShowedTotals: false
+            isShowedTotals: false,
+            isTabsChildren: Boolean(window.tabsListChildren.length)
           }
 
           dispatch('addPanel', panel)
@@ -326,28 +328,20 @@ const window = {
           console.warn(`Dictionary Tab (State Window) - Error ${error.code}: ${error.message}.`)
         })
     },
-    changeShowedDetailWindow({ commit, state }, {
-      containerUuid,
-      isShowedDetail = true
-    }) {
-      const window = state.window.find(itemWindow => {
-        return itemWindow.uuid === containerUuid
-      })
-      commit('changeShowedDetailWindow', {
-        window: window,
-        changeShowedDetail: isShowedDetail
-      })
-    },
-    changeShowedRecordWindow({ commit, state }, {
+    changeWindowAttribute({ commit, getters }, {
       parentUuid,
-      isShowedRecordNavigation = true
+      window,
+      attributeName,
+      attributeValue
     }) {
-      const window = state.window.find(itemWindow => {
-        return itemWindow.uuid === parentUuid
-      })
-      commit('changeShowedRecordWindow', {
-        window: window,
-        isShowedRecordNavigation: isShowedRecordNavigation
+      if (isEmptyValue(window)) {
+        window = getters.getWindow(parentUuid)
+      }
+      const newWindow = window
+      newWindow[attributeName] = attributeValue
+      commit('changeWindow', {
+        window,
+        newWindow
       })
     },
     /**

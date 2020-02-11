@@ -58,7 +58,7 @@ const lookup = {
             option: option,
             value: value, // isNaN(objectParams.value) ? objectParams.value : parseInt(objectParams.value, 10),
             parsedDirectQuery: directQuery,
-            tableName: tableName,
+            tableName,
             roleUuid: getCurrentRole(),
             clientId: rootGetters.getContextClientId
           })
@@ -142,8 +142,8 @@ const lookup = {
       let parsedQuery = query
       if (parsedQuery && parsedQuery.includes('@')) {
         parsedQuery = parseContext({
-          parentUuid: parentUuid,
-          containerUuid: containerUuid,
+          parentUuid,
+          containerUuid,
           value: parsedQuery,
           isBooleanToString: true
         }).value
@@ -154,8 +154,8 @@ const lookup = {
         itemLookup.roleUuid !== getCurrentRole()
       })
       commit('deleteLookupList', {
-        lookupItem: lookupItem,
-        lookupList: lookupList
+        lookupItem,
+        lookupList
       })
     }
   },

@@ -1,5 +1,5 @@
 <template>
-  <el-col v-if="items.children" :span="24">
+  <el-col v-if="items.children" key="is-desktop-dropdown" :span="24">
     <el-collapse v-model="activeNames">
       <el-collapse-item :title="title" name="1" class="collapse-item">
         <el-row justify="space-around">
@@ -26,7 +26,7 @@
       </el-collapse-item>
     </el-collapse>
   </el-col>
-  <el-col v-else :span="isMobile">
+  <el-col v-else key="is-mobile-dropdown" :span="isMobile">
     <el-card
       shadow="never"
       class="custom-card"
@@ -71,9 +71,8 @@ export default {
     isMobile() {
       if (this.device === 'mobile') {
         return 24
-      } else {
-        return 8
       }
+      return 8
     }
   },
   methods: {
@@ -81,11 +80,11 @@ export default {
       if (item.meta && item.meta.type === 'window') {
         this.$router.push({
           name: item.name,
-          query: {
-            tabParent: 0
-          },
           params: {
             childs: item.children
+          },
+          query: {
+            tabParent: 0
           }
         })
       } else {

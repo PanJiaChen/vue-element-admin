@@ -2,6 +2,7 @@ import { login, logout, getInfo, getSessionInfo, changeRole } from '@/api/user'
 import { getToken, setToken, removeToken, getCurrentRole, setCurrentRole, removeCurrentRole } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
+import language from '@/lang'
 
 const state = {
   token: getToken(),
@@ -188,7 +189,29 @@ const actions = {
     })
   },
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, roleUuid) {
+  changeRoles({ commit, dispatch }, {
+    roleUuid,
+    isCloseAllViews = true
+  }) {
+    const route = router.app._route
+    const selectedTag = {
+      fullPath: route.fullPath,
+      hash: route.hash,
+      matched: route.matched,
+      meta: route.meta,
+      name: route.name,
+      params: route.params,
+      path: route.path,
+      query: route.query,
+      title: route.meta.title
+    }
+    console.log(selectedTag)
+    if (isCloseAllViews) {
+      dispatch('tagsView/delAllViews', selectedTag, { root: true })
+    } else {
+      dispatch('tagsView/delOthersViews', selectedTag, { root: true })
+    }
+
     return changeRole({
       sessionUuid: getToken(),
       roleUuid: roleUuid,
@@ -204,21 +227,7 @@ const actions = {
 
         // Update user info and context associated with session
         dispatch('getInfo', changeRoleResponse.uuid)
-          .then(() => {
-            const route = router.app._route
-            const selectedTag = {
-              fullPath: route.fullPath,
-              hash: route.hash,
-              matched: route.matched,
-              meta: route.meta,
-              name: route.name,
-              params: route.params,
-              path: route.path,
-              query: route.query,
-              title: route.meta.title
-            }
-            dispatch('tagsView/delOthersViews', selectedTag, { root: true })
-          })
+
         dispatch('clearProcessControl', null, {
           root: true
         })
@@ -226,6 +235,10 @@ const actions = {
           root: true
         })
 
+        showMessage({
+          message: language.t('notifications.successChangeRole'),
+          type: 'success'
+        })
         return {
           ...role,
           sessionUuid: changeRoleResponse.uuid
@@ -238,6 +251,15 @@ const actions = {
         })
         console.warn(`Error change role: ${error.message}. Code: ${error.code}.`)
       })
+      .finally(() => {
+        resetRouter()
+        dispatch('permission/generateRoutes', null, {
+          root: true
+        })
+          .then(response => {
+            router.addRoutes(response)
+          })
+      })
     //  return new Promise(async resolve => {
     //  const token = role
     //  commit('SET_TOKEN', token)
@@ -245,7 +267,7 @@ const actions = {
     //  setToken(token)
     //  const { roles } = await dispatch('getInfo')
 
-    //  generate accessible routes map based on   roles
+    //  generate accessible routes map based on roles
     //  const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
 
     //  dynamically add accessible routes

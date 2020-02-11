@@ -1,3 +1,4 @@
+import Vue from 'vue'
 
 const utils = {
   state: {
@@ -14,7 +15,17 @@ const utils = {
     isShowedTabChildren: false,
     recordTable: 0,
     selectionProcess: [],
-    isContainerInfo: false
+    isContainerInfo: false,
+    openRoute: {
+      path: '',
+      name: '',
+      route: {},
+      params: {},
+      definedParameters: {},
+      query: {},
+      isReaded: false,
+      isLoaded: false
+    }
   },
   mutations: {
     setWidth(state, width) {
@@ -55,6 +66,16 @@ const utils = {
     },
     setReportTypeToShareLink(state, payload) {
       state.reportType = payload
+    },
+    setOpenRoute(state, payload) {
+      state.openRoute = {
+        ...state.openRoute,
+        ...payload
+      }
+    },
+    setReadRoute(state, payload) {
+      Vue.set(state.openRoute, 'definedParameters', payload.parameters)
+      Vue.set(state.openRoute, 'isLoaded', true)
     }
   },
   actions: {
@@ -88,12 +109,13 @@ const utils = {
     setProcessSelect({ commit }, params) {
       commit('setProcessSelecetion', params)
     },
-    changeShowedDetail({ dispatch }, params) {
-      if (params.panelType === 'window') {
-        dispatch('changeShowedDetailWindow', params)
-      } else if (params.panelType === 'browser') {
-        dispatch('changeShowedCriteriaBrowser', params)
-      }
+    setOpenRoute({ commit }, routeParameters) {
+      commit('setOpenRoute', {
+        ...routeParameters
+      })
+    },
+    setReadRoute({ commit }, parameters) {
+      commit('setReadRoute', parameters)
     },
     setTempShareLink({ commit }, parameters) {
       if (!parameters.href.includes(String(parameters.processId))) {
@@ -159,6 +181,12 @@ const utils = {
     },
     getReportType: (state) => {
       return state.reportType
+    },
+    getIsLoadedOpenRoute: (state) => {
+      return state.openRoute.isLoaded
+    },
+    getIsReadedOpenRoute: (state) => {
+      return state.openRoute.isReaded
     }
   }
 }

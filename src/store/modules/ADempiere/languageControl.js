@@ -189,8 +189,7 @@ const languageControl = {
     getTranslationByLanguage: (state, getters) => ({
       containerUuid,
       language,
-      recordUuid,
-      recordId
+      recordUuid
     }) => {
       const translationContainer = getters.getTranslationContainer(containerUuid)
       if (translationContainer && translationContainer.recordUuid === recordUuid) {

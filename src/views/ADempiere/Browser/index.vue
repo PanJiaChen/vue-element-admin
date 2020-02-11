@@ -135,14 +135,14 @@ export default {
   },
   methods: {
     handleChange(value) {
-      var showCriteria = false
+      let showCriteria = false
       if (this.activeSearch.length) {
         showCriteria = true
       }
-      this.$store.dispatch('changeShowedCriteriaBrowser', {
-        panelType: this.panelType,
+      this.$store.dispatch('changeBrowserAttribute', {
         containerUuid: this.browserUuid,
-        isShowedCriteria: showCriteria
+        attributeName: 'isShowedCriteria',
+        attributeValue: showCriteria
       })
     },
     getBrowser() {
@@ -150,20 +150,20 @@ export default {
         this.browserMetadata = this.getterBrowser
         this.isLoaded = true
         this.defaultSearch()
-      } else {
-        this.$store.dispatch('getPanelAndFields', {
-          containerUuid: this.browserUuid,
-          panelType: this.panelType,
-          routeToDelete: this.$route
-        })
-          .then(() => {
-            this.browserMetadata = this.getterBrowser
-            this.defaultSearch()
-          })
-          .finally(() => {
-            this.isLoaded = true
-          })
+        return
       }
+      this.$store.dispatch('getPanelAndFields', {
+        containerUuid: this.browserUuid,
+        panelType: this.panelType,
+        routeToDelete: this.$route
+      })
+        .then(() => {
+          this.browserMetadata = this.getterBrowser
+          this.defaultSearch()
+        })
+        .finally(() => {
+          this.isLoaded = true
+        })
     },
     defaultSearch() {
       // open or closed show criteria

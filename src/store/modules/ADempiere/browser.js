@@ -1,8 +1,10 @@
 import { getBrowser as getBrowserMetadata } from '@/api/ADempiere/dictionary'
-import { isEmptyValue, showMessage } from '@/utils/ADempiere'
+import { showMessage } from '@/utils/ADempiere/notification'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { generateField } from '@/utils/ADempiere/dictionaryUtils'
 import router from '@/router'
 import language from '@/lang'
+
 const browser = {
   state: {
     browser: []
@@ -14,8 +16,8 @@ const browser = {
     dictionaryResetCacheBrowser(state) {
       state.browser = []
     },
-    changeShowedCriteriaBrowser(state, payload) {
-      payload.browser.isShowedCriteria = payload.isShowedCriteria
+    changeBrowser(state, payload) {
+      payload.browser = payload.newBrowser
     }
   },
   actions: {
@@ -28,8 +30,8 @@ const browser = {
           .then(browserResponse => {
             const panelType = 'browser'
             const additionalAttributes = {
-              containerUuid: browserResponse.uuid,
-              panelType: panelType
+              containerUuid,
+              panelType
             }
             const {
               query,
@@ -90,17 +92,6 @@ const browser = {
                 })
               })
 
-            //  Panel for save on store
-            const newBrowser = {
-              ...browserResponse,
-              containerUuid: browserResponse.uuid,
-              fieldList: fieldsList,
-              panelType: panelType,
-              // app attributes
-              isMandatoryParams: isMandatoryParams,
-              isShowedCriteria: Boolean(fieldsList.length && isMandatoryParams),
-              isShowedTotals: true
-            }
             //  Convert from gRPC process list
             const actions = []
             if (process) {
@@ -112,27 +103,39 @@ const browser = {
                 description: process.description,
                 isReport: process.isReport,
                 isDirectPrint: process.isDirectPrint,
-                containerUuidAssociated: newBrowser.uuid,
+                containerUuidAssociated: containerUuid,
                 panelTypeAssociated: panelType
               })
               // TODO: No list of parameters
               // // add process associated in vuex store
               // dispatch('addProcessAssociated', {
               //   processToGenerate: process,
-              //   containerUuidAssociated: newBrowser.uuid
+              //   containerUuidAssociated: containerUuid
               // })
             }
-
-            dispatch('addPanel', newBrowser)
-            commit('addBrowser', newBrowser)
-
             //  Add process menu
             dispatch('setContextMenu', {
-              containerUuid: browserResponse.uuid,
+              containerUuid,
               relations: [],
-              actions: actions,
+              actions,
               references: []
             })
+
+            //  Panel for save on store
+            const newBrowser = {
+              ...browserResponse,
+              containerUuid: browserResponse.uuid,
+              fieldList: fieldsList,
+              panelType,
+              // app attributes
+              isMandatoryParams,
+              isShowedCriteria: Boolean(fieldsList.length && isMandatoryParams),
+              isShowedTotals: true
+            }
+
+            commit('addBrowser', newBrowser)
+            dispatch('addPanel', newBrowser)
+
             resolve(newBrowser)
           })
           .catch(error => {
@@ -146,13 +149,20 @@ const browser = {
           })
       })
     },
-    changeShowedCriteriaBrowser({ commit, getters }, {
+    changeBrowserAttribute({ commit, getters }, {
       containerUuid,
-      isShowedCriteria
+      browser,
+      attributeName,
+      attributeValue
     }) {
-      commit('changeShowedCriteriaBrowser', {
-        browser: getters.getBrowser(containerUuid),
-        isShowedCriteria: isShowedCriteria
+      if (isEmptyValue(browser)) {
+        browser = getters.getBrowser(containerUuid)
+      }
+      const newBrowser = browser
+      newBrowser[attributeName] = attributeValue
+      commit('changeBrowser', {
+        browser,
+        newBrowser
       })
     }
   },

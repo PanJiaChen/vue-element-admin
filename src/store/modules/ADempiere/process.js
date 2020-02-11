@@ -45,9 +45,9 @@ const process = {
 
             //  Add process menu
             dispatch('setContextMenu', {
-              containerUuid: processDefinition.uuid,
+              containerUuid,
               relations: [],
-              actions: actions,
+              actions,
               references: []
             })
             resolve(processDefinition)

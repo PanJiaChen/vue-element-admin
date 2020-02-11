@@ -51,7 +51,6 @@
 <script>
 import { getLanguage } from '@/lang'
 import { showMessage } from '@/utils/ADempiere'
-import { resetRouter } from '@/router'
 
 export default {
   name: 'ProfileRole',
@@ -90,27 +89,15 @@ export default {
   },
   methods: {
     showMessage,
-    resetRouter,
     handleChange(valueSelected) {
       this.$message({
         message: this.$t('notifications.loading'),
         iconClass: 'el-icon-loading'
       })
-      this.$store.dispatch('user/changeRoles', valueSelected)
-        .then(response => {
-          this.showMessage({
-            message: this.$t('notifications.successChangeRole'),
-            type: 'success'
-          })
-          this.$store.dispatch('permission/generateRoutes')
-            .then(response => {
-              this.resetRouter()
-              response.forEach(element => {
-                this.$router.resolve(element)
-              })
-              this.$router.addRoutes(response)
-            })
-        })
+      this.$store.dispatch('user/changeRoles', {
+        roleUuid: valueSelected,
+        isCloseAllViews: false
+      })
     },
     changeLanguage(languageValue) {
       this.currentLanguage = languageValue

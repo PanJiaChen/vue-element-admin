@@ -209,11 +209,12 @@ export default {
       })
         .then(responseLookupItem => {
           if (this.isPanelWindow) {
-            this.$store.dispatch('notifyFieldChangeDisplayColumn', {
+            this.$store.dispatch('changeFieldAttribure', {
               containerUuid: this.metadata.containerUuid,
               isAdvancedQuery: this.metadata.isAdvancedQuery,
               columnName: this.metadata.columnName,
-              displayColumn: responseLookupItem.label
+              attributeName: 'displayColumn',
+              attributeValue: responseLookupItem.label
             })
           }
           this.options = this.getterLookupAll

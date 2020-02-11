@@ -285,7 +285,7 @@ const data = {
 
       const dataStore = getters.getDataRecordsList(containerUuid)
       commit('addNewRow', {
-        values: values,
+        values,
         data: dataStore
       })
     },
@@ -359,8 +359,8 @@ const data = {
           newDataStore.record = dataStore.record.concat(newDataStore.record)
         }
         commit('setRecordSelection', {
-          dataStore: dataStore,
-          newDataStore: newDataStore
+          dataStore,
+          newDataStore
         })
       } else {
         commit('addRecordSelection', newDataStore)

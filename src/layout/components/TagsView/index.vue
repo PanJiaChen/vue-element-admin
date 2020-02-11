@@ -107,14 +107,13 @@ export default {
     generateTitle, // generateTitle by vue-i18n
     isActive(route) {
       if (route.name === 'Report Viewer') {
-        if (route.params.processId === this.$route.params.processId && route.params.tableName === this.$route.params.tableName) {
-          return route.params.processId === this.$route.params.processId
-        } else {
-          return route.path === this.$route.path
+        const isSameProcess = route.params.processId === this.$route.params.processId
+        if (isSameProcess && route.params.tableName === this.$route.params.tableName) {
+          return isSameProcess
         }
-      } else {
-        return route.name === this.$route.name
+        return route.path === this.$route.path
       }
+      return route.name === this.$route.name
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix
@@ -190,25 +189,32 @@ export default {
       })
     },
     closeSelectedTag(view) {
-      if (view.meta && view.meta.uuid && view.meta.type) {
-        this.$store.dispatch('resetPanelToNew', {
-          parentUuid: view.meta.type !== 'window' ? undefined : view.meta.uuid,
-          containerUuid: view.meta.type === 'window' ? view.meta.tabUuid : view.meta.uuid,
-          panelType: view.meta.type,
-          isNewRecord: false
-        })
-        if (view.meta.type === 'window' || view.meta.type === 'browser') {
-          this.$store.dispatch('deleteRecordContainer', {
-            viewUuid: view.meta.uuid
-          })
-          if (view.meta.type === 'window') {
-            this.$store.dispatch('setWindowOldRoute')
-          }
-        }
-      }
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
           this.toLastView(visitedViews, view)
+        }
+      }).finally(() => {
+        if (view.meta && view.meta.uuid && view.meta.type) {
+          let parentUuid
+          let containerUuid = view.meta.uuid
+          if (view.meta.type === 'window') {
+            parentUuid = view.meta.uuid
+            containerUuid = view.meta.tabUuid
+            this.$store.dispatch('setWindowOldRoute')
+          }
+
+          this.$store.dispatch('resetPanelToNew', {
+            parentUuid,
+            containerUuid,
+            panelType: view.meta.type,
+            isNewRecord: false
+          })
+
+          if (['window', 'browser'].includes(view.meta.type)) {
+            this.$store.dispatch('deleteRecordContainer', {
+              viewUuid: view.meta.uuid
+            })
+          }
         }
       })
     },

@@ -37,7 +37,7 @@
         <field-translated
           v-if="field.isTranslated && !isAdvancedQuery"
           :field-attributes="fieldAttributes"
-          :record-uuid="field.optionCRUD"
+          :record-uuid="field.recordUuid"
         />
       </template>
       <component
@@ -73,7 +73,7 @@ import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
  * reference (or type of visualization) of each field
  */
 export default {
-  name: 'Field',
+  name: 'FieldDefinition',
   components: {
     FieldContextInfo,
     FieldTranslated,
@@ -87,10 +87,6 @@ export default {
     containerUuid: {
       type: String,
       default: ''
-    },
-    metadataUuid: {
-      type: String,
-      default: undefined
     },
     panelType: {
       type: String,
@@ -277,8 +273,9 @@ export default {
           return true
         }
 
+        // TODO: Evaluate record uuid without route.action
         // edit mode is diferent to create new
-        let isWithRecord = this.field.optionCRUD !== 'create-new'
+        let isWithRecord = this.field.recordUuid !== 'create-new'
         if (this.inTable) {
           isWithRecord = !this.isEmptyValue(this.field.recordUuid)
         }

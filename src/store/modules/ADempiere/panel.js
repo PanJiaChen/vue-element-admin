@@ -32,9 +32,6 @@ const panel = {
     dictionaryResetCache(state) {
       state.panel = []
     },
-    changeFieldList(state, payload) {
-      payload.fieldList = payload.newFieldList
-    },
     changeField(state, payload) {
       payload.field = payload.newField
     },
@@ -152,7 +149,6 @@ const panel = {
       })
 
       commit('changePanel', {
-        containerUuid,
         panel,
         newPanel
       })
@@ -192,14 +188,18 @@ const panel = {
      * @param {array}   fieldsIncludes fields to set valueAttribute
      * @param {array}   fieldsExcludes fields to dont change
      */
-    changeFieldAttributesBoolean({ commit, getters }, parameters) {
-      const { containerUuid, attribute, valueAttribute, fieldsIncludes, fieldsExcludes } = parameters
-      var { fieldList = [] } = parameters
-      if (fieldList.length <= 0) {
-        fieldList = getters.getFieldsListFromPanel(containerUuid)
-      }
+    changeFieldAttributesBoolean({ commit, getters }, {
+      containerUuid,
+      isAdvancedQuery = false,
+      attribute,
+      valueAttribute,
+      fieldsIncludes = [],
+      fieldsExcludes = []
+    }) {
+      const panel = getters.getPanel(containerUuid, isAdvancedQuery)
+      const newPanel = panel
 
-      var newFields = fieldList.map(itemField => {
+      newPanel.fieldList = panel.fieldList.map(itemField => {
         // not change exlude field
         if (fieldsExcludes && fieldsExcludes.length && fieldsExcludes.includes(itemField.columnName)) {
           return itemField
@@ -213,22 +213,24 @@ const panel = {
         itemField[attribute] = !valueAttribute
         return itemField
       })
-      commit('changeFieldList', {
-        fieldList: fieldList,
-        newFieldList: newFields
+
+      commit('changePanel', {
+        panel,
+        newPanel
       })
     },
     /**
      * @param {string}  containerUuid
-     * @param {array}   fieldList
+     * @param {array}   fieldsList
      */
-    showOnlyMandatoryColumns({ dispatch, getters }, parameters) {
-      const { containerUuid } = parameters
-      var { fieldList = [] } = parameters
-      if (fieldList.length <= 0) {
-        fieldList = getters.getFieldsListFromPanel(containerUuid)
+    showOnlyMandatoryColumns({ dispatch, getters }, {
+      containerUuid,
+      fieldsList = []
+    }) {
+      if (fieldsList.length <= 0) {
+        fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-      const fieldsExcludes = fieldList.filter(fieldItem => {
+      const fieldsIncludes = fieldsList.filter(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (isMandatory) {
           return true
@@ -238,8 +240,8 @@ const panel = {
       })
 
       dispatch('changeFieldAttributesBoolean', {
-        containerUuid: containerUuid,
-        fieldsIncludes: fieldsExcludes,
+        containerUuid,
+        fieldsIncludes,
         attribute: 'isShowedTableFromUser',
         valueAttribute: true
       })
@@ -250,12 +252,12 @@ const panel = {
      */
     showAllAvailableColumns({ dispatch, getters }, {
       containerUuid,
-      fieldList = []
+      fieldsList = []
     }) {
-      if (fieldList.length <= 0) {
-        fieldList = getters.getFieldsListFromPanel(containerUuid)
+      if (fieldsList.length <= 0) {
+        fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-      const fieldsExcludes = fieldList.filter(fieldItem => {
+      const fieldsIncludes = fieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed && fieldItem.isDisplayedFromLogic && !fieldItem.isKey
         //  Verify for displayed and is active
         return fieldItem.isActive && isDisplayed
@@ -265,7 +267,7 @@ const panel = {
 
       dispatch('changeFieldAttributesBoolean', {
         containerUuid,
-        fieldsIncludes: fieldsExcludes,
+        fieldsIncludes,
         attribute: 'isShowedTableFromUser',
         valueAttribute: true
       })
@@ -283,54 +285,62 @@ const panel = {
       parentUuid,
       containerUuid,
       panelType = 'window',
-      isNewRecord = false,
-      fieldList = []
+      isNewRecord = false
     }) {
-      const defaultAttributes = getters.getParsedDefaultValues({
-        parentUuid,
-        containerUuid
-      })
-      if (panelType === 'window' && isNewRecord) {
-        // redirect to create new record
-        const oldRoute = router.app._route
-        router.push({
-          name: oldRoute.name,
-          query: {
-            ...oldRoute.query,
-            action: 'create-new'
-          }
-        })
-        showMessage({
-          message: language.t('data.createNewRecord'),
-          type: 'info'
+      return new Promise(resolve => {
+        const panel = getters.getPanel(containerUuid)
+        const defaultAttributes = getters.getParsedDefaultValues({
+          parentUuid,
+          containerUuid,
+          fieldsList: panel.fieldList
         })
 
-        if (!fieldList.length) {
-          fieldList = getters.getFieldsListFromPanel(containerUuid)
-        }
-        fieldList.forEach(fieldToBlanck => {
-          commit('changeFieldValueToNull', {
-            field: fieldToBlanck,
-            value: undefined
+        if (panelType === 'window' && isNewRecord) {
+          // redirect to create new record
+          const oldRoute = router.app._route
+          router.push({
+            name: oldRoute.name,
+            params: {
+              ...oldRoute.params
+            },
+            query: {
+              ...oldRoute.query,
+              action: 'create-new'
+            }
           })
-        })
+          showMessage({
+            message: language.t('data.createNewRecord'),
+            type: 'info'
+          })
 
-        // delete records tabs children when change record uuid
-        dispatch('deleteRecordContainer', {
-          viewUuid: parentUuid,
-          withOut: [containerUuid],
-          isNew: true
+          panel.fieldList.forEach(fieldToBlanck => {
+            commit('changeFieldValueToNull', {
+              field: fieldToBlanck,
+              value: undefined
+            })
+          })
+
+          if (panel.isTabsChildren) {
+            // delete records tabs children when change record uuid
+            dispatch('deleteRecordContainer', {
+              viewUuid: parentUuid,
+              withOut: [containerUuid],
+              isNew: true
+            })
+          }
+        }
+        dispatch('notifyPanelChange', {
+          parentUuid,
+          containerUuid,
+          panelType,
+          fieldList: panel.fieldList,
+          newValues: defaultAttributes,
+          isSendToServer: false,
+          // if isNewRecord active callouts, if window is closed no send callout
+          isSendCallout: isNewRecord,
+          isPrivateAccess: false
         })
-      }
-      dispatch('notifyPanelChange', {
-        parentUuid,
-        containerUuid,
-        panelType,
-        newValues: defaultAttributes,
-        isSendToServer: false,
-        // if isNewRecord active callouts, if window is closed no send callout
-        isSendCallout: isNewRecord,
-        isPrivateAccess: false
+        resolve(defaultAttributes)
       })
     },
     /**
@@ -351,7 +361,7 @@ const panel = {
       withOutColumnNames = [],
       isSendCallout = true,
       isAdvancedQuery = false,
-      isPrivateAccess = true,
+      isPrivateAccess = false,
       fieldList = []
     }) {
       if (!fieldList.length) {
@@ -384,6 +394,8 @@ const panel = {
           isChangedOldValue: true // defines if set oldValue with newValue instead of current value
         })
       })
+
+      // show fields in query
       if (isShowedField && Object.keys(newValues).length) {
         // join column names without duplicating it
         fieldsShowed = Array.from(new Set([
@@ -392,7 +404,6 @@ const panel = {
         ]))
 
         dispatch('changeFieldAttributesBoolean', {
-          parentUuid,
           containerUuid,
           attribute: 'isShowedFromUser',
           valueAttribute: true,
@@ -405,11 +416,14 @@ const panel = {
         })
         if (isPrivateAccess) {
           const tableName = rootGetters.getTableNameFromTab(parentUuid, containerUuid)
-          dispatch('getPrivateAccessFromServer', {
-            tableName,
-            recordId: newValues[`${tableName}_ID`],
-            userUuid: rootGetters['user/getUserUuid']
-          })
+          // TODO: Add current id and new id to comparison
+          if (!isEmptyValue(newValues[`${tableName}_ID`])) {
+            dispatch('getPrivateAccessFromServer', {
+              tableName,
+              recordId: newValues[`${tableName}_ID`],
+              userUuid: rootGetters['user/getUserUuid']
+            })
+          }
         }
       }
     },
@@ -748,23 +762,6 @@ const panel = {
         })
       })
     },
-    /**
-     * @deprecated used changeFieldAttribure
-     */
-    notifyFieldChangeDisplayColumn({ commit, getters }, {
-      containerUuid,
-      isAdvancedQuery,
-      columnName,
-      displayColumn
-    }) {
-      const field = getters.getFieldFromColumnName({ containerUuid, isAdvancedQuery, columnName })
-      commit('changeFieldValue', {
-        field: field,
-        newValue: field.value,
-        valueTo: field.valueTo,
-        displayColumn
-      })
-    },
     getPanelAndFields({ dispatch }, {
       parentUuid,
       containerUuid,
@@ -822,19 +819,33 @@ const panel = {
         newPanel: newPanel
       })
     },
+    /**
+     * Change a attribute in field state
+     * @param {string} attributeName
+     * @param {mixed} attributeValue
+     * @param {boolean|object} multipleAttributes
+     */
     changeFieldAttribure({ commit, getters }, {
       containerUuid,
       isAdvancedQuery,
       columnName,
       field,
       attributeName,
-      attributeValue
+      attributeValue,
+      multipleAttributes = false
     }) {
       if (isEmptyValue(field)) {
         field = getters.getFieldFromColumnName({ containerUuid, isAdvancedQuery, columnName })
       }
-      const newField = field
-      newField[attributeName] = attributeValue
+      let newField = field
+      if (multipleAttributes) {
+        newField = {
+          ...newField,
+          multipleAttributes
+        }
+      } else {
+        newField[attributeName] = attributeValue
+      }
       commit('changeField', {
         field,
         newField
@@ -1041,14 +1052,14 @@ const panel = {
       parentUuid,
       containerUuid,
       isGetServer = true,
-      fieldList = []
+      fieldsList = []
     }) => {
-      if (!fieldList.length) {
-        fieldList = getters.getFieldsListFromPanel(containerUuid)
+      if (!fieldsList.length) {
+        fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-      var attributesObject = {}
+      const attributesObject = {}
 
-      fieldList
+      fieldsList
         .map(fieldItem => {
           let isSQL = false
           let valueToReturn = fieldItem.parsedDefaultValue
@@ -1112,8 +1123,8 @@ const panel = {
       isOnlyDisplayed = false,
       isAdvancedQuery = false
     }) => {
-      var fieldList = getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery)
-      var attributesListLink = ''
+      let fieldList = getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery)
+      let attributesListLink = ''
       if (withOut.length) {
         fieldList = fieldList.filter(fieldItem => {
           // columns to exclude
@@ -1156,60 +1167,6 @@ const panel = {
       })
 
       return attributesListLink.slice(0, -1)
-    },
-    /**
-     * get field list visible and with values
-     * TODO: Deprecated, change by getColumnNamesAndValues
-     */
-    getPanelParameters: (state, getters) => (containerUuid, isEvaluateEmptyDisplayed = false, withOut = [], isAdvancedQuery) => {
-      if (isAdvancedQuery) {
-        var panel = getters.getPanel(containerUuid, isAdvancedQuery)
-      } else {
-        panel = getters.getPanel(containerUuid)
-      }
-      const fieldList = panel.fieldList
-      const fields = fieldList.length
-      var params = []
-      var fieldsMandatory = []
-      var isEmptyFieldDisplayed = false // indicate if exists a field displayed and empty value
-
-      if (fields > 0) {
-        params = fieldList.filter(fieldItem => {
-          // columns to exclude
-          if (withOut.find(subItem => subItem === fieldItem.columnName)) {
-            return false
-          }
-
-          const isMandatory = Boolean(fieldItem.isMandatory || fieldItem.isMandatoryFromLogic)
-          const isDisplayed = fieldIsDisplayed(fieldItem) && (fieldItem.isShowedFromUser || isMandatory)
-
-          // mandatory fields
-          if (isMandatory) {
-            fieldsMandatory.push(fieldItem)
-          }
-          if (!isEmptyValue(fieldItem.value) && isDisplayed) {
-            return true
-          }
-          // empty value
-          if (isMandatory && isEvaluateEmptyDisplayed) {
-            isEmptyFieldDisplayed = true
-          }
-          return false
-        })
-
-        if (isEvaluateEmptyDisplayed && isEmptyFieldDisplayed) {
-          return {
-            fields,
-            params: [],
-            fieldsMandatory
-          }
-        }
-      }
-      return {
-        fields,
-        params,
-        fieldsMandatory
-      }
     },
     /**
      * Getter converter selection params with value format

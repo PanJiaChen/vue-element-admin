@@ -17,6 +17,31 @@ export default {
     },
     key() {
       return this.$route.path
+    },
+    openRoute() {
+      return this.$store.state.utils.openRoute
+    }
+  },
+  created() {
+    this.readRouteParameters()
+  },
+  methods: {
+    readRouteParameters() {
+      if (this.$store.getters.getIsLoadedOpenRoute) {
+        return
+      }
+      this.$store.dispatch('setOpenRoute', {
+        path: this.$route.path,
+        name: this.$route.name,
+        fullPath: this.$route.fullPath,
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          ...this.$route.query
+        },
+        isLoaded: true
+      })
     }
   }
 }

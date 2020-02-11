@@ -4,8 +4,7 @@
       <el-container style="height: 100%;">
         <el-header :style="tableHeaderStyle">
           <el-collapse
-            v-if="isParent && isAdvancedQuery"
-            v-show="isAdvancedQuery"
+            v-if="isParent"
             v-model="activeName"
             v-shortkey="{ f6: ['f6'], ctrlf: ['ctrl', 'f'] }"
             @shortkey.native="actionAdvancedQuery()"
@@ -227,7 +226,7 @@
         <el-pagination
           small
           layout="slot, total, prev, pager, next"
-          :current-page="currentPage"
+          :current-page="pageNumber"
           :page-size="defaultMaxPagination"
           :total="getterRecordCount"
           @current-change="handleChangePage"
@@ -305,7 +304,8 @@ export default {
   },
   data() {
     const activeName = []
-    if (this.$route.query.action) {
+    // TODO: Manage attribute with vuex store in window module
+    if (this.isParent && this.$route.query.action && this.$route.query.action === 'advancedQuery') {
       activeName.push('1')
     }
     return {
@@ -317,15 +317,12 @@ export default {
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
       defaultMaxPagination: 50,
-      menuTable: '1',
       activeName,
       isLoadPanelFromServer: false,
       rowStyle: { height: '52px' },
       sortable: null,
-      currentPage: 1,
       uuidCurrentRecordSelected: '',
-      showTableSearch: false,
-      isAdvancedQuery: true
+      showTableSearch: false
     }
   },
   computed: {
@@ -345,9 +342,6 @@ export default {
     },
     getShowContextMenuTabChildren() {
       return this.$store.getters.getShowContextMenuTabChildren
-    },
-    getterFieldList() {
-      return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -376,7 +370,7 @@ export default {
       }
       return 0
     },
-    getPageNumber() {
+    pageNumber() {
       return this.getterDataRecordsAndSelection.pageNumber
     },
     isLoaded() {
@@ -402,7 +396,7 @@ export default {
       return this.$store.getters.getHeigth
     },
     tableHeaderStyle() {
-      if (this.isAdvancedQuery) {
+      if (this.isParent) {
         if (!this.isEmptyValue(this.activeName)) {
           return {
             height: '55%',
@@ -415,34 +409,34 @@ export default {
         }
       }
       return {
-        height: '5%'
+        height: '35px'
       }
     },
     getHeigthTable() {
       let totalRow = 0
+      // to refresh height table if changed isShowedTotals
       if (this.getterPanel.isShowedTotals) {
-        totalRow = 27
+        totalRow = 5
       }
 
       if (this.isPanelWindow) {
         // table record navigation
         if (this.isParent) {
-          if (this.isAdvancedQuery) {
-            if (this.isEmptyValue(this.activeName)) {
-              return this.getterHeight - 220 - totalRow
-            }
-            return this.getterHeight - 420 - totalRow
+          if (this.isEmptyValue(this.activeName)) {
+            return this.getterHeight - 210 - totalRow
           }
-          return this.getterHeight - 180 - totalRow
+          // panel advanced query is showed
+          return this.getterHeight - 420 - totalRow
         }
-        if (!this.activeName.length) {
-          return (this.getHeightPanelBottom - 7) + 'vh'
+        // tabs children
+        if (totalRow) {
+          totalRow = 1
         }
-        return this.getterHeight - 220 - totalRow
+        return (this.getHeightPanelBottom - 5 - totalRow) + 'vh'
       } else if (this.panelType === 'browser') {
         // open browser criteria
         if (this.getterIsShowedCriteria) {
-          // showed some field query criteria
+          // showed some field in panel query criteria
           if (this.getterFieldIsDisplayed.isDisplayed) {
             return this.getterHeight - 495 - totalRow
           }
@@ -467,18 +461,12 @@ export default {
       }
       return false
     },
-    windowFields() {
-      if (this.isAdvancedQuery) {
-        return this.$store.getters.getPanelParameters(this.containerUuid, false, [], this.isAdvancedQuery).params
-      }
-      return undefined
-    },
     isPanelWindow() {
       return Boolean(this.panelType === 'window')
     },
     getterContextClientId() {
       if (this.isPanelWindow) {
-        return parseInt(this.$store.getters.getContextClientId, 10)
+        return this.$store.getters.getContextClientId
       }
       return undefined
     },
@@ -515,9 +503,6 @@ export default {
       }
       return false
     },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
-    },
     keyUp() {
       if (this.currentTable < 1) {
         return this.currentTable
@@ -544,9 +529,6 @@ export default {
   created() {
     this.getPanel()
   },
-  beforeMount() {
-    this.currentPage = this.getPageNumber
-  },
   mounted() {
     if (this.isTableSelection) {
       this.toggleSelection(this.getDataSelection)
@@ -563,12 +545,6 @@ export default {
     setCurrent(row) {
       this.$refs.multipleTable.setCurrentRow(row)
     },
-    logArrayElements(element, index, array) {
-      if (index === this.currentTable) {
-        this.handleRowClick(this.getterDataRecords[index])
-        return this.setCurrent(this.getterDataRecords[index])
-      }
-    },
     theAction(event) {
       switch (event.srcKey) {
         case 'up':
@@ -580,14 +556,6 @@ export default {
       }
       this.handleRowClick(this.getterDataRecords[this.currentTable])
       return this.setCurrent(this.getterDataRecords[this.currentTable])
-    },
-    sortTab(actionSequence) {
-      // TODO: Refactor and remove redundant dispatchs
-      this.$store.dispatch('setShowDialog', {
-        type: 'window',
-        action: actionSequence,
-        parentRecordUuid: this.$route.query.action
-      })
     },
     closeMenu() {
       this.$store.dispatch('showMenuTable', {
@@ -709,7 +677,7 @@ export default {
     },
     isReadOnlyCell(row, field) {
       // TODO: Add support to its type fields
-      if (field.componentPath === 'FieldImage' || field.componentPath === 'FieldBinary') {
+      if (['FieldImage', 'FieldBinary'].includes(field.componentPath)) {
         return true
       }
 
@@ -734,11 +702,13 @@ export default {
         parentUuid: this.parentUuid,
         containerUuid: this.containerUuid
       })
-      this.$store.dispatch('setRecordSelection', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        panelType: this.panelType
-      })
+        .then(() => {
+          this.$store.dispatch('setRecordSelection', {
+            parentUuid: this.parentUuid,
+            containerUuid: this.containerUuid,
+            panelType: this.panelType
+          })
+        })
     },
     callOffNewRecord() {
       this.getterDataRecords.shift()
@@ -1010,27 +980,6 @@ export default {
       this.showTableSearch = !this.showTableSearch
       if (this.showTableSearch) {
         this.$refs.headerSearchSelect && this.$refs.headerSearchSelect.focus()
-      }
-    },
-    activeAdvancedQuery(value) {
-      this.isAdvancedQuery = value
-      if (value) {
-        this.$store.dispatch('setOldAction', this.$route.query.action)
-        this.$router.push({
-          query: {
-            ...this.$route.query,
-            action: 'advancedQuery'
-          }
-        })
-      }
-      if (!value) {
-        const oldAction = this.$store.getters.getOldAction
-        this.$router.push({
-          query: {
-            ...this.$route.query,
-            action: oldAction
-          }
-        })
       }
     },
     getFieldDefinition(fieldDefinition, row) {
