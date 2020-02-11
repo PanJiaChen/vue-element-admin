@@ -122,6 +122,7 @@ export default {
     contextMenuRelations: 'Relations',
     contextMenuActions: 'Actions',
     contextMenuReferences: 'References',
+    withOutReferences: 'Without references for record',
     RunProcess: 'Run',
     ChangeParameters: 'Change Parameters',
     RunProcessAs: 'Run As',

@@ -122,6 +122,7 @@ export default {
     contextMenuRelations: 'Relaciones',
     contextMenuActions: 'Acciones',
     contextMenuReferences: 'Referencias',
+    withOutReferences: 'Sin referencias para el registro',
     contextMenuDownload: 'Descargar',
     contextMenuShareLink: 'Compartir Link',
     contextMenuRefresh: 'Actualizar',

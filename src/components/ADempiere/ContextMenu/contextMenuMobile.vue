@@ -30,15 +30,31 @@
           <el-menu-item-group>
             <el-scrollbar wrap-class="scroll">
               <template v-for="(action, index) in actions">
-                <el-submenu v-if="action.childs" :key="index" :index="action.name" :disabled="action.disabled">
+                <el-submenu
+                  v-if="action.childs"
+                  :key="index"
+                  :index="action.name"
+                  :disabled="action.disabled"
+                >
                   <template slot="title">
                     {{ action.name }}
                   </template>
-                  <el-menu-item v-for="(child, key) in action.childs" :key="key" :index="child.uuid" @click="runAction(child)">
+                  <el-menu-item
+                    v-for="(child, key) in action.childs"
+                    :key="key"
+                    :index="child.uuid"
+                    @click="runAction(child)"
+                  >
                     {{ child.name }}
                   </el-menu-item>
                 </el-submenu>
-                <el-menu-item v-else :key="index" :index="action.name" :disabled="action.disabled" @click="runAction(action)">
+                <el-menu-item
+                  v-else
+                  :key="index"
+                  :index="action.name"
+                  :disabled="action.disabled"
+                  @click="runAction(action)"
+                >
                   <svg-icon v-if="action.type === 'process'" icon-class="component" />
                   {{ action.name }}
                 </el-menu-item>
@@ -57,17 +73,25 @@
             </el-scrollbar>
           </el-menu-item-group>
         </el-submenu>
-        <el-submenu :disabled="!isReferecesContent && !isReferencesLoaded" class="el-menu-item" index="3">
+        <el-submenu :disabled="!(isReferecesContent && isLoadedReferences)" class="el-menu-item" index="3">
           <template slot="title">
             {{ $t('components.contextMenuReferences') }}
           </template>
-          <template v-if="references && references.referencesList">
-            <template v-for="(reference, index) in references.referencesList">
-              <el-menu-item :key="index" :index="reference.displayName" @click="runAction(reference)">
+          <template v-if="references && isEmptyValue(references.referencesList)">
+            <el-scrollbar wrap-class="scroll-child">
+              <el-menu-item
+                v-for="(reference, index) in references.referencesList"
+                :key="index"
+                :index="reference.displayName"
+                @click="runAction(reference)"
+              >
                 {{ reference.displayName }}
               </el-menu-item>
-            </template>
+            </el-scrollbar>
           </template>
+          <el-menu-item v-else index="not-references" disabled>
+            {{ $t('components.withOutReferences') }}
+          </el-menu-item>
         </el-submenu>
       </el-menu>
     </right-menu>
