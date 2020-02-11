@@ -17,6 +17,18 @@ export default {
   computed: {
     scrollWrapper() {
       return this.$refs.scrollContainer.$refs.wrap
+    },
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    }
+  },
+  watch: {
+    isMobile(value) {
+      if (value) {
+        this.$refs.scrollContainer.$refs.resize.style.display = 'flex'
+      } else {
+        this.$refs.scrollContainer.$refs.resize.style.display = ''
+      }
     }
   },
   methods: {
