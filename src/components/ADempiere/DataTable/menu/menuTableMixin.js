@@ -17,7 +17,7 @@ export const menuTableMixin = {
       type: String,
       default: 'window'
     },
-    isOption: {
+    currentRow: {
       type: Object,
       default: () => {}
     },
@@ -53,8 +53,6 @@ export const menuTableMixin = {
     classTableMenu() {
       if (this.isMobile) {
         return 'menu-table-mobile'
-      } else if (this.$store.state.app.sidebar.opened) {
-        return 'menu-table'
       }
       return 'menu-table'
     },
@@ -78,9 +76,13 @@ export const menuTableMixin = {
     },
     fieldList() {
       if (this.panelMetadata && this.panelMetadata.fieldList) {
+        let sortAttribute = 'sequence'
+        if (this.panelType === 'browser') {
+          sortAttribute = 'seqNoGrid'
+        }
         return this.sortFields(
           this.panelMetadata.fieldList,
-          this.panelType !== 'browser' ? 'seqNoGrid' : 'sequence'
+          sortAttribute
         )
       }
       return []
@@ -159,6 +161,7 @@ export const menuTableMixin = {
   methods: {
     showNotification,
     closeMenu() {
+      // TODO: Validate to dispatch one action
       this.$store.dispatch('showMenuTable', {
         isShowedTable: false
       })
@@ -168,7 +171,7 @@ export const menuTableMixin = {
     },
     showModalTable(process) {
       const processData = this.$store.getters.getProcess(process.uuid)
-      if (!this.isOption) {
+      if (!this.currentRow) {
         this.$store.dispatch('setProcessSelect', {
           selection: this.getDataSelection,
           processTablaSelection: true,
@@ -176,7 +179,7 @@ export const menuTableMixin = {
         })
       } else {
         let valueProcess
-        const selection = this.isOption
+        const selection = this.currentRow
         for (const element in selection) {
           if (element === this.panelMetadata.keyColumn) {
             valueProcess = selection[element]
@@ -261,20 +264,15 @@ export const menuTableMixin = {
         attributeName: 'isShowedTableOptionalColumns'
       })
     },
-    typeFormat(key, keyPath) {
-      Object.keys(supportedTypes).forEach(type => {
-        if (type === key) {
-          this.exporRecordTable(key)
-        }
-      })
-      this.closeMenu()
-    },
-    exporRecordTable(key) {
+    /**
+     * @param {string} formatToExport
+     */
+    exporRecordTable(formatToExport) {
       const header = this.getterFieldListHeader
       const filterVal = this.getterFieldListValue
       let list = this.getDataSelection
-      if (this.isOption) {
-        list = this.gettersRecrdContextMenu
+      if (this.menuType === 'tableContextMenu') {
+        list = [this.currentRow]
       }
 
       const data = this.formatJson(filterVal, list)
@@ -282,8 +280,9 @@ export const menuTableMixin = {
         header,
         data,
         filename: '',
-        exportType: key
+        exportType: formatToExport
       })
+      this.closeMenu()
     },
     exporZipRecordTable() {
       const header = this.getterFieldListHeader

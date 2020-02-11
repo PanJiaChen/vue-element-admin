@@ -131,7 +131,6 @@ export default {
     contextMenuShareLink: 'Share Link',
     contextMenuRefresh: 'Refresh',
     contextMennuExport: 'Export Smart Browser',
-    contextMennuWindowReport: 'Export Records',
     contextMenuPrintFormatSetup: 'Print Format Setup',
     dateStartPlaceholder: 'Start date',
     dateEndPlaceholder: 'End date',
@@ -192,7 +191,6 @@ export default {
     },
     dataTable: {
       search: 'Search',
-      records: 'Records',
       selected: 'Selected',
       deleteSelection: 'Delete Selected Records',
       advancedQuery: 'Advanced Query',
@@ -285,16 +283,15 @@ export default {
     }
   },
   data: {
-    emtpyTableName: 'Error: Table Name is not defined',
-    errorGetData: 'Error getting data records',
     createRecordSuccessful: 'New record created successfully',
     createNewRecord: 'Mode New record',
     createRecordError: 'Error creating new record',
     deleteRecordSuccessful: 'Record deleted successfully',
     deleteRecordError: 'Error deleting record',
+    exportRecord: 'Export Record',
+    lockRecord: 'Lock Record',
     selectionRequired: 'You must select a record',
     undo: 'Undo',
-    lockRecord: 'Lock Record',
     unlockRecord: 'Unlock Record'
   },
   sequence: {

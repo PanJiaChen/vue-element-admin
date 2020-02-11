@@ -3,7 +3,7 @@
     :default-active="menuTable"
     :class="classTableMenu + ' menu-table-container'"
     mode="horizontal"
-    @select="typeFormat"
+    @select="exporRecordTable"
   >
     <el-submenu index="2">
       <template slot="title">
@@ -75,11 +75,16 @@
 </template>
 
 <script>
-import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/mixinMenu'
+import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/menuTableMixin'
 
 export default {
-  name: 'TableMenu',
-  mixins: [menuTableMixin]
+  name: 'TableMainMenu',
+  mixins: [menuTableMixin],
+  data() {
+    return {
+      menuType: 'tableMainMenu'
+    }
+  }
 }
 </script>
 

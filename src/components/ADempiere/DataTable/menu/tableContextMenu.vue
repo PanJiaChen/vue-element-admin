@@ -2,7 +2,7 @@
   <el-menu
     :collapse="isCollapse"
     class="el-menu-demo"
-    @select="typeFormat"
+    @select="exporRecordTable"
   >
     <el-submenu
       index="xlsx"
@@ -10,7 +10,7 @@
       <template
         slot="title"
       >
-        {{ $t('components.contextMennuWindowReport') }}
+        {{ $t('data.exportRecord') }}
       </template>
       <template v-for="(format, index) in supportedTypes">
         <el-menu-item
@@ -22,7 +22,7 @@
       </template>
     </el-submenu>
     <el-menu-item
-      index="eliminar"
+      index="delete"
       @click="deleteRecord()"
     >
       {{ $t('window.deleteRecord') }}
@@ -39,10 +39,15 @@
 </template>
 
 <script>
-import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/mixinMenu'
+import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/menuTableMixin'
 
 export default {
-  name: 'ContextMenu',
-  mixins: [menuTableMixin]
+  name: 'TableContextMenu',
+  mixins: [menuTableMixin],
+  data() {
+    return {
+      menuType: 'tableContextMenu'
+    }
+  }
 }
 </script>

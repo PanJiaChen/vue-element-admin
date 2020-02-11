@@ -205,7 +205,6 @@ const actions = {
       query: route.query,
       title: route.meta.title
     }
-    console.log(selectedTag)
     if (isCloseAllViews) {
       dispatch('tagsView/delAllViews', selectedTag, { root: true })
     } else {

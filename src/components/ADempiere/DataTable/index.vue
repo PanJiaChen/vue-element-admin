@@ -22,7 +22,7 @@
           </el-collapse>
           <div>
             <div v-if="!isMobile">
-              <table-menu
+              <table-main-menu
                 :container-uuid="containerUuid"
                 :parent-uuid="parentUuid"
                 :panel-type="panelType"
@@ -120,14 +120,14 @@
           </div>
         </el-header>
         <el-main style="padding: 0px !important; overflow: hidden;">
-          <context-menu
+          <table-context-menu
             v-show="isParent ? getShowContextMenuTable : getShowContextMenuTabChildren"
             :style="{ left: left + 'px', top: top + 'px' }"
             class="contextmenu"
             :container-uuid="containerUuid"
             :parent-uuid="parentUuid"
             :panel-type="panelType"
-            :is-option="isOption"
+            :current-row="currentRowMenu"
             :is-panel-window="isPanelWindow"
             :process-menu="getterContextMenu"
             :is-mobile="isMobile"
@@ -247,8 +247,8 @@ import FieldDefinition from '@/components/ADempiere/Field'
 import Sortable from 'sortablejs'
 import FilterColumns from '@/components/ADempiere/DataTable/filterColumns'
 import FixedColumns from '@/components/ADempiere/DataTable/fixedColumns'
-import ContextMenu from '@/components/ADempiere/DataTable/menu/contextMenu'
-import TableMenu from '@/components/ADempiere/DataTable/menu'
+import TableContextMenu from '@/components/ADempiere/DataTable/menu/tableContextMenu'
+import TableMainMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
@@ -263,10 +263,10 @@ export default {
     FieldDefinition,
     FilterColumns,
     FixedColumns,
-    ContextMenu,
     IconElement,
     MainPanel,
-    TableMenu
+    TableContextMenu,
+    TableMainMenu
   },
   props: {
     parentUuid: {
@@ -311,7 +311,7 @@ export default {
     return {
       top: 0,
       left: 0,
-      isOption: {},
+      currentRowMenu: {},
       currentRow: null,
       currentTable: 0,
       visible: this.getShowContextMenuTable,
@@ -585,7 +585,7 @@ export default {
         this.top = event.clientY - 100
       }
 
-      this.isOption = row
+      this.currentRowMenu = row
       this.visible = true
       this.$store.dispatch('showMenuTable', {
         isShowedTable: this.isParent

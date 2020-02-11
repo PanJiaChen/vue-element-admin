@@ -127,7 +127,6 @@ export default {
     contextMenuShareLink: 'Compartir Link',
     contextMenuRefresh: 'Actualizar',
     contextMennuExport: 'Exportar Smart Browser',
-    contextMennuWindowReport: 'Exportar Registro',
     contextMenuPrintFormatSetup: 'Configurar Formato de Impresión',
     RunProcess: 'Ejecutar',
     ChangeParameters: 'Cambiar Parametros',
@@ -192,7 +191,6 @@ export default {
     },
     dataTable: {
       search: 'Buscar',
-      records: 'Registros',
       selected: 'Seleccionados',
       deleteSelection: 'Eliminar Registros Seleccionados',
       advancedQuery: 'Consulta Avanzada',
@@ -260,16 +258,15 @@ export default {
     }
   },
   data: {
-    emtpyTableName: 'Error: El nombre de la tabla no esta definida',
-    errorGetData: 'Error obteniendo los datos de registro',
     createRecordSuccessful: 'Nuevo registro creado con exito',
     createNewRecord: 'Modo nuevo registro',
     createRecordError: 'Error al crear nuevo registro',
     deleteRecordSuccessful: 'Registro eliminado exitosamente',
     deleteRecordError: 'Error al eliminar el regitro',
+    exportRecord: 'Exportar Registro',
+    lockRecord: 'Bloquear Registro',
     selectionRequired: 'Debe seleccionar un registro',
     undo: 'Deshacer',
-    lockRecord: 'Bloquear Registro',
     unlockRecord: 'Desbloquear Registro'
   },
   sequence: {
