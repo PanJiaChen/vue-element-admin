@@ -21,6 +21,7 @@ import './utils/error-log' // error log
 
 import * as filters from './filters' // global filters
 import * as globalMethods from '@/utils/ADempiere/globalMethods' // global methods
+import VMarkdown from 'v-markdown/src'
 
 /**
  * If you don't want to use mock-server
@@ -34,6 +35,7 @@ import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
+Vue.use(VMarkdown)
 Vue.use(VueSplit)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

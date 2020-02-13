@@ -177,6 +177,9 @@ export const contextMixin = {
     isPersonalLock() {
       return this.$store.getters['user/getIsPersonalLock']
     },
+    listDocumentActions() {
+      return this.$store.getters.getListDocumentActions.documentActionsList
+    },
     isManageDataRecords() {
       return ['browser', 'window'].includes(this.panelType)
     }
@@ -341,6 +344,14 @@ export const contextMixin = {
           })
       }
       this.actions = this.metadataMenu.actions
+      if (this.panelType === 'window') {
+        var processAction = this.actions.find(item => {
+          if (item.name === 'Procesar Orden' || (item.name === 'Process Order')) {
+            return item
+          }
+        })
+        this.$store.dispatch('setOrden', processAction)
+      }
 
       if (this.actions && this.actions.length) {
         this.actions.forEach(itemAction => {

@@ -1,4 +1,6 @@
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { requestListDocumentActions } from '@/api/ADempiere/data'
+
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component
 // See structure:
@@ -14,7 +16,8 @@ import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 // ]
 const contextMenu = {
   state: {
-    contextMenu: []
+    contextMenu: [],
+    listDocumentAction: []
   },
   mutations: {
     setContextMenu(state, payload) {
@@ -22,11 +25,34 @@ const contextMenu = {
     },
     dictionaryResetCacheContextMenu(state) {
       state.contextMenu = []
+    },
+    listDocumentAction(state, payload) {
+      state.listDocumentAction = payload
     }
   },
   actions: {
     setContextMenu({ commit }, payload) {
       commit('setContextMenu', payload)
+    },
+    listDocumentActionStatus({ commit }, params) {
+      const tableName = params.tableName
+      const recordId = params.recordId
+      const recordUuid = params.recordUuid
+      const documentStatus = params.DocStatus
+      const documentAction = params.DocAction
+      const pageSize = 0
+      const pageToken = ''
+      requestListDocumentActions({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken })
+        .then(response => {
+          var documentAction = {
+            defaultDocumentAction: response.defaultDocumentAction,
+            documentActionsList: response.documentActionsList
+          }
+          commit('listDocumentAction', documentAction)
+        })
+        .catch(error => {
+          console.warn(error)
+        })
     }
   },
   getters: {
@@ -50,6 +76,9 @@ const contextMenu = {
         return menu
       }
       return menu.actions
+    },
+    getListDocumentActions: (state) => {
+      return state.listDocumentAction
     }
   }
 }

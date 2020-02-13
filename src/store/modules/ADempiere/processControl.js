@@ -112,14 +112,14 @@ const processControl = {
     startProcess({ commit, state, dispatch, getters, rootGetters }, params) {
       return new Promise((resolve, reject) => {
         // TODO: Add support to evaluate params to send
-        const samePocessInExecution = getters.getInExecution(params.containerUuid)
+        // const samePocessInExecution = getters.getInExecution(params.containerUuid)
         // exists some call to executed process with container uuid
-        if (samePocessInExecution && !params.isProcessTableSelection) {
-          return reject({
-            error: 0,
-            message: `In this process (${samePocessInExecution.name}) there is already an execution in progress.`
-          })
-        }
+        // if (samePocessInExecution && !params.isProcessTableSelection) {
+        //   return reject({
+        //     error: 0,
+        //     message: `In this process (${samePocessInExecution.name}) there is already an execution in progress.`
+        //   })
+        // }
 
         // additional attributes to send server, selection to browser, or table name and record id to window
         let selection = []
@@ -167,7 +167,7 @@ const processControl = {
           }
         }
         // get info metadata process
-        const processDefinition = rootGetters.getProcess(params.action.uuid)
+        const processDefinition = !isEmptyValue(params.isActionDocument) ? params.action : rootGetters.getProcess(params.action.uuid)
         let reportType = params.reportFormat
         const finalParameters = rootGetters.getParametersToServer({ containerUuid: processDefinition.uuid })
 
@@ -178,39 +178,70 @@ const processControl = {
           type: 'info'
         })
         const timeInitialized = (new Date()).getTime()
-        // Run process on server and wait for it for notify
-        var processResult = {
+        let processResult
+        if (!isEmptyValue(params.isActionDocument)) {
+          processResult = {
+            // panel attributes from where it was executed
+            parentUuid: params.parentUuid,
+            containerUuid: params.containerUuid,
+            panelType: params.panelType,
+            lastRun: timeInitialized,
+            processUuid: params.action.uuid,
+            processId: params.action.id,
+            processName: 'Procesar Orden',
+            parameters: params.parametersList,
+            isError: false,
+            isProcessing: true,
+            summary: '',
+            resultTableName: '',
+            logs: [],
+            output: {
+              uuid: '',
+              name: '',
+              description: '',
+              fileName: '',
+              output: '',
+              outputStream: '',
+              reportType: ''
+            }
+          }
+        } else {
+          const timeInitialized = (new Date()).getTime()
+          // Run process on server and wait for it for notify
+          // uuid of process
+          processResult = {
           // panel attributes from where it was executed
-          parentUuid: params.parentUuid,
-          containerUuid: params.containerUuid,
-          panelType: params.panelType,
-          menuParentUuid: params.menuParentUuid,
-          processIdPath: params.routeToDelete.path,
-          printFormatUuid: params.action.printFormatUuid,
-          // process attributes
-          lastRun: timeInitialized,
-          action: processDefinition.name,
-          name: processDefinition.name,
-          description: processDefinition.description,
-          instanceUuid: '',
-          processUuid: processDefinition.uuid,
-          processId: processDefinition.id,
-          processName: processDefinition.processName,
-          parameters: finalParameters,
-          isError: false,
-          isProcessing: true,
-          isReport: processDefinition.isReport,
-          summary: '',
-          resultTableName: '',
-          logs: [],
-          output: {
-            uuid: '',
-            name: '',
-            description: '',
-            fileName: '',
-            output: '',
-            outputStream: '',
-            reportType: ''
+            parentUuid: params.parentUuid,
+            containerUuid: params.containerUuid,
+            panelType: params.panelType,
+            menuParentUuid: params.menuParentUuid,
+            processIdPath: params.routeToDelete.path,
+            printFormatUuid: params.action.printFormatUuid,
+            // process attributes
+            lastRun: timeInitialized,
+            action: processDefinition.name,
+            name: processDefinition.name,
+            description: processDefinition.description,
+            instanceUuid: '',
+            processUuid: processDefinition.uuid,
+            processId: processDefinition.id,
+            processName: processDefinition.processName,
+            parameters: finalParameters,
+            isError: false,
+            isProcessing: true,
+            isReport: processDefinition.isReport,
+            summary: '',
+            resultTableName: '',
+            logs: [],
+            output: {
+              uuid: '',
+              name: '',
+              description: '',
+              fileName: '',
+              output: '',
+              outputStream: '',
+              reportType: ''
+            }
           }
         }
         commit('addInExecution', processResult)
@@ -245,7 +276,7 @@ const processControl = {
                 uuid: processDefinition.uuid,
                 id: processDefinition.id,
                 reportType: reportType,
-                parameters: finalParameters,
+                parameters: isEmptyValue(finalParameters) ? params.parametersList : finalParameters,
                 selection: selection,
                 tableName: windowSelectionProcess.tableName,
                 recordId: selection[windowSelectionProcess.tableName]
@@ -425,7 +456,7 @@ const processControl = {
             uuid: processDefinition.uuid,
             id: processDefinition.id,
             reportType,
-            parameters: finalParameters,
+            parameters: isEmptyValue(finalParameters) ? params.parametersList : finalParameters,
             selection,
             tableName,
             recordId
@@ -441,7 +472,7 @@ const processControl = {
                 href: undefined,
                 download: undefined
               }
-              if (processDefinition.isReport) {
+              if (runProcessResponse.isReport || processDefinition.isReport) {
                 const blob = new Blob(
                   [output.outputStream],
                   { type: output.mimeType }
@@ -550,6 +581,12 @@ const processControl = {
                 output
               })
               dispatch('setReportTypeToShareLink', processResult.output.reportType)
+              dispatch('getDataListTab', {
+                parentUuid: params.parentUuid,
+                containerUuid: params.containerUuid,
+                isRefreshPanel: true,
+                recordUuid: params.recordUuid
+              })
               resolve(processResult)
             })
             .catch(error => {

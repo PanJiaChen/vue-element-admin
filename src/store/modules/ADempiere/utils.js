@@ -16,6 +16,9 @@ const utils = {
     recordTable: 0,
     selectionProcess: [],
     isContainerInfo: false,
+    documentAction: [],
+    chatText: '',
+    markDown: false,
     openRoute: {
       path: '',
       name: '',
@@ -54,6 +57,15 @@ const utils = {
     },
     setProcessTable(state, recordTable) {
       state.recordTable = recordTable
+    },
+    setOrden(state, payload) {
+      state.documentAction = payload
+    },
+    setChatText(state, payload) {
+      state.chatText = payload
+    },
+    setMarkDown(state, payload) {
+      state.markDown = payload
     },
     setProcessSelecetion(state, selectionProcess) {
       state.selectionProcess = selectionProcess
@@ -109,6 +121,12 @@ const utils = {
     setProcessSelect({ commit }, params) {
       commit('setProcessSelecetion', params)
     },
+    setchatText({ commit }, params) {
+      commit('setChatText', params)
+    },
+    setMarkDown({ commit }, send) {
+      commit('setMarkDown', send)
+    },
     setOpenRoute({ commit }, routeParameters) {
       commit('setOpenRoute', {
         ...routeParameters
@@ -127,6 +145,9 @@ const utils = {
     },
     setReportTypeToShareLink({ commit }, value) {
       commit('setReportTypeToShareLink', value)
+    },
+    setOrden({ commit }, params) {
+      commit('setOrden', params)
     }
   },
   getters: {
@@ -187,6 +208,15 @@ const utils = {
     },
     getIsReadedOpenRoute: (state) => {
       return state.openRoute.isReaded
+    },
+    getOrden: (state) => {
+      return state.documentAction
+    },
+    getChatTextLong: (state) => {
+      return state.chatText
+    },
+    getMarkDown: (state) => {
+      return state.markDown
     }
   }
 }

@@ -136,7 +136,6 @@
           <el-table
             ref="multipleTable"
             v-loading="$route.query.action !== 'create-new' && isLoaded"
-            v-shortkey="{ up: ['arrowup'], down: ['arrowdown'], left: ['arrowleft'], right: ['arrowright'] }"
             :height="getHeigthTable"
             style="width: 100%"
             border
@@ -151,7 +150,6 @@
             cell-class-name="datatable-max-cell-height"
             :show-summary="getterPanel.isShowedTotals"
             :summary-method="getSummaries"
-            @shortkey.native="theAction"
             @row-click="handleRowClick"
             @row-dblclick="handleRowDblClick"
             @select="handleSelection"
