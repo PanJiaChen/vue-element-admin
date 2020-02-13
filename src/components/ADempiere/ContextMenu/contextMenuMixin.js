@@ -43,6 +43,10 @@ export const contextMixin = {
     isInsertRecord: {
       type: Boolean,
       default: undefined
+    },
+    defaultFromatExport: {
+      type: String,
+      default: 'xlsx'
     }
   },
   data() {
@@ -172,6 +176,9 @@ export const contextMixin = {
     },
     isPersonalLock() {
       return this.$store.getters['user/getIsPersonalLock']
+    },
+    isManageDataRecords() {
+      return ['browser', 'window'].includes(this.panelType)
     }
   },
   watch: {
@@ -226,9 +233,7 @@ export const contextMixin = {
           this.$store.dispatch('deleteEntity', {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
-            recordUuid: this.recordUuid,
-            panelType: 'window',
-            isNewRecord: false
+            recordUuid: this.recordUuid
           })
           break
         case 'f5':
@@ -411,18 +416,20 @@ export const contextMixin = {
               href: window.location.href
             })
           }
+
           let reportFormat = action.reportExportType
           if (this.isEmptyValue(reportFormat)) {
-            if (!this.isEmptyValue(this.$route.query.reportType)) {
-              reportFormat = this.$route.query.reportType
-            } else if (!this.isEmptyValue(this.$route.meta.reportFormat)) {
+            reportFormat = this.$route.query.reportType
+            if (this.isEmptyValue(reportFormat)) {
               reportFormat = this.$route.meta.reportFormat
-            } else {
-              reportFormat = 'html'
+              if (this.isEmptyValue(reportFormat)) {
+                reportFormat = 'html'
+              }
             }
           }
+
           this.$store.dispatch(action.action, {
-            action: action,
+            action,
             parentUuid: this.containerUuid,
             containerUuid: containerParams, // EVALUATE IF IS action.uuid
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)

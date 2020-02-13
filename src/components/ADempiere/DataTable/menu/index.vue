@@ -3,7 +3,6 @@
     :default-active="menuTable"
     :class="classTableMenu + ' menu-table-container'"
     mode="horizontal"
-    @select="exporRecordTable"
   >
     <el-submenu index="2">
       <template slot="title">
@@ -41,15 +40,19 @@
       <el-submenu
         :disabled="Boolean(getDataSelection.length < 1)"
         index="xlsx"
+        @click.native="exporRecordTable(defaultFromatExport)"
       >
         <template slot="title">
           {{ $t('table.dataTable.exportRecordTable') }}
         </template>
-        <template v-for="(format, index) in supportedTypes">
-          <el-menu-item :key="index" :index="index">
-            {{ format }}
-          </el-menu-item>
-        </template>
+        <el-menu-item
+          v-for="(format, keyFormat) in supportedTypes"
+          :key="keyFormat"
+          :index="keyFormat"
+          @click.native="exporRecordTable(keyFormat)"
+        >
+          {{ format }}
+        </el-menu-item>
       </el-submenu>
       <el-menu-item index="optional" @click="showOptionalColums()">
         {{ $t('components.filterableItems') }}
@@ -61,13 +64,17 @@
         {{ $t('table.dataTable.showAllAvailableColumns') }}
       </el-menu-item>
       <el-menu-item
-        v-if="['browser', 'window'].includes(panelType)"
         :disabled="isFieldsQuantity"
         @click="showTotals()"
       >
         {{ panelMetadata.isShowedTotals ? $t('table.dataTable.hiddenTotal') : $t('table.dataTable.showTotal') }}
       </el-menu-item>
-      <el-menu-item v-if="!isPanelWindow" :disabled="Boolean(getDataSelection.length < 1)" index="zoom-record" @click="zoomRecord()">
+      <el-menu-item
+        v-if="!isPanelWindow"
+        :disabled="Boolean(getDataSelection.length < 1)"
+        index="zoom-record"
+        @click="zoomRecord()"
+      >
         {{ $t('table.ProcessActivity.zoomIn') }}
       </el-menu-item>
     </el-submenu>

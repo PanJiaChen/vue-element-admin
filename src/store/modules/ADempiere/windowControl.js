@@ -408,42 +408,55 @@ const windowControl = {
           })
         })
     },
-    deleteEntity({ dispatch, rootGetters }, parameters) {
+    deleteEntity({ dispatch, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      recordUuid,
+      recordId,
+      row
+    }) {
       return new Promise(resolve => {
-        const panel = rootGetters.getPanel(parameters.containerUuid)
+        const panel = rootGetters.getPanel(containerUuid)
+        if (!isEmptyValue(row)) {
+          recordUuid = row.UUID
+          recordId = row[`${panel.tableName}_ID`]
+        }
 
         deleteEntity({
           tableName: panel.tableName,
-          recordUuid: parameters.recordUuid
+          recordUuid,
+          recordId
         })
           .then(responseDeleteEntity => {
             // refresh record list
             dispatch('getDataListTab', {
-              parentUuid: parameters.parentUuid,
-              containerUuid: parameters.containerUuid
+              parentUuid,
+              containerUuid
             })
               .then(responseDataList => {
-                // if response is void, go to new record
-                if (responseDataList.length <= 0) {
-                  dispatch('resetPanelToNew', {
-                    parentUuid: parameters.parentUuid,
-                    containerUuid: parameters.containerUuid,
-                    panelType: 'window',
-                    isNewRecord: true
-                  })
-                } else {
-                  const oldRoute = router.app._route
-                  // else display first record of table in panel
-                  router.push({
-                    name: oldRoute.name,
-                    params: {
-                      ...oldRoute.params
-                    },
-                    query: {
-                      ...oldRoute.query,
-                      action: responseDataList[0].UUID
-                    }
-                  })
+                if (panel.isParentTab) {
+                  // if response is void, go to new record
+                  if (responseDataList.length <= 0) {
+                    dispatch('resetPanelToNew', {
+                      parentUuid,
+                      containerUuid,
+                      panelType: 'window',
+                      isNewRecord: true
+                    })
+                  } else {
+                    const oldRoute = router.app._route
+                    // else display first record of table in panel
+                    router.push({
+                      name: oldRoute.name,
+                      params: {
+                        ...oldRoute.params
+                      },
+                      query: {
+                        ...oldRoute.query,
+                        action: responseDataList[0].UUID
+                      }
+                    })
+                  }
                 }
               })
             showMessage({
@@ -451,13 +464,17 @@ const windowControl = {
               type: 'success'
             })
 
+            if (isEmptyValue(recordId)) {
+              // TODO: Verify performance with tableName_ID
+              const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+              recordId = fieldId.value
+            }
             // set data log to undo action
-            const fieldId = panel.fieldList.find(itemField => itemField.isKey)
             dispatch('setDataLog', {
-              containerUuid: parameters.containerUuid,
+              containerUuid,
               tableName: panel.tableName,
-              recordId: fieldId.value, // TODO: Verify performance with tableName_ID
-              recordUuid: parameters.recordUuid,
+              recordId,
+              recordUuid,
               eventType: 'DELETE'
             })
 

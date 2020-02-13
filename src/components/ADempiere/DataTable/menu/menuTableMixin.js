@@ -40,6 +40,10 @@ export const menuTableMixin = {
     panelMetadata: {
       type: Object,
       default: () => {}
+    },
+    defaultFromatExport: {
+      type: String,
+      default: 'xlsx'
     }
   },
   data() {
@@ -232,11 +236,12 @@ export const menuTableMixin = {
       this.$store.dispatch('deleteSelectionDataList', {
         parentUuid: this.parentUuid,
         containerUuid: this.containerUuid
-      })
-      this.$store.dispatch('setRecordSelection', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        panelType: this.panelType
+      }).then(() => {
+        this.$store.dispatch('setRecordSelection', {
+          parentUuid: this.parentUuid,
+          containerUuid: this.containerUuid,
+          panelType: this.panelType
+        })
       })
     },
     addNewRow() {

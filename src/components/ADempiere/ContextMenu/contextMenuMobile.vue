@@ -68,7 +68,7 @@
                 </a>
               </el-menu-item>
               <el-submenu
-                v-if="['browser', 'window'].includes(panelType)"
+                v-if="isManageDataRecords"
                 :disabled="isDisabledExportRecord"
                 index="exportRecord"
               >
@@ -82,7 +82,7 @@
               <el-menu-item v-show="$route.name === 'Report Viewer'" index="printFormat" @click="redirect">
                 {{ $t('components.contextMenuPrintFormatSetup') }}
               </el-menu-item>
-              <el-menu-item v-if="panelType !== 'process'" index="refreshData" @click="refreshData">
+              <el-menu-item v-if="isManageDataRecords" index="refreshData" @click="refreshData">
                 {{ $t('components.contextMenuRefresh') }}
               </el-menu-item>
               <el-menu-item index="shareLink" @click="setShareLink">
