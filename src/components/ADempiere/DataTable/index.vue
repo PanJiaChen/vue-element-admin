@@ -122,8 +122,8 @@
         <el-main style="padding: 0px !important; overflow: hidden;">
           <table-context-menu
             v-show="isParent ? getShowContextMenuTable : getShowContextMenuTabChildren"
-            :style="{ left: left + 'px', top: top + 'px' }"
-            class="contextmenu"
+            :style="{ left: leftContextualMenu + 'px', top: topContextualMenu + 'px' }"
+            class="contextual-menu"
             :container-uuid="containerUuid"
             :parent-uuid="parentUuid"
             :panel-type="panelType"
@@ -309,8 +309,8 @@ export default {
       activeName.push('1')
     }
     return {
-      top: 0,
-      left: 0,
+      topContextualMenu: 0,
+      leftContextualMenu: 0,
       currentRowMenu: {},
       currentRow: null,
       currentTable: 0,
@@ -575,18 +575,22 @@ export default {
       const maxLeft = offsetWidth - menuMinWidth // left boundary
       const left = event.clientX - offsetLeft + 15 // 15: margin right
 
-      this.left = left
+      this.leftContextualMenu = left
       if (left > maxLeft) {
-        this.left = maxLeft
+        this.leftContextualMenu = maxLeft
       }
 
-      this.top = event.clientY - event.screenY
-      if (this.isParent) {
-        this.top = event.clientY - 100
+      const offsetTop = this.$el.getBoundingClientRect().top
+      let top = event.clientY - offsetTop
+      if (this.panelType === 'browser' && this.getterPanel.isShowedCriteria) {
+        top = event.clientY - 200
       }
+      this.topContextualMenu = top
 
       this.currentRowMenu = row
       this.visible = true
+
+      // TODO: Verify use
       this.$store.dispatch('showMenuTable', {
         isShowedTable: this.isParent
       })
@@ -1007,7 +1011,7 @@ export default {
 </script>
 
 <style lang="scss">
- .contextmenu {
+ .contextual-menu {
     margin: 0;
     background: #fff;
     z-index: 3000;
