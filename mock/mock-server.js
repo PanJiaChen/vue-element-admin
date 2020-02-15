@@ -54,6 +54,7 @@ module.exports = app => {
     extended: true
   }))
 
+  const initMockStartIndex = app._router.stack.length
   const mockRoutes = registerRoutes(app)
   var mockRoutesLength = mockRoutes.mockRoutesLength
   var mockStartIndex = mockRoutes.mockStartIndex
@@ -66,7 +67,7 @@ module.exports = app => {
     if (event === 'change' || event === 'add') {
       try {
         // remove mock routes stack
-        app._router.stack.splice(mockStartIndex, mockRoutesLength)
+        app._router.stack.splice(initMockStartIndex, mockRoutesLength)
 
         // clear routes cache
         unregisterRoutes()
@@ -74,6 +75,8 @@ module.exports = app => {
         const mockRoutes = registerRoutes(app)
         mockRoutesLength = mockRoutes.mockRoutesLength
         mockStartIndex = mockRoutes.mockStartIndex
+        const newRoutes = app._router.stack.splice(mockStartIndex, mockRoutesLength)
+        app._router.stack.splice(initMockStartIndex, 0, ...newRoutes)
 
         console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
       } catch (error) {
