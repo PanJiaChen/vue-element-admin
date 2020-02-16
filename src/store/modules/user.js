@@ -169,7 +169,7 @@ const actions = {
           root: true
         })
 
-        // dispatch('tagsView/delAllViews', null, { root:true })
+        dispatch('tagsView/delAllViews', null, { root: true })
         removeToken()
         removeCurrentRole()
         resetRouter()
