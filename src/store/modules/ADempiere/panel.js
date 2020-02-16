@@ -24,9 +24,11 @@ const panel = {
       payload.panel = payload.newPanel
     },
     changeFieldLogic(state, payload) {
-      payload.field.isDisplayedFromLogic = Boolean(payload.isDisplayedFromLogic)
+      if (payload.isDisplayedFromLogic !== undefined && payload.isDisplayedFromLogic !== null) {
+        payload.field.isDisplayedFromLogic = Boolean(payload.isDisplayedFromLogic)
+      }
       payload.field.isMandatoryFromLogic = Boolean(payload.isMandatoryFromLogic)
-      payload.field.isReportFromLogic = Boolean(payload.isReportFromLogic)
+      payload.field.isReadOnlyFromLogic = Boolean(payload.isReadOnlyFromLogic)
       payload.field.parsedDefaultValue = payload.parsedDefaultValue
     },
     dictionaryResetCache(state) {

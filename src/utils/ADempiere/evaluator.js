@@ -83,7 +83,16 @@ class evaluator {
     if (logic === undefined) {
       return _defaultUndefined
     }
-    let expr = /^(['"@#$a-zA-Z0-9\-_\s]){0,}((<>|<=|<|==|=|>=|>|!=|!|\^){1,2})([\s"'@#$a-zA-Z0-9\-_]){0,}$/i
+
+    /**
+     * fist group: (['"@#\w\d-_\s]{0,}) only values aphabetic (\w), numerics (\d),
+     * space (\d) and '"@#$-_ characters, at least ocurrency to 0 position
+     * second group: (<>|<=|==|>=|!=|<|=|>|!|\^) coincides only with some of the
+     * conditions <>, <=, ==, >=, !=, <, =, >, !, ^
+     * third group: same as the first group
+     * flag: global match (g), insensitive case (i), multiline (m)
+     */
+    let expr = /^(['"@#$-_\w\d\s]{0,})(<>|<=|==|>=|!=|<|=|>|!|\^)(['"@#$-_\w\d\s]{0,})/gim
     let st = expr.test(logic)
 
     if (!st) {
@@ -91,7 +100,7 @@ class evaluator {
       return _defaultUndefined
     }
 
-    expr = /(<>|<=|<|==|=|>=|>|!=|!|\^){1,2}/i
+    expr = /(<>|<=|==|>=|!=|<|=|>|!|\^)/gm
     st = logic.split(expr)
 
     // First Part (or column name)
