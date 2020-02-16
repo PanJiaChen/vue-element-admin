@@ -83,9 +83,9 @@ export default {
         panelType: this.fieldAttributes.panelType,
         columnName: this.fieldAttributes.columnName,
         newValue: value === 'NotSend' ? this.value : value,
-        isAdvancedQuery: this.fieldAttributes.isAdvancedQuery,
-        isSendToServer: !(value === 'NotSend' || this.fieldAttributes.isAdvancedQuery),
-        isSendCallout: !(value === 'NotSend' || this.fieldAttributes.isAdvancedQuery)
+        isAdvancedQuery: true,
+        isSendToServer: !(value === 'NotSend'),
+        isSendCallout: false
       }
 
       this.$store.dispatch('notifyFieldChange', {
