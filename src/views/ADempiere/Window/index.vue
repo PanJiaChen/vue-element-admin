@@ -22,7 +22,7 @@
                             circle
                             style="margin-left: 10px;"
                             class="el-button-window"
-                            @click="handleChangeShowedRecordNavigation(isShowedRecordNavigation)"
+                            @click="handleChangeShowedRecordNavigation(false)"
                           />
                           <el-button
                             v-show="!isPanel"
@@ -50,18 +50,12 @@
                         </div>
                       </div>
                     </div>
-                    <i
-                      v-if="isMobile"
-                      class="el-icon-close"
-                      style="position: fixed; padding-top: 15px; color: #000000; font-size: 121%; font-weight: 615 !important; padding-left: 9px;"
-                      @click="handleChangeShowedRecordNavigation(isShowedRecordNavigation)"
-                    />
                   </el-aside>
                 </div>
               </template>
               <template slot="paneR">
                 <el-container style="height: 86vh;">
-                  <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation(isShowedRecordNavigation)">
+                  <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation(!isShowedRecordNavigation)">
                     <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
                       <el-header style="height: 39px;">
                         <context-menu
@@ -113,7 +107,7 @@
                               class="open-navegation"
                               circle
                               type="primary"
-                              @click="handleChangeShowedRecordNavigation(isShowedRecordNavigation)"
+                              @click="handleChangeShowedRecordNavigation(true)"
                             />
                           </div>
                         </div>
@@ -255,10 +249,6 @@ export default {
       isPanel: false,
       activeInfo: 'listChatEntries',
       show: false,
-      chatNote: '',
-      typeAction: 0,
-      isLoadingFromServer: false,
-      currentKey: 100,
       // TODO: Manage attribute with store
       isShowedRecordPanel: false
     }
@@ -386,19 +376,10 @@ export default {
       return true
     },
     getIsWorkflowLog() {
-      if (this.isEmptyValue(this.gettersListWorkflow)) {
+      if (this.isEmptyValue(this.$store.getters.getWorkflow)) {
         return false
       }
       return true
-    },
-    getIsChat() {
-      return this.$store.getters.getIsNote
-    },
-    isNote() {
-      return this.$store.getters.getIsNote
-    },
-    gettersListWorkflow() {
-      return this.$store.getters.getWorkflow
     },
     getterShowContainerInfo() {
       return this.$store.getters.getShowContainerInfo
@@ -406,25 +387,15 @@ export default {
   },
   watch: {
     $route(value) {
-      if (value.query.action === 'create-new') {
-        this.$store.dispatch(this.activeInfo, {
-          tableName: this.$route.params.tableName,
-          recordId: this.$route.params.recordId
-        })
-          .then((response) => {
+      this.$store.dispatch(this.activeInfo, {
+        tableName: this.$route.params.tableName,
+        recordId: this.$route.params.recordId
+      })
+        .then(response => {
+          if (value.query.action === 'create-new') {
             this.$store.dispatch('isNote', false)
-          })
-      } else {
-        this.$store.dispatch(this.activeInfo, {
-          tableName: this.$route.params.tableName,
-          recordId: this.$route.params.recordId
+          }
         })
-      }
-    },
-    'this.$route.params'(newValue, oldValue) {
-      if (!this.isEmptyValue(newValue)) {
-        this.getIsRecordLocked()
-      }
     }
   },
   created() {
@@ -449,12 +420,6 @@ export default {
         recordId: this.$route.params.recordId
       })
     },
-    refres(tabInfo) {
-      this.$store.dispatch(tabInfo, {
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId
-      })
-    },
     // callback new size
     onDrag(size) {
       this.$store.dispatch('setSplitHeightTop', {
@@ -468,7 +433,6 @@ export default {
     getWindow() {
       if (this.getterWindow) {
         this.generateWindow()
-        this.isLoadingFromServer = true
         return
       }
       this.$store.dispatch('getWindowFromServer', {
@@ -477,7 +441,6 @@ export default {
       })
         .then(response => {
           this.generateWindow()
-          this.isLoadingFromServer = true
         })
     },
     generateWindow() {
@@ -485,23 +448,22 @@ export default {
 
       let isShowRecords = this.isShowedRecordNavigation
       if (isShowRecords === undefined) {
-        if (['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10) {
+        if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10) ||
+          this.$route.query.action === 'advancedQuery') {
           isShowRecords = true
         } else if (this.windowMetadata.windowType === 'T') {
           isShowRecords = false
-        } else if (this.$route.query.action === 'advancedQuery') {
-          isShowRecords = true
         }
+        this.handleChangeShowedRecordNavigation(!isShowRecords)
       }
-      this.handleChangeShowedRecordNavigation(!isShowRecords)
 
       this.isLoaded = true
     },
-    handleChangeShowedRecordNavigation(value) {
+    handleChangeShowedRecordNavigation(valueToChange) {
       this.$store.dispatch('changeWindowAttribute', {
         parentUuid: this.windowUuid, // act as parentUuid
         attributeName: 'isShowedRecordNavigation',
-        attributeValue: !value
+        attributeValue: valueToChange
       })
     },
     handleChangeShowedPanel(value) {
@@ -514,12 +476,6 @@ export default {
         attributeName: 'isShowedTabsChildren',
         attributeValue: !this.isShowedTabsChildren
       })
-    },
-    getIsRecordLocked() {
-      if (this.$store.getters.getRecordPrivateAccess(this.$route.params.tableName, this.$route.params.recordId)) {
-        return true
-      }
-      return false
     }
   }
 }

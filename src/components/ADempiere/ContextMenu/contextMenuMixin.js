@@ -345,12 +345,12 @@ export const contextMixin = {
       }
       this.actions = this.metadataMenu.actions
       if (this.panelType === 'window') {
-        var processAction = this.actions.find(item => {
+        const processAction = this.actions.find(item => {
           if (item.name === 'Procesar Orden' || (item.name === 'Process Order')) {
             return item
           }
         })
-        this.$store.dispatch('setOrden', processAction)
+        this.$store.dispatch('setOrder', processAction)
       }
 
       if (this.actions && this.actions.length) {

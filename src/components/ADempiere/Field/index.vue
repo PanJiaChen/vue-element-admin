@@ -25,7 +25,7 @@
           :field-value="field.value"
         />
         <field-context-info
-          v-else-if="(field.contextInfo && field.contextInfo.isActive) || field.reference.zoomWindowList.length"
+          v-else-if="isContextInfo"
           key="is-field-context-info"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
@@ -33,39 +33,12 @@
         <span v-else key="is-field-name">
           {{ isFieldOnly() }}
         </span>
-        <el-popover
-          v-if="(field.columnName === 'DocStatus') && (!isEmptyValue(processOrdenUuid))"
-          placement="right"
-          width="400"
-          trigger="click"
-        >
-          <el-select
-            v-model="valueActionDocument"
-            @change="documentActionChange"
-          >
-            <el-option
-              v-for="(item, key) in listDocumentActions"
-              :key="key"
-              :label="item.name"
-              :value="item.value"
-            />
-          </el-select>
-          <el-tag
-            v-if="isEmptyValue(valueActionDocument)"
-            :type="tagStatus(field.value)"
-          >
-            {{ field.displayColumn }}
-          </el-tag>
-          <el-tag
-            v-else
-            :type="tagStatus(valueActionDocument)"
-          >
-            {{ labelDocumentActions }}
-          </el-tag>
-          <p v-if="isEmptyValue(valueActionDocument)"> {{ field.description }} </p>
-          <p v-else> {{ descriptionDocumentActions }} </p>
-          <el-button slot="reference" type="text" icon="el-icon-set-up" @click="listActionDocument" />
-        </el-popover>
+
+        <field-document-status
+          v-if="isDocuemntStatus"
+          :field="fieldAttributes"
+        />
+
         <field-translated
           v-if="field.isTranslated && !isAdvancedQuery"
           :field-attributes="fieldAttributes"
@@ -92,13 +65,12 @@
 
 <script>
 import FieldContextInfo from '@/components/ADempiere/Field/fieldPopovers/fieldContextInfo'
+import FieldDocumentStatus from '@/components/ADempiere/Field/fieldPopovers/fieldDocumentStatus'
 import FieldOperatorComparison from '@/components/ADempiere/Field/fieldPopovers/fieldOperatorComparison'
 import FieldTranslated from '@/components/ADempiere/Field/fieldPopovers/fieldTranslated'
 import { FIELD_ONLY } from '@/components/ADempiere/Field/references'
 import { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { showMessage } from '@/utils/ADempiere/notification'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 
 /**
  * This is the base component for linking the components according to the
@@ -108,6 +80,7 @@ export default {
   name: 'FieldDefinition',
   components: {
     FieldContextInfo,
+    FieldDocumentStatus,
     FieldOperatorComparison,
     FieldTranslated
   },
@@ -148,8 +121,7 @@ export default {
   },
   data() {
     return {
-      field: {},
-      valueActionDocument: ''
+      field: {}
     }
   },
   computed: {
@@ -267,36 +239,22 @@ export default {
       }
       return false
     },
-    listDocumentActions() {
-      return this.$store.getters.getListDocumentActions.documentActionsList
+    processOrderUuid() {
+      return this.$store.getters.getOrders
     },
-    defaultDocumentActions() {
-      return this.$store.getters.getListDocumentActions.defaultDocumentAction
-    },
-    labelDocumentActions() {
-      const found = this.listDocumentActions.find(element => {
-        if (element.value === this.valueActionDocument) {
-          return element
+    isDocuemntStatus() {
+      if (this.panelType === 'window') {
+        if (this.field.columnName === 'DocStatus' && !this.isEmptyValue(this.processOrderUuid)) {
+          return true
         }
-      })
-      if (this.isEmptyValue(found)) {
-        return this.valueActionDocument
       }
-      return found.name
+      return false
     },
-    descriptionDocumentActions() {
-      const found = this.listDocumentActions.find(element => {
-        if (element.value === this.valueActionDocument) {
-          return element
-        }
-      })
-      if (this.isEmptyValue(found)) {
-        return this.valueActionDocument
+    isContextInfo() {
+      if (!this.isAdvancedQuery) {
+        return (this.field.contextInfo && this.field.contextInfo.isActive) || this.field.reference.zoomWindowList.length
       }
-      return found.description
-    },
-    processOrdenUuid() {
-      return this.$store.getters.getOrden
+      return false
     }
   },
   watch: {
@@ -309,42 +267,6 @@ export default {
     this.field = this.metadataField
   },
   methods: {
-    showMessage,
-    listActionDocument() {
-      this.$store.dispatch('listDocumentActionStatus', {
-        tableName: 'C_Order',
-        recordUuid: this.$route.query.action
-      })
-    },
-    documentActionChange(value) {
-      var actionProcess = this.$store.getters.getOrden
-      this.$store.dispatch('notifyFieldChange', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        columnName: 'DocAction',
-        isSendToServer: true,
-        newValue: value
-      })
-      this.$store.dispatch('startProcess', {
-        action: {
-          uuid: actionProcess.uuid,
-          id: actionProcess.id,
-          name: actionProcess.name
-        }, // process metadata
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId,
-        recordUuid: this.$route.query.action,
-        parametersList: [{
-          columnName: 'DocStatus',
-          value: this.valueActionDocument
-        }],
-        isActionDocument: true,
-        parentUuid: this.parentUuid,
-        panelType: this.panelType,
-        containerUuid: this.containerUuid// determinate if get table name and record id (window) or selection (browser)
-      })
-      this.valueActionDocument = ''
-    },
     isDisplayed() {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
@@ -423,30 +345,6 @@ export default {
     focusField() {
       if (this.isDisplayed() && this.isMandatory() && !this.isReadOnly()) {
         this.$refs[this.field.columnName].activeFocus()
-      }
-    },
-    redirect({ window, columnName, value }) {
-      const viewSearch = recursiveTreeSearch({
-        treeData: this.permissionRoutes,
-        attributeValue: window.uuid,
-        attributeName: 'meta',
-        secondAttribute: 'uuid',
-        attributeChilds: 'children'
-      })
-      if (viewSearch) {
-        this.$router.push({
-          name: viewSearch.name,
-          query: {
-            action: 'advancedQuery',
-            tabParent: 0,
-            [columnName]: value
-          }
-        })
-      } else {
-        this.showMessage({
-          type: 'error',
-          message: this.$t('notifications.noRoleAccess')
-        })
       }
     }
   }

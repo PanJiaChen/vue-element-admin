@@ -17,7 +17,12 @@ import { requestListDocumentActions } from '@/api/ADempiere/data'
 const contextMenu = {
   state: {
     contextMenu: [],
-    listDocumentAction: []
+    listDocumentAction: {
+      defaultDocumentAction: undefined,
+      documentActionsList: [],
+      recordId: undefined,
+      recordUuid: undefined
+    }
   },
   mutations: {
     setContextMenu(state, payload) {
@@ -34,21 +39,37 @@ const contextMenu = {
     setContextMenu({ commit }, payload) {
       commit('setContextMenu', payload)
     },
-    listDocumentActionStatus({ commit }, params) {
-      const tableName = params.tableName
-      const recordId = params.recordId
-      const recordUuid = params.recordUuid
-      const documentStatus = params.DocStatus
-      const documentAction = params.DocAction
-      const pageSize = 0
-      const pageToken = ''
-      requestListDocumentActions({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken })
-        .then(response => {
-          var documentAction = {
-            defaultDocumentAction: response.defaultDocumentAction,
-            documentActionsList: response.documentActionsList
+    /**
+     * TODO: Verify tableName params to change in constant
+     * @param {number} recordId
+     * @param {string} recordUuid
+     */
+    listDocumentActionStatus({ commit }, {
+      tableName = 'C_Order',
+      recordId,
+      recordUuid,
+      documentAction,
+      documentStatus
+    }) {
+      requestListDocumentActions({
+        tableName,
+        recordId,
+        recordUuid,
+        documentAction,
+        documentStatus,
+        pageSize: 0,
+        pageToken: ''
+      })
+        .then(responseDocumentActios => {
+          const documentAction = {
+            defaultDocumentAction: responseDocumentActios.defaultDocumentAction,
+            documentActionsList: responseDocumentActios.documentActionsList,
+            recordId,
+            recordUuid
           }
+
           commit('listDocumentAction', documentAction)
+          return documentAction
         })
         .catch(error => {
           console.warn(error)
@@ -79,6 +100,9 @@ const contextMenu = {
     },
     getListDocumentActions: (state) => {
       return state.listDocumentAction
+    },
+    getListDocumentActionByUuid: (state) => (recordUuid) => {
+      return state.listDocumentAction.find(itemDocumentAction => itemDocumentAction.recordUuid === recordUuid)
     }
   }
 }

@@ -58,7 +58,7 @@ const utils = {
     setProcessTable(state, recordTable) {
       state.recordTable = recordTable
     },
-    setOrden(state, payload) {
+    setOrder(state, payload) {
       state.documentAction = payload
     },
     setChatText(state, payload) {
@@ -146,8 +146,8 @@ const utils = {
     setReportTypeToShareLink({ commit }, value) {
       commit('setReportTypeToShareLink', value)
     },
-    setOrden({ commit }, params) {
-      commit('setOrden', params)
+    setOrder({ commit }, params) {
+      commit('setOrder', params)
     }
   },
   getters: {
@@ -209,7 +209,7 @@ const utils = {
     getIsReadedOpenRoute: (state) => {
       return state.openRoute.isReaded
     },
-    getOrden: (state) => {
+    getOrders: (state) => {
       return state.documentAction
     },
     getChatTextLong: (state) => {
