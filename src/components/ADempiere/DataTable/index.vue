@@ -149,6 +149,7 @@
             element-loading-spinner="el-icon-loading"
             cell-class-name="datatable-max-cell-height"
             :show-summary="getterPanel.isShowedTotals"
+            :row-class-name="tableRowClassName"
             :summary-method="getSummaries"
             @row-click="handleRowClick"
             @row-dblclick="handleRowDblClick"
@@ -715,6 +716,12 @@ export default {
     callOffNewRecord() {
       this.getterDataRecords.shift()
     },
+    tableRowClassName({ row, rowIndex }) {
+      if (row.isNew) {
+        return 'warning-row'
+      }
+      return ''
+    },
     addNewRow() {
       if (this.getterNewRecords <= 0) {
         this.$store.dispatch('addNewRow', {
@@ -724,6 +731,7 @@ export default {
           isEdit: true,
           isSendServer: false
         })
+        this.$refs.multipleTable.$refs.bodyWrapper.scrollTop = 0
       } else {
         const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({
           containerUuid: this.containerUuid
@@ -733,6 +741,20 @@ export default {
           type: 'info'
         })
       }
+    },
+    async setFocus() {
+      return new Promise(resolve => {
+        const fieldFocus = this.fieldList.find(itemField => {
+          if (this.$refs.hasOwnProperty(itemField.columnName)) {
+            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
+              return true
+            }
+          }
+        })
+        this.$refs[fieldFocus.columnName][0].focusField()
+        resolve()
+        return
+      })
     },
     async getList() {
       this.oldgetDataDetail = this.getterDataRecords.map(v => v.id)
@@ -1042,6 +1064,13 @@ export default {
   }
 </style>
 <style>
+  .el-table .warning-row {
+    background: rgba(104, 245, 203, 0.712);
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
   .el-table > .cell {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;

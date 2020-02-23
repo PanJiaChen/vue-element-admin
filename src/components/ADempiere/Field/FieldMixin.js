@@ -22,6 +22,7 @@ export const fieldMixin = {
     }
   },
   computed: {
+    /*
     getterValue() {
       const field = this.$store.getters.getFieldFromColumnName({
         containerUuid: this.metadata.containerUuid,
@@ -33,15 +34,14 @@ export const fieldMixin = {
       }
       return undefined
     },
+    */
     isDisabled() {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
     }
   },
   methods: {
     activeFocus() {
-      if (this.metadata.isUpdateable) {
-        this.$refs[this.metadata.columnName].focus()
-      }
+      this.$refs[this.metadata.columnName].focus()
     },
     /**
      * Overwrite component method if necessary
