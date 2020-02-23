@@ -581,12 +581,6 @@ const processControl = {
                 output
               })
               dispatch('setReportTypeToShareLink', processResult.output.reportType)
-              dispatch('getDataListTab', {
-                parentUuid: params.parentUuid,
-                containerUuid: params.containerUuid,
-                isRefreshPanel: true,
-                recordUuid: params.recordUuid
-              })
               resolve(processResult)
             })
             .catch(error => {
@@ -715,76 +709,37 @@ const processControl = {
                   outputStream: '',
                   reportType: ''
                 }
-                if (response.getOutput()) {
-                  const responseOutput = response.getOutput()
+                if (isEmptyValue(response.output)) {
+                  const responseOutput = response.output
                   output = {
-                    uuid: responseOutput.getUuid(),
-                    name: responseOutput.getName(),
-                    description: responseOutput.getDescription(),
-                    fileName: responseOutput.getFilename(),
-                    mimeType: responseOutput.getMimetype(),
-                    output: responseOutput.getOutput(),
-                    outputStream: responseOutput.getOutputstream(),
-                    reportType: responseOutput.getReporttype()
+                    uuid: responseOutput.uuid,
+                    name: responseOutput.name,
+                    description: responseOutput.description,
+                    fileName: responseOutput.filename,
+                    mimeType: responseOutput.mimeType,
+                    output: responseOutput.output,
+                    outputStream: responseOutput.outputstream,
+                    reportType: responseOutput.reporttype
                   }
                 }
                 var logList = []
-                if (response.getLogsList()) {
-                  logList = response.getLogsList().map(itemLog => {
+                if (response.getLogsList) {
+                  logList = response.getLogsList.map(itemLog => {
                     return {
-                      log: itemLog.getLog(),
-                      recordId: itemLog.getRecordid()
+                      log: itemLog.log,
+                      recordId: itemLog.recordid
                     }
                   })
                 }
 
-                var link = {
-                  href: undefined,
-                  download: undefined
-                }
-                if (processDefinition.isReport) {
-                  const blob = new Blob(
-                    [output.outputStream],
-                    { type: output.mimeType }
-                  )
-                  link = document.createElement('a')
-                  link.href = window.URL.createObjectURL(blob)
-                  link.download = output.fileName
-                  if (reportType !== 'pdf' && reportType !== 'html') {
-                    link.click()
-                  }
-
-                  // Report views List to context menu
-                  var reportViewList = {
-                    name: language.t('views.reportView'),
-                    type: 'summary',
-                    action: '',
-                    childs: [],
-                    option: 'reportView'
-                  }
-                  reportViewList.childs = getters.getReportViewList(processResult.processUuid)
-                  if (!reportViewList.childs.length) {
-                    dispatch('requestReportViews', {
-                      processUuid: processResult.processUuid
-                    })
-                      .then(response => {
-                        reportViewList.childs = response
-                        // Get contextMenu metadata and concat print report views with contextMenu actions
-                        var contextMenuMetadata = rootGetters.getContextMenu(processResult.processUuid)
-                        contextMenuMetadata.actions.push(reportViewList)
-                      })
-                  }
-                }
                 // assign new attributes
                 Object.assign(processResult, {
-                  instanceUuid: response.getInstanceuuid(),
-                  url: link.href,
-                  download: link.download,
-                  isError: response.getIserror(),
-                  isProcessing: response.getIsprocessing(),
-                  summary: response.getSummary(),
-                  ResultTableName: response.getResulttablename(),
-                  lastRun: response.getLastrun(),
+                  instanceUuid: response.instanceUuid,
+                  isError: response.isError,
+                  isProcessing: response.isProcessing,
+                  summary: response.summary,
+                  ResultTableName: response.resulttablename,
+                  lastRun: response.lastRun,
                   logs: logList,
                   output: output
                 })

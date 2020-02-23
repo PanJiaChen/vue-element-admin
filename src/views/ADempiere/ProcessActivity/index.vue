@@ -1,8 +1,8 @@
 <template>
-  <div v-if="getRunProcessAll.length" key="with-process" class="app-container">
+  <div v-if="!isEmptyValue(getProcessLog)" key="with-process" class="app-container">
     <el-timeline>
       <el-timeline-item
-        v-for="(activity, index) in getRunProcessAll"
+        v-for="(activity, index) in getProcessLog"
         :key="index"
         :timestamp="translateDate(activity.lastRun)"
         placement="top"
@@ -53,7 +53,7 @@
               </el-popover>
               <!-- show only when bring logs -->
               <el-popover
-                v-else-if="activity.logsList.length > 0 || activity.summary"
+                v-else-if="!isEmptyValue(activity.logsList) || !isEmptyValue(activity.summary)"
                 :key="index + 'is-summary'"
                 placement="right"
                 width="500"
@@ -172,6 +172,14 @@ export default {
         // sort by date and reverse string to order by most recently
         return new Date(a.lastRun) - new Date(b.lastRun)
       }).reverse()
+    },
+    getProcessLog() {
+      var log = this.getRunProcessAll.filter(element => {
+        if (element.isError !== undefined && (element.isProcessing !== undefined)) {
+          return element
+        }
+      })
+      return log
     },
     language() {
       return this.$store.getters.language
