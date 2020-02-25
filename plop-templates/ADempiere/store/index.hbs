@@ -1,0 +1,22 @@
+const {{name}} = {
+  {{#if state}}
+  state: {
+    {{name}}: {}
+  },
+  {{/if}}
+  {{#if mutations}}
+  mutations: {},
+  {{/if}}
+  {{#if actions}}
+  actions: {},
+  {{/if}}
+  {{#if getters}}
+  getters: {
+    get{{name}}: (state) => {
+      return state.{{name}}
+    }
+  }
+  {{/if}}
+}
+
+export default {{name}}
