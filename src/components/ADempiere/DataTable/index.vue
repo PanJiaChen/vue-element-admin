@@ -165,7 +165,7 @@
               fixed
               min-width="50"
             />
-            <template v-for="(fieldAttributes, key) in fieldList">
+            <template v-for="(fieldAttributes, key) in fieldsList">
               <el-table-column
                 v-if="isDisplayed(fieldAttributes)"
                 :key="key"
@@ -445,12 +445,20 @@ export default {
       }
       return this.getterHeight - 300 - totalRow
     },
-    fieldList() {
+    fieldsList() {
       if (this.getterPanel && this.getterPanel.fieldList) {
-        return this.sortFields(
-          this.getterPanel.fieldList,
-          this.panelType !== 'browser' ? 'seqNoGrid' : 'sequence'
-        )
+        if ((this.panelType === 'window' && this.isParent) || this.panelType === 'browser') {
+          let orderBy = 'seqNoGrid'
+          if (this.panelType === 'browser') {
+            orderBy = 'sequence'
+          }
+
+          return this.sortFields({
+            fieldsList: this.getterPanel.fieldList,
+            orderBy
+          })
+        }
+        return this.getterPanel.fieldList
       }
       return []
     },
@@ -727,7 +735,7 @@ export default {
         this.$store.dispatch('addNewRow', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
-          fieldList: this.fieldList,
+          fieldList: this.fieldsList,
           isEdit: true,
           isSendServer: false
         })
@@ -744,7 +752,7 @@ export default {
     },
     async setFocus() {
       return new Promise(resolve => {
-        const fieldFocus = this.fieldList.find(itemField => {
+        const fieldFocus = this.fieldsList.find(itemField => {
           if (this.$refs.hasOwnProperty(itemField.columnName)) {
             if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
               return true
@@ -939,7 +947,7 @@ export default {
         }).then(response => {
           this.isLoadPanelFromServer = true
         }).catch(error => {
-          console.warn(`FieldList Load Error ${error.code}: ${error.message}.`)
+          console.warn(`Fields List Load Error ${error.code}: ${error.message}.`)
         })
       }
     },
@@ -959,7 +967,7 @@ export default {
           sums[index] = 'Σ'
           return
         }
-        const field = this.fieldList.find(field => field.columnName === columnItem.property)
+        const field = this.fieldsList.find(field => field.columnName === columnItem.property)
         if (!FIELDS_QUANTITY.includes(field.referenceType)) {
           sums[index] = ''
           return

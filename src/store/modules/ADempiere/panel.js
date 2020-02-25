@@ -95,7 +95,15 @@ const panel = {
             }
           }
         })
-        params.fieldList = assignedGroup(params.fieldList)
+
+        let orderBy = 'sequence'
+        if ((params.panelType === 'window' && !params.isParent) || params.panelType === 'browser') {
+          orderBy = 'seqNoGrid'
+        }
+        params.fieldList = assignedGroup({
+          fieldsList: params.fieldList,
+          orderBy
+        })
       }
 
       params.keyColumn = keyColumn

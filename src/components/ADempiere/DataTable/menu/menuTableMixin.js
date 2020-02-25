@@ -2,7 +2,6 @@ import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADemp
 import { showNotification } from '@/utils/ADempiere/notification'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 import { FIELDS_QUANTITY } from '@/components/ADempiere/Field/references'
-import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
 
 export const menuTableMixin = {
   props: {
@@ -79,18 +78,9 @@ export const menuTableMixin = {
     getDataAllRecord() {
       return this.getterDataRecordsAndSelection.record
     },
-    fieldList() {
+    fieldsList() {
       if (this.panelMetadata && this.panelMetadata.fieldList) {
-        let sortAttribute = 'sequence'
-        if (this.panelType === 'browser') {
-          sortAttribute = 'seqNoGrid'
-        }
-        // TODO: Change to destructuring and add isParent attribure to change
-        // orderBy sequence value to seqNoGrid value if isParent is false
-        return this.sortFields(
-          this.panelMetadata.fieldList,
-          sortAttribute
-        )
+        return this.panelMetadata.fieldList
       }
       return []
     },
@@ -167,7 +157,6 @@ export const menuTableMixin = {
   },
   methods: {
     showNotification,
-    sortFields,
     closeMenu() {
       // TODO: Validate to dispatch one action
       this.$store.dispatch('showMenuTable', {
@@ -253,7 +242,7 @@ export const menuTableMixin = {
         this.$store.dispatch('addNewRow', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
-          fieldList: this.fieldList,
+          fieldList: this.fieldsList,
           isEdit: true,
           isSendServer: false
         })

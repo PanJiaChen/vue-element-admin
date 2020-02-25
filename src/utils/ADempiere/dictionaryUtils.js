@@ -467,18 +467,21 @@ export function getFieldTemplate(attributesOverwrite) {
  * @param  {array} fieldList Field of List with
  * @return {array} fieldList
  */
-export function assignedGroup(fieldList, assignedGroup) {
-  if (fieldList === undefined || fieldList.length <= 0) {
-    return fieldList
+export function assignedGroup({ fieldsList, groupToAssigned, orderBy }) {
+  if (fieldsList === undefined || fieldsList.length <= 0) {
+    return fieldsList
   }
 
-  fieldList = sortFields(fieldList, 'sequence', 'asc', fieldList[0].panelType)
+  fieldsList = sortFields({
+    fieldsList,
+    orderBy
+  })
 
   let firstChangeGroup = false
   let currentGroup = ''
   let typeGroup = ''
 
-  fieldList.forEach(fieldElement => {
+  fieldsList.forEach(fieldElement => {
     if (fieldElement.panelType !== 'window') {
       fieldElement.groupAssigned = ''
       fieldElement.typeGroupAssigned = ''
@@ -507,12 +510,12 @@ export function assignedGroup(fieldList, assignedGroup) {
     fieldElement.groupAssigned = currentGroup
     fieldElement.typeGroupAssigned = typeGroup
 
-    if (assignedGroup !== undefined) {
-      fieldElement.groupAssigned = assignedGroup
+    if (groupToAssigned !== undefined) {
+      fieldElement.groupAssigned = groupToAssigned
     }
   })
 
-  return fieldList
+  return fieldsList
 }
 
 /**
@@ -524,18 +527,26 @@ export function assignedGroup(fieldList, assignedGroup) {
  * @param {string} panelType
  * @returns {array}
  */
-export function sortFields(arr, orderBy = 'sequence', type = 'asc', panelType = 'window') {
-  if (panelType === 'browser') {
-    orderBy = 'seqNoGrid'
+export function sortFields({
+  fieldsList,
+  orderBy = 'sequence',
+  type = 'asc'
+}) {
+  if (type.toLowerCase() === 'asc') {
+    fieldsList.sort((itemA, itemB) => {
+      return itemA[orderBy] - itemB[orderBy]
+      // return itemA[orderBy] > itemB[orderBy]
+    })
+  } else {
+    fieldsList.sort((itemA, itemB) => {
+      return itemA[orderBy] + itemB[orderBy]
+      // return itemA[orderBy] > itemB[orderBy]
+    })
   }
-  arr.sort((itemA, itemB) => {
-    return itemA[orderBy] - itemB[orderBy]
-    // return itemA[orderBy] > itemB[orderBy]
-  })
-  if (type.toLowerCase() === 'desc') {
-    return arr.reverse()
-  }
-  return arr
+  // if (type.toLowerCase() === 'desc') {
+  //   return fieldsList.reverse()
+  // }
+  return fieldsList
 }
 
 /**
