@@ -12,7 +12,7 @@
         </el-breadcrumb-item>
         <el-breadcrumb-item key="1">
           <el-popover placement="bottom" trigger="hover" class="breadcrumb-popover">
-            <el-dropdown-item v-for="(item, index) in dropdownList" :key="index" :command="item">{{ generateTitle(item.meta.title) }}</el-dropdown-item>
+            <el-dropdown-item v-for="(item, index) in dropdownList" :key="index" @click.native="handleLink(item)">{{ generateTitle(item.meta.title) }}</el-dropdown-item>
             <i slot="reference" class="el-icon-more" />
           </el-popover>
         </el-breadcrumb-item>
