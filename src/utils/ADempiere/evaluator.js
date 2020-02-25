@@ -120,7 +120,7 @@ class evaluator {
       })
       // in context exists this column name
       if (value === null || value === undefined) {
-        console.info(`.The column ${first} not exists in context.`)
+        // console.info(`.The column ${first} not exists in context.`)
         return _defaultUndefined
       }
       firstEval = value // replace with it's value
@@ -184,10 +184,6 @@ class evaluator {
       value2 = true
     } else if (value2 === 'N') {
       value2 = false
-    }
-
-    if ([value1, operand, value2].includes(null)) {
-      return false
     }
 
     let isValueLogic

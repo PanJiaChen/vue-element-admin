@@ -16,7 +16,7 @@ const context = {
      */
     setContext(state, payload) {
       let key = ''
-      if (payload.parentUuid && !isEmptyValue(payload.value)) {
+      if (payload.parentUuid) {
         key += payload.parentUuid + '|'
 
         // set context for window
