@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
     <div class="recent-items">
-      <el-table :data="search.length ? filterResult(search) : documents" max-height="455" @row-click="handleClick">
+      <el-table :data="dataResult" max-height="455" @row-click="handleClick">
         <el-table-column
           prop="recordCount"
           width="60"
@@ -27,6 +27,7 @@
 <script>
 import { getPendingDocumentsFromServer } from '@/api/ADempiere/data'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 export default {
   name: 'PendingDocuments',
@@ -46,6 +47,12 @@ export default {
     cachedViews() {
       return this.$store.getters.cachedViews
     },
+    dataResult() {
+      if (this.search.length) {
+        return this.filterResult(this.search)
+      }
+      return this.documents
+    },
     permissionRoutes() {
       return this.$store.getters.permission_routes
     }
@@ -55,6 +62,7 @@ export default {
     this.subscribeChanges()
   },
   methods: {
+    showMessage,
     getPendingDocuments() {
       const userUuid = this.$store.getters['user/getUserUuid']
       const roleUuid = this.$store.getters.getRoleUuid
@@ -101,6 +109,11 @@ export default {
             action: 'criteria'
           }
         })
+      } else {
+        this.showMessage({
+          type: 'error',
+          message: this.$t('notifications.noRoleAccess')
+        })
       }
       // conditions for the registration amount (operador: row.criteria.whereClause)
     },
@@ -120,13 +133,13 @@ export default {
     width: 50%!important;
     float: right;
   }
-	.header {
-		padding-bottom: 10px;
-	}
-	.recent-items {
-		height: 455px;
-		overflow: auto;
-	}
+  .header {
+    padding-bottom: 10px;
+  }
+  .recent-items {
+    height: 455px;
+    overflow: auto;
+  }
   .time {
     float: left;
     font-size: 11px;

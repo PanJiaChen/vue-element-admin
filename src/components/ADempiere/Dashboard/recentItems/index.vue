@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
     <div class="recent-items">
-      <el-table :data="search.length ? filterResult(search) : recentItems" max-height="455" @row-click="handleClick">
+      <el-table :data="dataResult" max-height="455" @row-click="handleClick">
         <el-table-column width="40">
           <template slot-scope="{row}">
             <svg-icon :icon-class="row.icon" class="icon-window" />
@@ -18,9 +18,13 @@
           </template>
           <template slot-scope="{row}">
             <span>{{ row.displayName }}</span>
-            <el-tag class="action-tag">{{ $t(`views.${row.action}`) }}</el-tag>
+            <el-tag class="action-tag">
+              {{ $t(`views.${row.action}`) }}
+            </el-tag>
             <br>
-            <span class="time">{{ translateDate(row.updated) }}</span>
+            <span class="time">
+              {{ translateDate(row.updated) }}
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -31,6 +35,8 @@
 <script>
 import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 export default {
   name: 'RecentItems',
@@ -54,6 +60,15 @@ export default {
     },
     cachedViews() {
       return this.$store.getters.cachedViews
+    },
+    dataResult() {
+      if (this.search.length) {
+        return this.filterResult(this.search)
+      }
+      return this.recentItems
+    },
+    permissionRoutes() {
+      return this.$store.getters.permission_routes
     }
   },
   mounted() {
@@ -61,6 +76,7 @@ export default {
     this.subscribeChanges()
   },
   methods: {
+    showMessage,
     checkOpened(uuid) {
       return this.cachedViews.includes(uuid)
     },
@@ -91,16 +107,31 @@ export default {
       })
     },
     handleClick(row) {
-      if (!this.isEmptyValue(row.uuidRecord)) {
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: row.referenceUuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
+      })
+
+      if (viewSearch) {
+        let recordUuid
+        if (!this.isEmptyValue(row.uuidRecord)) {
+          recordUuid = row.uuidRecord
+        }
         this.$router.push({
-          name: row.menuUuid,
+          name: viewSearch.name,
           query: {
-            action: row.uuidRecord,
+            action: recordUuid,
             tabParent: 0
           }
         })
       } else {
-        this.$router.push({ name: row.menuUuid })
+        this.showMessage({
+          type: 'error',
+          message: this.$t('notifications.noRoleAccess')
+        })
       }
     },
     subscribeChanges() {
@@ -129,13 +160,13 @@ export default {
     width: 50%!important;
     float: right;
   }
-	.header {
-		padding-bottom: 10px;
-	}
-	.recent-items {
-		height: 455px;
-		overflow: auto;
-	}
+  .header {
+    padding-bottom: 10px;
+  }
+  .recent-items {
+    height: 455px;
+    overflow: auto;
+  }
   .time {
     float: left;
     font-size: 11px;

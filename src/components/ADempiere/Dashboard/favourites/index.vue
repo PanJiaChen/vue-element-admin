@@ -1,7 +1,7 @@
 <template>
   <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
     <div class="recent-items">
-      <el-table :data="search.length ? filterResult(search) : favorites" max-height="455" @row-click="handleClick">
+      <el-table :data="dataResult" max-height="455" @row-click="handleClick">
         <el-table-column width="40">
           <template slot-scope="{row}">
             <svg-icon :icon-class="row.icon" class="icon-window" />
@@ -18,7 +18,9 @@
           </template>
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
-            <el-tag class="action-tag">{{ $t(`views.${row.action}`) }}</el-tag>
+            <el-tag class="action-tag">
+              {{ $t(`views.${row.action}`) }}
+            </el-tag>
           </template>
         </el-table-column>
       </el-table>
@@ -29,6 +31,8 @@
 <script>
 import { getFavoritesFromServer } from '@/api/ADempiere/data'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { showMessage } from '@/utils/ADempiere/notification'
 
 export default {
   name: 'Favorites',
@@ -49,6 +53,15 @@ export default {
   computed: {
     cachedViews() {
       return this.$store.getters.cachedViews
+    },
+    dataResult() {
+      if (this.search.length) {
+        return this.filterResult(this.search)
+      }
+      return this.favorites
+    },
+    permissionRoutes() {
+      return this.$store.getters.permission_routes
     }
   },
   mounted() {
@@ -56,6 +69,7 @@ export default {
     this.subscribeChanges()
   },
   methods: {
+    showMessage,
     getFavoritesList() {
       const userUuid = this.$store.getters['user/getUserUuid']
       return new Promise(resolve => {
@@ -88,7 +102,33 @@ export default {
       })
     },
     handleClick(row) {
-      this.$router.push({ name: row.uuid })
+      console.log(row)
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: row.referenceUuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
+      })
+
+      if (viewSearch) {
+        let recordUuid
+        if (!this.isEmptyValue(row.uuidRecord)) {
+          recordUuid = row.uuidRecord
+        }
+        this.$router.push({
+          name: viewSearch.name,
+          query: {
+            action: recordUuid,
+            tabParent: 0
+          }
+        })
+      } else {
+        this.showMessage({
+          type: 'error',
+          message: this.$t('notifications.noRoleAccess')
+        })
+      }
     },
     filterResult(search) {
       return this.favorites.filter(item => this.ignoreAccent(item.name).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
@@ -109,13 +149,13 @@ export default {
     width: 50%!important;
     float: right;
   }
-	.header {
-		padding-bottom: 10px;
-	}
-	.recent-items {
-		height: 455px;
-		overflow: auto;
-	}
+  .header {
+    padding-bottom: 10px;
+  }
+  .recent-items {
+    height: 455px;
+    overflow: auto;
+  }
   .time {
     float: left;
     font-size: 11px;
