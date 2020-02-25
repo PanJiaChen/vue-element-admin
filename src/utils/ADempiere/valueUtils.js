@@ -350,6 +350,9 @@ export function parsedValueComponent({ fieldType, value, referenceType, isMandat
       if (String(value).trim() === '') {
         value = undefined
       }
+      if (typeof value === 'boolean') {
+        value = value ? 'Y' : 'N'
+      }
       if (referenceType === 'TableDirect') {
         if (value !== '' && value !== null && value !== undefined) {
           value = Number(value)

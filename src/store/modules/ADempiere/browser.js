@@ -47,10 +47,18 @@ const browser = {
                 ...additionalAttributes,
                 fieldListIndex: index
               }
-              const field = generateField(fieldItem, someAttributes)
+              const field = generateField({
+                fieldToGenerate: fieldItem,
+                moreAttributes: someAttributes,
+                isSOTrxMenu: routeToDelete.meta.isSOTrx
+              })
               // Add new field if is range number
               if (field.isRange && field.componentPath === 'FieldNumber') {
-                const fieldRange = generateField(fieldItem, someAttributes, true)
+                const fieldRange = generateField({
+                  fieldToGenerate: fieldItem,
+                  moreAttributes: someAttributes,
+                  typeRange: true
+                })
                 if (!isEmptyValue(fieldRange.value)) {
                   fieldRange.isShowedFromUser = true
                 }

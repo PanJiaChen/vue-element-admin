@@ -71,7 +71,8 @@ export function parseContext({
   columnName,
   value,
   isSQL = false,
-  isBooleanToString = false
+  isBooleanToString = false,
+  isSOTrxMenu
 }) {
   let isError = false
   const errorsList = []
@@ -129,18 +130,22 @@ export function parseContext({
       }
     }
 
-    if ((contextInfo === undefined || contextInfo.length === 0) &&
+    if (isEmptyValue(contextInfo) &&
       (token.startsWith('#') || token.startsWith('$'))) {
       contextInfo = getContext({
         columnName
       }) // get global context
+    }
+    // menu attribute isEmptyValue isSOTrx
+    if (!isEmptyValue(isSOTrxMenu) && token === 'IsSOTrx' && isEmptyValue(contextInfo)) {
+      contextInfo = isSOTrxMenu
     }
     if (contextInfo === undefined || contextInfo.length === 0) {
       console.info(`No Context for: ${token}`)
       isError = true
       errorsList.push(token)
     } else {
-      if (typeof contextInfo === 'object') {
+      if (['object', 'boolean'].includes(typeof contextInfo)) {
         outString = contextInfo
       } else {
         outString = outString + contextInfo // replace context with Context
@@ -150,7 +155,7 @@ export function parseContext({
     inString = inString.substring(secondIndexTag + 1, inString.length) // from second @
     firstIndexTag = inString.indexOf('@')
   }
-  if (typeof contextInfo !== 'object') {
+  if (!['object', 'boolean'].includes(typeof contextInfo)) {
     outString = outString + inString // add the rest of the string
   }
   if (isSQL) {

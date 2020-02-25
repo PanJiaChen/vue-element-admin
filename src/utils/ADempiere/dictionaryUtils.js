@@ -11,7 +11,12 @@ import language from '@/lang'
  * @param {object}  moreAttributes, additional attributes
  * @param {boolean} typeRange, indicate if this field is a range used as _To
  */
-export function generateField(fieldToGenerate, moreAttributes, typeRange = false) {
+export function generateField({
+  fieldToGenerate,
+  moreAttributes,
+  typeRange = false,
+  isSOTrxMenu
+}) {
   let isShowedFromUser = false
   // verify if it no overwrite value with ...moreAttributes
   if (moreAttributes.isShowedFromUser) {
@@ -27,10 +32,14 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
       parsedDefaultValue = parseContext({
         ...moreAttributes,
         columnName: fieldToGenerate.columnName,
-        value: parsedDefaultValue
+        value: parsedDefaultValue,
+        isSOTrxMenu: isSOTrxMenu
       }).value
     }
-    if (isEmptyValue(parsedDefaultValue) && String(parsedDefaultValue).trim() !== '-1') {
+
+    if ((isEmptyValue(parsedDefaultValue) ||
+      String(parsedDefaultValue).includes('@')) &&
+      String(parsedDefaultValue).trim() !== '-1') {
       parsedDefaultValue = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
@@ -38,7 +47,10 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
       })
 
       // search value preference with elementName
-      if (isEmptyValue(parsedDefaultValue) && !isEmptyValue(fieldToGenerate.elementName)) {
+      if (!isEmptyValue(fieldToGenerate.elementName) &&
+        (isEmptyValue(parsedDefaultValue) ||
+        String(parsedDefaultValue).includes('@')) &&
+        String(parsedDefaultValue).trim() !== '-1') {
         parsedDefaultValue = getPreference({
           parentUuid: fieldToGenerate.parentUuid,
           containerUuid: fieldToGenerate.containerUuid,
@@ -65,7 +77,10 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
         value: parsedDefaultValueTo
       }).value
     }
-    if (isEmptyValue(parsedDefaultValueTo) && String(parsedDefaultValueTo).trim() !== '-1') {
+
+    if ((isEmptyValue(parsedDefaultValueTo) ||
+      String(parsedDefaultValueTo).includes('@')) &&
+      String(parsedDefaultValueTo).trim() !== '-1') {
       parsedDefaultValueTo = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
         containerUuid: fieldToGenerate.containerUuid,
@@ -73,7 +88,10 @@ export function generateField(fieldToGenerate, moreAttributes, typeRange = false
       })
 
       // search value preference with elementName
-      if (isEmptyValue(parsedDefaultValueTo) && !isEmptyValue(fieldToGenerate.elementName)) {
+      if (!isEmptyValue(fieldToGenerate.elementName) &&
+        (isEmptyValue(parsedDefaultValueTo) ||
+        String(parsedDefaultValueTo).includes('@')) &&
+        String(parsedDefaultValueTo).trim() !== '-1') {
         parsedDefaultValueTo = getPreference({
           parentUuid: fieldToGenerate.parentUuid,
           containerUuid: fieldToGenerate.containerUuid,
@@ -211,10 +229,17 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
 
     fieldDefinitionList = processToGenerate.parametersList
       .map(fieldItem => {
-        const field = generateField(fieldItem, additionalAttributes)
+        const field = generateField({
+          fieldToGenerate: fieldItem,
+          moreAttributes: additionalAttributes
+        })
         // Add new field if is range number
         if (field.isRange && field.componentPath === 'FieldNumber') {
-          const fieldRange = generateField(fieldItem, additionalAttributes, true)
+          const fieldRange = generateField({
+            fieldToGenerate: fieldItem,
+            moreAttributes: additionalAttributes,
+            typeRange: true
+          })
           if (!isEmptyValue(fieldRange.value)) {
             fieldRange.isShowedFromUser = true
           }

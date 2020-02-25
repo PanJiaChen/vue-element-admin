@@ -136,6 +136,9 @@ export default {
     },
     'metadata.value'(value) {
       if (!this.metadata.inTable) {
+        if (typeof value === 'boolean') {
+          value = value ? 'Y' : 'N'
+        }
         if (this.metadata.displayed) {
           if (!this.options.some(option => option.key === value)) {
             this.options.push({

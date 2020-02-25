@@ -59,10 +59,10 @@ export function loadMainMenu() {
   return new Promise(resolve => {
     getMenu(getToken()).then(menuResponse => {
       const asyncRoutesMap = []
-      menuResponse.childsList.forEach(menu => {
-        const optionMenu = getRouteFromMenuItem(menu)
-        if (menu.isSummary) {
-          menu.childsList.forEach(menu => {
+      menuResponse.childsList.forEach(menuElement => {
+        const optionMenu = getRouteFromMenuItem(menuElement)
+        if (menuElement.isSummary) {
+          menuElement.childsList.forEach(menu => {
             const childsSumaryConverted = getChildFromAction(menu, 0)
 
             optionMenu.children.push(childsSumaryConverted)
@@ -70,7 +70,7 @@ export function loadMainMenu() {
             optionMenu.meta.childs.push(childsSumaryConverted)
           })
         } else {
-          const childsConverted = getChildFromAction(menu)
+          const childsConverted = getChildFromAction(menuElement)
 
           optionMenu.children.push(childsConverted)
           optionMenu.meta.childs.push(childsConverted)
@@ -99,16 +99,20 @@ function getChildFromAction(menu, index) {
     name: menu.uuid,
     hidden: index > 0,
     meta: {
-      isIndex: actionAttributes.isIndex,
-      title: menu.name,
-      description: menu.description,
-      uuid: menu.referenceUuid,
-      tabUuid: '',
-      type: actionAttributes.name,
-      parentUuid: menu.parentUuid,
-      icon: actionAttributes.icon,
       alwaysShow: true,
+      description: menu.description,
+      icon: actionAttributes.icon,
+      isIndex: actionAttributes.isIndex,
+      isReadOnly: menu.isReadOnly,
+      isSummary: menu.isSummary,
+      isSOTrx: menu.isSOTrx,
+      parentUuid: menu.parentUuid,
       noCache: false,
+      referenceUuid: menu.referenceUuid,
+      tabUuid: '',
+      title: menu.name,
+      type: actionAttributes.name,
+      uuid: menu.referenceUuid,
       childs: []
     }
   }
@@ -134,11 +138,15 @@ function getRouteFromMenuItem(menu) {
     component: Layout,
     name: menu.uuid,
     meta: {
-      title: menu.name,
       description: menu.description,
-      type: actionAttributes.name,
       icon: actionAttributes.icon,
+      isReadOnly: menu.isReadOnly,
+      isSummary: menu.isSummary,
+      isSOTrx: menu.isSOTrx,
       noCache: true,
+      referenceUuid: menu.referenceUuid,
+      title: menu.name,
+      type: actionAttributes.name,
       childs: []
     },
     children: [{
@@ -147,14 +155,17 @@ function getRouteFromMenuItem(menu) {
       name: menu.uuid + '-index',
       hidden: true,
       meta: {
-        isIndex: actionAttributes.isIndex,
-        parentUuid: menu.uuid,
-        title: menu.name,
-        description: menu.description,
-        type: actionAttributes.name,
-        icon: actionAttributes.icon,
-        noCache: true,
         breadcrumb: false,
+        description: menu.description,
+        icon: actionAttributes.icon,
+        isIndex: actionAttributes.isIndex,
+        isReadOnly: menu.isReadOnly,
+        isSOTrx: menu.isSOTrx,
+        noCache: true,
+        parentUuid: menu.uuid,
+        referenceUuid: menu.referenceUuid,
+        title: menu.name,
+        type: actionAttributes.name,
         childs: []
       }
     }]

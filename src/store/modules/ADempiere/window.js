@@ -256,9 +256,12 @@ const window = {
           let fieldLinkColumnName
           //  Convert from gRPC
           const fieldsList = tabResponse.fieldsList.map((fieldItem, index) => {
-            fieldItem = generateField(fieldItem, {
-              ...additionalAttributes,
-              fieldListIndex: index
+            fieldItem = generateField({
+              fieldToGenerate: fieldItem,
+              moreAttributes: {
+                ...additionalAttributes,
+                fieldListIndex: index
+              }
             })
             if (fieldItem.sequence > fieldUuidsequence) {
               fieldUuidsequence = fieldItem.sequence
