@@ -5,7 +5,7 @@
   >
     <el-container style="height: 86vh;">
       <Split>
-        <SplitArea :size="show ? 50 : 100" :min-size="100">
+        <SplitArea :size="show ? isSizePanel : 100" :min-size="100">
           <el-aside width="100%">
             <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
               <template>
@@ -73,7 +73,7 @@
                           :tabs-list="windowMetadata.tabsListParent"
                           class="tab-window"
                         />
-                        <div style="right: 0%; top: 40%; position: absolute;">
+                        <div :class="classIsContainerInfo">
                           <el-button v-show="!show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
                         </div>
                         <div class="small-4 columns">
@@ -142,9 +142,9 @@
             </split-pane>
           </el-aside>
         </SplitArea>
-        <SplitArea :size="show ? 50 : 0">
+        <SplitArea :size="show ? isSize : 0">
           <el-main>
-            <div style="top: 40%; position: absolute;">
+            <div :class="isCloseInfo">
               <el-button v-show="show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
             </div>
             <div id="example-1">
@@ -292,6 +292,30 @@ export default {
       }
       return 'open-table-detail'
     },
+    classIsContainerInfo() {
+      if (this.isMobile) {
+        return 'container-info-mobile'
+      }
+      return 'container-info'
+    },
+    isSize() {
+      if (this.isMobile && (this.show)) {
+        return 98
+      }
+      return 50
+    },
+    isSizePanel() {
+      if (this.isMobile && (this.show)) {
+        return 2
+      }
+      return 50
+    },
+    isCloseInfo() {
+      if (this.isMobile) {
+        return 'close-info-mobile'
+      }
+      return 'close-info'
+    },
     iconShowedRecordNavigation() {
       if (this.isShowedRecordNavigation) {
         return 'el-icon-caret-left'
@@ -383,6 +407,24 @@ export default {
     },
     getterShowContainerInfo() {
       return this.$store.getters.getShowContainerInfo
+    },
+    getterDataRecordsAndSelection() {
+      return this.$store.getters.getDataRecordAndSelection(this.windowMetadata.firstTabUuid)
+    },
+    getterDataRecords() {
+      return this.getterDataRecordsAndSelection.record
+    },
+    getTableName() {
+      return this.$store.getters.getPanel(this.windowMetadata.firstTabUuid, false).tableName
+    },
+    // current record
+    getRecord() {
+      const record = this.getterDataRecords.find(record => {
+        if (record.UUID === this.$route.query.action) {
+          return record
+        }
+      })
+      return record
     }
   },
   watch: {
@@ -404,20 +446,22 @@ export default {
   methods: {
     conteInfo() {
       this.show = !this.show
-      this.$store.dispatch('listWorkflowLogs', {
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId
-      })
-      this.$store.dispatch('listChatEntries', {
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId
-      })
+      if (this.show) {
+        this.$store.dispatch('listWorkflowLogs', {
+          tableName: this.getTableName,
+          recordId: this.getRecord[this.getTableName + '_ID']
+        })
+        this.$store.dispatch(this.activeInfo, {
+          tableName: this.getTableName,
+          recordId: this.getRecord[this.getTableName + '_ID']
+        })
+      }
       this.$store.dispatch('showContainerInfo', !this.getterShowContainerInfo)
     },
     handleClick(tab, event) {
       this.$store.dispatch(tab.name, {
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId
+        tableName: this.getTableName,
+        recordId: this.getRecord[this.getTableName + '_ID']
       })
     },
     // callback new size
@@ -425,6 +469,7 @@ export default {
       this.$store.dispatch('setSplitHeightTop', {
         splitHeightTop: size[0]
       })
+
       this.$store.dispatch('setSplitHeight', {
         splitHeight: size[1]
       })
@@ -620,6 +665,24 @@ export default {
     border-color: #DCDFE6;
     color: white;
     background: #008fd3;
+  }
+  .container-info-mobile {
+    top: 29%;
+    position: absolute;
+    right: 0%;
+  }
+  .container-info {
+    top: 40%;
+    position: absolute;
+    right: 0%;
+  }
+  .close-info {
+    top: 40%;
+    position: absolute;
+  }
+  .close-info-mobile {
+    top: 29%;
+    position: absolute;
   }
 .vertical-panes {
   width: 100%;

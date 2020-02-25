@@ -2,9 +2,9 @@
   <div>
     <el-card
       v-if="getIsChangeLog"
-      class="box-card"
+      :class="classIsMobilePanel"
     >
-      <el-scrollbar wrap-class="scroll-window-log-change">
+      <el-scrollbar :wrap-class="classIsMobilePanel">
         <el-timeline>
           <el-timeline-item
             v-for="(listLogs, key) in gettersListRecordLogs"
@@ -37,12 +37,38 @@
 import { MixinInfo } from '@/components/ADempiere/ContainerInfo/mixinInfo'
 export default {
   name: 'RecordLogs',
-  mixins: [MixinInfo]
+  mixins: [MixinInfo],
+  computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
+    classIsMobileScroll() {
+      if (this.isMobile) {
+        return 'scroll-window-log-change-mobile'
+      }
+      return 'scroll-window-log-change'
+    },
+    classIsMobilePanel() {
+      if (this.isMobile) {
+        return 'panel-mobile'
+      }
+      return 'panel'
+    }
+  }
 }
 </script>
 
 <style>
   .scroll-window-log-change {
     max-height: 74vh !important;
+  }
+  .scroll-window-log-change-mobile {
+    max-height: 56vh !important;
+  }
+  .panel-mobile {
+    height: 57vh;
+  }
+  .panel {
+    height: 100vh;
   }
 </style>
