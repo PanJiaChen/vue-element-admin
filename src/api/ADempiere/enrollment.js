@@ -1,12 +1,12 @@
 import Enrollment from '@adempiere/grpc-enrollment-client'
-import { HOST_GRPC_ENROLLMENT } from '@/api/ADempiere/constants'
+import { ENROLLMENT_ADDRESS } from '@/api/ADempiere/constants'
 
 // Get Instance for connection
 function Instance() {
   return new Enrollment(
-    HOST_GRPC_ENROLLMENT,
+    ENROLLMENT_ADDRESS,
     3.9,
-    'ADempier-Vue'
+    'ADempiere-Vue'
   )
 }
 

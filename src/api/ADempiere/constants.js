@@ -1,14 +1,11 @@
 
 export const ADDRESS_HOST = 'http://localhost'
+export const PROXY_PORT = '8989'
 
-export const PORT_DICTIONARY = '8990'
-export const HOST_GRPC_DICTIONARY = ADDRESS_HOST + ':' + PORT_DICTIONARY
+export const DICTIONARY_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/dictionary`
 
-export const PORT_DATA = '8991'
-export const HOST_GRPC_DATA = ADDRESS_HOST + ':' + PORT_DATA
+export const BUSINESS_DATA_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/businessdata`
 
-export const PORT_AUTHENTICATION = '8989'
-export const HOST_GRPC_AUTHENTICATION = ADDRESS_HOST + ':' + PORT_AUTHENTICATION
+export const ACCESS_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/access`
 
-export const PORT_ENROLLMENT = '8992'
-export const HOST_GRPC_ENROLLMENT = ADDRESS_HOST + ':' + PORT_ENROLLMENT
+export const ENROLLMENT_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/enrollment`

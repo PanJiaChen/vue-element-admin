@@ -1,11 +1,11 @@
 import { getLanguage } from '@/lang/index'
 import Access from '@adempiere/grpc-access-client'
-import { HOST_GRPC_AUTHENTICATION } from '@/api/ADempiere/constants'
+import { ACCESS_ADDRESS } from '@/api/ADempiere/constants'
 
 // Instance for connection
 function Instance() {
   return new Access(
-    HOST_GRPC_AUTHENTICATION,
+    ACCESS_ADDRESS,
     'Version Epale',
     getLanguage() || 'en_US'
   )

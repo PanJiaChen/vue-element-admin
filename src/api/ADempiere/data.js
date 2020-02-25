@@ -1,12 +1,12 @@
 import { getLanguage } from '@/lang/index'
 import { getToken } from '@/utils/auth'
 import BusinessData from '@adempiere/grpc-data-client'
-import { HOST_GRPC_DATA } from '@/api/ADempiere/constants'
+import { BUSINESS_DATA_ADDRESS } from '@/api/ADempiere/constants'
 
 // Get Instance for connection
 function Instance() {
   return new BusinessData(
-    HOST_GRPC_DATA,
+    BUSINESS_DATA_ADDRESS,
     getToken(),
     getLanguage() || 'en_US'
   )
