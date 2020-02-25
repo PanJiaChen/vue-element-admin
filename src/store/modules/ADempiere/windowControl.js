@@ -172,7 +172,7 @@ const windowControl = {
           })
       })
     },
-    createEntityFromTable({ commit, getters, rootGetters }, {
+    createEntityFromTable({ commit, dispatch, getters, rootGetters }, {
       parentUuid,
       containerUuid,
       row
@@ -187,8 +187,9 @@ const windowControl = {
       const { tableName, isParentTab } = rootGetters.getPanel(containerUuid)
 
       // TODO: Add support to Binary columns (BinaryData)
-      const columnsToDontSend = ['BinaryData', 'isSendServer', 'isEdit']
+      const columnsToDontSend = ['BinaryData', 'isEdit', 'isNew', 'isSendServer']
 
+      // TODO: Evaluate peformance without filter using delete(prop) before convert object to array
       // attributes or fields
       let finalAttributes = convertObjectToArrayPairs(row)
       finalAttributes = finalAttributes.filter(itemAttribute => {
@@ -206,6 +207,8 @@ const windowControl = {
         tableName,
         attributesList: finalAttributes
       })
+
+      let isError = false
       return createEntity({
         tableName,
         attributesList: finalAttributes
@@ -239,9 +242,22 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn(`Create Entity Table Error ${error.code}: ${error.message}`)
+          console.warn(`Create Entity Table Error ${error.code}: ${error.message}.`)
+          isError = true
         })
         .finally(() => {
+          if (isError) {
+            dispatch('addNewRow', {
+              containerUuid,
+              row
+            })
+          } else {
+            // refresh record list
+            dispatch('getDataListTab', {
+              parentUuid,
+              containerUuid
+            })
+          }
           commit('deleteInCreate', {
             containerUuid,
             tableName,
@@ -332,15 +348,15 @@ const windowControl = {
         })
     },
     updateCurrentEntityFromTable({ rootGetters }, {
-      parentUuid,
       containerUuid,
       row
     }) {
       const { tableName, fieldList } = rootGetters.getPanel(containerUuid)
 
       // TODO: Add support to Binary columns (BinaryData)
-      const columnsToDontSend = ['BinaryData', 'isSendServer', 'isEdit']
+      const columnsToDontSend = ['BinaryData', 'isEdit', 'isNew', 'isSendServer']
 
+      // TODO: Evaluate peformance without filter using delete(prop) before convert object to array
       // attributes or fields
       let finalAttributes = convertObjectToArrayPairs(row)
       finalAttributes = finalAttributes.filter(itemAttribute => {
@@ -367,7 +383,7 @@ const windowControl = {
             message: error.message,
             type: 'error'
           })
-          console.warn(`Update Entity Table Error ${error.code}: ${error.message}`)
+          console.warn(`Update Entity Table Error ${error.code}: ${error.message}.`)
         })
     },
     /**
@@ -596,14 +612,20 @@ const windowControl = {
      * @param {boolean} isRefreshPanel, if main panel is updated with new response data
      * @param {boolean} isLoadAllRecords, if main panel is updated with new response data
      */
-    getDataListTab({ dispatch, rootGetters }, parameters) {
-      const {
-        parentUuid, containerUuid, recordUuid,
-        referenceWhereClause = '', columnName, value, criteria,
-        isRefreshPanel = false, isLoadAllRecords = false, isReference = false,
-        isShowNotification = true
-      } = parameters
-      let { isAddRecord = false } = parameters
+    getDataListTab({ dispatch, rootGetters }, {
+      parentUuid,
+      containerUuid,
+      recordUuid,
+      referenceWhereClause = '',
+      columnName,
+      value,
+      criteria,
+      isAddRecord = false,
+      isLoadAllRecords = false,
+      isRefreshPanel = false,
+      isReference = false,
+      isShowNotification = true
+    }) {
       const tab = rootGetters.getTab(parentUuid, containerUuid)
 
       let parsedQuery = tab.query

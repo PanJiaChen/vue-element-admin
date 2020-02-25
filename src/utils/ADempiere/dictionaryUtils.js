@@ -471,6 +471,7 @@ export function assignedGroup(fieldList, assignedGroup) {
   if (fieldList === undefined || fieldList.length <= 0) {
     return fieldList
   }
+
   fieldList = sortFields(fieldList, 'sequence', 'asc', fieldList[0].panelType)
 
   let firstChangeGroup = false

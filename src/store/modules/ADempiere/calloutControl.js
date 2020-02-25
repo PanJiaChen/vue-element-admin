@@ -16,17 +16,10 @@ const callOutControl = {
       oldValue
     }) {
       const window = rootGetters.getWindow(parentUuid)
-      let attributesList = []
-      if (inTable) {
-        attributesList = rootGetters.getParametersToServer({
-          containerUuid,
-          row
-        })
-      } else {
-        attributesList = rootGetters.getParametersToServer({
-          containerUuid
-        })
-      }
+      const attributesList = rootGetters.getParametersToServer({
+        containerUuid,
+        row
+      })
 
       return runCallOutRequest({
         windowUuid: parentUuid,
@@ -40,13 +33,11 @@ const callOutControl = {
         windowNo: window.windowIndex
       })
         .then(calloutResponse => {
-          const newValues = {}
-          Object.keys(calloutResponse.values).forEach(key => {
-            if (calloutResponse.values[key] !== undefined) {
-              newValues[key] = calloutResponse.values[key]
-            }
-          })
           if (inTable) {
+            const newValues = {
+              ...row,
+              ...calloutResponse.values
+            }
             dispatch('notifyRowTableChange', {
               parentUuid,
               containerUuid,
@@ -58,7 +49,7 @@ const callOutControl = {
               parentUuid,
               containerUuid,
               panelType: 'window',
-              newValues,
+              newValues: calloutResponse.values,
               isSendToServer: false,
               withOutColumnNames,
               isSendCallout: false,
