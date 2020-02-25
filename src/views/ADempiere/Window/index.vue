@@ -15,7 +15,7 @@
                     <div class="small-4 columns">
                       <div class="w">
                         <div class="open-left" />
-                        <div class="open-datatable-aside">
+                        <div :class="styleTableNavigation">
                           <el-button
                             v-show="!isPanel"
                             :icon="iconShowedRecordNavigation"
@@ -25,7 +25,7 @@
                             @click="handleChangeShowedRecordNavigation(false)"
                           />
                           <el-button
-                            v-show="!isPanel"
+                            v-show="!isPanel && !isMobile"
                             :icon="iconIsShowedAside"
                             circle
                             class="el-button-window"
@@ -73,8 +73,53 @@
                           :tabs-list="windowMetadata.tabsListParent"
                           class="tab-window"
                         />
-                        <div :class="classIsContainerInfo">
-                          <el-button v-show="!show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
+                        <div v-if="isMobile">
+                          <el-card class="box-card">
+                            <el-tabs v-model="activeInfo" @tab-click="handleClick">
+                              <el-tab-pane
+                                name="listChatEntries"
+                              >
+                                <span slot="label">
+                                  <i class="el-icon-s-comment" />
+                                  {{ $t('window.containerInfo.notes') }}
+                                </span>
+                                <div>
+                                  <chat-entries />
+                                </div>
+                              </el-tab-pane>
+                              <el-tab-pane
+                                name="listRecordLogs"
+                              >
+                                <span slot="label">
+                                  <svg-icon icon-class="tree-table" />
+                                  {{ $t('window.containerInfo.changeLog') }}
+                                </span>
+                                <div
+                                  key="change-log-loaded"
+                                >
+                                  <record-logs />
+                                </div>
+                              </el-tab-pane>
+                              <el-tab-pane
+                                v-if="getIsWorkflowLog"
+                                name="listWorkflowLogs"
+                              >
+                                <span slot="label">
+                                  <i class="el-icon-s-help" />
+                                  {{ $t('window.containerInfo.workflowLog') }}
+                                </span>
+                                <div
+                                  v-if="getIsWorkflowLog"
+                                  key="workflow-log-loaded"
+                                >
+                                  <workflow-logs />
+                                </div>
+                              </el-tab-pane>
+                            </el-tabs>
+                          </el-card>
+                        </div>
+                        <div style="right: 0%; top: 40%; position: absolute;">
+                          <el-button v-show="!show && !isMobile" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
                         </div>
                         <div class="small-4 columns">
                           <div class="wrapper">
@@ -340,8 +385,14 @@ export default {
         overflow: 'hidden'
       }
     },
+    styleTableNavigation() {
+      if (this.isShowedRecordNavigation && (this.isMobile)) {
+        return 'open-datatable-aside-mobile'
+      }
+      return 'open-datatable-aside'
+    },
     splitAreaStyle() {
-      if (this.isShowedTabsChildren) {
+      if (this.isShowedTabsChildren || (this.isMobile)) {
         return {
           overflow: 'auto'
         }
@@ -620,6 +671,13 @@ export default {
     position: absolute;
     top: 41%;
     display: none;
+    z-index: 5;
+    right: 1%!important;
+  }
+  .open-datatable-aside-mobile {
+    position: absolute;
+    top: 41%;
+    display: grid;
     z-index: 5;
     right: 1%!important;
   }

@@ -137,7 +137,7 @@ export default {
       })
     },
     preHandleChange(value) {
-      var comment = this.editor.getHtml(value)
+      var comment = value
       if (this.clean) {
         this.$store.dispatch('setchatText', comment)
           .then((responseComment) => {
