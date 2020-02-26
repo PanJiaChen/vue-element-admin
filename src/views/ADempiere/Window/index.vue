@@ -5,7 +5,7 @@
   >
     <el-container style="height: 86vh;">
       <Split>
-        <SplitArea :size="show ? isSizePanel : 100" :min-size="100">
+        <SplitArea :size="showContainerInfo ? isSizePanel : 100" :min-size="100">
           <el-aside width="100%">
             <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
               <template>
@@ -187,14 +187,14 @@
             </split-pane>
           </el-aside>
         </SplitArea>
-        <SplitArea :size="show ? isSize : 0">
+        <SplitArea :size="showContainerInfo ? isSize : 0">
           <el-main>
             <div :class="isCloseInfo">
-              <el-button v-show="show" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
+              <el-button v-show="showContainerInfo" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
             </div>
             <div id="example-1">
               <transition name="slide-fade">
-                <p v-if="show">
+                <p v-if="showContainerInfo">
                   <el-card class="box-card">
                     <el-tabs v-model="activeInfo" @tab-click="handleClick">
                       <el-tab-pane
@@ -292,7 +292,7 @@ export default {
       isLoaded: false,
       isPanel: false,
       activeInfo: 'listChatEntries',
-      show: false,
+      showContainerInfo: false,
       // TODO: Manage attribute with store
       isShowedRecordPanel: false
     }
@@ -343,13 +343,13 @@ export default {
       return 'container-info'
     },
     isSize() {
-      if (this.isMobile && (this.show)) {
+      if (this.isMobile && (this.showContainerInfo)) {
         return 98
       }
       return 50
     },
     isSizePanel() {
-      if (this.isMobile && (this.show)) {
+      if (this.isMobile && (this.showContainerInfo)) {
         return 2
       }
       return 50
@@ -479,15 +479,17 @@ export default {
   },
   watch: {
     $route(value) {
-      this.$store.dispatch(this.activeInfo, {
-        tableName: this.$route.params.tableName,
-        recordId: this.$route.params.recordId
-      })
-        .then(response => {
-          if (value.query.action === 'create-new') {
-            this.$store.dispatch('isNote', false)
-          }
+      if (this.showContainerInfo) {
+        this.$store.dispatch(this.activeInfo, {
+          tableName: this.$route.params.tableName,
+          recordId: this.$route.params.recordId
         })
+          .then(response => {
+            if (value.query.action === 'create-new') {
+              this.$store.dispatch('isNote', false)
+            }
+          })
+      }
     }
   },
   created() {
@@ -495,8 +497,8 @@ export default {
   },
   methods: {
     conteInfo() {
-      this.show = !this.show
-      if (this.show) {
+      this.showContainerInfo = !this.showContainerInfo
+      if (this.showContainerInfo) {
         this.$store.dispatch('listWorkflowLogs', {
           tableName: this.getTableName,
           recordId: this.getRecord[this.getTableName + '_ID']
