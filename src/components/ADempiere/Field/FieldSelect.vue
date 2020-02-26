@@ -143,7 +143,7 @@ export default {
           if (!this.options.some(option => option.key === value)) {
             this.options.push({
               key: value,
-              label: this.findLabel(value)
+              label: this.isEmptyValue(this.findLabel(value)) ? ' ' : this.findLabel(value)
             })
             this.value = value
           }
@@ -170,7 +170,7 @@ export default {
   beforeMount() {
     if (this.metadata.displayed) {
       this.options = this.getterLookupAll
-      if (!this.isEmptyValue(this.value) && this.metadata.panelType !== 'table') {
+      if (!this.isEmptyValue(this.value)) {
         if (!this.findLabel(this.value)) {
           if (!this.isEmptyValue(this.metadata.displayColumn)) {
           // verify if exists to add
