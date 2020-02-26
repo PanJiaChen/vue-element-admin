@@ -271,7 +271,6 @@ import splitPane from 'vue-splitpane'
 import ChatEntries from '@/components/ADempiere/ContainerInfo/chatEntries'
 import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
-
 export default {
   name: 'WindowView',
   components: {
@@ -520,7 +519,6 @@ export default {
       this.$store.dispatch('setSplitHeightTop', {
         splitHeightTop: size[0]
       })
-
       this.$store.dispatch('setSplitHeight', {
         splitHeight: size[1]
       })
@@ -541,7 +539,6 @@ export default {
     },
     generateWindow() {
       this.windowMetadata = this.getterWindow
-
       let isShowRecords = this.isShowedRecordNavigation
       if (isShowRecords === undefined) {
         if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10) ||
@@ -552,7 +549,6 @@ export default {
         }
         this.handleChangeShowedRecordNavigation(!isShowRecords)
       }
-
       this.isLoaded = true
     },
     handleChangeShowedRecordNavigation(valueToChange) {
@@ -607,7 +603,6 @@ export default {
     color: #333;
     line-height: 21px;
   }
-
   .el-aside {
     height: 100%;
     color: #333;
@@ -791,23 +786,19 @@ export default {
     position: relative;
     height: 100vh;
   }
-
   .left-container {
     background-color: #ffffff;
     height: 100%;
   }
-
   .right-container {
     background-color: #ffffff;
     height: 200px;
   }
-
   .top-container {
     background-color: #ffffff;
     width: 100%;
     height: 100%;
   }
-
   .bottom-container {
     width: 100%;
     background-color: #95E1D3;
