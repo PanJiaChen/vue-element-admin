@@ -1,5 +1,5 @@
 <template>
-  <span v-if="isContextInfo">
+  <span>
     <el-popover
       ref="contextInfoField"
       placement="top"
@@ -16,7 +16,7 @@
         </span>
         {{ fieldAttributes.help }}
       </div>
-      <template v-for="(zoomItem, index) in fieldAttributes.reference.zoomWindowList">
+      <template v-for="(zoomItem, index) in fieldAttributes.reference.windowsList">
         <el-button
           :key="index"
           type="text"
@@ -55,9 +55,6 @@ export default {
     }
   },
   computed: {
-    isContextInfo() {
-      return (this.fieldAttributes.contextInfo && this.fieldAttributes.contextInfo.isActive) || this.fieldAttributes.reference.zoomWindowList.length
-    },
     permissionRoutes() {
       return this.$store.getters.permission_routes
     }

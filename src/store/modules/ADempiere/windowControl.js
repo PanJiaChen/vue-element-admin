@@ -29,15 +29,6 @@ const windowControl = {
     addReferencesList(state, payload) {
       state.references.push(payload)
     },
-    deleteReference(state, payload) {
-      state.references = state.references.filter(itemReference => {
-        if (itemReference.parentUuid === payload.windowUuid &&
-          itemReference.recordUuid === payload.recordUuid) {
-          return false
-        }
-        return true
-      })
-    },
     setDataLog(state, payload) {
       state.dataLog = payload
     },

@@ -45,18 +45,18 @@ const lookup = {
       return getLookup({
         tableName,
         directQuery: parsedDirectQuery,
-        value: value
+        value
       })
-        .then(response => {
-          const label = response.values.DisplayColumn
+        .then(lookupItemResponse => {
+          const label = lookupItemResponse.values.DisplayColumn
           const option = {
             label: isEmptyValue(label) ? ' ' : label,
-            key: value // response.values.KeyColumn
+            key: value // lookupItemResponse.values.KeyColumn
           }
 
           commit('addLoockupItem', {
-            option: option,
-            value: value, // isNaN(objectParams.value) ? objectParams.value : parseInt(objectParams.value, 10),
+            option,
+            value, // isNaN(objectParams.value) ? objectParams.value : parseInt(objectParams.value, 10),
             parsedDirectQuery: directQuery,
             tableName,
             roleUuid: getCurrentRole(),
@@ -65,7 +65,7 @@ const lookup = {
           return option
         })
         .catch(error => {
-          console.warn(`Get Lookup, Select Base - Error ${error.code}: ${error.message}`)
+          console.warn(`Get Lookup, Select Base - Error ${error.code}: ${error.message}.`)
         })
     },
     /**
@@ -94,8 +94,8 @@ const lookup = {
         tableName,
         query: parsedQuery
       })
-        .then(response => {
-          const options = response.recordsList.map(itemLookup => {
+        .then(lookupListResponse => {
+          const options = lookupListResponse.recordsList.map(itemLookup => {
             return {
               label: itemLookup.values.DisplayColumn,
               key: itemLookup.values.KeyColumn
@@ -112,7 +112,7 @@ const lookup = {
           return options
         })
         .catch(error => {
-          console.warn(`Get Lookup List, Select Base - Error ${error.code}: ${error.message}`)
+          console.warn(`Get Lookup List, Select Base - Error ${error.code}: ${error.message}.`)
         })
     },
     deleteLookupList({ commit, state }, {

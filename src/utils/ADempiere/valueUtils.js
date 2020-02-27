@@ -16,8 +16,8 @@ export function isEmptyValue(value) {
     return Boolean(!value.trim().length)
   } else if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean' || Object.prototype.toString.call(value) === '[object Date]') {
     return false
-  } else if (Object.prototype.toString.call(value) === '[object Map]' && value.size === 0) {
-    return true
+  } else if (Object.prototype.toString.call(value) === '[object Map]' || Object.prototype.toString.call(value) === '[object Set]') {
+    return Boolean(!value.size)
   } else if (Array.isArray(value)) {
     return Boolean(!value.length)
   } else if (typeof value === 'object') {
@@ -37,9 +37,8 @@ export function typeValue(value) {
   } else if (typeof value === 'number') {
     if (value.isInteger()) {
       return 'INTEGER'
-    } else {
-      return 'NUMBER'
     }
+    return 'DOUBLE'
   } else if (typeof value === 'boolean') {
     return 'BOOLEAN'
   } else if (Object.prototype.toString.call(value) === '[object Date]') {
@@ -278,8 +277,11 @@ export const recursiveTreeSearch = ({
 }
 
 /**
- *
- * @param {*} param0
+ * Parsed value to component type
+ * @param {mixed} value, value to parsed
+ * @param {string} fieldType, or componentPath
+ * @param {string} referenceType, reference in ADempiere
+ * @param {boolean} isMandatory, field is mandatory
  */
 export function parsedValueComponent({ fieldType, value, referenceType, isMandatory = false }) {
   if ((value === undefined || value === null) && !isMandatory) {

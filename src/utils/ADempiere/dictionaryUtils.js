@@ -27,7 +27,16 @@ export function generateField({
   const referenceType = componentReference.alias[0]
 
   let parsedDefaultValue = fieldToGenerate.defaultValue
-  if (!moreAttributes.isAdvancedQuery) {
+  let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
+  let operator = 'EQUAL'
+  if (moreAttributes.isAdvancedQuery) {
+    parsedDefaultValue = undefined
+    parsedDefaultValueTo = undefined
+
+    if (['FieldText', 'FieldTextLong'].includes(componentReference.type)) {
+      operator = 'LIKE'
+    }
+  } else {
     if (String(parsedDefaultValue).includes('@')) {
       parsedDefaultValue = parseContext({
         ...moreAttributes,
@@ -58,16 +67,15 @@ export function generateField({
         })
       }
     }
-  }
-  parsedDefaultValue = parsedValueComponent({
-    fieldType: componentReference.type,
-    value: parsedDefaultValue,
-    referenceType,
-    isMandatory: fieldToGenerate.isMandatory
-  })
 
-  let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
-  if (!moreAttributes.isAdvancedQuery) {
+    parsedDefaultValue = parsedValueComponent({
+      fieldType: componentReference.type,
+      value: parsedDefaultValue,
+      referenceType,
+      isMandatory: fieldToGenerate.isMandatory
+    })
+
+    // VALUE TO
     // if (String(parsedDefaultValueTo).includes('@SQL=')) {
     //   parsedDefaultValueTo.replace('@SQL=', '')
     if (String(parsedDefaultValueTo).includes('@')) {
@@ -99,15 +107,15 @@ export function generateField({
         })
       }
     }
-  }
-  parsedDefaultValueTo = parsedValueComponent({
-    fieldType: componentReference.type,
-    value: parsedDefaultValueTo,
-    referenceType,
-    isMandatory: fieldToGenerate.isMandatory
-  })
 
-  fieldToGenerate.reference.zoomWindowList = fieldToGenerate.reference.windowsList
+    parsedDefaultValueTo = parsedValueComponent({
+      fieldType: componentReference.type,
+      value: parsedDefaultValueTo,
+      referenceType,
+      isMandatory: fieldToGenerate.isMandatory
+    })
+  }
+
   const field = {
     ...fieldToGenerate,
     ...moreAttributes,
@@ -135,14 +143,9 @@ export function generateField({
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
     isFixedTableColumn: false,
     // Advanced query
-    operator: 'EQUAL', // current operator
+    operator, // current operator
     oldOperator: undefined, // old operator
-    defaultOperator: 'EQUAL'
-  }
-
-  if (moreAttributes.isAdvancedQuery && ['FieldText', 'FieldTextLong'].includes(field.componentPath)) {
-    field.operator = 'LIKE'
-    field.defaultOperator = 'LIKE'
+    defaultOperator: operator
   }
 
   // evaluate simple logics without context
@@ -260,8 +263,8 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
       .filter(field => field.parentFieldsList && field.isActive)
       .forEach((field, index, list) => {
         field.parentFieldsList.forEach(parentColumnName => {
-          var parentField = list.find(parentField => {
-            return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+          const parentField = list.find(itemParentField => {
+            return itemParentField.columnName === parentColumnName && parentColumnName !== field.columnName
           })
           if (parentField) {
             parentField.dependentFieldsList.push(field.columnName)
@@ -380,7 +383,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
  * @return string type, assigned value to folder after evaluating the parameter
  */
 export function evalutateTypeField(displayTypeId, isAllInfo = false) {
-  var component = REFERENCES.find(reference => displayTypeId === reference.id)
+  const component = REFERENCES.find(reference => displayTypeId === reference.id)
   if (isAllInfo) {
     return component
   }
@@ -398,8 +401,7 @@ export function getFieldTemplate(attributesOverwrite) {
     directQuery: '',
     parsedDirectQuery: '',
     validationCode: '',
-    windowsList: [],
-    zoomWindowList: []
+    windowsList: []
   }
   const newField = {
     id: 0,

@@ -119,7 +119,7 @@
                           </el-card>
                         </div>
                         <div style="right: 0%; top: 40%; position: absolute;">
-                          <el-button v-show="!show && !isMobile" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
+                          <el-button v-show="!showContainerInfo && !isMobile" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
                         </div>
                         <div class="small-4 columns">
                           <div class="wrapper">
@@ -343,13 +343,13 @@ export default {
       return 'container-info'
     },
     isSize() {
-      if (this.isMobile && (this.showContainerInfo)) {
+      if (this.isMobile && this.showContainerInfo) {
         return 98
       }
       return 50
     },
     isSizePanel() {
-      if (this.isMobile && (this.showContainerInfo)) {
+      if (this.isMobile && this.showContainerInfo) {
         return 2
       }
       return 50
@@ -385,13 +385,13 @@ export default {
       }
     },
     styleTableNavigation() {
-      if (this.isShowedRecordNavigation && (this.isMobile)) {
+      if (this.isShowedRecordNavigation && this.isMobile) {
         return 'open-datatable-aside-mobile'
       }
       return 'open-datatable-aside'
     },
     splitAreaStyle() {
-      if (this.isShowedTabsChildren || (this.isMobile)) {
+      if (this.isShowedTabsChildren || this.isMobile) {
         return {
           overflow: 'auto'
         }
@@ -465,7 +465,7 @@ export default {
       return this.getterDataRecordsAndSelection.record
     },
     getTableName() {
-      return this.$store.getters.getPanel(this.windowMetadata.firstTabUuid, false).tableName
+      return this.$store.getters.getTableNameFromTab(this.windowUuid, this.windowMetadata.firstTabUuid)
     },
     // current record
     getRecord() {

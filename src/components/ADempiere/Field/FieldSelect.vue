@@ -141,9 +141,10 @@ export default {
         }
         if (this.metadata.displayed) {
           if (!this.options.some(option => option.key === value)) {
+            const label = this.findLabel(value)
             this.options.push({
               key: value,
-              label: this.isEmptyValue(this.findLabel(value)) ? ' ' : this.findLabel(value)
+              label: this.isEmptyValue(label) ? ' ' : label
             })
             this.value = value
           }
@@ -170,7 +171,7 @@ export default {
   beforeMount() {
     if (this.metadata.displayed) {
       this.options = this.getterLookupAll
-      if (!this.isEmptyValue(this.value)) {
+      if (!this.isEmptyValue(this.value) && !this.metadata.isAdvancedQuery) {
         if (!this.findLabel(this.value)) {
           if (!this.isEmptyValue(this.metadata.displayColumn)) {
           // verify if exists to add
@@ -243,7 +244,7 @@ export default {
         }
       }
     },
-    remoteMethod() {
+    async remoteMethod() {
       if (this.isEmptyValue(this.metadata.reference.query)) {
         return
       }
