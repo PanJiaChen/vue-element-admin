@@ -313,5 +313,9 @@ export default {
     NULL: 'Is null',
     IN: 'Include',
     NOT_IN: 'Not include'
+  },
+  quickAccess: {
+    newRecord: 'Quick Access to Create New Record',
+    listRecords: 'Quick Access to List All Records'
   }
 }

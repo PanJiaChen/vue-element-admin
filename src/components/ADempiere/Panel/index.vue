@@ -408,8 +408,11 @@ export default {
               parameters.criteria[param] = route.params[param]
             }
           })
+        } else if (route.query.action && route.query.action === 'listRecords') {
+          parameters.isLoadAllRecords = true
+          route.params.isReadParameters = true
         } else if (!this.isEmptyValue(route.query.action) &&
-          !['create-new', 'reference', 'advancedQuery', 'criteria'].includes(route.query.action)) {
+          !['create-new', 'reference', 'advancedQuery', 'criteria', 'listRecords'].includes(route.query.action)) {
           parameters.isLoadAllRecords = false
           parameters.value = route.query.action
           parameters.tableName = this.metadata.tableName
@@ -420,6 +423,7 @@ export default {
         if (!route.params.hasOwnProperty('isReadParameters') || route.params.isReadParameters) {
           this.getData(parameters)
         }
+        this.setTagsViewTitle(route.query.action)
       } else {
         if (this.panelType === 'table' && route.query.action === 'advancedQuery') {
           // TODO: use action notifyPanelChange with isShowedField in true
@@ -638,7 +642,7 @@ export default {
       dataTransfer.setData('Text', '')
     },
     changePanelRecord(uuidRecord) {
-      if (!['create-new', 'reference', 'advancedQuery', 'criteria'].includes(uuidRecord)) {
+      if (!['create-new', 'reference', 'advancedQuery', 'criteria', 'listRecords'].includes(uuidRecord)) {
         const recordSelected = this.getterDataStore.record.find(record => record.UUID === uuidRecord)
         if (recordSelected) {
           this.dataRecords = recordSelected

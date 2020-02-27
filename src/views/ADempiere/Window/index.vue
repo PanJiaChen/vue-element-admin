@@ -543,13 +543,16 @@ export default {
       this.windowMetadata = this.getterWindow
       let isShowRecords = this.isShowedRecordNavigation
       if (isShowRecords === undefined) {
-        if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10) ||
+        if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10 && this.$route.query.action !== 'create-new') ||
           this.$route.query.action === 'advancedQuery') {
           isShowRecords = true
-        } else if (this.windowMetadata.windowType === 'T') {
+        } else if (this.windowMetadata.windowType === 'T' || this.$route.query.action === 'create-new') {
           isShowRecords = false
+        } else if (this.$route.query.action === 'listRecords') {
+          isShowRecords = true
+          this.handleChangeShowedPanel(true)
         }
-        this.handleChangeShowedRecordNavigation(!isShowRecords)
+        this.handleChangeShowedRecordNavigation(isShowRecords)
       }
       this.isLoaded = true
     },

@@ -18,9 +18,18 @@
           </template>
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
-            <el-tag class="action-tag">
+            <el-tag size="mini" class="action-tag">
               {{ $t(`views.${row.action}`) }}
             </el-tag>
+            <br>
+            <el-button-group class="actions-buttons">
+              <el-tooltip :content="$t('quickAccess.newRecord')" placement="top">
+                <el-button v-if="row.action === 'window'" size="mini" circle @click.stop="windowAction(row, 'create-new')"><i class="el-icon-circle-plus-outline" /></el-button>
+              </el-tooltip>
+              <el-tooltip :content="$t('quickAccess.listRecords')" placement="top">
+                <el-button v-if="row.action === 'window'" size="mini" circle @click.stop="windowAction(row, 'listRecords')"><i class="el-icon-search" /></el-button>
+              </el-tooltip>
+            </el-button-group>
           </template>
         </el-table-column>
       </el-table>
@@ -102,7 +111,6 @@ export default {
       })
     },
     handleClick(row) {
-      console.log(row)
       const viewSearch = recursiveTreeSearch({
         treeData: this.permissionRoutes,
         attributeValue: row.referenceUuid,
@@ -139,6 +147,30 @@ export default {
     },
     translateDate(value) {
       return this.$d(new Date(value), 'long', this.language)
+    },
+    windowAction(row, param) {
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: row.referenceUuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
+      })
+
+      if (viewSearch) {
+        this.$router.push({
+          name: viewSearch.name,
+          query: {
+            action: param,
+            tabParent: 0
+          }
+        })
+      } else {
+        this.showMessage({
+          type: 'error',
+          message: this.$t('notifications.noRoleAccess')
+        })
+      }
     }
   }
 }
@@ -172,6 +204,9 @@ export default {
     color: #36a3f7;
   }
   .action-tag {
+    float: right;
+  }
+  .actions-buttons {
     float: right;
   }
 </style>
