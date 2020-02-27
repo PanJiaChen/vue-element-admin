@@ -17,7 +17,7 @@ const containerInfo = {
       state.listworkflowLog = payload
     },
     addListWorkflows(state, payload) {
-      state.listworkflows = payload
+      state.listWorkflows = payload
     },
     addListRecordLogs(state, payload) {
       state.listRecordLogs = payload
@@ -124,9 +124,7 @@ const containerInfo = {
       const recordId = params.recordId
       const pageSize = 0
       const pageToken = 0
-      dispatch('listWorkflows', {
-        tableName: tableName
-      })
+      dispatch('listWorkflows', tableName)
       return requestListWorkflowsLogs({ tableName, recordId, pageSize, pageToken })
         .then(response => {
           var workflowLog = {
@@ -140,13 +138,17 @@ const containerInfo = {
           console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listWorkflows({ commit, state }, params) {
-      const tableName = params.tableName
+    listWorkflows({ commit, state }, tableName) {
       const pageSize = 0
       const pageToken = 0
       return requestListWorkflows({ tableName, pageSize, pageToken })
         .then(response => {
-          commit('addListWorkflows', response)
+          var nodeWorflow = {
+            nextPageToken: response.nextPageToken,
+            recordCount: response.recordCount,
+            workflowsList: response.workflowsList
+          }
+          commit('addListWorkflows', nodeWorflow)
         })
         .catch(error => {
           console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
@@ -156,6 +158,9 @@ const containerInfo = {
   getters: {
     getWorkflow: (state) => {
       return state.listworkflowLog.workflowLogsList
+    },
+    getNodeWorkflow: (state) => {
+      return state.listWorkflows
     },
     getRecordLogs: (state) => {
       return state.listRecordLogs

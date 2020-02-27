@@ -1,5 +1,5 @@
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
-import { requestListDocumentActions } from '@/api/ADempiere/data'
+import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/ADempiere/data'
 
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component
@@ -17,6 +17,12 @@ import { requestListDocumentActions } from '@/api/ADempiere/data'
 const contextMenu = {
   state: {
     contextMenu: [],
+    listDocumentStatus: {
+      defaultDocumentAction: undefined,
+      documentActionsList: [],
+      recordId: undefined,
+      recordUuid: undefined
+    },
     listDocumentAction: {
       defaultDocumentAction: undefined,
       documentActionsList: [],
@@ -33,6 +39,9 @@ const contextMenu = {
     },
     listDocumentAction(state, payload) {
       state.listDocumentAction = payload
+    },
+    addlistDocumentStatus(state, payload) {
+      state.listDocumentStatus = payload
     }
   },
   actions: {
@@ -74,6 +83,35 @@ const contextMenu = {
         .catch(error => {
           console.warn(error)
         })
+    },
+    listDocumentStatus({ commit }, {
+      tableName = 'C_Order',
+      recordId,
+      recordUuid,
+      documentAction,
+      documentStatus
+    }) {
+      requestListDocumentStatuses({
+        tableName,
+        recordId,
+        recordUuid,
+        documentAction,
+        documentStatus,
+        pageSize: 0,
+        pageToken: ''
+      })
+        .then(responseDocumentStatus => {
+          const documentStatus = {
+            documentActionsList: responseDocumentStatus.documentStatusesList,
+            recordId,
+            recordUuid
+          }
+          commit('addlistDocumentStatus', documentStatus)
+          return documentStatus
+        })
+        .catch(error => {
+          console.warn(error)
+        })
     }
   },
   getters: {
@@ -100,6 +138,9 @@ const contextMenu = {
     },
     getListDocumentActions: (state) => {
       return state.listDocumentAction
+    },
+    getListDocumentStatus: (state) => {
+      return state.listDocumentStatus
     },
     getListDocumentActionByUuid: (state) => (recordUuid) => {
       return state.listDocumentAction.find(itemDocumentAction => itemDocumentAction.recordUuid === recordUuid)

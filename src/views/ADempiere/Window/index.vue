@@ -54,18 +54,31 @@
                 </div>
               </template>
               <template slot="paneR">
-                <el-container style="height: 86vh;">
+                <el-container id="PanelRight" style="height: 86vh;">
+                  <resize-observer @notify="handleResize" />
                   <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation(!isShowedRecordNavigation)">
                     <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
-                      <el-header style="height: 39px;">
-                        <context-menu
-                          v-show="!isShowedRecordPanel"
-                          :menu-parent-uuid="$route.meta.parentUuid"
-                          :parent-uuid="windowUuid"
-                          :container-uuid="windowMetadata.currentTabUuid"
-                          :panel-type="panelType"
-                          :is-insert-record="getterIsInsertRecord"
-                        />
+                      <el-header style="height: 50px; background: #F5F7FA">
+                        <el-container>
+                          <el-aside width="100%" style="width: 78vw;overflow: hidden;">
+                            <workflow-status-bar
+                              :style-steps="styleStepsSimple"
+                              :container-uuid="windowMetadata.currentTabUuid"
+                              :parent-uuid="windowUuid"
+                              :panel-type="panelType"
+                            />
+                          </el-aside>
+                          <el-main>
+                            <context-menu
+                              v-show="!isShowedRecordPanel"
+                              :menu-parent-uuid="$route.meta.parentUuid"
+                              :parent-uuid="windowUuid"
+                              :container-uuid="windowMetadata.currentTabUuid"
+                              :panel-type="panelType"
+                              :is-insert-record="getterIsInsertRecord"
+                            />
+                          </el-main>
+                        </el-container>
                       </el-header>
                       <el-main :style="styleMainTab">
                         <tab-parent
@@ -271,6 +284,9 @@ import splitPane from 'vue-splitpane'
 import ChatEntries from '@/components/ADempiere/ContainerInfo/chatEntries'
 import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
+// Workflow
+import WorkflowStatusBar from '@/components/ADempiere/WorkflowStatusBar'
+
 export default {
   name: 'WindowView',
   components: {
@@ -282,7 +298,14 @@ export default {
     ModalDialog,
     ChatEntries,
     RecordLogs,
-    WorkflowLogs
+    WorkflowLogs,
+    WorkflowStatusBar
+  },
+  props: {
+    styleSteps: {
+      type: Object,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -393,11 +416,38 @@ export default {
     splitAreaStyle() {
       if (this.isShowedTabsChildren || this.isMobile) {
         return {
-          overflow: 'auto'
+          overflowX: 'hidden',
+          overflowY: 'auto'
         }
       }
       return {
         overflow: 'hidden'
+      }
+    },
+    styleStepsSimple() {
+      if (this.isShowedRecordNavigation) {
+        return {
+          paddingTop: '0px',
+          paddingBottom: '0px',
+          paddingLeft: '0px',
+          paddingRight: '0px',
+          borderRadius: '4px',
+          background: '#F5F7FA',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          width: this.$store.getters.getPanelRight + 'px'
+        }
+      }
+      return {
+        paddingTop: '0px',
+        paddingBottom: '0px',
+        paddingLeft: '0px',
+        paddingRight: '0px',
+        borderRadius: '4px',
+        background: '#F5F7FA',
+        overflowX: 'auto',
+        overflowY: 'hidden',
+        width: 'auto'
       }
     },
     sizeAreaStyle() {
@@ -494,13 +544,25 @@ export default {
   },
   created() {
     this.getWindow()
+    if (this.isShowedRecordNavigation) {
+      this.handleResize()
+    }
   },
   methods: {
+    handleResize() {
+      var PanelRight = document.getElementById('PanelRight')
+      var resizeWidth = PanelRight
+      if (!this.isEmptyValue(resizeWidth)) {
+        var widthPanel = PanelRight.clientWidth - 350
+        this.$store.dispatch('setPanelRight', widthPanel)
+      }
+    },
     conteInfo() {
       this.showContainerInfo = !this.showContainerInfo
       if (this.showContainerInfo) {
         this.$store.dispatch('listWorkflowLogs', {
           tableName: this.getTableName,
+          recordUuid: this.$route.query.action,
           recordId: this.getRecord[this.getTableName + '_ID']
         })
         this.$store.dispatch(this.activeInfo, {
@@ -762,6 +824,22 @@ export default {
 }
 </style>
 <style>
+  .el-step.is-simple .el-step__icon-inner {
+    font-size: 18px;
+    padding-top: 30px;
+  }
+  .el-steps--simple {
+    /* padding: 13px 8%; */
+    padding-top: 0px;
+    padding-bottom: 0px;
+    padding-left: 0%;
+    padding-right: 0px;
+    border-radius: 4px;
+    background: #F5F7FA;
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: auto;
+  }
   .scroll-window-log-change {
     max-height: 74vh !important;
   }

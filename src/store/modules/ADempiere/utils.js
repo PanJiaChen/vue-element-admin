@@ -28,7 +28,8 @@ const utils = {
       query: {},
       isReaded: false,
       isLoaded: false
-    }
+    },
+    panelRight: ''
   },
   mutations: {
     setWidth(state, width) {
@@ -88,6 +89,9 @@ const utils = {
     setReadRoute(state, payload) {
       Vue.set(state.openRoute, 'definedParameters', payload.parameters)
       Vue.set(state.openRoute, 'isLoaded', true)
+    },
+    setPanelRight(state, payload) {
+      state.panelRight = payload
     }
   },
   actions: {
@@ -148,6 +152,9 @@ const utils = {
     },
     setOrder({ commit }, params) {
       commit('setOrder', params)
+    },
+    setPanelRight({ commit }, panelRight) {
+      commit('setPanelRight', panelRight)
     }
   },
   getters: {
@@ -217,6 +224,9 @@ const utils = {
     },
     getMarkDown: (state) => {
       return state.markDown
+    },
+    getPanelRight: (state) => {
+      return state.panelRight
     }
   }
 }

@@ -22,6 +22,10 @@ export default {
   name: 'FieldText',
   mixins: [fieldMixin],
   props: {
+    inTable: {
+      type: Boolean,
+      default: false
+    },
     pattern: {
       type: String,
       default: undefined

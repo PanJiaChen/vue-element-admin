@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.1.8",
-    "@adempiere/grpc-data-client": "^2.1.0",
+    "@adempiere/grpc-data-client": "^2.1.1",
     "@adempiere/grpc-dictionary-client": "^1.3.5",
     "@adempiere/grpc-enrollment-client": "^1.0.7",
     "autoprefixer": "^9.5.1",
@@ -75,6 +75,7 @@
     "vue-count-to": "1.0.13",
     "vue-i18n": "7.3.2",
     "vue-multipane": "^0.9.5",
+    "vue-resize": "^0.4.5",
     "vue-router": "3.0.4",
     "vue-shortkey": "^3.1.7",
     "vue-split-panel": "^1.0.4",
