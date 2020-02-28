@@ -407,22 +407,24 @@ const panel = {
               value: newValues[actionField.columnName]
             })
               .then(response => {
-                dispatch('notifyFieldChange', {
-                  isSendToServer,
-                  isSendCallout,
-                  isAdvancedQuery,
-                  panelType,
-                  parentUuid,
-                  containerUuid,
-                  columnName: actionField.columnName,
-                  displayColumn: response.label,
-                  newValue: newValues[actionField.columnName],
-                  valueTo: newValues[`${actionField.columnName}_To`],
-                  fieldList,
-                  field: actionField,
-                  withOutColumnNames,
-                  isChangedOldValue: true // defines if set oldValue with newValue instead of current value
-                })
+                if (!isEmptyValue(response)) {
+                  dispatch('notifyFieldChange', {
+                    isSendToServer,
+                    isSendCallout,
+                    isAdvancedQuery,
+                    panelType,
+                    parentUuid,
+                    containerUuid,
+                    columnName: actionField.columnName,
+                    displayColumn: response.label,
+                    newValue: newValues[actionField.columnName],
+                    valueTo: newValues[`${actionField.columnName}_To`],
+                    fieldList,
+                    field: actionField,
+                    withOutColumnNames,
+                    isChangedOldValue: true // defines if set oldValue with newValue instead of current value
+                  })
+                }
               })
           } else {
             newValues[`DisplayColumn_${actionField.columnName}`] = lookup.label

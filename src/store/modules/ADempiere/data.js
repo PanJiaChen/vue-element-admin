@@ -290,11 +290,13 @@ const data = {
                 value: valueGetDisplayColumn
               })
                 .then(responseLookup => {
-                  dispatch('addDisplayColumn', {
-                    containerUuid,
-                    columnName: itemField.columnName,
-                    displayColumn: responseLookup.label
-                  })
+                  if (responseLookup) {
+                    dispatch('addDisplayColumn', {
+                      containerUuid,
+                      columnName: itemField.columnName,
+                      displayColumn: responseLookup.label
+                    })
+                  }
                 })
             })
         }
@@ -626,12 +628,14 @@ const data = {
                 value: valueToReturn.key
               })
                 .then(responseLookup => {
-                  valueToReturn.label = responseLookup.label
-                  dispatch('addDisplayColumn', {
-                    containerUuid: field.containerUuid,
-                    columnName: field.columnName,
-                    displayColumn: responseLookup.label
-                  })
+                  if (responseLookup) {
+                    valueToReturn.label = responseLookup.label
+                    dispatch('addDisplayColumn', {
+                      containerUuid: field.containerUuid,
+                      columnName: field.columnName,
+                      displayColumn: responseLookup.label
+                    })
+                  }
                 })
             }
             resolve(valueToReturn)

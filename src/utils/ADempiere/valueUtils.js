@@ -415,3 +415,30 @@ export function tagStatus(tag) {
   }
   return type
 }
+
+let partialValue = ''
+export function calculationValue(value, event) {
+  const VALIDATE_EXPRESSION = /[^\d\/.()%\*\+\-]/gim
+  if (!this.isEmptyValue(event) && !VALIDATE_EXPRESSION.test(event.key)) {
+    partialValue += event.key
+    const operation = String(value) + partialValue
+    if (!isEmptyValue(operation)) {
+      try {
+        // eslint-disable-next-line no-eval
+        return eval(operation) + ''
+      } catch (error) {
+        return null
+      }
+    }
+  } else {
+    if (value.key === 'Backspace') {
+      partialValue = partialValue.slice(0, -1)
+    } else {
+      return null
+    }
+  }
+}
+
+export function clearVariables() {
+  partialValue = ''
+}

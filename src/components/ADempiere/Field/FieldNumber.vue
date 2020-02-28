@@ -1,17 +1,23 @@
 <template>
-  <el-input-number
-    :ref="metadata.columnName"
-    v-model="value"
-    type="number"
-    :min="minValue"
-    :max="maxValue"
-    :placeholder="metadata.help"
-    :disabled="isDisabled"
-    :precision="precision"
-    controls-position="right"
-    :class="'display-type-' + cssClass"
-    @change="preHandleChange"
-  />
+  <el-tooltip v-model="isShowed" :manual="true" :content="valueToDisplay" placement="top" effect="light">
+    <el-input-number
+      :ref="metadata.columnName"
+      v-model="value"
+      v-shortkey="['enter']"
+      type="number"
+      :min="minValue"
+      :max="maxValue"
+      :placeholder="metadata.help"
+      :disabled="isDisabled"
+      :precision="precision"
+      controls-position="right"
+      :class="'display-type-' + cssClass"
+      @change="preHandleChange"
+      @shortkey.native="changeValue"
+      @blur="changeValue"
+      @keydown.native="calculateValue"
+    />
+  </el-tooltip>
 </template>
 
 <script>
@@ -30,7 +36,11 @@ export default {
     value = this.validateValue(value)
     return {
       value: value,
-      showControls: true
+      showControls: true,
+      operation: '',
+      expression: /[^\d\/.()%\*\+\-]/gim,
+      valueToDisplay: '',
+      isShowed: false
     }
   },
   computed: {
@@ -78,6 +88,33 @@ export default {
         return undefined
       }
       return Number(value)
+    },
+    calculateValue(event) {
+      const result = this.calculationValue(this.value, event)
+      if (!this.isEmptyValue(result)) {
+        this.valueToDisplay = result
+        this.isShowed = true
+      } else {
+        this.valueToDisplay = '...'
+        this.isShowed = true
+      }
+    },
+    changeValue() {
+      const result = this.validateValue(this.valueToDisplay)
+      this.$store.dispatch('notifyFieldChange', {
+        isAdvancedQuery: this.metadata.isAdvancedQuery,
+        panelType: this.metadata.panelType,
+        parentUuid: this.metadata.parentUuid,
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        newValue: result,
+        field: this.metadata,
+        isChangedOldValue: true
+      })
+        .finally(() => {
+          this.clearVariables()
+          this.isShowed = false
+        })
     }
   }
 }
