@@ -1,11 +1,13 @@
 
-export const ADDRESS_HOST = 'http://localhost'
-export const PROXY_PORT = '8989'
+const proxyAddress = process.env.VUE_APP_PROXY_ADDRESS || 'localhost'
+const proxyPort = process.env.VUE_APP_PROXY_PORT || '8989'
 
-export const DICTIONARY_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/dictionary`
+export const API_ADDRESS = `http://${proxyAddress}:${proxyPort}`
 
-export const BUSINESS_DATA_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/businessdata`
+export const ACCESS_ADDRESS = `${API_ADDRESS}/access`
 
-export const ACCESS_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/access`
+export const DICTIONARY_ADDRESS = `${API_ADDRESS}/dictionary`
 
-export const ENROLLMENT_ADDRESS = `${ADDRESS_HOST}:${PROXY_PORT}/enrollment`
+export const BUSINESS_DATA_ADDRESS = `${API_ADDRESS}/businessdata`
+
+export const ENROLLMENT_ADDRESS = `${API_ADDRESS}/enrollment`
