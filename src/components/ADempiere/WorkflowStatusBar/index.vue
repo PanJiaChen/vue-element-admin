@@ -38,7 +38,7 @@
           </el-tag>
           <p v-if="isEmptyValue(descriptionDocumentActions)"> {{ getValue.description }} </p>
           <p v-else> {{ descriptionDocumentActions }} </p>
-          <el-button slot="reference" type="text" :autofocus="true" class="title"> {{ node.name }} </el-button>
+          <el-link slot="reference" :autofocus="true" :underline="false" class="title"> {{ node.name }} </el-link>
         </el-popover>
         <span v-else> {{ node.name }} </span>
       </template>
@@ -226,6 +226,21 @@ export default {
     align-items: center;
     width: 50%;
   }
+  .el-step.is-simple .el-step__arrow {
+    -webkit-box-flex: 1;
+    -ms-flex-positive: 1;
+    /* flex-grow: 1; */
+    display: flex;
+    display: -ms-flexbox;
+    margin-top: -9px !important;
+    /* margin-bottom: -7px; */
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+  }
   .el-step.is-simple .el-step__main {
     position: relative;
     display: -webkit-box;
@@ -242,8 +257,21 @@ export default {
   }
   .title {
     color: #000000;
-    text-size-adjust: 20px;
+    text-size-adjust: 14px;
     font-size: 100%;
     font-weight: 605!important;
+  }
+  .el-step.is-simple .el-step__title {
+    font-size: 14px;
+    line-height: 20px;
+  }
+  .el-step.is-simple:last-of-type .el-step__arrow {
+    display: flex;
+  }
+  .el-step.is-simple .el-step__head {
+    width: auto;
+    font-size: 0;
+    padding-right: 10px;
+    margin-bottom: -5px !important;
   }
 </style>

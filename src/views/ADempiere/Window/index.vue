@@ -58,15 +58,17 @@
                   <resize-observer @notify="handleResize" />
                   <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation(!isShowedRecordNavigation)">
                     <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
-                      <el-header style="height: 50px; background: #F5F7FA">
+                      <el-header :style="gettersNodeList ? 'height: 45px; background: #F5F7FA' : 'height: 40px'">
                         <el-container>
                           <el-aside width="100%" style="width: 78vw;overflow: hidden;">
-                            <workflow-status-bar
-                              :style-steps="styleStepsSimple"
-                              :container-uuid="windowMetadata.currentTabUuid"
-                              :parent-uuid="windowUuid"
-                              :panel-type="panelType"
-                            />
+                            <el-scrollbar>
+                              <workflow-status-bar
+                                :style-steps="styleStepsSimple"
+                                :container-uuid="windowMetadata.currentTabUuid"
+                                :parent-uuid="windowUuid"
+                                :panel-type="panelType"
+                              />
+                            </el-scrollbar>
                           </el-aside>
                           <el-main>
                             <context-menu
@@ -525,6 +527,13 @@ export default {
         }
       })
       return record
+    },
+    gettersNodeList() {
+      var node = this.$store.getters.getNodeWorkflow
+      if (!this.isEmptyValue(node.workflowsList)) {
+        return true
+      }
+      return false
     }
   },
   watch: {
