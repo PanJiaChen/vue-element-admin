@@ -678,9 +678,11 @@ export default {
     async setFocus() {
       return new Promise(resolve => {
         const fieldFocus = this.getterFieldList.find(itemField => {
-          if (this.$refs.hasOwnProperty(itemField.columnName)) {
-            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
-              return true
+          if (itemField.componentPath !== 'FieldSelect' && itemField.isDisplayed) {
+            if (this.$refs.hasOwnProperty(itemField.columnName)) {
+              if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
+                return true
+              }
             }
           }
         })
