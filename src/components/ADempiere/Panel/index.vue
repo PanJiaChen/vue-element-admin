@@ -618,7 +618,8 @@ export default {
       if (!this.isEmptyValue(this.$route.params.recordId)) {
         this.$store.dispatch('listDocumentStatus', {
           recordUuid: this.$route.query.action,
-          recordId: this.$route.params.recordId
+          recordId: this.$route.params.recordId,
+          tableName: this.$route.params.tableName
         })
       }
       if (actionValue === 'create-new' || this.isEmptyValue(actionValue)) {
@@ -678,11 +679,9 @@ export default {
     async setFocus() {
       return new Promise(resolve => {
         const fieldFocus = this.getterFieldList.find(itemField => {
-          if (itemField.componentPath !== 'FieldSelect' && itemField.isDisplayed) {
-            if (this.$refs.hasOwnProperty(itemField.columnName)) {
-              if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
-                return true
-              }
+          if (this.$refs.hasOwnProperty(itemField.columnName)) {
+            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
+              return true
             }
           }
         })

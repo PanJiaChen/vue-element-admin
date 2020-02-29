@@ -85,7 +85,7 @@ const contextMenu = {
         })
     },
     listDocumentStatus({ commit }, {
-      tableName = 'C_Order',
+      tableName,
       recordId,
       recordUuid,
       documentAction,

@@ -60,6 +60,13 @@ export default {
     }
   },
   watch: {
+    '$route.query.tabChild'(actionValue) {
+      if (this.isEmptyValue(actionValue) || actionValue === 'create-new') {
+        this.currentTabChild = '0'
+        return
+      }
+      this.currentTabChild = actionValue
+    },
     // Current TabChildren
     currentTabChild(newValue, oldValue) {
       if (newValue !== oldValue) {

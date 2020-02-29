@@ -55,11 +55,12 @@ export default {
     }
   },
   watch: {
-    // TODO: Remove watchers of action, and pased as props from window
-    '$route.query.action'(actionValue) {
+    '$route.query.tabParent'(actionValue) {
       if (this.isEmptyValue(actionValue) || actionValue === 'create-new') {
         this.currentTab = '0'
+        return
       }
+      this.currentTab = actionValue
     },
     currentTab(newValue, oldValue) {
       if (newValue !== oldValue) {

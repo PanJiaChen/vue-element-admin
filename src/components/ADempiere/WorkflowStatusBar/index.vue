@@ -83,12 +83,16 @@ export default {
       return this.$store.getters.getPanel(this.containerUuid)
     },
     getValueStatus() {
-      if (!this.isEmptyValue(this.getterPanel)) {
-        var status = this.getterPanel.fieldList.find(field => {
+      const panel = this.getterPanel
+      var status
+      if (!this.isEmptyValue(panel)) {
+        status = panel.fieldList.find(field => {
           if (field.columnName === 'DocStatus') {
             return field
           }
         })
+      }
+      if (!this.isEmptyValue(status)) {
         return status.value
       }
       return 'CL'
