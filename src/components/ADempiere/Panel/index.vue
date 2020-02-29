@@ -615,7 +615,7 @@ export default {
       return groupsList
     },
     setTagsViewTitle(actionValue) {
-      if (!this.isEmptyValue(this.$route.params.recordId)) {
+      if (!this.isEmptyValue(this.$route.params.recordId) && this.getterPanel.isDocument) {
         this.$store.dispatch('listDocumentStatus', {
           recordUuid: this.$route.query.action,
           recordId: this.$route.params.recordId,

@@ -60,29 +60,31 @@ const contextMenu = {
       documentAction,
       documentStatus
     }) {
-      requestListDocumentActions({
-        tableName,
-        recordId,
-        recordUuid,
-        documentAction,
-        documentStatus,
-        pageSize: 0,
-        pageToken: ''
-      })
-        .then(responseDocumentActios => {
-          const documentAction = {
-            defaultDocumentAction: responseDocumentActios.defaultDocumentAction,
-            documentActionsList: responseDocumentActios.documentActionsList,
-            recordId,
-            recordUuid
-          }
+      return new Promise(resolve => {
+        requestListDocumentActions({
+          tableName,
+          recordId,
+          recordUuid,
+          documentAction,
+          documentStatus,
+          pageSize: 0,
+          pageToken: ''
+        })
+          .then(responseDocumentActios => {
+            const documentAction = {
+              defaultDocumentAction: responseDocumentActios.defaultDocumentAction,
+              documentActionsList: responseDocumentActios.documentActionsList,
+              recordId,
+              recordUuid
+            }
 
-          commit('listDocumentAction', documentAction)
-          return documentAction
-        })
-        .catch(error => {
-          console.warn(error)
-        })
+            commit('listDocumentAction', documentAction)
+            resolve(documentAction)
+          })
+          .catch(error => {
+            console.warn(`Error getting document action list. Code ${error.code}: ${error.message}.`)
+          })
+      })
     },
     listDocumentStatus({ commit }, {
       tableName,
@@ -91,27 +93,29 @@ const contextMenu = {
       documentAction,
       documentStatus
     }) {
-      requestListDocumentStatuses({
-        tableName,
-        recordId,
-        recordUuid,
-        documentAction,
-        documentStatus,
-        pageSize: 0,
-        pageToken: ''
+      return new Promise(resolve => {
+        requestListDocumentStatuses({
+          tableName,
+          recordId,
+          recordUuid,
+          documentAction,
+          documentStatus,
+          pageSize: 0,
+          pageToken: ''
+        })
+          .then(responseDocumentStatus => {
+            const documentStatus = {
+              documentActionsList: responseDocumentStatus.documentStatusesList,
+              recordId,
+              recordUuid
+            }
+            commit('addlistDocumentStatus', documentStatus)
+            resolve(documentStatus)
+          })
+          .catch(error => {
+            console.warn(`Error getting document statuses list. Code ${error.code}: ${error.message}.`)
+          })
       })
-        .then(responseDocumentStatus => {
-          const documentStatus = {
-            documentActionsList: responseDocumentStatus.documentStatusesList,
-            recordId,
-            recordUuid
-          }
-          commit('addlistDocumentStatus', documentStatus)
-          return documentStatus
-        })
-        .catch(error => {
-          console.warn(error)
-        })
     }
   },
   getters: {
@@ -131,10 +135,10 @@ const contextMenu = {
       const menu = state.contextMenu.find(
         item => item.containerUuid === containerUuid
       )
-      if (menu === undefined) {
-        return menu
+      if (menu) {
+        return menu.actions
       }
-      return menu.actions
+      return menu
     },
     getListDocumentActions: (state) => {
       return state.listDocumentAction
