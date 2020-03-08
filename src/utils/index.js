@@ -9,12 +9,12 @@
  * @returns {string | null}
  */
 export function parseTime(time, cFormat) {
-  if (arguments.length === 0) {
+  if (arguments.length === 0  && time != null) {
     return null
   }
   const format = cFormat || '{y}-{m}-{d} {h}:{i}:{s}'
   let date
-  if (typeof time === 'object' && time != null) {
+  if (typeof time === 'object') {
     date = time
   } else {
     if ((typeof time === 'string') && (/^[0-9]+$/.test(time))) {
