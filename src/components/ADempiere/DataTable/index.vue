@@ -634,6 +634,8 @@ export default {
           referenceType: field.referenceType,
           number: row[field.columnName]
         })
+      } else if (field.componentPath === 'FieldSelect' && this.isEmptyValue(row['DisplayColumn_' + field.columnName]) && row[field.columnName] === 0) {
+        return field.defaultValue
       }
       return row['DisplayColumn_' + field.columnName] || row[field.columnName]
     },
