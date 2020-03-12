@@ -57,6 +57,9 @@ export default {
     },
     getterIsLoadContextParent() {
       return this.getterDataParentTab.isLoadedContext
+    },
+    isReadyFromGetData() {
+      return !this.getDataSelection.isLoaded && this.getterIsLoadContextParent && this.getterIsLoadRecordParent
     }
   },
   watch: {
@@ -82,14 +85,8 @@ export default {
       }
     },
     // Refrest the records of the TabChildren
-    getDataSelection(value) {
-      if (!value.isLoaded && this.getterIsLoadContextParent && this.getterIsLoadRecordParent) {
-        this.getDataTable()
-      }
-    },
-    // Load parent tab context
-    getterIsLoadContextParent(value) {
-      if (value && !this.getDataSelection.isLoaded && this.getterIsLoadRecordParent) {
+    isReadyFromGetData(value) {
+      if (value) {
         this.getDataTable()
       }
     }
