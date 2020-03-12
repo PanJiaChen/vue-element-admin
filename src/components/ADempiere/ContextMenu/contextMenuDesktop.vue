@@ -97,7 +97,7 @@
               v-for="(reference, index) in references.referencesList"
               :key="index"
               :index="reference.displayName"
-              @click="runAction(reference)"
+              @click="openReference(reference)"
             >
               {{ reference.displayName }}
             </el-menu-item>

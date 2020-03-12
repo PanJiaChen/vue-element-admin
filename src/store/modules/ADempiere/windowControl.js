@@ -879,7 +879,7 @@ const windowControl = {
     getReferencesList: (state) => (windowUuid, recordUuid) => {
       return state.references.find(item => item.windowUuid === windowUuid && item.recordUuid === recordUuid)
     },
-    getReferencesInfo: (state, getters) => (windowUuid, recordUuid, referenceUuid) => {
+    getReferencesInfo: (state, getters) => ({ windowUuid, recordUuid, referenceUuid }) => {
       const references = getters.getReferencesList(windowUuid, recordUuid)
       return references.referencesList.find(item => item.uuid === referenceUuid)
     },

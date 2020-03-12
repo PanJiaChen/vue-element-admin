@@ -486,28 +486,6 @@ export const contextMixin = {
               }
             })
         }
-      } else if (action.type === 'reference') {
-        if (action.windowUuid && action.recordUuid) {
-          const viewSearch = recursiveTreeSearch({
-            treeData: this.permissionRoutes,
-            attributeValue: action.windowUuid,
-            attributeName: 'meta',
-            secondAttribute: 'uuid',
-            attributeChilds: 'children'
-          })
-          if (viewSearch) {
-            this.$router.push({
-              name: viewSearch.name,
-              query: {
-                action: action.type,
-                referenceUuid: action.uuid,
-                recordUuid: action.recordUuid,
-                windowUuid: this.parentUuid,
-                tabParent: 0
-              }
-            })
-          }
-        }
       } else if (action.type === 'updateReport') {
         var updateReportParams = {
           instanceUuid: action.instanceUuid,
@@ -552,6 +530,34 @@ export const contextMixin = {
               routeToDelete: this.$route
             })
           })
+      }
+    },
+    openReference(referenceElement) {
+      if (referenceElement.windowUuid && referenceElement.recordUuid) {
+        const viewSearch = recursiveTreeSearch({
+          treeData: this.permissionRoutes,
+          attributeValue: referenceElement.windowUuid,
+          attributeName: 'meta',
+          secondAttribute: 'uuid',
+          attributeChilds: 'children'
+        })
+        if (viewSearch) {
+          this.$router.push({
+            name: viewSearch.name,
+            query: {
+              action: referenceElement.type,
+              referenceUuid: referenceElement.uuid,
+              recordUuid: referenceElement.recordUuid,
+              // windowUuid: this.parentUuid,
+              tabParent: 0
+            }
+          })
+        } else {
+          this.showMessage({
+            type: 'error',
+            message: this.$t('notifications.noRoleAccess')
+          })
+        }
       }
     },
     setShareLink() {
