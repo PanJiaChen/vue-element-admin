@@ -13,15 +13,6 @@ function Instance() {
 }
 
 /**
- * Converted the gRPC value to the value needed
- * @param {object} grpcValue Value get of gRPC
- * @returns {mixed}
- */
-export function convertValueFromGRPC(grpcValue) {
-  return Instance.call(this).convertValueFromGRPC(grpcValue)
-}
-
-/**
  * Create entity
  * @param {string}  parameters.tableName
  * @param {array}   parameters.attributesList
@@ -213,13 +204,13 @@ export function runProcess({ uuid, reportType, tableName, recordId, parameters: 
  * @param {string} whereClause
  * @param {string} orderByClause
  * @param {string} nextPageToken
- * @param {array}  parameters, This allows follow structure:
+ * @param {array}  parametersList, This allows follow structure:
  * [{
  *     columnName,
  *     value
  * }]
  */
-export function getBrowserSearch({ uuid, parameters: parametersList = [], query, whereClause, orderByClause, nextPageToken: pageToken, pageSize }) {
+export function getBrowserSearch({ uuid, parametersList = [], query, whereClause, orderByClause, nextPageToken: pageToken, pageSize }) {
   //  Run browser
   return Instance.call(this).requestListBrowserSearch({
     uuid,

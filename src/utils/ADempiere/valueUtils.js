@@ -1,5 +1,3 @@
-import { convertValueFromGRPC } from '@/api/ADempiere/data'
-
 /**
  * Checks if value is empty. Deep-checks arrays and objects
  * Note: isEmpty([]) == true, isEmpty({}) == true,
@@ -10,7 +8,7 @@ import { convertValueFromGRPC } from '@/api/ADempiere/data'
 export function isEmptyValue(value) {
   if (value === undefined || value == null) {
     return true
-  } else if (value === -1 || String(value).trim() === '-1') {
+  } else if (String(value).trim() === '-1') {
     return true
   } else if (typeof value === 'string') {
     return Boolean(!value.trim().length)
@@ -134,41 +132,6 @@ export function convertArrayPairsToObject({
     result[element[nameKey]] = element[nameValue]
   })
 
-  return result
-}
-
-export function convertValuesMapToObject(map) {
-  var objectConverted = {}
-  map.forEach((value, key) => {
-    var valueResult = map.get(key)
-    var tempValue
-    if (valueResult) {
-      tempValue = convertValueFromGRPC(value)
-    }
-    objectConverted[key] = tempValue
-  })
-  return objectConverted
-}
-
-export function convertMapToArrayPairs({
-  toConvert,
-  nameKey = 'columnName',
-  nameValue = 'value',
-  isGRPC = true
-}) {
-  const result = []
-  if (toConvert) {
-    toConvert.forEach((value, key) => {
-      const element = {}
-      element[nameKey] = key
-      element[nameValue] = value
-      if (isGRPC) {
-        element[nameValue] = convertValueFromGRPC(value)
-      }
-
-      result.push(element)
-    })
-  }
   return result
 }
 

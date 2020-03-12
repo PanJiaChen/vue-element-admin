@@ -28,7 +28,7 @@ const browserControl = {
 
       const browser = rootGetters.getBrowser(containerUuid)
       // parameters isQueryCriteria
-      const finalParameters = rootGetters.getParametersToServer({
+      const parametersList = rootGetters.getParametersToServer({
         containerUuid,
         fieldList: browser.fieldList
       })
@@ -62,7 +62,7 @@ const browserControl = {
         query: parsedQuery,
         whereClause: parsedWhereClause,
         orderByClause: browser.orderByClause,
-        parameters: finalParameters,
+        parametersList,
         nextPageToken: nextPageToken
       })
         .then(browserSearchResponse => {

@@ -18,6 +18,7 @@ export function generateField({
   isSOTrxMenu
 }) {
   let isShowedFromUser = false
+  let isSQLValue = false
   // verify if it no overwrite value with ...moreAttributes
   if (moreAttributes.isShowedFromUser) {
     isShowedFromUser = moreAttributes.isShowedFromUser
@@ -74,6 +75,11 @@ export function generateField({
       isMandatory: fieldToGenerate.isMandatory
     })
 
+    if (String(fieldToGenerate.defaultValue).includes('@SQL=')) {
+      isShowedFromUser = true
+      isSQLValue = true
+    }
+
     // VALUE TO
     if (String(parsedDefaultValueTo).includes('@') &&
       String(parsedDefaultValueTo).trim() !== '-1') {
@@ -115,6 +121,7 @@ export function generateField({
   const field = {
     ...fieldToGenerate,
     ...moreAttributes,
+    isSOTrxMenu,
     // displayed attributes
     componentPath: componentReference.type,
     isSupport: componentReference.support,
@@ -138,6 +145,7 @@ export function generateField({
     isShowedFromUser,
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
     isFixedTableColumn: false,
+    isSQLValue,
     // Advanced query
     operator, // current operator
     oldOperator: undefined, // old operator

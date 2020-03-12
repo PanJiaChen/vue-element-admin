@@ -44,7 +44,9 @@ export function getParentFields({ displayLogic, mandatoryLogic, readOnlyLogic, d
  * @param {string} parentUuid: (REQUIRED from Window) UUID Window
  * @param {string} containerUuid: (REQUIRED) UUID Tab, Process, SmartBrowser, Report and Form
  * @param {string} columnName: (Optional if exists in value) Column name to search in context
- * @param {boolean} isBooleanToString, convert boolean values to string
+ * @param {boolean} isBooleanToString, convert boolean values to string ('Y' or 'N')
+ * @param {boolean} isSQL
+ * @param {boolean} isSOTrxMenu
  */
 export function parseContext({
   parentUuid,
@@ -79,6 +81,12 @@ export function parseContext({
   let outString = ''
 
   let firstIndexTag = inString.indexOf('@')
+  const convertBooleanToString = (booleanValue) => {
+    if (booleanValue) {
+      return 'Y'
+    }
+    return 'N'
+  }
 
   while (firstIndexTag !== -1) {
     outString = outString + inString.substring(0, firstIndexTag) // up to @
@@ -103,12 +111,8 @@ export function parseContext({
       containerUuid,
       columnName
     }) // get context
-    if (isBooleanToString && typeof contextInfo === 'boolean') {
-      if (contextInfo) {
-        contextInfo = 'Y'
-      } else {
-        contextInfo = 'N'
-      }
+    if ((isBooleanToString || isSQL) && typeof contextInfo === 'boolean') {
+      contextInfo = convertBooleanToString(contextInfo)
     }
 
     if (isEmptyValue(contextInfo) &&
@@ -120,6 +124,9 @@ export function parseContext({
     // menu attribute isEmptyValue isSOTrx
     if (!isEmptyValue(isSOTrxMenu) && token === 'IsSOTrx' && isEmptyValue(contextInfo)) {
       contextInfo = isSOTrxMenu
+      if (isBooleanToString || isSQL) {
+        contextInfo = convertBooleanToString(contextInfo)
+      }
     }
     if (contextInfo === undefined || contextInfo.length === 0) {
       console.info(`No Context for: ${token}`)
@@ -141,16 +148,18 @@ export function parseContext({
   }
   if (isSQL) {
     return {
+      errorsList,
+      isError,
+      isSQL,
       query: outString,
-      value: contextInfo,
-      isSQL
+      value: contextInfo
     }
   }
   return {
-    value: outString,
-    isError,
     errorsList,
-    isSQL
+    isError,
+    isSQL,
+    value: outString
   }
 } // parseContext
 

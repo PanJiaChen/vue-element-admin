@@ -9,6 +9,7 @@ import {
   unlockPrivateAccessFromServer
 } from '@/api/ADempiere/data'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 
@@ -127,7 +128,7 @@ const data = {
      * @param {boolean} isPanelValues, define if used values form panel
      * @param {boolean} isEdit, define if used values form panel
      */
-    addNewRow({ commit, getters, rootGetters, dispatch }, {
+    async addNewRow({ commit, getters, rootGetters, dispatch }, {
       parentUuid,
       containerUuid,
       isPanelValues = false,
@@ -145,7 +146,9 @@ const data = {
       if (!isEmptyValue(currentNewRow)) {
         values = currentNewRow
         return values
-      } if (isEmptyValue(row)) {
+      }
+
+      if (isEmptyValue(row)) {
         const tabPanel = rootGetters.getPanel(containerUuid)
 
         if (isEmptyValue(fieldList)) {
@@ -192,26 +195,28 @@ const data = {
           }
         }
 
-        // get display column
+        // get display column and/or sql value
         if (fieldList.length) {
           fieldList
             // TODO: Evaluate if is field is read only and FieldSelect
-            .filter(itemField => itemField.componentPath === 'FieldSelect' || String(values[itemField.columnName]) === '[object Object]')
-            .forEach(itemField => {
-              let valueGetDisplayColumn = values[itemField.columnName]
-              if (String(values[itemField.columnName]) === '[object Object]') {
-                if (itemField.componentPath === 'FieldSelect') {
-                  values[itemField.columnName] = ' '
-                  values[`DisplayColumn_${itemField.columnName}`] = ' '
-                } else if (itemField.componentPath === 'FieldNumber') {
-                  values[itemField.columnName] = 0
+            .filter(itemField => itemField.componentPath === 'FieldSelect' || String(values[itemField.columnName]) === '[object Object]' || itemField.isSQLValue)
+            .map(async itemField => {
+              const { columnName, componentPath } = itemField
+              let valueGetDisplayColumn = values[columnName]
+
+              if (String(values[columnName]) === '[object Object]') {
+                if (componentPath === 'FieldSelect') {
+                  values[columnName] = ' '
+                  values[`DisplayColumn_${columnName}`] = ' '
+                } else if (componentPath === 'FieldNumber') {
+                  values[columnName] = 0
                 }
               }
               // overwrite value with column link
-              if (!isEmptyValue(linkColumnName) && linkColumnName === itemField.columnName) {
+              if (!isEmptyValue(linkColumnName) && linkColumnName === columnName) {
                 valueGetDisplayColumn = valueLink
-                if (isEmptyValue(values[itemField.columnName])) {
-                  values[itemField.columnName] = valueGetDisplayColumn
+                if (isEmptyValue(values[columnName])) {
+                  values[columnName] = valueGetDisplayColumn
                 }
               }
 
@@ -227,29 +232,22 @@ const data = {
                   valueGetDisplayColumn = parseInt(valueGetDisplayColumn, 10)
                 }
               }
+
               if (!isEmptyValue(valueGetDisplayColumn) && String(valueGetDisplayColumn) === '[object Object]' && valueGetDisplayColumn.isSQL) {
-                // get value from direct Query
-                dispatch('getRecordBySQL', {
-                  query: valueGetDisplayColumn.query,
-                  field: itemField
+                // get value from Query
+                valueGetDisplayColumn = await dispatch('getValueBySQL', {
+                  parentUuid,
+                  containerUuid,
+                  query: itemField.defaultValue
                 })
-                  .then(defaultValue => {
-                    if (itemField.componentPath === 'FieldSelect') {
-                      values[itemField.columnName] = defaultValue.key
-                      values[`DisplayColumn_${itemField.columnName}`] = defaultValue.label
-                    } else {
-                      values[itemField.columnName] = defaultValue.key
-                      dispatch('notifyRowTableChange', {
-                        parentUuid,
-                        containerUuid,
-                        isNew,
-                        isEdit,
-                        row: values
-                      })
-                    }
-                  })
+                values[columnName] = valueGetDisplayColumn
+              }
+
+              // break to next itineration if not select field
+              if (componentPath !== 'FieldSelect') {
                 return
               }
+
               // get label (DisplayColumn) from vuex store
               const options = rootGetters.getLookupAll({
                 parentUuid,
@@ -263,41 +261,33 @@ const data = {
               const option = options.find(itemOption => itemOption.key === valueGetDisplayColumn)
               // if there is a lookup option, assign the display column with the label
               if (option) {
-                values[`DisplayColumn_${itemField.columnName}`] = option.label
-                if (isEmptyValue(option.label) && !itemField.isMandatory) {
-                  values[itemField.columnName] = undefined
-                }
+                values[`DisplayColumn_${columnName}`] = option.label
+                // if (isEmptyValue(option.label) && !itemField.isMandatory) {
+                //   values[columnName] = undefined
+                // }
                 return
               }
-              if (linkColumnName === itemField.columnName) {
+              if (linkColumnName === columnName) {
                 // get context value if link column exists and does not exist in row
                 const nameParent = rootGetters.getContext({
                   parentUuid,
                   containerUuid,
                   columnName: 'Name'
                 })
-                if (nameParent) {
-                  values[`DisplayColumn_${itemField.columnName}`] = nameParent
+                if (!isEmptyValue(nameParent)) {
+                  values[`DisplayColumn_${columnName}`] = nameParent
                   return
                 }
               }
-              // get from server
-              dispatch('getLookupItemFromServer', {
+              // get value to displayed from server
+              const { label } = await dispatch('getLookupItemFromServer', {
                 parentUuid,
                 containerUuid,
                 tableName: itemField.reference.tableName,
                 directQuery: itemField.reference.directQuery,
                 value: valueGetDisplayColumn
               })
-                .then(responseLookup => {
-                  if (responseLookup) {
-                    dispatch('addDisplayColumn', {
-                      containerUuid,
-                      columnName: itemField.columnName,
-                      displayColumn: responseLookup.label
-                    })
-                  }
-                })
+              values[`DisplayColumn_${columnName}`] = label
             })
         }
 
@@ -314,8 +304,17 @@ const data = {
         data: dataStore
       })
     },
-    addDisplayColumn({ commit, getters }, parameters) {
-      const { containerUuid, columnName, displayColumn } = parameters
+    /**
+     * Add or change display column in table of records
+     * @param {string} containerUuid
+     * @param {string} columnName
+     * @param {string} displayColumn
+     */
+    addDisplayColumn({ commit, getters }, {
+      containerUuid,
+      columnName,
+      displayColumn
+    }) {
       const dataStore = getters.getDataRecordsList(containerUuid)
       const rowRecord = dataStore.find(itemData => itemData.isNew)
 
@@ -393,13 +392,16 @@ const data = {
     },
     /**
      * Set selection in data list associated in container
-     * @param {string} parameters.containerUuid
-     * @param {string} parameters.selection
+     * @param {string} containerUuid
+     * @param {array} selection
      */
-    setSelection({ commit, getters }, parameters) {
-      const recordSelection = getters.getDataRecordAndSelection(parameters.containerUuid)
+    setSelection({ commit, getters }, {
+      containerUuid,
+      selection = []
+    }) {
+      const recordSelection = getters.getDataRecordAndSelection(containerUuid)
       commit('setSelection', {
-        newSelection: parameters.selection,
+        newSelection: selection,
         data: recordSelection
       })
     },
@@ -608,40 +610,33 @@ const data = {
           })
         })
     },
-    getRecordBySQL({ dispatch }, {
-      query,
-      field
+    /**
+     * @param {string} parentUuid
+     * @param {string} containerUuid
+     * @param {string} query
+     */
+    getValueBySQL({ commit }, {
+      parentUuid,
+      containerUuid,
+      query
     }) {
       // TODO: Change to promise all
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
+        if (query.includes('@')) {
+          query = parseContext({
+            parentUuid,
+            containerUuid,
+            isSQL: true,
+            value: query
+          }).query
+        }
+
         getDefaultValueFromServer(query)
           .then(defaultValueResponse => {
-            const valueToReturn = {}
-            valueToReturn.key = defaultValueResponse
-            // add display Column for table
-            if (field.componentPath === 'FieldSelect') {
-              dispatch('getLookupItemFromServer', {
-                parentUuid: field.parentUuid,
-                containerUuid: field.containerUuid,
-                tableName: field.reference.tableName,
-                directQuery: field.reference.directQuery,
-                value: valueToReturn.key
-              })
-                .then(responseLookup => {
-                  if (responseLookup) {
-                    valueToReturn.label = responseLookup.label
-                    dispatch('addDisplayColumn', {
-                      containerUuid: field.containerUuid,
-                      columnName: field.columnName,
-                      displayColumn: responseLookup.label
-                    })
-                  }
-                })
-            }
-            resolve(valueToReturn)
+            resolve(defaultValueResponse)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`Error getting default value from server. Error code ${error.code}: ${error.message}.`)
           })
       })
     },

@@ -16,8 +16,12 @@ const browser = {
     dictionaryResetCacheBrowser(state) {
       state.browser = []
     },
-    changeBrowser(state, payload) {
-      payload.browser = payload.newBrowser
+    changeBrowserAttribute(state, payload) {
+      let value = payload.attributeValue
+      if (payload.attributeNameControl) {
+        value = payload.browser[payload.attributeNameControl]
+      }
+      payload.browser[payload.attributeName] = value
     }
   },
   actions: {
@@ -41,7 +45,8 @@ const browser = {
 
             //  Convert from gRPC
             const fieldsRangeList = []
-            let isMandatoryParams = false
+            let isShowedCriteria = false
+            let awaitForValues = 0
             let fieldsList = browserResponse.fieldsList.map((fieldItem, index) => {
               const someAttributes = {
                 ...additionalAttributes,
@@ -65,24 +70,29 @@ const browser = {
                 fieldsRangeList.push(fieldRange)
               }
 
-              if ((query.includes(`@${field.columnName}@`) ||
-                query.includes(`@${field.columnName}_To@`) ||
-                whereClause.includes(`@${field.columnName}@`) ||
-                whereClause.includes(`@${field.columnName}_To@`)) &&
-                field.isQueryCriteria) {
-                field.isMandatory = true
-                field.isMandatoryFromLogic = true
-                field.isShowedFromUser = true
-              }
-
               // Only isQueryCriteria fields with values, displayed in main panel
               if (field.isQueryCriteria) {
+                if (field.isSQLValue) {
+                  isShowedCriteria = true
+                  field.isShowedFromUser = true
+                  awaitForValues++
+                }
+                if (query.includes(`@${field.columnName}@`) ||
+                  query.includes(`@${field.columnName}_To@`) ||
+                  whereClause.includes(`@${field.columnName}@`) ||
+                  whereClause.includes(`@${field.columnName}_To@`)) {
+                  field.isMandatory = true
+                  field.isMandatoryFromLogic = true
+                  field.isShowedFromUser = true
+                }
+
                 if (isEmptyValue(field.value)) {
                   // isMandatory params to showed search criteria
                   if (field.isMandatory || field.isMandatoryFromLogic) {
-                    isMandatoryParams = true
+                    isShowedCriteria = true
                   }
                 } else {
+                  // with value
                   field.isShowedFromUser = true
                 }
               }
@@ -91,7 +101,7 @@ const browser = {
             })
             fieldsList = fieldsList.concat(fieldsRangeList)
 
-            //  Get dependent fields
+            // Get dependent fields
             fieldsList
               .forEach((field, index, list) => {
                 if (field.isActive && field.parentFieldsList.length) {
@@ -106,7 +116,7 @@ const browser = {
                 }
               })
 
-            //  Convert from gRPC process list
+            // Convert from gRPC process list
             const actions = []
             if (process) {
               actions.push({
@@ -127,7 +137,7 @@ const browser = {
               //   containerUuidAssociated: containerUuid
               // })
             }
-            //  Add process menu
+            // Add process menu
             dispatch('setContextMenu', {
               containerUuid,
               relations: [],
@@ -135,14 +145,16 @@ const browser = {
               references: []
             })
 
-            //  Panel for save on store
+            // Panel for save on store
             const newBrowser = {
               ...browserResponse,
               containerUuid,
               fieldList: fieldsList,
               panelType,
               // app attributes
-              isShowedCriteria: Boolean(fieldsList.length && isMandatoryParams),
+              awaitForValues, // control to values
+              awaitForValuesToQuery: awaitForValues, // get values from request search
+              isShowedCriteria,
               isShowedTotals: true
             }
 
@@ -166,16 +178,17 @@ const browser = {
       containerUuid,
       browser,
       attributeName,
+      attributeNameControl,
       attributeValue
     }) {
       if (isEmptyValue(browser)) {
         browser = getters.getBrowser(containerUuid)
       }
-      const newBrowser = browser
-      newBrowser[attributeName] = attributeValue
-      commit('changeBrowser', {
+      commit('changeBrowserAttribute', {
         browser,
-        newBrowser
+        attributeName,
+        attributeValue,
+        attributeNameControl
       })
     }
   },

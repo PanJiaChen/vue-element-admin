@@ -7,7 +7,7 @@ export const fieldMixin = {
     },
     // value received from data result
     valueModel: {
-      type: [String, Number, Boolean, Date, Array],
+      type: [String, Number, Boolean, Date, Array, Object],
       default: null
     }
   },
@@ -37,6 +37,16 @@ export const fieldMixin = {
     */
     isDisabled() {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
+    }
+  },
+  async created() {
+    if (this.metadata.isSQLValue && (this.isEmptyValue(this.metadata.value) || this.metadata.value.isSQL || isNaN(this.metadata.value))) {
+      const value = await this.$store.dispatch('getValueBySQL', {
+        parentUuid: this.metadata.parentUuid,
+        containerUuid: this.metadata.containerUuid,
+        query: this.metadata.defaultValue
+      })
+      this.preHandleChange(value)
     }
   },
   methods: {

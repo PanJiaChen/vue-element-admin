@@ -112,7 +112,7 @@ export default {
       return this.$store.getters.getDataRecordsList(this.browserUuid)
     },
     getContainerIsReadyForSubmit() {
-      return !this.$store.getters.isNotReadyForSubmit(this.browserUuid)
+      return !this.$store.getters.isNotReadyForSubmit(this.browserUuid) && !this.browserMetadata.awaitForValuesToQuery
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -128,6 +128,21 @@ export default {
         return 'content-help-mobile'
       }
       return 'content-help'
+    },
+    isShowedCriteria() {
+      if (this.getterBrowser) {
+        return this.getterBrowser.isShowedCriteria
+      }
+      return false
+    }
+  },
+  watch: {
+    isShowedCriteria(value) {
+      const activeSearch = []
+      if (value) {
+        activeSearch.push('opened-criteria')
+      }
+      this.activeSearch = activeSearch
     }
   },
   created() {
