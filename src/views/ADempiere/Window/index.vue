@@ -457,7 +457,7 @@ export default {
       if (this.isShowedTabsChildren) {
         return 50
       }
-      return 100
+      return 110
     },
     getterWindow() {
       return this.$store.getters.getWindow(this.windowUuid)
@@ -782,7 +782,7 @@ export default {
     bottom: 5%;
   }
   .open-left {
-    width: 5%;
+    width: 2%;
     height: 97%;
     position: absolute;
     top: 2%;
