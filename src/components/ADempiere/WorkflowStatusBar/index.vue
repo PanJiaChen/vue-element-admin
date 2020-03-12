@@ -1,5 +1,5 @@
 <template>
-  <el-steps v-if="!isEmptyValue(gettersNodeList)" :active="getActive" finish-status="success" simple :style="styleSteps">
+  <el-steps :active="getActive" finish-status="success" simple :style="styleSteps">
     <el-step
       v-for="(node, index) in listDocumentStatus"
       :key="index"
