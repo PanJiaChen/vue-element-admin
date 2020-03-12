@@ -252,7 +252,7 @@ const window = {
             isAdvancedQuery
           }
 
-          let fieldUuidsequence = 0
+          let isWithUuidField = false // indicates it contains the uuid field
           let fieldLinkColumnName
           //  Convert from gRPC
           const fieldsList = tabResponse.fieldsList.map((fieldItem, index) => {
@@ -263,8 +263,9 @@ const window = {
                 fieldListIndex: index
               }
             })
-            if (fieldItem.sequence > fieldUuidsequence) {
-              fieldUuidsequence = fieldItem.sequence
+
+            if (!isWithUuidField && fieldItem.columnName === 'UUID') {
+              isWithUuidField = true
             }
 
             if (fieldItem.isParent) {
@@ -277,30 +278,29 @@ const window = {
           if (!isAdvancedQuery) {
             //  Get dependent fields
             fieldsList
-              .filter(field => field.parentFieldsList && field.isActive)
               .forEach((field, index, list) => {
-                field.parentFieldsList.forEach(parentColumnName => {
-                  const parentField = list.find(parentField => {
-                    return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+                if (field.parentFieldsList.length && field.isActive) {
+                  field.parentFieldsList.forEach(parentColumnName => {
+                    const parentField = list.find(parentField => {
+                      return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+                    })
+                    if (parentField) {
+                      parentField.dependentFieldsList.push(field.columnName)
+                    }
                   })
-                  if (parentField) {
-                    parentField.dependentFieldsList.push(field.columnName)
-                  }
-                })
+                }
               })
           }
 
-          if (!fieldsList.find(field => field.columnName === 'UUID')) {
-            const attributesOverwrite = {
-              panelType: panelType,
-              sequence: (fieldUuidsequence + 10),
+          if (!isWithUuidField) {
+            const fieldUuid = getFieldTemplate({
+              ...additionalAttributes,
+              isShowedFromUser: false,
               name: 'UUID',
               columnName: 'UUID',
-              isAdvancedQuery,
               componentPath: 'FieldText'
-            }
-            const field = getFieldTemplate(attributesOverwrite)
-            fieldsList.push(field)
+            })
+            fieldsList.push(fieldUuid)
           }
 
           const window = getters.getWindow(parentUuid)

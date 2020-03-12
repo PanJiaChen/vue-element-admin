@@ -37,7 +37,8 @@ export function generateField({
       operator = 'LIKE'
     }
   } else {
-    if (String(parsedDefaultValue).includes('@')) {
+    if (String(parsedDefaultValue).includes('@') &&
+      String(parsedDefaultValue).trim() !== '-1') {
       parsedDefaultValue = parseContext({
         ...moreAttributes,
         columnName: fieldToGenerate.columnName,
@@ -46,8 +47,8 @@ export function generateField({
       }).value
     }
 
-    if ((isEmptyValue(parsedDefaultValue) ||
-      String(parsedDefaultValue).includes('@')) &&
+    if (isEmptyValue(parsedDefaultValue) &&
+      !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
       String(parsedDefaultValue).trim() !== '-1') {
       parsedDefaultValue = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
@@ -57,9 +58,7 @@ export function generateField({
 
       // search value preference with elementName
       if (!isEmptyValue(fieldToGenerate.elementName) &&
-        (isEmptyValue(parsedDefaultValue) ||
-        String(parsedDefaultValue).includes('@')) &&
-        String(parsedDefaultValue).trim() !== '-1') {
+        isEmptyValue(parsedDefaultValue)) {
         parsedDefaultValue = getPreference({
           parentUuid: fieldToGenerate.parentUuid,
           containerUuid: fieldToGenerate.containerUuid,
@@ -76,9 +75,8 @@ export function generateField({
     })
 
     // VALUE TO
-    // if (String(parsedDefaultValueTo).includes('@SQL=')) {
-    //   parsedDefaultValueTo.replace('@SQL=', '')
-    if (String(parsedDefaultValueTo).includes('@')) {
+    if (String(parsedDefaultValueTo).includes('@') &&
+      String(parsedDefaultValueTo).trim() !== '-1') {
       parsedDefaultValueTo = parseContext({
         ...moreAttributes,
         columnName: `${fieldToGenerate.columnName}_To`,
@@ -86,8 +84,8 @@ export function generateField({
       }).value
     }
 
-    if ((isEmptyValue(parsedDefaultValueTo) ||
-      String(parsedDefaultValueTo).includes('@')) &&
+    if (isEmptyValue(parsedDefaultValueTo) &&
+      !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
       String(parsedDefaultValueTo).trim() !== '-1') {
       parsedDefaultValueTo = getPreference({
         parentUuid: fieldToGenerate.parentUuid,
@@ -97,9 +95,7 @@ export function generateField({
 
       // search value preference with elementName
       if (!isEmptyValue(fieldToGenerate.elementName) &&
-        (isEmptyValue(parsedDefaultValueTo) ||
-        String(parsedDefaultValueTo).includes('@')) &&
-        String(parsedDefaultValueTo).trim() !== '-1') {
+        isEmptyValue(parsedDefaultValueTo)) {
         parsedDefaultValueTo = getPreference({
           parentUuid: fieldToGenerate.parentUuid,
           containerUuid: fieldToGenerate.containerUuid,
@@ -260,16 +256,17 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
 
     //  Get dependent fields
     fieldDefinitionList
-      .filter(field => field.parentFieldsList && field.isActive)
       .forEach((field, index, list) => {
-        field.parentFieldsList.forEach(parentColumnName => {
-          const parentField = list.find(itemParentField => {
-            return itemParentField.columnName === parentColumnName && parentColumnName !== field.columnName
+        if (field.isActive && field.parentFieldsList.length) {
+          field.parentFieldsList.forEach(parentColumnName => {
+            const parentField = list.find(itemParentField => {
+              return itemParentField.columnName === parentColumnName && parentColumnName !== field.columnName
+            })
+            if (parentField) {
+              parentField.dependentFieldsList.push(field.columnName)
+            }
           })
-          if (parentField) {
-            parentField.dependentFieldsList.push(field.columnName)
-          }
-        })
+        }
       })
   }
 
@@ -392,18 +389,7 @@ export function evalutateTypeField(displayTypeId, isAllInfo = false) {
 
 // Default template for injected fields
 export function getFieldTemplate(attributesOverwrite) {
-  const referenceValue = {
-    tableName: '',
-    keyColumnName: '',
-    displayColumnName: '',
-    query: '',
-    parsedQuery: '',
-    directQuery: '',
-    parsedDirectQuery: '',
-    validationCode: '',
-    windowsList: []
-  }
-  const newField = {
+  return {
     id: 0,
     uuid: '',
     name: '',
@@ -452,16 +438,26 @@ export function getFieldTemplate(attributesOverwrite) {
     readOnlyLogic: undefined,
     parentFieldsList: undefined,
     dependentFieldsList: [],
-    reference: referenceValue,
+    reference: {
+      tableName: '',
+      keyColumnName: '',
+      displayColumnName: '',
+      query: '',
+      parsedQuery: '',
+      directQuery: '',
+      parsedDirectQuery: '',
+      validationCode: '',
+      windowsList: []
+    },
     contextInfo: undefined,
     isShowedFromUser: false,
     isFixedTableColumn: false,
     sizeFieldFromType: {
       type: 'Button',
       size: DEFAULT_SIZE
-    }
+    },
+    ...attributesOverwrite
   }
-  return Object.assign(newField, attributesOverwrite)
 }
 
 /**

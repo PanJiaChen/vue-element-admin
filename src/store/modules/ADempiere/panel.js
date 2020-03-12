@@ -97,7 +97,7 @@ const panel = {
         })
 
         let orderBy = 'sequence'
-        if ((params.panelType === 'window' && !params.isParent) || params.panelType === 'browser') {
+        if ((params.panelType === 'window' && !params.isParentTab) || params.panelType === 'browser') {
           orderBy = 'seqNoGrid'
         }
         params.fieldList = assignedGroup({

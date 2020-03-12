@@ -93,16 +93,17 @@ const browser = {
 
             //  Get dependent fields
             fieldsList
-              .filter(field => field.parentFieldsList && field.isActive)
               .forEach((field, index, list) => {
-                field.parentFieldsList.forEach(parentColumnName => {
-                  const parentField = list.find(parentField => {
-                    return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+                if (field.isActive && field.parentFieldsList.length) {
+                  field.parentFieldsList.forEach(parentColumnName => {
+                    const parentField = list.find(parentField => {
+                      return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
+                    })
+                    if (parentField) {
+                      parentField.dependentFieldsList.push(field.columnName)
+                    }
                   })
-                  if (parentField) {
-                    parentField.dependentFieldsList.push(field.columnName)
-                  }
-                })
+                }
               })
 
             //  Convert from gRPC process list
