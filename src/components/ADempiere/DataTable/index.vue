@@ -186,7 +186,6 @@
                       :in-table="true"
                       :metadata-field="{
                         ...fieldAttributes,
-                        parentUuid: parentUuid,
                         displayColumn: scope.row['DisplayColumn_' + fieldAttributes.columnName],
                         tableIndex: scope.$index,
                         rowKey: scope.row[getterPanel.keyColumn],

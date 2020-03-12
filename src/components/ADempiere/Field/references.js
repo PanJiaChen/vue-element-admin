@@ -286,15 +286,6 @@ export const FIELD_RANGE = [
   }
 ]
 
-export const FIELD_ONLY = [
-  {
-    id: 28,
-    type: 'Button',
-    description: 'Command Button - starts a process',
-    alias: ['Button']
-  }
-]
-
 export const FIELD_NOT_SHOWED = [
   {
     id: 28,

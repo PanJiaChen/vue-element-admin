@@ -31,20 +31,17 @@
               :shadow="shadowGroup"
               :body-style="{ padding: '10px' }"
             >
-              <el-row :gutter="gutterRow">
+              <el-row>
                 <template v-for="(fieldAttributes, subKey) in firstGroup.metadataFields">
                   <field-definition
                     :ref="fieldAttributes.columnName"
                     :key="subKey"
-                    :parent-uuid="parentUuid"
-                    :container-uuid="containerUuid"
                     :metadata-field="{
                       ...fieldAttributes,
                       optionCRUD,
                       recordUuid: uuidRecord
                     }"
                     :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
-                    :panel-type="panelType"
                     :in-group="!getterIsShowedRecordNavigation"
                     :is-advanced-query="isAdvancedQuery"
                   />
@@ -90,20 +87,17 @@
                         />
                       </div>
                     </div>
-                    <el-row :gutter="gutterRow">
+                    <el-row>
                       <template v-for="(fieldAttributes, subKey) in item.metadataFields">
                         <field-definition
                           :ref="fieldAttributes.columnName"
                           :key="subKey"
-                          :parent-uuid="parentUuid"
-                          :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
                             optionCRUD,
                             recordUuid: uuidRecord
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
-                          :panel-type="panelType"
                           :in-group="isPanelWindow && fieldGroups.length > 1"
                           :is-advanced-query="isAdvancedQuery"
                         />
@@ -143,20 +137,17 @@
                         />
                       </div>
                     </div>
-                    <el-row :gutter="gutterRow">
+                    <el-row>
                       <template v-for="(fieldAttributes, subKey) in item.metadataFields">
                         <field-definition
                           :ref="fieldAttributes.columnName"
                           :key="subKey"
-                          :parent-uuid="parentUuid"
-                          :container-uuid="containerUuid"
                           :metadata-field="{
                             ...fieldAttributes,
                             optionCRUD,
                             recordUuid: uuidRecord
                           }"
                           :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
-                          :panel-type="panelType"
                           :in-group="isPanelWindow && fieldGroups.length > 1"
                         />
                       </template>
@@ -228,7 +219,6 @@ export default {
     return {
       fieldList: [],
       dataRecords: {},
-      gutterRow: 0,
       isLoadPanel: false,
       isLoadRecord: false,
       uuidRecord: this.$route.query.action,

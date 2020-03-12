@@ -75,7 +75,6 @@ import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
 import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
-import { FIELD_ONLY } from '@/components/ADempiere/Field/references'
 import { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
@@ -94,18 +93,6 @@ export default {
     calculator
   },
   props: {
-    parentUuid: {
-      type: String,
-      default: ''
-    },
-    containerUuid: {
-      type: String,
-      default: ''
-    },
-    panelType: {
-      type: String,
-      default: 'window'
-    },
     // receives the property that is an object with all the attributes
     metadataField: {
       type: Object,
@@ -144,7 +131,6 @@ export default {
     fieldAttributes() {
       return {
         ...this.field,
-        panelType: this.panelType,
         inTable: this.inTable,
         isAdvancedQuery: this.isAdvancedQuery,
         // DOM properties
@@ -176,8 +162,8 @@ export default {
       return ''
     },
     getterIsShowedRecordNavigation() {
-      if (this.panelType === 'window') {
-        return this.$store.getters.getIsShowedRecordNavigation(this.parentUuid)
+      if (this.field.panelType === 'window') {
+        return this.$store.getters.getIsShowedRecordNavigation(this.field.parentUuid)
       }
       return false
     },
@@ -207,7 +193,8 @@ export default {
         return newSizes
       }
 
-      if (this.panelType === 'window') {
+      if (this.field.panelType === 'window') {
+        // TODO: Add FieldYesNo and name.length > 12 || 14
         if (this.field.componentPath === 'FieldTextLong') {
           return sizeField
         }
@@ -241,14 +228,14 @@ export default {
       return sizeField
     },
     getterContextProcessing() {
-      const processing = this.$store.getters.getContextProcessing(this.parentUuid)
+      const processing = this.$store.getters.getContextProcessing(this.field.parentUuid)
       if (processing === true || processing === 'Y') {
         return true
       }
       return false
     },
     getterContextProcessed() {
-      const processed = this.$store.getters.getContextProcessed(this.parentUuid)
+      const processed = this.$store.getters.getContextProcessed(this.field.parentUuid)
       if (processed === true || processed === 'Y') {
         return true
       }
@@ -258,7 +245,7 @@ export default {
       return this.$store.getters.getOrders
     },
     isDocuemntStatus() {
-      if (this.panelType === 'window') {
+      if (this.field.panelType === 'window') {
         if (this.field.columnName === 'DocStatus' && !this.isEmptyValue(this.processOrderUuid)) {
           return true
         }
@@ -300,7 +287,7 @@ export default {
 
       const isUpdateableAllFields = this.field.isReadOnly || this.field.isReadOnlyFromLogic
 
-      if (this.panelType === 'window') {
+      if (this.field.panelType === 'window') {
         if (this.field.isAlwaysUpdateable) {
           return false
         }
@@ -319,7 +306,7 @@ export default {
         }
 
         return (!this.field.isUpdateable && isWithRecord) || (isUpdateableAllFields || this.field.isReadOnlyFromForm)
-      } else if (this.panelType === 'browser') {
+      } else if (this.field.panelType === 'browser') {
         if (this.inTable) {
           // browser result
           return this.field.isReadOnly
@@ -337,23 +324,10 @@ export default {
       return this.field.isMandatory || this.field.isMandatoryFromLogic
     },
     isFieldOnly() {
-      if (this.inTable || this.field.isFieldOnly || this.verifyIsFieldOnly()) {
+      if (this.inTable || this.field.isFieldOnly) {
         return undefined
       }
       return this.field.name
-    },
-    /**
-     * TODO: Evaluate the current field with the only fields contained in the
-     * constant FIELD_ONLY
-     * @return {boolean}
-     */
-    verifyIsFieldOnly() {
-      const field = FIELD_ONLY.find(itemField => {
-        if (this.field.displayType === itemField.id) {
-          return true
-        }
-      })
-      return Boolean(field)
     },
     focusField() {
       if (this.isDisplayed && this.isMandatory() && !this.isReadOnly()) {

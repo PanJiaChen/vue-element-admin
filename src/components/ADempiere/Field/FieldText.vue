@@ -43,7 +43,7 @@ export default {
       if (this.metadata.inTable) {
         return 1
       }
-      return 5
+      return 4
     },
     typeTextBox() {
       // String, Url, FileName...
