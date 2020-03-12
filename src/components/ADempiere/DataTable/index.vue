@@ -725,7 +725,7 @@ export default {
       this.getterDataRecords.shift()
     },
     tableRowClassName({ row, rowIndex }) {
-      if (row.isNew) {
+      if (row.isNew && this.isEmptyValue(row.Created)) {
         return 'warning-row'
       }
       return ''
@@ -1073,7 +1073,7 @@ export default {
 </style>
 <style>
   .el-table .warning-row {
-    background: rgba(104, 245, 203, 0.712);
+    background: rgba(161, 250, 223, 0.945);
   }
 
   .el-table .success-row {
