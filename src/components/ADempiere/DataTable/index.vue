@@ -1016,7 +1016,7 @@ export default {
     },
     getFieldDefinition(fieldDefinition, row) {
       let styleSheet = ''
-      if (fieldDefinition && (fieldDefinition.id !== null || fieldDefinition.conditionsList.length)) {
+      if (fieldDefinition && (!this.isEmptyValue(fieldDefinition.id) || fieldDefinition.conditionsList.length)) {
         fieldDefinition.conditionsList.forEach(condition => {
           const columns = evaluator.parseDepends(condition.condition)
           let conditionLogic = condition.condition
