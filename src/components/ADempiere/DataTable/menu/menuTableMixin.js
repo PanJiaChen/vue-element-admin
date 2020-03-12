@@ -157,6 +157,14 @@ export const menuTableMixin = {
   },
   methods: {
     showNotification,
+    sortTab(actionSequence) {
+      // TODO: Refactor and remove redundant dispatchs
+      this.$store.dispatch('setShowDialog', {
+        type: 'window',
+        action: actionSequence,
+        parentRecordUuid: this.$route.query.action
+      })
+    },
     closeMenu() {
       // TODO: Validate to dispatch one action
       this.$store.dispatch('showMenuTable', {

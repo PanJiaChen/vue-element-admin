@@ -326,10 +326,10 @@ export default {
   },
   computed: {
     getterContextMenu() {
-      const process = this.$store.getters.getContextMenu(this.containerUuid).actions
+      const process = this.$store.getters.getContextMenu(this.containerUuid)
       if (process) {
-        return process.filter(menu => {
-          if (menu.type === 'process') {
+        return process.actions.filter(menu => {
+          if (menu.type === 'process' || menu.type === 'application') {
             return menu
           }
         })

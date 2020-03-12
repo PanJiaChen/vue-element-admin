@@ -197,7 +197,9 @@ const window = {
               parentTabs.push(tab)
               return tab
             }
-            childrenTabs.push(tab)
+            if (!tab.isSortTab) {
+              childrenTabs.push(tab)
+            }
             return tab
           })
 

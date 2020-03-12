@@ -26,9 +26,9 @@
         v-for="(process, key) in processMenu"
         v-show="isPanelWindow && processMenu"
         :key="key"
-        :disabled="Boolean(getDataSelection.length < 1)"
+        :disabled="process.type === 'application' ? false : Boolean(getDataSelection.length < 1)"
         index="process"
-        @click="showModalTable(process)"
+        @click="process.type === 'application' ? sortTab(process) : showModalTable(process)"
       >
         {{ process.name }}
       </el-menu-item>
