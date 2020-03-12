@@ -106,7 +106,7 @@ export default {
   .container-submenu-mobile {
     position: absolute;
     height: 39px !important;
-    width: 39px !important;
+    width: 55px !important;
     right: 0;
     top: 0;
   }

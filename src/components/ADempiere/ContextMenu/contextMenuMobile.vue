@@ -1,5 +1,6 @@
 <template>
   <div class="container-submenu-mobile container-context-menu">
+    <svg-icon v-if="isPanelTypeMobile" :icon-class="iconDefault" @click="runAction(actions[0])" />
     <right-menu>
       <el-menu
         ref="contextMenu"
@@ -126,6 +127,30 @@ export default {
   components: {
     RightMenu
   },
-  mixins: [contextMixin]
+  mixins: [contextMixin],
+  computed: {
+    isPanelTypeMobile() {
+      console.log(this.panelType, this.$route.meta.type)
+      if (this.$route.meta.type === 'process' || this.$route.meta.type === 'report') {
+        return true
+      }
+      return false
+    },
+    iconDefault() {
+      if (this.$route.meta.type === 'process') {
+        return 'component'
+      }
+      return 'skill'
+    }
+  }
 }
 </script>
+<style scoped>
+  .svg-icon {
+    width: 1em;
+    height: 2em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+</style>
