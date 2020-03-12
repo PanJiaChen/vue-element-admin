@@ -30,7 +30,7 @@ export function login(loginValues) {
 }
 
 // Get User Info from session Uuid or token
-export function getInfo(token) {
+export function requestUserInfoFromSession(token) {
   return Instance.call(this).requestUserInfoFromSession(token)
 }
 

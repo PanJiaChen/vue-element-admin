@@ -1,7 +1,8 @@
-import { login, logout, getInfo, getSessionInfo, changeRole } from '@/api/user'
+import { login, logout, requestUserInfoFromSession, getSessionInfo, changeRole } from '@/api/user'
 import { getToken, setToken, removeToken, getCurrentRole, setCurrentRole, removeCurrentRole } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 
 const state = {
@@ -52,22 +53,22 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
-    const { userName, password } = userInfo
+  login({ commit }, {
+    userName,
+    password
+  }) {
     return new Promise((resolve, reject) => {
-      login({ userName, password })
+      login({
+        userName,
+        password
+      })
         .then(logInResponse => {
           const { uuid: token } = logInResponse
 
-          logInResponse.avatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4'
-          logInResponse.name = logInResponse.userInfo.name
-
           commit('SET_TOKEN', token)
-          commit('SET_ROL', logInResponse.role)
-
           setToken(token)
-          setCurrentRole(logInResponse.role.uuid)
-          resolve(logInResponse)
+
+          resolve()
         }).catch(error => {
           reject(error)
         })
@@ -75,70 +76,91 @@ const actions = {
   },
   // session info
   getInfo({ commit, dispatch }, sessionUuid = null) {
-    if (!sessionUuid) {
+    if (isEmptyValue(sessionUuid)) {
       sessionUuid = getToken()
     }
-    return getSessionInfo(sessionUuid)
-      .then(responseGetInfo => {
-        commit('setIsSession', true)
-        commit('setSessionInfo', {
-          id: responseGetInfo.id,
-          uuid: responseGetInfo.uuid,
-          name: responseGetInfo.name,
-          processed: responseGetInfo.processed
+    return new Promise(resolve => {
+      getSessionInfo(sessionUuid)
+        .then(responseGetInfo => {
+          const { role } = responseGetInfo
+
+          commit('setIsSession', true)
+          commit('setSessionInfo', {
+            id: responseGetInfo.id,
+            uuid: responseGetInfo.uuid,
+            name: responseGetInfo.name,
+            processed: responseGetInfo.processed
+          })
+
+          const userInfo = responseGetInfo.userInfo
+          commit('SET_NAME', responseGetInfo.name)
+          commit('SET_INTRODUCTION', userInfo.description)
+          commit('SET_USER_UUID', userInfo.uuid)
+
+          // TODO: return 'Y' or 'N' string values as data type Booelan (4)
+          // TODO: return #Date as long data type Date (5)
+          responseGetInfo.defaultContextMap.set('#Date', new Date())
+          // set multiple context
+          dispatch('setMultipleContextMap', responseGetInfo.defaultContextMap, {
+            root: true
+          })
+
+          const sessionResponse = {
+            name: responseGetInfo.name,
+            defaultContext: responseGetInfo.defaultContextMap
+          }
+
+          commit('SET_ROL', role)
+          setCurrentRole(role.uuid)
+
+          resolve(sessionResponse)
+
+          dispatch('getUserInfoFromSession', sessionUuid)
+            .catch(error => {
+              console.warn(`Error ${error.code} getting user info value: ${error.message}.`)
+            })
         })
-
-        const userInfo = responseGetInfo.userInfo
-        commit('SET_NAME', responseGetInfo.name)
-        commit('SET_INTRODUCTION', userInfo.description)
-        commit('SET_USER_UUID', userInfo.uuid)
-
-        // TODO: return 'Y' or 'N' string values as data type Booelan (4)
-        // TODO: return #Date as long data type Date (5)
-        responseGetInfo.defaultContextMap.set('#Date', new Date())
-        // set multiple context
-        dispatch('setMultipleContextMap', responseGetInfo.defaultContextMap, {
-          root: true
+        .catch(error => {
+          console.warn(`Error ${error.code} getting context session: ${error.message}.`)
         })
-
-        const sessionResponse = {
-          name: responseGetInfo.name,
-          defaultContext: responseGetInfo.defaultContextMap
-        }
-        return sessionResponse
-      })
-      .catch(error => {
-        console.warn(`Error getting context session ${error.message}`)
-      })
-      .finally(() => {
-        dispatch('getUserInfoValue', sessionUuid)
-      })
+    })
   },
   // get user info
-  getUserInfoValue({ commit }, sessionUuid = null) {
-    if (!sessionUuid) {
+  getUserInfoFromSession({ commit }, sessionUuid = null) {
+    if (isEmptyValue(sessionUuid)) {
       sessionUuid = getToken()
     }
     return new Promise((resolve, reject) => {
-      getInfo(sessionUuid).then(responseGetInfo => {
-        if (!responseGetInfo) {
-          reject('Verification failed, please Login again.')
+      requestUserInfoFromSession(sessionUuid).then(responseGetInfo => {
+        if (isEmptyValue(responseGetInfo)) {
+          reject({
+            code: 0,
+            message: 'Verification failed, please Login again.'
+          })
         }
         // roles must be a non-empty array
-        if (!responseGetInfo.rolesList || responseGetInfo.rolesList.length <= 0) {
-          reject('getInfo: roles must be a non-null array!')
+        if (isEmptyValue(responseGetInfo.rolesList)) {
+          reject({
+            code: 0,
+            message: 'getInfo: roles must be a non-null array!'
+          })
         }
 
-        const rol = responseGetInfo.rolesList.find(itemRol => {
-          return itemRol.uuid === getCurrentRole()
-        })
-        const rolesName = responseGetInfo.rolesList.map(rolItem => {
-          return rolItem.name
-        })
-
         commit('SET_ROLES_LIST', responseGetInfo.rolesList)
+
+        const rolesName = responseGetInfo.rolesList.map(roleItem => {
+          return roleItem.name
+        })
         commit('SET_ROLES', rolesName)
-        commit('SET_ROL', rol)
+
+        if (isEmptyValue(state.rol)) {
+          const role = responseGetInfo.rolesList.find(itemRole => {
+            return itemRole.uuid === getCurrentRole()
+          })
+          if (!isEmptyValue(role)) {
+            commit('SET_ROL', role)
+          }
+        }
 
         // TODO: Add support from ADempiere
         const avatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4'
@@ -146,11 +168,10 @@ const actions = {
 
         resolve({
           ...responseGetInfo,
-          avatar: avatar,
+          avatar,
           roles: rolesName
         })
       }).catch(error => {
-        console.warn(`Error getting user info value ${error.message}`)
         reject(error)
       })
     })
@@ -205,15 +226,16 @@ const actions = {
       query: route.query,
       title: route.meta.title
     }
+
+    let actionToDispatch = 'tagsView/delOthersViews'
     if (isCloseAllViews) {
-      dispatch('tagsView/delAllViews', selectedTag, { root: true })
-    } else {
-      dispatch('tagsView/delOthersViews', selectedTag, { root: true })
+      actionToDispatch = 'tagsView/delAllViews'
     }
+    dispatch(actionToDispatch, selectedTag, { root: true })
 
     return changeRole({
       sessionUuid: getToken(),
-      roleUuid: roleUuid,
+      roleUuid,
       organizationUuid: null,
       warehouseUuid: null
     })
