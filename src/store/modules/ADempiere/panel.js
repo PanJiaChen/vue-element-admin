@@ -531,7 +531,7 @@ const panel = {
         })
 
         // request context info field
-        if (!isEmptyValue(field.value) && !isEmptyValue(field.contextInfo) && !isEmptyValue(field.contextInfo.sqlStatement)) {
+        if ((!isEmptyValue(field.value) || !isEmptyValue(newValue)) && !isEmptyValue(field.contextInfo) && !isEmptyValue(field.contextInfo.sqlStatement)) {
           var isSQL = false
           var sqlStatement = field.contextInfo.sqlStatement
           if (sqlStatement.includes('@')) {
