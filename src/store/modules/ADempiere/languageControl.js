@@ -4,6 +4,7 @@ import {
   updateEntity
 } from '@/api/ADempiere/data'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+
 const languageControl = {
   state: {
     languagesList: [],
@@ -25,6 +26,9 @@ const languageControl = {
     },
     addTranslationChangeRecord(state, payload) {
       payload.currentTranslation = payload.newTranlation
+    },
+    resetStateTranslations(state) {
+      state.translationsList = []
     }
   },
   actions: {

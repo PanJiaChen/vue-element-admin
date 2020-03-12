@@ -162,7 +162,7 @@ const actions = {
         commit('SET_TOKEN', '')
         commit('SET_ROLES', [])
         commit('setIsSession', false)
-        dispatch('clearProcessControl', null, {
+        dispatch('resetStateBusinessData', null, {
           root: true
         })
         dispatch('dictionaryResetCache', null, {
@@ -227,7 +227,7 @@ const actions = {
         // Update user info and context associated with session
         dispatch('getInfo', changeRoleResponse.uuid)
 
-        dispatch('clearProcessControl', null, {
+        dispatch('resetStateBusinessData', null, {
           root: true
         })
         dispatch('dictionaryResetCache', null, {

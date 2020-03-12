@@ -13,13 +13,15 @@ import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 
+const initStateBusinessData = {
+  recordSelection: [], // record data and selection
+  inGetting: [],
+  contextInfoField: [],
+  recordPrivateAccess: {}
+}
+
 const data = {
-  state: {
-    recordSelection: [], // record data and selection
-    inGetting: [],
-    contextInfoField: [],
-    recordPrivateAccess: {}
-  },
+  state: initStateBusinessData,
   mutations: {
     addInGetting(state, payload) {
       state.inGetting.push(payload)
@@ -81,6 +83,9 @@ const data = {
     },
     setPrivateAccess(state, payload) {
       state.recordPrivateAccess = payload
+    },
+    resetStateBusinessData(state) {
+      state = initStateBusinessData
     }
   },
   actions: {
@@ -900,6 +905,18 @@ const data = {
           })
           console.warn(`Error unlock private access: ${error.message}. Code: ${error.code}.`)
         })
+    },
+    resetStateBusinessData({ commit }) {
+      commit('resetStateContainerInfo')
+      commit('setInitialContext', {})
+      commit('resetStateTranslations')
+      commit('resetStateBusinessData')
+      commit('resetContextMenu')
+      commit('resetStateTranslations')
+      commit('resetStateLookup')
+      commit('resetStateProcessControl')
+      commit('resetStateUtils')
+      commit('resetStateWindowControl')
     }
   },
   getters: {

@@ -3,11 +3,13 @@ import { getCurrentRole } from '@/utils/ADempiere/auth'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 
+const initStateLookup = {
+  lookupItem: [],
+  lookupList: []
+}
+
 const lookup = {
-  state: {
-    lookupItem: [],
-    lookupList: []
-  },
+  state: initStateLookup,
   mutations: {
     addLoockupItem(state, payload) {
       state.lookupItem.push(payload)
@@ -18,6 +20,9 @@ const lookup = {
     deleteLookupList(state, payload) {
       state.lookupItem = payload.lookupItem
       state.lookupList = payload.lookupList
+    },
+    resetStateLookup(state) {
+      state = initStateLookup
     }
   },
   actions: {

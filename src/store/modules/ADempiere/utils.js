@@ -1,36 +1,38 @@
 import Vue from 'vue'
 
-const utils = {
-  state: {
-    width: 0,
-    height: 0,
-    splitHeight: 50,
-    splitHeightTop: 0,
-    widthLayout: 0,
-    tempShareLink: '',
-    oldAction: undefined,
-    reportType: '',
-    isShowedTable: false,
-    recordUuidTable: 0,
-    isShowedTabChildren: false,
-    recordTable: 0,
-    selectionProcess: [],
-    isContainerInfo: false,
-    documentAction: [],
-    chatText: '',
-    markDown: false,
-    openRoute: {
-      path: '',
-      name: '',
-      route: {},
-      params: {},
-      definedParameters: {},
-      query: {},
-      isReaded: false,
-      isLoaded: false
-    },
-    panelRight: ''
+const initStateUtils = {
+  width: 0,
+  height: 0,
+  splitHeight: 50,
+  splitHeightTop: 0,
+  widthLayout: 0,
+  tempShareLink: '',
+  oldAction: undefined,
+  reportType: '',
+  isShowedTable: false,
+  recordUuidTable: 0,
+  isShowedTabChildren: false,
+  recordTable: 0,
+  selectionProcess: [],
+  isContainerInfo: false,
+  documentAction: [],
+  chatText: '',
+  markDown: false,
+  openRoute: {
+    path: '',
+    name: '',
+    route: {},
+    params: {},
+    definedParameters: {},
+    query: {},
+    isReaded: false,
+    isLoaded: false
   },
+  panelRight: ''
+}
+
+const utils = {
+  state: initStateUtils,
   mutations: {
     setWidth(state, width) {
       state.width = width
@@ -92,6 +94,9 @@ const utils = {
     },
     setPanelRight(state, payload) {
       state.panelRight = payload
+    },
+    resetStateUtils(state) {
+      state = initStateUtils
     }
   },
   actions: {

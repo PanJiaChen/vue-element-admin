@@ -8,19 +8,20 @@ import language from '@/lang'
 import router from '@/router'
 import { generateField, getFieldTemplate } from '@/utils/ADempiere/dictionaryUtils'
 
+const initStateWindow = {
+  window: [],
+  windowIndex: 0
+}
+
 const window = {
-  state: {
-    window: [],
-    windowIndex: 0
-  },
+  state: initStateWindow,
   mutations: {
     addWindow(state, payload) {
       state.window.push(payload)
       state.windowIndex++
     },
     dictionaryResetCacheWindow(state) {
-      state.window = []
-      state.windowIndex = 0
+      state = initStateWindow
     },
     changeWindow(state, payload) {
       payload.window = payload.newWindow

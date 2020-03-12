@@ -4,7 +4,7 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component
 // See structure:
-// menu: [
+// contextMenu: [
 //   {
 //     containerUuid: '',
 //     relations: [],
@@ -14,22 +14,24 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 //     lastAction: {}
 //   }
 // ]
-const contextMenu = {
-  state: {
-    contextMenu: [],
-    listDocumentStatus: {
-      defaultDocumentAction: undefined,
-      documentActionsList: [],
-      recordId: undefined,
-      recordUuid: undefined
-    },
-    listDocumentAction: {
-      defaultDocumentAction: undefined,
-      documentActionsList: [],
-      recordId: undefined,
-      recordUuid: undefined
-    }
+const initStateContextMenu = {
+  contextMenu: [],
+  listDocumentStatus: {
+    defaultDocumentAction: undefined,
+    documentActionsList: [],
+    recordId: undefined,
+    recordUuid: undefined
   },
+  listDocumentAction: {
+    defaultDocumentAction: undefined,
+    documentActionsList: [],
+    recordId: undefined,
+    recordUuid: undefined
+  }
+}
+
+const contextMenu = {
+  state: initStateContextMenu,
   mutations: {
     setContextMenu(state, payload) {
       state.contextMenu.push(payload)
@@ -42,6 +44,9 @@ const contextMenu = {
     },
     addlistDocumentStatus(state, payload) {
       state.listDocumentStatus = payload
+    },
+    resetContextMenu(state) {
+      state = initStateContextMenu
     }
   },
   actions: {

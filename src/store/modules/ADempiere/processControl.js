@@ -7,24 +7,26 @@ import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 import router from '@/router'
 
+const initStateProcessControl = {
+  inExecution: [], // process not response from server
+  isVisibleDialog: false,
+  reportObject: {},
+  reportList: [],
+  metadata: {},
+  process: [], // process to run finish
+  sessionProcess: [],
+  notificationProcess: [],
+  inRequestMetadata: [],
+  reportViewList: [],
+  totalResponse: 0,
+  totalRequest: 0,
+  totalSelection: 0,
+  errorSelection: 0,
+  successSelection: 0
+}
+
 const processControl = {
-  state: {
-    inExecution: [], // process not response from server
-    isVisibleDialog: false,
-    reportObject: {},
-    reportList: [],
-    metadata: {},
-    process: [], // process to run finish
-    sessionProcess: [],
-    notificationProcess: [],
-    inRequestMetadata: [],
-    reportViewList: [],
-    totalResponse: 0,
-    totalRequest: 0,
-    totalSelection: 0,
-    errorSelection: 0,
-    successSelection: 0
-  },
+  state: initStateProcessControl,
   mutations: {
     // Add process in execution
     addInExecution(state, payload) {
@@ -49,8 +51,8 @@ const processControl = {
     addStartedProcess(state, payload) {
       state.process.push(payload)
     },
-    dataResetCacheProcess(state, payload) {
-      state.process = payload
+    resetStateProcessControl(state) {
+      state = initStateProcessControl
     },
     /**
      *
@@ -77,16 +79,6 @@ const processControl = {
     },
     changeFormatReport(state, payload) {
       state.reportFormat = payload
-    },
-    clearProcessControl(state) {
-      state.inExecution = [] // process not response from server
-      state.reportObject = {}
-      state.reportList = []
-      state.metadata = {}
-      state.process = [] // process to run finish
-      state.sessionProcess = []
-      state.notificationProcess = []
-      state.inRequestMetadata = []
     },
     setReportViewsList(state, payload) {
       state.reportViewList.push(payload)
@@ -913,9 +905,6 @@ const processControl = {
       if (reportFormat !== undefined) {
         commit('changeFormatReport', reportFormat)
       }
-    },
-    clearProcessControl({ commit }) {
-      commit('clearProcessControl')
     }
   },
   getters: {

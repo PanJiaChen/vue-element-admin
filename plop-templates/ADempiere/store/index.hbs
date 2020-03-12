@@ -5,7 +5,13 @@ const {{name}} = {
   },
   {{/if}}
   {{#if mutations}}
-  mutations: {},
+  mutations: {
+    {{#if state}}
+    resetState{{name}}(state) {
+      state = {}
+    }
+    {{/if}}
+  },
   {{/if}}
   {{#if actions}}
   actions: {},

@@ -1,12 +1,20 @@
-import { requestReportViews, requestPrintFormats, requestDrillTables, getReportOutput } from '@/api/ADempiere'
-import { isEmptyValue } from '@/utils/ADempiere'
-const contextMenu = {
-  state: {
-    reportFormatsList: [],
-    reportViewsList: [],
-    drillTablesList: [],
-    reportOutput: {}
-  },
+import {
+  requestReportViews,
+  requestPrintFormats,
+  requestDrillTables,
+  getReportOutput
+} from '@/api/ADempiere/data'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+
+const initStateReportControl = {
+  reportFormatsList: [],
+  reportViewsList: [],
+  drillTablesList: [],
+  reportOutput: {}
+}
+
+const reportControl = {
+  state: initStateReportControl,
   mutations: {
     setReportFormatsList(state, payload) {
       state.reportFormatsList.push(payload)
@@ -19,6 +27,9 @@ const contextMenu = {
     },
     setNewReportOutput(state, payload) {
       state.reportOutput = payload
+    },
+    resetReportControl(state) {
+      state = initStateReportControl
     }
   },
   actions: {
@@ -181,7 +192,7 @@ const contextMenu = {
   },
   getters: {
     getPrintFormatList: (state) => (containerUuid) => {
-      var printFormatList = state.reportFormatsList.find(list => list.containerUuid === containerUuid)
+      const printFormatList = state.reportFormatsList.find(list => list.containerUuid === containerUuid)
       if (printFormatList) {
         return printFormatList.printFormatList
       }
@@ -191,14 +202,14 @@ const contextMenu = {
       return getters.getPrintFormatList(containerUuid).find(printFormat => printFormat.isDefault)
     },
     getReportViewList: (state) => (containerUuid) => {
-      var reportViewList = state.reportViewsList.find(list => list.containerUuid === containerUuid)
+      const reportViewList = state.reportViewsList.find(list => list.containerUuid === containerUuid)
       if (reportViewList) {
         return reportViewList.viewList
       }
       return []
     },
     getDrillTablesList: (state) => (containerUuid) => {
-      var drillTablesList = state.drillTablesList.find(list => list.containerUuid === containerUuid)
+      const drillTablesList = state.drillTablesList.find(list => list.containerUuid === containerUuid)
       if (drillTablesList) {
         return drillTablesList.viewList
       }
@@ -207,4 +218,4 @@ const contextMenu = {
   }
 }
 
-export default contextMenu
+export default reportControl
