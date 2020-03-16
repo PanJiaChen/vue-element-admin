@@ -323,11 +323,13 @@ const panel = {
             type: 'info'
           })
 
-          panel.fieldList.forEach(fieldToBlanck => {
-            commit('changeFieldValueToNull', {
-              field: fieldToBlanck,
-              value: undefined
-            })
+          panel.fieldList.forEach(fieldToBlank => {
+            if (isEmptyValue(fieldToBlank.parsedDefaultValue)) {
+              commit('changeFieldValueToNull', {
+                field: fieldToBlank,
+                value: undefined
+              })
+            }
           })
 
           if (panel.isTabsChildren) {
@@ -511,13 +513,15 @@ const panel = {
           newValue = parsedValueComponent({
             fieldType: field.componentPath,
             referenceType: field.referenceType,
-            value: newValue
+            value: newValue,
+            isIdentifier: field.columnName.includes('_ID')
           })
           if (field.isRange) {
             valueTo = parsedValueComponent({
               fieldType: field.componentPath,
               referenceType: field.referenceType,
-              value: valueTo
+              value: valueTo,
+              isIdentifier: field.columnName.includes('_ID')
             })
           }
         }
@@ -1170,7 +1174,8 @@ const panel = {
             fieldType: fieldItem.componentPath,
             referenceType: fieldItem.referenceType,
             isMandatory: fieldItem.isMandatory,
-            value: String(valueToReturn) === '[object Object]' && valueToReturn.isSQL ? valueToReturn : String(valueToReturn) === '[object Object]' ? valueToReturn.value : valueToReturn
+            value: String(valueToReturn) === '[object Object]' && valueToReturn.isSQL ? valueToReturn : String(valueToReturn) === '[object Object]' ? valueToReturn.value : valueToReturn,
+            isIdentifier: fieldItem.columnName.includes('_ID')
           })
           attributesObject[fieldItem.columnName] = valueToReturn
 
@@ -1336,7 +1341,8 @@ const panel = {
                   fieldType: parameterItem.componentPath,
                   value: itemValue,
                   referenceType: parameterItem.referenceType,
-                  isMandatory
+                  isMandatory,
+                  isIdentifier: parameterItem.columnName.includes('_ID')
                 })
               })
             } else {

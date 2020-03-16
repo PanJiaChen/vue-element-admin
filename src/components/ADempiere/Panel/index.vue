@@ -363,19 +363,22 @@ export default {
             fieldItem.value = parsedValueComponent({
               fieldType: fieldItem.componentPath,
               value: route.query[fieldItem.columnName],
-              referenceType: fieldItem.referenceType
+              referenceType: fieldItem.referenceType,
+              isIdentifier: fieldItem.columnName.includes('_ID')
             })
             if (String(route.query.isAdvancedQuery) === String(fieldItem.isAdvancedQuery)) {
               fieldItem.value = parsedValueComponent({
                 fieldType: fieldItem.componentPath,
                 value: route.query[fieldItem.columnName],
-                referenceType: fieldItem.referenceType
+                referenceType: fieldItem.referenceType,
+                isIdentifier: fieldItem.columnName.includes('_ID')
               })
               if (fieldItem.isRange && this.$route.query[`${fieldItem.columnName}_To`]) {
                 fieldItem.valueTo = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
                   value: route.query[`${fieldItem.columnName}_To`],
-                  referenceType: fieldItem.referenceType
+                  referenceType: fieldItem.referenceType,
+                  isIdentifier: fieldItem.columnName.includes('_ID')
                 })
               }
             }
@@ -428,12 +431,14 @@ export default {
               if (route.query.action === 'advancedQuery' && fieldItem.isAdvancedQuery) {
                 this.dataRecords[fieldItem.columnName] = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
-                  value: route.query[fieldItem.columnName]
+                  value: route.query[fieldItem.columnName],
+                  isIdentifier: fieldItem.columnName.includes('_ID')
                 })
                 if (fieldItem.isRange && route.query[`${fieldItem.columnName}_To`]) {
                   this.dataRecords[fieldItem.columnName] = parsedValueComponent({
                     fieldType: fieldItem.componentPath,
-                    value: route.query[`${fieldItem.columnName}_To`]
+                    value: route.query[`${fieldItem.columnName}_To`],
+                    isIdentifier: fieldItem.columnName.includes('_ID')
                   })
                 }
               }
