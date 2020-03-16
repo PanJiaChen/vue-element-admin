@@ -15,11 +15,11 @@
     :class="classField"
   >
     <el-form-item
-      :required="isMandatory()"
+      :required="isMandatory"
     >
       <template slot="label">
         <operator-comparison
-          v-if="isAdvancedQuery && isDisplayed"
+          v-if="isAdvancedQuery"
           key="is-field-operator-comparison"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
@@ -31,14 +31,13 @@
           :field-value="field.value"
         />
         <span v-else key="is-field-name">
-          {{ isFieldOnly() }}
+          {{ isFieldOnly }}
         </span>
 
         <document-status
           v-if="isDocuemntStatus"
           :field="fieldAttributes"
         />
-
         <translated
           v-if="field.isTranslated && !isAdvancedQuery"
           :field-attributes="fieldAttributes"
@@ -134,8 +133,8 @@ export default {
         inTable: this.inTable,
         isAdvancedQuery: this.isAdvancedQuery,
         // DOM properties
-        required: this.isMandatory(),
-        readonly: this.isReadOnly(),
+        required: this.isMandatory,
+        readonly: this.isReadOnly,
         displayed: this.isDisplayed,
         disabled: !this.field.isActive,
         isSelectCreated: this.isSelectCreated
@@ -145,7 +144,63 @@ export default {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
       }
-      return fieldIsDisplayed(this.field) && (this.isMandatory() || this.field.isShowedFromUser || this.inTable)
+      return fieldIsDisplayed(this.field) && (this.isMandatory || this.field.isShowedFromUser || this.inTable)
+    },
+    isMandatory() {
+      if (this.isAdvancedQuery) {
+        return false
+      }
+      return this.field.isMandatory || this.field.isMandatoryFromLogic
+    },
+    isReadOnly() {
+      if (this.isAdvancedQuery) {
+        if (['NULL', 'NOT_NULL'].includes(this.field.operator)) {
+          return true
+        }
+        return false
+      }
+
+      if (!this.field.isActive) {
+        return true
+      }
+
+      const isUpdateableAllFields = this.field.isReadOnly || this.field.isReadOnlyFromLogic
+
+      if (this.field.panelType === 'window') {
+        if (this.field.isAlwaysUpdateable) {
+          return false
+        }
+        if (this.getterContextProcessing) {
+          return true
+        }
+        if (this.getterContextProcessed) {
+          return true
+        }
+
+        // TODO: Evaluate record uuid without route.action
+        // edit mode is diferent to create new
+        let isWithRecord = this.field.recordUuid !== 'create-new'
+        if (this.inTable) {
+          isWithRecord = !this.isEmptyValue(this.field.recordUuid)
+        }
+
+        return (!this.field.isUpdateable && isWithRecord) || (isUpdateableAllFields || this.field.isReadOnlyFromForm)
+      } else if (this.field.panelType === 'browser') {
+        if (this.inTable) {
+          // browser result
+          return this.field.isReadOnly
+        }
+        // query criteria
+        return this.field.isReadOnlyFromLogic
+      }
+      // other type of panels (process/report)
+      return isUpdateableAllFields
+    },
+    isFieldOnly() {
+      if (this.inTable || this.field.isFieldOnly) {
+        return undefined
+      }
+      return this.field.name
     },
     isSelectCreated() {
       return this.isAdvancedQuery &&
@@ -273,64 +328,8 @@ export default {
   },
   methods: {
     showMessage,
-    isReadOnly() {
-      if (this.isAdvancedQuery) {
-        if (['NULL', 'NOT_NULL'].includes(this.field.operator)) {
-          return true
-        }
-        return false
-      }
-
-      if (!this.field.isActive) {
-        return true
-      }
-
-      const isUpdateableAllFields = this.field.isReadOnly || this.field.isReadOnlyFromLogic
-
-      if (this.field.panelType === 'window') {
-        if (this.field.isAlwaysUpdateable) {
-          return false
-        }
-        if (this.getterContextProcessing) {
-          return true
-        }
-        if (this.getterContextProcessed) {
-          return true
-        }
-
-        // TODO: Evaluate record uuid without route.action
-        // edit mode is diferent to create new
-        let isWithRecord = this.field.recordUuid !== 'create-new'
-        if (this.inTable) {
-          isWithRecord = !this.isEmptyValue(this.field.recordUuid)
-        }
-
-        return (!this.field.isUpdateable && isWithRecord) || (isUpdateableAllFields || this.field.isReadOnlyFromForm)
-      } else if (this.field.panelType === 'browser') {
-        if (this.inTable) {
-          // browser result
-          return this.field.isReadOnly
-        }
-        // query criteria
-        return this.field.isReadOnlyFromLogic
-      }
-      // other type of panels (process/report)
-      return isUpdateableAllFields
-    },
-    isMandatory() {
-      if (this.isAdvancedQuery) {
-        return false
-      }
-      return this.field.isMandatory || this.field.isMandatoryFromLogic
-    },
-    isFieldOnly() {
-      if (this.inTable || this.field.isFieldOnly) {
-        return undefined
-      }
-      return this.field.name
-    },
     focusField() {
-      if (this.isDisplayed && this.isMandatory() && !this.isReadOnly()) {
+      if (this.isDisplayed && this.isMandatory && !this.isReadOnly) {
         this.$refs[this.field.columnName].activeFocus()
       }
     }

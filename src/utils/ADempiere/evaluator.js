@@ -15,26 +15,29 @@ class evaluator {
   /**
    * Evaluate logic's
    * @param {string} parentUuid Parent (Window / Process / Smart Browser)
+   * @param {function} context
+   * @param {string} logic
+   * @param {boolean} defaultReturned value to return if logic or context is undefined
    */
-  static evaluateLogic(objectToEvaluate) {
-    let defaultUndefined = false
-    if (objectToEvaluate.type === 'displayed') {
-      defaultUndefined = true
-    }
+  static evaluateLogic({
+    parentUuid,
+    containerUuid,
+    context,
+    logic,
+    defaultReturned = false
+  }) {
     // empty logic
-    if (objectToEvaluate.logic === undefined ||
-      objectToEvaluate.logic === null ||
-      objectToEvaluate.logic.trim() === '') {
-      return defaultUndefined
+    if (logic === undefined || logic === null || logic.trim() === '') {
+      return defaultReturned
     }
-    const st = objectToEvaluate.logic.trim().replace('\n', '')
+    const st = logic.trim().replace('\n', '')
     const expr = /(\||&)/
     const stList = st.split(expr)
     const it = stList.length
 
     if (((it / 2) - ((it + 1) / 2)) === 0) {
-      console.info(`Logic does not comply with format "<expression> [<logic> <expression>]"  -->  ${objectToEvaluate.logic}`)
-      return defaultUndefined
+      console.info(`Logic does not comply with format "<expression> [<logic> <expression>]"  -->  ${logic}`)
+      return defaultReturned
     }
 
     let retValue = null
@@ -44,23 +47,32 @@ class evaluator {
         logOp = element
       } else if (retValue === null) {
         retValue = evaluator.evaluateLogicTuples({
-          ...objectToEvaluate,
-          conditional: element
+          parentUuid,
+          containerUuid,
+          context,
+          logic: element,
+          defaultReturned
         })
       } else {
         if (logOp.trim() === '&') {
           retValue = retValue & evaluator.evaluateLogicTuples({
-            ...objectToEvaluate,
-            conditional: element
+            parentUuid,
+            containerUuid,
+            context,
+            logic: element,
+            defaultReturned
           })
         } else if (logOp.trim() === '|') {
           retValue = retValue | evaluator.evaluateLogicTuples({
-            ...objectToEvaluate,
-            conditional: element
+            parentUuid,
+            containerUuid,
+            context,
+            logic: element,
+            defaultReturned
           })
         } else {
-          console.info(`Logic operant '|' or '&' expected  -->  ${objectToEvaluate.logic}`)
-          return defaultUndefined
+          console.info(`Logic operant '|' or '&' expected  -->  ${logic}`)
+          return defaultReturned
         }
       }
     })
@@ -69,19 +81,23 @@ class evaluator {
 
   /**
    * Evaluate Logic Tuples
-   * @param {object} objectToEvaluate Complete object
+   * @param {string} parentUuid Complete object
+   * @param {string} containerUuid Complete object
+   * @param {function} context
    * @param {string} logic If is displayed or not (mandatory and readonly)
+   * @param {boolean} defaultReturned
    * @return {boolean}
    */
-  static evaluateLogicTuples(objectToEvaluate) {
-    let _defaultUndefined = false
-    if (objectToEvaluate.type === 'displayed') {
-      _defaultUndefined = true
-    }
-    const logic = objectToEvaluate.conditional
+  static evaluateLogicTuples({
+    parentUuid,
+    containerUuid,
+    context,
+    defaultReturned = false,
+    logic
+  }) {
     // not context info, not logic
-    if (logic === undefined) {
-      return _defaultUndefined
+    if (logic === undefined || logic === null || logic.trim() === '') {
+      return defaultReturned
     }
 
     /**
@@ -97,7 +113,7 @@ class evaluator {
 
     if (!st) {
       console.info(`.Logic tuple does not comply with format '@context@=value' where operand could be one of '=!^><'  -->  ${logic}`)
-      return _defaultUndefined
+      return defaultReturned
     }
 
     expr = /(<>|<=|==|>=|!=|<|=|>|!|\^)/gm
@@ -113,21 +129,26 @@ class evaluator {
       first = first.replace(/@/g, '').trim()
       isGlobal = first.startsWith('#')
       isCountable = first.startsWith('$')
-      const value = objectToEvaluate.context.getContext({
-        parentUuid: (isGlobal || isCountable) ? '' : objectToEvaluate.parentUuid,
-        containerUuid: (isGlobal || isCountable) ? '' : objectToEvaluate.containerUuid,
+      if (isGlobal || isCountable) {
+        parentUuid = null
+        containerUuid = null
+      }
+
+      const value = context({
+        parentUuid,
+        containerUuid,
         columnName: first
       })
       // in context exists this column name
       if (value === null || value === undefined) {
         // console.info(`.The column ${first} not exists in context.`)
-        return _defaultUndefined
+        return defaultReturned
       }
       firstEval = value // replace with it's value
     }
 
     if (firstEval === null || firstEval === undefined) {
-      return _defaultUndefined
+      return defaultReturned
     }
     if (typeof firstEval === 'string') {
       firstEval = firstEval.replace(/['"]/g, '').trim() // strip ' and "
@@ -140,9 +161,9 @@ class evaluator {
     let secondEval = second.trim()
     if (expr.test(second)) {
       second = second.replace(/@/g, ' ').trim() // strip tag
-      secondEval = objectToEvaluate.context.getContext({
-        parentUuid: (isGlobal || isCountable) ? null : objectToEvaluate.parentUuid,
-        containerUuid: (isGlobal || isCountable) ? null : objectToEvaluate.containerUuid,
+      secondEval = context({
+        parentUuid,
+        containerUuid,
         columnName: first
       }) // replace with it's value
     }
@@ -161,7 +182,7 @@ class evaluator {
     // Logical Comparison
     const result = this.evaluateLogicTuple(firstEval, operand, secondEval)
 
-    return result
+    return Boolean(result)
   }
 
   /**
@@ -172,19 +193,21 @@ class evaluator {
    * @return {boolean}
    */
   static evaluateLogicTuple(value1, operand, value2) {
-    // Convert value 1 string value to boolean value
-    if (value1 === 'Y') {
-      value1 = true
-    } else if (value1 === 'N') {
-      value1 = false
+    const convertStringToBoolean = (valueToParsed) => {
+      const valueString = String(valueToParsed).trim()
+      if (valueString === 'Y') {
+        return true
+      } else if (valueString === 'N') {
+        return false
+      }
+      return valueToParsed
     }
 
+    // Convert value 1 string value to boolean value
+    value1 = convertStringToBoolean(value1)
+
     // Convert value 2 string value to boolean value
-    if (value2 === 'Y') {
-      value2 = true
-    } else if (value2 === 'N') {
-      value2 = false
-    }
+    value2 = convertStringToBoolean(value2)
 
     let isValueLogic
     // TODO: Add '^' operand comparison

@@ -6,7 +6,7 @@
 // - Process & Report: Always save a panel and parameters
 // - Smart Browser: Can have a search panel, table panel and process panel
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
-import evaluator, { parseContext } from '@/utils/ADempiere/contextUtils'
+import evaluator, { getContext, parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { assignedGroup, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import router from '@/router'
@@ -775,28 +775,27 @@ const panel = {
       dependentsList.map(async fieldDependent => {
         //  isDisplayed Logic
         let isDisplayedFromLogic, isMandatoryFromLogic, isReadOnlyFromLogic, defaultValue
-        if (fieldDependent.displayLogic.trim() !== '') {
+        if (!isEmptyValue(fieldDependent.displayLogic)) {
           isDisplayedFromLogic = evaluator.evaluateLogic({
-            context: getters,
+            context: getContext,
             parentUuid,
             containerUuid,
-            logic: fieldDependent.displayLogic,
-            type: 'displayed'
+            logic: fieldDependent.displayLogic
           })
         }
         //  Mandatory Logic
-        if (fieldDependent.mandatoryLogic.trim() !== '') {
+        if (!isEmptyValue(fieldDependent.mandatoryLogic)) {
           isMandatoryFromLogic = evaluator.evaluateLogic({
-            context: getters,
+            context: getContext,
             parentUuid,
             containerUuid,
             logic: fieldDependent.mandatoryLogic
           })
         }
         //  Read Only Logic
-        if (fieldDependent.readOnlyLogic.trim() !== '') {
+        if (!isEmptyValue(fieldDependent.readOnlyLogic)) {
           isReadOnlyFromLogic = evaluator.evaluateLogic({
-            context: getters,
+            context: getContext,
             parentUuid,
             containerUuid,
             logic: fieldDependent.readOnlyLogic
