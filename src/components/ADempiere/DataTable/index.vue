@@ -726,7 +726,7 @@ export default {
       this.getterDataRecords.shift()
     },
     tableRowClassName({ row, rowIndex }) {
-      if (row.isNew && this.isEmptyValue(row.Created)) {
+      if (row.isNew && rowIndex === 0) {
         return 'warning-row'
       }
       return ''
