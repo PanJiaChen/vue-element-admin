@@ -64,7 +64,7 @@ export default {
   },
   watch: {
     '$route.query.tabChild'(actionValue) {
-      if (this.isEmptyValue(actionValue) || actionValue === 'create-new') {
+      if (this.isEmptyValue(actionValue)) {
         this.currentTabChild = '0'
         return
       }
@@ -93,6 +93,9 @@ export default {
   },
   mounted() {
     this.setCurrentTabChild()
+    if (this.isReadyFromGetData) {
+      this.getDataTable()
+    }
   },
   methods: {
     setCurrentTabChild() {
