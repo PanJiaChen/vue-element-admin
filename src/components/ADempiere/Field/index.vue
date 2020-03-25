@@ -329,7 +329,7 @@ export default {
   methods: {
     showMessage,
     focusField() {
-      if (this.isDisplayed && this.isMandatory && !this.isReadOnly) {
+      if (this.isDisplayed && !this.isReadOnly) {
         this.$refs[this.field.columnName].activeFocus()
       }
     }

@@ -680,7 +680,7 @@ export default {
       return new Promise(resolve => {
         const fieldFocus = this.getterFieldList.find(itemField => {
           if (this.$refs.hasOwnProperty(itemField.columnName)) {
-            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
+            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable && itemField.componentPath !== 'FieldSelect') {
               return true
             }
           }
