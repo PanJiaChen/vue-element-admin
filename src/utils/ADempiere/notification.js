@@ -6,7 +6,6 @@ export function hasTranslation(text) {
   const hasKey = language.te('notifications.' + text)
   if (hasKey) {
     const translatedText = language.t('notifications.' + text)
-
     return translatedText
   }
   return text
@@ -14,61 +13,70 @@ export function hasTranslation(text) {
 
 /**
  *
- * @param {object} parameters
- * @param {object} parameters.type, required
- * @param {object} parameters.title, required
- * @param {object} parameters.message, required
- * @param {object} parameters.summary, required
- * @param {object} parameters.name, required
+ * @param {string} type, required
+ * @param {string} title, required
+ * @param {object} message
+ * @param {string} summary
+ * @param {string} name
+ * @param {array} logs
  */
-export function showNotification(parameters) {
-  var title = hasTranslation(parameters.title)
-  var message = ''
-  if (parameters.message) {
-    message = hasTranslation(parameters.message)
+export function showNotification({ type, title, message, summary, name, logs = [] }) {
+  title = hasTranslation(title)
+  if (message) {
+    message = hasTranslation(message)
   }
-  //  For summary
-  if (parameters.summary) {
+  // For summary
+  if (summary) {
     if (message) {
-      message = message + '<br>' + parameters.summary
+      message = `${message} <br> ${summary}`
     } else {
-      message = parameters.summary
+      message = summary
     }
   }
-  //  For logs
-  if (parameters.logs) {
-    parameters.logs.forEach(logResult => {
+  // For logs
+  if (logs && logs.length) {
+    logs.forEach(logResult => {
       if (logResult) {
-        message = message + '<br>' + logResult.log
+        message = `${message} <br> ${logResult.log}`
       }
     })
   }
-  if (parameters.name) {
-    message = parameters.name + message
+  if (name) {
+    message = name + message
   }
-  Notification({
-    title: title,
-    message: `<div style="max-height: 100px; overflow-y: auto;">` + message + `</div>`,
-    type: parameters.type,
+
+  return Notification({
+    title,
+    message: `<div style="max-height: 100px; overflow-y: auto;">${message}</div>`,
+    type,
     position: 'bottom-right',
     dangerouslyUseHTMLString: true,
     onClick() {
-      router.push({ name: 'ProcessActivity' })
+      router.push({
+        name: 'ProcessActivity'
+      })
     }
   })
 }
 
-export function showMessage(parameters) {
-  var delay = 3000
-  if (parameters.type === 'info') {
+/**
+ *
+ * @param {string} type
+ * @param {string} message
+ * @param {number} duration
+ */
+export function showMessage({ type, message, duration = 0 }) {
+  let delay = 3000
+  if (type === 'info') {
     delay = 2000
   }
-  if (parameters.duration) {
-    delay = parameters.duration
+  if (duration) {
+    delay = duration
   }
-  Message({
-    message: parameters.message,
-    type: parameters.type,
+
+  return Message({
+    message,
+    type,
     showClose: true,
     duration: delay
   })

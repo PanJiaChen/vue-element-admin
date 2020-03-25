@@ -176,15 +176,15 @@ export function getLookupList({
  * @param {number}  reportType
  * @param {number}  tableName, table name of tab, used only window
  * @param {number}  recordId, record identifier, used only window
- * @param {array}   parameters, parameters from process [{ columnName, value }]
- * @param {array}   selection, selection records, used only browser
+ * @param {array}   parametersList, parameters from process [{ columnName, value }]
+ * @param {array}   selectionsList, selection records, used only browser
       [{
           selectionId,
           selectionValues: [{ columnName, value }]
       }]
  * @param {string}  printFormatUuid
  */
-export function runProcess({ uuid, reportType, tableName, recordId, parameters: parametersList = [], selection: selectionsList = [], printFormatUuid }) {
+export function runProcess({ uuid, reportType, tableName, recordId, parametersList = [], selectionsList = [], printFormatUuid }) {
   //  Run Process
   return Instance.call(this).requestRunProcess({
     uuid,
