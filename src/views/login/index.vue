@@ -59,14 +59,14 @@
       <el-button
         type="text"
         style="float: left"
-        @click.native.prevent="$router.push({ path: 'forgotPassword' })"
+        @click.native.prevent="pathRedirect('forgotPassword')"
       >
         {{ $t('route.forgotPassword') }}
       </el-button>
       <el-button
         type="text"
         style="float: right"
-        @click.native.prevent="$router.push({ path: 'userEnrollment' })"
+        @click.native.prevent="pathRedirect('userEnrollment')"
       >
         {{ $t('route.userEnrollment') }}
       </el-button>
@@ -94,12 +94,13 @@
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect'
+import { loginMixin } from '@/views/login/loginMixin'
 import SocialSign from './components/SocialSignin'
 
 export default {
   name: 'Login',
-  components: { LangSelect, SocialSign },
+  components: { SocialSign },
+  mixins: [loginMixin],
   data() {
     const validateUsername = (rule, value, callback) => {
       if ((value.trim()).length < 1) {
@@ -165,16 +166,6 @@ export default {
         this.capsTooltip = false
       }
     },
-    showPwd() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
-    },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
@@ -186,11 +177,12 @@ export default {
               })
             })
             .catch(error => {
+              let message = this.$t('login.unexpectedError')
               if (error.code === 13) {
-                this.$message.error(this.$t('login.invalidLogin'))
-              } else {
-                this.$message.error(this.$t('login.unexpectedError'))
+                message = this.$t('login.invalidLogin')
               }
+
+              this.$message.error(message)
             })
             .finally(() => {
               this.loading = false

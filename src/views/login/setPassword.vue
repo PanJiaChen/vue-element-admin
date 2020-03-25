@@ -31,7 +31,7 @@
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
           />
-          <span class="show-pwd" @click="showPassword">
+          <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
@@ -61,7 +61,7 @@
       </el-tooltip>
 
       <el-button
-        :disabled="isEmptyValue(changePasswordForm.password) || changePasswordForm.password !== changePasswordForm.passwordConfirm"
+        :disabled="isDisabled"
         :loading="loading"
         type="primary"
         style="width:100%;margin-bottom:30px;"
@@ -70,7 +70,7 @@
         {{ $t('login.submit') }}
       </el-button>
 
-      <el-button type="text" style="float: left" @click.native.prevent="$router.push({ path: 'login' })">
+      <el-button type="text" style="float: left" @click.native.prevent="pathRedirect('login')">
         {{ $t('login.title') }}
       </el-button>
     </el-form>
@@ -78,11 +78,11 @@
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect'
+import { loginMixin } from '@/views/login/loginMixin'
 
 export default {
   name: 'ChangePassword',
-  components: { LangSelect },
+  mixins: [loginMixin],
   data() {
     const validatePass = (rule, value, callback) => {
       if (this.isEmptyValue(value)) {
@@ -119,6 +119,15 @@ export default {
   computed: {
     formName() {
       return this.$route.name
+    },
+    isDisabled() {
+      if (this.isEmptyValue(this.changePasswordForm.password)) {
+        return true
+      }
+      if (this.changePasswordForm.password !== this.changePasswordForm.passwordConfirm) {
+        return true
+      }
+      return false
     }
   },
   methods: {
@@ -141,17 +150,7 @@ export default {
       }
     },
     checkCapslockNew({ shiftKey, key } = {}, isNew = true) {
-      this.checkCapslock({ shiftKey: shiftKey, key: key }, true)
-    },
-    showPassword() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+      this.checkCapslock({ shiftKey, key }, true)
     },
     showPasswordConfirm() {
       if (this.passwordConfirmType === 'password') {

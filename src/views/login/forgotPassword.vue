@@ -40,7 +40,7 @@
         {{ $t('login.submit') }}
       </el-button>
 
-      <el-button type="text" style="float: left" @click.native.prevent="$router.push({ path: 'login' })">
+      <el-button type="text" style="float: left" @click.native.prevent="pathRedirect('login')">
         {{ $t('login.title') }}
       </el-button>
     </el-form>
@@ -48,11 +48,11 @@
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect'
+import { loginMixin } from '@/views/login/loginMixin'
 
 export default {
   name: 'ForgotPassword',
-  components: { LangSelect },
+  mixins: [loginMixin],
   data() {
     return {
       forgotForm: {
@@ -65,11 +65,6 @@ export default {
     }
   },
   methods: {
-    showPwd() {
-      this.$nextTick(() => {
-        this.$refs.userName.focus()
-      })
-    },
     handleSubmit() {
       if (!this.isEmptyValue(this.forgotForm.userName)) {
         this.loading = true

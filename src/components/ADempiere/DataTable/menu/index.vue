@@ -22,16 +22,17 @@
       >
         {{ $t('table.dataTable.deleteSelection') }}
       </el-menu-item>
-      <el-menu-item
-        v-for="(process, key) in processMenu"
-        v-show="isPanelWindow && processMenu"
-        :key="key"
-        :disabled="process.type === 'application' ? false : Boolean(getDataSelection.length < 1)"
-        index="process"
-        @click="process.type === 'application' ? sortTab(process) : showModalTable(process)"
-      >
-        {{ process.name }}
-      </el-menu-item>
+      <template v-if="isPanelWindow && !isEmptyValue(processMenu)">
+        <el-menu-item
+          v-for="(process, key) in processMenu"
+          :key="key"
+          :disabled="process.type === 'application' ? false : Boolean(getDataSelection.length < 1)"
+          index="process"
+          @click="process.type === 'application' ? sortTab(process) : showModalTable(process)"
+        >
+          {{ process.name }}
+        </el-menu-item>
+      </template>
       <el-menu-item
         @click="exporZipRecordTable"
       >

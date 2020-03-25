@@ -71,7 +71,7 @@
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
           />
-          <span class="show-pwd" @click="showPassword">
+          <span class="show-pwd" @click="showPwd">
             <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
           </span>
         </el-form-item>
@@ -110,7 +110,7 @@
         {{ $t('login.submit') }}
       </el-button>
 
-      <el-button type="text" style="float: left" @click.native.prevent="$router.push({ path: 'login' })">
+      <el-button type="text" style="float: left" @click.native.prevent="pathRedirect('login')">
         {{ $t('login.title') }}
       </el-button>
     </el-form>
@@ -118,11 +118,11 @@
 </template>
 
 <script>
-import LangSelect from '@/components/LangSelect'
+import { loginMixin } from '@/views/login/loginMixin'
 
 export default {
   name: 'UserEnrollment',
-  components: { LangSelect },
+  mixins: [loginMixin],
   data() {
     const validateField = (rule, value, callback) => {
       if (this.isEmptyValue(value)) {
@@ -189,20 +189,21 @@ export default {
   },
   computed: {
     isReadyFormSubmit() {
-      if (this.isEmptyValue(this.enrollmentUserForm.name)) {
+      const { name, userName, eMail, password, passwordConfirm } = this.enrollmentUserForm
+      if (this.isEmptyValue(name)) {
         return false
       }
-      if (this.isEmptyValue(this.enrollmentUserForm.userName)) {
+      if (this.isEmptyValue(userName)) {
         return false
       }
-      if (this.isEmptyValue(this.enrollmentUserForm.eMail) || !this.eMailPattern.test(this.enrollmentUserForm.eMail)) {
+      if (this.isEmptyValue(eMail) || !this.eMailPattern.test(eMail)) {
         return false
       }
       if (this.isShowPassword) {
-        if (this.isEmptyValue(this.enrollmentUserForm.password)) {
+        if (this.isEmptyValue(password)) {
           return false
         }
-        if (this.enrollmentUserForm.password !== this.enrollmentUserForm.passwordConfirm) {
+        if (password !== passwordConfirm) {
           return false
         }
       }
@@ -229,17 +230,7 @@ export default {
       }
     },
     checkCapslockNew({ shiftKey, key } = {}, isNew = true) {
-      this.checkCapslock({ shiftKey: shiftKey, key: key }, true)
-    },
-    showPassword() {
-      if (this.passwordType === 'password') {
-        this.passwordType = ''
-      } else {
-        this.passwordType = 'password'
-      }
-      this.$nextTick(() => {
-        this.$refs.password.focus()
-      })
+      this.checkCapslock({ shiftKey, key }, true)
     },
     showPasswordConfirm() {
       if (this.passwordConfirmType === 'password') {
