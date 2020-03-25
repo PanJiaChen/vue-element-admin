@@ -280,6 +280,9 @@ export default {
         timeElapsed: 'Time Elapsed',
         addNote: 'Add Note'
       }
+    },
+    callout: {
+      error: 'Error In Callout'
     }
   },
   data: {

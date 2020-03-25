@@ -255,6 +255,9 @@ export default {
         timeElapsed: 'Tiempo transcurrido',
         addNote: 'Agregar Nota'
       }
+    },
+    callout: {
+      error: 'Error En Callout'
     }
   },
   data: {

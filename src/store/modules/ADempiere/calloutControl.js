@@ -1,8 +1,23 @@
 import { runCallOutRequest } from '@/api/ADempiere/data'
 import { showMessage } from '@/utils/ADempiere/notification'
+import language from '@/lang'
 
 const callOutControl = {
   actions: {
+    /**
+     * Run or execute callout to get values
+     * @param {String} parentUuid
+     * @param {String} containerUuid
+     * @param {String} callout, path of callout to execute
+     * @param {String} tableName
+     * @param {String} columnName
+     * @param {Array<String>} withOutColumnNames
+     * @param {Boolean} inTable, indicate if is activate from table
+     * @param {Object} row, if callout is activate in table
+     * @param {Mixed} value
+     * @param {Mixed} oldValue
+     * @return {Promise} values
+     */
     getCallout({ rootGetters, dispatch }, {
       parentUuid,
       containerUuid,
@@ -15,55 +30,58 @@ const callOutControl = {
       value,
       oldValue
     }) {
-      const window = rootGetters.getWindow(parentUuid)
-      const attributesList = rootGetters.getParametersToServer({
-        containerUuid,
-        row
-      })
-
-      return runCallOutRequest({
-        windowUuid: parentUuid,
-        tabUuid: containerUuid,
-        tableName,
-        columnName,
-        value,
-        oldValue,
-        callout,
-        attributesList,
-        windowNo: window.windowIndex
-      })
-        .then(calloutResponse => {
-          if (inTable) {
-            const newValues = {
-              ...row,
-              ...calloutResponse.values
+      return new Promise((resolve, reject) => {
+        const window = rootGetters.getWindow(parentUuid)
+        const attributesList = rootGetters.getParametersToServer({
+          containerUuid,
+          row
+        })
+        runCallOutRequest({
+          windowUuid: parentUuid,
+          tabUuid: containerUuid,
+          tableName,
+          columnName,
+          value,
+          oldValue,
+          callout,
+          attributesList,
+          windowNo: window.windowIndex
+        })
+          .then(calloutResponse => {
+            if (inTable) {
+              const newValues = {
+                ...row,
+                ...calloutResponse.values
+              }
+              dispatch('notifyRowTableChange', {
+                parentUuid,
+                containerUuid,
+                row: newValues,
+                isEdit: true
+              })
+            } else {
+              dispatch('notifyPanelChange', {
+                parentUuid,
+                containerUuid,
+                panelType: 'window',
+                newValues: calloutResponse.values,
+                isSendToServer: false,
+                withOutColumnNames,
+                isSendCallout: false,
+                isChangeFromCallout: true
+              })
             }
-            dispatch('notifyRowTableChange', {
-              parentUuid,
-              containerUuid,
-              row: newValues,
-              isEdit: true
-            })
-          } else {
-            dispatch('notifyPanelChange', {
-              parentUuid,
-              containerUuid,
-              panelType: 'window',
-              newValues: calloutResponse.values,
-              isSendToServer: false,
-              withOutColumnNames,
-              isSendCallout: false,
-              isChangeFromCallout: true
-            })
-          }
-        })
-        .catch(error => {
-          showMessage({
-            message: error.message,
-            type: 'error'
+            resolve(calloutResponse.values)
           })
-          console.warn(`Field ${columnName} error callout`, error.message)
-        })
+          .catch(error => {
+            reject(error)
+            showMessage({
+              message: error.message || language.t('window.callout.error'),
+              type: 'error'
+            })
+            console.warn(`Field ${columnName} error callout. Code ${error.code}: ${error.message}`)
+          })
+      })
     }
   }
 }
