@@ -116,6 +116,24 @@ const browser = {
                 }
               })
 
+            // Panel for save on store
+            const newBrowser = {
+              ...browserResponse,
+              containerUuid,
+              fieldList: fieldsList,
+              panelType,
+              // app attributes
+              awaitForValues, // control to values
+              awaitForValuesToQuery: awaitForValues, // get values from request search
+              isShowedCriteria,
+              isShowedTotals: true
+            }
+
+            commit('addBrowser', newBrowser)
+            dispatch('addPanel', newBrowser)
+
+            resolve(newBrowser)
+
             // Convert from gRPC process list
             const actions = []
             if (process) {
@@ -140,28 +158,8 @@ const browser = {
             // Add process menu
             dispatch('setContextMenu', {
               containerUuid,
-              relations: [],
-              actions,
-              references: []
+              actions
             })
-
-            // Panel for save on store
-            const newBrowser = {
-              ...browserResponse,
-              containerUuid,
-              fieldList: fieldsList,
-              panelType,
-              // app attributes
-              awaitForValues, // control to values
-              awaitForValuesToQuery: awaitForValues, // get values from request search
-              isShowedCriteria,
-              isShowedTotals: true
-            }
-
-            commit('addBrowser', newBrowser)
-            dispatch('addPanel', newBrowser)
-
-            resolve(newBrowser)
           })
           .catch(error => {
             router.push({ path: '/dashboard' })

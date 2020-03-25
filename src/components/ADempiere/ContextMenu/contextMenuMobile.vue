@@ -130,7 +130,6 @@ export default {
   mixins: [contextMixin],
   computed: {
     isPanelTypeMobile() {
-      console.log(this.panelType, this.$route.meta.type)
       if (this.$route.meta.type === 'process' || this.$route.meta.type === 'report') {
         return true
       }

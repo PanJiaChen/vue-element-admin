@@ -189,9 +189,7 @@ const window = {
             //  Add process menu
             dispatch('setContextMenu', {
               containerUuid: tab.uuid,
-              relations: [],
-              actions: actions,
-              references: []
+              actions: actions
             })
 
             if (tab.isParentTab) {

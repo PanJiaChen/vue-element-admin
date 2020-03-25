@@ -10,8 +10,6 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 //     relations: [],
 //     actions: [],
 //     references: []
-//     defaultAction: {},
-//     lastAction: {}
 //   }
 // ]
 const initStateContextMenu = {
@@ -50,8 +48,25 @@ const contextMenu = {
     }
   },
   actions: {
-    setContextMenu({ commit }, payload) {
-      commit('setContextMenu', payload)
+    /**
+     * Sub menu associated with panel
+     * @param {string} containerUuid
+     * @param {array}  relations
+     * @param {array}  actions
+     * @param {array}  references
+     */
+    setContextMenu({ commit }, {
+      containerUuid,
+      relations = [],
+      actions = [],
+      references = []
+    }) {
+      commit('setContextMenu', {
+        containerUuid,
+        relations,
+        actions,
+        references
+      })
     },
     /**
      * TODO: Verify tableName params to change in constant

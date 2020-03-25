@@ -18,7 +18,7 @@ const process = {
   },
   actions: {
     /**
-     *
+     * Get process metadata from server
      * @param {string} containerUuid
      * @param {object} routeToDelete, route to close in tagView when fail
      */
@@ -26,31 +26,32 @@ const process = {
       containerUuid,
       routeToDelete
     }) {
-      let printFormatsAvailable
-      dispatch('requestPrintFormats', {
-        processUuid: containerUuid
-      })
-        .then(response => {
-          printFormatsAvailable = response
-        })
       return new Promise(resolve => {
         getProcessMetadata(containerUuid)
-          .then(responseProcess => {
-            responseProcess.printFormatsAvailable = printFormatsAvailable
+          .then(async responseProcess => {
+            let printFormatsAvailable = []
+            if (responseProcess.isReport) {
+              printFormatsAvailable = await dispatch('requestPrintFormats', {
+                processUuid: containerUuid
+              })
+            }
+
             const { processDefinition, actions } = generateProcess({
-              processToGenerate: responseProcess
+              processToGenerate: {
+                ...responseProcess,
+                printFormatsAvailable
+              }
             })
+
             dispatch('addPanel', processDefinition)
             commit('addProcess', processDefinition)
+            resolve(processDefinition)
 
             //  Add process menu
             dispatch('setContextMenu', {
               containerUuid,
-              relations: [],
-              actions,
-              references: []
+              actions
             })
-            resolve(processDefinition)
           })
           .catch(error => {
             router.push({
@@ -79,16 +80,13 @@ const process = {
 
         dispatch('addPanel', processDefinition)
         commit('addProcess', processDefinition)
+        resolve(processDefinition)
 
         //  Add process menu
         dispatch('setContextMenu', {
           containerUuid: processDefinition.uuid,
-          relations: [],
-          actions,
-          references: []
+          actions
         })
-
-        resolve(processDefinition)
       })
     }
   },
