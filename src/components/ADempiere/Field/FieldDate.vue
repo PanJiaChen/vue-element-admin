@@ -183,7 +183,7 @@ export default {
       }
 
       // generate range value
-      if (this.metadata.isRange) {
+      if (this.metadata.isRange && !this.metadata.inTable) {
         let valueTo = this.metadata.valueTo
         if (typeof valueTo === 'number') {
           valueTo = new Date(valueTo).toUTCString()
