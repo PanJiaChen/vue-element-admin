@@ -341,6 +341,7 @@ const panel = {
             })
           }
         }
+
         dispatch('notifyPanelChange', {
           parentUuid,
           containerUuid,
@@ -352,6 +353,21 @@ const panel = {
           isSendCallout: isNewRecord,
           isPrivateAccess: false
         })
+          .then(() => {
+            if (['process', 'report'].includes(panelType)) {
+              const fieldsUser = panel.fieldList.filter(itemField => {
+                return itemField.isShowedFromUserDefault || !isEmptyValue(itemField.value)
+              }).map(itemField => {
+                return itemField.columnName
+              })
+
+              dispatch('changeFieldShowedFromUser', {
+                containerUuid,
+                fieldsUser,
+                groupField: ''
+              })
+            }
+          })
         resolve(defaultAttributes)
       })
     },
@@ -440,6 +456,7 @@ const panel = {
 
         Promise.all(promisessList)
           .then(response => {
+            resolve()
             const calloutsToExecute = []
             if (isSendCallout) {
               response.forEach(item => {

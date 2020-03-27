@@ -175,6 +175,7 @@ export function generateField({
     // TODO: Add support on server
     // app attributes
     isShowedFromUser,
+    isShowedFromUserDefault: isShowedFromUser, // set this value when reset panel
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
     isFixedTableColumn: false,
     isSQLValue,

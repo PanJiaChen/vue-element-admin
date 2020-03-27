@@ -188,48 +188,45 @@ const processControl = {
           })
         }
         const timeInitialized = (new Date()).getTime()
-        let processResult
+        let processResult = {
+          // panel attributes from where it was executed
+          parentUuid,
+          containerUuid,
+          panelType,
+          lastRun: timeInitialized,
+          parametersList,
+          logs: [],
+          isError: false,
+          isProcessing: true,
+          summary: '',
+          resultTableName: '',
+          output: {
+            uuid: '',
+            name: '',
+            description: '',
+            fileName: '',
+            output: '',
+            outputStream: '',
+            reportType: ''
+          }
+        }
         if (!isEmptyValue(isActionDocument)) {
           processResult = {
-            // panel attributes from where it was executed
-            parentUuid,
-            containerUuid,
-            panelType,
-            lastRun: timeInitialized,
+            ...processResult,
             processUuid: action.uuid,
             processId: action.id,
             processName: 'Procesar Orden',
-            parameters: parametersList,
-            parametersList,
-            isError: false,
-            isProcessing: true,
-            summary: '',
-            resultTableName: '',
-            logs: [],
-            output: {
-              uuid: '',
-              name: '',
-              description: '',
-              fileName: '',
-              output: '',
-              outputStream: '',
-              reportType: ''
-            }
+            parameters: parametersList
           }
         } else {
-          const timeInitialized = (new Date()).getTime()
           // Run process on server and wait for it for notify
           // uuid of process
           processResult = {
-          // panel attributes from where it was executed
-            parentUuid,
-            containerUuid,
-            panelType,
+            ...processResult,
             menuParentUuid,
             processIdPath: routeToDelete.path,
             printFormatUuid: action.printFormatUuid,
             // process attributes
-            lastRun: timeInitialized,
             action: processDefinition.name,
             name: processDefinition.name,
             description: processDefinition.description,
@@ -238,21 +235,7 @@ const processControl = {
             processId: processDefinition.id,
             processName: processDefinition.processName,
             parameters: finalParameters,
-            isError: false,
-            isProcessing: true,
-            isReport: processDefinition.isReport,
-            summary: '',
-            resultTableName: '',
-            logs: [],
-            output: {
-              uuid: '',
-              name: '',
-              description: '',
-              fileName: '',
-              output: '',
-              outputStream: '',
-              reportType: ''
-            }
+            isReport: processDefinition.isReport
           }
         }
         commit('addInExecution', processResult)
@@ -272,6 +255,14 @@ const processControl = {
           // close view if is process, report.
           router.push({ path: '/dashboard' })
           dispatch('tagsView/delView', routeToDelete)
+
+          // reset panel and set defalt isShowedFromUser
+          if (!processDefinition.isReport) {
+            dispatch('resetPanelToNew', {
+              containerUuid,
+              panelType
+            })
+          }
         }
         if (isProcessTableSelection) {
           const windowSelectionProcess = getters.getProcessSelect
@@ -853,7 +844,8 @@ const processControl = {
     },
     /**
      * Show modal dialog with process/report, tab (sequence) metadata
-     * @param {object} params
+     * @param {String} type of panel or panelType ('process', 'report', 'window')
+     * @param {Object} action
      */
     setShowDialog({ state, commit, dispatch, rootGetters }, {
       type,
