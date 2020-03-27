@@ -143,12 +143,11 @@ const reportControl = {
       instanceUuid,
       option
     }) {
-      if (isEmptyValue(printFormatUuid)) {
-        printFormatUuid = getters.getDefaultPrintFormat(processUuid).printFormatUuid
-      }
-
-      const parametersList = rootGetters.getParametersToServer({ containerUuid: processUuid })
       return new Promise(resolve => {
+        if (isEmptyValue(printFormatUuid)) {
+          printFormatUuid = getters.getDefaultPrintFormat(processUuid).printFormatUuid
+        }
+        const parametersList = rootGetters.getParametersToServer({ containerUuid: processUuid })
         getReportOutput({
           parametersList,
           printFormatUuid,
@@ -166,7 +165,7 @@ const reportControl = {
               isError: false,
               instanceUuid,
               isReport: true,
-              option: option
+              option
             }
             commit('setNewReportOutput', reportOutput)
 

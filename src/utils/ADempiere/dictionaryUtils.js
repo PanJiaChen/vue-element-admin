@@ -198,13 +198,17 @@ export function generateField({
   }
 
   // Overwrite some values
-  if (typeRange) {
-    field.uuid = `${field.uuid}_To`
-    field.columnName = `${field.columnName}_To`
-    field.name = `${field.name} To`
-    field.value = parsedDefaultValueTo
-    field.defaultValue = field.defaultValueTo
-    field.parsedDefaultValue = field.parsedDefaultValueTo
+  if (field.isRange) {
+    field.operator = 'GREATER_EQUAL'
+    if (typeRange) {
+      field.uuid = `${field.uuid}_To`
+      field.columnName = `${field.columnName}_To`
+      field.name = `${field.name} To`
+      field.value = parsedDefaultValueTo
+      field.defaultValue = field.defaultValueTo
+      field.parsedDefaultValue = field.parsedDefaultValueTo
+      field.operator = 'LESS_EQUAL'
+    }
   }
 
   // hidden field type button

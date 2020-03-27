@@ -1406,12 +1406,21 @@ const panel = {
             value = undefined
           }
 
-          // only to fields type Time, Datea and DateTime
+          let operator
+          // set default operator of field
+          if (isAdvancedQuery || ['process', 'report'].includes(parameterItem.panelType)) {
+            operator = parameterItem.operator
+          }
+          // only to fields type Time, Date and DateTime, and is range, with values
+          // manage as Array = [value, valueTo]
           if (parameterItem.isRange && parameterItem.componentPath !== 'FieldNumber') {
+            operator = 'LESS_EQUAL' // operand to value is second position of array
             parametersRange.push({
               columnName: `${parameterItem.columnName}_To`,
+              operator,
               value: valueTo
             })
+            operator = 'GREATER_EQUAL' // rewrite to assign first position of array
           }
 
           return {
@@ -1419,7 +1428,7 @@ const panel = {
             value,
             isRange: parameterItem.isRange,
             values,
-            operator: isAdvancedQuery ? parameterItem.operator : undefined
+            operator
           }
         })
 
