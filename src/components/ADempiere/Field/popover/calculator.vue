@@ -1,10 +1,11 @@
 <template>
   <el-dropdown trigger="click">
-    <el-button type="text">
+    <el-button type="text" :disabled="fieldAttributes.readonly" @click="focusCalc">
       <i class="el-icon-s-operation el-icon--right" />
     </el-button>
     <el-dropdown-menu slot="dropdown" class="dropdown-calc">
       <el-input
+        ref="calculatorInput"
         v-model="calcValue"
         v-shortkey="['enter']"
         class="calc-input"
@@ -119,15 +120,15 @@ export default {
       }, {
         row1: {
           type: 'value',
-          value: 7
+          value: '7'
         },
         row2: {
           type: 'value',
-          value: 8
+          value: '8'
         },
         row3: {
           type: 'value',
-          value: 9
+          value: '9'
         },
         row4: {
           type: 'operator',
@@ -140,15 +141,15 @@ export default {
       }, {
         row1: {
           type: 'value',
-          value: 4
+          value: '4'
         },
         row2: {
           type: 'value',
-          value: 5
+          value: '5'
         },
         row3: {
           type: 'value',
-          value: 7
+          value: '7'
         },
         row4: {
           type: 'operator',
@@ -161,15 +162,15 @@ export default {
       }, {
         row1: {
           type: 'value',
-          value: 1
+          value: '1'
         },
         row2: {
           type: 'value',
-          value: 2
+          value: '2'
         },
         row3: {
           type: 'value',
-          value: 3
+          value: '3'
         },
         row4: {
           type: 'result',
@@ -182,7 +183,7 @@ export default {
       }, {
         row1: {
           type: 'value',
-          value: 0
+          value: '0'
         },
         row2: {
           type: 'operator',
@@ -212,13 +213,20 @@ export default {
     sendValue(row, column) {
       const isAcceptedType = ['result', 'clear'].includes(row[column.property].type)
       if (!isAcceptedType && !this.isDisabled(row, column)) {
-        this.calcValue += row[column.property].value
+        this.isEmptyValue(this.calcValue) ? this.calcValue = row[column.property].value : this.calcValue += row[column.property].value
+        const result = this.calculationValue(this.calcValue, event)
+        if (!this.isEmptyValue(result)) {
+          this.valueToDisplay = result
+        } else {
+          this.valueToDisplay = '...'
+        }
       }
       if (row[column.property].type === 'clear') {
         if (row[column.property].value === 'C') {
           this.calcValue = this.calcValue.slice(0, -1)
         } else if (row[column.property].value === 'AC') {
           this.calcValue = ''
+          this.valueToDisplay = ''
         }
       }
       if (row[column.property].value === '=') {
@@ -226,19 +234,32 @@ export default {
       }
     },
     changeValue() {
-      const result = Number(this.valueToDisplay)
-      this.$store.dispatch('notifyFieldChange', {
-        isAdvancedQuery: this.fieldAttributes.isAdvancedQuery,
-        panelType: this.fieldAttributes.panelType,
+      const newValue = Number(this.valueToDisplay)
+      let isSendCallout = true
+      const isSendToServer = true
+      const isChangedOldValue = false
+      if (this.fieldAttributes.isAdvancedQuery) {
+        isSendCallout = false
+      }
+
+      const sendParameters = {
         parentUuid: this.fieldAttributes.parentUuid,
         containerUuid: this.fieldAttributes.containerUuid,
-        columnName: this.fieldAttributes.columnName,
-        newValue: result,
         field: this.fieldAttributes,
-        isChangedOldValue: true
+        panelType: this.fieldAttributes.panelType,
+        columnName: this.fieldAttributes.columnName,
+        newValue,
+        isAdvancedQuery: this.fieldAttributes.isAdvancedQuery,
+        isSendToServer,
+        isSendCallout,
+        isChangedOldValue
+      }
+      this.$store.dispatch('notifyFieldChange', {
+        ...sendParameters
       })
         .finally(() => {
           this.clearVariables()
+          this.$children[0].visible = false
         })
     },
     spanMethod({ row, column, rowIndex, columnIndex }) {
@@ -264,7 +285,7 @@ export default {
           }
         }
       } else if (rowIndex === 4) {
-        if (row[column.property].value === 0) {
+        if (row[column.property].value === '0') {
           return {
             rowspan: 1,
             colspan: 2
@@ -292,6 +313,9 @@ export default {
       } else {
         this.valueToDisplay = '...'
       }
+    },
+    focusCalc() {
+      this.$refs.calculatorInput.focus()
     }
   }
 }

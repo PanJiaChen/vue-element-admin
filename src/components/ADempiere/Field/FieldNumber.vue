@@ -38,7 +38,7 @@ export default {
       value: value,
       showControls: true,
       operation: '',
-      expression: /[^\d\/.()%\*\+\-]/gim,
+      expression: /[\d\/.()%\*\+\-]/gim,
       valueToDisplay: '',
       isShowed: false
     }
@@ -90,31 +90,55 @@ export default {
       return Number(value)
     },
     calculateValue(event) {
-      const result = this.calculationValue(this.value, event)
-      if (!this.isEmptyValue(result)) {
-        this.valueToDisplay = result
-        this.isShowed = true
+      const isAllowed = event.key.match(this.expression)
+      if (isAllowed) {
+        const result = this.calculationValue(this.value, event)
+        if (!this.isEmptyValue(result)) {
+          this.valueToDisplay = result
+          this.isShowed = true
+        } else {
+          this.valueToDisplay = '...'
+          this.isShowed = true
+        }
+      } else if (!isAllowed && event.key === 'Backspace') {
+        if (String(this.value).slice(0, -1) > 0) {
+          event.preventDefault()
+          const newValue = String(this.value).slice(0, -1)
+          const result = this.calculationValue(newValue, event)
+          if (!this.isEmptyValue(result)) {
+            this.value = this.validateValue(result)
+            this.valueToDisplay = result
+            this.isShowed = true
+          } else {
+            this.valueToDisplay = '...'
+            this.isShowed = true
+          }
+        }
+      } else if (!isAllowed && event.key === 'Delete') {
+        if (String(this.value).slice(-1) > 0) {
+          event.preventDefault()
+          const newValue = String(this.value).slice(-1)
+          const result = this.calculationValue(newValue, event)
+          if (!this.isEmptyValue(result)) {
+            this.value = this.validateValue(result)
+            this.valueToDisplay = result
+            this.isShowed = true
+          } else {
+            this.valueToDisplay = '...'
+            this.isShowed = true
+          }
+        }
       } else {
-        this.valueToDisplay = '...'
-        this.isShowed = true
+        event.preventDefault()
       }
     },
     changeValue() {
-      const result = this.validateValue(this.valueToDisplay)
-      this.$store.dispatch('notifyFieldChange', {
-        isAdvancedQuery: this.metadata.isAdvancedQuery,
-        panelType: this.metadata.panelType,
-        parentUuid: this.metadata.parentUuid,
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        newValue: result,
-        field: this.metadata,
-        isChangedOldValue: true
-      })
-        .finally(() => {
-          this.clearVariables()
-          this.isShowed = false
-        })
+      if (!this.isEmptyValue(this.valueToDisplay) && this.valueToDisplay !== '...') {
+        const result = this.validateValue(this.valueToDisplay)
+        this.preHandleChange(result)
+      }
+      this.clearVariables()
+      this.isShowed = false
     }
   }
 }

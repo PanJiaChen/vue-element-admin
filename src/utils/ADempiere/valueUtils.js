@@ -388,10 +388,12 @@ export function tagStatus(tag) {
 
 let partialValue = ''
 export function calculationValue(value, event) {
-  const VALIDATE_EXPRESSION = /[^\d\/.()%\*\+\-]/gim
-  if (!this.isEmptyValue(event) && !VALIDATE_EXPRESSION.test(event.key)) {
+  const isZero = Number(value) === 0
+  const VALIDATE_EXPRESSION = /[\d\/.()%\*\+\-]/gim
+  const isValidKey = VALIDATE_EXPRESSION.test(event.key)
+  if (event.type === 'keydown' && isValidKey) {
     partialValue += event.key
-    const operation = String(value) + partialValue
+    const operation = isEmptyValue(value) || isZero ? partialValue : String(value) + partialValue
     if (!isEmptyValue(operation)) {
       try {
         // eslint-disable-next-line no-eval
@@ -400,9 +402,23 @@ export function calculationValue(value, event) {
         return null
       }
     }
+  } else if (event.type === 'click') {
+    if (!isEmptyValue(value)) {
+      try {
+        // eslint-disable-next-line no-eval
+        return eval(value) + ''
+      } catch (error) {
+        return null
+      }
+    }
   } else {
-    if (value.key === 'Backspace') {
-      partialValue = partialValue.slice(0, -1)
+    if ((event.key === 'Backspace' || event.key === 'Delete') && !isEmptyValue(value)) {
+      try {
+        // eslint-disable-next-line no-eval
+        return eval(value) + ''
+      } catch (error) {
+        return null
+      }
     } else {
       return null
     }

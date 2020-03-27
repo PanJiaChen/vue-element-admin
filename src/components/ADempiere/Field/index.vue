@@ -44,7 +44,7 @@
           :record-uuid="field.recordUuid"
         />
         <calculator
-          v-if="!isAdvancedQuery && isNumeric"
+          v-if="!isAdvancedQuery && isNumeric && !field.isReadOnlyFromLogic"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
         />
