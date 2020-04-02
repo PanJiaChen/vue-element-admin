@@ -529,6 +529,12 @@ export default {
       })
       return record
     },
+    getCurrentRecord() {
+      if (this.isEmptyValue(this.$store.getters.getCurrentRecord)) {
+        return this.getterDataRecords[0]
+      }
+      return this.$store.getters.getCurrentRecord
+    },
     isWorkflowBarStatus() {
       const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
       if (!this.isEmptyValue(panel) && panel.isDocument && this.$route.meta.type === 'window' && this.$route.query.action !== 'create-new') {

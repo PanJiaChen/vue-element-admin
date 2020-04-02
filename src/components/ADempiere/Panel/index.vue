@@ -675,6 +675,8 @@ export default {
       }
       this.setTagsViewTitle(uuidRecord)
       this.setFocus()
+      const currentRecord = this.getterDataStore.record.find(record => record.UUID === uuidRecord)
+      this.$store.dispatch('currentRecord', currentRecord)
     },
     async setFocus() {
       return new Promise(resolve => {

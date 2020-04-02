@@ -289,12 +289,6 @@ const windowControl = {
         }
         return true
       })
-      // if (rootGetters.getShowContainerInfo) {
-      //   dispatch('listRecordLogs', {
-      //     tableName: panel.tableName,
-      //     recordId
-      //   })
-      // }
       return updateEntity({
         tableName: panel.tableName,
         recordUuid,
@@ -327,12 +321,12 @@ const windowControl = {
             recordUuid,
             eventType: 'UPDATE'
           })
-          // if (containerInfo) {
-          dispatch('listRecordLogs', {
-            tableName: panel.tableName,
-            recordId
-          })
-          // }
+          if (rootGetters.getShowContainerInfo) {
+            dispatch('listRecordLogs', {
+              tableName: panel.tableName,
+              recordId
+            })
+          }
           return newValues
         })
         .catch(error => {
