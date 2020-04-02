@@ -17,6 +17,7 @@
           :metadata="tabAttributes"
           :group-tab="tabAttributes.tabGroup"
           :panel-type="panelType"
+          :is-showed-record-navigation="windowMetadata.isShowedRecordNavigation"
         />
       </el-tab-pane>
     </template>
@@ -34,15 +35,9 @@ export default {
   },
   mixins: [tabMixin],
   computed: {
-    getWindow() {
-      return this.$store.getters.getWindow(this.windowUuid)
-    },
-    // if tabs children is showed or closed
-    isShowedTabsChildren() {
-      return this.getWindow.isShowedTabsChildren
-    },
     tabParentStyle() {
-      if (this.isShowedTabsChildren) {
+      // if tabs children is showed or closed
+      if (this.windowMetadata.isShowedTabsChildren) {
         return {
           height: '100%',
           overflow: 'hidden'

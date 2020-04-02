@@ -33,7 +33,11 @@ export function generateField({
   let parsedDefaultValue = fieldToGenerate.defaultValue
   let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
   let operator = 'EQUAL'
+  let isNumericField = componentReference.type === 'FieldNumber'
+  let isTranslatedField = fieldToGenerate.isTranslated
   if (moreAttributes.isAdvancedQuery) {
+    isNumericField = false
+    isTranslatedField = false
     parsedDefaultValue = undefined
     parsedDefaultValueTo = undefined
 
@@ -182,7 +186,10 @@ export function generateField({
     // Advanced query
     operator, // current operator
     oldOperator: undefined, // old operator
-    defaultOperator: operator
+    defaultOperator: operator,
+    // popover's
+    isNumericField,
+    isTranslatedField
   }
 
   // Sizes from panel and groups

@@ -39,12 +39,12 @@
           :field="fieldAttributes"
         />
         <translated
-          v-if="field.isTranslated && !isAdvancedQuery"
+          v-if="field.isTranslatedField"
           :field-attributes="fieldAttributes"
           :record-uuid="field.recordUuid"
         />
         <calculator
-          v-if="!isAdvancedQuery && isNumeric && !field.isReadOnlyFromLogic"
+          v-if="field.isNumericField && !field.isReadOnlyFromLogic"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
         />
@@ -170,10 +170,10 @@ export default {
         if (this.field.isAlwaysUpdateable) {
           return false
         }
-        if (this.getterContextProcessing) {
+        if (this.field.isProcessingContext) {
           return true
         }
-        if (this.getterContextProcessed) {
+        if (this.field.isProcessedContext) {
           return true
         }
 
@@ -216,12 +216,6 @@ export default {
       }
       return ''
     },
-    getterIsShowedRecordNavigation() {
-      if (this.field.panelType === 'window') {
-        return this.$store.getters.getIsShowedRecordNavigation(this.field.parentUuid)
-      }
-      return false
-    },
     sizeFieldResponsive() {
       if (!this.isDisplayed) {
         return DEFAULT_SIZE
@@ -254,7 +248,7 @@ export default {
           return sizeField
         }
         // two columns if is mobile or desktop and show record navigation
-        if (this.getWidth <= 768 || (this.getWidth >= 768 && this.getterIsShowedRecordNavigation)) {
+        if (this.getWidth <= 768 || (this.getWidth >= 768 && this.field.isShowedRecordNavigation)) {
           newSizes.xs = 12
           newSizes.sm = 12
           newSizes.md = 12
@@ -282,25 +276,11 @@ export default {
       }
       return sizeField
     },
-    getterContextProcessing() {
-      const processing = this.$store.getters.getContextProcessing(this.field.parentUuid)
-      if (processing === true || processing === 'Y') {
-        return true
-      }
-      return false
-    },
-    getterContextProcessed() {
-      const processed = this.$store.getters.getContextProcessed(this.field.parentUuid)
-      if (processed === true || processed === 'Y') {
-        return true
-      }
-      return false
-    },
     processOrderUuid() {
       return this.$store.getters.getOrders
     },
     isDocuemntStatus() {
-      if (this.field.panelType === 'window') {
+      if (this.field.panelType === 'window' && !this.isAdvancedQuery) {
         if (this.field.columnName === 'DocStatus' && !this.isEmptyValue(this.processOrderUuid)) {
           return true
         }
@@ -312,9 +292,6 @@ export default {
         return (this.field.contextInfo && this.field.contextInfo.isActive) || this.field.reference.windowsList.length
       }
       return false
-    },
-    isNumeric() {
-      return this.field.componentPath === 'FieldNumber'
     }
   },
   watch: {

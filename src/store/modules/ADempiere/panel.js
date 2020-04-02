@@ -898,6 +898,7 @@ const panel = {
       parentUuid,
       containerUuid,
       panelType,
+      panelMetadata,
       routeToDelete,
       isAdvancedQuery = false
     }) {
@@ -921,6 +922,7 @@ const panel = {
         parentUuid,
         containerUuid,
         panelType,
+        panelMetadata,
         isAdvancedQuery,
         routeToDelete
       })

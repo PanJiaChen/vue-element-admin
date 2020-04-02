@@ -5,6 +5,7 @@
     :parent-uuid="parentUuid"
     :container-uuid="containerUuid"
     :panel-type="panelType"
+    :table-name="tableName"
     :is-report="isReport"
     :last-parameter="lastParameter"
     :report-format="reportFormat"
@@ -31,6 +32,10 @@ export default {
       required: true
     },
     panelType: {
+      type: String,
+      default: undefined
+    },
+    tableName: {
       type: String,
       default: undefined
     },

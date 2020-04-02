@@ -27,6 +27,10 @@ export const contextMixin = {
       type: String,
       default: undefined
     },
+    tableName: {
+      type: String,
+      default: undefined
+    },
     isReport: {
       type: Boolean,
       default: false
@@ -281,6 +285,7 @@ export const contextMixin = {
           this.$store.dispatch('getReferencesListFromServer', {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
+            tableName: this.tableName,
             recordUuid: this.recordUuid
           })
             .then(() => {

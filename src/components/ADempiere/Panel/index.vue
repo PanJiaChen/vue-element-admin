@@ -38,11 +38,14 @@
                     :key="subKey"
                     :metadata-field="{
                       ...fieldAttributes,
+                      isShowedRecordNavigation,
+                      isProcessingContext: getterContextProcessing,
+                      isProcessedContext: getterContextProcessed,
                       optionCRUD,
                       recordUuid: uuidRecord
                     }"
                     :record-data-fields="isAdvancedQuery ? undefined : dataRecords[fieldAttributes.columnName]"
-                    :in-group="!getterIsShowedRecordNavigation"
+                    :in-group="!isShowedRecordNavigation"
                     :is-advanced-query="isAdvancedQuery"
                   />
                 </template>
@@ -94,6 +97,9 @@
                           :key="subKey"
                           :metadata-field="{
                             ...fieldAttributes,
+                            isShowedRecordNavigation,
+                            isProcessingContext: getterContextProcessing,
+                            isProcessedContext: getterContextProcessed,
                             optionCRUD,
                             recordUuid: uuidRecord
                           }"
@@ -144,6 +150,9 @@
                           :key="subKey"
                           :metadata-field="{
                             ...fieldAttributes,
+                            isShowedRecordNavigation,
+                            isProcessingContext: getterContextProcessing,
+                            isProcessedContext: getterContextProcessed,
                             optionCRUD,
                             recordUuid: uuidRecord
                           }"
@@ -213,6 +222,10 @@ export default {
     isAdvancedQuery: {
       type: Boolean,
       default: false
+    },
+    isShowedRecordNavigation: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -244,9 +257,21 @@ export default {
     isPanelWindow() {
       return this.panelType === 'window'
     },
-    getterIsShowedRecordNavigation() {
-      if (this.isPanelWindow) {
-        return this.$store.getters.getIsShowedRecordNavigation(this.parentUuid)
+    getterContextProcessing() {
+      if (this.panelType === 'window' && !this.isAdvancedQuery) {
+        const processing = this.$store.getters.getContextProcessing(this.parentUuid)
+        if (processing === true || processing === 'Y') {
+          return true
+        }
+      }
+      return false
+    },
+    getterContextProcessed() {
+      if (this.panelType === 'window' && !this.isAdvancedQuery) {
+        const processed = this.$store.getters.getContextProcessed(this.parentUuid)
+        if (processed === true || processed === 'Y') {
+          return true
+        }
       }
       return false
     },
@@ -276,7 +301,7 @@ export default {
       return this.getterDataStore.isLoaded
     },
     classCards() {
-      if (this.isMobile || this.fieldGroups.length < 2 || this.getterIsShowedRecordNavigation) {
+      if (this.isMobile || this.fieldGroups.length < 2 || this.isShowedRecordNavigation) {
         return 'cards-not-group'
       }
       return 'cards-in-group'
@@ -320,6 +345,7 @@ export default {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
           panelType: this.panelType,
+          panelMetadata: this.metadata,
           isAdvancedQuery: this.isAdvancedQuery
         }).then(() => {
           this.generatePanel(this.getterFieldList)

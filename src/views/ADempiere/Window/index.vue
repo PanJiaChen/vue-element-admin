@@ -5,7 +5,7 @@
   >
     <el-container style="height: 86vh;">
       <Split>
-        <SplitArea :size="showContainerInfo ? isSizePanel : 100" :min-size="100">
+        <SplitArea :size="sizePanel" :min-size="100">
           <el-aside width="100%">
             <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
               <template>
@@ -77,8 +77,9 @@
                               :menu-parent-uuid="$route.meta.parentUuid"
                               :parent-uuid="windowUuid"
                               :container-uuid="windowMetadata.currentTabUuid"
+                              :table-name="windowMetadata.currentTab.tableName"
                               :panel-type="panelType"
-                              :is-insert-record="getterIsInsertRecord"
+                              :is-insert-record="windowMetadata.currentTab.isInsertRecord"
                             />
                           </el-main>
                         </el-container>
@@ -86,6 +87,7 @@
                       <el-main :style="styleMainTab">
                         <tab-parent
                           :window-uuid="windowUuid"
+                          :window-metadata="windowMetadata"
                           :tabs-list="windowMetadata.tabsListParent"
                           class="tab-window"
                         />
@@ -140,7 +142,7 @@
                         <div class="small-4 columns">
                           <div class="wrapper">
                             <div
-                              v-show="windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
+                              v-show="!isEmptyValue(windowMetadata.tabsListChildren)"
                               class="open-detail"
                             />
                             <el-button
@@ -151,7 +153,7 @@
                               :class="classIsMobile"
                               circle
                               type="primary"
-                              @click="handleChangeShowedTabChildren()"
+                              @click="handleChangeShowedTabChildren(true)"
                             />
                           </div>
                         </div>
@@ -176,7 +178,7 @@
                     </SplitArea>
                     <SplitArea v-show="isShowedTabsChildren" :size="50">
                       <el-header
-                        v-if="isShowedTabsChildren && windowMetadata.tabsListChildren && windowMetadata.tabsListChildren.length"
+                        v-if="isShowedTabsChildren && !isEmptyValue(windowMetadata.tabsListChildren)"
                         style="height: auto; padding-right: 35px !important; padding-bottom: 33px;"
                       >
                         <div class="w-33">
@@ -185,12 +187,13 @@
                               icon="el-icon-caret-bottom"
                               circle
                               class="el-button-window"
-                              @click="handleChangeShowedTabChildren()"
+                              @click="handleChangeShowedTabChildren(false)"
                             />
                           </div>
                         </div>
                         <tab-children
                           :window-uuid="windowUuid"
+                          :window-metadata="windowMetadata"
                           :tabs-list="windowMetadata.tabsListChildren"
                           :first-tab-uuid="windowMetadata.firstTabUuid"
                           :style="{ 'height': getHeightPanelBottom + 'vh' }"
@@ -374,11 +377,14 @@ export default {
       }
       return 50
     },
-    isSizePanel() {
-      if (this.isMobile && this.showContainerInfo) {
-        return 2
+    sizePanel() {
+      if (this.showContainerInfo) {
+        if (this.isMobile) {
+          return 2
+        }
+        return 50
       }
-      return 50
+      return 100
     },
     isCloseInfo() {
       if (this.isMobile) {
@@ -428,20 +434,7 @@ export default {
       }
     },
     styleStepsSimple() {
-      if (this.isShowedRecordNavigation) {
-        return {
-          paddingTop: '0px',
-          paddingBottom: '0px',
-          paddingLeft: '0px',
-          paddingRight: '0px',
-          borderRadius: '4px',
-          background: '#F5F7FA',
-          overflowX: 'auto',
-          overflowY: 'hidden',
-          width: this.$store.getters.getPanelRight + 'px'
-        }
-      }
-      return {
+      const baseStyle = {
         paddingTop: '0px',
         paddingBottom: '0px',
         paddingLeft: '0px',
@@ -449,7 +442,16 @@ export default {
         borderRadius: '4px',
         background: '#F5F7FA',
         overflowX: 'auto',
-        overflowY: 'hidden',
+        overflowY: 'hidden'
+      }
+      if (this.isShowedRecordNavigation) {
+        return {
+          ...baseStyle,
+          width: this.$store.getters.getPanelRight + 'px'
+        }
+      }
+      return {
+        ...baseStyle,
         width: 'auto'
       }
     },
@@ -463,10 +465,16 @@ export default {
       return this.$store.getters.getWindow(this.windowUuid)
     },
     isShowedTabsChildren() {
-      return this.getterWindow.isShowedTabsChildren
+      if (this.windowMetadata && this.windowMetadata.isShowedTabsChildren) {
+        return this.windowMetadata.isShowedTabsChildren
+      }
+      return false
     },
     isShowedRecordNavigation() {
-      return this.$store.getters.getIsShowedRecordNavigation(this.windowUuid)
+      if (this.windowMetadata && this.windowMetadata.isShowedRecordNavigation) {
+        return this.windowMetadata.isShowedRecordNavigation
+      }
+      return false
     },
     getHeightPanelTop() {
       return this.$store.getters.getSplitHeightTop
@@ -476,13 +484,6 @@ export default {
     },
     getterRecordList() {
       return this.$store.getters.getDataRecordsList(this.windowMetadata.currentTabUuid).length
-    },
-    getterIsInsertRecord() {
-      const tab = this.$store.getters.getCurrentTab(this.windowUuid)
-      if (tab) {
-        return tab.isInsertRecord
-      }
-      return false
     },
     gettersListRecordLogs() {
       const changeLog = this.$store.getters.getRecordLogs.recorLogs
@@ -518,7 +519,10 @@ export default {
       return this.getterDataRecordsAndSelection.record
     },
     getTableName() {
-      return this.$store.getters.getTableNameFromTab(this.windowUuid, this.windowMetadata.firstTabUuid)
+      if (this.windowMetadata && this.windowMetadata.firstTab.tableName) {
+        return this.windowMetadata.firstTab.tableName
+      }
+      return undefined
     },
     // current record
     getRecord() {
@@ -566,32 +570,34 @@ export default {
   },
   methods: {
     handleResize() {
-      var PanelRight = document.getElementById('PanelRight')
-      var resizeWidth = PanelRight
-      if (!this.isEmptyValue(resizeWidth)) {
-        var widthPanel = PanelRight.clientWidth - 350
+      const panelRight = document.getElementById('PanelRight')
+      if (!this.isEmptyValue(panelRight)) {
+        const widthPanel = panelRight.clientWidth - 350
         this.$store.dispatch('setPanelRight', widthPanel)
       }
     },
     conteInfo() {
       this.showContainerInfo = !this.showContainerInfo
       if (this.showContainerInfo) {
+        const tableName = this.getTableName
+        const recordId = this.getRecord[tableName + '_ID']
         this.$store.dispatch('listWorkflowLogs', {
-          tableName: this.getTableName,
+          tableName,
           recordUuid: this.$route.query.action,
-          recordId: this.getRecord[this.getTableName + '_ID']
+          recordId
         })
         this.$store.dispatch(this.activeInfo, {
-          tableName: this.getTableName,
-          recordId: this.getRecord[this.getTableName + '_ID']
+          tableName,
+          recordId
         })
       }
       this.$store.dispatch('showContainerInfo', !this.getterShowContainerInfo)
     },
     handleClick(tab, event) {
+      const tableName = this.getTableName
       this.$store.dispatch(tab.name, {
-        tableName: this.getTableName,
-        recordId: this.getRecord[this.getTableName + '_ID']
+        tableName,
+        recordId: this.getRecord[tableName + '_ID']
       })
     },
     // callback new size
@@ -605,8 +611,9 @@ export default {
     },
     // get window from vuex store or server
     getWindow() {
-      if (this.getterWindow) {
-        this.generateWindow()
+      const window = this.getterWindow
+      if (window) {
+        this.generateWindow(window)
         return
       }
       this.$store.dispatch('getWindowFromServer', {
@@ -614,11 +621,11 @@ export default {
         routeToDelete: this.$route
       })
         .then(response => {
-          this.generateWindow()
+          this.generateWindow(response)
         })
     },
-    generateWindow() {
-      this.windowMetadata = this.getterWindow
+    generateWindow(window) {
+      this.windowMetadata = window
       let isShowRecords = this.isShowedRecordNavigation
       if (isShowRecords === undefined) {
         if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10 && this.$route.query.action !== 'create-new') ||
@@ -637,6 +644,7 @@ export default {
     handleChangeShowedRecordNavigation(valueToChange) {
       this.$store.dispatch('changeWindowAttribute', {
         parentUuid: this.windowUuid, // act as parentUuid
+        window: this.windowMetadata,
         attributeName: 'isShowedRecordNavigation',
         attributeValue: valueToChange
       })
@@ -645,11 +653,12 @@ export default {
       this.isPanel = !this.isPanel
       this.isShowedRecordPanel = !this.isShowedRecordPanel
     },
-    handleChangeShowedTabChildren() {
+    handleChangeShowedTabChildren(isShowedChilds) {
       this.$store.dispatch('changeWindowAttribute', {
         parentUuid: this.windowUuid, // act as parentUuid
+        window: this.windowMetadata,
         attributeName: 'isShowedTabsChildren',
-        attributeValue: !this.isShowedTabsChildren
+        attributeValue: isShowedChilds
       })
     }
   }
