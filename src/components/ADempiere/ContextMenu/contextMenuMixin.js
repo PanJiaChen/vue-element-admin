@@ -56,7 +56,7 @@ export const contextMixin = {
   data() {
     return {
       actions: [],
-      supportedTypes: supportedTypes,
+      supportedTypes,
       references: [],
       file: this.$store.getters.getProcessResult.download,
       downloads: this.$store.getters.getProcessResult.url,
@@ -97,7 +97,10 @@ export const contextMixin = {
         menuUuid = this.menuParentUuid
       }
       const relations = this.$store.getters.getRelations(menuUuid)
-      return relations.children
+      if (relations) {
+        return relations.children
+      }
+      return []
     },
     permissionRoutes() {
       return this.$store.getters.permission_routes
@@ -133,9 +136,8 @@ export const contextMixin = {
       return value.map(fieldItem => {
         if (fieldItem.componentPath === 'FieldSelect') {
           return 'DisplayColumn_' + fieldItem.columnName
-        } else {
-          return fieldItem.columnName
         }
+        return fieldItem.columnName
       })
     },
     isDisabledExportRecord() {
@@ -333,23 +335,24 @@ export const contextMixin = {
       if (this.isEmptyValue(this.metadataMenu)) {
         return
       }
+      this.actions = this.metadataMenu.actions
 
       // TODO: Add store attribute to avoid making repeated requests
-      if (this.panelType === 'window' && !this.isEmptyValue(this.$route.params.tableName)) {
-        this.$store.dispatch('getPrivateAccessFromServer', {
-          tableName: this.$route.params.tableName,
-          recordId: this.$route.params.recordId
-        })
-          .then(privateAccessResponse => {
-            if (!this.isEmptyValue(privateAccessResponse)) {
-              this.$nextTick(() => {
-                this.validatePrivateAccess(privateAccessResponse)
-              })
-            }
-          })
-      }
-      this.actions = this.metadataMenu.actions
       if (this.panelType === 'window') {
+        if (!this.isEmptyValue(this.$route.params.tableName)) {
+          this.$store.dispatch('getPrivateAccessFromServer', {
+            tableName: this.$route.params.tableName,
+            recordId: this.$route.params.recordId
+          })
+            .then(privateAccessResponse => {
+              if (!this.isEmptyValue(privateAccessResponse)) {
+                this.$nextTick(() => {
+                  this.validatePrivateAccess(privateAccessResponse)
+                })
+              }
+            })
+        }
+
         const processAction = this.actions.find(item => {
           if (item.name === 'Procesar Orden' || (item.name === 'Process Order')) {
             return item
@@ -420,12 +423,13 @@ export const contextMixin = {
             containerParams = this.lastParameter
           }
 
-          var parentMenu = this.menuParentUuid
-          if (this.$route.params) {
-            if (this.$route.params.menuParentUuid) {
-              parentMenu = this.$route.params.menuParentUuid
+          let menuParentUuid = this.menuParentUuid
+          if (this.isEmptyValue(menuParentUuid) && this.$route.params) {
+            if (!this.isEmptyValue(this.$route.params.menuParentUuid)) {
+              menuParentUuid = this.$route.params.menuParentUuid
             }
           }
+
           if (this.panelType === 'process') {
             this.$store.dispatch('setTempShareLink', {
               processId: this.$route.params.processId,
@@ -449,8 +453,8 @@ export const contextMixin = {
             parentUuid: this.containerUuid,
             containerUuid: containerParams, // EVALUATE IF IS action.uuid
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-            reportFormat: reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
-            menuParentUuid: parentMenu, // to load relationsList in context menu (report view)
+            reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
+            menuParentUuid, // to load relationsList in context menu (report view)
             routeToDelete: this.$route
           })
             .catch(error => {
@@ -492,49 +496,54 @@ export const contextMixin = {
             })
         }
       } else if (action.type === 'updateReport') {
-        const updateReportParams = {
-          instanceUuid: action.instanceUuid,
-          processUuid: action.processUuid,
-          tableName: action.tableName,
-          processId: action.processId,
-          printFormatUuid: action.printFormatUuid,
-          reportViewUuid: action.reportViewUuid,
-          isSummary: false,
-          reportName: this.$store.getters.getProcessResult.name,
-          reportType: this.$store.getters.getReportType,
-          option: action.option
-        }
-        if (this.isEmptyValue(updateReportParams.instanceUuid)) {
-          updateReportParams.instanceUuid = this.$route.params.instanceUuid
-        }
-        if (this.isEmptyValue(updateReportParams.processId)) {
-          updateReportParams.processId = this.$route.params.processId
-        }
-        this.$store.dispatch('getReportOutputFromServer', updateReportParams)
-          .then(response => {
-            if (!response.isError) {
-              let link = {
-                href: undefined,
-                download: undefined
-              }
-
-              const blob = new Blob(
-                [response.outputStream],
-                { type: response.mimeType }
-              )
-              link = document.createElement('a')
-              link.href = window.URL.createObjectURL(blob)
-              link.download = response.fileName
-              if (response.reportType !== 'pdf' && response.reportType !== 'html') {
-                link.click()
-              }
-              response.url = link.href
-            }
-            this.$store.dispatch('finishProcess', {
-              processOutput: response
-            })
-          })
+        this.updateReport(action)
       }
+    },
+    updateReport(action) {
+      let instanceUuid = action.instanceUuid
+      if (this.isEmptyValue(instanceUuid)) {
+        instanceUuid = this.$route.params.instanceUuid
+      }
+      let processId = action.processId
+      if (this.isEmptyValue(processId)) {
+        processId = this.$route.params.processId
+      }
+      this.$store.dispatch('getReportOutputFromServer', {
+        instanceUuid,
+        processUuid: action.processUuid,
+        tableName: action.tableName,
+        processId,
+        printFormatUuid: action.printFormatUuid,
+        reportViewUuid: action.reportViewUuid,
+        isSummary: false,
+        reportName: this.$store.getters.getProcessResult.name,
+        reportType: this.$store.getters.getReportType,
+        option: action.option
+      })
+        .then(reportOutputResponse => {
+          if (!reportOutputResponse.isError) {
+            let link = {
+              href: undefined,
+              download: undefined
+            }
+
+            const blob = new Blob(
+              [reportOutputResponse.outputStream],
+              { type: reportOutputResponse.mimeType }
+            )
+            link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = reportOutputResponse.fileName
+            if (reportOutputResponse.reportType !== 'pdf' && reportOutputResponse.reportType !== 'html') {
+              link.click()
+            }
+            reportOutputResponse.url = link.href
+          }
+          this.$store.dispatch('finishProcess', {
+            processOutput: reportOutputResponse,
+            routeToDelete: this.$route
+          })
+        })
     },
     openReference(referenceElement) {
       if (referenceElement.windowUuid && referenceElement.recordUuid) {

@@ -612,7 +612,8 @@ const processControl = {
               commit('addNotificationProcess', processResult)
               dispatch('finishProcess', {
                 processOutput: processResult,
-                procesingMessage
+                procesingMessage,
+                routeToDelete
               })
 
               commit('deleteInExecution', {
@@ -880,6 +881,7 @@ const processControl = {
     },
     finishProcess({ commit }, {
       processOutput,
+      routeToDelete,
       procesingMessage
     }) {
       const processMessage = {
@@ -900,8 +902,9 @@ const processControl = {
       }
       if (processOutput.isReport && !processOutput.isError) {
         // open report viewer with report response
-        if (isEmptyValue(processOutput.menuParentUuid)) {
-          processOutput.menuParentUuid = processOutput.processUuid
+        let menuParentUuid = routeToDelete.params.menuParentUuid
+        if (isEmptyValue(menuParentUuid)) {
+          menuParentUuid = processOutput.menuParentUuid
         }
 
         let tableName
@@ -910,13 +913,14 @@ const processControl = {
             tableName = processOutput.tableName
           }
         }
+
         router.push({
           name: 'Report Viewer',
           params: {
             processId: processOutput.processId,
             instanceUuid: processOutput.instanceUuid,
             fileName: isEmptyValue(processOutput.output.fileName) ? processOutput.fileName : processOutput.output.fileName,
-            menuParentUuid: processOutput.menuParentUuid,
+            menuParentUuid,
             tableName
           }
         })
