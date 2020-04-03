@@ -1,37 +1,36 @@
-<!-- PULL REQUEST TEMPLATE -->
-<!-- (Update "[ ]" to "[x]" to check a box) -->
-**What kind of change does this PR introduce?** (check at least one)
+---
+title: "[]"
+labels: bug
+assignees: 'yamelsenih'
 
-- [ ] Bugfix
-- [ ] Feature
-- [ ] Code style update (formatting, renaming)
-- [ ] Refactor
-- [ ] Build-related changes
-- [ ] Documentation content changes
-- [ ] Other, please describe:
+---
+<!--
+    Note: In order to better solve your problem, please refer to the template to provide complete information, accurately describe the problem, and the incomplete information issue will be closed.
+-->
+## Bug report / Feature
 
-**Does this PR introduce a breaking change?** (check one)
+#### Steps to reproduce
 
-- [ ] Yes
-- [ ] No
+1. [xxx]
+2. [xxx]
+3. [xxxx]
 
-If yes, please describe the impact and migration path for existing applications:
-
-**The PR fulfills these requirements:**
-
-- [ ] It's submitted to the `develop` branch, not the `master` branch
-- [ ] Make sure you are requesting to **pull a topic/feature/bugfix branch** (right side). Don't request your `master` branch!
-- [ ] When resolving a specific issue, it's referenced in the PR's title (e.g. `fix #xxx[,#xxx]`, where "xxx" is the issue number)
-
-If adding a **new feature**, the PR's description includes:
-- [ ] A convincing reason for adding this feature (to avoid wasting your time, it's best to open a suggestion issue first and wait for approval before working on it)
-
-## Description
-<!-- Please describe your pull request. -->
+#### Screenshot or Gif
 
 
-### Screenshots
-<!-- A picture tells a thousand words -->
- **Before this PR**
+#### Link to minimal reproduction
 
-**After this PR**
+<!--
+Please only use Codepen, JSFiddle, CodeSandbox or a github repo
+-->
+
+#### Expected behavior
+A clear and concise description of what you expected to happen.
+
+#### Other relevant information
+- Your OS:
+- Node.js version:
+- vue-element-admin version:
+
+#### Additional context
+Add any other context about the problem here.
