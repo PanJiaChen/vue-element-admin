@@ -195,7 +195,7 @@ export default {
             recordId: this.$route.params.recordId,
             recordUuid: this.$route.query.action,
             parametersList: [{
-              columnName: 'DocStatus',
+              columnName: 'DocAction',
               value: this.valueActionDocument
             }],
             isActionDocument: true,
