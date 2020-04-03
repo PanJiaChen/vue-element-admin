@@ -74,7 +74,7 @@ const contextMenu = {
      * @param {string} recordUuid
      */
     listDocumentActionStatus({ commit }, {
-      tableName = 'C_Order',
+      tableName,
       recordId,
       recordUuid,
       documentAction,
