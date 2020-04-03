@@ -639,7 +639,7 @@ export default {
       return groupsList
     },
     setTagsViewTitle(actionValue) {
-      if (this.getterPanel.isDocument && this.getterDataStore.isLoaded) {
+      if (actionValue !== 'create-new' && !this.isEmptyValue(actionValue) && this.getterPanel.isDocument && this.getterDataStore.isLoaded) {
         this.$store.dispatch('listWorkflows', this.metadata.tableName)
         this.$store.dispatch('listDocumentStatus', {
           recordUuid: this.$route.query.action,
