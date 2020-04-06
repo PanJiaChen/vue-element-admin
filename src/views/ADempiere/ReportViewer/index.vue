@@ -13,16 +13,21 @@
           <h3 class="text-center" style="margin: 0 !important;">
             <el-popover
               v-if="!isEmptyValue(processMetadata.help)"
+              ref="helpTitle"
               placement="top-start"
-              :title="processMetadata.name"
+              :title="reportTitle"
               width="400"
               trigger="hover"
             >
               <div v-html="processMetadata.help" />
-              <el-button slot="reference" type="text" class="title">
-                {{ processMetadata.name }}
-              </el-button>
             </el-popover>
+            <el-button
+              v-popover:helpTitle
+              type="text"
+              class="title"
+            >
+              {{ reportTitle }}
+            </el-button>
           </h3>
           <iframe
             v-if="reportFormat === 'pdf'"
@@ -87,7 +92,7 @@ export default {
   data() {
     return {
       panelType: 'process',
-      name: [],
+      processMetadata: {},
       reportFormat: '',
       collectionReportFormat: [
         'ps',
@@ -101,15 +106,17 @@ export default {
         'arxml'
       ],
       reportContent: '',
-      reportHeader: '',
       isLoading: false,
       reportResult: {}
     }
   },
   computed: {
     // TODO: Add get metadata from server to open report view from link
-    processMetadata() {
+    getterProcess() {
       return this.$store.getters.getProcessById(this.$route.params.processId)
+    },
+    reportTitle() {
+      return this.processMetadata.name || this.$route.meta.title
     },
     url() {
       return this.$store.getters.getProcessResult.url
@@ -117,6 +124,9 @@ export default {
     getterCachedReport() {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid)
     }
+  },
+  created() {
+    this.processMetadata = this.getterProcess
   },
   mounted() {
     this.getCachedReport()
@@ -126,10 +136,10 @@ export default {
     showNotification,
     displayReport(reportResult) {
       if (!reportResult.isError) {
-        this.reportFormat = this.isEmptyValue(reportResult.output.reportType) ? reportResult.reportType : reportResult.output.reportType
-        this.reportContent = this.isEmptyValue(reportResult.output.output) ? reportResult.output : reportResult.output.output
-        this.reportHeader = this.isEmptyValue(reportResult.output.name) ? reportResult.processName : reportResult.output.name
-        this.name = this.isEmptyValue(reportResult.output.fileName) ? reportResult.fileName : reportResult.output.fileName
+        const { output } = reportResult
+        this.reportFormat = this.isEmptyValue(output.reportType) ? reportResult.reportType : output.reportType
+        this.reportContent = this.isEmptyValue(output.output) ? reportResult.output : output.output
+
         this.isLoading = true
       }
     },

@@ -1,5 +1,10 @@
 <template>
-  <el-container v-if="isLoaded" key="browser-loaded" class="view-base" style="height: 86vh;">
+  <el-container
+    v-if="isLoaded"
+    key="browser-loaded"
+    class="view-base"
+    style="height: 86vh;"
+  >
     <modal-dialog
       :container-uuid="browserUuid"
       :panel-type="panelType"
@@ -13,39 +18,32 @@
       <div class="w-33">
         <div class="center">
           <el-button
-            v-if="isEmptyValue(browserMetadata.help)"
-            slot="reference"
+            v-popover:helpTitle
             type="text"
             :class="cssClassTitle + ' warn-content text-center'"
           >
-            {{ browserMetadata.name }}
+            {{ browserTitle }}
           </el-button>
         </div>
       </div>
       <el-popover
-        v-if="!isEmptyValue(browserMetadata.name)"
+        v-if="!isEmptyValue(browserMetadata.help)"
+        ref="helpTitle"
         placement="top-start"
-        :title="browserMetadata.name"
+        :title="browserTitle"
         :class="cssClassHelp"
+        width="400"
         trigger="hover"
       >
         <div v-html="browserMetadata.help" />
-        <div class="w-33">
-          <div class="center">
-            <el-button
-              v-if="isEmptyValue(browserMetadata.help)"
-              slot="reference"
-              type="text"
-              :class="cssClassTitle + 'warn-content text-center'"
-            >
-              {{ browserMetadata.name }}
-            </el-button>
-          </div>
-        </div>
       </el-popover>
     </el-header>
     <el-main>
-      <el-collapse v-model="activeSearch" class="container-collasep-open" @change="handleChange">
+      <el-collapse
+        v-model="activeSearch"
+        class="container-collasep-open"
+        @change="handleChange"
+      >
         <el-collapse-item :title="$t('views.searchCriteria')" name="opened-criteria">
           <main-panel
             :container-uuid="browserUuid"
@@ -108,6 +106,9 @@ export default {
     getterBrowser() {
       return this.$store.getters.getBrowser(this.browserUuid)
     },
+    browserTitle() {
+      return this.browserMetadata.name || this.$route.meta.title
+    },
     getDataRecords() {
       return this.$store.getters.getDataRecordsList(this.browserUuid)
     },
@@ -161,8 +162,9 @@ export default {
       })
     },
     getBrowser() {
-      if (this.getterBrowser) {
-        this.browserMetadata = this.getterBrowser
+      const browser = this.getterBrowser
+      if (browser) {
+        this.browserMetadata = browser
         this.isLoaded = true
         this.defaultSearch()
         return
@@ -172,8 +174,8 @@ export default {
         panelType: this.panelType,
         routeToDelete: this.$route
       })
-        .then(() => {
-          this.browserMetadata = this.getterBrowser
+        .then(browserResponse => {
+          this.browserMetadata = browserResponse
           this.defaultSearch()
         })
         .finally(() => {
