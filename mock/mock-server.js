@@ -33,8 +33,10 @@ function unregisterRoutes() {
 
 // for mock server
 const responseFake = (url, type, respond) => {
+  /** Mock-Server的Context */
+  const MOCK_SERVER_CONTEXT = '^' + process.env.VUE_APP_MOCK_SERVER_CONTEXT
   return {
-    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    url: new RegExp(`${MOCK_SERVER_CONTEXT}${url}`),
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path)

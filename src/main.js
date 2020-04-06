@@ -27,7 +27,10 @@ import * as filters from './filters' // global filters
  * Currently MockJs will be used in the production environment,
  * please remove it before going online ! ! !
  */
-if (process.env.NODE_ENV === 'production') {
+/**
+ * VUE_APP_MOCK is defined in .env.production or .env.development
+ */
+if (process.env.VUE_APP_MOCK === 'Mock') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
