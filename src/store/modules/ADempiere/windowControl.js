@@ -402,6 +402,7 @@ const windowControl = {
               parentUuid,
               containerUuid,
               newValues: response,
+              isSendCallout: false,
               isSendToServer: false
             })
           }
@@ -691,6 +692,7 @@ const windowControl = {
                 parentUuid,
                 containerUuid,
                 newValues,
+                isSendCallout: false,
                 isSendToServer: false
               })
             } else {
