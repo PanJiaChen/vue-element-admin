@@ -17,10 +17,8 @@ export const tabMixin = {
   },
   data() {
     return {
-      currentTab: this.$route.query.tabParent,
       tabUuid: '',
-      panelType: 'window',
-      firstTableName: this.tabsList[0].tableName
+      panelType: 'window'
     }
   },
   computed: {
@@ -32,21 +30,11 @@ export const tabMixin = {
     this.tabUuid = this.tabsList[0].uuid
   },
   methods: {
-    parseContext,
-    //
     getDataTable() {
       this.$store.dispatch('getDataListTab', {
         parentUuid: this.windowUuid,
         containerUuid: this.tabUuid
       })
-    },
-    setCurrentTab() {
-      this.$store.dispatch('setCurrentTab', {
-        parentUuid: this.windowUuid,
-        containerUuid: this.tabUuid,
-        window: this.windowMetadata
-      })
-      this.$route.meta.tabUuid = this.tabUuid
     },
     /**
      * @param {object} tabHTML DOM HTML the tab clicked
@@ -54,7 +42,6 @@ export const tabMixin = {
     handleClick(tabHTML) {
       if (this.tabUuid !== tabHTML.$attrs.tabuuid) {
         this.tabUuid = tabHTML.$attrs.tabuuid
-        this.setCurrentTab()
       }
     },
     handleBeforeLeave(activeName) {

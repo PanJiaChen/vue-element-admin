@@ -52,14 +52,9 @@ export default {
     getterDataParentTab() {
       return this.$store.getters.getDataRecordAndSelection(this.firstTabUuid)
     },
-    getterIsLoadRecordParent() {
-      return this.getterDataParentTab.isLoaded
-    },
-    getterIsLoadContextParent() {
-      return this.getterDataParentTab.isLoadedContext
-    },
     isReadyFromGetData() {
-      return !this.getDataSelection.isLoaded && this.getterIsLoadContextParent && this.getterIsLoadRecordParent
+      const { isLoaded, isLoadedContext } = this.getterDataParentTab
+      return !this.getDataSelection.isLoaded && isLoaded && isLoadedContext
     }
   },
   watch: {
@@ -91,8 +86,12 @@ export default {
       }
     }
   },
-  mounted() {
+  created() {
     this.setCurrentTabChild()
+    const currentIndex = parseInt(this.currentTabChild, 10)
+    this.tabUuid = this.tabsList[currentIndex].uuid
+  },
+  mounted() {
     if (this.isReadyFromGetData) {
       this.getDataTable()
     }

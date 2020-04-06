@@ -34,6 +34,11 @@ export default {
     MainPanel
   },
   mixins: [tabMixin],
+  data() {
+    return {
+      currentTab: this.$route.query.tabParent
+    }
+  },
   computed: {
     tabParentStyle() {
       // if tabs children is showed or closed
@@ -70,6 +75,19 @@ export default {
         })
         this.$route.meta.tabUuid = this.tabUuid
       }
+    },
+    tabUuid(value) {
+      this.setCurrentTab()
+    }
+  },
+  methods: {
+    setCurrentTab() {
+      this.$store.dispatch('setCurrentTab', {
+        parentUuid: this.windowUuid,
+        containerUuid: this.tabUuid,
+        window: this.windowMetadata
+      })
+      this.$route.meta.tabUuid = this.tabUuid
     }
   }
 }
