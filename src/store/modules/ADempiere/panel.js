@@ -1027,7 +1027,7 @@ const panel = {
         if (row) {
           value = row[fieldItem.columnName]
         }
-        if (fieldIsDisplayed(fieldItem) && isMandatory && isEmptyValue(value)) {
+        if (fieldIsDisplayed(fieldItem) && isMandatory && !isEmptyValue(value)) {
           return true
         }
       })
