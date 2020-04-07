@@ -1,44 +1,46 @@
 <template>
   <div :class="computedClasses" class="material-input__component">
     <div :class="{iconClass:icon}">
-      <i v-if="icon" :class="['el-icon-' + icon]" class="el-input__icon material-input__icon"/>
+      <i v-if="icon" :class="['el-icon-' + icon]" class="el-input__icon material-input__icon" />
       <input
         v-if="type === 'email'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :required="required"
         type="email"
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'url'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :required="required"
         type="url"
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'number'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :step="step"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :max="max"
         :min="min"
         :minlength="minlength"
@@ -48,15 +50,16 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'password'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :max="max"
         :min="min"
         :required="required"
@@ -64,29 +67,31 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'tel'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :required="required"
         type="tel"
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
+        @input="handleModelInput"
+      >
       <input
         v-if="type === 'text'"
+        v-model="currentValue"
         :name="name"
         :placeholder="fillPlaceHolder"
-        v-model="currentValue"
         :readonly="readonly"
         :disabled="disabled"
-        :autoComplete="autoComplete"
+        :autocomplete="autoComplete"
         :minlength="minlength"
         :maxlength="maxlength"
         :required="required"
@@ -94,10 +99,11 @@
         class="material-input"
         @focus="handleMdFocus"
         @blur="handleMdBlur"
-        @input="handleModelInput">
-      <span class="material-input-bar"/>
+        @input="handleModelInput"
+      >
+      <span class="material-input-bar" />
       <label class="material-label">
-        <slot/>
+        <slot />
       </label>
     </div>
   </div>
@@ -191,7 +197,7 @@ export default {
 }
 </script>
 
-<style rel="stylesheet/scss" lang="scss" scoped>
+<style lang="scss" scoped>
   // Fonts:
   $font-size-base: 16px;
   $font-size-small: 18px;
