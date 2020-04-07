@@ -142,7 +142,6 @@ export default {
         }
         if (!this.findLabel(value) &&
           this.metadata.displayed &&
-          this.metadata.optionCRUD !== 'create-new' &&
           this.isEmptyValue(this.metadata.displayColumn)) {
           value = undefined
         }
