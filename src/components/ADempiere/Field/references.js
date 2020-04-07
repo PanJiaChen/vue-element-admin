@@ -1,11 +1,17 @@
 
-// All references
+/**
+ * All references
+ * {number} id: Identifiert to field reference
+ * {string|array} valueType: to convert and send server with gRPC
+ * {boolean} isSupported: Indicate if field is suported
+ */
 const REFERENCES = [
   {
     id: 25,
     type: 'FieldText',
     support: false,
     description: 'Account Element',
+    valueType: 'INTEGER',
     alias: ['Account']
   },
   {
@@ -13,6 +19,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: 'Number with 4 decimals',
+    valueType: 'DECIMAL',
     alias: ['Amount']
   },
   {
@@ -20,6 +27,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: false,
     description: 'Resource Assignment',
+    valueType: 'INTEGER',
     alias: ['Assignment']
   },
   {
@@ -27,13 +35,16 @@ const REFERENCES = [
     type: 'FieldBinary',
     support: true,
     description: 'Binary Data',
+    valueType: 'INTEGER',
     alias: ['Binary']
   },
   {
+    // this component is hidden
     id: 28,
     type: 'FieldButton',
     support: true,
     description: 'Command Button - starts a process',
+    valueType: 'STRING',
     alias: ['Button']
   },
   {
@@ -41,6 +52,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: false,
     description: 'Chart',
+    valueType: 'INTEGER',
     alias: ['Chart']
   },
   {
@@ -48,6 +60,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: false,
     description: 'Color element',
+    valueType: 'INTEGER',
     alias: ['Color']
   },
   {
@@ -55,6 +68,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: 'Costs + Prices (minimum currency precision but if exists more)',
+    valueType: 'DECIMAL',
     alias: ['Costs+Prices', 'CostsPrices', 'Cost Prices']
   },
   {
@@ -62,6 +76,7 @@ const REFERENCES = [
     type: 'FieldDate',
     support: true,
     description: 'Date mm/dd/yyyy',
+    valueType: 'DATE',
     alias: ['Date']
   },
   {
@@ -69,6 +84,7 @@ const REFERENCES = [
     type: 'FieldDate',
     support: true,
     description: 'Date with time',
+    valueType: 'DATE',
     alias: ['DateTime', 'Date Time', 'Date+Time']
   },
   {
@@ -76,6 +92,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Local File',
+    valueType: 'STRING',
     alias: ['FileName', 'File Name']
   },
   {
@@ -83,6 +100,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Local File Path',
+    valueType: 'STRING',
     alias: ['FilePath', 'File Path']
   },
   {
@@ -90,6 +108,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Local File Path or Name',
+    valueType: 'STRING',
     alias: ['FilePathOrName', 'File Path Or Name']
   },
   {
@@ -97,6 +116,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: '10 Digit Identifier',
+    valueType: 'INTEGER',
     alias: ['ID']
   },
   {
@@ -104,6 +124,7 @@ const REFERENCES = [
     type: 'FieldImage',
     support: true,
     description: 'Binary Image Data',
+    valueType: 'INTEGER',
     alias: ['Image']
   },
   {
@@ -111,6 +132,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: '10 Digit numeric',
+    valueType: 'INTEGER',
     alias: ['Integer']
   },
   {
@@ -118,6 +140,7 @@ const REFERENCES = [
     type: 'FieldSelect',
     support: true,
     description: 'Reference List',
+    valueType: 'STRING',
     alias: ['List']
   },
   {
@@ -125,6 +148,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: false,
     description: 'Location/Address',
+    valueType: 'INTEGER',
     alias: ['Location', 'Location (Address)', 'Location/Address']
   },
   {
@@ -132,12 +156,14 @@ const REFERENCES = [
     type: 'FieldSelect',
     support: true,
     description: 'Warehouse Locator Data type',
+    valueType: 'INTEGER',
     alias: ['Locator', 'Locator (WH)', 'Locator/WH']
   },
   {
     id: 34,
     type: 'FieldTextLong',
     support: true,
+    valueType: 'STRING',
     description: 'Reference List',
     alias: ['Memo']
   },
@@ -146,6 +172,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: 'Float Number',
+    valueType: 'DECIMAL',
     alias: ['Number']
   },
   {
@@ -153,6 +180,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Printer Name',
+    valueType: 'STRING',
     alias: ['PrinterName', 'Printer Name']
   },
   {
@@ -160,6 +188,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: false,
     description: 'Product Attribute',
+    valueType: 'INTEGER',
     alias: ['ProductAttribute', 'Product Attribute']
   },
   {
@@ -167,6 +196,7 @@ const REFERENCES = [
     type: 'FieldNumber',
     support: true,
     description: 'Quantity data type',
+    valueType: 'DECIMAL',
     alias: ['Quantity']
   },
   {
@@ -174,6 +204,7 @@ const REFERENCES = [
     type: 'FieldSelect',
     support: true,
     description: 'Search Field',
+    valueType: 'INTEGER',
     alias: ['Search']
   },
   {
@@ -181,6 +212,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Character String',
+    valueType: 'STRING',
     alias: ['String']
   },
   {
@@ -188,6 +220,7 @@ const REFERENCES = [
     type: 'FieldSelect',
     support: true,
     description: 'Table List',
+    valueType: 'INTEGER',
     alias: ['Table']
   },
   {
@@ -195,6 +228,7 @@ const REFERENCES = [
     type: 'FieldSelect',
     support: true,
     description: 'Direct Table Access',
+    valueType: 'INTEGER',
     alias: ['TableDirect', 'Table Direct']
   },
   {
@@ -202,6 +236,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'Character String up to 2000 characters',
+    valueType: 'STRING',
     alias: ['Text']
   },
   {
@@ -209,6 +244,7 @@ const REFERENCES = [
     type: 'FieldTextLong',
     support: true,
     description: 'Text (Long) - Text > 2000 characters',
+    valueType: 'STRING',
     alias: ['TextLong', 'Text Long']
   },
   {
@@ -216,6 +252,7 @@ const REFERENCES = [
     type: 'FieldTime',
     support: true,
     description: 'Time',
+    valueType: 'DATE',
     alias: ['Time']
   },
   {
@@ -223,6 +260,7 @@ const REFERENCES = [
     type: 'FieldText',
     support: true,
     description: 'URL',
+    valueType: 'STRING',
     alias: ['URL', 'Url']
   },
   {
@@ -230,6 +268,7 @@ const REFERENCES = [
     type: 'FieldYesNo',
     support: true,
     description: 'CheckBox',
+    valueType: 'BOOLEAN',
     alias: ['YesNo', 'Yes No', 'Yes-No']
   }
 ]
@@ -319,6 +358,6 @@ export const FIELD_READ_ONLY_FORM = [
   }
 ]
 
-export const FIELDS_FLOATS = ['Amount', 'Costs+Prices', 'Number']
+export const FIELDS_DECIMALS = ['Amount', 'Costs+Prices', 'Number', 'Quantity']
 
 export const FIELDS_QUANTITY = ['Amount', 'Costs+Prices', 'Integer', 'Number', 'Quantity']

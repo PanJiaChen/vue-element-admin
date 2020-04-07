@@ -264,7 +264,7 @@ export function getReferencesList({ windowUuid, tableName, recordId, recordUuid,
  * @param {array}   attributesList
  * @returns {Map} Entity
  */
-export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, callout, attributesList = [] }) {
+export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, valueType, callout, attributesList = [] }) {
   return Instance.call(this).requestRunCallout({
     windowUuid,
     windowNo,
@@ -273,6 +273,7 @@ export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, co
     columnName,
     value,
     oldValue,
+    valueType,
     callout,
     attributesList
   })

@@ -251,7 +251,7 @@ import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
-import { FIELDS_FLOATS, FIELDS_QUANTITY, FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
+import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import evaluator from '@/utils/ADempiere/evaluator'
 
@@ -996,7 +996,7 @@ export default {
     formatNumber({ referenceType, number }) {
       let fixed = 0
       // Amount, Costs+Prices, Number
-      if (FIELDS_FLOATS.includes(referenceType)) {
+      if (FIELDS_DECIMALS.includes(referenceType)) {
         fixed = 2
       }
       return new Intl.NumberFormat().format(number.toFixed(fixed))

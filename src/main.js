@@ -17,6 +17,8 @@ import VueResize from 'vue-resize'
  */
 import VMarkdown from 'v-markdown/src'
 
+import VueShortkey from 'vue-shortkey'
+
 import '@/styles/index.scss' // global css
 
 import App from './App'
@@ -44,6 +46,7 @@ if (process.env.NODE_ENV === 'production') {
   mockXHR()
 }
 Vue.use(VMarkdown)
+Vue.use(VueShortkey)
 Vue.use(VueSplit)
 Vue.use(VueResize)
 Vue.use(Element, {
@@ -62,8 +65,6 @@ Object.keys(globalMethods).forEach(key => {
 })
 
 Vue.config.productionTip = false
-
-Vue.use(require('vue-shortkey'))
 
 new Vue({
   el: '#app',

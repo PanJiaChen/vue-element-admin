@@ -82,7 +82,7 @@ const windowControl = {
           containerUuid,
           propertyName: 'value',
           isEvaluateValues: true,
-          isAddDisplayColumn: true
+          isAddDisplayColumn: false
         })
 
         commit('addInCreate', {
@@ -187,27 +187,33 @@ const windowControl = {
 
       // TODO: Evaluate peformance without filter using delete(prop) before convert object to array
       // attributes or fields
-      let finalAttributes = convertObjectToArrayPairs(row)
-      finalAttributes = finalAttributes.filter(itemAttribute => {
-        if (isEmptyValue(itemAttribute.value)) {
-          return false
-        }
+      const fieldsList = getters.getFieldsListFromPanel(containerUuid)
+      const attributesList = []
+      fieldsList.forEach(itemAttribute => {
         if (columnsToDontSend.includes(itemAttribute.columnName) || itemAttribute.columnName.includes('DisplayColumn')) {
           return false
         }
-        return true
+        if (isEmptyValue(row[itemAttribute.columnName])) {
+          return false
+        }
+
+        attributesList.push({
+          value: row[itemAttribute.columnName],
+          columnName: itemAttribute.columnName,
+          valueType: itemAttribute.valueType
+        })
       })
 
       commit('addInCreate', {
         containerUuid,
         tableName,
-        attributesList: finalAttributes
+        attributesList
       })
 
       let isError = false
       return createEntity({
         tableName,
-        attributesList: finalAttributes
+        attributesList
       })
         .then(createEntityResponse => {
           showMessage({
@@ -257,7 +263,7 @@ const windowControl = {
           commit('deleteInCreate', {
             containerUuid,
             tableName,
-            attributesList: finalAttributes
+            attributesList
           })
         })
     },

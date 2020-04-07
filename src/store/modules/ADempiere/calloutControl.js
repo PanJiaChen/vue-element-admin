@@ -28,7 +28,8 @@ const callOutControl = {
       inTable = false,
       row,
       value,
-      oldValue
+      oldValue,
+      valueType
     }) {
       return new Promise((resolve, reject) => {
         const window = rootGetters.getWindow(parentUuid)

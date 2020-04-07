@@ -647,6 +647,7 @@ const panel = {
               callout: field.callout,
               value: newValue,
               oldValue: field.oldValue,
+              valueType: field.valueType,
               withOutColumnNames
             })
           }
@@ -1163,13 +1164,15 @@ const panel = {
             attributesObject[`${fieldItem.columnName}_To`] = fieldItem.valueTo
             rangeColumnsList.push({
               columnName: `${fieldItem.columnName}_To`,
-              value: fieldItem.valueTo
+              value: fieldItem.valueTo,
+              valueType: fieldItem.valueType
             })
           }
 
           return {
             columnName: fieldItem.columnName,
-            value: valueToReturn
+            value: valueToReturn,
+            valueType: fieldItem.valueType
           }
         })
 
@@ -1420,6 +1423,7 @@ const panel = {
             parametersRange.push({
               columnName: `${parameterItem.columnName}_To`,
               operator,
+              valueType: parameterItem.valueType,
               value: valueTo
             })
             operator = 'GREATER_EQUAL' // rewrite to assign first position of array
@@ -1428,6 +1432,7 @@ const panel = {
           return {
             columnName: parameterItem.columnName,
             value,
+            valueType: parameterItem.valueType,
             isRange: parameterItem.isRange,
             values,
             operator

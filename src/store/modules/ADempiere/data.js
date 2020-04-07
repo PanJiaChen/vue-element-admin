@@ -742,6 +742,7 @@ const data = {
             columnName: field.columnName,
             callout: field.callout,
             value: newValue,
+            valueType: field.valueType,
             withOutColumnNames,
             row,
             inTable: true

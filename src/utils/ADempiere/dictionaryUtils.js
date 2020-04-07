@@ -182,6 +182,7 @@ export function generateField({
     isShowedFromUserDefault: isShowedFromUser, // set this value when reset panel
     isShowedTableFromUser: fieldToGenerate.isDisplayed,
     isFixedTableColumn: false,
+    valueType: componentReference.valueType, // value type to convert with gGRPC
     isSQLValue,
     // Advanced query
     operator, // current operator
