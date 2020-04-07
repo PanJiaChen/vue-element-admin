@@ -101,6 +101,7 @@ export default {
         if (!this.withoutRecord && this.$route.query.action !== this.documentActions.recordUuid) {
           this.$store.dispatch('listDocumentActionStatus', {
             recordUuid: this.$route.query.action,
+            tableName: this.$route.params.tableName,
             recordId: this.$route.params.recordId
           })
         }
