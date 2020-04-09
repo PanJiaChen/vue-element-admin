@@ -92,7 +92,8 @@ const lookup = {
       parentUuid,
       containerUuid,
       tableName,
-      query
+      query,
+      valueToFilter
     }) {
       if (isEmptyValue(query)) {
         return
@@ -106,9 +107,15 @@ const lookup = {
           isBooleanToString: true
         }).value
       }
+
+      const valuesList = []
+      if (!isEmptyValue(valueToFilter)) {
+        valuesList.push(valueToFilter)
+      }
       return getLookupList({
         tableName,
-        query: parsedQuery
+        query: parsedQuery,
+        valuesList
       })
         .then(lookupListResponse => {
           const list = []

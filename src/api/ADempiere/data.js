@@ -158,12 +158,14 @@ export function getLookup({
 export function getLookupList({
   tableName,
   query,
+  valuesList,
   pageToken,
   pageSize
 }) {
   return Instance.call(this).requestListLookupFromReference({
     tableName,
     query,
+    valuesList,
     pageToken,
     pageSize
   })

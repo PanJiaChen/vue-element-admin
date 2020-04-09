@@ -12,6 +12,8 @@
     :allow-create="metadata.isSelectCreated"
     :collapse-tags="!isSelectMultiple"
     :disabled="isDisabled"
+    remote
+    :remote-method="getRemoteList"
     @change="preHandleChange"
     @visible-change="getDataLookupList"
     @clear="clearLookup"
@@ -289,7 +291,6 @@ export default {
         directQuery: this.metadata.reference.directQuery,
         value: this.value
       })
-
       // set empty list and empty option
       this.changeBlankOption()
       const list = []
@@ -299,7 +300,26 @@ export default {
       // set empty value
       this.value = this.blankOption.key
     }
-  }
+  },
+  getRemoteList(value) {
+      if (!isNaN(value)) {
+        value = parseInt(value, 10)
+      }
+      if (!this.isLoading && String(value.length > 2)) {
+        setTimeout(() => {
+          this.isLoading = true
+          this.$store.dispatch('getLookupListFromServer', {
+            parentUuid: this.metadata.parentUuid,
+            containerUuid: this.metadata.containerUuid,
+            tableName: this.metadata.reference.tableName,
+            query: this.metadata.reference.query,
+            valueToFilter: value
+          })
+            .then(response => {
+              this.isLoading = false
+            })
+        }, 250)
+      }
 }
 </script>
 
