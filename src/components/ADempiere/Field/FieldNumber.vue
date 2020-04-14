@@ -3,7 +3,6 @@
     <el-input-number
       :ref="metadata.columnName"
       v-model="value"
-      v-shortkey="['enter']"
       type="number"
       :min="minValue"
       :max="maxValue"
@@ -13,9 +12,9 @@
       controls-position="right"
       :class="'display-type-amount'"
       @change="preHandleChange"
-      @shortkey.native="changeValue"
       @blur="changeValue"
       @keydown.native="calculateValue"
+      @keyup.enter.native="changeValue"
     />
   </el-tooltip>
 </template>
