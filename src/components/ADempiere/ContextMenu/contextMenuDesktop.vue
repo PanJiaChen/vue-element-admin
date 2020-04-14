@@ -48,7 +48,7 @@
             v-show="!action.hidden"
             :key="index"
             :index="action.name"
-            :disabled="action.disabled"
+            :disabled="panelType === 'browser' ? isEmptyValue(getDataSelection) : action.disabled"
             @click="runAction(action)"
           >
             {{ action.name }}
