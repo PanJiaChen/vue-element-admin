@@ -654,6 +654,10 @@ const panel = {
         }
 
         if (isSendToServer) {
+          const fieldsEmpty = getters.getFieldListEmptyMandatory({
+            containerUuid,
+            fieldsList
+          })
           if (panelType === 'table' || isAdvancedQuery) {
             if (field.isShowedFromUser && (field.oldValue !== field.value ||
               ['NULL', 'NOT_NULL'].includes(field.operator) ||
@@ -703,7 +707,7 @@ const panel = {
                   console.warn(`Error getting Advanced Query (notifyFieldChange): ${error.message}. Code: ${error.code}.`)
                 })
             }
-          } else if (!getters.isNotReadyForSubmit(containerUuid)) {
+          } else if (isEmptyValue(fieldsEmpty)) {
             // TODO: refactory for it and change for a standard method
             if (field.panelType === 'browser' && fieldIsDisplayed(field)) {
               let isReadyForQuery = true
@@ -788,10 +792,6 @@ const panel = {
               }
             }
           } else {
-            const fieldsEmpty = getters.getFieldListEmptyMandatory({
-              containerUuid,
-              fieldsList
-            })
             showMessage({
               message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
               type: 'info'
