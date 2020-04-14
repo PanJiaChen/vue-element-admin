@@ -74,8 +74,8 @@ import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
 import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
-import { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
-import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
+import { DEFAULT_SIZE, FIELD_DISPLAY_SIZES } from '@/components/ADempiere/Field/fieldSize'
+import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 
 /**
@@ -221,7 +221,22 @@ export default {
         return DEFAULT_SIZE
       }
 
-      const sizeField = this.field.sizeFieldFromType.size
+      let sizeField = {}
+      if (this.field.sizeFieldFromType && this.field.sizeFieldFromType.size) {
+        // set field size property
+        sizeField = this.field.sizeFieldFromType.size
+      }
+      if (this.isEmptyValue(sizeField)) {
+        // Sizes from panel and groups
+        sizeField = FIELD_DISPLAY_SIZES.find(item => {
+          return item.type === this.field.componentPath
+        })
+      }
+      if (this.isEmptyValue(sizeField)) {
+        // set default size
+        sizeField = DEFAULT_SIZE
+      }
+
       const newSizes = {}
 
       // in table set max width, used by browser result and tab children of window
@@ -289,9 +304,9 @@ export default {
     },
     isContextInfo() {
       if (!this.isAdvancedQuery) {
-        return (this.field.contextInfo && this.field.contextInfo.isActive) || this.field.reference.windowsList.length
+        return false
       }
-      return false
+      return (this.field.contextInfo && this.field.contextInfo.isActive) || (this.field.reference && this.field.reference.windowsList.length)
     }
   },
   watch: {
@@ -302,6 +317,24 @@ export default {
   created() {
     // assined field with prop
     this.field = this.metadataField
+    if (this.field.isCustomField && !this.field.componentPath) {
+      let componentReference = evalutateTypeField(this.field.displayType, true)
+      if (this.isEmptyValue(componentReference)) {
+        componentReference = {
+          type: 'FieldText',
+          alias: ['Text']
+        }
+      }
+      this.field = {
+        ...this.metadataField,
+        isActive: true,
+        isDisplayed: true,
+        isDisplayedFromLogic: true,
+        isShowedFromUser: true,
+        //
+        componentPath: componentReference.type
+      }
+    }
   },
   methods: {
     showMessage,

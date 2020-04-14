@@ -14,7 +14,7 @@
 
 <script>
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { FIELD_READ_ONLY_FORM } from '@/components/ADempiere/Field/references'
+import { FIELD_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 
 export default {

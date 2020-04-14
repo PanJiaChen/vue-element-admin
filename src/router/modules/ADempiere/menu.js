@@ -51,6 +51,23 @@ const staticRoutes = [
         }
       }
     ]
+  },
+  {
+    path: '/test-view',
+    component: Layout,
+    hidden: true,
+    redirect: '/test-view/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/ADempiere/TestView'),
+        name: 'Test View',
+        meta: {
+          title: 'TestView',
+          isIndex: true
+        }
+      }
+    ]
   }
 ]
 

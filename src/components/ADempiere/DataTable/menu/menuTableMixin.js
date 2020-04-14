@@ -1,7 +1,7 @@
 import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
-import { FIELDS_QUANTITY } from '@/components/ADempiere/Field/references'
+import { FIELDS_QUANTITY } from '@/utils/ADempiere/references'
 
 export const menuTableMixin = {
   props: {
@@ -119,7 +119,7 @@ export const menuTableMixin = {
     },
     isFieldsQuantity() {
       const fieldsQuantity = this.getterFieldList.filter(fieldItem => {
-        return FIELDS_QUANTITY.includes(fieldItem.referenceType)
+        return FIELDS_QUANTITY.includes(fieldItem.displayType)
       }).length
       return !fieldsQuantity
     },

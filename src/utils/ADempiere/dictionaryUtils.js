@@ -1,7 +1,7 @@
 import evaluator from '@/utils/ADempiere/evaluator'
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
 import { getContext, getParentFields, getPreference, parseContext } from '@/utils/ADempiere/contextUtils'
-import REFERENCES, { FIELD_NOT_SHOWED } from '@/components/ADempiere/Field/references'
+import REFERENCES, { FIELD_NOT_SHOWED } from '@/utils/ADempiere/references'
 import { FIELD_DISPLAY_SIZES, DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import language from '@/lang'
 

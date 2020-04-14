@@ -115,12 +115,14 @@ export default {
      * Parse the date format to be compatible with element-ui
      */
     formatView() {
-      let format = this.metadata.VFormat
-        .replace(/[Y]/gi, 'y')
-        .replace(/[m]/gi, 'M')
-        .replace(/[D]/gi, 'd')
-
-      if (format === '') {
+      let format = ''
+      if (!this.isEmptyValue(this.metadata.VFormat)) {
+        format = this.metadata.VFormat
+          .replace(/[Y]/gi, 'y')
+          .replace(/[m]/gi, 'M')
+          .replace(/[D]/gi, 'd')
+      }
+      if (this.isEmptyValue(format)) {
         format = 'yyyy-MM-dd'
       }
       if (this.typePicker.replace('range', '') === 'datetime') {

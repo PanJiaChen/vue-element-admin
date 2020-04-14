@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.1.8",
-    "@adempiere/grpc-data-client": "^2.1.6",
+    "@adempiere/grpc-data-client": "^2.2.1",
     "@adempiere/grpc-dictionary-client": "^1.3.5",
     "@adempiere/grpc-enrollment-client": "^1.0.7",
     "autoprefixer": "^9.5.1",
