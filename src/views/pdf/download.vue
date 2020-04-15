@@ -26,17 +26,17 @@ export default {
   },
   methods: {
     fetchData() {
-       import('./content.js').then(data => {
-         const { title } = data.default
-         document.title = title
-         this.article = data.default
-         setTimeout(() => {
-           this.fullscreenLoading = false
-           this.$nextTick(() => {
-             window.print()
-           })
-         }, 3000)
-       })
+      import('./content.js').then(data => {
+        const { title } = data.default
+        document.title = title
+        this.article = data.default
+        setTimeout(() => {
+          this.fullscreenLoading = false
+          this.$nextTick(() => {
+            window.print()
+          })
+        }, 3000)
+      })
     }
   }
 }
