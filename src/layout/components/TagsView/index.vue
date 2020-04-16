@@ -46,6 +46,9 @@ export default {
     },
     routes() {
       return this.$store.state.permission.routes
+    },
+    scrollWrapper() {
+      return this.$refs.scrollPane.$refs.scrollContainer.$refs.wrap
     }
   },
   watch: {
@@ -64,6 +67,10 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
+    this.scrollWrapper.addEventListener('scroll', this.closeMenu, true)
+  },
+  beforeDestroy() {
+    document.removeEventListener('scroll', this.closeMenu)
   },
   methods: {
     isActive(route) {
