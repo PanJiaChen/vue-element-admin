@@ -12,39 +12,55 @@ function Instance() {
   )
 }
 
-export function getWindow(uuid, childrenTabs = true) {
+export function getWindow(uuid, isWithTabs = true) {
   return Instance.call(this).requestWindow({
-    uuid: uuid,
-    isWithTabs: childrenTabs,
+    uuid,
+    isWithTabs,
     isConvertedMetadata: true
   })
 }
 
-export function getProcess(uuid, isConvert = true) {
+export function getProcess(uuid, isConvertedMetadata = true) {
   return Instance.call(this).requestProcess({
     uuid: uuid,
-    isConvertedMetadata: isConvert,
+    isConvertedMetadata,
     isConvertedFields: true
   })
 }
 
-export function getBrowser(uuid, isConvert = true) {
+export function getBrowser(uuid, isConvertedMetadata = true) {
   return Instance.call(this).requestBrowser({
     uuid,
-    isConvertedMetadata: isConvert,
+    isConvertedMetadata,
     isConvertedFields: true
   })
 }
 
-export function getTab(uuid, childrenFields = true, isConvert = true) {
+export function getTab(uuid, isWithFields = true, isConvertedMetadata = true) {
   return Instance.call(this).requestTab({
     uuid,
-    isWithFields: childrenFields,
-    isConvertedMetadata: isConvert,
+    isWithFields,
+    isConvertedMetadata,
     isConvertedFields: true
   })
 }
 
-export function getField(uuid) {
-  return Instance.call(this).requestField(uuid)
+export function getField({
+  fieldUuid,
+  columnUuid,
+  elementUuid,
+  // TableName + ColumnName
+  tableName,
+  columnName,
+  elementColumnName
+}) {
+  return Instance.call(this).requestField({
+    fieldUuid,
+    columnUuid,
+    elementUuid,
+    // TableName + ColumnName
+    tableName,
+    columnName,
+    elementColumnName
+  })
 }
