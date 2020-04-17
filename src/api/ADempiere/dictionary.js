@@ -64,3 +64,16 @@ export function getField({
     elementColumnName
   })
 }
+
+export function requestReference({ referenceUuid, columnName }) {
+  return Instance.call(this).requestReference({
+    referenceUuid,
+    columnName
+  })
+}
+
+export function requestValidationRule({ validationRuleUuid }) {
+  return Instance.call(this).requestValidationRule({
+    validationRuleUuid
+  })
+}
