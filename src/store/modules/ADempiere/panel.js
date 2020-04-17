@@ -56,13 +56,14 @@ const panel = {
   },
   actions: {
     addPanel({ commit, dispatch, getters }, params) {
+      const { panelType } = params
       let keyColumn = ''
       let selectionColumn = []
       let identifierColumns = []
       let count = 0
 
       if (params.fieldList) {
-        params.fieldList.forEach(itemField => {
+        params.fieldList.forEach((itemField, index, listFields) => {
           if (itemField.isKey) {
             keyColumn = itemField.columnName
           }
@@ -77,15 +78,15 @@ const panel = {
             })
           }
 
-          if (params.panelType === 'table' || params.isAdvancedQuery) {
+          if (panelType === 'table' || params.isAdvancedQuery) {
             itemField.isShowedFromUser = false
             if (count < 2 && itemField.isSelectionColumn && itemField.sequence >= 10) {
               itemField.isShowedFromUser = true
               count++
             }
           } else {
-            if (['browser', 'process', 'report'].includes(params.panelType) ||
-              params.panelType === 'window' && params.isParentTab) {
+            if (['browser', 'process', 'report', 'custom'].includes(panelType) ||
+              panelType === 'window' && params.isParentTab) {
               dispatch('setContext', {
                 parentUuid: params.parentUuid,
                 containerUuid: params.uuid,
@@ -93,11 +94,24 @@ const panel = {
                 value: itemField.value
               })
             }
+
+            //  Get dependent fields
+            if (!isEmptyValue(itemField.parentFieldsList) && itemField.isActive) {
+              itemField.parentFieldsList.forEach(parentColumnName => {
+                const parentField = listFields.find(parentFieldItem => {
+                  return parentFieldItem.columnName === parentColumnName &&
+                    parentColumnName !== itemField.columnName
+                })
+                if (parentField) {
+                  parentField.dependentFieldsList.push(itemField.columnName)
+                }
+              })
+            }
           }
         })
 
         let orderBy = 'sequence'
-        if ((params.panelType === 'window' && !params.isParentTab) || params.panelType === 'browser') {
+        if ((panelType === 'window' && !params.isParentTab) || panelType === 'browser') {
           orderBy = 'seqNoGrid'
         }
         params.fieldList = assignedGroup({
@@ -125,6 +139,7 @@ const panel = {
       params.isShowedTableOptionalColumns = false
 
       commit('addPanel', params)
+      return params
     },
     /**
      * Used by components/fields/filterFields

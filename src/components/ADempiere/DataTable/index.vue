@@ -251,7 +251,7 @@ import IconElement from '@/components/ADempiere/IconElement'
 import { formatDate } from '@/filters/ADempiere'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
-import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELD_READ_ONLY_FORM } from '@/utils/ADempiere/references'
+import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import evaluator from '@/utils/ADempiere/evaluator'
 
@@ -667,7 +667,7 @@ export default {
         return true
       }
       if (fieldIsDisplayed(field)) {
-        // const fieldReadOnlyAllForm = FIELD_READ_ONLY_FORM.filter(item => {
+        // const fieldReadOnlyAllForm = FIELDS_READ_ONLY_FORM.filter(item => {
         //   return row.hasOwnProperty(item.columnName) && item.isChangedAllForm
         // })
         // // columnName: Processed, Processing
@@ -677,7 +677,7 @@ export default {
         // }
 
         // columnName: IsActive
-        const fieldReadOnlyForm = FIELD_READ_ONLY_FORM.find(item => {
+        const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => {
           return row.hasOwnProperty(item.columnName) && !item.isChangedAllForm
         })
         if (fieldReadOnlyForm) {

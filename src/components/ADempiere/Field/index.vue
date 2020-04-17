@@ -74,7 +74,7 @@ import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
 import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
-import { DEFAULT_SIZE, FIELD_DISPLAY_SIZES } from '@/components/ADempiere/Field/fieldSize'
+import FIELDS_DISPLAY_SIZES, { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 
@@ -218,7 +218,7 @@ export default {
     },
     sizeFieldResponsive() {
       if (!this.isDisplayed) {
-        return DEFAULT_SIZE
+        return DEFAULT_SIZE.size
       }
 
       let sizeField = {}
@@ -228,13 +228,13 @@ export default {
       }
       if (this.isEmptyValue(sizeField)) {
         // Sizes from panel and groups
-        sizeField = FIELD_DISPLAY_SIZES.find(item => {
+        sizeField = FIELDS_DISPLAY_SIZES.find(item => {
           return item.type === this.field.componentPath
         })
       }
       if (this.isEmptyValue(sizeField)) {
         // set default size
-        sizeField = DEFAULT_SIZE
+        sizeField = DEFAULT_SIZE.size
       }
 
       const newSizes = {}
@@ -318,7 +318,7 @@ export default {
     // assined field with prop
     this.field = this.metadataField
     if (this.field.isCustomField && !this.field.componentPath) {
-      let componentReference = evalutateTypeField(this.field.displayType, true)
+      let componentReference = evalutateTypeField(this.field.displayType)
       if (this.isEmptyValue(componentReference)) {
         componentReference = {
           type: 'FieldText',

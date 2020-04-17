@@ -1,8 +1,8 @@
 import evaluator from '@/utils/ADempiere/evaluator'
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
 import { getContext, getParentFields, getPreference, parseContext } from '@/utils/ADempiere/contextUtils'
-import REFERENCES, { FIELD_NOT_SHOWED } from '@/utils/ADempiere/references'
-import { FIELD_DISPLAY_SIZES, DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
+import REFERENCES, { FIELDS_HIDDEN } from '@/utils/ADempiere/references'
+import FIELDS_DISPLAY_SIZES, { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
 import language from '@/lang'
 
 /**
@@ -24,7 +24,7 @@ export function generateField({
     isShowedFromUser = moreAttributes.isShowedFromUser
   }
 
-  const componentReference = evalutateTypeField(fieldToGenerate.displayType, true)
+  const componentReference = evalutateTypeField(fieldToGenerate.displayType)
   const referenceType = componentReference.alias[0]
   let isDisplayedFromLogic = fieldToGenerate.isDisplayed
   let isMandatoryFromLogic = false
@@ -194,14 +194,14 @@ export function generateField({
   }
 
   // Sizes from panel and groups
-  field.sizeFieldFromType = FIELD_DISPLAY_SIZES.find(item => {
+  field.sizeFieldFromType = FIELDS_DISPLAY_SIZES.find(item => {
     return item.type === field.componentPath
   })
   if (field.sizeFieldFromType === undefined) {
     console.warn(`Field size no found: ${field.name} type: ${field.componentPath}.`)
     field.sizeFieldFromType = {
       type: field.componentPath,
-      size: DEFAULT_SIZE
+      size: DEFAULT_SIZE.size
     }
   }
 
@@ -220,7 +220,7 @@ export function generateField({
   }
 
   // hidden field type button
-  const notShowedField = FIELD_NOT_SHOWED.find(itemField => {
+  const notShowedField = FIELDS_HIDDEN.find(itemField => {
     return field.displayType === itemField.id
   })
   if (notShowedField) {
@@ -279,21 +279,6 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
         return field
       })
     fieldDefinitionList = fieldDefinitionList.concat(fieldsRangeList)
-
-    //  Get dependent fields
-    fieldDefinitionList
-      .forEach((field, index, list) => {
-        if (field.isActive && field.parentFieldsList.length) {
-          field.parentFieldsList.forEach(parentColumnName => {
-            const parentField = list.find(itemParentField => {
-              return itemParentField.columnName === parentColumnName && parentColumnName !== field.columnName
-            })
-            if (parentField) {
-              parentField.dependentFieldsList.push(field.columnName)
-            }
-          })
-        }
-      })
   }
 
   //  Default Action
@@ -405,85 +390,12 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
  * @param {boolean} isAllInfo
  * @return string type, assigned value to folder after evaluating the parameter
  */
-export function evalutateTypeField(displayTypeId, isAllInfo = false) {
+export function evalutateTypeField(displayTypeId, isAllInfo = true) {
   const component = REFERENCES.find(reference => displayTypeId === reference.id)
   if (isAllInfo) {
     return component
   }
   return component.type
-}
-
-// Default template for injected fields
-export function getFieldTemplate(attributesOverwrite) {
-  return {
-    id: 0,
-    uuid: '',
-    name: '',
-    description: '',
-    help: '',
-    columnName: '',
-    fieldGroup: {
-      name: '',
-      fieldGroupType: ''
-    },
-    displayType: 10,
-    componentPath: 'FieldButton',
-    referenceType: 'Button',
-    isFieldOnly: false,
-    isRange: false,
-    isSameLine: false,
-    sequence: 0,
-    seqNoGrid: 0,
-    isIdentifier: 0,
-    isKey: false,
-    isSelectionColumn: false,
-    isUpdateable: true,
-    formatPattern: undefined,
-    VFormat: undefined,
-    value: undefined,
-    valueTo: undefined,
-    defaultValue: undefined,
-    parsedDefaultValue: undefined,
-    defaultValueTo: undefined,
-    parsedDefaultValueTo: undefined,
-    valueMin: undefined,
-    valueMax: undefined,
-    //
-    isDisplayed: false,
-    isActive: true,
-    isMandatory: false,
-    isReadOnly: false,
-    isDisplayedFromLogic: false,
-    isReadOnlyFromLogic: false,
-    isMandatoryFromLogic: false,
-    // browser attributes
-    callout: undefined,
-    isQueryCriteria: false,
-    displayLogic: undefined,
-    mandatoryLogic: undefined,
-    readOnlyLogic: undefined,
-    parentFieldsList: undefined,
-    dependentFieldsList: [],
-    reference: {
-      tableName: '',
-      keyColumnName: '',
-      displayColumnName: '',
-      query: '',
-      parsedQuery: '',
-      directQuery: '',
-      parsedDirectQuery: '',
-      validationCode: '',
-      windowsList: []
-    },
-    contextInfo: undefined,
-    isShowedFromUser: false,
-    isFixedTableColumn: false,
-    sizeFieldFromType: {
-      type: 'Button',
-      size: DEFAULT_SIZE
-    },
-    ...attributesOverwrite
-  }
 }
 
 /**

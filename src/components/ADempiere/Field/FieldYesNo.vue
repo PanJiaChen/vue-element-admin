@@ -14,7 +14,7 @@
 
 <script>
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { FIELD_READ_ONLY_FORM } from '@/utils/ADempiere/references'
+import { FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 
 export default {
@@ -62,7 +62,7 @@ export default {
       }
     },
     isReadOnlyForm(value) {
-      const fieldReadOnlyForm = FIELD_READ_ONLY_FORM.find(item => item.columnName === this.metadata.columnName)
+      const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => item.columnName === this.metadata.columnName)
       // columnName: IsActive, Processed, Processing
       if (fieldReadOnlyForm && fieldIsDisplayed(this.metadata)) {
         const fieldsExcludes = []

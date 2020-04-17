@@ -101,21 +101,6 @@ const browser = {
             })
             fieldsList = fieldsList.concat(fieldsRangeList)
 
-            // Get dependent fields
-            fieldsList
-              .forEach((field, index, list) => {
-                if (field.isActive && field.parentFieldsList.length) {
-                  field.parentFieldsList.forEach(parentColumnName => {
-                    const parentField = list.find(parentField => {
-                      return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
-                    })
-                    if (parentField) {
-                      parentField.dependentFieldsList.push(field.columnName)
-                    }
-                  })
-                }
-              })
-
             // Panel for save on store
             const newBrowser = {
               ...browserResponse,

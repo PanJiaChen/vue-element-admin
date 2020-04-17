@@ -6,7 +6,8 @@ import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 import router from '@/router'
-import { generateField, getFieldTemplate } from '@/utils/ADempiere/dictionaryUtils'
+import { generateField } from '@/utils/ADempiere/dictionaryUtils'
+import { getFieldTemplate } from '@/utils/ADempiere/lookupFactory'
 
 const initStateWindow = {
   window: [],
@@ -286,21 +287,6 @@ const window = {
 
             let isTabsChildren = false
             if (!isAdvancedQuery) {
-              //  Get dependent fields
-              fieldsList
-                .forEach((field, index, list) => {
-                  if (field.parentFieldsList.length && field.isActive) {
-                    field.parentFieldsList.forEach(parentColumnName => {
-                      const parentField = list.find(parentField => {
-                        return parentField.columnName === parentColumnName && parentColumnName !== field.columnName
-                      })
-                      if (parentField) {
-                        parentField.dependentFieldsList.push(field.columnName)
-                      }
-                    })
-                  }
-                })
-
               const window = getters.getWindow(parentUuid)
               isTabsChildren = Boolean(window.tabsListChildren.length)
             }
