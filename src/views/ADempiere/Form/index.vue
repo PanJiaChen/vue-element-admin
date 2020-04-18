@@ -1,0 +1,149 @@
+<template>
+  <el-container
+    v-if="isLoaded"
+    key="form-loaded"
+    class="view-base"
+    style="height: 84vh;"
+  >
+    <el-popover
+      v-if="!isEmptyValue(formMetadata.help)"
+      ref="helpTitle"
+      placement="top-start"
+      :title="formTitle"
+      width="400"
+      trigger="hover"
+    >
+      <div v-html="formMetadata.help" />
+    </el-popover>
+    <div class="w-33">
+      <div class="center">
+        <el-button
+          v-popover:helpTitle
+          type="text"
+          class="title text-center"
+        >
+          {{ formTitle }}
+        </el-button>
+      </div>
+    </div>
+    <form-panel
+      :metadata="{
+        ...formMetadata,
+        containerUuid: formUuid,
+        title: formTitle
+      }"
+    />
+  </el-container>
+  <div
+    v-else
+    key="form-loading"
+    v-loading="!isLoaded"
+    :element-loading-text="$t('notifications.loading')"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(255, 255, 255, 0.8)"
+    class="view-loading"
+  />
+</template>
+
+<script>
+import FormPanel from '@/components/ADempiere/Form'
+
+export default {
+  name: 'FormView',
+  components: {
+    FormPanel
+  },
+  data() {
+    return {
+      formUuid: this.$route.meta.uuid,
+      formMetadata: {},
+      isLoaded: false
+    }
+  },
+  computed: {
+    formTitle() {
+      return this.formMetadata.name || this.$route.meta.title
+    },
+    getterForm() {
+      return this.$store.getters.getForm(this.formUuid)
+    }
+  },
+  created() {
+    this.getForm()
+  },
+  methods: {
+    getForm() {
+      const panel = this.getterForm
+      if (panel) {
+        this.formMetadata = panel
+        this.isLoaded = true
+      } else {
+        this.$store.dispatch('getFormFromServer', {
+          containerUuid: this.formUuid,
+          routeToDelete: this.$rote
+        })
+          .then(responseForm => {
+            this.formMetadata = responseForm
+          })
+          .finally(() => {
+            this.isLoaded = true
+          })
+      }
+    }
+  }
+}
+</script>
+
+<style scoped>
+  .view-base {
+    height: 100%;
+    min-height: calc(100vh - 84px);
+  }
+
+  .view-loading {
+    padding: 100px 100px;
+    height: 100%;
+  }
+
+  .custom-title {
+    color: #000000;
+    text-size-adjust: 20px;
+    font-size: 100%;
+    font-weight: 605 !important;
+  }
+
+  .title {
+    color: #000000;
+    text-size-adjust: 20px;
+    font-size: 100%;
+    font-weight: 605!important;
+    /* left: 50%; */
+  }
+
+  .w-33 {
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .warn-content {
+    margin: 0px 0px !important;
+    padding-top: 0px !important;
+  }
+  .content-help {
+    width: 100%;
+    height: 200%;
+    padding-left: 39px !important;
+  }
+  .el-card {
+    width: 100% !important;
+    height: 200% !important;
+  }
+  .content-collapse {
+    padding-left: 20 px !important;
+    padding-top: 50 px !important;
+  }
+
+  .center{
+    text-align: center;
+  }
+</style>

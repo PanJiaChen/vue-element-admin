@@ -65,6 +65,18 @@ export function getField({
   })
 }
 
+/**
+ * Request Form
+ * @param {string} uuid
+ * @param {number} id, integer identifier
+ */
+export function requestForm({ uuid, id }) {
+  return Instance.call(this).requestForm({
+    uuid,
+    id
+  })
+}
+
 export function requestReference({ referenceUuid, columnName }) {
   return Instance.call(this).requestReference({
     referenceUuid,

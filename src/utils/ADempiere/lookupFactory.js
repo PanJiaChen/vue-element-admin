@@ -93,7 +93,7 @@ export function createFieldDictionary({
     })
       .then(response => {
         resolve(getFactoryFromField({
-          containerUuid: containerUuid,
+          containerUuid,
           field: response
         }))
       }).catch(error => {
@@ -242,14 +242,32 @@ export function getFieldTemplate(attributesOverwrite) {
   const componentReference = evalutateTypeField(displayType)
   const referenceType = componentReference.alias[0]
 
-  let sizeFieldFromType = FIELDS_DISPLAY_SIZES.find(item => {
-    return item.type === componentReference.type
-  })
-  if (isEmptyValue(sizeFieldFromType)) {
-    sizeFieldFromType = {
-      type: referenceType,
-      size: DEFAULT_SIZE.size
+  // set size from displayed, max 24
+  let size = DEFAULT_SIZE.size
+  if (!isEmptyValue(attributesOverwrite.size)) {
+    size = attributesOverwrite.size
+    delete attributesOverwrite.size
+    if (typeof size === 'number') {
+      size = {
+        xs: size,
+        sm: size,
+        md: size,
+        lg: size,
+        xl: size
+      }
     }
+  } else {
+    const sizeComponent = FIELDS_DISPLAY_SIZES.find(item => {
+      return item.type === componentReference.type
+    })
+    if (!isEmptyValue(sizeComponent)) {
+      size = sizeComponent.size
+    }
+  }
+
+  const sizeFieldFromType = {
+    type: referenceType,
+    size
   }
 
   const fieldTemplateMetadata = {

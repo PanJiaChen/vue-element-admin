@@ -553,6 +553,7 @@ export function convertAction(action) {
     case 'X':
       actionAttributes.name = 'form'
       actionAttributes.icon = 'form'
+      actionAttributes.component = () => import('@/views/ADempiere/Form')
       break
     default:
       actionAttributes.name = 'summary'
