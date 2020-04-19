@@ -55,14 +55,15 @@ import FIELDS_DISPLAY_SIZES, { DEFAULT_SIZE } from '@/components/ADempiere/Field
 import store from '@/store'
 
 // Create a Field from UUID based on server meta-data
-export function createFieldDictionary({
+export function createFieldFromDictionary({
   containerUuid,
   fieldUuid,
   columnUuid,
   elementUuid,
   elementColumnName,
   tableName,
-  columnName
+  columnName,
+  overwriteDefinition
 }) {
   let field
   if (fieldUuid) {
@@ -94,7 +95,8 @@ export function createFieldDictionary({
       .then(response => {
         resolve(getFactoryFromField({
           containerUuid,
-          field: response
+          field: response,
+          overwriteDefinition
         }))
       }).catch(error => {
         console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
@@ -105,60 +107,108 @@ export function createFieldDictionary({
 // Convert field getted from server to factory
 function getFactoryFromField({
   containerUuid,
-  field
+  field,
+  overwriteDefinition
 }) {
-  return createField({
+  const fieldDefinition = {
+    displayType: field.displayType,
+    tableName: field.reference.tableName,
+    directQuery: field.directQuery,
+    query: field.reference.query,
+    keyColumnName: field.reference.keyColumnName,
+    validationCode: field.reference.validationCode,
+    windowsList: field.reference.windowsList,
+    id: field.id,
+    uuid: field.uuid,
+    name: field.name,
+    description: field.description,
+    help: field.help,
+    fieldGroup: field.fieldGroup,
+    isFieldOnly: field.isFieldOnly,
+    isRange: field.isRange,
+    isSameLine: field.isSameLine,
+    sequence: field.sequence,
+    seqNoGrid: field.seqNoGrid,
+    isIdentifier: field.isIdentifier,
+    isKey: field.isKey,
+    isSelectionColumn: field.isSelectionColumn,
+    isUpdateable: field.isUpdateable,
+    formatPattern: field.formatPattern,
+    vFormat: field.vFormat,
+    defaultValue: field.defaultValue,
+    defaultValueTo: field.defaultValueTo,
+    valueMin: field.valueMin,
+    valueMax: field.valueMax,
+    isActive: field.isActive,
+    isMandatory: field.isMandatory,
+    isReadOnly: field.isReadOnly,
+    isDisplayedFromLogic: field.isDisplayedFromLogic,
+    isReadOnlyFromLogic: field.isReadOnlyFromLogic,
+    isMandatoryFromLogic: field.isMandatoryFromLogic,
+    callout: field.callout,
+    isQueryCriteria: field.isQueryCriteria,
+    displayLogic: field.displayLogic,
+    mandatoryLogic: field.mandatoryLogic,
+    readOnlyLogic: field.readOnlyLogic,
+    parentFieldsList: field.parentFieldsList,
+    dependentFieldsList: field.dependentFieldsList,
+    contextInfo: field.contextInfo
+  }
+  // Overwrite definition
+  if (!isEmptyValue(overwriteDefinition)) {
+    if (!isEmptyValue(overwriteDefinition.isQueryCriteria)) {
+      fieldDefinition.isQueryCriteria = overwriteDefinition.isQueryCriteria
+    }
+    if (!isEmptyValue(overwriteDefinition.isMandatory)) {
+      fieldDefinition.isMandatory = overwriteDefinition.isMandatory
+    }
+    if (!isEmptyValue(overwriteDefinition.isReadOnly)) {
+      fieldDefinition.isReadOnly = overwriteDefinition.isReadOnly
+    }
+    if (!isEmptyValue(overwriteDefinition.isSelectionColumn)) {
+      fieldDefinition.isSelectionColumn = overwriteDefinition.isSelectionColumn
+    }
+    if (!isEmptyValue(overwriteDefinition.isUpdateable)) {
+      fieldDefinition.isUpdateable = overwriteDefinition.isUpdateable
+    }
+    if (!isEmptyValue(overwriteDefinition.isFieldOnly)) {
+      fieldDefinition.isFieldOnly = overwriteDefinition.isFieldOnly
+    }
+    if (!isEmptyValue(overwriteDefinition.isRange)) {
+      fieldDefinition.isRange = overwriteDefinition.isRange
+    }
+    if (!isEmptyValue(overwriteDefinition.displayLogic)) {
+      fieldDefinition.displayLogic = overwriteDefinition.displayLogic
+    }
+    if (!isEmptyValue(overwriteDefinition.mandatoryLogic)) {
+      fieldDefinition.mandatoryLogic = overwriteDefinition.mandatoryLogic
+    }
+    if (!isEmptyValue(overwriteDefinition.readOnlyLogic)) {
+      fieldDefinition.readOnlyLogic = overwriteDefinition.readOnlyLogic
+    }
+    if (!isEmptyValue(overwriteDefinition.formatPattern)) {
+      fieldDefinition.formatPattern = overwriteDefinition.formatPattern
+    }
+    if (!isEmptyValue(overwriteDefinition.vFormat)) {
+      fieldDefinition.vFormat = overwriteDefinition.vFormat
+    }
+    if (!isEmptyValue(overwriteDefinition.defaultValue)) {
+      fieldDefinition.defaultValue = overwriteDefinition.defaultValue
+    }
+    if (!isEmptyValue(overwriteDefinition.defaultValueTo)) {
+      fieldDefinition.defaultValueTo = overwriteDefinition.defaultValueTo
+    }
+  }
+  //  Convert it
+  return createFieldFromDefinition({
     containerUuid: containerUuid,
     columnName: field.columnName,
-    definition: {
-      displayType: field.displayType,
-      tableName: field.reference.tableName,
-      directQuery: field.directQuery,
-      query: field.reference.query,
-      keyColumnName: field.reference.keyColumnName,
-      validationCode: field.reference.validationCode,
-      windowsList: field.reference.windowsList,
-      id: field.id,
-      uuid: field.uuid,
-      name: field.name,
-      description: field.description,
-      help: field.help,
-      fieldGroup: field.fieldGroup,
-      isFieldOnly: field.isFieldOnly,
-      isRange: field.isRange,
-      isSameLine: field.isSameLine,
-      sequence: field.sequence,
-      seqNoGrid: field.seqNoGrid,
-      isIdentifier: field.isIdentifier,
-      isKey: field.isKey,
-      isSelectionColumn: field.isSelectionColumn,
-      isUpdateable: field.isUpdateable,
-      formatPattern: field.formatPattern,
-      vFormat: field.vFormat,
-      defaultValue: field.defaultValue,
-      defaultValueTo: field.defaultValueTo,
-      valueMin: field.valueMin,
-      valueMax: field.valueMax,
-      isActive: field.isActive,
-      isMandatory: field.isMandatory,
-      isReadOnly: field.isReadOnly,
-      isDisplayedFromLogic: field.isDisplayedFromLogic,
-      isReadOnlyFromLogic: field.isReadOnlyFromLogic,
-      isMandatoryFromLogic: field.isMandatoryFromLogic,
-      callout: field.callout,
-      isQueryCriteria: field.isQueryCriteria,
-      displayLogic: field.displayLogic,
-      mandatoryLogic: field.mandatoryLogic,
-      readOnlyLogic: field.readOnlyLogic,
-      parentFieldsList: field.parentFieldsList,
-      dependentFieldsList: field.dependentFieldsList,
-      contextInfo: field.contextInfo
-    }
+    definition: fieldDefinition
   })
 }
 
 // Create a field, it assumed that you define all behavior from source code
-export function createField({
+export function createFieldFromDefinition({
   parentUuid,
   containerUuid,
   columnName,
@@ -213,15 +263,6 @@ export function createField({
     }
     definition.reference = reference
   }
-  // if(isLookup()) {
-  //
-  // }
-  // // Special cases
-  // // Please if you need use a special case remember that already exists many implementations
-  // switch (displayType) {
-  //   case TEXT.id:
-  //     break
-  // }
   return getFieldTemplate({
     ...definition,
     isShowedFromUser: true,
@@ -233,10 +274,10 @@ export function createField({
 }
 
 // Default template for injected fields
-export function getFieldTemplate(attributesOverwrite) {
+export function getFieldTemplate(overwriteDefinition) {
   let displayType = 10
-  if (!isEmptyValue(attributesOverwrite.displayType)) {
-    displayType = attributesOverwrite.displayType
+  if (!isEmptyValue(overwriteDefinition.displayType)) {
+    displayType = overwriteDefinition.displayType
   }
 
   const componentReference = evalutateTypeField(displayType)
@@ -244,9 +285,9 @@ export function getFieldTemplate(attributesOverwrite) {
 
   // set size from displayed, max 24
   let size = DEFAULT_SIZE.size
-  if (!isEmptyValue(attributesOverwrite.size)) {
-    size = attributesOverwrite.size
-    delete attributesOverwrite.size
+  if (!isEmptyValue(overwriteDefinition.size)) {
+    size = overwriteDefinition.size
+    delete overwriteDefinition.size
     if (typeof size === 'number') {
       size = {
         xs: size,
@@ -331,7 +372,7 @@ export function getFieldTemplate(attributesOverwrite) {
     isShowedFromUser: false,
     isFixedTableColumn: false,
     sizeFieldFromType,
-    ...attributesOverwrite
+    ...overwriteDefinition
   }
 
   // get parsed parent fields list

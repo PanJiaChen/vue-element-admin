@@ -28,7 +28,7 @@
 
 <script>
 import Field from '@/components/ADempiere/Field'
-import { createField, createFieldDictionary } from '@/utils/ADempiere/lookupFactory'
+import { createFieldFromDefinition, createFieldFromDictionary } from '@/utils/ADempiere/lookupFactory'
 import { URL, TEXT, NUMBER, INTEGER, TEXT_LONG, TABLE_DIRECT } from '@/utils/ADempiere/references'
 
 export default {
@@ -80,7 +80,7 @@ export default {
 
       let sequence = 10
       // URL
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'URL',
         definition: {
@@ -91,7 +91,7 @@ export default {
         }
       }))
       // From Field UUID
-      createFieldDictionary({
+      createFieldFromDictionary({
         containerUuid: this.panelUuid,
         fieldUuid: '8ceabe8a-fb40-11e8-a479-7a0060f0aa01'
       })
@@ -101,7 +101,7 @@ export default {
           console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
         })
       // From Column UUID
-      createFieldDictionary({
+      createFieldFromDictionary({
         containerUuid: this.panelUuid,
         columnUuid: '8b4bbb7e-fb40-11e8-a479-7a0060f0aa01'
       })
@@ -111,7 +111,7 @@ export default {
           console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
         })
       // From Element Column Name
-      createFieldDictionary({
+      createFieldFromDictionary({
         containerUuid: this.panelUuid,
         elementColumnName: 'M_RMA_ID'
       })
@@ -121,10 +121,13 @@ export default {
           console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
         })
       // From Table and Column Name
-      createFieldDictionary({
+      createFieldFromDictionary({
         containerUuid: this.panelUuid,
         tableName: 'C_BPartner',
-        columnName: 'PaymentRule'
+        columnName: 'PaymentRule',
+        overwriteDefinition: {
+          isMandatory: true
+        }
       })
         .then(metadata => {
           fieldsList.push(metadata)
@@ -134,7 +137,7 @@ export default {
       // Table direct
       // To be define
       sequence = sequence + 10
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'C_Currency_ID',
         definition: {
@@ -150,7 +153,7 @@ export default {
 
       sequence = sequence + 10
       // Text
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'Name',
         definition: {
@@ -164,7 +167,7 @@ export default {
 
       sequence = sequence + 10
       // Amount
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'Amount',
         definition: {
@@ -178,7 +181,7 @@ export default {
 
       sequence = sequence + 10
       // Integer
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'SeqNo',
         definition: {
@@ -192,7 +195,7 @@ export default {
 
       sequence = sequence + 10
       // Text Long
-      fieldsList.push(createField({
+      fieldsList.push(createFieldFromDefinition({
         containerUuid: this.panelUuid,
         columnName: 'Description',
         definition: {
