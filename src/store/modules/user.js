@@ -79,7 +79,7 @@ const actions = {
     if (isEmptyValue(sessionUuid)) {
       sessionUuid = getToken()
     }
-    return new Promise(resolve => {
+    return new Promise((resolve, reject) => {
       getSessionInfo(sessionUuid)
         .then(responseGetInfo => {
           const { role } = responseGetInfo
@@ -118,10 +118,12 @@ const actions = {
           dispatch('getUserInfoFromSession', sessionUuid)
             .catch(error => {
               console.warn(`Error ${error.code} getting user info value: ${error.message}.`)
+              reject(error)
             })
         })
         .catch(error => {
           console.warn(`Error ${error.code} getting context session: ${error.message}.`)
+          reject(error)
         })
     })
   },
