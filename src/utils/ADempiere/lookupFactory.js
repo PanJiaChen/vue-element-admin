@@ -198,6 +198,12 @@ function getFactoryFromField({
     if (!isEmptyValue(overwriteDefinition.defaultValueTo)) {
       fieldDefinition.defaultValueTo = overwriteDefinition.defaultValueTo
     }
+    if (!isEmptyValue(overwriteDefinition.displayType)) {
+      fieldDefinition.displayType = overwriteDefinition.displayType
+    }
+    if (!isEmptyValue(overwriteDefinition.size)) {
+      fieldDefinition.size = overwriteDefinition.size
+    }
   }
   //  Convert it
   return createFieldFromDefinition({

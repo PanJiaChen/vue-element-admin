@@ -1,5 +1,5 @@
 import Field from '@/components/ADempiere/Field'
-import { createField, createFieldDictionary } from '@/utils/ADempiere/lookupFactory'
+import { createFieldFromDefinition, createFieldFromDictionary } from '@/utils/ADempiere/lookupFactory'
 
 export default {
   name: 'FormMixn',
@@ -26,8 +26,8 @@ export default {
     }
   },
   methods: {
-    createField,
-    createFieldDictionary,
+    createFieldFromDefinition,
+    createFieldFromDictionary,
     getPanel() {
       const panel = this.getterPanel
       if (panel) {

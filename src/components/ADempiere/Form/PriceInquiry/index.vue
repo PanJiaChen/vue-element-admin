@@ -28,8 +28,7 @@
 
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin'
-import { COSTS_PLUS_PRICES, CHAR, TEXT } from '@/utils/ADempiere/references'
-
+import { TEXT } from '@/utils/ADempiere/references'
 export default {
   name: 'TestView',
   mixins: [formMixin],
@@ -52,84 +51,97 @@ export default {
   methods: {
     setFieldsList() {
       const fieldsList = []
-      let sequence = 10
-      const sequenceIncrement = () => {
-        sequence = sequence + 10
-        return sequence
-      }
-
-      fieldsList.push(this.createField({
+      // Product Code
+      this.createFieldFromDictionary({
         containerUuid: this.metadata.containerUuid,
-        columnName: 'Value',
-        definition: {
-          name: 'Product Code/Bar Code',
-          displayType: CHAR.id,
-          panelType: this.panelType,
-          sequence,
-          size: 24
+        elementColumnName: 'ProductValue',
+        overwriteDefinition: {
+          size: 24,
+          sequence: 10,
+          isMandatory: true
         }
-      }))
-
-      fieldsList.push(this.createField({
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+      // Product Name
+      this.createFieldFromDictionary({
         containerUuid: this.metadata.containerUuid,
-        columnName: 'Name',
-        definition: {
-          name: 'Product Name',
+        elementColumnName: 'ProductName',
+        overwriteDefinition: {
+          size: 24,
+          sequence: 20,
+          isReadOnly: true
+        }
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+      // Product Description
+      this.createFieldFromDictionary({
+        containerUuid: this.metadata.containerUuid,
+        elementColumnName: 'ProductDescription',
+        overwriteDefinition: {
+          size: 24,
+          sequence: 30,
           displayType: TEXT.id,
-          panelType: this.panelType,
-          sequence: sequenceIncrement(),
-          size: 24
+          isReadOnly: true
         }
-      }))
-
-      fieldsList.push(this.createField({
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+      // Price List
+      this.createFieldFromDictionary({
         containerUuid: this.metadata.containerUuid,
-        columnName: 'Description',
-        definition: {
-          name: 'Product Description',
-          displayType: TEXT.id,
-          panelType: this.panelType,
-          sequence: sequenceIncrement(),
-          size: 24
+        elementColumnName: 'PriceList',
+        overwriteDefinition: {
+          size: 16,
+          sequence: 40,
+          isReadOnly: true
         }
-      }))
-
-      fieldsList.push(this.createField({
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+      // Tax Amount
+      this.createFieldFromDictionary({
         containerUuid: this.metadata.containerUuid,
-        columnName: 'Price',
-        definition: {
-          name: 'Price',
-          displayType: COSTS_PLUS_PRICES.id,
-          panelType: this.panelType,
-          sequence: sequenceIncrement(),
-          size: 16
+        elementColumnName: 'TaxAmt',
+        overwriteDefinition: {
+          size: 8,
+          sequence: 50,
+          isReadOnly: true
         }
-      }))
-
-      fieldsList.push(this.createField({
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+      // Total
+      this.createFieldFromDictionary({
         containerUuid: this.metadata.containerUuid,
-        columnName: 'Tax',
-        definition: {
-          name: 'Tax',
-          displayType: COSTS_PLUS_PRICES.id,
-          panelType: this.panelType,
-          sequence: sequenceIncrement(),
-          size: 8
+        elementColumnName: 'GrandTotal',
+        overwriteDefinition: {
+          size: 24,
+          sequence: 60,
+          isReadOnly: true
         }
-      }))
-
-      fieldsList.push(this.createField({
-        containerUuid: this.metadata.containerUuid,
-        columnName: 'Total',
-        definition: {
-          name: 'Total',
-          displayType: COSTS_PLUS_PRICES.id,
-          panelType: this.panelType,
-          sequence: sequenceIncrement(),
-          size: 24
-        }
-      }))
-
+      })
+        .then(metadata => {
+          fieldsList.push(metadata)
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
       this.metadataList = fieldsList
     }
   }
