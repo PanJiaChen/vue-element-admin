@@ -3,7 +3,7 @@
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link sidebar-logo-link-close" to="/">
         <el-tooltip placement="right">
-          <div slot="content">{{ getRol.name }} | {{ getRol.clientName }}</div>
+          <div slot="content">{{ getRole.name }} | {{ getRole.clientName }}</div>
           <img v-if="logo" :src="logo" class="sidebar-logo">
           <h1 v-else class="sidebar-title">{{ title }} </h1>
         </el-tooltip>
@@ -12,9 +12,9 @@
         <img v-if="logo" :src="logo" class="sidebar-logo" @click="dashboard()">
         <h1 class="sidebar-title" @click="dashboard()">{{ title }}</h1><br>
         <el-tooltip placement="right">
-          <div slot="content">{{ getRol.name }} | {{ getRol.clientName }}</div>
+          <div slot="content">{{ getRole.name }} | {{ getRole.clientName }}</div>
           <p class="sidebar-sub-title" @click="profile()">
-            {{ getRol.name }} | {{ getRol.clientName }}
+            {{ getRole.name }} | {{ getRole.clientName }}
           </p>
         </el-tooltip>
       </div>
@@ -40,8 +40,8 @@ export default {
     }
   },
   computed: {
-    getRol() {
-      return this.$store.getters['user/getRol']
+    getRole() {
+      return this.$store.getters['user/getRole']
     }
   },
   methods: {

@@ -1,15 +1,15 @@
 <template>
   <el-form>
     <el-form-item :label="$t('profile.currentRole')">
-      {{ getRol.name }}
+      {{ getRole.name }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.clientName')">
-      {{ getRol.clientName }}
+      {{ getRole.clientName }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.description')">
-      {{ getRol.description }}
+      {{ getRole.description }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.changeRole')">
@@ -62,8 +62,8 @@ export default {
     }
   },
   computed: {
-    getRol() {
-      return this.$store.getters['user/getRol']
+    getRole() {
+      return this.$store.getters['user/getRole']
     },
     getRolesList() {
       return this.$store.getters['user/getRoles']
@@ -79,12 +79,12 @@ export default {
     }
   },
   watch: {
-    'getRol.uuid'(uuidRol) {
+    'getRole.uuid'(uuidRol) {
       this.valueRol = uuidRol
     }
   },
   created() {
-    this.valueRol = this.getRol.uuid
+    this.valueRol = this.getRole.uuid
     this.getLanguageData()
   },
   methods: {
@@ -94,7 +94,7 @@ export default {
         message: this.$t('notifications.loading'),
         iconClass: 'el-icon-loading'
       })
-      this.$store.dispatch('user/changeRoles', {
+      this.$store.dispatch('user/changeRole', {
         roleUuid: valueSelected,
         isCloseAllViews: false
       })

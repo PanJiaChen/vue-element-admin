@@ -8,11 +8,11 @@
       <div class="box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
-          {{ getRol.name }}
+          {{ getRole.name }}
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ getRol.name }}</div>
+        <div class="user-name text-center">{{ getRole.name }}</div>
         <div class="user-role text-muted">
           {{ $t('profile.availableRoles') }}
           <li v-for="(item, key) in getRoles" :key="key">
@@ -76,8 +76,8 @@ export default {
     }
   },
   computed: {
-    getRol() {
-      return this.$store.getters['user/getRol']
+    getRole() {
+      return this.$store.getters['user/getRole']
     },
     getRoles() {
       return this.$store.getters['user/getRoles']

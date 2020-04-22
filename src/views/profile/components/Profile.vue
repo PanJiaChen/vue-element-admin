@@ -3,7 +3,7 @@
     <router-link to="/profile/index">
       <img v-if="logo" :src="logo" class="sidebar-logo">
       <p style="float: right;max-width: 150px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
-        {{ getRol.clientName }}
+        {{ getRole.clientName }}
       </p>
     </router-link>
     <roles-navbar />
@@ -33,8 +33,8 @@ export default {
     }
   },
   computed: {
-    getRol() {
-      return this.$store.getters['user/getRol']
+    getRole() {
+      return this.$store.getters['user/getRole']
     },
     getRoles() {
       return this.$store.getters['user/getRoles']

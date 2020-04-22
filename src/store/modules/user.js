@@ -1,5 +1,19 @@
 import { login, logout, requestUserInfoFromSession, getSessionInfo, changeRole } from '@/api/user'
-import { getToken, setToken, removeToken, getCurrentRole, setCurrentRole, removeCurrentRole } from '@/utils/auth'
+import {
+  getToken,
+  setToken,
+  removeToken,
+  getCurrentRole,
+  setCurrentRole,
+  removeCurrentRole,
+  getCurrentOrganization,
+  setCurrentOrganization,
+  getCurrentWarehouse,
+  setCurrentWarehouse,
+  removeCurrentWarehouse,
+  removeCurrentOrganization
+} from '@/utils/auth'
+import { getOrganizationsList, getWarehousesList } from '@/api/ADempiere/data'
 import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
@@ -11,9 +25,13 @@ const state = {
   userUuid: '',
   avatar: '',
   introduction: '',
-  rol: {}, // info current rol
+  role: {}, // info current role
   rolesList: [],
   roles: [],
+  organizationsList: [],
+  organization: {},
+  warehousesList: [],
+  warehouse: {},
   isSession: false,
   sessionInfo: {}
 }
@@ -37,8 +55,20 @@ const mutations = {
   SET_ROLES_LIST: (state, payload) => {
     state.rolesList = payload
   },
-  SET_ROL: (state, rol) => {
-    state.rol = rol
+  SET_ORGANIZATIONS_LIST: (state, payload) => {
+    state.organizationsList = payload
+  },
+  SET_ORGANIZATION: (state, organization) => {
+    state.organization = organization
+  },
+  SET_WAREHOUSES_LIST: (state, payload) => {
+    state.warehousesList = payload
+  },
+  SET_WAREHOUSE: (state, warehouse) => {
+    state.warehouse = warehouse
+  },
+  SET_ROLE: (state, role) => {
+    state.role = role
   },
   SET_USER_UUID: (state, payload) => {
     state.userUuid = payload
@@ -110,9 +140,47 @@ const actions = {
             defaultContext: responseGetInfo.defaultContextMap
           }
 
-          commit('SET_ROL', role)
+          commit('SET_ROLE', role)
           setCurrentRole(role.uuid)
-
+          getOrganizationsList({ roleUuid: role.uuid })
+            .then(response => {
+              commit('SET_ORGANIZATIONS_LIST', response.organizationsList)
+              let organization = response.organizationsList.find(item => item.uuid === getCurrentOrganization())
+              if (isEmptyValue(organization)) {
+                organization = response.organizationsList[0]
+              }
+              if (isEmptyValue(organization)) {
+                removeCurrentOrganization()
+                commit('SET_ORGANIZATION', undefined)
+              } else {
+                setCurrentOrganization(organization.uuid)
+                commit('SET_ORGANIZATION', organization)
+              }
+              getWarehousesList({ organizationUuid: getCurrentOrganization() })
+                .then(response => {
+                  commit('SET_WAREHOUSES_LIST', response.warehousesList)
+                  let warehouse = response.warehousesList.find(item => item.uuid === getCurrentWarehouse())
+                  if (isEmptyValue(warehouse)) {
+                    warehouse = response.warehousesList[0]
+                  }
+                  if (isEmptyValue(warehouse)) {
+                    removeCurrentWarehouse()
+                    commit('SET_WAREHOUSE', undefined)
+                  } else {
+                    setCurrentWarehouse(warehouse.uuid)
+                    commit('SET_WAREHOUSE', warehouse)
+                  }
+                })
+                .catch(error => {
+                  console.warn(`Error ${error.code} getting user info value: ${error.message}.`)
+                  reject(error)
+                })
+            })
+            .catch(error => {
+              console.warn(`Error ${error.code} getting user info value: ${error.message}.`)
+              reject(error)
+            })
+          //
           resolve(sessionResponse)
 
           dispatch('getUserInfoFromSession', sessionUuid)
@@ -155,12 +223,12 @@ const actions = {
         })
         commit('SET_ROLES', rolesName)
 
-        if (isEmptyValue(state.rol)) {
+        if (isEmptyValue(state.role)) {
           const role = responseGetInfo.rolesList.find(itemRole => {
             return itemRole.uuid === getCurrentRole()
           })
           if (!isEmptyValue(role)) {
-            commit('SET_ROL', role)
+            commit('SET_ROLE', role)
           }
         }
 
@@ -211,9 +279,40 @@ const actions = {
       resolve()
     })
   },
+  changeOrganization({ commit, dispatch }, {
+    organizationUuid
+  }) {
+    setCurrentOrganization(organizationUuid)
+    getWarehousesList({ organizationUuid: organizationUuid })
+      .then(response => {
+        commit('SET_WAREHOUSES_LIST', response.warehousesList)
+        let warehouse = response.warehousesList.find(item => item.uuid === getCurrentWarehouse())
+        if (isEmptyValue(warehouse)) {
+          warehouse = response.warehousesList[0]
+        }
+        if (isEmptyValue(warehouse)) {
+          removeCurrentWarehouse()
+          commit('SET_WAREHOUSE', undefined)
+        } else {
+          setCurrentWarehouse(warehouse.uuid)
+          commit('SET_WAREHOUSE', warehouse)
+        }
+      })
+      .catch(error => {
+        console.warn(`Error ${error.code} getting user info value: ${error.message}.`)
+      })
+  },
+  changeWarehouse({ commit, state }, {
+    warehouseUuid
+  }) {
+    setCurrentWarehouse(warehouseUuid)
+    commit('SET_WAREHOUSE', state.warehousesList.find(warehouse => warehouse.uuid === warehouseUuid))
+  },
   // dynamically modify permissions
-  changeRoles({ commit, dispatch }, {
+  changeRole({ commit, dispatch }, {
     roleUuid,
+    organizationUuid,
+    warehouseUuid,
     isCloseAllViews = true
   }) {
     const route = router.app._route
@@ -238,12 +337,12 @@ const actions = {
     return changeRole({
       sessionUuid: getToken(),
       roleUuid,
-      organizationUuid: null,
-      warehouseUuid: null
+      organizationUuid,
+      warehouseUuid
     })
       .then(changeRoleResponse => {
         const { role } = changeRoleResponse
-        commit('SET_ROL', role)
+        commit('SET_ROLE', role)
         setCurrentRole(role.uuid)
         commit('SET_TOKEN', changeRoleResponse.uuid)
         setToken(changeRoleResponse.uuid)
@@ -303,9 +402,21 @@ const getters = {
   getRoles: (state) => {
     return state.rolesList
   },
-  // current rol info
-  getRol: (state) => {
-    return state.rol
+  getOrganizations: (state) => {
+    return state.organizationsList
+  },
+  getWarehouses: (state) => {
+    return state.warehousesList
+  },
+  // current role info
+  getRole: (state) => {
+    return state.role
+  },
+  getOrganization: (state) => {
+    return state.organization
+  },
+  getWarehouse: (state) => {
+    return state.warehouse
   },
   getIsSession: (state) => {
     return state.isSession
@@ -314,7 +425,7 @@ const getters = {
     return state.userUuid
   },
   getIsPersonalLock: (state) => {
-    return state.rol.isPersonalLock
+    return state.role.isPersonalLock
   }
 }
 
