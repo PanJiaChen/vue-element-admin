@@ -21,14 +21,6 @@ export const MixinInfo = {
     },
     gettersListRecordLogs() {
       const changeLog = this.$store.getters.getRecordLogs.recorLogs
-      if (this.isEmptyValue(changeLog)) {
-        return changeLog
-      }
-      changeLog.sort((a, b) => {
-        var c = new Date(a.logDate)
-        var d = new Date(b.logDate)
-        return d - c
-      })
       return changeLog
     },
     getIsChangeLog() {
