@@ -77,36 +77,33 @@ const panel = {
               componentPath: itemField.componentPath
             })
           }
-
           if (panelType === 'table' || params.isAdvancedQuery) {
             itemField.isShowedFromUser = false
             if (count < 2 && itemField.isSelectionColumn && itemField.sequence >= 10) {
               itemField.isShowedFromUser = true
               count++
             }
-          } else {
-            if (['browser', 'process', 'report', 'form'].includes(panelType) ||
-              panelType === 'window' && params.isParentTab) {
-              dispatch('setContext', {
-                parentUuid: params.parentUuid,
-                containerUuid: params.uuid,
-                columnName: itemField.columnName,
-                value: itemField.value
+          }
+          //  For all
+          if (['browser', 'process', 'report', 'form', 'table'].includes(panelType) || (panelType === 'window' && params.isParentTab)) {
+            dispatch('setContext', {
+              parentUuid: params.parentUuid,
+              containerUuid: params.uuid,
+              columnName: itemField.columnName,
+              value: itemField.value
+            })
+          }
+          //  Get dependent fields
+          if (!isEmptyValue(itemField.parentFieldsList) && itemField.isActive) {
+            itemField.parentFieldsList.forEach(parentColumnName => {
+              const parentField = listFields.find(parentFieldItem => {
+                return parentFieldItem.columnName === parentColumnName &&
+                  parentColumnName !== itemField.columnName
               })
-            }
-
-            //  Get dependent fields
-            if (!isEmptyValue(itemField.parentFieldsList) && itemField.isActive) {
-              itemField.parentFieldsList.forEach(parentColumnName => {
-                const parentField = listFields.find(parentFieldItem => {
-                  return parentFieldItem.columnName === parentColumnName &&
-                    parentColumnName !== itemField.columnName
-                })
-                if (parentField) {
-                  parentField.dependentFieldsList.push(itemField.columnName)
-                }
-              })
-            }
+              if (parentField) {
+                parentField.dependentFieldsList.push(itemField.columnName)
+              }
+            })
           }
         })
 
@@ -592,7 +589,6 @@ const panel = {
             columnName,
             value: newValue
           })
-
           // request context info field
           if ((!isEmptyValue(field.value) || !isEmptyValue(newValue)) && !isEmptyValue(field.contextInfo) && !isEmptyValue(field.contextInfo.sqlStatement)) {
             let isSQL = false

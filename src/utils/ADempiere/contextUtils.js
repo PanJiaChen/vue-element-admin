@@ -22,11 +22,18 @@ export const getContext = ({
  * @param {string} displayLogic
  * @param {string} mandatoryLogic
  * @param {string} readOnlyLogic
+ * @param {object} reference
  * @param {string} defaultValue
  * @returns {array} List column name of parent fields
  */
-export function getParentFields({ displayLogic, mandatoryLogic, readOnlyLogic, defaultValue }) {
-  return Array.from(new Set([
+export function getParentFields({
+  displayLogic,
+  mandatoryLogic,
+  readOnlyLogic,
+  reference,
+  defaultValue
+}) {
+  const parentFields = Array.from(new Set([
     //  For Display logic
     ...evaluator.parseDepends(displayLogic),
     //  For Mandatory Logic
@@ -36,6 +43,11 @@ export function getParentFields({ displayLogic, mandatoryLogic, readOnlyLogic, d
     //  For Default Value
     ...evaluator.parseDepends(defaultValue)
   ]))
+  //  Validate reference
+  if (!isEmptyValue(reference)) {
+    parentFields.push(...evaluator.parseDepends(reference.validationCode))
+  }
+  return parentFields
 }
 
 /**
@@ -60,7 +72,6 @@ export function parseContext({
   let isError = false
   const errorsList = []
   value = String(value)
-
   if (isEmptyValue(value)) {
     return {
       value: undefined,

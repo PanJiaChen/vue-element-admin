@@ -701,6 +701,12 @@ const data = {
       displayColumn,
       withOutColumnNames = []
     }) {
+      dispatch('setContext', {
+        parentUuid,
+        containerUuid,
+        columnName,
+        value: newValue
+      })
       const recordSelection = state.recordSelection.find(recordItem => {
         return recordItem.containerUuid === containerUuid
       })
@@ -712,7 +718,6 @@ const data = {
       if (row[columnName] === newValue) {
         return
       }
-
       const rowSelection = recordSelection.selection.find(itemRecord => {
         return itemRecord[keyColumn] === rowKey
       })
