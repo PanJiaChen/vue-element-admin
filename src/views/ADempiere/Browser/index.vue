@@ -109,8 +109,8 @@ export default {
     browserTitle() {
       return this.browserMetadata.name || this.$route.meta.title
     },
-    getDataRecords() {
-      return this.$store.getters.getDataRecordsList(this.browserUuid)
+    isLoadedRecords() {
+      return this.$store.getters.getDataRecordAndSelection(this.browserUuid).isLoaded
     },
     getContainerIsReadyForSubmit() {
       return !this.$store.getters.isNotReadyForSubmit(this.browserUuid) && !this.browserMetadata.awaitForValuesToQuery
@@ -189,17 +189,17 @@ export default {
         this.activeSearch = ['opened-criteria']
       }
 
-      if (this.getDataRecords.length <= 0) {
+      if (!this.isLoadedRecords) {
         if (this.getContainerIsReadyForSubmit) {
           this.$store.dispatch('getBrowserSearch', {
             containerUuid: this.browserUuid
           })
-        } else {
-          this.$store.dispatch('setRecordSelection', {
-            containerUuid: this.browserUuid,
-            panelType: this.panelType
-          })
         }
+      } else {
+        this.$store.dispatch('setRecordSelection', {
+          containerUuid: this.browserUuid,
+          panelType: this.panelType
+        })
       }
     }
   }
