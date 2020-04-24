@@ -4,7 +4,7 @@
     v-model="value"
     :inactive-text="$t('components.switchInactiveText')"
     :active-text="$t('components.switchActiveText')"
-    class="custom-field-yes-no"
+    :class="'custom-field-yes-no ' + metadata.cssClassName"
     :true-value="true"
     :false-value="false"
     :disabled="isDisabled"
@@ -86,7 +86,7 @@ export default {
 </script>
 
 <style>
- .custom-field-yes-no {
-   min-height: 34px;
- }
+  .custom-field-yes-no {
+    min-height: 34px;
+  }
 </style>

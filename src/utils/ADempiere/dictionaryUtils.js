@@ -244,6 +244,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     processId: processToGenerate.id,
     processName: processToGenerate.name,
     containerUuid: processToGenerate.uuid,
+    isEvaluateValueChanges: true,
     panelType
   }
 

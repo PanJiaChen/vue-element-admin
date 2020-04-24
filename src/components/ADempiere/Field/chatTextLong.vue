@@ -8,13 +8,10 @@ import 'tui-editor/dist/tui-editor.css' // editor ui
 import 'tui-editor/dist/tui-editor-contents.css' // editor content
 import 'codemirror/lib/codemirror.css' // codemirror
 import Editor from 'tui-editor'
-
 import { getLanguage } from '@/lang'
-// import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
 
 export default {
   name: 'ChatTextLong',
-  //   mixins: [fieldMixin],
   props: {
     id: {
       type: String,
@@ -137,15 +134,14 @@ export default {
       })
     },
     preHandleChange(value) {
-      var comment = value
       if (this.clean) {
-        this.$store.dispatch('setchatText', comment)
-          .then((responseComment) => {
+        this.$store.dispatch('setchatText', value)
+          .then(responseComment => {
             this.$store.dispatch('setMarkDown', false)
             this.$store.dispatch('setchatText', '')
           })
       } else {
-        this.$store.dispatch('setchatText', comment)
+        this.$store.dispatch('setchatText', value)
       }
     },
     addReanOnlyChanges() {
@@ -176,6 +172,7 @@ export default {
   }
 }
 </script>
+
 <style>
   .isdisable {
     background: #F5F7FA;

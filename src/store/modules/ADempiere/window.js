@@ -259,7 +259,8 @@ const window = {
               tableName: tabResponse.tableName,
               //
               isReadOnlyFromForm: false,
-              isAdvancedQuery
+              isAdvancedQuery,
+              isEvaluateValueChanges: !isAdvancedQuery
             }
 
             let isWithUuidField = false // indicates it contains the uuid field

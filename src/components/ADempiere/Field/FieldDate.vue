@@ -10,10 +10,10 @@
     :start-placeholder="$t('components.dateStartPlaceholder')"
     :end-placeholder="$t('components.dateEndPlaceholder')"
     unlink-panels
-    class="date-base"
+    :class="'date-base ' + metadata.cssClassName"
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
-    :picker-options="typePicker === 'daterange' ? pickerOptionsDateRange : pickerOptionsDate"
+    :picker-options="pickerOptions"
     @change="preHandleChange"
   />
 </template>
@@ -137,6 +137,12 @@ export default {
           .replace(/[aA]/gi, '')
       }
       return undefined
+    },
+    pickerOptions() {
+      if (this.typePicker === 'daterange') {
+        return this.pickerOptionsDateRange
+      }
+      return this.pickerOptionsDate
     }
   },
   watch: {

@@ -6,7 +6,7 @@
     :on-remove="handleRemove"
     :on-success="handleSuccess"
     :on-error="handleError"
-    class="image-uploader"
+    :class="'image-uploader ' + metadata.cssClassName"
     action="https://jsonplaceholder.typicode.com/posts/"
     :disabled="isDisabled"
     @change="preHandleChange"

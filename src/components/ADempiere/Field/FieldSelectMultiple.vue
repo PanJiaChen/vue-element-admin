@@ -5,7 +5,7 @@
     filterable
     allow-create
     :placeholder="metadata.help"
-    class="custom-field-select custom-field-select-multiple"
+    :class="'custom-field-select custom-field-select-multiple ' + metadata.cssClassName"
     @change="preHandleChange"
   >
     <el-option

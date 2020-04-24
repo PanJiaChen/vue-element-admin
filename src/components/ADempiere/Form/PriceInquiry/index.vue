@@ -8,9 +8,10 @@
     >
       <el-row>
         <field
-          v-for="(metadata) in metadataList"
-          :key="metadata.columnName"
-          :metadata-field="metadata"
+          v-for="(field) in fieldsList"
+          :key="field.columnName"
+          :metadata-field="field"
+          :v-model="field.value"
         />
       </el-row>
     </el-form>
@@ -28,122 +29,75 @@
 
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin'
-import { TEXT } from '@/utils/ADempiere/references'
+import fieldsList from './fieldsList.js'
+import { getProductPrice } from '@/api/ADempiere/pos'
+
 export default {
-  name: 'TestView',
+  name: 'PriceInquiry',
   mixins: [formMixin],
   data() {
     return {
-      metadataList: [],
-      panelMetadata: {},
-      isLoaded: false,
-      panelType: 'custom'
-    }
-  },
-  computed: {
-    getterPanel() {
-      return this.$store.getters.getPanel(this.metadata.containerUuid)
+      fieldsList
     }
   },
   created() {
-    this.getPanel()
+    this.unsubscribe = this.subscribeChanges()
+  },
+  beforeDestroy() {
+    this.unsubscribe()
   },
   methods: {
-    setFieldsList() {
-      const fieldsList = []
-      // Product Code
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'ProductValue',
-        overwriteDefinition: {
-          size: 24,
-          sequence: 10,
-          isMandatory: true
+    subscribeChanges() {
+      return this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'changeFieldValue' && mutation.payload.field.columnName === 'ProductValue') {
+          // cleans all values except column name 'ProductValue'
+          this.setValues({ withOutColumnNames: ['ProductValue'] })
+          getProductPrice({
+            searchValue: mutation.payload.newValue
+          })
+            .then(productPrice => {
+              const { product, taxRate } = productPrice
+
+              const values = {
+                ProductName: product.name,
+                ProductDescription: product.description,
+                PriceList: productPrice.priceList,
+                TaxAmt: this.getTaxAmount(productPrice.priceList, taxRate.rate),
+                GrandTotal: this.getGrandTotal(productPrice.priceList, taxRate.rate)
+              }
+
+              // set new values except column name 'ProductValue'
+              this.setValues({ values, withOutColumnNames: ['ProductValue'] })
+            })
+            .catch(error => {
+              this.$message({
+                type: 'info',
+                message: error.message
+              })
+            })
         }
       })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Product Name
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'ProductName',
-        overwriteDefinition: {
-          size: 24,
-          sequence: 20,
-          isReadOnly: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Product Description
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'ProductDescription',
-        overwriteDefinition: {
-          size: 24,
-          sequence: 30,
-          displayType: TEXT.id,
-          isReadOnly: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Price List
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'PriceList',
-        overwriteDefinition: {
-          size: 16,
-          sequence: 40,
-          isReadOnly: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Tax Amount
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'TaxAmt',
-        overwriteDefinition: {
-          size: 8,
-          sequence: 50,
-          isReadOnly: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Total
-      this.createFieldFromDictionary({
-        containerUuid: this.metadata.containerUuid,
-        elementColumnName: 'GrandTotal',
-        overwriteDefinition: {
-          size: 24,
-          sequence: 60,
-          isReadOnly: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      this.metadataList = fieldsList
+    },
+    getTaxAmount(priceList, taxRate) {
+      if (this.isEmptyValue(priceList) || this.isEmptyValue(taxRate)) {
+        return 0
+      }
+      return (priceList * taxRate) / 100
+    },
+    getGrandTotal(priceList, taxRate) {
+      if (this.isEmptyValue(priceList)) {
+        return 0
+      }
+      return priceList + this.getTaxAmount(priceList, taxRate)
     }
   }
 }
 </script>
+<style lang="scss">
+  .price-inquiry {
+    input {
+      color: #606266 !important;
+      font-size: 200% !important;
+    }
+  }
+</style>

@@ -6,7 +6,7 @@
     :on-success="handleAvatarSuccess"
     :before-upload="beforeAvatarUpload"
     :disabled="isDisabled"
-    class="avatar-uploader"
+    :class="'avatar-uploader ' + metadata.cssClassName"
   >
     <img v-if="value" :src="value" class="avatar">
     <i v-else class="el-icon-plus avatar-uploader-icon" />

@@ -108,7 +108,7 @@ export function createFieldFromDictionary({
 function getFactoryFromField({
   containerUuid,
   field,
-  overwriteDefinition
+  overwriteDefinition = {}
 }) {
   const fieldDefinition = {
     displayType: field.displayType,
@@ -152,62 +152,14 @@ function getFactoryFromField({
     readOnlyLogic: field.readOnlyLogic,
     parentFieldsList: field.parentFieldsList,
     dependentFieldsList: field.dependentFieldsList,
-    contextInfo: field.contextInfo
+    contextInfo: field.contextInfo,
+    // Overwrite definition
+    ...overwriteDefinition
   }
-  // Overwrite definition
-  if (!isEmptyValue(overwriteDefinition)) {
-    if (!isEmptyValue(overwriteDefinition.isQueryCriteria)) {
-      fieldDefinition.isQueryCriteria = overwriteDefinition.isQueryCriteria
-    }
-    if (!isEmptyValue(overwriteDefinition.isMandatory)) {
-      fieldDefinition.isMandatory = overwriteDefinition.isMandatory
-    }
-    if (!isEmptyValue(overwriteDefinition.isReadOnly)) {
-      fieldDefinition.isReadOnly = overwriteDefinition.isReadOnly
-    }
-    if (!isEmptyValue(overwriteDefinition.isSelectionColumn)) {
-      fieldDefinition.isSelectionColumn = overwriteDefinition.isSelectionColumn
-    }
-    if (!isEmptyValue(overwriteDefinition.isUpdateable)) {
-      fieldDefinition.isUpdateable = overwriteDefinition.isUpdateable
-    }
-    if (!isEmptyValue(overwriteDefinition.isFieldOnly)) {
-      fieldDefinition.isFieldOnly = overwriteDefinition.isFieldOnly
-    }
-    if (!isEmptyValue(overwriteDefinition.isRange)) {
-      fieldDefinition.isRange = overwriteDefinition.isRange
-    }
-    if (!isEmptyValue(overwriteDefinition.displayLogic)) {
-      fieldDefinition.displayLogic = overwriteDefinition.displayLogic
-    }
-    if (!isEmptyValue(overwriteDefinition.mandatoryLogic)) {
-      fieldDefinition.mandatoryLogic = overwriteDefinition.mandatoryLogic
-    }
-    if (!isEmptyValue(overwriteDefinition.readOnlyLogic)) {
-      fieldDefinition.readOnlyLogic = overwriteDefinition.readOnlyLogic
-    }
-    if (!isEmptyValue(overwriteDefinition.formatPattern)) {
-      fieldDefinition.formatPattern = overwriteDefinition.formatPattern
-    }
-    if (!isEmptyValue(overwriteDefinition.vFormat)) {
-      fieldDefinition.vFormat = overwriteDefinition.vFormat
-    }
-    if (!isEmptyValue(overwriteDefinition.defaultValue)) {
-      fieldDefinition.defaultValue = overwriteDefinition.defaultValue
-    }
-    if (!isEmptyValue(overwriteDefinition.defaultValueTo)) {
-      fieldDefinition.defaultValueTo = overwriteDefinition.defaultValueTo
-    }
-    if (!isEmptyValue(overwriteDefinition.displayType)) {
-      fieldDefinition.displayType = overwriteDefinition.displayType
-    }
-    if (!isEmptyValue(overwriteDefinition.size)) {
-      fieldDefinition.size = overwriteDefinition.size
-    }
-  }
+
   //  Convert it
   return createFieldFromDefinition({
-    containerUuid: containerUuid,
+    containerUuid,
     columnName: field.columnName,
     definition: fieldDefinition
   })
@@ -218,6 +170,7 @@ export function createFieldFromDefinition({
   parentUuid,
   containerUuid,
   columnName,
+  panelType = 'form',
   definition = {}
 }) {
   if (!isEmptyValue(definition)) {
@@ -270,6 +223,7 @@ export function createFieldFromDefinition({
     definition.reference = reference
   }
   return getFieldTemplate({
+    panelType,
     ...definition,
     isShowedFromUser: true,
     isCustomField: true,

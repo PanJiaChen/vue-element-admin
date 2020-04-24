@@ -35,7 +35,8 @@ const browser = {
             const panelType = 'browser'
             const additionalAttributes = {
               containerUuid,
-              panelType
+              panelType,
+              isEvaluateValueChanges: true
             }
             const {
               query,

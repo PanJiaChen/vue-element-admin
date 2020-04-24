@@ -10,7 +10,7 @@
       :disabled="isDisabled"
       :precision="precision"
       controls-position="right"
-      :class="'display-type-amount'"
+      :class="'display-type-amount ' + metadata.cssClassName"
       @change="preHandleChange"
       @blur="changeValue"
       @keydown.native="calculateValue"

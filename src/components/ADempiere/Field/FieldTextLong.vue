@@ -1,5 +1,5 @@
 <template>
-  <div :id="id" :class="classDisable" />
+  <div :id="id" :class="classDisable + ' ' + metadata.cssClassName" />
 </template>
 
 <script>

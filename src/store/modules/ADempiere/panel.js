@@ -85,7 +85,7 @@ const panel = {
               count++
             }
           } else {
-            if (['browser', 'process', 'report', 'custom'].includes(panelType) ||
+            if (['browser', 'process', 'report', 'form'].includes(panelType) ||
               panelType === 'window' && params.isParentTab) {
               dispatch('setContext', {
                 parentUuid: params.parentUuid,
@@ -393,6 +393,7 @@ const panel = {
      * @param {object} fieldList, field list of panel
      * @param {object} newValues, values to set in panel
      * @param {boolean} isSendToServer, indicate if changes send to server
+     * @param {boolean} isChangedAllValues, check if it changes all the values of the fields, if it does not exist, set an empty value
      */
     notifyPanelChange({ dispatch, getters, rootGetters }, {
       parentUuid,
@@ -407,7 +408,8 @@ const panel = {
       isPrivateAccess = false,
       fieldList = [],
       isChangeFromCallout = false,
-      isChangeMultipleFields = true
+      isChangeMultipleFields = true,
+      isChangedAllValues = false
     }) {
       return new Promise(resolve => {
         if (!fieldList.length) {
@@ -422,7 +424,12 @@ const panel = {
 
           // Evaluate with hasOwnProperty if exits this value
           if (!newValues.hasOwnProperty(actionField.columnName)) {
-            return
+            if (!isChangedAllValues || withOutColumnNames.includes(actionField.columnName)) {
+              // breaks if this value does not exist or ignore with out column names
+              return
+            }
+            // set empty value and continue
+            newValues[actionField.columnName] = undefined
           }
 
           if (isChangeFromCallout &&
@@ -630,7 +637,7 @@ const panel = {
         }
 
         // the field has not changed, then the action is broken
-        if (newValue === field.value && isEmptyValue(displayColumn) && !isAdvancedQuery) {
+        if (newValue === field.value && isEmptyValue(displayColumn) && field.isEvaluateValueChanges) {
           resolve()
           return
         }

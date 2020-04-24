@@ -41,7 +41,6 @@
             <form-panel
               :metadata="{
                 ...formMetadata,
-                containerUuid: formUuid,
                 title: formTitle
               }"
             />

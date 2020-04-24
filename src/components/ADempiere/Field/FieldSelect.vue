@@ -6,7 +6,7 @@
     :placeholder="metadata.help"
     :loading="isLoading"
     value-key="key"
-    :class="classStyle"
+    :class="classStyle + ' ' + metadata.cssClassName"
     clearable
     :multiple="isSelectMultiple"
     :allow-create="metadata.isSelectCreated"

@@ -4,6 +4,7 @@
     v-model="value"
     show-alpha
     :disabled="isDisabled"
+    :class="metadata.cssClassName"
     @change="preHandleChange"
   />
 </template>

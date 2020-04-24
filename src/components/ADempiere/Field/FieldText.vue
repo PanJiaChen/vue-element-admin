@@ -4,6 +4,7 @@
     v-model="value"
     :pattern="pattern"
     :rows="rows"
+    :class="metadata.cssClassName"
     :type="typeTextBox"
     :placeholder="metadata.help"
     :readonly="Boolean(metadata.readonly)"

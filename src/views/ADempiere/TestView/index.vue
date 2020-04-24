@@ -1,213 +1,163 @@
 <template>
-  <div class="wrapper">
-    <el-form
-      v-if="isLoaded"
-      key="form-loaded"
-      label-position="top"
-      label-width="200px"
-    >
-      <el-row>
-        <field
-          v-for="(metadata) in metadataList"
-          :key="metadata.columnName"
-          :metadata-field="metadata"
-        />
+  <el-container
+    v-if="isLoaded"
+    key="form-loaded"
+    class="view-base"
+    style="height: 84vh;"
+  >
+    <el-header style="height: 39px;">
+      <context-menu
+        :menu-parent-uuid="$route.meta.parentUuid"
+        :container-uuid="metadata.containerUuid"
+        :panel-type="panelType"
+      />
+    </el-header>
+    <el-main>
+      <el-row :gutter="20">
+        <el-col :span="24">
+          <el-card
+            class="content-collapse"
+            :style="isEmptyValue(metadata.fieldList) ? 'height: 75vh !important;' : ''"
+          >
+            <h3 class="warn-content text-center">
+              <el-popover
+                v-if="!isEmptyValue(metadata.help)"
+                ref="helpTitle"
+                placement="top-start"
+                :title="formTitle"
+                width="400"
+                trigger="hover"
+              >
+                <div v-html="metadata.help" />
+              </el-popover>
+              <el-button
+                v-popover:helpTitle
+                type="text"
+                class="title text-center"
+              >
+                {{ formTitle }}
+              </el-button>
+            </h3>
+
+            <!-- emulated component form -->
+            <div class="wrapper">
+              <el-form
+                label-position="top"
+                label-width="200px"
+              >
+                <el-row>
+                  <field
+                    v-for="(fieldMetadata) in fieldsList"
+                    :key="fieldMetadata.columnName"
+                    :metadata-field="fieldMetadata"
+                  />
+                </el-row>
+              </el-form>
+            </div>
+            <!-- emulated component form -->
+
+          </el-card>
+        </el-col>
       </el-row>
-    </el-form>
-    <div
-      v-else
-      key="form-loading"
-      v-loading="!isLoaded"
-      :element-loading-text="$t('notifications.loading')"
-      element-loading-spinner="el-icon-loading"
-      element-loading-background="rgba(255, 255, 255, 0.8)"
-      class="loading-panel"
-    />
-  </div>
+    </el-main>
+  </el-container>
+  <div
+    v-else
+    key="form-loading"
+    v-loading="!isLoaded"
+    :element-loading-text="$t('notifications.loading')"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(255, 255, 255, 0.8)"
+    class="view-loading"
+  />
 </template>
 
 <script>
-import Field from '@/components/ADempiere/Field'
-import { createFieldFromDefinition, createFieldFromDictionary } from '@/utils/ADempiere/lookupFactory'
-import { URL, TEXT, NUMBER, INTEGER, TEXT_LONG, TABLE_DIRECT } from '@/utils/ADempiere/references'
+import formMixin from '@/components/ADempiere/Form/formMixin'
+import fieldsList from './fieldsList.js'
+import ContextMenu from '@/components/ADempiere/ContextMenu'
 
 export default {
   name: 'TestView',
   components: {
-    Field
+    ContextMenu
+  },
+  mixins: [formMixin],
+  props: {
+    metadata: {
+      type: Object,
+      default: () => {
+        return {
+          containerUuid: 'Test-View',
+          name: 'Test View'
+        }
+      }
+    }
   },
   data() {
     return {
-      metadataList: [],
-      panelMetadata: {},
-      isLoaded: false,
-      panelUuid: 'Test-View',
-      panelType: 'custom'
+      fieldsList
     }
   },
   computed: {
-    getterPanel() {
-      return this.$store.getters.getPanel(this.panelUuid)
-    }
-  },
-  created() {
-    this.getPanel()
-  },
-  methods: {
-    getPanel() {
-      const panel = this.getterPanel
-      if (panel) {
-        this.metadataList = panel.fieldList
-        this.isLoaded = true
-      } else {
-        this.setFieldsList()
-        this.$store.dispatch('addPanel', {
-          name: 'Test View',
-          uuid: this.panelUuid,
-          panelType: this.panelType,
-          fieldList: this.metadataList
-        })
-          .then(responsePanel => {
-            this.metadataList = responsePanel.fieldList
-          })
-          .finally(() => {
-            this.isLoaded = true
-          })
-      }
-    },
-    setFieldsList() {
-      const fieldsList = []
-
-      let sequence = 10
-      // URL
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'URL',
-        definition: {
-          name: 'Web',
-          displayType: URL.id,
-          panelType: this.panelType,
-          sequence
-        }
-      }))
-      // From Field UUID
-      createFieldFromDictionary({
-        containerUuid: this.panelUuid,
-        fieldUuid: '8ceabe8a-fb40-11e8-a479-7a0060f0aa01'
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // From Column UUID
-      createFieldFromDictionary({
-        containerUuid: this.panelUuid,
-        columnUuid: '8b4bbb7e-fb40-11e8-a479-7a0060f0aa01'
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // From Element Column Name
-      createFieldFromDictionary({
-        containerUuid: this.panelUuid,
-        elementColumnName: 'M_RMA_ID'
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // From Table and Column Name
-      createFieldFromDictionary({
-        containerUuid: this.panelUuid,
-        tableName: 'C_BPartner',
-        columnName: 'PaymentRule',
-        overwriteDefinition: {
-          isMandatory: true
-        }
-      })
-        .then(metadata => {
-          fieldsList.push(metadata)
-        }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
-        })
-      // Table direct
-      // To be define
-      sequence = sequence + 10
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'C_Currency_ID',
-        definition: {
-          name: 'Currency',
-          displayType: TABLE_DIRECT.id,
-          panelType: this.panelType,
-          keyColumn: 'C_Currency.C_Currency_ID',
-          directQuery: 'SELECT C_Currency.C_Currency_ID,NULL,C_Currency.ISO_Code,C_Currency.IsActive FROM C_Currency WHERE C_Currency.C_Currency_ID=?',
-          query: 'SELECT C_Currency.C_Currency_ID,NULL,C_Currency.ISO_Code,C_Currency.IsActive FROM C_Currency ORDER BY 3',
-          sequence
-        }
-      }))
-
-      sequence = sequence + 10
-      // Text
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'Name',
-        definition: {
-          name: 'Only Name',
-          displayType: TEXT.id,
-          panelType: this.panelType,
-          displayLogic: '@URL@!""',
-          sequence
-        }
-      }))
-
-      sequence = sequence + 10
-      // Amount
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'Amount',
-        definition: {
-          name: 'Amount for it',
-          displayType: NUMBER.id,
-          panelType: this.panelType,
-          readOnlyLogic: '@C_Currency_ID@<>""',
-          sequence
-        }
-      }))
-
-      sequence = sequence + 10
-      // Integer
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'SeqNo',
-        definition: {
-          name: 'Sequence for record',
-          displayType: INTEGER.id,
-          panelType: this.panelType,
-          mandatoryLogic: '@URL@!""',
-          sequence
-        }
-      }))
-
-      sequence = sequence + 10
-      // Text Long
-      fieldsList.push(createFieldFromDefinition({
-        containerUuid: this.panelUuid,
-        columnName: 'Description',
-        definition: {
-          name: 'Only Description',
-          displayType: TEXT_LONG.id,
-          panelType: this.panelType,
-          sequence
-        }
-      }))
-
-      this.metadataList = fieldsList
+    formTitle() {
+      return this.metadata.name || this.$route.meta.title
     }
   }
 }
 </script>
+
+<style>
+  .el-card__body {
+    padding-top: 0px !important;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+  }
+</style>
+<style scoped >
+  .view-base {
+    height: 100%;
+    min-height: calc(100vh - 84px);
+  }
+
+  .view-loading {
+    padding: 100px 100px;
+    height: 100%;
+  }
+
+  .title, .custom-title {
+    color: #000;
+    text-size-adjust: 20px;
+    font-size: 100%;
+    font-weight: 605 !important;
+    /* left: 50%; */
+  }
+
+  .w-33 {
+    width: 100%;
+    background-color: transparent;
+  }
+
+  .warn-content {
+    margin: 0px 0px !important;
+    padding-top: 0px !important;
+  }
+  .content-help {
+    width: 100%;
+    height: 200%;
+    padding-left: 39px !important;
+  }
+  .el-card {
+    width: 100% !important;
+    height: 200% !important;
+  }
+  .content-collapse {
+    padding-left: 20 px !important;
+    padding-top: 50 px !important;
+  }
+
+  .center{
+    text-align: center;
+  }
+</style>
