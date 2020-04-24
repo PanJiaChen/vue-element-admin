@@ -20,7 +20,7 @@ export function hasTranslation(text) {
  * @param {string} name
  * @param {array} logs
  */
-export function showNotification({ type, title, message, summary, name, logs = [] }) {
+export function showNotification({ type, title, message, summary, name, logs = [], isRedirect = true }) {
   title = hasTranslation(title)
   if (message) {
     message = hasTranslation(message)
@@ -52,9 +52,11 @@ export function showNotification({ type, title, message, summary, name, logs = [
     position: 'bottom-right',
     dangerouslyUseHTMLString: true,
     onClick() {
-      router.push({
-        name: 'ProcessActivity'
-      })
+      if (isRedirect) {
+        router.push({
+          name: 'ProcessActivity'
+        })
+      }
     }
   })
 }

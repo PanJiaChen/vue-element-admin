@@ -415,59 +415,7 @@ export const contextMixin = {
     },
     runAction(action) {
       if (action.type === 'action') {
-        // run process or report
-        const fieldNotReady = this.$store.getters.isNotReadyForSubmit(this.$route.meta.uuid)
-        if (!fieldNotReady) {
-          let containerParams = this.$route.meta.uuid
-          if (this.lastParameter !== undefined) {
-            containerParams = this.lastParameter
-          }
-
-          let menuParentUuid = this.menuParentUuid
-          if (this.isEmptyValue(menuParentUuid) && this.$route.params) {
-            if (!this.isEmptyValue(this.$route.params.menuParentUuid)) {
-              menuParentUuid = this.$route.params.menuParentUuid
-            }
-          }
-
-          if (this.panelType === 'process') {
-            this.$store.dispatch('setTempShareLink', {
-              processId: this.$route.params.processId,
-              href: window.location.href
-            })
-          }
-
-          let reportFormat = action.reportExportType
-          if (this.isEmptyValue(reportFormat)) {
-            reportFormat = this.$route.query.reportType
-            if (this.isEmptyValue(reportFormat)) {
-              reportFormat = this.$route.meta.reportFormat
-              if (this.isEmptyValue(reportFormat)) {
-                reportFormat = 'html'
-              }
-            }
-          }
-
-          this.$store.dispatch(action.action, {
-            action,
-            parentUuid: this.containerUuid,
-            containerUuid: containerParams, // EVALUATE IF IS action.uuid
-            panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-            reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
-            menuParentUuid, // to load relationsList in context menu (report view)
-            routeToDelete: this.$route
-          })
-            .catch(error => {
-              console.warn(error)
-            })
-        } else {
-          this.showNotification({
-            type: 'warning',
-            title: this.$t('notifications.emptyValues'),
-            name: '<b>' + fieldNotReady.name + '.</b> ',
-            message: this.$t('notifications.fieldMandatory')
-          })
-        }
+        this.executeAction(action)
       } else if (action.type === 'process') {
         // run process associate with view (window or browser)
         this.showModal(action)
@@ -497,6 +445,64 @@ export const contextMixin = {
         }
       } else if (action.type === 'updateReport') {
         this.updateReport(action)
+      }
+    },
+    executeAction(action) {
+      let containerParams = this.$route.meta.uuid
+      if (this.lastParameter !== undefined) {
+        containerParams = this.lastParameter
+      }
+      const fieldsNotReady = this.$store.getters.getFieldListEmptyMandatory({
+        containerUuid: containerParams
+      })
+
+      // run process or report
+      if (this.isEmptyValue(fieldsNotReady)) {
+        let menuParentUuid = this.menuParentUuid
+        if (this.isEmptyValue(menuParentUuid) && this.$route.params) {
+          if (!this.isEmptyValue(this.$route.params.menuParentUuid)) {
+            menuParentUuid = this.$route.params.menuParentUuid
+          }
+        }
+
+        if (this.panelType === 'process') {
+          this.$store.dispatch('setTempShareLink', {
+            processId: this.$route.params.processId,
+            href: window.location.href
+          })
+        }
+
+        let reportFormat = action.reportExportType
+        if (this.isEmptyValue(reportFormat)) {
+          reportFormat = this.$route.query.reportType
+          if (this.isEmptyValue(reportFormat)) {
+            reportFormat = this.$route.meta.reportFormat
+            if (this.isEmptyValue(reportFormat)) {
+              reportFormat = 'html'
+            }
+          }
+        }
+
+        this.$store.dispatch(action.action, {
+          action,
+          parentUuid: this.containerUuid,
+          containerUuid: containerParams, // EVALUATE IF IS action.uuid
+          panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+          reportFormat, // this.$route.query.reportType ? this.$route.query.reportType : action.reportExportType,
+          menuParentUuid, // to load relationsList in context menu (report view)
+          routeToDelete: this.$route
+        })
+          .catch(error => {
+            console.warn(error)
+          })
+      } else {
+        this.showNotification({
+          type: 'warning',
+          title: this.$t('notifications.emptyValues'),
+          name: '<b>' + fieldsNotReady + '.</b> ',
+          message: this.$t('notifications.fieldMandatory'),
+          isRedirect: false
+        })
       }
     },
     updateReport(action) {
