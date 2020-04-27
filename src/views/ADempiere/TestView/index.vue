@@ -1,6 +1,5 @@
 <template>
   <el-container
-    v-if="isLoaded"
     key="form-loaded"
     class="view-base"
     style="height: 84vh;"
@@ -16,6 +15,7 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-card
+            v-if="isLoaded"
             class="content-collapse"
             :style="isEmptyValue(metadata.fieldList) ? 'height: 75vh !important;' : ''"
           >
@@ -57,19 +57,19 @@
             <!-- emulated component form -->
 
           </el-card>
+          <div
+            v-else
+            key="form-loading"
+            v-loading="!isLoaded"
+            :element-loading-text="$t('notifications.loading')"
+            element-loading-spinner="el-icon-loading"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            class="view-loading"
+          />
         </el-col>
       </el-row>
     </el-main>
   </el-container>
-  <div
-    v-else
-    key="form-loading"
-    v-loading="!isLoaded"
-    :element-loading-text="$t('notifications.loading')"
-    element-loading-spinner="el-icon-loading"
-    element-loading-background="rgba(255, 255, 255, 0.8)"
-    class="view-loading"
-  />
 </template>
 
 <script>
