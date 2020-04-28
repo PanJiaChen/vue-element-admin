@@ -1,7 +1,7 @@
 import { getLanguage } from '@/lang/index'
-import { getToken, getCurrentOrganization, getCurrentWarehouse } from '@/utils/auth'
 import POS from '@adempiere/grpc-pos-client'
 import { BUSINESS_DATA_ADDRESS } from '@/api/ADempiere/constants'
+import { getToken, getCurrentOrganization, getCurrentWarehouse } from '@/utils/auth'
 
 // Get Instance for connection
 function Instance() {

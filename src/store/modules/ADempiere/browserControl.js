@@ -1,4 +1,4 @@
-import { getBrowserSearch } from '@/api/ADempiere/data'
+import { getBrowserSearch } from '@/api/ADempiere/browser'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'

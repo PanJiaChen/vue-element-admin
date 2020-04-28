@@ -30,7 +30,7 @@
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin'
 import fieldsList from './fieldsList.js'
-import { getProductPrice } from '@/api/ADempiere/pos'
+import { getProductPrice } from '@/api/ADempiere/form/price-checking'
 
 export default {
   name: 'PriceInquiry',

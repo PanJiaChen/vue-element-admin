@@ -5,7 +5,7 @@ import {
   requestListRecordChats,
   requestListChatEntries,
   requestCreateChatEntry
-} from '@/api/ADempiere/data'
+} from '@/api/ADempiere/window'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const initStateContainerInfo = {

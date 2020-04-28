@@ -1,8 +1,5 @@
-import {
-  requestLanguages,
-  requestTranslations,
-  updateEntity
-} from '@/api/ADempiere/data'
+import { requestLanguages } from '@/api/ADempiere/system-core'
+import { requestTranslations, updateEntity } from '@/api/ADempiere/persistence'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const languageControl = {

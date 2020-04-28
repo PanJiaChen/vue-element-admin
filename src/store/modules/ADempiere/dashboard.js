@@ -1,5 +1,5 @@
 // Default store for handle dashboard refresh and other functionalities
-import { requestLisDashboards, getRecentItems } from '@/api/ADempiere/data'
+import { requestLisDashboards, getRecentItems } from '@/api/ADempiere/dashboard/dashboard'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { getCurrentRole } from '@/utils/auth'

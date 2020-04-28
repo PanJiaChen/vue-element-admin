@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { getFavoritesFromServer } from '@/api/ADempiere/data'
+import { getFavoritesFromServer } from '@/api/ADempiere/dashboard/dashboard'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 import { showMessage } from '@/utils/ADempiere/notification'

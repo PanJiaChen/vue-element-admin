@@ -69,6 +69,7 @@
 </template>
 
 <script>
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import contextInfo from '@/components/ADempiere/Field/popover/contextInfo'
 import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
@@ -122,6 +123,9 @@ export default {
   computed: {
     // load the component that is indicated in the attributes of received property
     componentRender() {
+      if (isEmptyValue(this.field.componentPath)) {
+        return () => import('@/components/ADempiere/Field/FieldText')
+      }
       if (this.isSelectCreated) {
         return () => import(`@/components/ADempiere/Field/FieldSelectMultiple`)
       }

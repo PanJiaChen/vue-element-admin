@@ -13,7 +13,7 @@ import {
   removeCurrentWarehouse,
   removeCurrentOrganization
 } from '@/utils/auth'
-import { getOrganizationsList, getWarehousesList } from '@/api/ADempiere/data'
+import { getOrganizationsList, getWarehousesList } from '@/api/ADempiere/system-core'
 import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'

@@ -24,7 +24,7 @@
 </template>
 
 <script>
-
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 export default {
   name: 'Dashboard',
   props: {
@@ -47,8 +47,8 @@ export default {
       if (this.unsupportedDashboards.includes(this.metadata.fileName)) {
         return
       }
-      if (this.metadata.fileName === 'userfavorites') {
-        return () => import('@/components/ADempiere/Dashboard/favourites')
+      if (isEmptyValue(this.metadata.fileName)) {
+        return () => import('@/components/ADempiere/Dashboard/calendar')
       }
       return () => import(`@/components/ADempiere/Dashboard/${this.metadata.fileName}`)
     }

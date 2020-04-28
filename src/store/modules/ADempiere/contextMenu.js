@@ -1,5 +1,5 @@
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
-import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/ADempiere/data'
+import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/ADempiere/dashboard/dashboard'
 
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component

@@ -1,4 +1,4 @@
-import { getLookup, getLookupList } from '@/api/ADempiere/data'
+import { getLookup, getLookupList } from '@/api/ADempiere/values'
 import { getToken as getSession } from '@/utils/auth'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'

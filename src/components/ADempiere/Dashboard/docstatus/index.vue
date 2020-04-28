@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { getPendingDocumentsFromServer } from '@/api/ADempiere/data'
+import { getPendingDocumentsFromServer } from '@/api/ADempiere/dashboard/dashboard'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 

@@ -1,4 +1,4 @@
-import { runCallOutRequest } from '@/api/ADempiere/data'
+import { runCallOutRequest } from '@/api/ADempiere/rule'
 import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 

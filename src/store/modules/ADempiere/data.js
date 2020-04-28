@@ -1,13 +1,7 @@
 import Vue from 'vue'
-import {
-  getEntity,
-  getEntitiesList,
-  getDefaultValueFromServer,
-  getContextInfoValueFromServer,
-  getPrivateAccessFromServer,
-  lockPrivateAccessFromServer,
-  unlockPrivateAccessFromServer
-} from '@/api/ADempiere/data'
+import { getEntity, getEntitiesList } from '@/api/ADempiere/persistence'
+import { getDefaultValueFromServer, getContextInfoValueFromServer } from '@/api/ADempiere/values'
+import { getPrivateAccessFromServer, lockPrivateAccessFromServer, unlockPrivateAccessFromServer } from '@/api/ADempiere/private-access'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'

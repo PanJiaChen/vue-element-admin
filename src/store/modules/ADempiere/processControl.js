@@ -1,7 +1,7 @@
 import {
   runProcess,
   requestListProcessesLogs
-} from '@/api/ADempiere/data'
+} from '@/api/ADempiere/process'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'

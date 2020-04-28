@@ -1,4 +1,5 @@
-import { createEntity, updateEntity, deleteEntity, getReferencesList, rollbackEntity } from '@/api/ADempiere/data'
+import { createEntity, updateEntity, deleteEntity, rollbackEntity } from '@/api/ADempiere/persistence'
+import { getReferencesList } from '@/api/ADempiere/values'
 import { convertObjectToArrayPairs, isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'

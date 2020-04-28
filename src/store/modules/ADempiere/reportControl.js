@@ -3,7 +3,7 @@ import {
   requestPrintFormats,
   requestDrillTables,
   getReportOutput
-} from '@/api/ADempiere/data'
+} from '@/api/ADempiere/report'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const initStateReportControl = {
