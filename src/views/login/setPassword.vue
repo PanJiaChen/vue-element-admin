@@ -79,7 +79,10 @@
 
 <script>
 import { loginMixin } from '@/views/login/loginMixin'
-
+import { resetPasswordFromToken } from '@/api/ADempiere/enrollment'
+import { showMessage } from '@/utils/ADempiere/notification'
+import language from '@/lang'
+import router from '@/router'
 export default {
   name: 'ChangePassword',
   mixins: [loginMixin],
@@ -165,18 +168,44 @@ export default {
     handleSubmit() {
       if (!this.isEmptyValue(this.changePasswordForm.password) && !this.isEmptyValue(this.changePasswordForm.passwordConfirm)) {
         this.loading = true
-        let actionType = 'resetPasswordFromToken'
-        if (this.formName === 'createPassword') {
-          actionType = 'createPasswordFromToken'
-        }
-        this.$store.dispatch(actionType, {
+        this.createPasswordFromToken({
           token: this.$route.query.token,
           password: this.changePasswordForm.password
         })
-          .finally(() => {
-            this.loading = false
-          })
       }
+    },
+    createPasswordFromToken({
+      token,
+      password
+    }) {
+      resetPasswordFromToken({
+        token: token,
+        password: password
+      })
+        .then(createPasswordResponse => {
+          if (createPasswordResponse.responseTypeStatus === 'OK') {
+            showMessage({
+              message: language.t('login.createPasswordSuccessful'),
+              type: 'success'
+            })
+          } else {
+            showMessage({
+              message: language.t('login.unexpectedError'),
+              type: 'error'
+            })
+          }
+          router.push({
+            path: 'login'
+          })
+        })
+        .catch(error => {
+          showMessage({
+            message: language.t('login.unexpectedError'),
+            type: 'error'
+          })
+          console.warn(`Create Password - Error ${error.code}: ${error.message}`)
+        })
+        .finally(this.loading = false)
     },
     verifyToken() {
       if (this.$route.query && this.$route.query.token && !this.isEmptyValue(this.$route.query.token)) {

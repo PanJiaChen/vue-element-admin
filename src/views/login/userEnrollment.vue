@@ -119,6 +119,10 @@
 
 <script>
 import { loginMixin } from '@/views/login/loginMixin'
+import router from '@/router'
+import { showMessage } from '@/utils/ADempiere/notification'
+import language from '@/lang'
+import { enrollmentUser } from '@/api/ADempiere/enrollment'
 
 export default {
   name: 'UserEnrollment',
@@ -253,10 +257,24 @@ export default {
         if (this.isShowPassword) {
           dataToSubmit.password = this.enrollmentUserForm.password
         }
-        this.$store.dispatch('enrollmentUser', dataToSubmit)
-          .finally(() => {
-            this.loading = false
+        enrollmentUser(dataToSubmit)
+          .then(() => {
+            showMessage({
+              message: language.t('login.userEnrollmentSuccessful'),
+              type: 'success'
+            })
+            router.push({
+              path: 'login'
+            })
           })
+          .catch(error => {
+            showMessage({
+              message: language.t('login.unexpectedError'),
+              type: 'error'
+            })
+            console.warn(`Enrollment User - Error ${error.code}: ${error.message}`)
+          })
+          .finally(this.loading = false)
       } else {
         console.log('error submit!!')
         return false

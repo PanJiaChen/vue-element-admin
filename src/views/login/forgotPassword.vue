@@ -49,6 +49,10 @@
 
 <script>
 import { loginMixin } from '@/views/login/loginMixin'
+import router from '@/router'
+import { showMessage } from '@/utils/ADempiere/notification'
+import language from '@/lang'
+import { forgotPassword } from '@/api/ADempiere/enrollment'
 
 export default {
   name: 'ForgotPassword',
@@ -68,10 +72,31 @@ export default {
     handleSubmit() {
       if (!this.isEmptyValue(this.forgotForm.userName)) {
         this.loading = true
-        this.$store.dispatch('forgotPassword', this.forgotForm.userName)
-          .finally(() => {
-            this.loading = false
+        forgotPassword(this.forgotForm.userName)
+          .then(forgotPasswordResponse => {
+            if (forgotPasswordResponse.responseTypeStatus === 'OK') {
+              showMessage({
+                message: language.t('login.passwordResetSendLink') + this.forgotForm.userName,
+                type: 'success'
+              })
+              router.push({
+                path: 'login'
+              })
+            } else {
+              showMessage({
+                message: language.t('login.unexpectedError'),
+                type: 'error'
+              })
+            }
           })
+          .catch(error => {
+            showMessage({
+              message: language.t('login.unexpectedError'),
+              type: 'error'
+            })
+            console.warn(`Forgot Password - Error ${error.code}: ${error.message}`)
+          })
+          .finally(this.loading = false)
       }
     }
   }
