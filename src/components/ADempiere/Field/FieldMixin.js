@@ -22,19 +22,6 @@ export const fieldMixin = {
     }
   },
   computed: {
-    /*
-    getterValue() {
-      const field = this.$store.getters.getFieldFromColumnName({
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        isAdvancedQuery: this.metadata.isAdvancedQuery
-      })
-      if (field) {
-        return field.value
-      }
-      return undefined
-    },
-    */
     isDisabled() {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
     }
@@ -60,6 +47,36 @@ export const fieldMixin = {
      */
     preHandleChange(value) {
       this.handleChange(value)
+    },
+    focusGained(value) {
+      this.$store.dispatch('notifyFocusGained', {
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        value: this.value
+      })
+    },
+    focusLost(value) {
+      this.$store.dispatch('notifyFocusLost', {
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        value: this.value
+      })
+    },
+    keyPressed(value) {
+      this.$store.dispatch('notifyKeyPressed', {
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        value: value.key,
+        keyCode: value.keyCode
+      })
+    },
+    keyReleased(value) {
+      this.$store.dispatch('notifyKeyReleased', {
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        value: value.key,
+        keyCode: value.keyCode
+      })
     },
     /**
      * @param {mixed} value, main value in component
@@ -97,7 +114,12 @@ export const fieldMixin = {
         isSendCallout,
         isChangedOldValue
       }
-
+      // Global Action performed
+      this.$store.dispatch('notifyActionPerformed', {
+        containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
+        value: newValue
+      })
       if (this.metadata.inTable) {
         this.$store.dispatch('notifyCellTableChange', {
           ...sendParameters,

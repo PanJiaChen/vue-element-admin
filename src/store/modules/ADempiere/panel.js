@@ -552,10 +552,18 @@ const panel = {
      * @param {array}   withOutColumnNames
      */
     notifyFieldChange({ commit, dispatch, getters }, {
-      parentUuid, containerUuid, panelType = 'window', isAdvancedQuery = false,
-      columnName, newValue, valueTo, displayColumn,
-      isSendToServer = true, isSendCallout = true,
-      isChangedOldValue = false, withOutColumnNames = [],
+      parentUuid,
+      containerUuid,
+      panelType = 'window',
+      isAdvancedQuery = false,
+      columnName,
+      newValue,
+      valueTo,
+      displayColumn,
+      isSendToServer = true,
+      isSendCallout = true,
+      isChangedOldValue = false,
+      withOutColumnNames = [],
       isChangeMultipleFields = false
     }) {
       return new Promise(async resolve => {

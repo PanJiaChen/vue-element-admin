@@ -9,6 +9,8 @@
     :false-value="false"
     :disabled="isDisabled"
     @change="preHandleChange"
+    @blur="focusLost"
+    @focus="focusGained"
   />
 </template>
 

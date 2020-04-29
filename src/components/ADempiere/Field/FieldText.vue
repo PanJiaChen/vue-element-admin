@@ -13,6 +13,10 @@
     :show-password="Boolean(metadata.isEncrypted)"
     :autofocus="metadata.inTable"
     @change="preHandleChange"
+    @blur="focusLost"
+    @focus="focusGained"
+    @keydown.native="keyPressed"
+    @keyup.native="keyReleased"
   />
 </template>
 

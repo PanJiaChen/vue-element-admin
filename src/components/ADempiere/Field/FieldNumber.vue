@@ -12,9 +12,10 @@
       controls-position="right"
       :class="'display-type-amount ' + metadata.cssClassName"
       @change="preHandleChange"
-      @blur="changeValue"
-      @keydown.native="calculateValue"
-      @keyup.enter.native="changeValue"
+      @blur="focusLost"
+      @focus="focusGained"
+      @keydown.native="keyPressed"
+      @keyup.native="keyReleased"
     />
   </el-tooltip>
 </template>

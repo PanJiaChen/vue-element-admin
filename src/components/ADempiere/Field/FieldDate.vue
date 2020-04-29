@@ -15,6 +15,10 @@
     :disabled="isDisabled"
     :picker-options="pickerOptions"
     @change="preHandleChange"
+    @blur="focusLost"
+    @focus="focusGained"
+    @keydown.native="keyPressed"
+    @keyup.native="keyReleased"
   />
 </template>
 

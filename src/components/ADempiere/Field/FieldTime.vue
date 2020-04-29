@@ -13,6 +13,10 @@
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
     @change="preHandleChange"
+    @blur="focusLost"
+    @focus="focusGained"
+    @keydown.native="keyPressed"
+    @keyup.native="keyReleased"
   />
 </template>
 
