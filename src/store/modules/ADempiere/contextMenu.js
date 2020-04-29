@@ -68,6 +68,9 @@ const contextMenu = {
         references
       })
     },
+    addAction({ state }, newAction) {
+      newAction.push(state.contextMenu.actions)
+    },
     /**
      * TODO: Verify tableName params to change in constant
      * @param {number} recordId

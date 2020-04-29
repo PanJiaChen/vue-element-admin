@@ -156,6 +156,13 @@ export default {
         withOutColumnNames,
         isChangedAllValues: true
       })
+    },
+    addAction(action) {
+      this.$store.dispatch('addAction', {
+        name: action.name,
+        action: action.action,
+        containerUuid: this.metadata.containerUuid
+      })
     }
   }
 }
