@@ -9,7 +9,9 @@
       :container-uuid="browserUuid"
       :panel-type="panelType"
     />
-    <el-header>
+    <el-header
+      v-if="ShowInfoContext"
+    >
       <context-menu
         :menu-parent-uuid="$route.meta.parentUuid"
         :container-uuid="browserUuid"
@@ -103,6 +105,9 @@ export default {
     }
   },
   computed: {
+    ShowInfoContext() {
+      return this.$store.state.settings.ShowInfoContext
+    },
     getterBrowser() {
       return this.$store.getters.getBrowser(this.browserUuid)
     },

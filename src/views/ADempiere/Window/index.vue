@@ -58,7 +58,10 @@
                   <resize-observer @notify="handleResize" />
                   <Split v-shortkey="['f8']" direction="vertical" @onDrag="onDrag" @shortkey.native="handleChangeShowedRecordNavigation(!isShowedRecordNavigation)">
                     <SplitArea :size="sizeAreaStyle" :style="splitAreaStyle">
-                      <el-header :style="isWorkflowBarStatus ? 'height: 45px; background: #F5F7FA' : 'height: 40px'">
+                      <el-header
+                        v-if="ShowInfoContext"
+                        :style="isWorkflowBarStatus ? 'height: 45px; background: #F5F7FA' : 'height: 40px'"
+                      >
                         <el-container>
                           <el-aside width="100%" style="width: 78vw;overflow: hidden;">
                             <el-scrollbar>
@@ -340,6 +343,9 @@ export default {
     next()
   },
   computed: {
+    ShowInfoContext() {
+      return this.$store.state.settings.ShowInfoContext
+    },
     defaultPorcentSplitPane() {
       if (this.isShowedRecordPanel) {
         if (this.isShowedRecordNavigation) {

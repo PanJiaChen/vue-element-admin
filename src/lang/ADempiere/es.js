@@ -224,7 +224,8 @@ export default {
     theme: 'Color del tema',
     tagsView: 'Habilitar Tags-View',
     fixedHeader: 'Encabezado fijo',
-    sidebarLogo: 'Logotipo de la barra lateral'
+    sidebarLogo: 'Logotipo de la barra lateral',
+    showContextMenu: 'Mostrar Menu de Contexto'
   },
   profile: {
     aboutMe: 'Sobre Mi',

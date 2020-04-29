@@ -8,6 +8,7 @@ const state = {
   showSettings: showSettings,
   tagsView: tagsView,
   fixedHeader: fixedHeader,
+  showContextMenu: true,
   sidebarLogo: sidebarLogo
 }
 
@@ -31,4 +32,3 @@ export default {
   mutations,
   actions
 }
-

@@ -5,7 +5,10 @@
     class="view-base"
     style="height: 84vh;"
   >
-    <el-header style="height: 39px;">
+    <el-header
+      v-if="ShowInfoContext"
+      style="height: 39px; background: white;"
+    >
       <context-menu
         :menu-parent-uuid="$route.meta.parentUuid"
         :container-uuid="formUuid"
@@ -79,6 +82,9 @@ export default {
     }
   },
   computed: {
+    ShowInfoContext() {
+      return this.$store.state.settings.ShowInfoContext
+    },
     formTitle() {
       return this.formMetadata.name || this.$route.meta.title
     },
