@@ -51,6 +51,10 @@ export const contextMixin = {
     defaultFromatExport: {
       type: String,
       default: 'xlsx'
+    },
+    isDisplayed: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -146,20 +150,20 @@ export const contextMixin = {
       }
       return false
     },
-    getterDataRecordsAll() {
+    getAllDataRecords() {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
     },
     getDataSelection() {
-      return this.getterDataRecordsAll.selection
+      return this.getAllDataRecords.selection
     },
     getDataRecord() {
-      return this.getterDataRecordsAll.record.filter(fieldItem => {
+      return this.getAllDataRecords.record.filter(fieldItem => {
         if (this.recordUuid === fieldItem.UUID) {
           return fieldItem
         }
       })
     },
-    getterDataLog() {
+    getDataLog() {
       if (this.panelType === 'window') {
         return this.$store.getters.getDataLog(this.containerUuid, this.recordUuid)
       }
@@ -168,7 +172,7 @@ export const contextMixin = {
     processParametersExecuted() {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid).parameters
     },
-    getterWindowOldRoute() {
+    getOldRouteOfWindow() {
       if (this.panelType === 'window') {
         const oldRoute = this.$store.state.windowControl.windowOldRoute
         if (!this.isEmptyValue(oldRoute.query.action) && oldRoute.query.action !== 'create-new' && this.$route.query.action === 'create-new') {
@@ -177,7 +181,7 @@ export const contextMixin = {
       }
       return false
     },
-    metadataReport() {
+    getReportDefinition() {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid)
     },
     isPersonalLock() {
@@ -204,7 +208,7 @@ export const contextMixin = {
         this.generateContextMenu()
       }
     },
-    getterDataLog(newValue, oldValue) {
+    getDataLog(newValue, oldValue) {
       if (this.panelType === 'window' && newValue !== oldValue) {
         this.generateContextMenu()
       }
@@ -380,7 +384,7 @@ export const contextMixin = {
             }
             // rollback
             if (itemAction.action === 'undoModifyData') {
-              itemAction.disabled = Boolean(!this.getterDataLog && !this.getterWindowOldRoute)
+              itemAction.disabled = Boolean(!this.getDataLog && !this.getOldRouteOfWindow)
             }
           }
         })
@@ -420,11 +424,11 @@ export const contextMixin = {
         // run process associate with view (window or browser)
         this.showModal(action)
       } else if (action.type === 'dataAction') {
-        if (action.action === 'undoModifyData' && Boolean(!this.getterDataLog) && this.getterWindowOldRoute) {
+        if (action.action === 'undoModifyData' && Boolean(!this.getDataLog) && this.getOldRouteOfWindow) {
           this.$router.push({
-            path: this.getterWindowOldRoute.path,
+            path: this.getOldRouteOfWindow.path,
             query: {
-              ...this.getterWindowOldRoute.query
+              ...this.getOldRouteOfWindow.query
             }
           })
         } else {
@@ -641,7 +645,7 @@ export const contextMixin = {
       this.$router.push({
         name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid,
         query: {
-          action: this.metadataReport.output.printFormatUuid,
+          action: this.getReportDefinition.output.printFormatUuid,
           tabParent: ROUTES.PRINT_FORMAT_SETUP_WINDOW.tabParent
         }
       })
