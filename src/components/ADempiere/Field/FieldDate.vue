@@ -20,6 +20,7 @@
 
 <script>
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import { DATE_PLUS_TIME } from '@/utils/ADempiere/references'
 
 export default {
   name: 'FieldDate',
@@ -103,7 +104,8 @@ export default {
         picker += 's'
         return picker
       }
-      if (this.metadata.displayType === 16) {
+      // Date + Time reference (16)
+      if (this.metadata.displayType === DATE_PLUS_TIME.id) {
         picker += 'time'
       }
       if (this.metadata.isRange && !this.metadata.inTable) {

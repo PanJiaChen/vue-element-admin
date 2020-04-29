@@ -316,8 +316,8 @@ export default {
     BETWEEN: 'Between ">-<"',
     NOT_NULL: 'Is not null',
     NULL: 'Is null',
-    IN: 'Include',
-    NOT_IN: 'Not include'
+    IN: 'Include "()"',
+    NOT_IN: 'Not include "!()"'
   },
   quickAccess: {
     newRecord: 'Quick Access to Create New Record',

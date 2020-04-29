@@ -18,6 +18,7 @@
 
 <script>
 import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import { TEXT } from '@/utils/ADempiere/references'
 
 export default {
   name: 'FieldText',
@@ -49,7 +50,8 @@ export default {
     typeTextBox() {
       // String, Url, FileName...
       let typeInput = 'text'
-      if (this.metadata.referenceType === 'Text') {
+      // Display Type 'Text' (14)
+      if (this.metadata.displayType === TEXT.id) {
         typeInput = 'textarea'
       }
       if (this.metadata.isEncrypted) {

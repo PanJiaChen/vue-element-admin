@@ -1,3 +1,5 @@
+import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
+
 /**
  * Checks if value is empty. Deep-checks arrays and objects
  * Note: isEmpty([]) == true, isEmpty({}) == true,
@@ -243,14 +245,14 @@ export const recursiveTreeSearch = ({
  * Parsed value to component type
  * @param {mixed} value, value to parsed
  * @param {string} fieldType, or componentPath
- * @param {string} referenceType, reference in ADempiere
+ * @param {number} displayType, reference in ADempiere
  * @param {boolean} isMandatory, field is mandatory
  * @param {boolean} isIdentifier, field is ID
  */
 export function parsedValueComponent({
   fieldType,
   value,
-  referenceType,
+  displayType,
   isMandatory = false,
   isIdentifier = false
 }) {
@@ -325,7 +327,8 @@ export function parsedValueComponent({
       if (typeof value === 'boolean') {
         value = value ? 'Y' : 'N'
       }
-      if (referenceType === 'TableDirect' || (referenceType === 'Table' && isIdentifier)) {
+      // Table (18) or Table Direct (19)
+      if (displayType === TABLE.id || (displayType === TABLE_DIRECT.id && isIdentifier)) {
         if (value !== '' && value !== null && value !== undefined) {
           value = Number(value)
         }

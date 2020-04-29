@@ -568,14 +568,14 @@ const panel = {
           if (!['IN', 'NOT_IN'].includes(field.operator)) {
             newValue = parsedValueComponent({
               fieldType: field.componentPath,
-              referenceType: field.referenceType,
+              displayType: field.displayType,
               value: newValue,
               isIdentifier: field.columnName.includes('_ID')
             })
             if (field.isRange) {
               valueTo = parsedValueComponent({
                 fieldType: field.componentPath,
-                referenceType: field.referenceType,
+                displayType: field.displayType,
                 value: valueTo,
                 isIdentifier: field.columnName.includes('_ID')
               })
@@ -1239,7 +1239,7 @@ const panel = {
 
           valueToReturn = parsedValueComponent({
             fieldType: fieldItem.componentPath,
-            referenceType: fieldItem.referenceType,
+            displayType: fieldItem.displayType,
             isMandatory: fieldItem.isMandatory,
             value: String(valueToReturn) === '[object Object]' && valueToReturn.isSQL ? valueToReturn : String(valueToReturn) === '[object Object]' ? valueToReturn.value : valueToReturn,
             isIdentifier: fieldItem.columnName.includes('_ID')
@@ -1418,7 +1418,7 @@ const panel = {
                 return parsedValueComponent({
                   fieldType: parameterItem.componentPath,
                   value: itemValue,
-                  referenceType: parameterItem.referenceType,
+                  displayType: parameterItem.displayType,
                   isMandatory,
                   isIdentifier: parameterItem.columnName.includes('_ID')
                 })

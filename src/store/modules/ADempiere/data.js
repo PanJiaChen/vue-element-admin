@@ -5,6 +5,7 @@ import { getPrivateAccessFromServer, lockPrivateAccessFromServer, unlockPrivateA
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
+import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
 import language from '@/lang'
 
 const initStateBusinessData = {
@@ -224,7 +225,8 @@ const data = {
                 return
               }
               // always the values for these types of fields are integers
-              if (['TableDirect'].includes(itemField.referenceType)) {
+              // Table (18) or Table Direct (19)
+              if ([TABLE.id, TABLE_DIRECT.id].includes(itemField.diplayType)) {
                 valueGetDisplayColumn = parseInt(valueGetDisplayColumn, 10)
               } else {
                 if (!isNaN(valueGetDisplayColumn)) {

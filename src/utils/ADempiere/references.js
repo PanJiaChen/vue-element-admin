@@ -1,335 +1,507 @@
 // This file is used for set a static values for references of fields,
 // currently exists for ADempiere metadata distints display types and are represented for follow:
+export const DEFAULT_SIZE = {
+  xs: 6,
+  sm: 8,
+  md: 2,
+  lg: 6,
+  xl: 6
+}
 
 // Account Element
 export const ACCOUNT_ELEMENT = {
   id: 25,
-  type: 'FieldText',
-  support: false,
-  description: 'Account Element',
+  isSupported: false,
   valueType: 'INTEGER',
-  alias: ['Account']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Number
 export const NUMBER = {
   id: 12,
-  type: 'FieldNumber',
-  support: true,
-  description: 'Number with 4 decimals',
+  isSupported: true,
   valueType: 'DECIMAL',
-  alias: ['Amount']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Resource Assignment
 export const RESOURCE_ASSIGNMENT = {
   id: 33,
-  type: 'FieldText',
-  support: false,
-  description: 'Resource Assignment',
+  isSupported: false,
   valueType: 'INTEGER',
-  alias: ['Assignment']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Binary Data
 export const BINARY_DATA = {
   id: 23,
-  type: 'FieldBinary',
-  description: 'Binary Data',
-  support: true,
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Binary']
+  componentPath: 'FieldBinary',
+  size: {
+    xs: 6,
+    sm: 6,
+    md: 6,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Button
 export const BUTTON = {
   // this component is hidden
   id: 28,
-  type: 'FieldButton',
-  description: 'Command Button - starts a process',
-  support: true,
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['Button']
+  componentPath: 'FieldButton',
+  size: {
+    xs: 0,
+    sm: 0,
+    md: 0,
+    lg: 0,
+    xl: 0
+  }
 }
 
 // Chart
 export const CHART = {
   id: 53370,
-  type: 'FieldText',
-  support: false,
-  description: 'Chart',
+  isSupported: false,
   valueType: 'STRING',
-  alias: ['Chart']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Color
 export const COLOR = {
   id: 27,
-  type: 'FieldText',
-  support: false,
-  description: 'Color element',
+  isSupported: false,
   valueType: 'INTEGER',
-  alias: ['Color']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Cost or Prices
 export const COSTS_PLUS_PRICES = {
   id: 37,
-  type: 'FieldNumber',
-  support: true,
-  description: 'Costs + Prices (minimum currency precision but if exists more)',
+  isSupported: true,
   valueType: 'DECIMAL',
-  alias: ['Costs+Prices', 'CostsPrices', 'Cost Prices']
+  componentPath: 'FieldNumber',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Date
 export const DATE = {
   id: 15,
-  type: 'FieldDate',
-  support: true,
-  description: 'Date mm/dd/yyyy',
+  isSupported: true,
   valueType: 'DATE',
-  alias: ['Date']
+  componentPath: 'FieldDate',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Date with time
 export const DATE_PLUS_TIME = {
   id: 16,
-  type: 'FieldDate',
-  support: true,
-  description: 'Date with time',
+  isSupported: true,
   valueType: 'DATE',
-  alias: ['DateTime', 'Date Time', 'Date+Time']
+  componentPath: 'FieldDate',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Local File
 export const LOCAL_FILE = {
   id: 39,
-  type: 'FieldText',
-  support: true,
-  description: 'Local File',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['FileName', 'File Name']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Local File Path
 export const LOCAL_FILE_PATH = {
   id: 38,
-  type: 'FieldText',
-  support: true,
-  description: 'Local File Path',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['FilePath', 'File Path']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Local File Path or Name
 export const LOCAL_FILE_PATH_OR_NAME = {
   id: 53670,
-  type: 'FieldText',
-  support: true,
-  description: 'Local File Path or Name',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['FilePathOrName', 'File Path Or Name']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // ID
 export const ID = {
   id: 13,
-  type: 'FieldNumber',
-  support: true,
-  description: '10 Digit Identifier',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['ID']
+  componentPath: 'FieldNumber',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Binary Image Data
 export const BINARY = {
   id: 32,
-  type: 'FieldImage',
-  support: true,
-  description: 'Binary Image Data',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Image']
+  componentPath: 'FieldImage',
+  size: {
+    xs: 6,
+    sm: 6,
+    md: 6,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Integer
 export const INTEGER = {
   id: 11,
-  type: 'FieldNumber',
-  support: true,
-  description: '10 Digit numeric',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Integer']
+  componentPath: 'FieldNumber',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Reference List
 export const LIST = {
   id: 17,
-  type: 'FieldSelect',
-  support: true,
-  description: 'Reference List',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['List']
+  componentPath: 'FieldSelect',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Location Address
 export const LOCATION_ADDRESS = {
   id: 21,
-  type: 'FieldText',
-  support: false,
-  description: 'Location/Address',
+  isSupported: false,
   valueType: 'INTEGER',
-  alias: ['Location', 'Location (Address)', 'Location/Address']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Warehouse Locator Data type
 export const LOCATOR_WAREHOUSE = {
   id: 31,
-  type: 'FieldSelect',
-  support: true,
-  description: 'Warehouse Locator Data type',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Locator', 'Locator (WH)', 'Locator/WH']
+  componentPath: 'FieldSelect',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Memo
 export const MEMO = {
   id: 34,
-  type: 'FieldTextLong',
-  support: true,
+  isSupported: true,
   valueType: 'STRING',
-  description: 'Reference List',
-  alias: ['Memo']
+  componentPath: 'FieldTextLong',
+  size: {
+    xs: 24,
+    sm: 24,
+    md: 24,
+    lg: 24,
+    xl: 24
+  }
 }
 
 // Float Number
 export const FLOAT = {
   id: 22,
-  type: 'FieldNumber',
-  support: true,
-  description: 'Float Number',
+  isSupported: true,
   valueType: 'DECIMAL',
-  alias: ['Number']
+  componentPath: 'FieldNumber',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Printer Name
 export const PRINTER_NAME = {
   id: 42,
-  type: 'FieldText',
-  support: true,
-  description: 'Printer Name',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['PrinterName', 'Printer Name']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Product Attribute
 export const PRODUCT_ATTRIBUTE = {
   id: 35,
-  type: 'FieldText',
-  support: false,
-  description: 'Product Attribute',
+  isSupported: false,
   valueType: 'INTEGER',
-  alias: ['ProductAttribute', 'Product Attribute']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Quantity
 export const QUANTITY = {
   id: 29,
-  type: 'FieldNumber',
-  support: true,
-  description: 'Quantity data type',
+  isSupported: true,
   valueType: 'DECIMAL',
-  alias: ['Quantity']
+  componentPath: 'FieldNumber',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Search
 export const SEARCH = {
   id: 30,
-  type: 'FieldSelect',
-  support: true,
-  description: 'Search Field',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Search']
+  componentPath: 'FieldSelect',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
-// Char
+// Char (display type String)
 export const CHAR = {
   id: 10,
-  type: 'FieldText',
-  support: true,
-  description: 'Character String',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['String']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Table List
 export const TABLE = {
   id: 18,
-  type: 'FieldSelect',
-  support: true,
-  description: 'Table List',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['Table']
+  componentPath: 'FieldSelect',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Table Dir
 export const TABLE_DIRECT = {
   id: 19,
-  type: 'FieldSelect',
-  support: true,
-  description: 'Direct Table Access',
+  isSupported: true,
   valueType: 'INTEGER',
-  alias: ['TableDirect', 'Table Direct']
+  componentPath: 'FieldSelect',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Text
 export const TEXT = {
   id: 14,
-  type: 'FieldText',
-  support: true,
-  description: 'Character String up to 2000 characters',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['Text']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Text Long
 export const TEXT_LONG = {
   id: 36,
-  type: 'FieldTextLong',
-  support: true,
-  description: 'Text (Long) - Text > 2000 characters',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['TextLong', 'Text Long']
+  componentPath: 'FieldTextLong',
+  size: {
+    xs: 24,
+    sm: 24,
+    md: 24,
+    lg: 24,
+    xl: 24
+  }
 }
 
 // Time
 export const TIME = {
   id: 24,
-  type: 'FieldTime',
-  support: true,
-  description: 'Time',
+  isSupported: true,
   valueType: 'DATE',
-  alias: ['Time']
+  componentPath: 'FieldTime',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // URL
 export const URL = {
   id: 40,
-  type: 'FieldText',
-  support: true,
-  description: 'URL',
+  isSupported: true,
   valueType: 'STRING',
-  alias: ['URL', 'Url']
+  componentPath: 'FieldText',
+  size: {
+    xs: 24,
+    sm: 12,
+    md: 8,
+    lg: 6,
+    xl: 6
+  }
 }
 
 // Yes No
 export const YES_NO = {
   id: 20,
-  type: 'FieldYesNo',
-  support: true,
-  description: 'CheckBox',
+  isSupported: true,
   valueType: 'BOOLEAN',
-  alias: ['YesNo', 'Yes No', 'Yes-No']
+  componentPath: 'FieldYesNo',
+  size: {
+    xs: 14,
+    sm: 8,
+    md: 8,
+    lg: 3,
+    xl: 6
+  }
 }
 
 // Some helper methods
@@ -377,6 +549,7 @@ const REFERENCES = [
   PRODUCT_ATTRIBUTE,
   QUANTITY,
   SEARCH,
+  // String as CHAR
   CHAR,
   TABLE,
   TABLE_DIRECT,
@@ -429,6 +602,15 @@ export const FIELDS_READ_ONLY_FORM = [
   }
 ]
 
-export const FIELDS_DECIMALS = [NUMBER.id, QUANTITY.id, COSTS_PLUS_PRICES.id]
+export const FIELDS_DECIMALS = [
+  COSTS_PLUS_PRICES.id,
+  NUMBER.id,
+  QUANTITY.id
+]
 
-export const FIELDS_QUANTITY = [NUMBER.id, QUANTITY.id, INTEGER.id, COSTS_PLUS_PRICES.id]
+export const FIELDS_QUANTITY = [
+  COSTS_PLUS_PRICES.id,
+  INTEGER.id,
+  NUMBER.id,
+  QUANTITY.id
+]

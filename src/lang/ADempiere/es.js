@@ -291,8 +291,8 @@ export default {
     BETWEEN: 'Entre ">-<"',
     NULL: 'No tiene valor',
     NOT_NULL: 'Tiene un valor',
-    IN: 'Incluye',
-    NOT_IN: 'No incluye'
+    IN: 'Incluye "()"',
+    NOT_IN: 'No incluye "!()"'
   },
   quickAccess: {
     newRecord: 'Acceso Rápido para Crear Registro Nuevo',

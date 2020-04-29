@@ -19,7 +19,7 @@
     >
       <template slot="label">
         <operator-comparison
-          v-if="isAdvancedQuery"
+          v-if="field.isComparisonField"
           key="is-field-operator-comparison"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
@@ -75,7 +75,7 @@ import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
 import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
-import FIELDS_DISPLAY_SIZES, { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
+import { DEFAULT_SIZE } from '@/utils/ADempiere/references'
 import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 
@@ -222,23 +222,17 @@ export default {
     },
     sizeFieldResponsive() {
       if (!this.isDisplayed) {
-        return DEFAULT_SIZE.size
+        return DEFAULT_SIZE
       }
 
       let sizeField = {}
-      if (this.field.sizeFieldFromType && this.field.sizeFieldFromType.size) {
+      if (this.field.size) {
         // set field size property
-        sizeField = this.field.sizeFieldFromType.size
-      }
-      if (this.isEmptyValue(sizeField)) {
-        // Sizes from panel and groups
-        sizeField = FIELDS_DISPLAY_SIZES.find(item => {
-          return item.type === this.field.componentPath
-        })
+        sizeField = this.field.size
       }
       if (this.isEmptyValue(sizeField)) {
         // set default size
-        sizeField = DEFAULT_SIZE.size
+        sizeField = DEFAULT_SIZE
       }
 
       const newSizes = {}
@@ -325,8 +319,7 @@ export default {
       let componentReference = evalutateTypeField(this.field.displayType)
       if (this.isEmptyValue(componentReference)) {
         componentReference = {
-          type: 'FieldText',
-          alias: ['Text']
+          componentPath: 'FieldText'
         }
       }
       this.field = {
@@ -336,7 +329,7 @@ export default {
         isDisplayedFromLogic: true,
         isShowedFromUser: true,
         //
-        componentPath: componentReference.type
+        componentPath: componentReference.componentPath
       }
     }
   },

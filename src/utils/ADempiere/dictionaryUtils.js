@@ -1,8 +1,8 @@
 import evaluator from '@/utils/ADempiere/evaluator'
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
 import { getContext, getParentFields, getPreference, parseContext } from '@/utils/ADempiere/contextUtils'
-import REFERENCES, { FIELDS_HIDDEN } from '@/utils/ADempiere/references'
-import FIELDS_DISPLAY_SIZES, { DEFAULT_SIZE } from '@/components/ADempiere/Field/fieldSize'
+import REFERENCES, { DEFAULT_SIZE, FIELDS_HIDDEN } from '@/utils/ADempiere/references'
+import { FIELD_OPERATORS_LIST } from '@/utils/ADempiere/dataUtils'
 import language from '@/lang'
 
 /**
@@ -25,7 +25,6 @@ export function generateField({
   }
 
   const componentReference = evalutateTypeField(fieldToGenerate.displayType)
-  const referenceType = componentReference.alias[0]
   let isDisplayedFromLogic = fieldToGenerate.isDisplayed
   let isMandatoryFromLogic = false
   let isReadOnlyFromLogic = false
@@ -33,15 +32,28 @@ export function generateField({
   let parsedDefaultValue = fieldToGenerate.defaultValue
   let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
   let operator = 'EQUAL'
-  let isNumericField = componentReference.type === 'FieldNumber'
+  let isNumericField = componentReference.componentPath === 'FieldNumber'
   let isTranslatedField = fieldToGenerate.isTranslated
+  let isComparisonField = false // to list operators comparison
+  let operatorsList = []
   if (moreAttributes.isAdvancedQuery) {
     isNumericField = false
     isTranslatedField = false
     parsedDefaultValue = undefined
     parsedDefaultValueTo = undefined
 
-    if (['FieldText', 'FieldTextLong'].includes(componentReference.type)) {
+    // set field operators list
+    isComparisonField = !['FieldBinary', 'FieldButton', 'FieldImage'].includes(componentReference.componentPath)
+    if (isComparisonField) {
+      const operatorsField = FIELD_OPERATORS_LIST.find(item => {
+        return item.componentPath === componentReference.componentPath
+      })
+      if (operatorsField) {
+        operatorsList = operatorsField.operatorsList
+      }
+    }
+
+    if (['FieldText', 'FieldTextLong'].includes(componentReference.componentPath)) {
       operator = 'LIKE'
     }
   } else {
@@ -76,9 +88,9 @@ export function generateField({
     }
 
     parsedDefaultValue = parsedValueComponent({
-      fieldType: componentReference.type,
+      fieldType: componentReference.componentPath,
       value: parsedDefaultValue,
-      referenceType,
+      displayType: fieldToGenerate.displayType,
       isMandatory: fieldToGenerate.isMandatory,
       isIdentifier: fieldToGenerate.columnName.includes('_ID')
     })
@@ -119,9 +131,9 @@ export function generateField({
     }
 
     parsedDefaultValueTo = parsedValueComponent({
-      fieldType: componentReference.type,
+      fieldType: componentReference.componentPath,
       value: parsedDefaultValueTo,
-      referenceType,
+      displayType: fieldToGenerate.displayType,
       isMandatory: fieldToGenerate.isMandatory,
       isIdentifier: fieldToGenerate.columnName.includes('_ID')
     })
@@ -159,9 +171,9 @@ export function generateField({
     ...moreAttributes,
     isSOTrxMenu,
     // displayed attributes
-    componentPath: componentReference.type,
-    isSupport: componentReference.support,
-    referenceType,
+    componentPath: componentReference.componentPath,
+    isSupported: componentReference.isSupported,
+    size: componentReference.size || DEFAULT_SIZE,
     displayColumn: undefined, // link to value from selects and table
     // value attributes
     value: String(parsedDefaultValue).trim() === '' ? undefined : parsedDefaultValue,
@@ -188,21 +200,11 @@ export function generateField({
     operator, // current operator
     oldOperator: undefined, // old operator
     defaultOperator: operator,
+    operatorsList,
     // popover's
+    isComparisonField,
     isNumericField,
     isTranslatedField
-  }
-
-  // Sizes from panel and groups
-  field.sizeFieldFromType = FIELDS_DISPLAY_SIZES.find(item => {
-    return item.type === field.componentPath
-  })
-  if (field.sizeFieldFromType === undefined) {
-    console.warn(`Field size no found: ${field.name} type: ${field.componentPath}.`)
-    field.sizeFieldFromType = {
-      type: field.componentPath,
-      size: DEFAULT_SIZE.size
-    }
   }
 
   // Overwrite some values

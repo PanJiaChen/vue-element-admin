@@ -389,21 +389,21 @@ export default {
             fieldItem.value = parsedValueComponent({
               fieldType: fieldItem.componentPath,
               value: route.query[fieldItem.columnName],
-              referenceType: fieldItem.referenceType,
+              displayType: fieldItem.displayType,
               isIdentifier: fieldItem.columnName.includes('_ID')
             })
             if (String(route.query.isAdvancedQuery) === String(fieldItem.isAdvancedQuery)) {
               fieldItem.value = parsedValueComponent({
                 fieldType: fieldItem.componentPath,
                 value: route.query[fieldItem.columnName],
-                referenceType: fieldItem.referenceType,
+                displayType: fieldItem.displayType,
                 isIdentifier: fieldItem.columnName.includes('_ID')
               })
               if (fieldItem.isRange && this.$route.query[`${fieldItem.columnName}_To`]) {
                 fieldItem.valueTo = parsedValueComponent({
                   fieldType: fieldItem.componentPath,
                   value: route.query[`${fieldItem.columnName}_To`],
-                  referenceType: fieldItem.referenceType,
+                  displayType: fieldItem.displayType,
                   isIdentifier: fieldItem.columnName.includes('_ID')
                 })
               }
