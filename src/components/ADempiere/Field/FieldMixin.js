@@ -49,34 +49,42 @@ export const fieldMixin = {
       this.handleChange(value)
     },
     focusGained(value) {
-      this.$store.dispatch('notifyFocusGained', {
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        value: this.value
-      })
+      if (this.metadata.handleFocusGained) {
+        this.$store.dispatch('notifyFocusGained', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: this.value
+        })
+      }
     },
     focusLost(value) {
-      this.$store.dispatch('notifyFocusLost', {
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        value: this.value
-      })
+      if (this.metadata.handleFocusLost) {
+        this.$store.dispatch('notifyFocusLost', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: this.value
+        })
+      }
     },
     keyPressed(value) {
-      this.$store.dispatch('notifyKeyPressed', {
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        value: value.key,
-        keyCode: value.keyCode
-      })
+      if (this.metadata.handleKeyPressed) {
+        this.$store.dispatch('notifyKeyPressed', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: value.key,
+          keyCode: value.keyCode
+        })
+      }
     },
     keyReleased(value) {
-      this.$store.dispatch('notifyKeyReleased', {
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        value: value.key,
-        keyCode: value.keyCode
-      })
+      if (this.metadata.handleKeyReleased) {
+        this.$store.dispatch('notifyKeyReleased', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: value.key,
+          keyCode: value.keyCode
+        })
+      }
     },
     /**
      * @param {mixed} value, main value in component
@@ -115,11 +123,13 @@ export const fieldMixin = {
         isChangedOldValue
       }
       // Global Action performed
-      this.$store.dispatch('notifyActionPerformed', {
-        containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
-        value: newValue
-      })
+      if (this.metadata.handleActionPerformed) {
+        this.$store.dispatch('notifyActionPerformed', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: newValue
+        })
+      }
       if (this.metadata.inTable) {
         this.$store.dispatch('notifyCellTableChange', {
           ...sendParameters,

@@ -309,6 +309,11 @@ export function getFieldTemplate(overwriteDefinition) {
     mandatoryLogic: undefined,
     readOnlyLogic: undefined,
     parentFieldsList: undefined,
+    handleFocusGained: false,
+    handleFocusLost: false,
+    handleKeyPressed: false,
+    handleKeyReleased: false,
+    handleActionPerformed: true,
     dependentFieldsList: [],
     reference: {
       tableName: '',
