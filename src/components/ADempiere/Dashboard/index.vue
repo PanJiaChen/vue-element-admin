@@ -24,7 +24,6 @@
 </template>
 
 <script>
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 export default {
   name: 'Dashboard',
   props: {
@@ -47,10 +46,24 @@ export default {
       if (this.unsupportedDashboards.includes(this.metadata.fileName)) {
         return
       }
-      if (isEmptyValue(this.metadata.fileName)) {
-        return () => import('@/components/ADempiere/Dashboard/calendar')
+
+      let dashboard
+      switch (this.metadata.fileName) {
+        case 'recentItems':
+          dashboard = () => import('@/components/ADempiere/Dashboard/recentItems')
+          break
+        case 'userfavorites':
+          dashboard = () => import('@/components/ADempiere/Dashboard/userfavorites')
+          break
+        case 'docstatus':
+          dashboard = () => import('@/components/ADempiere/Dashboard/docstatus')
+          break
+        default:
+          dashboard = () => import('@/components/ADempiere/Dashboard/calendar')
+          break
       }
-      return () => import(`@/components/ADempiere/Dashboard/${this.metadata.fileName}`)
+      return dashboard
+      // return () => import(`@/components/ADempiere/Dashboard/${this.metadata.fileName}`)
     }
   }
 }

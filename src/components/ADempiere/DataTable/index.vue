@@ -668,7 +668,8 @@ export default {
       }
       if (fieldIsDisplayed(field)) {
         // const fieldReadOnlyAllForm = FIELDS_READ_ONLY_FORM.filter(item => {
-        //   return row.hasOwnProperty(item.columnName) && item.isChangedAllForm
+        //   return item.isChangedAllForm &&
+        //     Object.prototype.hasOwnProperty.call(row, item.columnName)
         // })
         // // columnName: Processed, Processing
         // if (fieldReadOnlyAllForm.length) {
@@ -678,7 +679,8 @@ export default {
 
         // columnName: IsActive
         const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => {
-          return row.hasOwnProperty(item.columnName) && !item.isChangedAllForm
+          return !item.isChangedAllForm &&
+            Object.prototype.hasOwnProperty.call(row, item.columnName)
         })
         if (fieldReadOnlyForm) {
           const isReadOnlyRow = row[fieldReadOnlyForm.columnName] === fieldReadOnlyForm.valueIsReadOnlyForm && field.columnName !== fieldReadOnlyForm.columnName
@@ -754,7 +756,7 @@ export default {
     async setFocus() {
       return new Promise(resolve => {
         const fieldFocus = this.fieldsList.find(itemField => {
-          if (this.$refs.hasOwnProperty(itemField.columnName)) {
+          if (Object.prototype.hasOwnProperty.call(this.$refs, itemField.columnName)) {
             if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
               return true
             }

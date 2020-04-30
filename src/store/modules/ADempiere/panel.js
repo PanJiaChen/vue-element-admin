@@ -420,7 +420,7 @@ const panel = {
           }
 
           // Evaluate with hasOwnProperty if exits this value
-          if (!newValues.hasOwnProperty(actionField.columnName)) {
+          if (!Object.prototype.hasOwnProperty.call(newValues, actionField.columnName)) {
             if (!isChangedAllValues || withOutColumnNames.includes(actionField.columnName)) {
               // breaks if this value does not exist or ignore with out column names
               return
@@ -431,7 +431,7 @@ const panel = {
 
           if (isChangeFromCallout &&
             actionField.componentPath === 'FieldSelect' &&
-            !newValues.hasOwnProperty(`DisplayColumn_${actionField.columnName}`)) {
+            !Object.prototype.hasOwnProperty.call(newValues, `DisplayColumn_${actionField.columnName}`)) {
             let lookup = rootGetters.getLookupItem({
               parentUuid,
               containerUuid,
@@ -566,6 +566,8 @@ const panel = {
       withOutColumnNames = [],
       isChangeMultipleFields = false
     }) {
+      // TODO: https://eslint.org/docs/rules/no-async-promise-executor
+      // eslint-disable-next-line no-async-promise-executor
       return new Promise(async resolve => {
         const panel = getters.getPanel(containerUuid, isAdvancedQuery)
         const { fieldList: fieldsList, tableName } = panel

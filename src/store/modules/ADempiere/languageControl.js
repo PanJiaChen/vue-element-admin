@@ -176,7 +176,7 @@ const languageControl = {
     getLanguageByParameter: (state) => (parameter) => {
       const list = state.languagesList
       list.forEach(language => {
-        if (language.hasOwnProperty(parameter)) {
+        if (Object.prototype.hasOwnProperty.call(language, parameter)) {
           return language
         }
       })

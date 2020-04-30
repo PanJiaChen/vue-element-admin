@@ -62,11 +62,10 @@ export default {
       return this.$store.state.app.device === 'mobile'
     },
     templateDevice() {
-      let template = 'contextMenuDesktop'
       if (this.isMobile) {
-        template = 'contextMenuMobile'
+        return () => import('@/components/ADempiere/ContextMenu/contextMenuMobile')
       }
-      return () => import(`@/components/ADempiere/ContextMenu/${template}`)
+      return () => import('@/components/ADempiere/ContextMenu/contextMenuDesktop')
     }
   }
 }

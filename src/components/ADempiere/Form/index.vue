@@ -17,9 +17,16 @@ export default {
   computed: {
     // load the component that is indicated in the attributes of received property
     componentRender() {
+      let form
+      switch (this.metadata.fileName) {
+        case 'PriceChecking':
+          form = import('@/components/ADempiere/Form/PriceChecking')
+          break
+      }
+
       return () => {
         return new Promise(resolve => {
-          import(`@/components/ADempiere/Form/${this.metadata.fileName}`)
+          form
             .then(formFile => {
               resolve(formFile)
             })

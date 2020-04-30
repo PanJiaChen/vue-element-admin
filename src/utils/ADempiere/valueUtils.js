@@ -189,10 +189,10 @@ export const recursiveTreeSearch = ({
     const length = treeData.length
     while (index < length) {
       let value = treeData[index]
-      if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
+      if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
         value = value[attributeName]
       }
-      if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
+      if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
         value = value[secondAttribute]
       }
 
@@ -218,10 +218,10 @@ export const recursiveTreeSearch = ({
     }
   } else {
     let value = treeData
-    if (!isEmptyValue(value) && value.hasOwnProperty(attributeName)) {
+    if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
       value = value[attributeName]
     }
-    if (!isEmptyValue(value) && secondAttribute && value.hasOwnProperty(secondAttribute)) {
+    if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
       value = value[secondAttribute]
     }
 
@@ -272,7 +272,7 @@ export function parsedValueComponent({
         if (isMandatory) {
           returnValue = 0
         }
-      } else if (typeof value === 'object' && value.hasOwnProperty('query')) {
+      } else if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
         returnValue = value
       } else {
         if (Array.isArray(value) && value.length) {
@@ -287,7 +287,7 @@ export function parsedValueComponent({
     case 'FieldYesNo':
       if (value === 'false' || value === 'N') {
         value = false
-      } else if (typeof value === 'object' && value.hasOwnProperty('query')) {
+      } else if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
         returnValue = value
       }
       returnValue = Boolean(value)
@@ -296,7 +296,7 @@ export function parsedValueComponent({
     // data type String
     case 'FieldText':
     case 'FieldTextArea':
-      if (typeof value === 'object' && value.hasOwnProperty('query')) {
+      if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
         returnValue = value
       }
       returnValue = value ? String(value) : undefined
@@ -314,7 +314,7 @@ export function parsedValueComponent({
       if (typeof value === 'number' || typeof value === 'string') {
         value = new Date(value)
       }
-      if (typeof value === 'object' && value.hasOwnProperty('query')) {
+      if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
         returnValue = value
       }
       returnValue = value

@@ -69,7 +69,6 @@
 </template>
 
 <script>
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import contextInfo from '@/components/ADempiere/Field/popover/contextInfo'
 import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
@@ -77,7 +76,6 @@ import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
 import { DEFAULT_SIZE } from '@/utils/ADempiere/references'
 import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
-import { showMessage } from '@/utils/ADempiere/notification'
 
 /**
  * This is the base component for linking the components according to the
@@ -123,13 +121,51 @@ export default {
   computed: {
     // load the component that is indicated in the attributes of received property
     componentRender() {
-      if (isEmptyValue(this.field.componentPath)) {
+      if (this.isEmptyValue(this.field.componentPath)) {
         return () => import('@/components/ADempiere/Field/FieldText')
       }
       if (this.isSelectCreated) {
-        return () => import(`@/components/ADempiere/Field/FieldSelectMultiple`)
+        return () => import('@/components/ADempiere/Field/FieldSelectMultiple')
       }
-      return () => import(`@/components/ADempiere/Field/${this.field.componentPath}`)
+
+      let field
+      switch (this.field.componentPath) {
+        case 'FieldBinary':
+          field = () => import('@/components/ADempiere/Field/FieldBinary')
+          break
+        case 'FieldButton':
+          field = () => import('@/components/ADempiere/Field/FieldButton')
+          break
+        case 'FieldColor':
+          field = () => import('@/components/ADempiere/Field/FieldColor')
+          break
+        case 'FieldDate':
+          field = () => import('@/components/ADempiere/Field/FieldDate')
+          break
+        case 'FieldImage':
+          field = () => import('@/components/ADempiere/Field/FieldImage')
+          break
+        case 'FieldNumber':
+          field = () => import('@/components/ADempiere/Field/FieldNumber')
+          break
+        case 'FieldSelect':
+          field = () => import('@/components/ADempiere/Field/FieldSelect')
+          break
+        case 'FieldText':
+          field = () => import('@/components/ADempiere/Field/FieldText')
+          break
+        case 'FieldTextLong':
+          field = () => import('@/components/ADempiere/Field/FieldTextLong')
+          break
+        case 'FieldTime':
+          field = () => import('@/components/ADempiere/Field/FieldTime')
+          break
+        case 'FieldYesNo':
+          field = () => import('@/components/ADempiere/Field/FieldYesNo')
+          break
+      }
+      return field
+      // return () => import(`@/components/ADempiere/Field/${this.field.componentPath}`)
     },
     fieldAttributes() {
       return {
@@ -334,7 +370,6 @@ export default {
     }
   },
   methods: {
-    showMessage,
     focusField() {
       if (this.isDisplayed && !this.isReadOnly) {
         this.$refs[this.field.columnName].activeFocus()

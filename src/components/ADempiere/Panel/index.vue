@@ -384,7 +384,7 @@ export default {
       if (this.isPanelWindow) {
         // TODO: use action notifyPanelChange with isShowedField in true
         this.getterFieldList.forEach(fieldItem => {
-          if (route.query.hasOwnProperty(fieldItem.columnName) && !fieldItem.isAdvancedQuery) {
+          if (Object.prototype.hasOwnProperty.call(route.query, fieldItem.columnName) && !fieldItem.isAdvancedQuery) {
             fieldItem.isShowedFromUser = true
             fieldItem.value = parsedValueComponent({
               fieldType: fieldItem.componentPath,
@@ -443,7 +443,7 @@ export default {
           route.params.isReadParameters = true
         }
         // Only call get data if panel type is window
-        if (!route.params.hasOwnProperty('isReadParameters') || route.params.isReadParameters) {
+        if (!Object.prototype.hasOwnProperty.call(route.params, 'isReadParameters') || route.params.isReadParameters) {
           this.getData(parameters)
         }
         this.setTagsViewTitle(route.query.action)
@@ -451,7 +451,7 @@ export default {
         if (this.panelType === 'table' && route.query.action === 'advancedQuery') {
           // TODO: use action notifyPanelChange with isShowedField in true
           this.fieldList.forEach(fieldItem => {
-            if (route.query.hasOwnProperty(fieldItem.columnName) && fieldItem.isAdvancedQuery) {
+            if (Object.prototype.hasOwnProperty.call(route.query, fieldItem.columnName) && fieldItem.isAdvancedQuery) {
               fieldItem.isShowedFromUser = true
 
               if (route.query.action === 'advancedQuery' && fieldItem.isAdvancedQuery) {
@@ -707,7 +707,7 @@ export default {
     async setFocus() {
       return new Promise(resolve => {
         const fieldFocus = this.getterFieldList.find(itemField => {
-          if (this.$refs.hasOwnProperty(itemField.columnName)) {
+          if (Object.prototype.hasOwnProperty.call(this.$refs, itemField.columnName)) {
             if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable && itemField.componentPath !== 'FieldSelect') {
               return true
             }
