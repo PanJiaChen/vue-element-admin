@@ -10,7 +10,7 @@
       :panel-type="panelType"
     />
     <el-header
-      v-if="ShowInfoContext"
+      v-if="showContextMenu"
     >
       <context-menu
         :menu-parent-uuid="$route.meta.parentUuid"
@@ -105,8 +105,8 @@ export default {
     }
   },
   computed: {
-    ShowInfoContext() {
-      return this.$store.state.settings.ShowInfoContext
+    showContextMenu() {
+      return this.$store.state.settings.showContextMenu
     },
     getterBrowser() {
       return this.$store.getters.getBrowser(this.browserUuid)

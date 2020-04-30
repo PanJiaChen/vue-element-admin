@@ -6,7 +6,7 @@
     style="height: 84vh;"
   >
     <el-header
-      v-if="ShowInfoContext"
+      v-if="showContextMenu"
       style="height: 39px;"
     >
       <context-menu
@@ -89,8 +89,8 @@ export default {
     }
   },
   computed: {
-    ShowInfoContext() {
-      return this.$store.state.settings.ShowInfoContext
+    showContextMenu() {
+      return this.$store.state.settings.showContextMenu
     },
     getterProcess() {
       return this.$store.getters.getPanel(this.processUuid)

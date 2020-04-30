@@ -6,7 +6,7 @@
     style="height: 84vh;"
   >
     <el-header
-      v-if="ShowInfoContext"
+      v-if="showContextMenu"
       style="height: 39px; background: white;"
     >
       <context-menu
@@ -82,8 +82,8 @@ export default {
     }
   },
   computed: {
-    ShowInfoContext() {
-      return this.$store.state.settings.ShowInfoContext
+    showContextMenu() {
+      return this.$store.state.settings.showContextMenu
     },
     formTitle() {
       return this.formMetadata.name || this.$route.meta.title
