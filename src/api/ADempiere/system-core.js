@@ -44,6 +44,14 @@ export function getWarehousesList({
   })
 }
 
+// Get Country definition from server using id or uuid for record
+export function getCountryDefinition({ countryUuid, countryId }) {
+  return Instance.call(this).requestGetCountry({
+    countryUuid,
+    countryId
+  })
+}
+
 // Get languages from api
 export function requestLanguages({ pageToken, pageSize }) {
   return Instance.call(this).requestListLanguages({ pageToken, pageSize })
