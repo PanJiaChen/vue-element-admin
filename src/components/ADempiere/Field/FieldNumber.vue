@@ -9,7 +9,8 @@
       :placeholder="metadata.help"
       :disabled="isDisabled"
       :precision="precision"
-      controls-position="right"
+      :controls="isShowControls"
+      :controls-position="controlsPosition"
       :class="'display-type-amount ' + metadata.cssClassName"
       @change="preHandleChange"
       @blur="focusLost"
@@ -62,6 +63,24 @@ export default {
         return 2
       }
       return undefined
+    },
+    isShowControls() {
+      if (!this.isEmptyValue(this.metadata.showControl)) {
+        if (this.metadata.showControl === 0) {
+          return false
+        }
+      }
+      return true
+    },
+    controlsPosition() {
+      if (!this.isEmptyValue(this.metadata.showControl)) {
+        // show side controls
+        if (this.metadata.showControl === 1) {
+          return undefined
+        }
+      }
+      // show right controls
+      return 'right'
     }
   },
   watch: {

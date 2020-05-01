@@ -89,6 +89,6 @@ export default {
 
 <style>
   .custom-field-yes-no {
-    min-height: 34px;
+    max-height: 34px;
   }
 </style>

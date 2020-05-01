@@ -38,7 +38,9 @@ export const fieldMixin = {
   },
   methods: {
     activeFocus() {
-      this.$refs[this.metadata.columnName].focus()
+      if (this.$refs[this.metadata.columnName]) {
+        this.$refs[this.metadata.columnName].focus()
+      }
     },
     /**
      * Overwrite component method if necessary
@@ -49,6 +51,14 @@ export const fieldMixin = {
       this.handleChange(value)
     },
     focusGained(value) {
+      if (this.metadata.isAutoSelection) {
+        // select all the content inside the text box
+        if (!this.isEmptyValue(value.target.selectionStart) &&
+          !this.isEmptyValue(value.target.selectionStart)) {
+          value.target.selectionStart = 0
+          value.target.selectionEnd = value.target.value.length
+        }
+      }
       if (this.metadata.handleFocusGained) {
         this.$store.dispatch('notifyFocusGained', {
           containerUuid: this.metadata.containerUuid,

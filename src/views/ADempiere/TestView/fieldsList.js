@@ -6,6 +6,7 @@ export default [
     columnName: 'URL',
     definition: {
       name: 'Web',
+      isAutoSelection: true,
       displayType: URL.id
     }
   },
@@ -69,7 +70,8 @@ export default [
     definition: {
       name: 'Sequence for record',
       displayType: INTEGER.id,
-      mandatoryLogic: '@URL@!""'
+      mandatoryLogic: '@URL@!""',
+      showControl: 1
     }
   },
   // Text Long
