@@ -2,7 +2,7 @@
   <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="rightPanel-background" />
     <div class="rightPanel">
-      <div class="handle-button" :style="{'top':buttonTop+'px','background-color':theme}" @click="show=!show">
+      <div class="handle-button" :style="{'top':buttonTop+'px'}" @click="show=!show">
         <i :class="show?'el-icon-close':'el-icon-setting'" />
       </div>
       <div class="rightPanel-items">
@@ -30,11 +30,6 @@ export default {
   data() {
     return {
       show: false
-    }
-  },
-  computed: {
-    theme() {
-      return this.$store.state.settings.theme
     }
   },
   watch: {
@@ -85,6 +80,7 @@ export default {
 </style>
 
 <style lang="scss" scoped>
+@import "../../styles/element-variables";
 .rightPanel-background {
   position: fixed;
   top: 0;
@@ -125,6 +121,15 @@ export default {
 }
 
 .handle-button {
+  /*
+   You can use any color of theme colors(which refers to `matchColors` option) in your css,
+   such as: $--color-primary and $--color-primary-light-6
+
+   可以在项目的css中使用任意主题色系的颜色，比如：$--color-primary 和 $--color-primary-light-6
+   主题色系的系列颜色是由webpack-theme-color-replacer插件的`matchColors`选项所指定的，可在vue.config.js中修改。
+   */
+  background-color: $--color-primary;
+
   width: 48px;
   height: 48px;
   position: absolute;
