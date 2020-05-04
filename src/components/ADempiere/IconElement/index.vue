@@ -1,9 +1,8 @@
 <template>
-  <div :class="{'show-input-search':isShowElement}" class="search-detail">
+  <div :class="{ 'show-input-search': isShowElement }" class="search-detail">
     <i
       :class="icon + ' props-icon'"
       @click.stop="click"
-      @submit.prevent.native="false"
     />
     <slot
       ref="headerSearchSelect"
