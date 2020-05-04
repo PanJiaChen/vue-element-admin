@@ -58,6 +58,7 @@
     "normalize.css": "7.0.0",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
+    "pinyin": "2.9.0",
     "screenfull": "4.2.0",
     "showdown": "1.9.0",
     "sortablejs": "1.8.4",
