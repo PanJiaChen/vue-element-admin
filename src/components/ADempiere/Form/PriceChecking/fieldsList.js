@@ -8,7 +8,8 @@ export default [
     overwriteDefinition: {
       size: 24,
       sequence: 10,
-      cssClassName: 'price-inquiry'
+      cssClassName: 'price-inquiry',
+      handleActionPerformed: true
     }
   },
   // Product Name

@@ -49,7 +49,7 @@ export default {
   methods: {
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'changeFieldValue' && mutation.payload.field.columnName === 'ProductValue') {
+        if (mutation.type === 'addActionPerformed' && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
           this.setValues({ withOutColumnNames: ['ProductValue'] })
           getProductPrice({

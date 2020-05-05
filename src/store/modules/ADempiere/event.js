@@ -10,6 +10,15 @@
 //   value: new value for event,
 //   keyCode: optional for key events
 // }
+// How subsribe for it?
+// Just create a method and call it
+// subscribeChanges() {
+//   this.$store.subscribe((mutation, state) => {
+//     if (mutation.type === 'addActionPerformed' && mutation.payload.columnName === 'ProductValue') {
+//       // here is your code
+//     }
+//   }
+// }
 //  Generic Action
 export const ACTION_PERFORMED = 1
 export const FOCUS_GAINED = 2
@@ -23,10 +32,37 @@ const event = {
     actionEvents: []
   },
   mutations: {
-    addChange(state, change) {
-      state.fieldEvents.push(change)
+    addActionPerformed(state, change) {
+      state.fieldEvents.push({
+        ...change,
+        eventType: ACTION_PERFORMED
+      })
     },
-    addAction(state, action) {
+    addKeyPressed(state, change) {
+      state.fieldEvents.push({
+        ...change,
+        eventType: KEY_PRESSED
+      })
+    },
+    addKeyReleased(state, change) {
+      state.fieldEvents.push({
+        ...change,
+        eventType: KEY_RELEASED
+      })
+    },
+    addFocusGained(state, change) {
+      state.fieldEvents.push({
+        ...change,
+        eventType: FOCUS_GAINED
+      })
+    },
+    addFocusLost(state, change) {
+      state.fieldEvents.push({
+        ...change,
+        eventType: FOCUS_LOST
+      })
+    },
+    addRunAction(state, action) {
       state.actionEvents.push(action)
     },
     resetStateLookup(state) {
@@ -38,49 +74,44 @@ const event = {
   },
   actions: {
     notifyActionPerformed({ commit }, event) {
-      commit('addChange', {
+      commit('addActionPerformed', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
-        value: event.value,
-        eventType: ACTION_PERFORMED
+        value: event.value
       })
     },
     notifyKeyPressed({ commit }, event) {
-      commit('addChange', {
+      commit('addKeyPressed', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
         value: event.value,
-        keyCode: event.keyCode,
-        eventType: KEY_PRESSED
+        keyCode: event.keyCode
       })
     },
     notifyKeyReleased({ commit }, event) {
-      commit('addChange', {
+      commit('addKeyReleased', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
         value: event.value,
-        keyCode: event.keyCode,
-        eventType: KEY_RELEASED
+        keyCode: event.keyCode
       })
     },
     notifyFocusGained({ commit }, event) {
-      commit('addChange', {
+      commit('addFocusGained', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
-        value: event.value,
-        eventType: FOCUS_GAINED
+        value: event.value
       })
     },
     notifyFocusLost({ commit }, event) {
-      commit('addChange', {
+      commit('addFocusLost', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
-        value: event.value,
-        eventType: FOCUS_LOST
+        value: event.value
       })
     },
-    notifyRunAction({ commit }, action) {
-      commit('addAction', {
+    runAction({ commit }, action) {
+      commit('addRunAction', {
         containerUuid: action.containerUuid,
         action: action.action,
         paremeters: action.parameters
