@@ -97,3 +97,38 @@ export function requestCreateChatEntry({ tableName, recordId, comment }) {
     comment
   })
 }
+
+/**
+ * Request Document Status List
+ * @param {string} tableName
+ * @param {number} recordId
+ * @param {string} recordUuid
+ * @param {string} documentStatus
+ * @param {string} documentAction
+ * @param {number} pageSize
+ * @param {string} pageToken
+ */
+export function requestListDocumentStatuses({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken }) {
+  return Instance.call(this).requestListDocumentStatuses({
+    tableName,
+    recordId,
+    recordUuid,
+    documentStatus,
+    documentAction,
+    pageSize,
+    pageToken
+  })
+}
+
+// Request a document action list from current status of document
+export function requestListDocumentActions({ tableName, recordId, recordUuid, documentStatus, documentAction, pageSize, pageToken }) {
+  return Instance.call(this).requestListDocumentActions({
+    tableName,
+    recordId,
+    recordUuid,
+    documentStatus,
+    documentAction,
+    pageSize,
+    pageToken
+  })
+}
