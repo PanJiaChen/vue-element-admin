@@ -1,6 +1,6 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPane" class="tags-view-wrapper">
+    <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
@@ -46,9 +46,6 @@ export default {
     },
     routes() {
       return this.$store.state.permission.routes
-    },
-    scrollWrapper() {
-      return this.$refs.scrollPane.$refs.scrollContainer.$refs.wrap
     }
   },
   watch: {
@@ -67,10 +64,6 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
-    this.scrollWrapper.addEventListener('scroll', this.closeMenu, true)
-  },
-  beforeDestroy() {
-    document.removeEventListener('scroll', this.closeMenu)
   },
   methods: {
     isActive(route) {
@@ -196,6 +189,9 @@ export default {
     },
     closeMenu() {
       this.visible = false
+    },
+    handleScroll() {
+      this.closeMenu()
     }
   }
 }
