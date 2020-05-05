@@ -1,7 +1,19 @@
 <template>
-  <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.native.prevent="handleScroll">
-    <slot />
-  </el-scrollbar>
+  <div class="scroll-box">
+    <el-button
+      class="scroll-arrow"
+      icon="el-icon-arrow-left"
+      @click="handleArrow(-80)"
+    />
+    <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.native.prevent="handleScroll">
+      <slot />
+    </el-scrollbar>
+    <el-button
+      class="scroll-arrow"
+      icon="el-icon-arrow-right"
+      @click="handleArrow(80)"
+    />
+  </div>
 </template>
 
 <script>
@@ -24,6 +36,10 @@ export default {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
       const $scrollWrapper = this.scrollWrapper
       $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+    },
+    handleArrow(v) {
+      const $scrollWrapper = this.scrollWrapper
+      $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + v
     },
     moveToTarget(currentTag) {
       const $container = this.$refs.scrollContainer.$el
@@ -81,5 +97,15 @@ export default {
       height: 49px;
     }
   }
+}
+.scroll-box {
+  display: flex;
+}
+.scroll-arrow {
+  width: 28px;
+  height: 28px;
+  margin: 3px 3px;
+  padding: 1px 1px;
+  border-radius: 0;
 }
 </style>
