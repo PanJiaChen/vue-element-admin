@@ -140,6 +140,12 @@ export const fieldMixin = {
           value: newValue
         })
       }
+
+      // if is custom field, set custom handle change value
+      if (this.metadata.isCustomField) {
+        return
+      }
+
       if (this.metadata.inTable) {
         this.$store.dispatch('notifyCellTableChange', {
           ...sendParameters,

@@ -22,6 +22,9 @@ export default {
         case 'PriceChecking':
           form = import('@/components/ADempiere/Form/PriceChecking')
           break
+        default:
+          form = import('@/views/ADempiere/Unsupported')
+          break
       }
 
       return () => {
