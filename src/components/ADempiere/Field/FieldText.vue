@@ -17,6 +17,7 @@
     @focus="focusGained"
     @keydown.native="keyPressed"
     @keyup.native="keyReleased"
+    @keyup.native.enter="actionKeyPerformed"
   />
 </template>
 

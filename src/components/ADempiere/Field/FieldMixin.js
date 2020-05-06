@@ -86,6 +86,16 @@ export const fieldMixin = {
         })
       }
     },
+    actionKeyPerformed(value) {
+      if (this.metadata.handleActionKeyPerformed) {
+        this.$store.dispatch('notifyActionKeyPerformed', {
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: value.target.value,
+          keyCode: value.keyCode
+        })
+      }
+    },
     keyReleased(value) {
       if (this.metadata.handleKeyReleased) {
         this.$store.dispatch('notifyKeyReleased', {

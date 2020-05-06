@@ -50,6 +50,9 @@ const event = {
         eventType: KEY_RELEASED
       })
     },
+    addActionKeyPerformed(state, change) {
+      state.fieldEvents.push(change)
+    },
     addFocusGained(state, change) {
       state.fieldEvents.push({
         ...change,
@@ -90,6 +93,14 @@ const event = {
     },
     notifyKeyReleased({ commit }, event) {
       commit('addKeyReleased', {
+        containerUuid: event.containerUuid,
+        columnName: event.columnName,
+        value: event.value,
+        keyCode: event.keyCode
+      })
+    },
+    notifyActionKeyPerformed({ commit }, event) {
+      commit('addActionKeyPerformed', {
         containerUuid: event.containerUuid,
         columnName: event.columnName,
         value: event.value,

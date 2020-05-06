@@ -9,7 +9,7 @@ export default [
       size: 24,
       sequence: 10,
       cssClassName: 'price-inquiry',
-      handleActionPerformed: true
+      handleActionKeyPerformed: true
     }
   },
   // Product Name

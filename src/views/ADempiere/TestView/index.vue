@@ -103,6 +103,21 @@ export default {
     formTitle() {
       return this.metadata.name || this.$route.meta.title
     }
+  },
+  created() {
+    this.unsubscribe = this.subscribeChanges()
+  },
+  beforeDestroy() {
+    this.unsubscribe()
+  },
+  methods: {
+    subscribeChanges() {
+      return this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'addActionKeyPerformed') {
+          console.log(mutation)
+        }
+      })
+    }
   }
 }
 </script>

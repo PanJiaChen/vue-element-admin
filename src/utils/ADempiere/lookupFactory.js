@@ -313,7 +313,8 @@ export function getFieldTemplate(overwriteDefinition) {
     handleFocusLost: false,
     handleKeyPressed: false,
     handleKeyReleased: false,
-    handleActionPerformed: true,
+    handleActionKeyPerformed: false,
+    handleActionPerformed: false,
     dependentFieldsList: [],
     reference: {
       tableName: '',
@@ -328,7 +329,6 @@ export function getFieldTemplate(overwriteDefinition) {
     isFixedTableColumn: false,
     ...overwriteDefinition
   }
-
   // get parsed parent fields list
   fieldTemplateMetadata.parentFieldsList = getParentFields(fieldTemplateMetadata)
 

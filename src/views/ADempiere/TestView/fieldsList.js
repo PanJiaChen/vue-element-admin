@@ -52,7 +52,8 @@ export default [
     definition: {
       name: 'Only Name',
       displayType: TEXT.id,
-      displayLogic: '@URL@!""'
+      displayLogic: '@URL@!""',
+      handleActionKeyPerformed: true
     }
   },
   // Amount
@@ -61,7 +62,8 @@ export default [
     definition: {
       name: 'Amount for it',
       displayType: NUMBER.id,
-      readOnlyLogic: '@C_Currency_ID@<>""'
+      readOnlyLogic: '@C_Currency_ID@<>""',
+      handleActionKeyPerformed: true
     }
   },
   // Integer

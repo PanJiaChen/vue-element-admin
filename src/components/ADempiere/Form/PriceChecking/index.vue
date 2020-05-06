@@ -49,11 +49,11 @@ export default {
   methods: {
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'addActionPerformed' && mutation.payload.columnName === 'ProductValue') {
+        if (mutation.type === 'addActionKeyPerformed' && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
           this.setValues({ withOutColumnNames: ['ProductValue'] })
           getProductPrice({
-            searchValue: mutation.payload.newValue
+            searchValue: mutation.payload.value
           })
             .then(productPrice => {
               const { product, taxRate } = productPrice
