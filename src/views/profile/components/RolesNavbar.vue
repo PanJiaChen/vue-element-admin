@@ -105,9 +105,11 @@ export default {
         warehouseUuid: this.warehouseUuid
       })
         .then(response => {
+          if (this.$route.name !== 'Dashboard') {
+            this.$router.push({ path: '/' })
+          }
           this.$store.dispatch('listDashboard', response.uuid)
         })
-      this.$router.push({ path: '/' })
     },
     changeOrganization(organizationUuid) {
       this.$store.dispatch('user/changeOrganization', {
