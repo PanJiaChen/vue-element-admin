@@ -45,7 +45,7 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.2.0",
-    "@adempiere/grpc-data-client": "^2.2.9",
+    "@adempiere/grpc-data-client": "^2.3.2",
     "@adempiere/grpc-dictionary-client": "^1.4.1",
     "@adempiere/grpc-enrollment-client": "^1.1.0",
     "@adempiere/grpc-pos-client": "^1.1.0",
@@ -104,7 +104,7 @@
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "6.2.2",
     "html-webpack-plugin": "4.2.1",
-    "husky": "4.2.5",
+    "husky": "^4.2.5",
     "lint-staged": "10.2.0",
     "mockjs": "1.1.0",
     "node-sass": "^4.14.0",

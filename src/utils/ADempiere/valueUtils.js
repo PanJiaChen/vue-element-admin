@@ -169,6 +169,7 @@ export function convertFieldListToShareLink(fieldList) {
 
   return attributesListLink.slice(0, -1)
 }
+
 /**
  * Find element in an array recursively
  * @param {object|array} treeData
@@ -256,7 +257,8 @@ export function parsedValueComponent({
   isMandatory = false,
   isIdentifier = false
 }) {
-  if ((value === undefined || value === null) && !isMandatory) {
+  const isEmpty = isEmptyValue(value)
+  if (isEmpty && !isMandatory) {
     if (fieldType === 'FieldYesNo') {
       return Boolean(value)
     }
@@ -267,7 +269,7 @@ export function parsedValueComponent({
   switch (fieldType) {
     // data type Number
     case 'FieldNumber':
-      if (String(value).trim() === '' || value === undefined || value === null) {
+      if (isEmpty) {
         returnValue = undefined
         if (isMandatory) {
           returnValue = 0
@@ -305,7 +307,7 @@ export function parsedValueComponent({
     // data type Date
     case 'FieldDate':
     case 'FieldTime ':
-      if (String(value).trim() === '') {
+      if (isEmpty) {
         value = undefined
       }
       if (!isNaN(value)) {
@@ -321,7 +323,7 @@ export function parsedValueComponent({
       break
 
     case 'FieldSelect':
-      if (String(value).trim() === '') {
+      if (isEmpty) {
         value = undefined
       }
       if (typeof value === 'boolean') {
@@ -329,7 +331,7 @@ export function parsedValueComponent({
       }
       // Table (18) or Table Direct (19)
       if (displayType === TABLE.id || (displayType === TABLE_DIRECT.id && isIdentifier)) {
-        if (value !== '' && value !== null && value !== undefined) {
+        if (!isEmptyValue(value)) {
           value = Number(value)
         }
       } // Search or List
@@ -342,6 +344,7 @@ export function parsedValueComponent({
   }
   return returnValue
 }
+
 /**
  * add a tab depending on the status of the document
  * @param {string} tag, document status key

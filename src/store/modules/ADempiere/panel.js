@@ -249,16 +249,15 @@ const panel = {
       containerUuid,
       fieldsList = []
     }) {
-      if (fieldsList.length <= 0) {
+      if (isEmptyValue(fieldsList)) {
         fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-      const fieldsIncludes = fieldsList.filter(fieldItem => {
+      const fieldsIncludes = []
+      fieldsList.array.forEach(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (isMandatory) {
-          return true
+          fieldsIncludes.push(fieldItem.columnName)
         }
-      }).map(fieldItem => {
-        return fieldItem.columnName
       })
 
       dispatch('changeFieldAttributesBoolean', {
@@ -276,15 +275,16 @@ const panel = {
       containerUuid,
       fieldsList = []
     }) {
-      if (fieldsList.length <= 0) {
+      if (isEmptyValue(fieldsList)) {
         fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-      const fieldsIncludes = fieldsList.filter(fieldItem => {
+      const fieldsIncludes = []
+      fieldsList.foreach(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed && fieldItem.isDisplayedFromLogic && !fieldItem.isKey
-        //  Verify for displayed and is active
-        return fieldItem.isActive && isDisplayed
-      }).map(fieldItem => {
-        return fieldItem.columnName
+        // Verify for displayed and is active
+        if (fieldItem.isActive && isDisplayed) {
+          fieldsIncludes.push(fieldItem.columnName)
+        }
       })
 
       dispatch('changeFieldAttributesBoolean', {
@@ -311,6 +311,10 @@ const panel = {
     }) {
       return new Promise(resolve => {
         const panel = getters.getPanel(containerUuid)
+        if (isEmptyValue(panel)) {
+          resolve()
+          return
+        }
         const defaultAttributes = getters.getParsedDefaultValues({
           parentUuid,
           containerUuid,
@@ -409,7 +413,7 @@ const panel = {
       isChangedAllValues = false
     }) {
       return new Promise(resolve => {
-        if (!fieldList.length) {
+        if (isEmptyValue(fieldList)) {
           fieldList = getters.getFieldsListFromPanel(containerUuid, isAdvancedQuery)
         }
         let fieldsShowed = []
@@ -682,10 +686,6 @@ const panel = {
         }
 
         if (isSendToServer) {
-          const fieldsEmpty = getters.getFieldListEmptyMandatory({
-            containerUuid,
-            fieldsList
-          })
           if (panelType === 'table' || isAdvancedQuery) {
             if (field.isShowedFromUser && (field.oldValue !== field.value ||
               ['NULL', 'NOT_NULL'].includes(field.operator) ||
@@ -735,95 +735,101 @@ const panel = {
                   console.warn(`Error getting Advanced Query (notifyFieldChange): ${error.message}. Code: ${error.code}.`)
                 })
             }
-          } else if (isEmptyValue(fieldsEmpty)) {
-            // TODO: refactory for it and change for a standard method
-            if (field.panelType === 'browser' && fieldIsDisplayed(field)) {
-              let isReadyForQuery = true
-              if (field.isSQLValue) {
-                let awaitForValuesToQuery = panel.awaitForValuesToQuery
-                awaitForValuesToQuery--
-                dispatch('changeBrowserAttribute', {
-                  containerUuid,
-                  attributeName: 'awaitForValuesToQuery',
-                  attributeValue: awaitForValuesToQuery
-                })
-                if (awaitForValuesToQuery === 0) {
-                  if (panel.isShowedCriteria) {
-                    dispatch('changeBrowserAttribute', {
-                      containerUuid,
-                      attributeName: 'isShowedCriteria',
-                      attributeValue: false
-                    })
+          } else {
+            const fieldsEmpty = getters.getFieldListEmptyMandatory({
+              containerUuid,
+              fieldsList
+            })
+
+            if (isEmptyValue(fieldsEmpty)) {
+              // TODO: refactory for it and change for a standard method
+              if (field.panelType === 'browser' && fieldIsDisplayed(field)) {
+                let isReadyForQuery = true
+                if (field.isSQLValue) {
+                  let awaitForValuesToQuery = panel.awaitForValuesToQuery
+                  awaitForValuesToQuery--
+                  dispatch('changeBrowserAttribute', {
+                    containerUuid,
+                    attributeName: 'awaitForValuesToQuery',
+                    attributeValue: awaitForValuesToQuery
+                  })
+                  if (awaitForValuesToQuery === 0) {
+                    if (panel.isShowedCriteria) {
+                      dispatch('changeBrowserAttribute', {
+                        containerUuid,
+                        attributeName: 'isShowedCriteria',
+                        attributeValue: false
+                      })
+                    }
+                  } else if (awaitForValuesToQuery > 0) {
+                    isReadyForQuery = false
                   }
-                } else if (awaitForValuesToQuery > 0) {
-                  isReadyForQuery = false
+                }
+                if (isReadyForQuery && !field.dependentFieldsList.length) {
+                  dispatch('getBrowserSearch', {
+                    containerUuid,
+                    isClearSelection: true
+                  })
+                }
+              } else if (field.panelType === 'window' && fieldIsDisplayed(field)) {
+                const uuid = getters.getUuid(containerUuid)
+                if (isEmptyValue(uuid)) {
+                  dispatch('createNewEntity', {
+                    parentUuid,
+                    containerUuid
+                  })
+                    .then(() => {
+                      // change old value so that it is not send in the next update
+                      commit('changeFieldValue', {
+                        field,
+                        newValue,
+                        valueTo,
+                        displayColumn,
+                        isChangedOldValue: true
+                      })
+                    })
+                    .catch(error => {
+                      showMessage({
+                        message: error.message,
+                        type: 'error'
+                      })
+                      console.warn(`Create Entity Error ${error.code}: ${error.message}.`)
+                    })
+                } else {
+                  dispatch('updateCurrentEntity', {
+                    containerUuid,
+                    recordUuid: uuid
+                  })
+                    .then(response => {
+                      // change old value so that it is not send in the next update
+                      showMessage({
+                        message: language.t('notifications.updateFields') + field.name,
+                        type: 'success'
+                      })
+                      commit('changeFieldValue', {
+                        field,
+                        newValue,
+                        valueTo,
+                        displayColumn,
+                        isChangedOldValue: true
+                      })
+
+                      // change value in table
+                      dispatch('notifyRowTableChange', {
+                        containerUuid,
+                        row: response,
+                        isEdit: false,
+                        isParent: true
+                      })
+                    })
                 }
               }
-              if (isReadyForQuery && !field.dependentFieldsList.length) {
-                dispatch('getBrowserSearch', {
-                  containerUuid,
-                  isClearSelection: true
-                })
-              }
+            } else {
+              showMessage({
+                message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
+                type: 'info'
+              })
             }
-            if (field.panelType === 'window' && fieldIsDisplayed(field)) {
-              const uuid = getters.getUuid(containerUuid)
-              if (isEmptyValue(uuid)) {
-                dispatch('createNewEntity', {
-                  parentUuid,
-                  containerUuid
-                })
-                  .then(() => {
-                    // change old value so that it is not send in the next update
-                    commit('changeFieldValue', {
-                      field,
-                      newValue,
-                      valueTo,
-                      displayColumn,
-                      isChangedOldValue: true
-                    })
-                  })
-                  .catch(error => {
-                    showMessage({
-                      message: error.message,
-                      type: 'error'
-                    })
-                    console.warn(`Create Entity Error ${error.code}: ${error.message}.`)
-                  })
-              } else {
-                dispatch('updateCurrentEntity', {
-                  containerUuid,
-                  recordUuid: uuid
-                })
-                  .then(response => {
-                    // change old value so that it is not send in the next update
-                    showMessage({
-                      message: language.t('notifications.updateFields') + field.name,
-                      type: 'success'
-                    })
-                    commit('changeFieldValue', {
-                      field,
-                      newValue,
-                      valueTo,
-                      displayColumn,
-                      isChangedOldValue: true
-                    })
-
-                    // change value in table
-                    dispatch('notifyRowTableChange', {
-                      containerUuid,
-                      row: response,
-                      isEdit: false,
-                      isParent: true
-                    })
-                  })
-              }
-            }
-          } else {
-            showMessage({
-              message: language.t('notifications.mandatoryFieldMissing') + fieldsEmpty,
-              type: 'info'
-            })
           }
         }
       })
@@ -1066,35 +1072,28 @@ const panel = {
     getFieldListEmptyMandatory: (state, getters) => ({
       containerUuid,
       fieldsList = [],
-      isEvaluateShowed = true,
       row
     }) => {
       if (fieldsList.length <= 0) {
         fieldsList = getters.getFieldsListFromPanel(containerUuid)
       }
-
+      const fieldsEmpty = []
       // all optionals (not mandatory) fields
-      fieldsList = fieldsList.filter(fieldItem => {
-        const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
-        if (isMandatory) {
-          if (isEvaluateShowed) {
-            return fieldIsDisplayed(fieldItem)
-          }
-          return isMandatory
-        }
-      })
-      fieldsList = fieldsList.filter(fieldItem => {
+      fieldsList.forEach(fieldItem => {
         let value = fieldItem.value
         // used when evaluate data in table
         if (row) {
           value = row[fieldItem.columnName]
         }
-        return isEmptyValue(value)
+        if (isEmptyValue(value)) {
+          const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
+          if (fieldIsDisplayed(fieldItem) && isMandatory) {
+            fieldsEmpty.push(fieldItem.name)
+          }
+        }
       })
 
-      return fieldsList.map(fieldItem => {
-        return fieldItem.name
-      })
+      return fieldsEmpty
     },
     /**
      * Show all available fields not mandatory to show, used in components panel/filterFields.vue
@@ -1264,7 +1263,7 @@ const panel = {
           return {
             columnName: fieldItem.columnName,
             value: valueToReturn,
-            isSQL: isSQL
+            isSQL
           }
         })
       return attributesObject

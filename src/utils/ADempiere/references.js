@@ -28,7 +28,7 @@ export const NUMBER = {
   id: 12,
   isSupported: true,
   valueType: 'DECIMAL',
-  componentPath: 'FieldText',
+  componentPath: 'FieldNumber',
   size: {
     xs: 24,
     sm: 12,
@@ -104,7 +104,7 @@ export const COLOR = {
   id: 27,
   isSupported: false,
   valueType: 'INTEGER',
-  componentPath: 'FieldText',
+  componentPath: 'FieldColor',
   size: {
     xs: 24,
     sm: 12,

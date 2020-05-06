@@ -16,6 +16,7 @@ const callOutControl = {
      * @param {Object} row, if callout is activate in table
      * @param {Mixed} value
      * @param {Mixed} oldValue
+     * @param {String} valueType
      * @return {Promise} values
      */
     getCallout({ rootGetters, dispatch }, {
@@ -40,11 +41,12 @@ const callOutControl = {
         runCallOutRequest({
           windowUuid: parentUuid,
           tabUuid: containerUuid,
+          callout,
           tableName,
           columnName,
           value,
           oldValue,
-          callout,
+          valueType,
           attributesList,
           windowNo: window.windowIndex
         })

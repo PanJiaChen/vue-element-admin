@@ -101,43 +101,44 @@ export function generateField({
     }
 
     // VALUE TO
-    if (String(parsedDefaultValueTo).includes('@') &&
-      String(parsedDefaultValueTo).trim() !== '-1') {
-      parsedDefaultValueTo = parseContext({
-        ...moreAttributes,
-        columnName: `${fieldToGenerate.columnName}_To`,
-        value: parsedDefaultValueTo
-      }).value
-    }
+    if (fieldToGenerate.isRange) {
+      if (String(parsedDefaultValueTo).includes('@') &&
+        String(parsedDefaultValueTo).trim() !== '-1') {
+        parsedDefaultValueTo = parseContext({
+          ...moreAttributes,
+          columnName: `${fieldToGenerate.columnName}_To`,
+          value: parsedDefaultValueTo
+        }).value
+      }
 
-    if (isEmptyValue(parsedDefaultValueTo) &&
-      !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
-      String(parsedDefaultValueTo).trim() !== '-1') {
-      parsedDefaultValueTo = getPreference({
-        parentUuid: fieldToGenerate.parentUuid,
-        containerUuid: fieldToGenerate.containerUuid,
-        columnName: `${fieldToGenerate.columnName}_To`
-      })
-
-      // search value preference with elementName
-      if (!isEmptyValue(fieldToGenerate.elementName) &&
-        isEmptyValue(parsedDefaultValueTo)) {
+      if (isEmptyValue(parsedDefaultValueTo) &&
+        !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
+        String(parsedDefaultValueTo).trim() !== '-1') {
         parsedDefaultValueTo = getPreference({
           parentUuid: fieldToGenerate.parentUuid,
           containerUuid: fieldToGenerate.containerUuid,
-          columnName: `${fieldToGenerate.elementName}_To`
+          columnName: `${fieldToGenerate.columnName}_To`
         })
+
+        // search value preference with elementName
+        if (!isEmptyValue(fieldToGenerate.elementName) &&
+          isEmptyValue(parsedDefaultValueTo)) {
+          parsedDefaultValueTo = getPreference({
+            parentUuid: fieldToGenerate.parentUuid,
+            containerUuid: fieldToGenerate.containerUuid,
+            columnName: `${fieldToGenerate.elementName}_To`
+          })
+        }
       }
+
+      parsedDefaultValueTo = parsedValueComponent({
+        fieldType: componentReference.componentPath,
+        value: parsedDefaultValueTo,
+        displayType: fieldToGenerate.displayType,
+        isMandatory: fieldToGenerate.isMandatory,
+        isIdentifier: fieldToGenerate.columnName.includes('_ID')
+      })
     }
-
-    parsedDefaultValueTo = parsedValueComponent({
-      fieldType: componentReference.componentPath,
-      value: parsedDefaultValueTo,
-      displayType: fieldToGenerate.displayType,
-      isMandatory: fieldToGenerate.isMandatory,
-      isIdentifier: fieldToGenerate.columnName.includes('_ID')
-    })
-
     parentFieldsList = getParentFields(fieldToGenerate)
 
     // evaluate logics
