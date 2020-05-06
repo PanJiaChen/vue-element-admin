@@ -53,17 +53,16 @@ const staticRoutes = [
     ]
   },
   {
-    path: '/test-view',
+    path: '/test',
     component: Layout,
     hidden: true,
-    redirect: '/test-view/index',
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/ADempiere/TestView'),
+        path: '/test',
+        component: () => import('@/views/ADempiere/Test'),
         name: 'Test View',
         meta: {
-          title: 'TestView',
+          title: 'Test View',
           isIndex: true
         }
       }
