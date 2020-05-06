@@ -73,7 +73,11 @@ export default {
   },
   mounted() {
     this.getRecentItems({ pageToken: undefined, pageSize: undefined })
-    this.subscribeChanges()
+
+    this.unsubscribe = this.subscribeChanges()
+  },
+  beforeDestroy() {
+    this.unsubscribe()
   },
   methods: {
     showMessage,
@@ -120,11 +124,16 @@ export default {
         if (!this.isEmptyValue(row.uuidRecord)) {
           recordUuid = row.uuidRecord
         }
+        let tabParent
+        if (row.action === 'window') {
+          tabParent = 0
+        }
+
         this.$router.push({
           name: viewSearch.name,
           query: {
             action: recordUuid,
-            tabParent: 0
+            tabParent
           }
         })
       } else {
@@ -157,7 +166,7 @@ export default {
 
 <style scoped>
   .search_recent {
-    width: 50%!important;
+    width: 50% !important;
     float: right;
   }
   .header {

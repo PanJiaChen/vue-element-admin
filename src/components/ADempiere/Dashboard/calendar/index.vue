@@ -3,7 +3,7 @@
     <!-- Use 2.5 slot syntax. If you use Vue 2.6, please use new slot syntax-->
     <template
       slot="dateCell"
-      slot-scope="{date, data}"
+      slot-scope="{ date, data }"
     >
       <p :class="data.isSelected ? 'is-selected' : ''">
         {{ data.day.split('-').slice(2).join('-') }} {{ data.isSelected ? '✔️' : '' }}

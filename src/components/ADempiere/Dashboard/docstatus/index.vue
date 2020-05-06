@@ -59,7 +59,11 @@ export default {
   },
   mounted() {
     this.getPendingDocuments()
-    this.subscribeChanges()
+
+    this.unsubscribe = this.subscribeChanges()
+  },
+  beforeDestroy() {
+    this.unsubscribe()
   },
   methods: {
     showMessage,
@@ -130,7 +134,7 @@ export default {
 
 <style scoped>
   .search_recent {
-    width: 50%!important;
+    width: 50% !important;
     float: right;
   }
   .header {
