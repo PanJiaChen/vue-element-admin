@@ -18,7 +18,7 @@ export const fieldMixin = {
       value = this.valueModel
     }
     return {
-      value: value
+      value
     }
   },
   computed: {
@@ -36,8 +36,16 @@ export const fieldMixin = {
       this.preHandleChange(value)
     }
   },
+  mounted() {
+    if (this.metadata.handleRequestFocus) {
+      this.requestFocus()
+    }
+  },
   methods: {
-    activeFocus() {
+    /**
+     * Set focus if handle focus attribute is true
+     */
+    requestFocus() {
       if (this.$refs[this.metadata.columnName]) {
         this.$refs[this.metadata.columnName].focus()
       }
@@ -51,7 +59,7 @@ export const fieldMixin = {
       this.handleChange(value)
     },
     focusGained(value) {
-      if (this.metadata.isAutoSelection) {
+      if (this.metadata.handleContentSelection) {
         // select all the content inside the text box
         if (!this.isEmptyValue(value.target.selectionStart) &&
           !this.isEmptyValue(value.target.selectionStart)) {
