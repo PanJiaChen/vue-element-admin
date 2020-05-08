@@ -121,7 +121,7 @@ export default {
   computed: {
     // load the component that is indicated in the attributes of received property
     componentRender() {
-      if (this.isEmptyValue(this.field.componentPath)) {
+      if (this.isEmptyValue(this.field.componentPath || !this.field.isSupported)) {
         return () => import('@/components/ADempiere/Field/FieldText')
       }
       if (this.isSelectCreated) {
@@ -144,6 +144,9 @@ export default {
           break
         case 'FieldImage':
           field = () => import('@/components/ADempiere/Field/FieldImage')
+          break
+        case 'FieldLocator':
+          field = () => import('@/components/ADempiere/Field/FieldLocator')
           break
         case 'FieldNumber':
           field = () => import('@/components/ADempiere/Field/FieldNumber')

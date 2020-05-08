@@ -284,7 +284,7 @@ export const LOCATOR_WAREHOUSE = {
   id: 31,
   isSupported: true,
   valueType: 'INTEGER',
-  componentPath: 'FieldSelect',
+  componentPath: 'FieldLocator',
   size: {
     xs: 24,
     sm: 12,

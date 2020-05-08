@@ -484,7 +484,8 @@ const data = {
       const {
         parentUuid, containerUuid,
         tableName, query, whereClause, orderByClause, conditionsList = [],
-        isShowNotification = true, isParentTab = true, isAddRecord = false
+        isShowNotification = true, isParentTab = true, isAddRecord = false,
+        isAddDefaultValues = true
       } = parameters
       if (isShowNotification) {
         showMessage({
@@ -515,11 +516,14 @@ const data = {
       })
 
       // gets the default value of the fields (including whether it is empty or undefined)
-      const defaultValues = rootGetters.getParsedDefaultValues({
-        parentUuid: parentUuid,
-        containerUuid: containerUuid,
-        isGetServer: false
-      })
+      let defaultValues = {}
+      if (isAddDefaultValues) {
+        defaultValues = rootGetters.getParsedDefaultValues({
+          parentUuid,
+          containerUuid,
+          isGetServer: false
+        })
+      }
       return getEntitiesList({
         tableName,
         query,
@@ -537,9 +541,10 @@ const data = {
             values.isEdit = false
             values.isSelected = false
             values.isReadOnlyFromRow = false
-
-            if (inEdited.find(itemEdit => itemEdit.UUID === values.UUID)) {
-              values.isEdit = true
+            if (isAddDefaultValues) {
+              if (inEdited.find(itemEdit => itemEdit.UUID === values.UUID)) {
+                values.isEdit = true
+              }
             }
 
             // overwrite default values and sets the values obtained from the
