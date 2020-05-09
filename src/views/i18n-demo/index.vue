@@ -120,7 +120,7 @@ export default {
     }
   },
   created() {
-    if (!this.$i18n.getLocaleMessage('en')[viewName]) {
+    if (!this.$i18n.getLocaleMessage('zh')[viewName]) {
       this.$i18n.mergeLocaleMessage('en', local.en)
       this.$i18n.mergeLocaleMessage('zh', local.zh)
       this.$i18n.mergeLocaleMessage('es', local.es)
