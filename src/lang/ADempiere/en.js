@@ -11,10 +11,10 @@ export default {
     page404: '404',
     profile: 'Profile',
     ProcessActivity: 'Process Logs',
-    Role: 'Role',
-    Client: 'Client',
-    Warehouse: 'Warehouse',
-    ReportViewer: 'Report Viewer'
+    role: 'Role',
+    organization: 'Organization',
+    warehouse: 'Warehouse',
+    reportViewer: 'Report Viewer'
   },
   notifications: {
     // simplex

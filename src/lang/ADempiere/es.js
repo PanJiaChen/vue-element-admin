@@ -11,10 +11,10 @@ export default {
     page404: '404',
     profile: 'Perfil',
     ProcessActivity: 'Histórico Procesos',
-    Role: 'Rol',
-    Client: 'Compañía',
-    Warehouse: 'Almacén',
-    ReportViewer: 'Visor de Reportes'
+    role: 'Rol',
+    organization: 'Organización',
+    warehouse: 'Almacén',
+    reportViewer: 'Visor de Reportes'
   },
   notifications: {
     // simplex

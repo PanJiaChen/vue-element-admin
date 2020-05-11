@@ -1,6 +1,6 @@
 <template>
   <el-form>
-    {{ $t('route.Role') }}
+    {{ $t('route.role') }}
     <el-select
       v-model="roleUuid"
       :filterable="!isMobile"
@@ -15,7 +15,7 @@
         :disabled="isEmptyValue(role.uuid)"
       />
     </el-select>
-    {{ $t('route.Client') }}
+    {{ $t('route.organization') }}
     <el-select
       v-model="organizationUuid"
       :filterable="!isMobile"
@@ -30,7 +30,7 @@
         :disabled="isEmptyValue(organization.uuid)"
       />
     </el-select>
-    {{ $t('route.Warehouse') }}
+    {{ $t('route.warehouse') }}
     <el-select
       v-model="warehouseUuid"
       :filterable="!isMobile"
