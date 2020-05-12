@@ -34,11 +34,11 @@
         :filterable="true"
         value-key="key"
         :placeholder="$t('profile.changeLanguagePlaceholder')"
-        @visible-change="getLanguageList"
+        @visible-change="loadLanguageList"
         @change="changeLanguage"
       >
         <el-option
-          v-for="item in getterLanguageList"
+          v-for="item in getLanguageList"
           :key="item.value"
           :label="item.languageName"
           :value="item.languageISO"
@@ -68,7 +68,7 @@ export default {
     getRolesList() {
       return this.$store.getters['user/getRoles']
     },
-    getterLanguageList() {
+    getLanguageList() {
       return this.$store.getters.getLanguagesList
     },
     isMobile() {
@@ -102,14 +102,14 @@ export default {
     changeLanguage(languageValue) {
       this.currentLanguage = languageValue
     },
-    getLanguageList(open) {
+    loadLanguageList(open) {
       if (open) {
         this.getLanguageData()
       }
     },
     getLanguageData() {
-      if (this.isEmptyValue(this.getterLanguageList)) {
-        this.$store.dispatch('getLanguagesFromServer')
+      if (this.isEmptyValue(this.getLanguageList)) {
+        this.$store.dispatch('user/getLanguagesFromServer')
       }
     }
   }

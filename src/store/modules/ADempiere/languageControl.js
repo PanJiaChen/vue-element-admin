@@ -1,17 +1,11 @@
-import { requestLanguages } from '@/api/ADempiere/system-core'
 import { requestTranslations, updateEntity } from '@/api/ADempiere/persistence'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const languageControl = {
   state: {
-    languagesList: [],
     translationsList: []
   },
   mutations: {
-    setlanguagesList(state, payload) {
-      state.languagesList = payload
-    },
-    // Add data in container
     addTranslationToList(state, payload) {
       state.translationsList.push(payload)
     },
@@ -26,21 +20,11 @@ const languageControl = {
     },
     resetStateTranslations(state) {
       state.translationsList = []
+      state.translationsList = []
+      state.currentLanguage = {}
     }
   },
   actions: {
-    getLanguagesFromServer({ commit }) {
-      return new Promise(resolve => {
-        requestLanguages({ pageToke: undefined, pageSize: undefined })
-          .then(languageResponse => {
-            commit('setlanguagesList', languageResponse.languagesList)
-            resolve(languageResponse.languagesList)
-          })
-          .catch(error => {
-            console.warn(`Error getting Languages List: ${error.message}. Code: ${error.code}.`)
-          })
-      })
-    },
     setTranslation({ state, commit }, {
       containerUuid,
       tableName,
@@ -170,9 +154,6 @@ const languageControl = {
     }
   },
   getters: {
-    getLanguagesList: (state) => {
-      return state.languagesList
-    },
     getLanguageByParameter: (state) => (parameter) => {
       const list = state.languagesList
       list.forEach(language => {

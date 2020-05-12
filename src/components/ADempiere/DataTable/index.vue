@@ -248,7 +248,7 @@ import FixedColumns from '@/components/ADempiere/DataTable/fixedColumns'
 import TableContextMenu from '@/components/ADempiere/DataTable/menu/tableContextMenu'
 import TableMainMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
-import { formatDate } from '@/filters/ADempiere'
+import { formatField } from '@/utils/ADempiere/valueFormat'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
 import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
@@ -625,7 +625,7 @@ export default {
           cell = cell.getTime()
         }
         // replace number timestamp value for date
-        return formatDate(cell, field.displayType)
+        return formatField(cell, field.displayType)
       } else if (field.componentPath === 'FieldNumber') {
         if (this.isEmptyValue(row[field.columnName])) {
           return undefined

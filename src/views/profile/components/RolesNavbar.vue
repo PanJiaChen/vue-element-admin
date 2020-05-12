@@ -123,7 +123,9 @@ export default {
       })
     },
     getLanguageData() {
-      this.$store.dispatch('getLanguagesFromServer')
+      if (this.isEmptyValue(this.getLanguageList)) {
+        this.$store.dispatch('user/getLanguagesFromServer')
+      }
     }
   }
 }

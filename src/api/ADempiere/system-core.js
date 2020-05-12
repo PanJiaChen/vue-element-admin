@@ -53,6 +53,6 @@ export function getCountryDefinition({ countryUuid, countryId }) {
 }
 
 // Get languages from api
-export function requestLanguages({ pageToken, pageSize }) {
+export function listLanguages({ pageToken, pageSize }) {
   return Instance.call(this).requestListLanguages({ pageToken, pageSize })
 }
