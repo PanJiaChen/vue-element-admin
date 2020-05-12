@@ -1,8 +1,7 @@
-import Mock from 'mockjs'
-import { deepClone } from '../../src/utils/index.js'
-import { asyncRoutes, constantRoutes } from './routes.js'
+const Mock = require('mockjs')
+const { asyncRoutes, constantRoutes } = require('./routes.js')
 
-const routes = deepClone([...constantRoutes, ...asyncRoutes])
+const routes = [].concat(constantRoutes, asyncRoutes)
 
 const roles = [
   {
@@ -35,7 +34,7 @@ const roles = [
   }
 ]
 
-export default [
+exports.default = [
   // mock get all routes form server
   {
     url: '/vue-element-admin/routes',
