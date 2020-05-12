@@ -20,9 +20,9 @@
         <el-col :span="24">
           <el-card
             class="content-collapse"
-            :style="isEmptyValue(formMetadata.fieldList) ? 'height: 75vh !important;' : ''"
+            :style="isEmptyValue(formMetadata.fieldList) ? ( showTitle ? 'height: 75vh !important;' : 'height: 78vh !important;') : ''"
           >
-            <h3 class="warn-content text-center">
+            <h3 v-if="showTitle" class="warn-content text-center">
               <el-popover
                 v-if="!isEmptyValue(formMetadata.help)"
                 ref="helpTitle"
@@ -40,7 +40,9 @@
               >
                 {{ formTitle }}
               </el-button>
+              <el-button v-if="showTitle" type="text" style="float: right" :circle="true" icon="el-icon-arrow-up" @click="title" />
             </h3>
+            <el-button v-if="!showTitle" type="text" style="float: right" :circle="true" icon="el-icon-arrow-down" @click="title" />
             <form-panel
               :metadata="{
                 ...formMetadata,
@@ -78,6 +80,7 @@ export default {
       formUuid: this.$route.meta.uuid,
       formMetadata: {},
       isLoaded: false,
+      showTitle: true,
       panelType: 'form'
     }
   },
@@ -96,6 +99,9 @@ export default {
     this.getForm()
   },
   methods: {
+    title() {
+      this.showTitle = !this.showTitle
+    },
     getForm() {
       const panel = this.getterForm
       if (panel) {
