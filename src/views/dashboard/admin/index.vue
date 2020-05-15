@@ -11,7 +11,6 @@
 </template>
 
 <script>
-
 import Dashboard from '@/components/ADempiere/Dashboard'
 
 export default {

@@ -35,6 +35,9 @@ export const tabMixin = {
         parentUuid: this.windowUuid,
         containerUuid: this.tabUuid
       })
+        .catch(error => {
+          console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+        })
     },
     /**
      * @param {object} tabHTML DOM HTML the tab clicked

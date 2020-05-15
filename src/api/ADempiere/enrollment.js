@@ -1,14 +1,5 @@
-import Enrollment from '@adempiere/grpc-enrollment-client'
-import { ENROLLMENT_ADDRESS } from '@/api/ADempiere/constants'
-
 // Get Instance for connection
-function Instance() {
-  return new Enrollment(
-    ENROLLMENT_ADDRESS,
-    3.9,
-    'ADempiere-Vue'
-  )
-}
+import { EnrollmentInstance as Instance } from '@/api/ADempiere/instances.js'
 
 /**
  * enroll User
@@ -18,10 +9,10 @@ function Instance() {
  */
 export function enrollmentUser({ name, userName, password, eMail }) {
   return Instance.call(this).enrollUser({
-    name: name,
-    userName: userName,
-    password: password,
-    eMail: eMail
+    name,
+    userName,
+    password,
+    eMail
   })
 }
 

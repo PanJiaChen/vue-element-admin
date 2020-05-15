@@ -585,6 +585,9 @@ export default {
               })
             }
           })
+          .catch(error => {
+            console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+          })
       }
     },
     /**

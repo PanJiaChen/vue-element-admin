@@ -260,6 +260,9 @@ const windowControl = {
               parentUuid,
               containerUuid
             })
+              .catch(error => {
+                console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+              })
           }
           commit('deleteInCreate', {
             containerUuid,
@@ -473,6 +476,9 @@ const windowControl = {
                   }
                 }
               })
+              .catch(error => {
+                console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+              })
             showMessage({
               message: language.t('data.deleteRecordSuccessful'),
               type: 'success'
@@ -534,6 +540,9 @@ const windowControl = {
             parentUuid,
             containerUuid
           })
+            .catch(error => {
+              console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+            })
           return
         }
         deleteEntity({
@@ -571,6 +580,9 @@ const windowControl = {
                 parentUuid,
                 containerUuid
               })
+                .catch(error => {
+                  console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+                })
               showMessage({
                 message: language.t('data.deleteRecordSuccessful'),
                 type: 'success'
@@ -779,7 +791,7 @@ const windowControl = {
       if (isEmptyValue(tableName)) {
         tableName = rootGetters.getTab(windowUuid, containerUuid).tableName
       }
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getReferencesList({
           windowUuid,
           tableName,
@@ -803,7 +815,7 @@ const windowControl = {
             resolve(referenceResponse)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`References Load Error ${error.code}: ${error.message}.`)
           })
       })
     },
@@ -886,6 +898,9 @@ const windowControl = {
                 parentUuid,
                 containerUuid: tabAssociatedUuid
               })
+                .catch(error => {
+                  console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+                })
             }
           })
       })

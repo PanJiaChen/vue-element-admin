@@ -148,8 +148,7 @@ const processControl = {
                 message: `Required selection data record to run this process (${action.name})`
               })
             }
-          }
-          if (panelType === 'window') {
+          } else if (panelType === 'window') {
             const contextMenu = getters.getRecordUuidMenu
             tab = rootGetters.getTab(parentUuid, containerUuid)
             if (isProcessTableSelection) {
@@ -322,7 +321,7 @@ const processControl = {
                         processId: processDefinition.id,
                         tableName: output.tableName,
                         printFormatUuid: output.printFormatUuid,
-                        reportViewUuid: output.reportViewUuid
+                        reportViewUuid: output.reportViewUuid // TODO: Change to uuid
                       })
                         .then(responseReportView => {
                           reportViewList.childs = responseReportView

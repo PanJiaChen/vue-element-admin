@@ -1,18 +1,5 @@
-import { getLanguage } from '@/lang/index'
-import BusinessData from '@adempiere/grpc-data-client'
-import { BUSINESS_DATA_ADDRESS } from '@/api/ADempiere/constants'
-import { getToken, getCurrentOrganization, getCurrentWarehouse } from '@/utils/auth'
-
 // Get Instance for connection
-function Instance() {
-  return new BusinessData({
-    host: BUSINESS_DATA_ADDRESS,
-    sessionUuid: getToken(),
-    organizationUuid: getCurrentOrganization(),
-    warehouseUuid: getCurrentWarehouse(),
-    language: getLanguage() || 'en_US'
-  })
-}
+import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
 
 /**
  * Run callout request

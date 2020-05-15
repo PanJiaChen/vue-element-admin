@@ -262,6 +262,9 @@ export const contextMixin = {
           isRefreshPanel: true,
           recordUuid: this.recordUuid
         })
+          .catch(error => {
+            console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+          })
       } else if (this.panelType === 'browser') {
         const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({
           containerUuid: this.containerUuid,
@@ -296,9 +299,6 @@ export const contextMixin = {
           })
             .then(() => {
               this.references = this.getterReferences
-            })
-            .catch(error => {
-              console.warn(`References Load Error ${error.code}: ${error.message}.`)
             })
             .finally(() => {
               this.isLoadedReferences = true

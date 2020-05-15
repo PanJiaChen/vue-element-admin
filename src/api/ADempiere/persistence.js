@@ -1,23 +1,10 @@
-import { getLanguage } from '@/lang/index'
-import { getToken, getCurrentOrganization, getCurrentWarehouse } from '@/utils/auth'
-import BusinessData from '@adempiere/grpc-data-client'
-import { BUSINESS_DATA_ADDRESS } from '@/api/ADempiere/constants'
-
 // Get Instance for connection
-function Instance() {
-  return new BusinessData({
-    host: BUSINESS_DATA_ADDRESS,
-    sessionUuid: getToken(),
-    organizationUuid: getCurrentOrganization(),
-    warehouseUuid: getCurrentWarehouse(),
-    language: getLanguage() || 'en_US'
-  })
-}
+import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
 
 /**
  * Create entity
- * @param {string}  parameters.tableName
- * @param {array}   parameters.attributesList
+ * @param {string}  tableName
+ * @param {array}   attributesList
  */
 export function createEntity({ tableName, attributesList }) {
   return Instance.call(this).requestCreateEntity({

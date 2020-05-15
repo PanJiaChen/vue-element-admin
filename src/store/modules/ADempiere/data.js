@@ -112,6 +112,9 @@ const data = {
           isAddRecord,
           isShowNotification
         })
+          .catch(error => {
+            console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
+          })
       } else if (panelType === 'browser') {
         if (!rootGetters.isNotReadyForSubmit(containerUuid)) {
           dispatch('getBrowserSearch', {
@@ -455,7 +458,7 @@ const data = {
       recordUuid,
       recordId
     }) {
-      return new Promise((resolve, reject) => {
+      return new Promise(resolve => {
         getEntity({
           tableName,
           recordUuid,
@@ -465,7 +468,7 @@ const data = {
             resolve(responseGetEntity.values)
           })
           .catch(error => {
-            reject(error)
+            console.warn(`Error Get Entity ${error.message}. Code: ${error.code}.`)
           })
       })
     },

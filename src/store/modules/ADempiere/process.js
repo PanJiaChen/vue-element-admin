@@ -75,7 +75,7 @@ const process = {
     }) {
       return new Promise(resolve => {
         const { processDefinition, actions } = generateProcess({
-          processToGenerate: processToGenerate
+          processToGenerate
         })
 
         dispatch('addPanel', processDefinition)
