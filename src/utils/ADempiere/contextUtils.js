@@ -201,13 +201,15 @@ export function getPreference({
 
   //        USER PREFERENCES
   // View Preferences
-  retValue = getContext({
-    parentUuid: 'P' + parentUuid,
-    containerUuid,
-    columnName: columnName
-  })
-  if (!isEmptyValue(retValue)) {
-    return retValue
+  if (parentUuid && containerUuid) {
+    retValue = getContext({
+      parentUuid: 'P' + parentUuid,
+      containerUuid,
+      columnName: columnName
+    })
+    if (!isEmptyValue(retValue)) {
+      return retValue
+    }
   }
 
   //  Global Preferences
