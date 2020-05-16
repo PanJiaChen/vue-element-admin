@@ -58,7 +58,7 @@
     "echarts": "4.7.0",
     "element-ui": "2.13.1",
     "file-saver": "2.0.2",
-    "fuse.js": "5.2.3",
+    "fuse.js": "3.4.4",
     "js-cookie": "2.2.1",
     "jsonlint": "1.6.3",
     "jszip": "3.4.0",
@@ -66,7 +66,7 @@
     "moment": "^2.24.0",
     "normalize.css": "8.0.1",
     "nprogress": "0.2.0",
-    "path-to-regexp": "6.1.0",
+    "path-to-regexp": "2.4.0",
     "screenfull": "5.0.2",
     "script-loader": "0.7.2",
     "showdown": "1.9.1",
@@ -87,7 +87,7 @@
     "xlsx": "0.15.6"
   },
   "devDependencies": {
-    "@adempiere/grpc-core-client": "^1.0.3",
+    "@adempiere/grpc-core-client": "^1.0.4",
     "@babel/core": "7.9.0",
     "@babel/register": "7.9.0",
     "@vue/cli-plugin-babel": "4.3.1",
