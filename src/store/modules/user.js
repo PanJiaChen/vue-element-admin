@@ -18,7 +18,7 @@ import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { convertDateFormat } from '@/utils/ADempiere/valueFormat'
-import { language, getLanguage } from '@/lang'
+import language, { getLanguage } from '@/lang'
 
 const state = {
   token: getToken(),
