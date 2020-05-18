@@ -96,7 +96,8 @@ export default {
   },
   data() {
     return {
-      fieldsList
+      fieldsList,
+      unsubscribe: () => {}
     }
   },
   computed: {

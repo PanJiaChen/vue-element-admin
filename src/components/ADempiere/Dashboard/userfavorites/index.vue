@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       favorites: [],
+      unsubscribe: () => {},
       isLoaded: true,
       search: '',
       accentRegexp: /[\u0300-\u036f]/g
@@ -108,7 +109,7 @@ export default {
       })
     },
     subscribeChanges() {
-      this.$store.subscribe((mutation, state) => {
+      return this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'notifyDashboardRefresh') {
           this.getFavoritesList()
         }

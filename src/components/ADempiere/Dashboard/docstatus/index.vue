@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       documents: [],
+      unsubscribe: () => {},
       search: ''
     }
   },
@@ -89,7 +90,7 @@ export default {
       })
     },
     subscribeChanges() {
-      this.$store.subscribe((mutation, state) => {
+      return this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'notifyDashboardRefresh') {
           this.getPendingDocuments()
         }

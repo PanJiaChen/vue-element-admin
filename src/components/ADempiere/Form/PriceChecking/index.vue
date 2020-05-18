@@ -37,7 +37,8 @@ export default {
   mixins: [formMixin],
   data() {
     return {
-      fieldsList
+      fieldsList,
+      unsubscribe: () => {}
     }
   },
   created() {
