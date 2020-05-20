@@ -34,11 +34,11 @@ export const DictionaryInstance = () => {
   const { getLanguage } = require('@/lang/index')
   const { getToken } = require('@/utils/auth')
 
-  return new Dictionary(
-    DICTIONARY_ADDRESS,
-    getToken(),
-    getLanguage() || 'en_US'
-  )
+  return new Dictionary({
+    host: DICTIONARY_ADDRESS,
+    sessionUuid: getToken(),
+    language: getLanguage() || 'en_US'
+  })
 }
 
 // Instance for connection Enrollment
