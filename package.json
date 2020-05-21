@@ -45,6 +45,7 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.2.1",
+    "@adempiere/grpc-core-client": "^1.0.7",
     "@adempiere/grpc-data-client": "^2.3.6",
     "@adempiere/grpc-dictionary-client": "^1.4.2",
     "@adempiere/grpc-enrollment-client": "^1.1.0",
@@ -87,7 +88,6 @@
     "xlsx": "0.15.6"
   },
   "devDependencies": {
-    "@adempiere/grpc-core-client": "^1.0.4",
     "@babel/core": "7.9.0",
     "@babel/register": "7.9.0",
     "@vue/cli-plugin-babel": "4.3.1",

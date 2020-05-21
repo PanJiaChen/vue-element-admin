@@ -2,29 +2,14 @@ import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
 
 /**
  * Checks if value is empty. Deep-checks arrays and objects
- * Note: isEmpty([]) == true, isEmpty({}) == true,
- * isEmpty([{0: false}, "", 0]) == true, isEmpty({0: 1}) == false
- * @param   {boolean|array|object|number|string} value
+ * Note: isEmpty([]) == true, isEmpty({}) == true, isEmpty([{0:false},"",0]) == true, isEmpty({0:1}) == false
+ * @param  {boolean|array|object|number|string|date|map|set|function} value
  * @returns {boolean}
  */
 export function isEmptyValue(value) {
-  if (value === undefined || value == null) {
-    return true
-  } else if (String(value).trim() === '-1') {
-    return true
-  } else if (typeof value === 'string') {
-    return Boolean(!value.trim().length)
-  } else if (typeof value === 'function' || typeof value === 'number' || typeof value === 'boolean' || Object.prototype.toString.call(value) === '[object Date]') {
-    return false
-  } else if (Object.prototype.toString.call(value) === '[object Map]' || Object.prototype.toString.call(value) === '[object Set]') {
-    return Boolean(!value.size)
-  } else if (Array.isArray(value)) {
-    return Boolean(!value.length)
-  } else if (typeof value === 'object') {
-    return Boolean(!Object.keys(value).length)
-  }
+  const { isEmptyValue } = require('@/api/ADempiere/system-core')
 
-  return true
+  return isEmptyValue(value)
 }
 
 export function typeValue(value) {
@@ -330,7 +315,7 @@ export function parsedValueComponent({
         value = value ? 'Y' : 'N'
       }
       // Table (18) or Table Direct (19)
-      if (displayType === TABLE.id || (displayType === TABLE_DIRECT.id && isIdentifier)) {
+      if (displayType === TABLE_DIRECT.id || (displayType === TABLE.id && isIdentifier)) {
         if (!isEmptyValue(value)) {
           value = Number(value)
         }
