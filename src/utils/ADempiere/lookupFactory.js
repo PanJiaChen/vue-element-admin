@@ -79,28 +79,28 @@ export function createFieldFromDictionary({
       columnName
     })
   }
-  if (!isEmptyValue(field)) {
-    return getFactoryFromField({ containerUuid, field })
-  }
-  return new Promise(resolve => {
-    store.dispatch('getFieldFromServer', {
-      fieldUuid,
-      columnUuid,
-      elementUuid,
-      elementColumnName,
-      tableName,
-      columnName
-    })
-      .then(response => {
-        resolve(getFactoryFromField({
-          containerUuid,
-          field: response,
-          overwriteDefinition
-        }))
-      }).catch(error => {
-        console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+  if (isEmptyValue(field)) {
+    return new Promise(resolve => {
+      store.dispatch('getFieldFromServer', {
+        fieldUuid,
+        columnUuid,
+        elementUuid,
+        elementColumnName,
+        tableName,
+        columnName
       })
-  })
+        .then(response => {
+          resolve(getFactoryFromField({
+            containerUuid,
+            field: response,
+            overwriteDefinition
+          }))
+        }).catch(error => {
+          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+        })
+    })
+  }
+  return new Promise(resolve => { resolve(getFactoryFromField({ containerUuid, field })) })
 }
 
 // Convert field getted from server to factory
@@ -109,49 +109,50 @@ function getFactoryFromField({
   field,
   overwriteDefinition = {}
 }) {
+  const fieldAttributes = isEmptyValue(field.fieldResponse) ? field : field.fieldResponse
   const fieldDefinition = {
-    displayType: field.displayType,
-    tableName: field.reference.tableName,
-    directQuery: field.directQuery,
-    query: field.reference.query,
-    keyColumnName: field.reference.keyColumnName,
-    validationCode: field.reference.validationCode,
-    windowsList: field.reference.windowsList,
-    id: field.id,
-    uuid: field.uuid,
-    name: field.name,
-    description: field.description,
-    help: field.help,
-    fieldGroup: field.fieldGroup,
-    isFieldOnly: field.isFieldOnly,
-    isRange: field.isRange,
-    isSameLine: field.isSameLine,
-    sequence: field.sequence,
-    seqNoGrid: field.seqNoGrid,
-    isIdentifier: field.isIdentifier,
-    isKey: field.isKey,
-    isSelectionColumn: field.isSelectionColumn,
-    isUpdateable: field.isUpdateable,
-    formatPattern: field.formatPattern,
-    vFormat: field.vFormat,
-    defaultValue: field.defaultValue,
-    defaultValueTo: field.defaultValueTo,
-    valueMin: field.valueMin,
-    valueMax: field.valueMax,
-    isActive: field.isActive,
-    isMandatory: field.isMandatory,
-    isReadOnly: field.isReadOnly,
-    isDisplayedFromLogic: field.isDisplayedFromLogic,
-    isReadOnlyFromLogic: field.isReadOnlyFromLogic,
-    isMandatoryFromLogic: field.isMandatoryFromLogic,
-    callout: field.callout,
-    isQueryCriteria: field.isQueryCriteria,
-    displayLogic: field.displayLogic,
-    mandatoryLogic: field.mandatoryLogic,
-    readOnlyLogic: field.readOnlyLogic,
-    parentFieldsList: field.parentFieldsList,
-    dependentFieldsList: field.dependentFieldsList,
-    contextInfo: field.contextInfo,
+    displayType: fieldAttributes.displayType,
+    tableName: fieldAttributes.reference.tableName,
+    directQuery: fieldAttributes.directQuery,
+    query: fieldAttributes.reference.query,
+    keyColumnName: fieldAttributes.reference.keyColumnName,
+    validationCode: fieldAttributes.reference.validationCode,
+    windowsList: fieldAttributes.reference.windowsList,
+    id: fieldAttributes.id,
+    uuid: fieldAttributes.uuid,
+    name: fieldAttributes.name,
+    description: fieldAttributes.description,
+    help: fieldAttributes.help,
+    fieldGroup: fieldAttributes.fieldGroup,
+    isFieldOnly: fieldAttributes.isFieldOnly,
+    isRange: fieldAttributes.isRange,
+    isSameLine: fieldAttributes.isSameLine,
+    sequence: fieldAttributes.sequence,
+    seqNoGrid: fieldAttributes.seqNoGrid,
+    isIdentifier: fieldAttributes.isIdentifier,
+    isKey: fieldAttributes.isKey,
+    isSelectionColumn: fieldAttributes.isSelectionColumn,
+    isUpdateable: fieldAttributes.isUpdateable,
+    formatPattern: fieldAttributes.formatPattern,
+    vFormat: fieldAttributes.vFormat,
+    defaultValue: fieldAttributes.defaultValue,
+    defaultValueTo: fieldAttributes.defaultValueTo,
+    valueMin: fieldAttributes.valueMin,
+    valueMax: fieldAttributes.valueMax,
+    isActive: fieldAttributes.isActive,
+    isMandatory: fieldAttributes.isMandatory,
+    isReadOnly: fieldAttributes.isReadOnly,
+    isDisplayedFromLogic: fieldAttributes.isDisplayedFromLogic,
+    isReadOnlyFromLogic: fieldAttributes.isReadOnlyFromLogic,
+    isMandatoryFromLogic: fieldAttributes.isMandatoryFromLogic,
+    callout: fieldAttributes.callout,
+    isQueryCriteria: fieldAttributes.isQueryCriteria,
+    displayLogic: fieldAttributes.displayLogic,
+    mandatoryLogic: fieldAttributes.mandatoryLogic,
+    readOnlyLogic: fieldAttributes.readOnlyLogic,
+    parentFieldsList: fieldAttributes.parentFieldsList,
+    dependentFieldsList: fieldAttributes.dependentFieldsList,
+    contextInfo: fieldAttributes.contextInfo,
     // Overwrite definition
     ...overwriteDefinition
   }

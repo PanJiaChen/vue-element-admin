@@ -65,22 +65,22 @@ const field = {
   getters: {
     getFieldFromUuid: (state) => (uuid) => {
       return state.fieldList.find(fieldItem => {
-        return fieldItem.uuid === uuid
+        return fieldItem.fieldResponse.uuid === uuid
       })
     },
     getFieldFromColumnUuid: (state) => (columnUuid) => {
       return state.fieldList.find(fieldItem => {
-        return fieldItem.columnUuid === columnUuid
+        return fieldItem.fieldResponse.columnUuid === columnUuid
       })
     },
     getFieldFromElementUuid: (state) => (elementUuid) => {
       return state.fieldList.find(fieldItem => {
-        return fieldItem.elementUuid === elementUuid
+        return fieldItem.fieldResponse.elementUuid === elementUuid
       })
     },
     getFieldFromElementColumnName: (state) => (elementColumnName) => {
       return state.fieldList.find(fieldItem => {
-        return fieldItem.elementColumnName === elementColumnName
+        return fieldItem.fieldResponse.elementColumnName === elementColumnName
       })
     },
     getFieldFromTableNameAndColumnName: (state) => ({
@@ -88,7 +88,7 @@ const field = {
       columnName
     }) => {
       return state.fieldList.find(fieldItem => {
-        return fieldItem.tableName === tableName && fieldItem.columnName === columnName
+        return fieldItem.fieldResponse.tableName === tableName && fieldItem.fieldResponse.columnName === columnName
       })
     }
   }
