@@ -59,6 +59,8 @@
 
 **バグ修正や新規機能追加のissue と pull requestは大歓迎です。**
 
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
+
  <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
