@@ -79,7 +79,7 @@
     "vue-i18n": "8.17.4",
     "vue-multipane": "^0.9.5",
     "vue-resize": "^0.5.0",
-    "vue-router": "3.1.6",
+    "vue-router": "3.2.0",
     "vue-shortkey": "^3.1.7",
     "vue-split-panel": "^1.0.4",
     "vue-splitpane": "1.0.6",

@@ -446,7 +446,11 @@ export default {
         if (!Object.prototype.hasOwnProperty.call(route.params, 'isReadParameters') || route.params.isReadParameters) {
           this.getData(parameters)
         }
-        this.setTagsViewTitle(route.query.action)
+        let viewTitle = ''
+        if (route.query && !this.isEmptyValue(route.query.action)) {
+          viewTitle = route.query.action
+        }
+        this.setTagsViewTitle(viewTitle)
       } else {
         if (this.panelType === 'table' && route.query.action === 'advancedQuery') {
           // TODO: use action notifyPanelChange with isShowedField in true
@@ -513,6 +517,8 @@ export default {
           .then(response => {
             if (response.length && !parameters.isNewRecord) {
               this.dataRecords = response[0]
+              const recordId = this.dataRecords[`${this.metadata.tableName}_ID`]
+
               if (this.$route.query.action === 'criteria') {
                 this.$router.push({
                   name: this.$route.name,
@@ -523,9 +529,12 @@ export default {
                   params: {
                     ...this.$route.params,
                     tableName: this.metadata.tableName,
-                    recordId: this.dataRecords[`${this.metadata.tableName}_ID`]
+                    recordId
                   }
+                }).catch(error => {
+                  console.info(`Panel Component: ${error.name}, ${error.message}`)
                 })
+
                 this.$store.dispatch('notifyPanelChange', {
                   parentUuid: this.parentUuid,
                   containerUuid: this.containerUuid,
@@ -542,10 +551,14 @@ export default {
                     ...this.$route.query
                   },
                   params: {
+                    ...this.$route.params,
                     tableName: this.metadata.tableName,
-                    recordId: this.dataRecords[`${this.metadata.tableName}_ID`]
+                    recordId
                   }
+                }).catch(error => {
+                  console.info(`Panel Component: ${error.name}, ${error.message}`)
                 })
+
                 this.$store.dispatch('notifyPanelChange', {
                   parentUuid: this.parentUuid,
                   containerUuid: this.containerUuid,
@@ -560,10 +573,16 @@ export default {
                   query: {
                     ...this.$route.query,
                     action: this.dataRecords.UUID
+                  },
+                  params: {
+                    ...this.$route.params,
+                    tableName: this.metadata.tableName,
+                    recordId
                   }
+                }).catch(error => {
+                  console.info(`Panel Component: ${error.name}, ${error.message}`)
                 })
-                this.$route.params['tableName'] = this.metadata.tableName
-                this.$route.params['recordId'] = this.dataRecords[`${this.metadata.tableName}_ID`]
+
                 this.$store.dispatch('notifyPanelChange', {
                   parentUuid: this.parentUuid,
                   containerUuid: this.containerUuid,
@@ -574,7 +593,11 @@ export default {
                   panelType: this.panelType
                 })
               }
-              this.setTagsViewTitle(this.$route.query.action)
+              let viewTitle = ''
+              if (this.$route.query && !this.isEmptyValue(this.$route.query.action)) {
+                viewTitle = this.$route.query.action
+              }
+              this.setTagsViewTitle(viewTitle)
               this.isLoadRecord = true
             } else {
               this.$router.push({
@@ -582,6 +605,8 @@ export default {
                   ...this.$route.query,
                   action: 'create-new'
                 }
+              }).catch(error => {
+                console.info(`Panel Component: ${error.name}, ${error.message}`)
               })
             }
           })
@@ -703,7 +728,7 @@ export default {
         }
       }
       this.setTagsViewTitle(uuidRecord)
-      if (this.$route.query.action === 'create-new') {
+      if (this.$route.query && this.$route.query.action === 'create-new') {
         this.setFocus()
       }
       const currentRecord = this.getterDataStore.record.find(record => record.UUID === uuidRecord)

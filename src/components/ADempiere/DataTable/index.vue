@@ -858,15 +858,20 @@ export default {
           // disabled rollback when change route
           this.$store.dispatch('setDataLog', {})
         }
+        const tableName = this.getterPanel.tableName
         this.$router.push({
+          name: this.$route.name,
           query: {
             ...this.$route.query,
             action: row.UUID
           },
           params: {
-            tableName: this.getterPanel.tableName,
-            recordId: row[`${this.getterPanel.tableName}_ID`]
+            ...this.$router.params,
+            tableName,
+            recordId: row[`${tableName}_ID`]
           }
+        }).catch(error => {
+          console.info(`DataTable Component: ${error.name}, ${error.message}`)
         })
       } else {
         if (!row.isEdit) {
