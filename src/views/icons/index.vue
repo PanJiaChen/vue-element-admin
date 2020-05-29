@@ -72,20 +72,20 @@ export default {
   overflow: hidden;
 
   .grid {
-    position: relative;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    position: relative;
   }
 
   .icon-item {
-    margin: 20px;
-    height: 85px;
-    text-align: center;
-    width: 100px;
-    float: left;
-    font-size: 30px;
     color: #24292e;
     cursor: pointer;
+    float: left;
+    font-size: 30px;
+    height: 85px;
+    margin: 20px;
+    text-align: center;
+    width: 100px;
   }
 
   span {

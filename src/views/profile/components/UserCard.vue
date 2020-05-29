@@ -1,5 +1,5 @@
 <template>
-  <el-card style="margin-bottom:20px;">
+  <el-card style="margin-bottom: 20px;">
     <div slot="header" class="clearfix">
       <span>About me</span>
     </div>
@@ -75,8 +75,8 @@ export default {
 
 <style lang="scss" scoped>
 .box-center {
-  margin: 0 auto;
   display: table;
+  margin: 0 auto;
 }
 
 .text-muted {
@@ -93,9 +93,9 @@ export default {
   }
 
   .user-role {
-    padding-top: 10px;
-    font-weight: 400;
     font-size: 14px;
+    font-weight: 400;
+    padding-top: 10px;
   }
 
   .box-social {
@@ -112,8 +112,8 @@ export default {
 }
 
 .user-bio {
-  margin-top: 20px;
   color: #606266;
+  margin-top: 20px;
 
   span {
     padding-left: 4px;
@@ -125,9 +125,9 @@ export default {
 
     .user-bio-section-header {
       border-bottom: 1px solid #dfe6ec;
-      padding-bottom: 10px;
-      margin-bottom: 10px;
       font-weight: bold;
+      margin-bottom: 10px;
+      padding-bottom: 10px;
     }
   }
 }

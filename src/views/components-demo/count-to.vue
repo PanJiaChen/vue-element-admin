@@ -15,7 +15,7 @@
       :autoplay="false"
       class="example"
     />
-    <div style="margin-left: 25%;margin-top: 40px;">
+    <div style="margin-left: 25%; margin-top: 40px;">
       <label class="label" for="startValInput">startVal:
         <input v-model.number="setStartVal" type="number" name="startValInput">
       </label>
@@ -25,7 +25,7 @@
       <label class="label" for="durationInput">duration:
         <input v-model.number="setDuration" type="number" name="durationInput">
       </label>
-      <div class="startBtn example-btn" @click="start">
+      <div class="start-btn example-btn" @click="start">
         Start
       </div>
       <div class="pause-resume-btn example-btn" @click="pauseResume">
@@ -124,95 +124,96 @@ export default {
 
 <style scoped>
 .example-btn {
+  background-color: #fff;
+  background-image: none;
+  border: 1px solid transparent;
+  border-color: #d9d9d9;
+  border-radius: 4px;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: pointer;
   display: inline-block;
-  margin-bottom: 0;
+  font-size: 12px;
   font-weight: 500;
+  line-height: 1.5;
+  margin-bottom: 0;
+  padding: 4px 15px;
+  position: relative;
   text-align: center;
   -ms-touch-action: manipulation;
   touch-action: manipulation;
-  cursor: pointer;
-  background-image: none;
-  border: 1px solid transparent;
-  white-space: nowrap;
-  line-height: 1.5;
-  padding: 4px 15px;
-  font-size: 12px;
-  border-radius: 4px;
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
-  transition: all .3s cubic-bezier(.645, .045, .355, 1);
-  position: relative;
-  color: rgba(0, 0, 0, .65);
-  background-color: #fff;
-  border-color: #d9d9d9;
+  white-space: nowrap;
 }
 
 .example-btn:hover {
-  color: #4AB7BD;
   background-color: #fff;
-  border-color: #4AB7BD;
+  border-color: #4ab7bd;
+  color: #4ab7bd;
 }
+
 .example {
-  font-size: 50px;
-  color: #F6416C;
+  color: #f6416c;
   display: block;
-  margin: 10px 0;
-  text-align: center;
+  font-size: 50px;
   font-size: 80px;
   font-weight: 500;
+  margin: 10px 0;
+  text-align: center;
 }
 
 .label {
   color: #2f4f4f;
-  font-size: 16px;
   display: inline-block;
+  font-size: 16px;
   margin: 15px 30px 15px 0;
 }
 
 input {
-  position: relative;
-  display: inline-block;
-  padding: 4px 7px;
-  width: 70px;
-  height: 28px;
-  cursor: text;
-  font-size: 12px;
-  line-height: 1.5;
-  color: rgba(0, 0, 0, .65);
   background-color: #fff;
   background-image: none;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  -webkit-transition: all .3s;
-  transition: all .3s;
+  color: rgba(0, 0, 0, 0.65);
+  cursor: text;
+  display: inline-block;
+  font-size: 12px;
+  height: 28px;
+  line-height: 1.5;
+  padding: 4px 7px;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  width: 70px;
 }
 
-.startBtn {
-  margin-left: 20px;
-  font-size: 20px;
-  color: #30B08F;
+.start-btn {
   background-color: #fff;
+  color: #30b08f;
+  font-size: 20px;
+  margin-left: 20px;
 }
 
-.startBtn:hover {
-  background-color: #30B08F;
+.start-btn:hover {
+  background-color: #30b08f;
+  border-color: #30b08f;
   color: #fff;
-  border-color: #30B08F;
 }
 
 .pause-resume-btn {
-  font-size: 20px;
-  color: #E65D6E;
   background-color: #fff;
+  color: #e65d6e;
+  font-size: 20px;
 }
 
 .pause-resume-btn:hover {
-  background-color: #E65D6E;
+  background-color: #e65d6e;
+  border-color: #e65d6e;
   color: #fff;
-  border-color: #E65D6E;
 }
 </style>
 

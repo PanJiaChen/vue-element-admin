@@ -208,14 +208,14 @@ export default {
   // Utils
   $spacer: 12px;
   $transition: 0.2s ease all;
-  $index: 0px;
+  $index: 0;
   $index-has-icon: 30px;
   // Theme:
   $color-white: white;
-  $color-grey: #9E9E9E;
-  $color-grey-light: #E0E0E0;
-  $color-blue: #2196F3;
-  $color-red: #F44336;
+  $color-grey: #9e9e9e;
+  $color-grey-light: #e0e0e0;
+  $color-blue: #2196f3;
+  $color-red: #f44336;
   $color-black: black;
   // Base clases:
   %base-bar-pseudo {
@@ -239,9 +239,11 @@ export default {
   .material-input__component {
     margin-top: 36px;
     position: relative;
+
     * {
       box-sizing: border-box;
     }
+
     .iconClass {
       .material-input__icon {
         position: absolute;
@@ -255,13 +257,16 @@ export default {
         font-weight: $font-weight-normal;
         pointer-events: none;
       }
+
       .material-label {
         left: $index-has-icon;
       }
+
       .material-input {
         text-indent: $index-has-icon;
       }
     }
+
     .material-input {
       font-size: $font-size-base;
       padding: $spacer $spacer $spacer - $apixel * 10 $spacer / 2;
@@ -270,12 +275,14 @@ export default {
       border: none;
       line-height: 1;
       border-radius: 0;
+
       &:focus {
         outline: none;
         border: none;
         border-bottom: 1px solid transparent; // fixes the height issue
       }
     }
+
     .material-label {
       font-weight: $font-weight-normal;
       position: absolute;
@@ -285,15 +292,18 @@ export default {
       transition: $transition;
       font-size: $font-size-small;
     }
+
     .material-input-bar {
       position: relative;
       display: block;
       width: 100%;
-      &:before {
+
+      &::before {
         @extend %base-bar-pseudo;
         left: 50%;
       }
-      &:after {
+
+      &::after {
         @extend %base-bar-pseudo;
         right: 50%;
       }
@@ -313,8 +323,8 @@ export default {
     // Active state:
     &.material--active {
       .material-input-bar {
-        &:before,
-        &:after {
+        &::before,
+        &::after {
           width: 50%;
         }
       }
@@ -323,18 +333,21 @@ export default {
 
   .material-input__component {
     background: $color-white;
+
     .material-input {
       background: none;
       color: $color-black;
       text-indent: $index;
       border-bottom: 1px solid $color-grey-light;
     }
+
     .material-label {
       color: $color-grey;
     }
+
     .material-input-bar {
-      &:before,
-      &:after {
+      &::before,
+      &::after {
         background: $color-blue;
       }
     }
@@ -349,9 +362,10 @@ export default {
       &.material--active .material-label {
         color: $color-red;
       }
+
       .material-input-bar {
-        &:before,
-        &:after {
+        &::before,
+        &::after {
           background: transparent;
         }
       }

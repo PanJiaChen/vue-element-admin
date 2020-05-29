@@ -6,11 +6,11 @@
 @import './btn.scss';
 
 body {
-  height: 100%;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
+  height: 100%;
   text-rendering: optimizeLegibility;
-  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
 }
 
 label {
@@ -18,8 +18,8 @@ label {
 }
 
 html {
-  height: 100%;
   box-sizing: border-box;
+  height: 100%;
 }
 
 #app {
@@ -27,13 +27,13 @@ html {
 }
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
 .no-padding {
-  padding: 0px !important;
+  padding: 0 !important;
 }
 
 .padding-content {
@@ -48,8 +48,8 @@ a:active {
 a,
 a:focus,
 a:hover {
-  cursor: pointer;
   color: inherit;
+  cursor: pointer;
   text-decoration: none;
 }
 
@@ -81,33 +81,33 @@ div:focus {
   cursor: pointer;
 }
 
-.inlineBlock {
+.inline-block {
   display: block;
 }
 
 .clearfix {
-  &:after {
-    visibility: hidden;
+  &::after {
+    clear: both;
+    content: ' ';
     display: block;
     font-size: 0;
-    content: " ";
-    clear: both;
     height: 0;
+    visibility: hidden;
   }
 }
 
 aside {
   background: #eef1f6;
-  padding: 8px 24px;
-  margin-bottom: 20px;
   border-radius: 2px;
-  display: block;
-  line-height: 32px;
-  font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #2c3e50;
+  display: block;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-size: 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  line-height: 32px;
+  margin-bottom: 20px;
+  padding: 8px 24px;
 
   a {
     color: #337ab7;
@@ -134,22 +134,22 @@ aside {
 }
 
 .text-center {
-  text-align: center
+  text-align: center;
 }
 
 .sub-navbar {
+  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
   height: 50px;
   line-height: 50px;
-  position: relative;
-  width: 100%;
-  text-align: right;
   padding-right: 20px;
+  position: relative;
+  text-align: right;
   transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
+  width: 100%;
 
   .subtitle {
-    font-size: 20px;
     color: #fff;
+    font-size: 20px;
   }
 
   &.draft {
@@ -176,8 +176,8 @@ aside {
 
   .filter-item {
     display: inline-block;
-    vertical-align: middle;
     margin-bottom: 10px;
+    vertical-align: middle;
   }
 }
 
