@@ -104,7 +104,8 @@
     "stylelint-order": "4.0.0",
     "svg-sprite-loader": "4.1.3",
     "svgo": "1.2.0",
-    "vue-template-compiler": "2.6.10"
+    "vue-template-compiler": "2.6.10",
+    "core-js": "2.6.11"
   },
   "engines": {
     "node": ">=8.9",
