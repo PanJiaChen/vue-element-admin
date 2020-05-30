@@ -39,29 +39,29 @@ export default {
 
 <style  scoped>
   .components-container {
-    position: relative;
     height: 100vh;
+    position: relative;
   }
 
   .left-container {
-    background-color: #F38181;
+    background-color: #f38181;
     height: 100%;
   }
 
   .right-container {
-    background-color: #FCE38A;
+    background-color: #fce38a;
     height: 200px;
   }
 
   .top-container {
-    background-color: #FCE38A;
-    width: 100%;
+    background-color: #fce38a;
     height: 100%;
+    width: 100%;
   }
 
   .bottom-container {
-    width: 100%;
-    background-color: #95E1D3;
+    background-color: #95e1d3;
     height: 100%;
+    width: 100%;
   }
 </style>

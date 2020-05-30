@@ -1,8 +1,8 @@
 @mixin clearfix {
-  &:after {
-    content: "";
-    display: table;
+  &::after {
     clear: both;
+    content: '';
+    display: table;
   }
 }
 
@@ -22,15 +22,15 @@
 }
 
 @mixin relative {
+  height: 100%;
   position: relative;
   width: 100%;
-  height: 100%;
 }
 
 @mixin pct($pct) {
-  width: #{$pct};
-  position: relative;
   margin: 0 auto;
+  position: relative;
+  width: #{$pct};
 }
 
 @mixin triangle($width, $height, $color, $direction) {

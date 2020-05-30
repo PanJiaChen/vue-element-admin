@@ -38,24 +38,27 @@ export default {
 </script>
 <style lang="scss">
 .board {
-  width: 1000px;
-  margin-left: 20px;
-  display: flex;
-  justify-content: space-around;
-  flex-direction: row;
   align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-left: 20px;
+  width: 1000px;
 }
+
 .kanban {
   &.todo {
     .board-column-header {
-      background: #4A9FF9;
+      background: #4a9ff9;
     }
   }
+
   &.working {
     .board-column-header {
       background: #f9944a;
     }
   }
+
   &.done {
     .board-column-header {
       background: #2ac06d;

@@ -1,298 +1,346 @@
 .todoapp {
-  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  line-height: 1.4em;
+  background: #fff;
   color: #4d4d4d;
-  min-width: 230px;
-  max-width: 550px;
-  margin: 0 auto ;
+  font: 14px 'Helvetica Neue', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 300;
-  background: #fff;
-  z-index: 1;
+  line-height: 1.4em;
+  margin: 0 auto;
+  max-width: 550px;
+  min-width: 230px;
   position: relative;
+  z-index: 1;
+
   button {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    background: none;
-    font-size: 100%;
-    vertical-align: baseline;
-    font-family: inherit;
-    font-weight: inherit;
-    color: inherit;
     -webkit-appearance: none;
     appearance: none;
+    background: none;
+    border: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: 100%;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-weight: inherit;
+    margin: 0;
+    padding: 0;
+    vertical-align: baseline;
   }
+
   :focus {
     outline: 0;
   }
+
   .hidden {
     display: none;
   }
+
   .todoapp {
     background: #fff;
-    margin: 130px 0 40px 0;
-    position: relative;
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    margin: 130px 0 40px;
+    position: relative;
   }
+
   .todoapp input::-webkit-input-placeholder {
+    color: #e6e6e6;
     font-style: italic;
     font-weight: 300;
-    color: #e6e6e6;
   }
+
   .todoapp input::-moz-placeholder {
+    color: #e6e6e6;
     font-style: italic;
     font-weight: 300;
-    color: #e6e6e6;
   }
+
   .todoapp input::input-placeholder {
+    color: #e6e6e6;
     font-style: italic;
     font-weight: 300;
-    color: #e6e6e6;
   }
+
   .todoapp h1 {
-    position: absolute;
-    top: -155px;
-    width: 100%;
+    color: rgba(175, 47, 47, 0.15);
     font-size: 100px;
     font-weight: 100;
+    position: absolute;
     text-align: center;
-    color: rgba(175, 47, 47, 0.15);
     -webkit-text-rendering: optimizeLegibility;
     -moz-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
+    top: -155px;
+    width: 100%;
   }
+
   .new-todo,
   .edit {
-    position: relative;
-    margin: 0;
-    width: 100%;
-    font-size: 18px;
-    font-family: inherit;
-    font-weight: inherit;
-    line-height: 1.4em;
     border: 0;
-    color: inherit;
-    padding: 6px;
     border: 1px solid #999;
     box-shadow: inset 0 -1px 5px 0 rgba(0, 0, 0, 0.2);
     box-sizing: border-box;
+    color: inherit;
+    font-family: inherit;
+    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-weight: inherit;
+    line-height: 1.4em;
+    margin: 0;
+    padding: 6px;
+    position: relative;
+    width: 100%;
   }
+
   .new-todo {
-    padding: 10px 16px 16px 60px;
-    border: none;
     background: rgba(0, 0, 0, 0.003);
+    border: none;
     box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
+    padding: 10px 16px 16px 60px;
   }
+
   .main {
+    border-top: 1px solid #e6e6e6;
     position: relative;
     z-index: 2;
-    border-top: 1px solid #e6e6e6;
   }
+
   .toggle-all {
-    text-align: center;
     border: none;
     /* Mobile Safari */
     opacity: 0;
     position: absolute;
+    text-align: center;
   }
+
   .toggle-all+label {
-    width: 60px;
-    height: 34px;
     font-size: 0;
+    height: 34px;
+    left: -13px;
     position: absolute;
     top: -52px;
-    left: -13px;
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
+    width: 60px;
   }
-  .toggle-all+label:before {
+
+  .toggle-all+label::before {
+    color: #e6e6e6;
     content: '❯';
     font-size: 22px;
-    color: #e6e6e6;
-    padding: 10px 27px 10px 27px;
+    padding: 10px 27px;
   }
-  .toggle-all:checked+label:before {
+
+  .toggle-all:checked+label::before {
     color: #737373;
   }
+
   .todo-list {
+    list-style: none;
     margin: 0;
     padding: 0;
-    list-style: none;
   }
+
   .todo-list li {
-    position: relative;
-    font-size: 24px;
     border-bottom: 1px solid #ededed;
+    font-size: 24px;
+    position: relative;
   }
+
   .todo-list li:last-child {
     border-bottom: none;
   }
+
   .todo-list li.editing {
     border-bottom: none;
     padding: 0;
   }
+
   .todo-list li.editing .edit {
     display: block;
-    width: 506px;
-    padding: 12px 16px;
     margin: 0 0 0 43px;
+    padding: 12px 16px;
+    width: 506px;
   }
+
   .todo-list li.editing .view {
     display: none;
   }
+
   .todo-list li .toggle {
-    text-align: center;
-    width: 40px;
-    /* auto, since non-WebKit browsers doesn't support input styling */
-    height: auto;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin: auto 0;
-    border: none;
     /* Mobile Safari */
     -webkit-appearance: none;
     appearance: none;
+    border: none;
+    bottom: 0;
+    /* auto, since non-WebKit browsers doesn't support input styling */
+    height: auto;
+    margin: auto 0;
+    position: absolute;
+    text-align: center;
+    top: 0;
+    width: 40px;
   }
+
   .todo-list li .toggle {
     opacity: 0;
   }
+
   .todo-list li .toggle+label {
     /*
     Firefox requires `#` to be escaped - https://bugzilla.mozilla.org/show_bug.cgi?id=922433
     IE and Edge requires *everything* to be escaped to render, so we do that instead of just the `#` - https://developer.microsoft.com/en-us/microsoft-edge/platform/issues/7157459/
   */
     background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23ededed%22%20stroke-width%3D%223%22/%3E%3C/svg%3E');
-    background-repeat: no-repeat;
     background-position: center left;
+    background-repeat: no-repeat;
     background-size: 36px;
   }
+
   .todo-list li .toggle:checked+label {
-    background-size: 36px;
     background-image: url('data:image/svg+xml;utf8,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20width%3D%2240%22%20height%3D%2240%22%20viewBox%3D%22-10%20-18%20100%20135%22%3E%3Ccircle%20cx%3D%2250%22%20cy%3D%2250%22%20r%3D%2250%22%20fill%3D%22none%22%20stroke%3D%22%23bddad5%22%20stroke-width%3D%223%22/%3E%3Cpath%20fill%3D%22%235dc2af%22%20d%3D%22M72%2025L42%2071%2027%2056l-4%204%2020%2020%2034-52z%22/%3E%3C/svg%3E');
+    background-size: 36px;
   }
+
   .todo-list li label {
-    word-break: break-all;
-    padding: 15px 15px 15px 50px;
     display: block;
-    line-height: 1.0;
-        font-size: 14px;
+    font-size: 14px;
+    line-height: 1;
+    padding: 15px 15px 15px 50px;
     transition: color 0.4s;
+    word-break: break-all;
   }
+
   .todo-list li.completed label {
     color: #d9d9d9;
     text-decoration: line-through;
   }
+
   .todo-list li .destroy {
-    display: none;
-    position: absolute;
-    top: 0;
-    right: 10px;
     bottom: 0;
-    width: 40px;
+    color: #cc9a9a;
+    cursor: pointer;
+    display: none;
+    font-size: 30px;
     height: 40px;
     margin: auto 0;
-    font-size: 30px;
-    color: #cc9a9a;
+    position: absolute;
+    right: 10px;
+    top: 0;
     transition: color 0.2s ease-out;
-    cursor: pointer;
+    width: 40px;
   }
+
   .todo-list li .destroy:hover {
     color: #af5b5e;
   }
-  .todo-list li .destroy:after {
+
+  .todo-list li .destroy::after {
     content: '×';
   }
+
   .todo-list li:hover .destroy {
     display: block;
   }
+
   .todo-list li .edit {
     display: none;
   }
+
   .todo-list li.editing:last-child {
     margin-bottom: -1px;
   }
+
   .footer {
-    color: #777;
-    position: relative;
-    padding: 10px 15px;
-    height: 40px;
-    text-align: center;
     border-top: 1px solid #e6e6e6;
+    color: #777;
+    height: 40px;
+    padding: 10px 15px;
+    position: relative;
+    text-align: center;
   }
-  .footer:before {
+
+  .footer::before {
+    bottom: 0;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
     content: '';
+    height: 40px;
+    left: 0;
+    overflow: hidden;
     position: absolute;
     right: 0;
-    bottom: 0;
-    left: 0;
-    height: 40px;
-    overflow: hidden;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2), 0 8px 0 -3px #f6f6f6, 0 9px 1px -3px rgba(0, 0, 0, 0.2), 0 16px 0 -6px #f6f6f6, 0 17px 2px -6px rgba(0, 0, 0, 0.2);
   }
+
   .todo-count {
     float: left;
     text-align: left;
   }
+
   .todo-count strong {
     font-weight: 300;
   }
+
   .filters {
+    list-style: none;
     margin: 0;
     padding: 0;
     position: relative;
     z-index: 1;
-    list-style: none;
   }
+
   .filters li {
     display: inline;
   }
+
   .filters li a {
+    border: 1px solid transparent;
+    border-radius: 3px;
     color: inherit;
     font-size: 12px;
     padding: 3px 7px;
     text-decoration: none;
-    border: 1px solid transparent;
-    border-radius: 3px;
   }
+
   .filters li a:hover {
     border-color: rgba(175, 47, 47, 0.1);
   }
+
   .filters li a.selected {
     border-color: rgba(175, 47, 47, 0.2);
   }
+
   .clear-completed,
   html .clear-completed:active {
-    float: right;
-    position: relative;
-    line-height: 20px;
-    text-decoration: none;
     cursor: pointer;
+    float: right;
+    line-height: 20px;
+    position: relative;
+    text-decoration: none;
   }
+
   .clear-completed:hover {
     text-decoration: underline;
   }
+
   .info {
-    margin: 65px auto 0;
     color: #bfbfbf;
     font-size: 10px;
-    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+    margin: 65px auto 0;
     text-align: center;
+    text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   }
+
   .info p {
     line-height: 1;
   }
+
   .info a {
     color: inherit;
-    text-decoration: none;
     font-weight: 400;
+    text-decoration: none;
   }
+
   .info a:hover {
     text-decoration: underline;
   }
@@ -300,11 +348,12 @@
   Hack to remove background from Mobile Safari.
   Can't use it globally since it destroys checkboxes in Firefox
 */
-  @media screen and (-webkit-min-device-pixel-ratio:0) {
+  @media screen and (-webkit-min-device-pixel-ratio: 0) {
     .toggle-all,
     .todo-list li .toggle {
       background: none;
     }
+
     .todo-list li .toggle {
       height: 40px;
     }
@@ -313,6 +362,7 @@
     .footer {
       height: 50px;
     }
+
     .filters {
       bottom: 10px;
     }

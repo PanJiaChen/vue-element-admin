@@ -1,7 +1,7 @@
 <template>
   <div v-loading.fullscreen.lock="fullscreenLoading" class="main-article" element-loading-text="Efforts to generate PDF">
-    <div class="article__heading">
-      <div class="article__heading__title">
+    <div class="article-heading">
+      <div class="article-heading-title">
         {{ article.title }}
       </div>
     </div>
@@ -44,57 +44,57 @@ export default {
 
 <style lang="scss">
 @mixin clearfix {
-  &:before {
-    display: table;
-    content: '';
+  &::before {
     clear: both;
+    content: '';
+    display: table;
   }
 
-  &:after {
-    display: table;
-    content: '';
+  &::after {
     clear: both;
+    content: '';
+    display: table;
   }
 }
 
 .main-article {
-  padding: 20px;
-  margin: 0 auto;
-  display: block;
-  width: 740px;
   background: #fff;
+  display: block;
+  margin: 0 auto;
+  padding: 20px;
+  width: 740px;
 }
 
-.article__heading {
-  position: relative;
-  padding: 0 0 20px;
+.article-heading {
   overflow: hidden;
+  padding: 0 0 20px;
+  position: relative;
 }
 
-.article__heading__title {
+.article-heading-title {
+  -webkit-box-orient: vertical;
+  color: #333;
   display: block;
   display: -webkit-box;
-  -webkit-box-orient: vertical;
+  font-size: 32px;
+  font-weight: 600;
   -webkit-line-clamp: 2;
   line-clamp: 2;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  font-size: 32px;
   line-height: 48px;
-  font-weight: 600;
-  color: #333;
   overflow: hidden;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
 }
 
 .node-article-content {
-  margin: 20px 0 0;
   @include clearfix;
-  font-size: 16px;
   color: #333;
+  font-family: medium-content-serif-font, Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-size: 16px;
   letter-spacing: 0.5px;
   line-height: 28px;
+  margin: 20px 0 0;
   margin-bottom: 30px;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
 
   &> :last-child {
     margin-bottom: 0;
@@ -107,17 +107,17 @@ export default {
   }
 
   img {
-    max-width: 100%;
     display: block;
     margin: 0 auto;
+    max-width: 100%;
   }
 
   p {
-    font-weight: 400;
-    font-style: normal;
     font-size: 21px;
+    font-style: normal;
+    font-weight: 400;
+    letter-spacing: -0.003em;
     line-height: 1.58;
-    letter-spacing: -.003em;
 
   }
 
@@ -128,32 +128,32 @@ export default {
   li {
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
-
-    letter-spacing: .01rem;
-    font-weight: 400;
-    font-style: normal;
     font-size: 21px;
+    font-style: normal;
+    font-weight: 400;
+
+    letter-spacing: 0.01rem;
+    letter-spacing: -0.003em;
     line-height: 1.58;
-    letter-spacing: -.003em;
-    margin-left: 30px;
     margin-bottom: 14px;
+    margin-left: 30px;
   }
 
   a {
-    text-decoration: none;
-    background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, .84) 100%, rgba(0, 0, 0, 0) 0);
-    background-size: 1px 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.84) 100%, rgba(0, 0, 0, 0) 0);
     background-position: 0 calc(1em + 1px);
+    background-repeat: repeat-x;
+    background-size: 1px 1px;
     padding: 0 6px;
+    text-decoration: none;
   }
 
   code {
-    background: rgba(0, 0, 0, .05);
-    padding: 3px 4px;
-    margin: 0 2px;
-    font-size: 16px;
+    background: rgba(0, 0, 0, 0.05);
     display: inline-block;
+    font-size: 16px;
+    margin: 0 2px;
+    padding: 3px 4px;
   }
 
   img {
@@ -168,17 +168,17 @@ export default {
   blockquote {
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
-    font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
-    letter-spacing: .01rem;
-    font-weight: 400;
-    font-style: italic;
+    border-left: 3px solid rgba(0, 0, 0, 0.84);
+    font-family: medium-content-serif-font, Georgia, Cambria, 'Times New Roman', Times, serif;
     font-size: 21px;
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: 0.01rem;
+    letter-spacing: -0.003em;
     line-height: 1.58;
-    letter-spacing: -.003em;
-    border-left: 3px solid rgba(0, 0, 0, .84);
-    padding-left: 20px;
     margin-left: -23px;
     padding-bottom: 2px;
+    padding-left: 20px;
   }
 
   a {
@@ -189,8 +189,8 @@ export default {
   h3,
   h4 {
     font-size: 34px;
+    letter-spacing: -0.015em;
     line-height: 1.15;
-    letter-spacing: -.015em;
     margin: 53px 0 0;
   }
 
