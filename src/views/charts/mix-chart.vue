@@ -14,10 +14,10 @@ export default {
 </script>
 
 <style scoped>
-.chart-container {
-  height: calc(100vh - 84px);
+.chart-container{
   position: relative;
   width: 100%;
+  height: calc(100vh - 84px);
 }
 </style>
 

@@ -7,14 +7,7 @@
 
     <pan-thumb :image="image" />
 
-    <el-button
-      type="primary"
-      icon="el-icon-upload"
-      style="bottom: 15px;
-  margin-left: 40px;
-  position: absolute;"
-      @click="imagecropperShow=true"
-    >
+    <el-button type="primary" icon="el-icon-upload" style="position: absolute;bottom: 15px;margin-left: 40px;" @click="imagecropperShow=true">
       Change Avatar
     </el-button>
 
@@ -59,10 +52,10 @@ export default {
 </script>
 
 <style scoped>
-  .avatar {
-    border-radius: 50%;
-    height: 200px;
+  .avatar{
     width: 200px;
+    height: 200px;
+    border-radius: 50%;
   }
 </style>
 

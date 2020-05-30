@@ -1,5 +1,5 @@
 <template>
-  <div class="err-page-container">
+  <div class="errPage-container">
     <el-button icon="el-icon-arrow-left" class="pan-back-btn" @click="back">
       返回
     </el-button>
@@ -59,45 +59,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .err-page-container {
-    margin: 100px auto;
-    max-width: 100%;
+  .errPage-container {
     width: 800px;
-
+    max-width: 100%;
+    margin: 100px auto;
     .pan-back-btn {
       background: #008489;
-      border: none !important;
       color: #fff;
+      border: none!important;
     }
-
     .pan-gif {
-      display: block;
       margin: 0 auto;
+      display: block;
     }
-
     .pan-img {
       display: block;
       margin: 0 auto;
       width: 100%;
     }
-
     .text-jumbo {
-      color: #484848;
       font-size: 60px;
       font-weight: 700;
+      color: #484848;
     }
-
     .list-unstyled {
       font-size: 14px;
-
       li {
         padding-bottom: 5px;
       }
-
       a {
         color: #008489;
         text-decoration: none;
-
         &:hover {
           text-decoration: underline;
         }

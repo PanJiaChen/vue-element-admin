@@ -103,6 +103,7 @@ export default {
 <style lang="scss" scoped>
 .user-activity {
   .user-block {
+
     .username,
     .description {
       display: block;
@@ -110,38 +111,38 @@ export default {
       padding: 2px 0;
     }
 
-    .username {
-      color: #000;
+    .username{
       font-size: 16px;
+      color: #000;
     }
 
-    ::after {
+    :after {
       clear: both;
     }
 
     .img-circle {
       border-radius: 50%;
-      float: left;
-      height: 40px;
       width: 40px;
+      height: 40px;
+      float: left;
     }
 
     span {
-      font-size: 12px;
       font-weight: 500;
+      font-size: 12px;
     }
   }
 
   .post {
-    border-bottom: 1px solid #d2d6de;
-    color: #666;
     font-size: 14px;
+    border-bottom: 1px solid #d2d6de;
     margin-bottom: 15px;
     padding-bottom: 15px;
+    color: #666;
 
     .image {
-      height: 100%;
       width: 100%;
+      height: 100%;
 
     }
 
@@ -151,18 +152,19 @@ export default {
   }
 
   .list-inline {
-    list-style: none;
-    margin-left: -5px;
     padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
 
     li {
       display: inline-block;
-      font-size: 13px;
-      padding-left: 5px;
       padding-right: 5px;
+      padding-left: 5px;
+      font-size: 13px;
     }
 
     .link-black {
+
       &:hover,
       &:focus {
         color: #999;
@@ -173,8 +175,8 @@ export default {
 }
 
 .box-center {
-  display: table;
   margin: 0 auto;
+  display: table;
 }
 
 .text-muted {

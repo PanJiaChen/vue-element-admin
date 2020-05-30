@@ -1,5 +1,5 @@
 <template>
-  <div class="create-post-container">
+  <div class="createPost-container">
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
@@ -14,7 +14,7 @@
         </el-button>
       </sticky>
 
-      <div class="create-post-main-container">
+      <div class="createPost-main-container">
         <el-row>
           <Warning />
 
@@ -25,10 +25,10 @@
               </MDinput>
             </el-form-item>
 
-            <div class="post-info-container">
+            <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="60px" label="Author:" class="post-info-container-item">
+                  <el-form-item label-width="60px" label="Author:" class="postInfo-container-item">
                     <el-select v-model="postForm.author" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="Search user">
                       <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
                     </el-select>
@@ -36,20 +36,20 @@
                 </el-col>
 
                 <el-col :span="10">
-                  <el-form-item label-width="120px" label="Publish Time:" class="post-info-container-item">
+                  <el-form-item label-width="120px" label="Publish Time:" class="postInfo-container-item">
                     <el-date-picker v-model="displayTime" type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="Select date and time" />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="6">
-                  <el-form-item label-width="90px" label="Importance:" class="post-info-container-item">
+                  <el-form-item label-width="90px" label="Importance:" class="postInfo-container-item">
                     <el-rate
                       v-model="postForm.importance"
                       :max="3"
                       :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
                       :low-threshold="1"
                       :high-threshold="3"
-                      style="display: inline-block;"
+                      style="display:inline-block"
                     />
                   </el-form-item>
                 </el-col>
@@ -250,40 +250,40 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/mixin.scss';
+@import "~@/styles/mixin.scss";
 
-.create-post-container {
+.createPost-container {
   position: relative;
 
-  .create-post-main-container {
+  .createPost-main-container {
     padding: 40px 45px 20px 50px;
 
-    .post-info-container {
+    .postInfo-container {
+      position: relative;
       @include clearfix;
       margin-bottom: 10px;
-      position: relative;
 
-      .post-info-container-item {
+      .postInfo-container-item {
         float: left;
       }
     }
   }
 
   .word-counter {
+    width: 40px;
     position: absolute;
     right: 10px;
-    top: 0;
-    width: 40px;
+    top: 0px;
   }
 }
 
 .article-textarea /deep/ {
   textarea {
-    border: none;
-    border-bottom: 1px solid #bfcbd9;
-    border-radius: 0;
     padding-right: 40px;
     resize: none;
+    border: none;
+    border-radius: 0px;
+    border-bottom: 1px solid #bfcbd9;
   }
 }
 </style>

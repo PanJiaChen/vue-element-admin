@@ -1,11 +1,12 @@
 // cover some element-ui styles
+
 .el-breadcrumb__inner,
 .el-breadcrumb__inner a {
   font-weight: 400 !important;
 }
 
 .el-upload {
-  input[type='file'] {
+  input[type="file"] {
     display: none !important;
   }
 }
@@ -16,7 +17,7 @@
 
 .cell {
   .el-tag {
-    margin-right: 0;
+    margin-right: 0px;
   }
 }
 
@@ -29,8 +30,8 @@
 
 .fixed-width {
   .el-button--mini {
-    min-width: 60px;
     padding: 7px 10px;
+    min-width: 60px;
   }
 }
 
@@ -40,17 +41,17 @@
     text-align: center;
 
     .el-tag {
-      margin-right: 0;
+      margin-right: 0px;
     }
   }
 }
 
 // to fixed https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
-  left: 0;
-  margin: 0 auto;
-  position: relative;
   transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
 }
 
 // refine element ui upload
@@ -59,8 +60,8 @@
     width: 100%;
 
     .el-upload-dragger {
-      height: 200px;
       width: 100%;
+      height: 200px;
     }
   }
 }
@@ -68,7 +69,7 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block;
+    display: block
   }
 }
 

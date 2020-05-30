@@ -10,7 +10,7 @@
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__info">All rights reserved
-          <a style="color: #20a0ff;" href="https://wallstreetcn.com" target="_blank">wallstreetcn</a>
+          <a style="color:#20a0ff" href="https://wallstreetcn.com" target="_blank">wallstreetcn</a>
         </div>
         <div class="bullshit__headline">{{ message }}</div>
         <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
@@ -33,216 +33,194 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.wscn-http404-container {
-  left: 50%;
+.wscn-http404-container{
+  transform: translate(-50%,-50%);
   position: absolute;
   top: 40%;
-  transform: translate(-50%, -50%);
+  left: 50%;
 }
-
 .wscn-http404 {
-  overflow: hidden;
-  padding: 0 50px;
   position: relative;
   width: 1200px;
-
+  padding: 0 50px;
+  overflow: hidden;
   .pic-404 {
-    float: left;
-    overflow: hidden;
     position: relative;
+    float: left;
     width: 600px;
-
+    overflow: hidden;
     &__parent {
       width: 100%;
     }
-
     &__child {
       position: absolute;
-
       &.left {
-        animation-delay: 1s;
-        animation-duration: 2s;
-        animation-fill-mode: forwards;
-        animation-name: cloudLeft;
-        animation-timing-function: linear;
+        width: 80px;
+        top: 17px;
         left: 220px;
         opacity: 0;
-        top: 17px;
-        width: 80px;
-      }
-
-      &.mid {
-        animation-delay: 1.2s;
+        animation-name: cloudLeft;
         animation-duration: 2s;
-        animation-fill-mode: forwards;
-        animation-name: cloudMid;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
+        animation-delay: 1s;
+      }
+      &.mid {
+        width: 46px;
+        top: 10px;
         left: 420px;
         opacity: 0;
-        top: 10px;
-        width: 46px;
-      }
-
-      &.right {
-        animation-delay: 1s;
+        animation-name: cloudMid;
         animation-duration: 2s;
-        animation-fill-mode: forwards;
-        animation-name: cloudRight;
         animation-timing-function: linear;
+        animation-fill-mode: forwards;
+        animation-delay: 1.2s;
+      }
+      &.right {
+        width: 62px;
+        top: 100px;
         left: 500px;
         opacity: 0;
-        top: 100px;
-        width: 62px;
+        animation-name: cloudRight;
+        animation-duration: 2s;
+        animation-timing-function: linear;
+        animation-fill-mode: forwards;
+        animation-delay: 1s;
       }
       @keyframes cloudLeft {
         0% {
+          top: 17px;
           left: 220px;
           opacity: 0;
-          top: 17px;
         }
-
         20% {
+          top: 33px;
           left: 188px;
           opacity: 1;
-          top: 33px;
         }
-
         80% {
+          top: 81px;
           left: 92px;
           opacity: 1;
-          top: 81px;
         }
-
         100% {
+          top: 97px;
           left: 60px;
           opacity: 0;
-          top: 97px;
         }
       }
       @keyframes cloudMid {
         0% {
+          top: 10px;
           left: 420px;
           opacity: 0;
-          top: 10px;
         }
-
         20% {
+          top: 40px;
           left: 360px;
           opacity: 1;
-          top: 40px;
         }
-
         70% {
+          top: 130px;
           left: 180px;
           opacity: 1;
-          top: 130px;
         }
-
         100% {
+          top: 160px;
           left: 120px;
           opacity: 0;
-          top: 160px;
         }
       }
       @keyframes cloudRight {
         0% {
+          top: 100px;
           left: 500px;
           opacity: 0;
-          top: 100px;
         }
-
         20% {
+          top: 120px;
           left: 460px;
           opacity: 1;
-          top: 120px;
         }
-
         80% {
+          top: 180px;
           left: 340px;
           opacity: 1;
-          top: 180px;
         }
-
         100% {
+          top: 200px;
           left: 300px;
           opacity: 0;
-          top: 200px;
         }
       }
     }
   }
-
   .bullshit {
-    float: left;
-    overflow: hidden;
-    padding: 30px 0;
     position: relative;
+    float: left;
     width: 300px;
-
+    padding: 30px 0;
+    overflow: hidden;
     &__oops {
-      animation-duration: 0.5s;
-      animation-fill-mode: forwards;
-      animation-name: slideUp;
-      color: #1482f0;
       font-size: 32px;
       font-weight: bold;
       line-height: 40px;
+      color: #1482f0;
+      opacity: 0;
       margin-bottom: 20px;
-      opacity: 0;
+      animation-name: slideUp;
+      animation-duration: 0.5s;
+      animation-fill-mode: forwards;
     }
-
     &__headline {
-      animation-delay: 0.1s;
-      animation-duration: 0.5s;
-      animation-fill-mode: forwards;
-      animation-name: slideUp;
-      color: #222;
       font-size: 20px;
-      font-weight: bold;
       line-height: 24px;
-      margin-bottom: 10px;
+      color: #222;
+      font-weight: bold;
       opacity: 0;
-    }
-
-    &__info {
-      animation-delay: 0.2s;
-      animation-duration: 0.5s;
-      animation-fill-mode: forwards;
+      margin-bottom: 10px;
       animation-name: slideUp;
-      color: grey;
+      animation-duration: 0.5s;
+      animation-delay: 0.1s;
+      animation-fill-mode: forwards;
+    }
+    &__info {
       font-size: 13px;
       line-height: 21px;
-      margin-bottom: 30px;
+      color: grey;
       opacity: 0;
-    }
-
-    &__return-home {
-      animation-delay: 0.3s;
-      animation-duration: 0.5s;
-      animation-fill-mode: forwards;
+      margin-bottom: 30px;
       animation-name: slideUp;
-      background: #1482f0;
-      border-radius: 100px;
-      color: #fff;
-      cursor: pointer;
+      animation-duration: 0.5s;
+      animation-delay: 0.2s;
+      animation-fill-mode: forwards;
+    }
+    &__return-home {
       display: block;
       float: left;
-      font-size: 14px;
-      height: 36px;
-      line-height: 36px;
-      opacity: 0;
-      text-align: center;
       width: 110px;
+      height: 36px;
+      background: #1482f0;
+      border-radius: 100px;
+      text-align: center;
+      color: #ffffff;
+      opacity: 0;
+      font-size: 14px;
+      line-height: 36px;
+      cursor: pointer;
+      animation-name: slideUp;
+      animation-duration: 0.5s;
+      animation-delay: 0.3s;
+      animation-fill-mode: forwards;
     }
     @keyframes slideUp {
       0% {
-        opacity: 0;
         transform: translateY(60px);
+        opacity: 0;
       }
-
       100% {
-        opacity: 1;
         transform: translateY(0);
+        opacity: 1;
       }
     }
   }

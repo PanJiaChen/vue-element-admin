@@ -45,15 +45,15 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="margin-bottom: 30px;width: 100%;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div style="position: relative;">
+      <div style="position:relative">
         <div class="tips">
           <span>Username : admin</span>
           <span>Password : any</span>
         </div>
         <div class="tips">
-          <span style="margin-right: 18px;">Username : editor</span>
+          <span style="margin-right:18px;">Username : editor</span>
           <span>Password : any</span>
         </div>
 
@@ -204,8 +204,8 @@ export default {
 /* 修复input 背景不协调 和光标变色 */
 /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
 
-$bg: #283443;
-$light-gray: #fff;
+$bg:#283443;
+$light_gray:#fff;
 $cursor: #fff;
 
 @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
@@ -222,25 +222,25 @@ $cursor: #fff;
     width: 85%;
 
     input {
-      -webkit-appearance: none;
       background: transparent;
-      border: 0;
-      border-radius: 0;
-      caret-color: $cursor;
-      color: $light-gray;
-      height: 47px;
+      border: 0px;
+      -webkit-appearance: none;
+      border-radius: 0px;
       padding: 12px 5px 12px 15px;
+      color: $light_gray;
+      height: 47px;
+      caret-color: $cursor;
 
       &:-webkit-autofill {
-        box-shadow: 0 0 0 1000px $bg inset !important;
+        box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
     }
   }
 
   .el-form-item {
-    background: rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     color: #454545;
   }
@@ -248,28 +248,28 @@ $cursor: #fff;
 </style>
 
 <style lang="scss" scoped>
-$bg: #2d3a4b;
-$dark-gray: #889aa4;
-$light-gray: #eee;
+$bg:#2d3a4b;
+$dark_gray:#889aa4;
+$light_gray:#eee;
 
 .login-container {
-  background-color: $bg;
   min-height: 100%;
-  overflow: hidden;
   width: 100%;
+  background-color: $bg;
+  overflow: hidden;
 
   .login-form {
-    margin: 0 auto;
-    max-width: 100%;
-    overflow: hidden;
-    padding: 160px 35px 0;
     position: relative;
     width: 520px;
+    max-width: 100%;
+    padding: 160px 35px 0;
+    margin: 0 auto;
+    overflow: hidden;
   }
 
   .tips {
-    color: #fff;
     font-size: 14px;
+    color: #fff;
     margin-bottom: 10px;
 
     span {
@@ -280,39 +280,39 @@ $light-gray: #eee;
   }
 
   .svg-container {
-    color: $dark-gray;
-    display: inline-block;
     padding: 6px 5px 6px 15px;
+    color: $dark_gray;
     vertical-align: middle;
     width: 30px;
+    display: inline-block;
   }
 
   .title-container {
     position: relative;
 
     .title {
-      color: $light-gray;
       font-size: 26px;
-      font-weight: bold;
-      margin: 0 auto 40px;
+      color: $light_gray;
+      margin: 0px auto 40px auto;
       text-align: center;
+      font-weight: bold;
     }
   }
 
   .show-pwd {
-    color: $dark-gray;
-    cursor: pointer;
-    font-size: 16px;
     position: absolute;
     right: 10px;
     top: 7px;
+    font-size: 16px;
+    color: $dark_gray;
+    cursor: pointer;
     user-select: none;
   }
 
   .thirdparty-button {
-    bottom: 6px;
     position: absolute;
     right: 0;
+    bottom: 6px;
   }
 
   @media only screen and (max-width: 470px) {

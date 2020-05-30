@@ -34,23 +34,23 @@ export default {
 
 <style lang="scss" scoped>
 .documentation-container {
+  margin: 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-evenly;
-  margin: 50px;
 
   .document-btn {
+    flex-shrink: 0;
+    display: block;
+    cursor: pointer;
     background: black;
     color: white;
-    cursor: pointer;
-    display: block;
-    flex-shrink: 0;
-    font-size: 20px;
     height: 60px;
-    line-height: 60px;
-    margin-bottom: 16px;
-    text-align: center;
     width: 200px;
+    margin-bottom: 16px;
+    line-height: 60px;
+    font-size: 20px;
+    text-align: center;
   }
 }
 </style>

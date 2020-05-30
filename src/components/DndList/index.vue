@@ -1,23 +1,23 @@
 <template>
-  <div class="dnd-list">
-    <div :style="{width:width1}" class="dnd-list-container">
+  <div class="dndList">
+    <div :style="{width:width1}" class="dndList-list">
       <h3>{{ list1Title }}</h3>
-      <draggable :set-data="setData" :list="list1" group="article" class="drag-area">
+      <draggable :set-data="setData" :list="list1" group="article" class="dragArea">
         <div v-for="element in list1" :key="element.id" class="list-complete-item">
           <div class="list-complete-item-handle">
             {{ element.id }}[{{ element.author }}] {{ element.title }}
           </div>
-          <div style="position: absolute;right: 0;">
-            <span style="float: right;margin-top: -20px;margin-right: 5px;" @click="deleteEle(element)">
-              <i style="color: #ff4949;" class="el-icon-delete" />
+          <div style="position:absolute;right:0px;">
+            <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
+              <i style="color:#ff4949" class="el-icon-delete" />
             </span>
           </div>
         </div>
       </draggable>
     </div>
-    <div :style="{width:width2}" class="dnd-list-container">
+    <div :style="{width:width2}" class="dndList-list">
       <h3>{{ list2Title }}</h3>
-      <draggable :list="list2" group="article" class="drag-area">
+      <draggable :list="list2" group="article" class="dragArea">
         <div v-for="element in list2" :key="element.id" class="list-complete-item">
           <div class="list-complete-item-handle2" @click="pushEle(element)">
             {{ element.id }} [{{ element.author }}] {{ element.title }}
@@ -105,25 +105,21 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.dnd-list {
+.dndList {
   background: #fff;
   padding-bottom: 40px;
-
-  &::after {
-    content: '';
+  &:after {
+    content: "";
     display: table;
     clear: both;
   }
-
-  .dnd-list-container {
+  .dndList-list {
     float: left;
     padding-bottom: 30px;
-
     &:first-of-type {
       margin-right: 2%;
     }
-
-    .drag-area {
+    .dragArea {
       margin-top: 15px;
       min-height: 50px;
       padding-bottom: 30px;
@@ -156,11 +152,11 @@ export default {
 }
 
 .list-complete-item.sortable-chosen {
-  background: #4ab7bd;
+  background: #4AB7BD;
 }
 
 .list-complete-item.sortable-ghost {
-  background: #30b08f;
+  background: #30B08F;
 }
 
 .list-complete-enter,

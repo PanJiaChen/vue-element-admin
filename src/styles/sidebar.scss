@@ -1,7 +1,8 @@
 #app {
+
   .main-container {
     min-height: 100%;
-    transition: margin-left 0.28s;
+    transition: margin-left .28s;
     margin-left: $sideBarWidth;
     position: relative;
   }
@@ -12,7 +13,7 @@
     background-color: $menuBg;
     height: 100%;
     position: fixed;
-    font-size: 0;
+    font-size: 0px;
     top: 0;
     bottom: 0;
     left: 0;
@@ -29,7 +30,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0;
+      right: 0px;
     }
 
     .el-scrollbar {
@@ -145,11 +146,11 @@
   // mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0;
+      margin-left: 0px;
     }
 
     .sidebar-container {
-      transition: transform 0.28s;
+      transition: transform .28s;
       width: $sideBarWidth !important;
     }
 
@@ -163,6 +164,7 @@
   }
 
   .withoutAnimation {
+
     .main-container,
     .sidebar-container {
       transition: none;
