@@ -46,7 +46,7 @@
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.2.1",
     "@adempiere/grpc-core-client": "^1.1.2",
-    "@adempiere/grpc-data-client": "^2.3.9",
+    "@adempiere/grpc-data-client": "^2.4.1",
     "@adempiere/grpc-dictionary-client": "^1.4.2",
     "@adempiere/grpc-enrollment-client": "^1.1.0",
     "@adempiere/grpc-pos-client": "^1.2.8",
