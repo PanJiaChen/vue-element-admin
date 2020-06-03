@@ -22,6 +22,7 @@
       <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
       <li @click="closeOthersTags">Close Others</li>
+      <li v-if="!isLastView()" @click="closeRightTags">Close to the Right</li>
       <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
@@ -75,6 +76,9 @@ export default {
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix
+    },
+    isLastView() {
+      return this.selectedTag.fullPath === this.visitedViews[this.visitedViews.length - 1].fullPath
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
@@ -159,6 +163,13 @@ export default {
         this.moveToCurrentTag()
       })
     },
+    closeRightTags() {
+      this.$store.dispatch('tagsView/delRightTags', this.selectedTag).then(visitedViews => {
+        if (!visitedViews.find(i => i.fullPath === this.$route.fullPath)) {
+          this.toLastView(visitedViews)
+        }
+      })
+    },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
         if (this.affixTags.some(tag => tag.path === view.path)) {
@@ -167,7 +178,7 @@ export default {
         this.toLastView(visitedViews, view)
       })
     },
-    toLastView(visitedViews, view) {
+    toLastView(visitedViews, view = {}) {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
         this.$router.push(latestView.fullPath)

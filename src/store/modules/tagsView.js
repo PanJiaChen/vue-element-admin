@@ -66,6 +66,19 @@ const mutations = {
   },
   MOVE_VIEW: (state, { oldIndex, newIndex }) => {
     state.visitedViews.splice(newIndex, 0, state.visitedViews.splice(oldIndex, 1)[0])
+  },
+  DEL_RIGHT_VIEWS: (state, view) => {
+    const index = state.visitedViews.findIndex(v => v.path === view.path)
+    if (index === -1) {
+      return
+    }
+    const arr = state.visitedViews.splice(index + 1)
+    arr.forEach(item => {
+      const index = state.cachedViews.indexOf(item.name)
+      if (index > -1) {
+        state.cachedViews.splice(index, 1)
+      }
+    })
   }
 }
 
@@ -155,6 +168,12 @@ const actions = {
   },
   moveView({ commit }, arg) {
     commit('MOVE_VIEW', arg)
+  },
+  delRightTags({ commit }, view) {
+    return new Promise(resolve => {
+      commit('DEL_RIGHT_VIEWS', view)
+      resolve([...state.visitedViews])
+    })
   }
 }
 
