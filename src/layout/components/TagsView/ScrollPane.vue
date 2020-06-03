@@ -34,11 +34,12 @@ export default {
     emitScroll() {
       this.$emit('scroll')
     },
-    moveToTarget(currentTag) {
+    moveToTarget(currentRoute) {
       const $container = this.$refs.scrollContainer.$el
       const $containerWidth = $container.offsetWidth
       const $scrollWrapper = this.scrollWrapper
-      const tagList = this.$parent.$refs.tag
+      const tagList = Array.from(window.document.querySelectorAll('#tags-view-container .tags-view-item'))
+      const currentTag = tagList.find(i => i.dataset.fullPath === currentRoute.fullPath)
 
       let firstTag = null
       let lastTag = null
@@ -60,10 +61,10 @@ export default {
         const nextTag = tagList[currentIndex + 1]
 
         // the tag's offsetLeft after of nextTag
-        const afterNextTagOffsetLeft = nextTag.$el.offsetLeft + nextTag.$el.offsetWidth + tagAndTagSpacing
+        const afterNextTagOffsetLeft = nextTag.offsetLeft + nextTag.offsetWidth + tagAndTagSpacing
 
         // the tag's offsetLeft before of prevTag
-        const beforePrevTagOffsetLeft = prevTag.$el.offsetLeft - tagAndTagSpacing
+        const beforePrevTagOffsetLeft = prevTag.offsetLeft - tagAndTagSpacing
 
         if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
           $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth

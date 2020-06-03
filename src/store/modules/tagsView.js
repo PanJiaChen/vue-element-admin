@@ -63,6 +63,9 @@ const mutations = {
         break
       }
     }
+  },
+  MOVE_VIEW: (state, { oldIndex, newIndex }) => {
+    state.visitedViews.splice(newIndex, 0, state.visitedViews.splice(oldIndex, 1)[0])
   }
 }
 
@@ -149,6 +152,9 @@ const actions = {
 
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
+  },
+  moveView({ commit }, arg) {
+    commit('MOVE_VIEW', arg)
   }
 }
 
