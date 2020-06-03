@@ -72,12 +72,15 @@ const mutations = {
     if (index === -1) {
       return
     }
-    const arr = state.visitedViews.splice(index + 1)
-    arr.forEach(item => {
-      const index = state.cachedViews.indexOf(item.name)
-      if (index > -1) {
-        state.cachedViews.splice(index, 1)
+    state.visitedViews = state.visitedViews.filter((item, idx) => {
+      if (idx <= index || (item.meta && item.meta.affix)) {
+        return true
       }
+      const i = state.cachedViews.indexOf(item.name)
+      if (i > -1) {
+        state.cachedViews.splice(i, 1)
+      }
+      return false
     })
   }
 }
