@@ -40,7 +40,10 @@ export default {
       const $scrollWrapper = this.scrollWrapper
       const tagList = Array.from(window.document.querySelectorAll('#tags-view-container .tags-view-item'))
       const currentTag = tagList.find(i => i.dataset.fullPath === currentRoute.fullPath)
-
+      // when jumping `/redirect/` at the beginning of the path will not match
+      if (!currentTag) {
+        return
+      }
       let firstTag = null
       let lastTag = null
 
