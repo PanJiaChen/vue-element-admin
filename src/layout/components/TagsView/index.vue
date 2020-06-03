@@ -78,7 +78,11 @@ export default {
       return tag.meta && tag.meta.affix
     },
     isLastView() {
-      return this.selectedTag.fullPath === this.visitedViews[this.visitedViews.length - 1].fullPath
+      try {
+        return this.selectedTag.fullPath === this.visitedViews[this.visitedViews.length - 1].fullPath
+      } catch (err) {
+        return false
+      }
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
@@ -126,13 +130,15 @@ export default {
       }
     },
     initSortableTags() {
-      new Sortable(this.$refs['sortable-wrap'], {
-        draggable: '.sortable',
-        animation: 200,
-        onUpdate: event => {
-          const { oldIndex, newIndex } = event
-          this.$store.dispatch('tagsView/moveView', { oldIndex, newIndex })
-        }
+      this.$nextTick(() => {
+        new Sortable(this.$refs['sortable-wrap'], {
+          draggable: '.sortable',
+          animation: 200,
+          onUpdate: event => {
+            const { oldIndex, newIndex } = event
+            this.$store.dispatch('tagsView/moveView', { oldIndex, newIndex })
+          }
+        })
       })
     },
     moveToCurrentTag() {
