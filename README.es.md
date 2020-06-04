@@ -51,11 +51,11 @@ Vue Element Admin es una solución práctica basada en la nueva plataforma de de
 - Plantilla de Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Créditos: [@Armour](https://github.com/Armour))
 - [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-**Después de la versión `v4.1.0+`, la rama por defecto master no tendrá soporte para i18n. Por favor use [i18n](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), los cambios serán incluidos en la rama master**
+**Después de la versión `v4.1.0+`, la rama por defecto master no tendrá soporte para i18n. Por favor utilice la rama [i18n](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), los cambios serán incluidos en la rama master**
 
 **la versión actual es `v4.0+` construida con `vue-cli`. Si encuentra algún problema, por favor coloque un [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). Si desea usar la versión anterior, puede cambiar de rama a [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), no relacionado con `vue-cli`**
 
-**Este proyecto no está soportado para versiones muy viejas de navegadores (e.g. IE).**
+**Este proyecto no está soportado para versiones antigüas de navegadores (ej. IE).**
 
 ## Preparación
 
@@ -64,13 +64,13 @@ Entendiendo y aprendiendo esto pudiera ayudarle con su proyecto.
 
 [![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
 
- <p align="center">
+<p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
 ## Patrocinantes
 
-Se un patrocinante y pon tu logo en nuestro README on GitHub con un enlace directo a tu sitio web. [[Se un Patrocinante]](https://www.patreon.com/panjiachen)
+Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace directo a su sitio web. [[Se un Patrocinante]](https://www.patreon.com/panjiachen)
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Plantilla de Dashboard de administración hecha con Vue, React y Angular.</p>
 
@@ -79,25 +79,28 @@ Se un patrocinante y pon tu logo en nuestro README on GitHub con un enlace direc
 ```
 - Iniciar / Cerrar Sesión
 
-- Permisos de Authentication
+- Permisos de Autenticación
   - Página de Permisos
   - Directivas de permisos
   - Página de configuración de permisos
   - Autenticación por dos pasos
 
 - Construcción Multi-entorno
-  - dev sit stage  producción
+  - Desarrollo (dev)
+  - sit
+  - Escenario de pruebas (stage),
+  - Producción (prod)
 
 - Características Globales
   - I18n
   - Temas dinámicos
-  - Dynamic sidebar (soporte a rutas multi-nivel)
+  - Menu lateral dinámico (soporte a rutas multi-nivel)
   - Barra de rutas dinámica
-  - Tags-view (Tab page Support right-click operation)
+  - Tags-view (Pestañas de página, Soporta operación de clic derecho)
   - Svg Sprite
   - Datos de simulación con Mock
   - Pantalla completa
-  - Responsive Sidebar
+  - Menu lateral responsivo
 
 - Editor
   - Editor de Texto Enriquecido
@@ -108,7 +111,7 @@ Se un patrocinante y pon tu logo en nuestro README on GitHub con un enlace direc
   - Exportación a Excel
   - Carga de Excel
   - Visualización de Excel
-  - Exportación como zip
+  - Exportación como ZIP
 
 - Tabla
   - Tabla Dinámica
@@ -137,7 +140,7 @@ Se un patrocinante y pon tu logo en nuestro README on GitHub con un enlace direc
 - Página de Guías
 - ECharts (Gráficos)
 - Portapapeles
-- Convertidor de Markdown a html
+- Convertidor de Markdown a HTML
 ```
 
 ## Iniciando
@@ -210,7 +213,7 @@ Navegadores modernos e Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| últimas 2 versiones| últimas 2 versiones| últimas 2 versiones
+| IE10, IE11, Edge | últimas 2 versiones | últimas 2 versiones | últimas 2 versiones |
 
 ## Licencia
 
