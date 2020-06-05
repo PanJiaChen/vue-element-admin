@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+  web-client:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: vue-element-admin
+    network_mode: bridge
+    build: .
+    volumes:
+      - /usr/app/
+      - /usr/app/node_modules
+    labels:
+      - app=vue-element-admin
+    stdin_open: true
+    tty: true
+    ports:
+      - 9526:9526 # Prod
+      # - 9527:9527 # Dev
