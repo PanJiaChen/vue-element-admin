@@ -27,10 +27,14 @@ const browser = {
   actions: {
     getBrowserFromServer({ commit, dispatch }, {
       containerUuid,
+      browserId,
       routeToDelete
     }) {
       return new Promise(resolve => {
-        getBrowserMetadata(containerUuid)
+        getBrowserMetadata({
+          uuid: containerUuid,
+          id: browserId
+        })
           .then(browserResponse => {
             const panelType = 'browser'
             const additionalAttributes = {

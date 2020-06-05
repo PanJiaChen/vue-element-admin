@@ -47,7 +47,7 @@
     "@adempiere/grpc-access-client": "^1.2.1",
     "@adempiere/grpc-core-client": "^1.1.4",
     "@adempiere/grpc-data-client": "^2.4.4",
-    "@adempiere/grpc-dictionary-client": "^1.4.2",
+    "@adempiere/grpc-dictionary-client": "^1.4.3",
     "@adempiere/grpc-enrollment-client": "^1.1.0",
     "@adempiere/grpc-pos-client": "^1.3.2",
     "axios": "0.19.2",

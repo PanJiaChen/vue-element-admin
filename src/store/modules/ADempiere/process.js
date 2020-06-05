@@ -18,16 +18,21 @@ const process = {
   },
   actions: {
     /**
-     * Get process metadata from server
+     * Get process/report metadata from server
      * @param {string} containerUuid
+     * @param {number} processId
      * @param {object} routeToDelete, route to close in tagView when fail
      */
     getProcessFromServer({ commit, dispatch }, {
       containerUuid,
+      processId,
       routeToDelete
     }) {
       return new Promise(resolve => {
-        getProcessMetadata(containerUuid)
+        getProcessMetadata({
+          uuid: containerUuid,
+          id: processId
+        })
           .then(async responseProcess => {
             let printFormatsAvailable = []
             if (responseProcess.isReport) {

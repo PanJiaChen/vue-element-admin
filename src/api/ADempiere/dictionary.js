@@ -1,36 +1,34 @@
 // Get Instance for connection
 import { DictionaryInstance as Instance } from '@/api/ADempiere/instances.js'
 
-export function getWindow(uuid, isWithTabs = true) {
+export function getWindow({ uuid, id, isWithTabs = true }) {
   return Instance.call(this).requestWindow({
     uuid,
-    isWithTabs,
-    isConvertedMetadata: true
+    id,
+    isWithTabs
   })
 }
 
-export function getProcess(uuid, isConvertedMetadata = true) {
+export function getProcess({ uuid, id }) {
   return Instance.call(this).requestProcess({
-    uuid: uuid,
-    isConvertedMetadata,
-    isConvertedFields: true
+    uuid,
+    id,
+    isWithFields: true
   })
 }
 
-export function getBrowser(uuid, isConvertedMetadata = true) {
+export function getBrowser({ uuid, id }) {
   return Instance.call(this).requestBrowser({
     uuid,
-    isConvertedMetadata,
-    isConvertedFields: true
+    id
   })
 }
 
-export function getTab(uuid, isWithFields = true, isConvertedMetadata = true) {
+export function getTab({ uuid, id, isWithFields = true }) {
   return Instance.call(this).requestTab({
     uuid,
-    isWithFields,
-    isConvertedMetadata,
-    isConvertedFields: true
+    id,
+    isWithFields
   })
 }
 

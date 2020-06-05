@@ -46,9 +46,13 @@ const window = {
   actions: {
     getWindowFromServer({ commit, state, dispatch }, {
       windowUuid,
+      windowId,
       routeToDelete
     }) {
-      return getWindowMetadata(windowUuid)
+      return getWindowMetadata({
+        uuid: windowUuid,
+        id: windowId
+      })
         .then(responseWindow => {
           const firstTabTableName = responseWindow.tabsList[0].tableName
           const firstTabUuid = responseWindow.tabsList[0].uuid
@@ -244,12 +248,16 @@ const window = {
     getTabAndFieldFromServer({ dispatch, getters }, {
       parentUuid,
       containerUuid,
+      tabId,
       panelType = 'window',
       panelMetadata,
       isAdvancedQuery = false
     }) {
       return new Promise(resolve => {
-        getTabMetadata(containerUuid)
+        getTabMetadata({
+          uuid: containerUuid,
+          id: tabId
+        })
           .then(tabResponse => {
             const additionalAttributes = {
               parentUuid,
