@@ -42,7 +42,7 @@
       <markdown-editor ref="markdownEditor" v-model="content4" :language="language" height="300px" />
     </div>
 
-    <el-button style="margin-top:80px;" type="primary" icon="el-icon-document" @click="getHtml">
+    <el-button style="margin-top: 80px;" type="primary" icon="el-icon-document" @click="getHtml">
       Get HTML
     </el-button>
     <div v-html="html" />
@@ -92,10 +92,11 @@ export default {
 </script>
 
 <style scoped>
-.editor-container{
+.editor-container {
   margin-bottom: 30px;
 }
-.tag-title{
+
+.tag-title {
   margin-bottom: 5px;
 }
 </style>

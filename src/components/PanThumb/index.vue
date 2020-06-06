@@ -91,7 +91,7 @@ export default {
   letter-spacing: 2px;
   font-size: 18px;
   margin: 0 60px;
-  padding: 22px 0 0 0;
+  padding: 22px 0 0;
   height: 85px;
   font-family: 'Open Sans', Arial, sans-serif;
   text-shadow: 0 0 1px #fff, 0 1px 2px rgba(0, 0, 0, 0.3);
@@ -137,6 +137,6 @@ export default {
 
 .pan-item:hover .pan-info p a {
   opacity: 1;
-  transform: translateX(0px) rotate(0deg);
+  transform: translateX(0) rotate(0deg);
 }
 </style>

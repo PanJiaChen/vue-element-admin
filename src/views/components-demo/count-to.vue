@@ -142,22 +142,23 @@ export default {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition: all .3s cubic-bezier(.645, .045, .355, 1);
-  transition: all .3s cubic-bezier(.645, .045, .355, 1);
+  -webkit-transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+  transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
   position: relative;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: #fff;
   border-color: #d9d9d9;
 }
 
 .example-btn:hover {
-  color: #4AB7BD;
+  color: #4ab7bd;
   background-color: #fff;
-  border-color: #4AB7BD;
+  border-color: #4ab7bd;
 }
+
 .example {
   font-size: 50px;
-  color: #F6416C;
+  color: #f6416c;
   display: block;
   margin: 10px 0;
   text-align: center;
@@ -181,38 +182,38 @@ input {
   cursor: text;
   font-size: 12px;
   line-height: 1.5;
-  color: rgba(0, 0, 0, .65);
+  color: rgba(0, 0, 0, 0.65);
   background-color: #fff;
   background-image: none;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
-  -webkit-transition: all .3s;
-  transition: all .3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 .startBtn {
   margin-left: 20px;
   font-size: 20px;
-  color: #30B08F;
+  color: #30b08f;
   background-color: #fff;
 }
 
 .startBtn:hover {
-  background-color: #30B08F;
+  background-color: #30b08f;
   color: #fff;
-  border-color: #30B08F;
+  border-color: #30b08f;
 }
 
 .pause-resume-btn {
   font-size: 20px;
-  color: #E65D6E;
+  color: #e65d6e;
   background-color: #fff;
 }
 
 .pause-resume-btn:hover {
-  background-color: #E65D6E;
+  background-color: #e65d6e;
   color: #fff;
-  border-color: #E65D6E;
+  border-color: #e65d6e;
 }
 </style>
 
