@@ -32,7 +32,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .sidebarLogoFade-enter-active {
   transition: opacity 1.5s;
 }
@@ -76,7 +75,7 @@ export default {
 
   &.collapse {
     .sidebar-logo {
-      margin-right: 0;
+      margin-right: 0px;
     }
   }
 }

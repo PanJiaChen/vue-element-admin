@@ -79,15 +79,15 @@ export default {
   }
 
   .card-panel {
-    background: #fff;
-    border-color: rgba(0, 0, 0, 0.05);
-    box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
-    color: #666;
+    height: 108px;
     cursor: pointer;
     font-size: 12px;
-    height: 108px;
-    overflow: hidden;
     position: relative;
+    overflow: hidden;
+    color: #666;
+    background: #fff;
+    box-shadow: 4px 4px 40px rgba(0, 0, 0, .05);
+    border-color: rgba(0, 0, 0, .05);
 
     &:hover {
       .card-panel-icon-wrapper {
@@ -107,7 +107,7 @@ export default {
       }
 
       .icon-shopping {
-        background: #34bfa3;
+        background: #34bfa3
       }
     }
 
@@ -124,15 +124,15 @@ export default {
     }
 
     .icon-shopping {
-      color: #34bfa3;
+      color: #34bfa3
     }
 
     .card-panel-icon-wrapper {
-      border-radius: 6px;
       float: left;
       margin: 14px 0 0 14px;
       padding: 16px;
       transition: all 0.38s ease-out;
+      border-radius: 6px;
     }
 
     .card-panel-icon {
@@ -144,12 +144,12 @@ export default {
       float: right;
       font-weight: bold;
       margin: 26px;
-      margin-left: 0;
+      margin-left: 0px;
 
       .card-panel-text {
+        line-height: 18px;
         color: rgba(0, 0, 0, 0.45);
         font-size: 16px;
-        line-height: 18px;
         margin-bottom: 12px;
       }
 
@@ -167,14 +167,14 @@ export default {
 
   .card-panel-icon-wrapper {
     float: none !important;
+    width: 100%;
     height: 100%;
     margin: 0 !important;
-    width: 100%;
 
     .svg-icon {
       display: block;
-      float: none !important;
       margin: 14px auto !important;
+      float: none !important;
     }
   }
 }

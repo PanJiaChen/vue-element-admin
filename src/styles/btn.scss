@@ -6,87 +6,94 @@
   &:hover {
     color: $color;
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
       background: $color;
     }
   }
 }
 
 .blue-btn {
-  @include colorBtn($blue); }
+  @include colorBtn($blue)
+}
 
 .light-blue-btn {
-  @include colorBtn($light-blue); }
+  @include colorBtn($light-blue)
+}
 
 .red-btn {
-  @include colorBtn($red); }
+  @include colorBtn($red)
+}
 
 .pink-btn {
-  @include colorBtn($pink); }
+  @include colorBtn($pink)
+}
 
 .green-btn {
-  @include colorBtn($green); }
+  @include colorBtn($green)
+}
 
 .tiffany-btn {
-  @include colorBtn($tiffany); }
+  @include colorBtn($tiffany)
+}
 
 .yellow-btn {
-  @include colorBtn($yellow); }
+  @include colorBtn($yellow)
+}
 
 .pan-btn {
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  display: inline-block;
   font-size: 14px;
-  outline: none;
+  color: #fff;
   padding: 14px 36px;
-  position: relative;
+  border-radius: 8px;
+  border: none;
+  outline: none;
   transition: 600ms ease all;
+  position: relative;
+  display: inline-block;
 
   &:hover {
     background: #fff;
 
-    &::before,
-    &::after {
-      transition: 600ms ease all;
+    &:before,
+    &:after {
       width: 100%;
+      transition: 600ms ease all;
     }
   }
 
-  &::before,
-  &::after {
+  &:before,
+  &:after {
     content: '';
-    height: 2px;
     position: absolute;
-    right: 0;
     top: 0;
-    transition: 400ms ease all;
+    right: 0;
+    height: 2px;
     width: 0;
+    transition: 400ms ease all;
   }
 
   &::after {
-    bottom: 0;
-    left: 0;
     right: inherit;
     top: inherit;
+    left: 0;
+    bottom: 0;
   }
 }
 
 .custom-button {
-  -webkit-appearance: none;
-  background: #fff;
-  border-radius: 4px;
-  box-sizing: border-box;
-  color: #fff;
-  cursor: pointer;
   display: inline-block;
-  font-size: 14px;
   line-height: 1;
-  margin: 0;
-  outline: 0;
-  padding: 10px 15px;
-  text-align: center;
   white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  color: #fff;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  outline: 0;
+  margin: 0;
+  padding: 10px 15px;
+  font-size: 14px;
+  border-radius: 4px;
 }

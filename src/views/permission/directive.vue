@@ -1,13 +1,13 @@
 <template>
   <div class="app-container">
     <switch-roles @change="handleRolesChange" />
-    <div :key="key" style="margin-top: 30px;">
+    <div :key="key" style="margin-top:30px;">
       <div>
         <span v-permission="['admin']" class="permission-alert">
           Only
           <el-tag class="permission-tag" size="small">admin</el-tag> can see this
         </span>
-        <el-tag v-permission="['admin']" class="permission-source-code" type="info">
+        <el-tag v-permission="['admin']" class="permission-sourceCode" type="info">
           v-permission="['admin']"
         </el-tag>
       </div>
@@ -17,7 +17,7 @@
           Only
           <el-tag class="permission-tag" size="small">editor</el-tag> can see this
         </span>
-        <el-tag v-permission="['editor']" class="permission-source-code" type="info">
+        <el-tag v-permission="['editor']" class="permission-sourceCode" type="info">
           v-permission="['editor']"
         </el-tag>
       </div>
@@ -28,36 +28,36 @@
           <el-tag class="permission-tag" size="small">admin</el-tag> and
           <el-tag class="permission-tag" size="small">editor</el-tag> can see this
         </span>
-        <el-tag v-permission="['admin','editor']" class="permission-source-code" type="info">
+        <el-tag v-permission="['admin','editor']" class="permission-sourceCode" type="info">
           v-permission="['admin','editor']"
         </el-tag>
       </div>
     </div>
 
-    <div :key="'checkPermission'+key" style="margin-top: 60px;">
+    <div :key="'checkPermission'+key" style="margin-top:60px;">
       <aside>
         In some cases, using v-permission will have no effect. For example: Element-UI's Tab component or el-table-column and other scenes that dynamically render dom. You can only do this with v-if.
         <br> e.g.
       </aside>
 
-      <el-tabs type="border-card" style="width: 550px;">
+      <el-tabs type="border-card" style="width:550px;">
         <el-tab-pane v-if="checkPermission(['admin'])" label="Admin">
           Admin can see this
-          <el-tag class="permission-source-code" type="info">
+          <el-tag class="permission-sourceCode" type="info">
             v-if="checkPermission(['admin'])"
           </el-tag>
         </el-tab-pane>
 
         <el-tab-pane v-if="checkPermission(['editor'])" label="Editor">
           Editor can see this
-          <el-tag class="permission-source-code" type="info">
+          <el-tag class="permission-sourceCode" type="info">
             v-if="checkPermission(['editor'])"
           </el-tag>
         </el-tab-pane>
 
         <el-tab-pane v-if="checkPermission(['admin','editor'])" label="Admin-OR-Editor">
           Both admin or editor can see this
-          <el-tag class="permission-source-code" type="info">
+          <el-tag class="permission-sourceCode" type="info">
             v-if="checkPermission(['admin','editor'])"
           </el-tag>
         </el-tab-pane>
@@ -92,19 +92,17 @@ export default {
 <style lang="scss" scoped>
 .app-container {
   /deep/ .permission-alert {
-    background-color: #f0f9eb;
-    border-radius: 4px;
-    color: #67c23a;
-    display: inline-block;
-    margin-top: 15px;
-    padding: 8px 16px;
     width: 320px;
+    margin-top: 15px;
+    background-color: #f0f9eb;
+    color: #67c23a;
+    padding: 8px 16px;
+    border-radius: 4px;
+    display: inline-block;
   }
-
-  /deep/ .permission-source-code {
+  /deep/ .permission-sourceCode {
     margin-left: 15px;
   }
-
   /deep/ .permission-tag {
     background-color: #ecf5ff;
   }

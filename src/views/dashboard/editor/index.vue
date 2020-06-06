@@ -1,18 +1,18 @@
 <template>
   <div class="dashboard-editor-container">
     <div class=" clearfix">
-      <pan-thumb :image="avatar" style="float: left;">
+      <pan-thumb :image="avatar" style="float: left">
         Your roles:
         <span v-for="item in roles" :key="item" class="pan-info-roles">{{ item }}</span>
       </pan-thumb>
-      <github-corner style=" border: 0;position: absolute; right: 0; top: 0;" />
+      <github-corner style="position: absolute; top: 0px; border: 0; right: 0;" />
       <div class="info-container">
-        <span class="display-name">{{ name }}</span>
-        <span style="display: inline-block;font-size: 20px;padding-top: 20px;">Editor's Dashboard</span>
+        <span class="display_name">{{ name }}</span>
+        <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
       </div>
     </div>
     <div>
-      <img :src="emptyGif" class="empty-gif">
+      <img :src="emptyGif" class="emptyGif">
     </div>
   </div>
 </template>
@@ -41,34 +41,31 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .empty-gif {
+  .emptyGif {
     display: block;
-    margin: 0 auto;
     width: 45%;
+    margin: 0 auto;
   }
 
   .dashboard-editor-container {
     background-color: #e3e3e3;
     min-height: 100vh;
-    padding: 50px 60px 0;
-
+    padding: 50px 60px 0px;
     .pan-info-roles {
-      color: #333;
-      display: block;
       font-size: 12px;
       font-weight: 700;
+      color: #333;
+      display: block;
     }
-
     .info-container {
+      position: relative;
+      margin-left: 190px;
       height: 150px;
       line-height: 200px;
-      margin-left: 190px;
-      position: relative;
-
-      .display-name {
-        color: #212121;
+      .display_name {
         font-size: 48px;
         line-height: 48px;
+        color: #212121;
         position: absolute;
         top: 25px;
       }

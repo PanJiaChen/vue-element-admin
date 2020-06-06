@@ -4,7 +4,7 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background: #fff;margin-bottom: 32px;padding: 16px 16px 0;">
+    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
@@ -27,13 +27,13 @@
     </el-row>
 
     <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="margin-bottom: 30px;padding-right: 8px;">
+      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
         <transaction-table />
       </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom: 30px;">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
         <todo-list />
       </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom: 30px;">
+      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
         <box-card />
       </el-col>
     </el-row>
@@ -98,21 +98,21 @@ export default {
 
 <style lang="scss" scoped>
 .dashboard-editor-container {
-  background-color: rgb(240, 242, 245);
   padding: 32px;
+  background-color: rgb(240, 242, 245);
   position: relative;
 
   .github-corner {
-    border: 0;
     position: absolute;
+    top: 0px;
+    border: 0;
     right: 0;
-    top: 0;
   }
 
   .chart-wrapper {
     background: #fff;
-    margin-bottom: 32px;
     padding: 16px 16px 0;
+    margin-bottom: 32px;
   }
 }
 

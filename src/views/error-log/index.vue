@@ -1,5 +1,5 @@
 <template>
-  <div class="err-page-container">
+  <div class="errPage-container">
     <ErrorA />
     <ErrorB />
     <h3>Please click the bug icon in the upper right corner</h3>
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style scoped>
-  .err-page-container {
+  .errPage-container {
     padding: 30px;
   }
 </style>
