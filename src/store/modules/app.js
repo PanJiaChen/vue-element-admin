@@ -6,7 +6,7 @@ const state = {
     withoutAnimation: false
   },
   device: 'desktop',
-  language: Cookies.get('language') || 'en',
+  language: Cookies.get('language') || 'zh',
   size: Cookies.get('size') || 'medium'
 }
 

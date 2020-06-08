@@ -28,7 +28,7 @@ const messages = {
 const i18n = new VueI18n({
   // set locale
   // options: en | zh | es
-  locale: Cookies.get('language') || 'en',
+  locale: Cookies.get('language') || 'zh',
   // set locale messages
   messages
 })
