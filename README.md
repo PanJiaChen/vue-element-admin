@@ -187,6 +187,13 @@ npm run lint
 npm run lint -- --fix
 ```
 
+## Docker Container
+
+```bash
+# requires superuser permissions of the operating system ('su' or 'sudo')
+docker-compose up
+```
+
 Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
 
 ## Changelog
