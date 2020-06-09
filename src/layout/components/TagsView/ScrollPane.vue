@@ -19,11 +19,20 @@ export default {
       return this.$refs.scrollContainer.$refs.wrap
     }
   },
+  mounted() {
+    this.scrollWrapper.addEventListener('scroll', this.emitScroll, true)
+  },
+  beforeDestroy() {
+    this.scrollWrapper.removeEventListener('scroll', this.emitScroll)
+  },
   methods: {
     handleScroll(e) {
       const eventDelta = e.wheelDelta || -e.deltaY * 40
       const $scrollWrapper = this.scrollWrapper
       $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
+    },
+    emitScroll() {
+      this.$emit('scroll')
     },
     moveToTarget(currentTag) {
       const $container = this.$refs.scrollContainer.$el
@@ -73,7 +82,7 @@ export default {
   position: relative;
   overflow: hidden;
   width: 100%;
-  /deep/ {
+  ::v-deep {
     .el-scrollbar__bar {
       bottom: 0px;
     }

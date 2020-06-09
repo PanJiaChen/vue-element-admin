@@ -31,7 +31,7 @@
 .fixed-width {
   .el-button--mini {
     padding: 7px 10px;
-    width: 60px;
+    min-width: 60px;
   }
 }
 
