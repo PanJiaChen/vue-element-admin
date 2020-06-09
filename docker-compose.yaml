@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 services:
   web-client:
@@ -17,4 +17,3 @@ services:
     tty: true
     ports:
       - 9526:9526 # Prod
-      # - 9527:9527 # Dev
