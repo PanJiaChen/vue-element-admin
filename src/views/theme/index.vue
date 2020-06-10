@@ -9,7 +9,7 @@
       <div class="box-item">
         <span class="field-label">Change Theme : </span>
         <el-switch v-model="theme" />
-        <aside style="margin-top:15px;">
+        <aside style="margin-top: 15px;">
           Tips: It is different from the theme-pick on the navbar is two different skinning methods, each with different application scenarios. Refer to the documentation for details.
         </aside>
       </div>
@@ -101,9 +101,10 @@ export default {
 </script>
 
 <style scoped>
-.field-label{
+.field-label {
   vertical-align: middle;
 }
+
 .box-card {
   width: 400px;
   max-width: 100%;

@@ -20,9 +20,9 @@ $--border-color-lighter: #e6ebf5;
 $--table-border: 1px solid #dfe6ec;
 
 /* icon font path, required */
-$--font-path: "~element-ui/lib/theme-chalk/fonts";
+$--font-path: '~element-ui/lib/theme-chalk/fonts';
 
-@import "~element-ui/packages/theme-chalk/src/index";
+@import '~element-ui/packages/theme-chalk/src/index';
 
 // the :export directive is the magic sauce for webpack
 // https://www.bluematador.com/blog/how-to-share-variables-between-js-and-sass

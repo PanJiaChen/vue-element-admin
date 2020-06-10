@@ -44,13 +44,13 @@ export default {
 
 <style lang="scss">
 @mixin clearfix {
-  &:before {
+  &::before {
     display: table;
     content: '';
     clear: both;
   }
 
-  &:after {
+  &::after {
     display: table;
     content: '';
     clear: both;
@@ -87,14 +87,14 @@ export default {
 }
 
 .node-article-content {
-  margin: 20px 0 0;
   @include clearfix;
+  margin: 20px 0 0;
   font-size: 16px;
   color: #333;
   letter-spacing: 0.5px;
   line-height: 28px;
   margin-bottom: 30px;
-  font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
+  font-family: medium-content-serif-font, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   &> :last-child {
     margin-bottom: 0;
@@ -117,7 +117,7 @@ export default {
     font-style: normal;
     font-size: 21px;
     line-height: 1.58;
-    letter-spacing: -.003em;
+    letter-spacing: -0.003em;
 
   }
 
@@ -129,12 +129,12 @@ export default {
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
 
-    letter-spacing: .01rem;
+    letter-spacing: 0.01rem;
     font-weight: 400;
     font-style: normal;
     font-size: 21px;
     line-height: 1.58;
-    letter-spacing: -.003em;
+    letter-spacing: -0.003em;
     margin-left: 30px;
     margin-bottom: 14px;
   }
@@ -142,14 +142,14 @@ export default {
   a {
     text-decoration: none;
     background-repeat: repeat-x;
-    background-image: linear-gradient(to right, rgba(0, 0, 0, .84) 100%, rgba(0, 0, 0, 0) 0);
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0.84) 100%, rgba(0, 0, 0, 0) 0);
     background-size: 1px 1px;
     background-position: 0 calc(1em + 1px);
     padding: 0 6px;
   }
 
   code {
-    background: rgba(0, 0, 0, .05);
+    background: rgba(0, 0, 0, 0.05);
     padding: 3px 4px;
     margin: 0 2px;
     font-size: 16px;
@@ -168,14 +168,14 @@ export default {
   blockquote {
     --x-height-multiplier: 0.375;
     --baseline-multiplier: 0.17;
-    font-family: medium-content-serif-font, Georgia, Cambria, "Times New Roman", Times, serif;
-    letter-spacing: .01rem;
+    font-family: medium-content-serif-font, Georgia, Cambria, 'Times New Roman', Times, serif;
+    letter-spacing: 0.01rem;
     font-weight: 400;
     font-style: italic;
     font-size: 21px;
     line-height: 1.58;
-    letter-spacing: -.003em;
-    border-left: 3px solid rgba(0, 0, 0, .84);
+    letter-spacing: -0.003em;
+    border-left: 3px solid rgba(0, 0, 0, 0.84);
     padding-left: 20px;
     margin-left: -23px;
     padding-bottom: 2px;
@@ -190,7 +190,7 @@ export default {
   h4 {
     font-size: 34px;
     line-height: 1.15;
-    letter-spacing: -.015em;
+    letter-spacing: -0.015em;
     margin: 53px 0 0;
   }
 
