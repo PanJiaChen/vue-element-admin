@@ -101,7 +101,7 @@ export default {
     background-color: #fff;
     margin: auto;
     box-shadow: none!important;
-    /deep/ .pan-info {
+    ::v-deep .pan-info {
       box-shadow: none!important;
     }
   }
