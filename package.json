@@ -86,11 +86,6 @@
     "node": ">=8.9",
     "npm": ">= 3.0.0"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
   "keywords": [
     "vue",
     "admin",
@@ -106,6 +101,11 @@
       "eslint --fix",
       "git add"
     ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   },
   "repository": {
     "type": "git",
