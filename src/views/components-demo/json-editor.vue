@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style scoped>
-.editor-container {
+.editor-container{
   position: relative;
   height: 100%;
 }

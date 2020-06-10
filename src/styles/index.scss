@@ -27,13 +27,13 @@ html {
 }
 
 *,
-*::before,
-*::after {
+*:before,
+*:after {
   box-sizing: inherit;
 }
 
 .no-padding {
-  padding: 0 !important;
+  padding: 0px !important;
 }
 
 .padding-content {
@@ -86,11 +86,11 @@ div:focus {
 }
 
 .clearfix {
-  &::after {
+  &:after {
     visibility: hidden;
     display: block;
     font-size: 0;
-    content: ' ';
+    content: " ";
     clear: both;
     height: 0;
   }
@@ -104,7 +104,7 @@ aside {
   display: block;
   line-height: 32px;
   font-size: 16px;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   color: #2c3e50;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -134,7 +134,7 @@ aside {
 }
 
 .text-center {
-  text-align: center;
+  text-align: center
 }
 
 .sub-navbar {

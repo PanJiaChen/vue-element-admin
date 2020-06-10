@@ -6,7 +6,7 @@
 }
 
 .el-upload {
-  input[type='file'] {
+  input[type="file"] {
     display: none !important;
   }
 }
@@ -17,7 +17,7 @@
 
 .cell {
   .el-tag {
-    margin-right: 0;
+    margin-right: 0px;
   }
 }
 
@@ -41,7 +41,7 @@
     text-align: center;
 
     .el-tag {
-      margin-right: 0;
+      margin-right: 0px;
     }
   }
 }
@@ -69,7 +69,7 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block;
+    display: block
   }
 }
 

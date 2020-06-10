@@ -6,33 +6,40 @@
   &:hover {
     color: $color;
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
       background: $color;
     }
   }
 }
 
 .blue-btn {
-  @include colorBtn($blue); }
+  @include colorBtn($blue)
+}
 
 .light-blue-btn {
-  @include colorBtn($light-blue); }
+  @include colorBtn($light-blue)
+}
 
 .red-btn {
-  @include colorBtn($red); }
+  @include colorBtn($red)
+}
 
 .pink-btn {
-  @include colorBtn($pink); }
+  @include colorBtn($pink)
+}
 
 .green-btn {
-  @include colorBtn($green); }
+  @include colorBtn($green)
+}
 
 .tiffany-btn {
-  @include colorBtn($tiffany); }
+  @include colorBtn($tiffany)
+}
 
 .yellow-btn {
-  @include colorBtn($yellow); }
+  @include colorBtn($yellow)
+}
 
 .pan-btn {
   font-size: 14px;
@@ -48,15 +55,15 @@
   &:hover {
     background: #fff;
 
-    &::before,
-    &::after {
+    &:before,
+    &:after {
       width: 100%;
       transition: 600ms ease all;
     }
   }
 
-  &::before,
-  &::after {
+  &:before,
+  &:after {
     content: '';
     position: absolute;
     top: 0;

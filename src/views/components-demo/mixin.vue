@@ -5,7 +5,7 @@
         <div slot="header" class="clearfix">
           <span>Buttons</span>
         </div>
-        <div style="margin-bottom: 50px;">
+        <div style="margin-bottom:50px;">
           <el-col :span="4" class="text-center">
             <router-link class="pan-btn blue-btn" to="/documentation/index">
               Documentation
@@ -40,13 +40,13 @@
       </el-card>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top: 50px;">
+    <el-row :gutter="20" style="margin-top:50px;">
       <el-col :span="6">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>Material Design 的input</span>
           </div>
-          <div style="height: 100px;">
+          <div style="height:100px;">
             <el-form :model="demo" :rules="demoRules">
               <el-form-item prop="title">
                 <md-input v-model="demo.title" icon="el-icon-search" name="title" placeholder="输入标题">
@@ -96,14 +96,14 @@
       </el-col>
     </el-row>
 
-    <el-row :gutter="20" style="margin-top: 50px;">
+    <el-row :gutter="20" style="margin-top:50px;">
       <el-col :span="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>Share</span>
           </div>
-          <div class="component-item" style="height: 420px;">
-            <dropdown-menu :items="articleList" style="margin: 0 auto;" title="系列文章" />
+          <div class="component-item" style="height:420px;">
+            <dropdown-menu :items="articleList" style="margin:0 auto;" title="系列文章" />
           </div>
         </el-card>
       </el-col>
@@ -163,8 +163,7 @@ export default {
   padding: 30px;
   min-height: calc(100vh - 84px);
 }
-
-.component-item {
+.component-item{
   min-height: 100px;
 }
 </style>

@@ -49,7 +49,7 @@
                       :colors="['#99A9BF', '#F7BA2A', '#FF9900']"
                       :low-threshold="1"
                       :high-threshold="3"
-                      style="display: inline-block;"
+                      style="display:inline-block"
                     />
                   </el-form-item>
                 </el-col>
@@ -250,7 +250,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~@/styles/mixin.scss';
+@import "~@/styles/mixin.scss";
 
 .createPost-container {
   position: relative;
@@ -259,8 +259,8 @@ export default {
     padding: 40px 45px 20px 50px;
 
     .postInfo-container {
-      @include clearfix;
       position: relative;
+      @include clearfix;
       margin-bottom: 10px;
 
       .postInfo-container-item {
@@ -273,7 +273,7 @@ export default {
     width: 40px;
     position: absolute;
     right: 10px;
-    top: 0;
+    top: 0px;
   }
 }
 
@@ -282,7 +282,7 @@ export default {
     padding-right: 40px;
     resize: none;
     border: none;
-    border-radius: 0;
+    border-radius: 0px;
     border-bottom: 1px solid #bfcbd9;
   }
 }
