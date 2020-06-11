@@ -1,15 +1,9 @@
 <script>
-import variables from '@/styles/variables.scss'
-
 export default {
   name: 'MenuItem',
   functional: true,
   props: {
     icon: {
-      type: String,
-      default: ''
-    },
-    elicon: {
       type: String,
       default: ''
     },
@@ -19,15 +13,15 @@ export default {
     }
   },
   render(h, context) {
-    const { icon, elicon, title } = context.props
+    const { icon, title } = context.props
     const vnodes = []
 
     if (icon) {
-      vnodes.push(<svg-icon icon-class={icon}/>)
-    }
-
-    if (elicon) {
-      vnodes.push(<el-icon icon-class={elicon} icon-color={variables.menuText}/>)
+      if (icon.includes('el-icon')) {
+        vnodes.push(<i class={[icon, 'sub-el-icon']} />)
+      } else {
+        vnodes.push(<svg-icon icon-class={icon}/>)
+      }
     }
 
     if (title) {
