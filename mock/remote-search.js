@@ -1,4 +1,4 @@
-import Mock from 'mockjs'
+const Mock = require('mockjs')
 
 const NameList = []
 const count = 100
@@ -10,7 +10,7 @@ for (let i = 0; i < count; i++) {
 }
 NameList.push({ name: 'mock-Pan' })
 
-export default [
+module.exports = [
   // username search
   {
     url: '/vue-element-admin/search/user',
