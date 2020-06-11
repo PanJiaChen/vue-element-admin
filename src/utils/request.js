@@ -1,8 +1,12 @@
 import axios from 'axios'
-import { MessageBox, Message } from 'element-ui'
+import {
+  Message,
+  MessageBox,
+  Loading
+} from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
-
+var loadingInstance = null
 // create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
@@ -21,6 +25,12 @@ service.interceptors.request.use(
       // please modify it according to the actual situation
       config.headers['X-Token'] = getToken()
     }
+    console.log('------')
+    loadingInstance = Loading.service({
+      lock: true,
+      text: '数据加载中，请稍后...',
+      background: 'rgba(0, 0, 0, 0.1)'
+    })
     return config
   },
   error => {
@@ -43,6 +53,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    loadingInstance.close()
     const res = response.data
 
     // if the custom code is not 20000, it is judged as an error.
@@ -72,6 +83,7 @@ service.interceptors.response.use(
     }
   },
   error => {
+    loadingInstance.close()
     console.log('err' + error) // for debug
     Message({
       message: error.message,

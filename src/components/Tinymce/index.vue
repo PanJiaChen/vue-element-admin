@@ -1,8 +1,16 @@
 <template>
-  <div :class="{fullscreen:fullscreen}" class="tinymce-container" :style="{width:containerWidth}">
+  <div
+    :class="{ fullscreen: fullscreen }"
+    class="tinymce-container"
+    :style="{ width: containerWidth }"
+  >
     <textarea :id="tinymceId" class="tinymce-textarea" />
     <div class="editor-custom-btn-container">
-      <editorImage color="#1890ff" class="editor-upload-btn" @successCBK="imageSuccessCBK" />
+      <editorImage
+        color="#1890ff"
+        class="editor-upload-btn"
+        @successCBK="imageSuccessCBK"
+      />
     </div>
   </div>
 </template>
@@ -18,7 +26,8 @@ import toolbar from './toolbar'
 import load from './dynamicLoadScript'
 
 // why use this cdn, detail see https://github.com/PanJiaChen/tinymce-all-in-one
-const tinymceCDN = 'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
+const tinymceCDN =
+  'https://cdn.jsdelivr.net/npm/tinymce-all-in-one@4.9.3/tinymce.min.js'
 
 export default {
   name: 'Tinymce',
@@ -27,7 +36,11 @@ export default {
     id: {
       type: String,
       default: function() {
-        return 'vue-tinymce-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
+        return (
+          'vue-tinymce-' +
+          +new Date() +
+          ((Math.random() * 1000).toFixed(0) + '')
+        )
       }
     },
     value: {
@@ -44,6 +57,13 @@ export default {
     menubar: {
       type: String,
       default: 'file edit insert view format table'
+    },
+    newEventList: {
+      type: Array,
+      required: false,
+      default() {
+        return []
+      }
     },
     height: {
       type: [Number, String],
@@ -63,17 +83,18 @@ export default {
       tinymceId: this.id,
       fullscreen: false,
       languageTypeList: {
-        'en': 'en',
-        'zh': 'zh_CN',
-        'es': 'es_MX',
-        'ja': 'ja'
+        en: 'en',
+        zh: 'zh_CN',
+        es: 'es_MX',
+        ja: 'ja'
       }
     }
   },
   computed: {
     containerWidth() {
       const width = this.width
-      if (/^[\d]+(\.[\d]+)?$/.test(width)) { // matches `100`, `'100'`
+      if (/^[\d]+(\.[\d]+)?$/.test(width)) {
+        // matches `100`, `'100'`
         return `${width}px`
       }
       return width
@@ -83,7 +104,8 @@ export default {
     value(val) {
       if (!this.hasChange && this.hasInit) {
         this.$nextTick(() =>
-          window.tinymce.get(this.tinymceId).setContent(val || ''))
+          window.tinymce.get(this.tinymceId).setContent(val || '')
+        )
       }
     }
   },
@@ -104,7 +126,7 @@ export default {
   methods: {
     init() {
       // dynamic load tinymce from cdn
-      load(tinymceCDN, (err) => {
+      load(tinymceCDN, err => {
         if (err) {
           this.$message.error(err.message)
           return
@@ -114,13 +136,39 @@ export default {
     },
     initTinymce() {
       const _this = this
+      // 自定义事件列表
+      let newToolbar = []
+      let barStr = ''
+      const eventData = []
+      this.newEventList.map(itemData => {
+        const { toolbarName, tooltip, text, fn } = itemData
+        eventData.push({
+          data: {
+            tooltip,
+            text,
+            onclick: e => {
+              fn(e, data => {
+                // 当事件成功后触发回调函数
+                _this.dataSuccessCBK(data)
+              })
+            }
+          },
+          name: toolbarName
+        })
+        barStr += toolbarName + ' '
+      })
+      if (this.toolbar.length > 0) {
+        newToolbar = this.toolbar.concat(barStr)
+      } else {
+        newToolbar = toolbar.concat(barStr)
+      }
       window.tinymce.init({
         selector: `#${this.tinymceId}`,
         language: this.languageTypeList['en'],
         height: this.height,
         body_class: 'panel-body ',
         object_resizing: false,
-        toolbar: this.toolbar.length > 0 ? this.toolbar : toolbar,
+        toolbar: newToolbar,
         menubar: this.menubar,
         plugins: plugins,
         end_container_on_empty_block: true,
@@ -144,8 +192,9 @@ export default {
           })
         },
         setup(editor) {
-          editor.on('FullscreenStateChanged', (e) => {
-            _this.fullscreen = e.state
+          eventData.map(item => {
+            console.log('-----', item)
+            editor.addButton(item.name, item.data)
           })
         },
         // it will try to keep these URLs intact
@@ -206,8 +255,27 @@ export default {
     imageSuccessCBK(arr) {
       const _this = this
       arr.forEach(v => {
-        window.tinymce.get(_this.tinymceId).insertContent(`<img class="wscnph" src="${v.url}" >`)
+        window.tinymce
+          .get(_this.tinymceId)
+          .insertContent(`<img class="wscnph" src="${v.url}" >`)
       })
+    },
+    dataSuccessCBK(dataList) {
+      const { type, list, setDom } = dataList
+      let newDom = ''
+      console.log(dataList)
+      const self = this
+      if (type === 'image') {
+        list.forEach(v => {
+          newDom = setDom(v)
+          window.tinymce.get(self.tinymceId).insertContent(newDom)
+        })
+      } else if (type === 'video') {
+        list.forEach(v => {
+          newDom = setDom(v)
+          window.tinymce.get(self.tinymceId).insertContent(newDom)
+        })
+      }
     }
   }
 }
