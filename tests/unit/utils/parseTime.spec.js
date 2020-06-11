@@ -1,9 +1,15 @@
 import { parseTime } from '@/utils/index.js'
+
 describe('Utils:parseTime', () => {
   const d = new Date('2018-07-13 17:54:01') // "2018-07-13 17:54:01"
   it('timestamp', () => {
     expect(parseTime(d)).toBe('2018-07-13 17:54:01')
   })
+
+  it('timestamp string', () => {
+    expect(parseTime((d + ''))).toBe('2018-07-13 17:54:01')
+  })
+
   it('ten digits timestamp', () => {
     expect(parseTime((d / 1000).toFixed(0))).toBe('2018-07-13 17:54:01')
   })
@@ -23,5 +29,9 @@ describe('Utils:parseTime', () => {
   })
   it('empty argument', () => {
     expect(parseTime()).toBeNull()
+  })
+
+  it('null', () => {
+    expect(parseTime(null)).toBeNull()
   })
 })

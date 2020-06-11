@@ -1,6 +1,6 @@
-import Mock from 'mockjs'
-import { deepClone } from '../../src/utils/index.js'
-import { asyncRoutes, constantRoutes } from './routes.js'
+const Mock = require('mockjs')
+const { deepClone } = require('../utils')
+const { asyncRoutes, constantRoutes } = require('./routes.js')
 
 const routes = deepClone([...constantRoutes, ...asyncRoutes])
 
@@ -35,10 +35,10 @@ const roles = [
   }
 ]
 
-export default [
+module.exports = [
   // mock get all routes form server
   {
-    url: '/routes',
+    url: '/vue-element-admin/routes',
     type: 'get',
     response: _ => {
       return {
@@ -50,7 +50,7 @@ export default [
 
   // mock get all roles form server
   {
-    url: '/roles',
+    url: '/vue-element-admin/roles',
     type: 'get',
     response: _ => {
       return {
@@ -62,7 +62,7 @@ export default [
 
   // add role
   {
-    url: '/role',
+    url: '/vue-element-admin/role',
     type: 'post',
     response: {
       code: 20000,
@@ -74,7 +74,7 @@ export default [
 
   // update role
   {
-    url: '/role/[A-Za-z0-9]',
+    url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'put',
     response: {
       code: 20000,
@@ -86,7 +86,7 @@ export default [
 
   // delete role
   {
-    url: '/role/[A-Za-z0-9]',
+    url: '/vue-element-admin/role/[A-Za-z0-9]',
     type: 'delete',
     response: {
       code: 20000,
