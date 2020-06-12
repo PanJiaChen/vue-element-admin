@@ -235,33 +235,33 @@ export default {
       }
     },
     changeValue() {
-      const newValue = Number(this.valueToDisplay)
-      let isSendCallout = true
-      const isSendToServer = true
-      const isChangedOldValue = false
-      if (this.fieldAttributes.isAdvancedQuery) {
-        isSendCallout = false
-      }
-
-      const sendParameters = {
-        parentUuid: this.fieldAttributes.parentUuid,
-        containerUuid: this.fieldAttributes.containerUuid,
-        field: this.fieldAttributes,
-        panelType: this.fieldAttributes.panelType,
-        columnName: this.fieldAttributes.columnName,
-        newValue,
-        isAdvancedQuery: this.fieldAttributes.isAdvancedQuery,
-        isSendToServer,
-        isSendCallout,
-        isChangedOldValue
-      }
-      this.$store.dispatch('notifyFieldChange', {
-        ...sendParameters
-      })
-        .finally(() => {
-          this.clearVariables()
-          this.$children[0].visible = false
-        })
+      // const newValue = Number(this.valueToDisplay)
+      // let isSendCallout = true
+      // const isSendToServer = true
+      // const isChangedOldValue = false
+      // if (this.fieldAttributes.isAdvancedQuery) {
+      //   isSendCallout = false
+      // }
+      //
+      // const sendParameters = {
+      //   parentUuid: this.fieldAttributes.parentUuid,
+      //   containerUuid: this.fieldAttributes.containerUuid,
+      //   field: this.fieldAttributes,
+      //   panelType: this.fieldAttributes.panelType,
+      //   columnName: this.fieldAttributes.columnName,
+      //   newValue,
+      //   isAdvancedQuery: this.fieldAttributes.isAdvancedQuery,
+      //   isSendToServer,
+      //   isSendCallout,
+      //   isChangedOldValue
+      // }
+      // this.$store.dispatch('notifyFieldChange', {
+      //   ...sendParameters
+      // })
+      //   .finally(() => {
+      //     this.clearVariables()
+      //     this.$children[0].visible = false
+      //   })
     },
     spanMethod({ row, column, rowIndex, columnIndex }) {
       if (rowIndex === 1) {

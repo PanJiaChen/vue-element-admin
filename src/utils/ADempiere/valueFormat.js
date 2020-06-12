@@ -1,9 +1,89 @@
 // A util class for handle format for time, date and others values to beused to display information
 // Note that this file use moment library for a easy conversion
 import moment from 'moment'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import store from '@/store'
 import { DATE, DATE_PLUS_TIME, TIME } from '@/utils/ADempiere/references'
+
+export const convertStringToBoolean = (valueToParsed) => {
+  const valueString = String(valueToParsed).trim()
+  if (valueString === 'N' || valueString === 'false') {
+    return false
+  }
+  return Boolean(valueToParsed)
+}
+
+export const convertBooleanToString = (booleanValue) => {
+  if (booleanValue || booleanValue === 'true') {
+    return 'Y'
+  }
+  return 'N'
+}
+
+/**
+ * Convert a object to array pairs
+ * @param {object} object, object to convert
+ * @param {string} nameKey, name from key in pairs
+ * @param {string} nameValue, name from value in pairs
+ * @returns {array} [ { nameKey: key, nameValue: value } ]
+ */
+export function convertObjectToKeyValue({
+  object,
+  keyName = 'columnName',
+  valueName = 'value'
+}) {
+  return Object.keys(object).map(key => {
+    const returnPairs = {}
+    returnPairs[keyName] = key
+    returnPairs[valueName] = object[key]
+    return returnPairs
+  })
+}
+
+/**
+ * Convert array pairs of object to literal object { key: value }
+ * @param {array} array, Array to convert
+ * @param {string} nameKey, name from key in pairs
+ * @param {string} nameValue, name from value in pairs
+ * @returns {object} { key: value, key2: value2 }
+ */
+export function convertArrayKeyValueObject({
+  array,
+  keyName = 'columnName',
+  valueName = 'value'
+}) {
+  const result = {}
+  array.forEach(element => {
+    result[element[keyName]] = element[valueName]
+  })
+
+  return result
+}
+
+/**
+ * Convert map of pairs to literal object
+ * @param {object} object
+ * @returns {map}
+ */
+export function convertObjectToHasMap({ object }) {
+  return new Map(
+    Object.entries(object)
+  )
+}
+
+/**
+ * Convert map of pairs to literal object
+ * @param {map} hasMapToConvert
+ * @returns {object} { key: value, key2: value2 }
+ */
+export function convertHasMapToObject({ map }) {
+  return Object.fromEntries(map)
+  // const result = {}
+  // map.forEach((value, key) => {
+  //   result[key] = value
+  // })
+  // return result
+}
 
 // This function just convert all java date format to moment format.
 // For know about java format pattern see: https://docs.oracle.com/javase/7/docs/api/java/text/SimpleDateFormat.html

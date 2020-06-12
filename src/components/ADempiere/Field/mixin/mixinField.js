@@ -1,5 +1,5 @@
 
-export const fieldMixin = {
+export default {
   props: {
     metadata: {
       type: Object,
@@ -13,26 +13,48 @@ export const fieldMixin = {
   },
   data() {
     // value render
-    let value = this.metadata.value
+    let value1 = this.metadata.value
     if (this.metadata.inTable) {
-      value = this.valueModel
+      value1 = this.valueModel
     }
+    value1 = this.parseValue(value1)
+
     return {
-      value
+      value1
     }
   },
   computed: {
     isDisabled() {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
+    },
+    cssClassStyle() {
+      return this.metadata.cssClassName
+    },
+    value: {
+      get() {
+        return this.$store.getters.getValueOfField({
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName
+        })
+      },
+      set(value) {
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value
+        })
+      }
     }
   },
   async created() {
-    if (this.metadata.isSQLValue && (this.isEmptyValue(this.metadata.value) || this.metadata.value.isSQL || isNaN(this.metadata.value))) {
+    if (this.metadata.isSQLValue && (this.isEmptyValue(this.metadata.value) || this.metadata.value.isSQL)) {
       const value = await this.$store.dispatch('getValueBySQL', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
         query: this.metadata.defaultValue
       })
+      // set value and change into store
       this.preHandleChange(value)
     }
   },
@@ -41,7 +63,27 @@ export const fieldMixin = {
       this.requestFocus()
     }
   },
+  watch: {
+    // valueModel(value) {
+    //   if (this.metadata.inTable) {
+    //     this.value = this.parseValue(value)
+    //   }
+    // },
+    // 'metadata.value'(value) {
+    //   if (!this.metadata.inTable) {
+    //     this.value = this.parseValue(value)
+    //   }
+    // }
+  },
   methods: {
+    /**
+     * Parse the value to a new value if required for element-ui component
+     * compatibility where this method is overwritten
+     * @param {mixed} value
+     */
+    parseValue(value) {
+      return value
+    },
     /**
      * Set focus if handle focus attribute is true
      */
@@ -56,7 +98,7 @@ export const fieldMixin = {
      * @param {mixed} value
      */
     preHandleChange(value) {
-      this.handleChange(value)
+      this.handleFieldChange({ value })
     },
     focusGained(value) {
       if (this.metadata.handleContentSelection) {
@@ -119,43 +161,17 @@ export const fieldMixin = {
      * @param {mixed} valueTo, used in end value in range
      * @param {string} label, or displayColumn to show in select
      */
-    handleChange(value, valueTo = undefined, label = undefined) {
-      let newValue = value
-      let isSendCallout = true
-      let isSendToServer = true
-      let isChangedOldValue = false
-      if (value === 'NotSend') {
-        newValue = this.value
-        if (this.componentPath === 'FieldYesNo') {
-          isChangedOldValue = true
-          newValue = Boolean(newValue)
-        }
-        isSendToServer = false
-        isSendCallout = false
-      }
-      if (this.metadata.isAdvancedQuery) {
-        isSendCallout = false
-      }
-
-      const sendParameters = {
-        parentUuid: this.metadata.parentUuid,
-        containerUuid: this.metadata.containerUuid,
-        field: this.metadata,
-        panelType: this.metadata.panelType,
-        columnName: this.metadata.columnName,
-        newValue,
-        valueTo,
-        isAdvancedQuery: this.metadata.isAdvancedQuery,
-        isSendToServer,
-        isSendCallout,
-        isChangedOldValue
-      }
+    handleFieldChange({
+      value,
+      valueTo,
+      label
+    }) {
       // Global Action performed
       if (this.metadata.handleActionPerformed) {
         this.$store.dispatch('notifyActionPerformed', {
           containerUuid: this.metadata.containerUuid,
           columnName: this.metadata.columnName,
-          value: newValue
+          value
         })
       }
 
@@ -163,20 +179,10 @@ export const fieldMixin = {
       if (this.metadata.isCustomField) {
         return
       }
-
-      if (this.metadata.inTable) {
-        this.$store.dispatch('notifyCellTableChange', {
-          ...sendParameters,
-          keyColumn: this.metadata.keyColumn,
-          tableIndex: this.metadata.tableIndex,
-          rowKey: this.metadata.rowKey
-        })
-      } else {
-        this.$store.dispatch('notifyFieldChange', {
-          ...sendParameters,
-          displayColumn: label
-        })
-      }
+      this.$store.dispatch('notifyFieldChange', {
+        containerUuid: this.metadata.containerUuid,
+        field: this.metadata
+      })
     }
   }
 }

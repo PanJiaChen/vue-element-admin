@@ -203,7 +203,7 @@ export default {
             this.$store.dispatch('setWindowOldRoute')
           }
 
-          this.$store.dispatch('resetPanelToNew', {
+          this.$store.dispatch('setDefaultValues', {
             parentUuid,
             containerUuid,
             panelType: view.meta.type,

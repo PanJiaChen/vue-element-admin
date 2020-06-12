@@ -8,7 +8,7 @@ import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
  * @param {string} directQuery
  * @param {string|number} value
  */
-export function getLookup({
+export function requestLookup({
   tableName,
   directQuery,
   value
@@ -25,16 +25,21 @@ export function getLookup({
  * The main attributes that function hope are:
  * @param {string} tableName
  * @param {string} query
+ * @param {Array<String>|<Number>}  valuesList
+ * @param {string} pageToken
+ * @param {number} pageSize
  */
-export function getLookupList({
+export function requestLookupList({
   tableName,
   query,
+  valuesList = [],
   pageToken,
   pageSize
 }) {
   return Instance.call(this).requestListLookupFromReference({
     tableName,
     query,
+    valuesList,
     pageToken,
     pageSize
   })

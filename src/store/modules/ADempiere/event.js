@@ -23,9 +23,11 @@
 export const ACTION_PERFORMED = 1
 export const FOCUS_GAINED = 2
 export const FOCUS_LOST = 3
+
 // Input actions
 export const KEY_PRESSED = 4
 export const KEY_RELEASED = 5
+
 const event = {
   state: {
     fieldEvents: [],

@@ -186,7 +186,7 @@
                       :in-table="true"
                       :metadata-field="{
                         ...fieldAttributes,
-                        displayColumn: scope.row['DisplayColumn_' + fieldAttributes.columnName],
+                        displayColumn: scope.row[fieldAttributes.displayColumnName],
                         tableIndex: scope.$index,
                         rowKey: scope.row[getterPanel.keyColumn],
                         keyColumn: getterPanel.keyColumn,
@@ -470,22 +470,21 @@ export default {
     isPanelWindow() {
       return Boolean(this.panelType === 'window')
     },
-    getterContextClientId() {
+    preferenceClientId() {
       if (this.isPanelWindow) {
-        return this.$store.getters.getContextClientId
+        return this.$store.getters.getPreferenceClientId
       }
       return undefined
     },
     isReadOnlyParent() {
       if (this.isPanelWindow) {
-        if (this.$store.getters.getContextIsActive(this.parentUuid) === false) {
+        if (!this.$store.getters.getContainerIsActive(this.parentUuid)) {
           return true
         }
-        if (this.$store.getters.getContextProcessing(this.parentUuid) === true ||
-          this.$store.getters.getContextProcessing(this.parentUuid) === 'Y') {
+        if (this.$store.getters.getContainerProcessing(this.parentUuid)) {
           return true
         }
-        if (this.$store.getters.getContextProcessed(this.parentUuid)) {
+        if (this.$store.getters.getContainerProcessed(this.parentUuid)) {
           return true
         }
       }
@@ -617,7 +616,7 @@ export default {
      */
     displayedValue(row, field) {
       if (typeof row[field.columnName] === 'boolean') {
-        // replace boolean true-false value for 'Yes' or 'Not'
+        // replace boolean true-false value for 'Yes' or 'Not' ('Si' or 'No' for spanish)
         return row[field.columnName] ? this.$t('components.switchActiveText') : this.$t('components.switchInactiveText')
       } else if (field.componentPath === 'FieldDate' || field.componentPath === 'FieldTime') {
         let cell = row[field.columnName]
@@ -634,10 +633,12 @@ export default {
           displayType: field.displayType,
           number: row[field.columnName]
         })
-      } else if (field.componentPath === 'FieldSelect' && this.isEmptyValue(row['DisplayColumn_' + field.columnName]) && row[field.columnName] === 0) {
+      } else if (field.componentPath === 'FieldSelect' &&
+        this.isEmptyValue(row[field.displayColumnName]) &&
+        row[field.columnName] === 0) {
         return field.defaultValue
       }
-      return row['DisplayColumn_' + field.columnName] || row[field.columnName]
+      return row[field.displayColumnName] || row[field.columnName]
     },
     rowCanBeEdited(record, fieldAttributes) {
       if (!this.isParent) {
@@ -663,28 +664,19 @@ export default {
     },
     isReadOnlyRow(row, field) {
       // evaluate context
-      if (this.getterContextClientId !== parseInt(row.AD_Client_ID, 10)) {
+      if (this.preferenceClientId !== parseInt(row.AD_Client_ID, 10)) {
         return true
       }
       if (fieldIsDisplayed(field)) {
-        // const fieldReadOnlyAllForm = FIELDS_READ_ONLY_FORM.filter(item => {
-        //   return item.isChangedAllForm &&
-        //     Object.prototype.hasOwnProperty.call(row, item.columnName)
-        // })
-        // // columnName: Processed, Processing
-        // if (fieldReadOnlyAllForm.length) {
-        //   const isReadOnlyAllRow = Boolean(fieldReadOnlyAllForm.find(item => row[item.columnName] === item.valueIsReadOnlyForm))
-        //   return isReadOnlyAllRow
-        // }
-
         // columnName: IsActive
         const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => {
           return !item.isChangedAllForm &&
+            // columnName: IsActive, Processed, Processing
             Object.prototype.hasOwnProperty.call(row, item.columnName)
         })
         if (fieldReadOnlyForm) {
-          const isReadOnlyRow = row[fieldReadOnlyForm.columnName] === fieldReadOnlyForm.valueIsReadOnlyForm && field.columnName !== fieldReadOnlyForm.columnName
-          return isReadOnlyRow
+          return field.columnName !== fieldReadOnlyForm.columnName &&
+            row[fieldReadOnlyForm.columnName] === fieldReadOnlyForm.valueIsReadOnlyForm
         }
       }
       return false
@@ -1078,8 +1070,7 @@ export default {
       }
     }
   }
-</style>
-<style>
+
   .el-table .warning-row {
     background: rgba(161, 250, 223, 0.945);
   }

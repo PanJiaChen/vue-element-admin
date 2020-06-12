@@ -10,7 +10,7 @@
     :start-placeholder="$t('components.dateStartPlaceholder')"
     :end-placeholder="$t('components.dateEndPlaceholder')"
     unlink-panels
-    :class="'date-base ' + metadata.cssClassName"
+    :class="cssClassStyle"
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
     :picker-options="pickerOptions"
@@ -23,20 +23,14 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 import { DATE_PLUS_TIME } from '@/utils/ADempiere/references'
 
 export default {
   name: 'FieldDate',
   mixins: [fieldMixin],
   data() {
-    // value render
-    let value = this.metadata.value
-    if (this.metadata.inTable) {
-      value = this.valueModel
-    }
     return {
-      value: this.parsedDateValue(value),
       pickerOptionsDate: {
         shortcuts: [{
           text: this.$t('components.date.Today'),
@@ -117,6 +111,9 @@ export default {
       }
       return picker
     },
+    cssClassStyle() {
+      return this.metadata.cssClassName + ' custom-field-date'
+    },
     /**
      * Parse the date format to be compatible with element-ui
      */
@@ -149,22 +146,53 @@ export default {
         return this.pickerOptionsDateRange
       }
       return this.pickerOptionsDate
-    }
-  },
-  watch: {
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = this.parsedDateValue(value)
-      }
     },
-    'metadata.value'(value) {
-      if (!this.metadata.inTable) {
-        this.value = this.parsedDateValue(value)
+    value: {
+      get() {
+        let value = this.$store.getters.getValueOfField({
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName
+        })
+        if (!this.metadata.isRange) {
+          return this.parseValue(value)
+        }
+
+        const valueTo = this.$store.getters.getValueOfField({
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnNameTo
+        })
+
+        value = this.parseValue([value, valueTo])
+        return value
+      },
+      set(value) {
+        let startValue = value
+        if (Array.isArray(value)) {
+          startValue = value[0]
+        }
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value: startValue
+        })
+        if (!this.metadata.isRange) {
+          return
+        }
+
+        const endValue = value[1]
+
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnNameTo,
+          value: endValue
+        })
       }
     }
   },
   methods: {
-    parsedDateValue(value) {
+    parseValue(value) {
       // not return undefined to v-model
       if (this.isEmptyValue(value)) {
         if (['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery) {
@@ -198,7 +226,11 @@ export default {
 
       // generate range value
       if (this.metadata.isRange && !this.metadata.inTable) {
-        let valueTo = this.metadata.valueTo
+        let valueTo // = this.metadata.valueTo
+        if (Array.isArray(value)) {
+          valueTo = value[1]
+          value = value[0]
+        }
         if (typeof valueTo === 'number') {
           valueTo = new Date(valueTo).toUTCString()
         }
@@ -206,6 +238,9 @@ export default {
           valueTo = undefined
         }
         value = [value, valueTo]
+        if (this.isEmptyValue(value[0]) || this.isEmptyValue(value[1])) {
+          value = []
+        }
       }
 
       return value
@@ -219,7 +254,7 @@ export default {
         if (Array.isArray(value)) {
           value = value.map(itemValue => new Date(itemValue))
         }
-        this.handleChange(value)
+        this.handleFieldChange({ value })
         return
       }
 
@@ -238,14 +273,17 @@ export default {
         endValue = new Date(endValue)
       }
 
-      this.handleChange(startValue, endValue)
+      this.handleFieldChange({
+        value: startValue,
+        valueTo: endValue
+      })
     }
   }
 }
 </script>
 
 <style scoped>
-  .date-base {
+  .custom-field-date {
     width: 100% !important;
   }
 </style>

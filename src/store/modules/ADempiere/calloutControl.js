@@ -1,5 +1,6 @@
 import { runCallOutRequest } from '@/api/ADempiere/rule'
 import { showMessage } from '@/utils/ADempiere/notification'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
 
 const callOutControl = {
@@ -19,7 +20,7 @@ const callOutControl = {
      * @param {String} valueType
      * @return {Promise} values
      */
-    getCallout({ rootGetters, dispatch }, {
+    runCallout({ rootGetters, dispatch }, {
       parentUuid,
       containerUuid,
       callout,
@@ -32,6 +33,10 @@ const callOutControl = {
       oldValue,
       valueType
     }) {
+      if (isEmptyValue(value) || isEmptyValue(callout)) {
+        return undefined
+      }
+      //  Else
       return new Promise((resolve, reject) => {
         const window = rootGetters.getWindow(parentUuid)
         const attributesList = rootGetters.getParametersToServer({

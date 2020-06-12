@@ -66,22 +66,21 @@ export default {
      * @param {string} label, or displayColumn to show in select
      */
     handleChange(value) {
-      const sendParameters = {
-        parentUuid: this.fieldAttributes.parentUuid,
-        containerUuid: this.fieldAttributes.containerUuid,
-        field: this.fieldAttributes,
-        panelType: this.fieldAttributes.panelType,
-        columnName: this.fieldAttributes.columnName,
-        newValue: value === 'NotSend' ? this.value : value,
-        isAdvancedQuery: true,
-        isSendToServer: !(value === 'NotSend'),
-        isSendCallout: false
-      }
-
-      this.$store.dispatch('notifyFieldChange', {
-        ...sendParameters,
-        isChangedOldValue: this.fieldAttributes.componentPath === 'FieldYesNo' && Boolean(value === 'NotSend')
-      })
+      // const sendParameters = {
+      //   parentUuid: this.fieldAttributes.parentUuid,
+      //   containerUuid: this.fieldAttributes.containerUuid,
+      //   field: this.fieldAttributes,
+      //   panelType: this.fieldAttributes.panelType,
+      //   columnName: this.fieldAttributes.columnName,
+      //   newValue: value === 'NotSend' ? this.value : value,
+      //   isAdvancedQuery: true,
+      //   isSendToServer: !(value === 'NotSend'),
+      //   isSendCallout: false
+      // }
+      // this.$store.dispatch('notifyFieldChange', {
+      //   ...sendParameters,
+      //   isChangedOldValue: this.fieldAttributes.componentPath === 'FieldYesNo' && Boolean(value === 'NotSend')
+      // })
     }
   }
 }

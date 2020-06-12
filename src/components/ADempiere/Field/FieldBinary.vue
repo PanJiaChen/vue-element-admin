@@ -6,7 +6,7 @@
     :on-remove="handleRemove"
     :on-success="handleSuccess"
     :on-error="handleError"
-    :class="'image-uploader ' + metadata.cssClassName"
+    :class="cssClassStyle"
     action="https://jsonplaceholder.typicode.com/posts/"
     :disabled="isDisabled"
     @change="preHandleChange"
@@ -21,21 +21,14 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 
 export default {
   name: 'FieldBinary',
   mixins: [fieldMixin],
-  watch: {
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = value
-      }
-    },
-    'metadata.value'(value) {
-      if (!this.metadata.inTable) {
-        this.value = value
-      }
+  computed: {
+    cssClassStyle() {
+      return this.metadata.cssClassName + ' image-uploader'
     }
   },
   methods: {

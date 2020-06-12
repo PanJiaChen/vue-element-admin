@@ -177,35 +177,35 @@ export default {
       }
     },
     documentActionChange(value) {
-      this.$store.dispatch('notifyFieldChange', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        columnName: 'DocAction',
-        isSendToServer: true,
-        newValue: value
-      })
-        .then(response => {
-          const actionProcess = this.$store.getters.getOrders
-          this.$store.dispatch('startProcess', {
-            action: {
-              uuid: actionProcess.uuid,
-              id: actionProcess.id,
-              name: actionProcess.name
-            }, // process metadata
-            tableName: this.$route.params.tableName,
-            recordId: this.$route.params.recordId,
-            recordUuid: this.$route.query.action,
-            parametersList: [{
-              columnName: 'DocAction',
-              value: this.valueActionDocument
-            }],
-            isActionDocument: true,
-            parentUuid: this.parentUuid,
-            panelType: this.panelType,
-            containerUuid: this.containerUuid// determinate if get table name and record id (window) or selection (browser)
-          })
-          this.valueActionDocument = ''
-        })
+      // this.$store.dispatch('notifyFieldChange', {
+      //   parentUuid: this.parentUuid,
+      //   containerUuid: this.containerUuid,
+      //   columnName: 'DocAction',
+      //   isSendToServer: true,
+      //   newValue: value
+      // })
+      //   .then(response => {
+      //     const actionProcess = this.$store.getters.getOrders
+      //     this.$store.dispatch('startProcess', {
+      //       action: {
+      //         uuid: actionProcess.uuid,
+      //         id: actionProcess.id,
+      //         name: actionProcess.name
+      //       }, // process metadata
+      //       tableName: this.$route.params.tableName,
+      //       recordId: this.$route.params.recordId,
+      //       recordUuid: this.$route.query.action,
+      //       parametersList: [{
+      //         columnName: 'DocAction',
+      //         value: this.valueActionDocument
+      //       }],
+      //       isActionDocument: true,
+      //       parentUuid: this.parentUuid,
+      //       panelType: this.panelType,
+      //       containerUuid: this.containerUuid// determinate if get table name and record id (window) or selection (browser)
+      //     })
+      //     this.valueActionDocument = ''
+      //   })
     }
   }
 }

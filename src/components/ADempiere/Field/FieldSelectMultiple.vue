@@ -17,18 +17,13 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 
 /**
  * This component is a list type field, for IN and NOT IN search with advanced query
  */
 export default {
   name: 'FieldSelectMultiple',
-  mixins: [fieldMixin],
-  methods: {
-    preHandleChange(value) {
-      this.handleChange(value)
-    }
-  }
+  mixins: [fieldMixin]
 }
 </script>

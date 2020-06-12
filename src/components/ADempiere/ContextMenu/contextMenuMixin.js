@@ -139,7 +139,7 @@ export const contextMixin = {
       })
       return value.map(fieldItem => {
         if (fieldItem.componentPath === 'FieldSelect') {
-          return 'DisplayColumn_' + fieldItem.columnName
+          return fieldItem.displayColumnName
         }
         return fieldItem.columnName
       })
@@ -174,7 +174,7 @@ export const contextMixin = {
     },
     getOldRouteOfWindow() {
       if (this.panelType === 'window') {
-        const oldRoute = this.$store.state.windowControl.windowOldRoute
+        const oldRoute = this.$store.state.window.windowOldRoute
         if (!this.isEmptyValue(oldRoute.query.action) && oldRoute.query.action !== 'create-new' && this.$route.query.action === 'create-new') {
           return oldRoute
         }
@@ -234,7 +234,7 @@ export const contextMixin = {
     actionContextMenu(event) {
       switch (event.srcKey) {
         case 'f2':
-          this.$store.dispatch('resetPanelToNew', {
+          this.$store.dispatch('setDefaultValues', {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
             recordUuid: this.recordUuid,
@@ -395,14 +395,15 @@ export const contextMixin = {
       if (action.type === 'process') {
         // Add context from view open in process to opening
         if (action.parentUuidAssociated || action.containerUuidAssociated) {
-          const contextValues = this.$store.getters.getContextView({
+          const attributes = this.$store.getters.getValuesView({
             parentUuid: action.parentUuidAssociated,
             containerUuid: action.containerUuidAssociated
           })
-          if (!this.isEmptyValue(contextValues)) {
-            this.$store.dispatch('setMultipleContextView', {
+
+          if (!this.isEmptyValue(attributes)) {
+            this.$store.dispatch('updateValuesOfContainer', {
               containerUuid: action.uuid,
-              values: contextValues
+              attributes
             })
           }
         }
@@ -437,7 +438,7 @@ export const contextMixin = {
             containerUuid: this.containerUuid,
             recordUuid: this.recordUuid,
             panelType: this.panelType,
-            isNewRecord: action.action === 'resetPanelToNew',
+            isNewRecord: action.action === 'setDefaultValues',
             tableName: action.tableName,
             recordId: action.recordId
           })

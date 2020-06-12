@@ -33,6 +33,13 @@ const reportControl = {
     }
   },
   actions: {
+    reportActionPerformed({ commit }, {
+      containerUuid,
+      field,
+      value
+    }) {
+
+    },
     requestPrintFormats({ commit }, {
       processId,
       processUuid,
@@ -147,7 +154,9 @@ const reportControl = {
         if (isEmptyValue(printFormatUuid)) {
           printFormatUuid = getters.getDefaultPrintFormat(processUuid).printFormatUuid
         }
-        const parametersList = rootGetters.getParametersToServer({ containerUuid: processUuid })
+        const parametersList = rootGetters.getParametersToServer({
+          containerUuid: processUuid
+        })
         getReportOutput({
           parametersList,
           printFormatUuid,

@@ -4,7 +4,7 @@
     v-model="value"
     :inactive-text="$t('components.switchInactiveText')"
     :active-text="$t('components.switchActiveText')"
-    :class="'custom-field-yes-no ' + metadata.cssClassName"
+    :class="cssClassStyle"
     :true-value="true"
     :false-value="false"
     :disabled="isDisabled"
@@ -17,7 +17,8 @@
 <script>
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import { FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import { convertStringToBoolean } from '@/utils/ADempiere/valueFormat.js'
 
 export default {
   name: 'FieldYesNo',
@@ -32,33 +33,17 @@ export default {
       ]
     }
   },
-  watch: {
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = Boolean(value)
-      }
-    },
-    'metadata.value'(value) {
-      if (!this.metadata.inTable) {
-        this.value = Boolean(value)
-      }
-    },
-    value(value, oldValue) {
-      if (typeof value !== 'boolean') {
-        if (value === 'N' || value === 'n') {
-          value = false
-        }
-        this.value = Boolean(value)
-      }
-      this.preHandleChange('NotSend')
+  computed: {
+    cssClassStyle() {
+      return this.metadata.cssClassName + ' custom-field-yes-no'
     }
   },
-  mounted() {
-    this.preHandleChange('NotSend') // activate logics
-  },
   methods: {
+    parseValue(value) {
+      return convertStringToBoolean(value)
+    },
     preHandleChange(value) {
-      this.handleChange(value)
+      this.handleFieldChange({ value })
       if (!this.metadata.inTable && !this.metadata.isAdvancedQuery) {
         this.isReadOnlyForm(this.value)
       }
@@ -87,7 +72,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   .custom-field-yes-no {
     max-height: 34px;
   }

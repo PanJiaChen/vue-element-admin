@@ -6,10 +6,10 @@ import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
  * @param {string}  tableName
  * @param {array}   attributesList
  */
-export function createEntity({ tableName, attributesList }) {
+export function createEntity({ tableName, attributes }) {
   return Instance.call(this).requestCreateEntity({
     tableName,
-    attributesList
+    attributesList: attributes
   })
 }
 
@@ -20,12 +20,12 @@ export function createEntity({ tableName, attributesList }) {
  * @param {string}  recordUuid
  * @param {array}   attributesList
  */
-export function updateEntity({ tableName, recordId, recordUuid, attributesList }) {
+export function updateEntity({ tableName, recordId, recordUuid, attributes }) {
   return Instance.call(this).requestUpdateEntity({
     tableName,
     recordId,
     recordUuid,
-    attributesList
+    attributesList: attributes
   })
 }
 

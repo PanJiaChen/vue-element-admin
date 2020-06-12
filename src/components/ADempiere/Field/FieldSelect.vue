@@ -6,7 +6,7 @@
     :placeholder="metadata.help"
     :loading="isLoading"
     value-key="key"
-    :class="classStyle + ' ' + metadata.cssClassName"
+    :class="cssClassStyle"
     clearable
     :multiple="isSelectMultiple"
     :allow-create="metadata.isSelectCreated"
@@ -17,7 +17,7 @@
     @clear="clearLookup"
   >
     <el-option
-      v-for="(option, key) in options"
+      v-for="(option, key) in optionsList"
       :key="key"
       :value="option.key"
       :label="option.label"
@@ -26,7 +26,8 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import { convertBooleanToString } from '@/utils/ADempiere/valueUtils.js'
 
 /**
  * This component is a lookup type field, use as a replacement for fields:
@@ -36,23 +37,24 @@ import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
  *
  * TODO: ALL: Although in the future these will have different components, and
  * are currently not supported is also displayed as a substitute for fields:
- * - Locator (WH)
  * - Search Field
  */
 export default {
   name: 'FieldSelect',
   mixins: [fieldMixin],
   data() {
+    // label with '' value is assumed to be undefined non-existent
+    const label = ' '
+
     return {
       isLoading: false,
-      options: [{
-        label: ' ',
+      optionsList: [{
+        label,
         key: undefined
       }],
       blankValues: [null, undefined, -1],
       blankOption: {
-        // label with '' value is assumed to be undefined non-existent
-        label: ' ',
+        label,
         key: undefined
       }
     }
@@ -67,8 +69,8 @@ export default {
     isSelectMultiple() {
       return ['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery
     },
-    classStyle() {
-      let styleClass = 'custom-field-select'
+    cssClassStyle() {
+      let styleClass = this.metadata.cssClassName + ' custom-field-select'
       if (this.isSelectMultiple) {
         styleClass += ' custom-field-select-multiple'
       }
@@ -96,11 +98,60 @@ export default {
         value: this.value
       })
 
+      // sets the value to blank when the lookupList or lookupItem have no
+      // values, or if only lookupItem does have a value
       if (this.isEmptyValue(allOptions) || (allOptions.length &&
         (!this.blankValues.includes(allOptions[0].key)))) {
         allOptions.unshift(this.blankOption)
       }
       return allOptions
+    },
+    value: {
+      get() {
+        const value = this.$store.getters.getValueOfField({
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName
+        })
+        let label = this.findLabel(value)
+        if (!label) {
+          label = this.displayColumn
+          /* eslint-disable */
+          this.optionsList.push({
+            key: value,
+            label
+          })
+          /* eslint-disable */
+        }
+        return value
+      },
+      set(value) {
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          columnName: this.metadata.columnName,
+          value
+        })
+      }
+    },
+    displayColumn: {
+      get() {
+        return this.$store.getters.getValueOfField({
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          // DisplayColumn_'ColumnName'
+          columnName: this.metadata.displayColumnName
+        })
+      },
+      set(value) {
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          // DisplayColumn_'ColumnName'
+          columnName: this.metadata.displayColumnName,
+          value
+        })
+      }
     }
   },
   watch: {
@@ -114,27 +165,23 @@ export default {
       } else {
         if (Array.isArray(this.value)) {
           if (this.value.length) {
+            // set first value
             this.value = this.value[0]
           } else {
-            this.value = undefined
+            this.value = this.blankOption.key
           }
         }
       }
     },
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = value
-      }
-    },
+    /*
     'metadata.value'(value) {
       if (!this.metadata.inTable) {
-        if (typeof value === 'boolean') {
-          value = value ? 'Y' : 'N'
-        }
+        value = this.parseValue(value)
+
         if (this.metadata.displayed) {
-          if (!this.options.some(option => option.key === value) &&
+          if (!this.optionsList.some(option => option.key === value) &&
             !this.isEmptyValue(this.metadata.displayColumn)) {
-            this.options.push({
+            this.optionsList.push({
               key: value,
               label: this.metadata.displayColumn
             })
@@ -154,7 +201,7 @@ export default {
           if (!this.isEmptyValue(value)) {
             // verify if exists to add
             if (!this.findLabel(this.value)) {
-              this.options.push({
+              this.optionsList.push({
                 key: this.value,
                 label: value
               })
@@ -162,24 +209,31 @@ export default {
           }
         }
       }
-    },
+    }
+    */
     'metadata.displayed'(value) {
       if (value) {
-        this.changeBlankOption()
-        this.options = this.getterLookupAll
+        // if is field showed, search into store all options to list
+        this.optionsList = this.getterLookupAll
       }
     }
   },
+  created() {
+    this.changeBlankOption()
+  },
   beforeMount() {
     if (this.metadata.displayed) {
-      this.changeBlankOption()
-      this.options = this.getterLookupAll
-      if (!this.isEmptyValue(this.value) && !this.metadata.isAdvancedQuery) {
-        if (!this.findLabel(this.value)) {
+      this.optionsList = this.getterLookupAll
+      const value = this.value
+      if (!this.isEmptyValue(value) && !this.metadata.isAdvancedQuery) {
+        const label = this.findLabel(value)
+        if (label) {
+          this.displayColumn = label
+        } else {
           if (!this.isEmptyValue(this.metadata.displayColumn)) {
           // verify if exists to add
-            this.options.push({
-              key: this.value,
+            this.optionsList.push({
+              key: value,
               label: this.metadata.displayColumn
             })
           } else {
@@ -194,26 +248,28 @@ export default {
     }
   },
   methods: {
+    parseValue(value) {
+      if (typeof value === 'boolean') {
+        // value ? 'Y' : 'N'
+        value = convertBooleanToString(value)
+      }
+      return value
+    },
     changeBlankOption() {
       if (Number(this.metadata.defaultValue) === -1) {
-        this.blankOption = {
-          label: ' ',
-          key: -1
-        }
-      }
-      if (this.value === undefined || this.value === null) {
-        this.blankOption = {
-          label: ' ',
-          key: undefined
-        }
+        this.blankOption.key = -1
       }
     },
     preHandleChange(value) {
       const label = this.findLabel(this.value)
-      this.handleChange(value, undefined, label)
+      this.displayColumn = label
+      this.handleFieldChange({
+        value,
+        label
+      })
     },
     findLabel(value) {
-      const selected = this.options.find(item => item.key === value)
+      const selected = this.optionsList.find(item => item.key === value)
       if (selected) {
         return selected.label
       }
@@ -230,20 +286,11 @@ export default {
         containerUuid: this.metadata.containerUuid,
         tableName: this.metadata.reference.tableName,
         directQuery: this.metadata.reference.directQuery,
-        value: this.metadata.value
+        value: this.value
       })
         .then(responseLookupItem => {
-          if (this.isPanelWindow) {
-            this.$store.dispatch('changeFieldAttribure', {
-              containerUuid: this.metadata.containerUuid,
-              isAdvancedQuery: this.metadata.isAdvancedQuery,
-              columnName: this.metadata.columnName,
-              attributeName: 'displayColumn',
-              attributeValue: responseLookupItem.label
-            })
-          }
-          this.changeBlankOption()
-          this.options = this.getterLookupAll
+          this.displayColumn = responseLookupItem.label
+          this.optionsList = this.getterLookupAll
         })
         .finally(() => {
           this.isLoading = false
@@ -261,26 +308,33 @@ export default {
         }
       }
     },
-    async remoteMethod() {
-      if (this.isEmptyValue(this.metadata.reference.query)) {
-        return
-      }
+    remoteMethod() {
       this.isLoading = true
       this.$store.dispatch('getLookupListFromServer', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
         tableName: this.metadata.reference.tableName,
-        query: this.metadata.reference.query
+        query: this.metadata.reference.query,
+        isAddBlankValue: true,
+        blankValue: this.blankOption.key
       })
         .then(responseLookupList => {
-          this.changeBlankOption()
-          this.options = this.getterLookupAll
+          if (!this.isEmptyValue(responseLookupList)) {
+            this.optionsList = responseLookupList
+          } else {
+            this.optionsList = this.getterLookupAll
+          }
         })
         .finally(() => {
           this.isLoading = false
         })
     },
     clearLookup() {
+      // set empty list and empty option
+      this.optionsList = [
+        this.blankOption
+      ]
+
       this.$store.dispatch('deleteLookupList', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
@@ -290,12 +344,6 @@ export default {
         value: this.value
       })
 
-      // set empty list and empty option
-      this.changeBlankOption()
-      const list = []
-      list.push(this.blankOption)
-      this.options = list
-
       // set empty value
       this.value = this.blankOption.key
     }
@@ -303,7 +351,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .custom-field-select {
     width: 100%;
   }

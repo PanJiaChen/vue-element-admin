@@ -108,13 +108,13 @@ export default {
       }
     },
     documentActionChange(value) {
-      this.$store.dispatch('notifyFieldChange', {
-        parentUuid: this.field.parentUuid,
-        containerUuid: this.field.containerUuid,
-        columnName: 'DocAction',
-        isSendToServer: true,
-        newValue: value
-      })
+      // this.$store.dispatch('notifyFieldChange', {
+      //   parentUuid: this.field.parentUuid,
+      //   containerUuid: this.field.containerUuid,
+      //   columnName: 'DocAction',
+      //   isSendToServer: true,
+      //   newValue: value
+      // })
 
       const actionProcess = this.$store.getters.getOrders
       this.$store.dispatch('startProcess', {

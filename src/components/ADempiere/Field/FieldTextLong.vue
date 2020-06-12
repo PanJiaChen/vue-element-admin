@@ -1,5 +1,8 @@
 <template>
-  <div :id="id" :class="classDisable + ' ' + metadata.cssClassName" />
+  <div
+    :id="id"
+    :class="cssClassStyle"
+  />
 </template>
 
 <script>
@@ -10,11 +13,15 @@ import 'codemirror/lib/codemirror.css' // codemirror
 import Editor from 'tui-editor'
 
 import { getLanguage } from '@/lang'
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import fieldMixinText from '@/components/ADempiere/Field/mixin/mixinFieldText.js'
 
 export default {
   name: 'FieldTextLong',
-  mixins: [fieldMixin],
+  mixins: [
+    fieldMixin,
+    fieldMixinText
+  ],
   props: {
     id: {
       type: String,
@@ -32,11 +39,12 @@ export default {
     }
   },
   computed: {
-    classDisable() {
+    cssClassStyle() {
+      let styleClass = this.metadata.cssClassName
       if (this.isDisabled) {
-        return 'isdisable'
+        styleClass += ' custom-field-text-long-disable'
       }
-      return ''
+      return styleClass
     },
     language() {
       // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
@@ -59,22 +67,6 @@ export default {
     }
   },
   watch: {
-    valueModel(value, oldValue) {
-      if (this.metadata.inTable) {
-        if (this.isEmptyValue(value)) {
-          value = ''
-        }
-        this.value = String(value)
-      }
-    },
-    'metadata.value'(value, oldValue) {
-      if (!this.metadata.inTable) {
-        if (this.isEmptyValue(value)) {
-          value = ''
-        }
-        this.value = String(value)
-      }
-    },
     value(newValue, oldValue) {
       if (this.isDisabled) {
         // not changed value
@@ -159,8 +151,9 @@ export default {
   }
 }
 </script>
-<style>
-  .isdisable {
+
+<style scoped>
+  .custom-field-text-long-disable {
     background: #F5F7FA;
   }
 </style>

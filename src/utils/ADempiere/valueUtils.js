@@ -1,4 +1,5 @@
-import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
+import { convertStringToBoolean, convertBooleanToString } from '@/utils/ADempiere/valueFormat.js'
+import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references.js'
 
 /**
  * Checks if value is empty. Deep-checks arrays and objects
@@ -85,49 +86,6 @@ export function clientDateTime(date = null, type = '') {
     return currentDateTime
   }
   return currentDateTime.date + ' ' + currentDateTime.time
-}
-
-/**
- * Convert a object to array pairs
- * @param {object} objectToConvert, object to convert
- * @param {string} nameKey, name from key in pairs
- * @param {string} nameValue, name from value in pairs
- * @returns {array} [ { nameKey: key, nameValue: value } ]
- */
-export function convertObjectToArrayPairs(objectToConvert, nameKey = 'columnName', nameValue = 'value') {
-  return Object.keys(objectToConvert).map(key => {
-    const returnPairs = {}
-    returnPairs[nameKey] = key
-    returnPairs[nameValue] = objectToConvert[key]
-    return returnPairs
-  })
-}
-
-/**
- * Convert array pairs of object to simple object { key:value }
- * @param {array} arrayToConvert, object to convert
- * @param {string} nameKey, name from key in pairs
- * @param {string} nameValue, name from value in pairs
- */
-export function convertArrayPairsToObject({
-  arrayToConvert,
-  nameKey = 'columnName',
-  nameValue = 'value'
-}) {
-  const result = {}
-  arrayToConvert.forEach(element => {
-    result[element[nameKey]] = element[nameValue]
-  })
-
-  return result
-}
-
-export function convertHasMapToObject(hasMapToConvert) {
-  const result = {}
-  hasMapToConvert.forEach((value, key) => {
-    result[key] = value
-  })
-  return result
 }
 
 export function convertFieldListToShareLink(fieldList) {
@@ -230,28 +188,33 @@ export const recursiveTreeSearch = ({
 /**
  * Parsed value to component type
  * @param {mixed} value, value to parsed
- * @param {string} fieldType, or componentPath
+ * @param {string} componentPath
  * @param {number} displayType, reference in ADempiere
  * @param {boolean} isMandatory, field is mandatory
  * @param {boolean} isIdentifier, field is ID
  */
 export function parsedValueComponent({
-  fieldType,
+  componentPath,
   value,
+  columnName,
   displayType,
   isMandatory = false,
   isIdentifier = false
 }) {
   const isEmpty = isEmptyValue(value)
   if (isEmpty && !isMandatory) {
-    if (fieldType === 'FieldYesNo') {
+    if (componentPath === 'FieldYesNo') {
+      if (columnName === 'IsActive') {
+        return true
+      }
+      // Processing, Processed, and any other columnName, return false by default
       return Boolean(value)
     }
     return undefined
   }
   var returnValue
 
-  switch (fieldType) {
+  switch (componentPath) {
     // data type Number
     case 'FieldNumber':
       if (isEmpty) {
@@ -272,12 +235,10 @@ export function parsedValueComponent({
 
     // data type Boolean
     case 'FieldYesNo':
-      if (value === 'false' || value === 'N') {
-        value = false
-      } else if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
+      if (typeof value === 'object' && Object.prototype.hasOwnProperty.call(value, 'query')) {
         returnValue = value
       }
-      returnValue = Boolean(value)
+      returnValue = convertStringToBoolean(value)
       break
 
     // data type String
@@ -312,7 +273,7 @@ export function parsedValueComponent({
         value = undefined
       }
       if (typeof value === 'boolean') {
-        value = value ? 'Y' : 'N'
+        value = convertBooleanToString(value)
       }
       // Table (18) or Table Direct (19)
       if (displayType === TABLE_DIRECT.id || (displayType === TABLE.id && isIdentifier)) {

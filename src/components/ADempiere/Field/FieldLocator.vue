@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 import { getLocatorList } from '@/api/ADempiere/field/locator'
 
 export default {
@@ -25,7 +25,6 @@ export default {
   mixins: [fieldMixin],
   data() {
     return {
-      value: [],
       options: [],
       props: {
         // checkStrictly: true,
@@ -59,7 +58,7 @@ export default {
       if (Array.isArray(value)) {
         selected = value[value.length - 1]
       }
-      this.handleChange(selected)
+      this.handleFieldChange({ value: selected })
       this.value = value
     },
     searchLocatorByWarehouse(node, resolve) {

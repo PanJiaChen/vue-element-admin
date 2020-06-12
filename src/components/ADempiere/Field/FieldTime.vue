@@ -9,7 +9,7 @@
     :is-range="isPickerRange"
     range-separator="-"
     :placeholder="$t('components.timePlaceholder')"
-    :class="'time-base ' + metadata.cssClassName"
+    :class="cssClassStyle"
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
     @change="preHandleChange"
@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 
 export default {
   name: 'FieldTime',
@@ -44,22 +44,13 @@ export default {
         return Number(this.metadata.valueMin)
       }
       return -Infinity
-    }
-  },
-  watch: {
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = this.parsedDateValue(value)
-      }
     },
-    'metadata.value'(value) {
-      if (!this.metadata.inTable) {
-        this.value = this.parsedDateValue(value)
-      }
+    cssClassStyle() {
+      return this.metadata.cssClassName + ' custom-field-time'
     }
   },
   methods: {
-    parsedDateValue(value) {
+    parseValue(value) {
       if (typeof value === 'number') {
         value = new Date(value).toUTCString()
       }
@@ -73,7 +64,7 @@ export default {
 </script>
 
 <style scoped>
-  .time-base {
+  .custom-field-time {
     width: 100% !important;
   }
 </style>

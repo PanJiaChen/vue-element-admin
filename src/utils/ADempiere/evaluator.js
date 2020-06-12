@@ -1,3 +1,6 @@
+import { convertStringToBoolean } from '@/utils/ADempiere/valueFormat.js'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
+
 // This class is used for evaluate a conditional
 // format := {expression} [{logic} {expression}]<br>
 // expression := @{context}@{operand}{value} or @{context}@{operand}{value}<br>
@@ -27,7 +30,7 @@ class evaluator {
     defaultReturned = false
   }) {
     // empty logic
-    if (logic === undefined || logic === null || logic.trim() === '') {
+    if (isEmptyValue(logic)) {
       return defaultReturned
     }
     const st = logic.trim().replace('\n', '')
@@ -96,7 +99,7 @@ class evaluator {
     logic
   }) {
     // not context info, not logic
-    if (logic === undefined || logic === null || logic.trim() === '') {
+    if (isEmptyValue(logic)) {
       return defaultReturned
     }
 
@@ -140,14 +143,14 @@ class evaluator {
         columnName: first
       })
       // in context exists this column name
-      if (value === null || value === undefined) {
-        // console.info(`.The column ${first} not exists in context.`)
+      if (isEmptyValue(value)) {
+      // console.info(`.The column ${first} not exists in context.`)
         return defaultReturned
       }
       firstEval = value // replace with it's value
     }
 
-    if (firstEval === null || firstEval === undefined) {
+    if (isEmptyValue(firstEval)) {
       return defaultReturned
     }
     if (typeof firstEval === 'string') {
@@ -193,16 +196,6 @@ class evaluator {
    * @return {boolean}
    */
   static evaluateLogicTuple(value1, operand, value2) {
-    const convertStringToBoolean = (valueToParsed) => {
-      const valueString = String(valueToParsed).trim()
-      if (valueString === 'Y') {
-        return true
-      } else if (valueString === 'N') {
-        return false
-      }
-      return valueToParsed
-    }
-
     // Convert value 1 string value to boolean value
     value1 = convertStringToBoolean(value1)
 
@@ -250,7 +243,7 @@ class evaluator {
    */
   static parseDepends(parseString) {
     const listFields = []
-    if (parseString === null || parseString === undefined) {
+    if (isEmptyValue(parseString)) {
       // return array empty
       return listFields
     }

@@ -63,7 +63,7 @@ export function generateField({
         ...moreAttributes,
         columnName: fieldToGenerate.columnName,
         value: parsedDefaultValue,
-        isSOTrxMenu: isSOTrxMenu
+        isSOTrxMenu
       }).value
     }
 
@@ -88,7 +88,8 @@ export function generateField({
     }
 
     parsedDefaultValue = parsedValueComponent({
-      fieldType: componentReference.componentPath,
+      componentPath: componentReference.componentPath,
+      columnName: fieldToGenerate.columnName,
       value: parsedDefaultValue,
       displayType: fieldToGenerate.displayType,
       isMandatory: fieldToGenerate.isMandatory,
@@ -132,7 +133,8 @@ export function generateField({
       }
 
       parsedDefaultValueTo = parsedValueComponent({
-        fieldType: componentReference.componentPath,
+        componentPath: componentReference.componentPath,
+        columnName: fieldToGenerate.columnName,
         value: parsedDefaultValueTo,
         displayType: fieldToGenerate.displayType,
         isMandatory: fieldToGenerate.isMandatory,
@@ -170,12 +172,15 @@ export function generateField({
   const field = {
     ...fieldToGenerate,
     ...moreAttributes,
+    columnNameTo: undefined,
+    elementNameTo: undefined,
     isSOTrxMenu,
     // displayed attributes
     componentPath: componentReference.componentPath,
     isSupported: componentReference.isSupported,
     size: componentReference.size || DEFAULT_SIZE,
     displayColumn: undefined, // link to value from selects and table
+    displayColumnName: `DisplayColumn_${fieldToGenerate.columnName}`, // key to display column
     // value attributes
     value: String(parsedDefaultValue).trim() === '' ? undefined : parsedDefaultValue,
     oldValue: parsedDefaultValue,
@@ -211,9 +216,12 @@ export function generateField({
   // Overwrite some values
   if (field.isRange) {
     field.operator = 'GREATER_EQUAL'
+    field.columnNameTo = `${field.columnName}_To`
+    field.elementNameTo = `${field.elementNameTo}_To`
     if (typeRange) {
       field.uuid = `${field.uuid}_To`
-      field.columnName = `${field.columnName}_To`
+      field.columnName = field.columnNameTo
+      field.elementName = field.elementNameTo
       field.name = `${field.name} To`
       field.value = parsedDefaultValueTo
       field.defaultValue = field.defaultValueTo
@@ -491,24 +499,32 @@ export function sortFields({
 
 /**
  * Determinate if field is displayed
- * @param {boolean} field.isActive
- * @param {boolean} field.isDisplayed
- * @param {boolean} field.isDisplayedFromLogic
- * @param {boolean} field.isQueryCriteria
- * @param {string}  field.panelType
+ * @param {boolean} isActive
+ * @param {boolean} isDisplayed
+ * @param {boolean} isDisplayedFromLogic
+ * @param {boolean} isQueryCriteria
+ * @param {string}  panelType
  * @returns {boolean}
  */
-export function fieldIsDisplayed(field) {
-  // if is Advanced Query
-  if (field.panelType === 'table') {
-    return field.isDisplayed && field.isDisplayedFromLogic
+export function fieldIsDisplayed({
+  panelType,
+  isActive,
+  isDisplayed,
+  isDisplayedFromLogic,
+  isQueryCriteria
+}) {
+  // Verify if field is active
+  if (!isActive) {
+    return false
   }
-  const isBrowserDisplayed = field.isQueryCriteria // browser query criteria
-  const isWindowDisplayed = field.isDisplayed && field.isDisplayedFromLogic // window, process and report, browser result
-  const isDisplayedView = (field.panelType === 'browser' && isBrowserDisplayed) || (field.panelType !== 'browser' && isWindowDisplayed)
 
-  //  Verify for displayed and is active
-  return field.isActive && isDisplayedView
+  // browser query criteria
+  if (panelType === 'browser') {
+    return isQueryCriteria
+  }
+
+  // window, table (advanced query), process and report, browser (table) result
+  return isDisplayed && isDisplayedFromLogic
 }
 
 // Convert action to action name for route

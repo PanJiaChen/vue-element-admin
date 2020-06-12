@@ -1,4 +1,4 @@
-import { getLookup, getLookupList } from '@/api/ADempiere/values'
+import { requestLookup, requestLookupList } from '@/api/ADempiere/values.js'
 import { getToken as getSession } from '@/utils/auth'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
@@ -55,7 +55,7 @@ const lookup = {
         }).value
       }
 
-      return getLookup({
+      return requestLookup({
         tableName,
         directQuery: parsedDirectQuery,
         value
@@ -73,7 +73,7 @@ const lookup = {
             parsedDirectQuery: directQuery,
             tableName,
             sessionUuid: getSession(),
-            clientId: rootGetters.getContextClientId
+            clientId: rootGetters.getPreferenceClientId
           })
           return option
         })
@@ -83,16 +83,22 @@ const lookup = {
     },
     /**
     * Get display column's list from lookup
-    * @param {string} parentUuid
-    * @param {string} containerUuid
-    * @param {string} tableName
-    * @param {string} query
+    * @param {string}  parentUuid
+    * @param {string}  containerUuid
+    * @param {string}  tableName
+    * @param {string}  query
+    * @param {boolean} isAddBlankValue
+    * @param {mixed}   blankValue
+    * @param {Array<String>|<Number>}  valuesList
     */
     getLookupListFromServer({ commit, rootGetters }, {
       parentUuid,
       containerUuid,
       tableName,
-      query
+      query,
+      isAddBlankValue = false,
+      blankValue,
+      valuesList = []
     }) {
       if (isEmptyValue(query)) {
         return
@@ -106,28 +112,38 @@ const lookup = {
           isBooleanToString: true
         }).value
       }
-      return getLookupList({
+      return requestLookupList({
         tableName,
-        query: parsedQuery
+        query: parsedQuery,
+        valuesList
       })
         .then(lookupListResponse => {
           const list = []
           lookupListResponse.recordsList.forEach(itemLookup => {
-            const key = itemLookup.values.KeyColumn
-            if (![null, -1, undefined].includes(key)) {
+            const {
+              KeyColumn: key,
+              DisplayColumn: label
+            } = itemLookup.values
+
+            if (!isEmptyValue(key)) {
               list.push({
-                label: itemLookup.values.DisplayColumn,
+                label,
                 key
               })
             }
           })
-
+          if (isAddBlankValue) {
+            list.unshift({
+              label: ' ',
+              key: blankValue
+            })
+          }
           commit('addLoockupList', {
             list,
             tableName,
             parsedQuery,
             sessionUuid: getSession(),
-            clientId: rootGetters.getContextClientId
+            clientId: rootGetters.getPreferenceClientId
           })
           return list
         })
@@ -200,7 +216,7 @@ const lookup = {
         return itemLookup.parsedDirectQuery === parsedDirectQuery &&
           itemLookup.tableName === tableName &&
           itemLookup.sessionUuid === getSession() &&
-          itemLookup.clientId === rootGetters.getContextClientId &&
+          itemLookup.clientId === rootGetters.getPreferenceClientId &&
           itemLookup.value === value
       })
       if (lookupItem) {
@@ -227,7 +243,7 @@ const lookup = {
         return itemLookup.parsedQuery === parsedQuery &&
           itemLookup.tableName === tableName &&
           itemLookup.sessionUuid === getSession() &&
-          itemLookup.clientId === rootGetters.getContextClientId
+          itemLookup.clientId === rootGetters.getPreferenceClientId
       })
       if (lookupList) {
         return lookupList.list

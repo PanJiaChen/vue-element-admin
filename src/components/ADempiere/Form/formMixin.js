@@ -139,12 +139,12 @@ export default {
     // Set value for one field from panel
     // use example: setValue('ProductName', 'Patio Fun')
     setValue(columnName, value) {
-      this.$store.dispatch('notifyFieldChange', {
-        containerUuid: this.metadata.containerUuid,
-        panelType: this.metadata.panelType,
-        columnName,
-        newValue: value
-      })
+      // this.$store.dispatch('notifyFieldChange', {
+      //   containerUuid: this.metadata.containerUuid,
+      //   panelType: this.metadata.panelType,
+      //   columnName,
+      //   newValue: value
+      // })
     },
     //  Set values for all list of columns
     // Use example: setValues(values)

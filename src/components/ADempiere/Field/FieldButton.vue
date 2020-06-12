@@ -8,22 +8,14 @@
 </template>
 
 <script>
-import { fieldMixin } from '@/components/ADempiere/Field/FieldMixin'
+import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import fieldMixinText from '@/components/ADempiere/Field/mixin/mixinFieldText.js'
 
 export default {
   name: 'FieldButton',
-  mixins: [fieldMixin],
-  watch: {
-    valueModel(value) {
-      if (this.metadata.inTable) {
-        this.value = String(value)
-      }
-    },
-    'metadata.value'(value) {
-      if (!this.metadata.inTable) {
-        this.value = String(value)
-      }
-    }
-  }
+  mixins: [
+    fieldMixin,
+    fieldMixinText
+  ]
 }
 </script>

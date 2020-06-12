@@ -117,8 +117,11 @@ export default {
     isLoadedRecords() {
       return this.$store.getters.getDataRecordAndSelection(this.browserUuid).isLoaded
     },
-    getContainerIsReadyForSubmit() {
-      return !this.$store.getters.isNotReadyForSubmit(this.browserUuid) && !this.browserMetadata.awaitForValuesToQuery
+    isReadyToSearch() {
+      if (this.browserMetadata.awaitForValuesToQuery) {
+        return false
+      }
+      return !this.$store.getters.isNotReadyForSubmit(this.browserUuid)
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -136,19 +139,15 @@ export default {
       return 'content-help'
     },
     isShowedCriteria() {
-      if (this.getterBrowser) {
-        return this.getterBrowser.isShowedCriteria
+      if (this.browserMetadata) {
+        return this.browserMetadata.isShowedCriteria
       }
       return false
     }
   },
   watch: {
     isShowedCriteria(value) {
-      const activeSearch = []
-      if (value) {
-        activeSearch.push('opened-criteria')
-      }
-      this.activeSearch = activeSearch
+      this.handleCollapse(value)
     }
   },
   created() {
@@ -166,6 +165,18 @@ export default {
         attributeValue: showCriteria
       })
     },
+    /**
+     * Manage open or closed component collapse of criteria
+     */
+    handleCollapse(isShowedCriteria) {
+      // by default criteria if closed
+      const activeSearch = []
+      if (isShowedCriteria) {
+        // open criteria
+        activeSearch.push('opened-criteria')
+      }
+      this.activeSearch = activeSearch
+    },
     getBrowser() {
       const browser = this.getterBrowser
       if (browser) {
@@ -181,6 +192,7 @@ export default {
       })
         .then(browserResponse => {
           this.browserMetadata = browserResponse
+          this.handleCollapse(browserResponse.isShowedCriteria)
           this.defaultSearch()
         })
         .finally(() => {
@@ -188,24 +200,23 @@ export default {
         })
     },
     defaultSearch() {
-      // open or closed show criteria
-      this.activeSearch = []
-      if (this.browserMetadata.isShowedCriteria) {
-        this.activeSearch = ['opened-criteria']
-      }
-
-      if (!this.isLoadedRecords) {
-        if (this.getContainerIsReadyForSubmit) {
+      if (this.isLoadedRecords) {
+        // not research
+        return
+      } else {
+        if (this.isReadyToSearch) {
+          // first search by default
           this.$store.dispatch('getBrowserSearch', {
             containerUuid: this.browserUuid
           })
+          return
         }
-      } else {
-        this.$store.dispatch('setRecordSelection', {
-          containerUuid: this.browserUuid,
-          panelType: this.panelType
-        })
       }
+      // set default values into data
+      this.$store.dispatch('setRecordSelection', {
+        containerUuid: this.browserUuid,
+        panelType: this.panelType
+      })
     }
   }
 }

@@ -285,6 +285,7 @@ export function getFieldTemplate(overwriteDefinition) {
     isKey: false,
     isSelectionColumn: false,
     isUpdateable: true,
+    //
     formatPattern: undefined,
     VFormat: undefined,
     value: undefined,
@@ -293,6 +294,7 @@ export function getFieldTemplate(overwriteDefinition) {
     parsedDefaultValue: undefined,
     defaultValueTo: undefined,
     parsedDefaultValueTo: undefined,
+    valueType: componentReference.valueType, // value type to convert with gGRPC
     valueMin: undefined,
     valueMax: undefined,
     //
