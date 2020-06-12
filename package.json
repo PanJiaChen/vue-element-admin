@@ -9,7 +9,8 @@
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src && stylelint --aei .vue,.html src",
+    "lint:eslint": "eslint --ext .js,.vue src",
     "lint:style": "stylelint --aei .vue,.html src",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit",
@@ -24,6 +25,10 @@
   "lint-staged": {
     "src/**/*.{js,vue}": [
       "eslint --fix",
+      "git add"
+    ],
+    "src/**/*.{css,scss,vue,html}": [
+      "stylelint",
       "git add"
     ]
   },
