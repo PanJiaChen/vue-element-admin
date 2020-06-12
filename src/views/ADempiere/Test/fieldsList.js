@@ -1,4 +1,4 @@
-import { URL, TEXT, NUMBER, INTEGER, TEXT_LONG, TABLE_DIRECT } from '@/utils/ADempiere/references'
+import { URL, TEXT, AMOUNT, INTEGER, TEXT_LONG, TABLE_DIRECT } from '@/utils/ADempiere/references.js'
 
 export default [
   // URL
@@ -62,7 +62,7 @@ export default [
     columnName: 'Amount',
     definition: {
       name: 'Amount for it',
-      displayType: NUMBER.id,
+      displayType: AMOUNT.id,
       readOnlyLogic: '@C_Currency_ID@<>""',
       handleActionKeyPerformed: true
     }

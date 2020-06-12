@@ -1,7 +1,17 @@
 import { getEntity, getEntitiesList } from '@/api/ADempiere/persistence'
-import { getDefaultValueFromServer, getContextInfoValueFromServer } from '@/api/ADempiere/values'
-import { getPrivateAccessFromServer, lockPrivateAccessFromServer, unlockPrivateAccessFromServer } from '@/api/ADempiere/private-access'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import {
+  getDefaultValueFromServer,
+  getContextInfoValueFromServer
+} from '@/api/ADempiere/values'
+import {
+  getPrivateAccessFromServer,
+  lockPrivateAccessFromServer,
+  unlockPrivateAccessFromServer
+} from '@/api/ADempiere/private-access'
+import {
+  isEmptyValue,
+  convertArrayPairsToObject
+} from '@/utils/ADempiere/valueUtils.js'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
@@ -634,11 +644,11 @@ const data = {
     },
     /**
      * TODO: Add support to tab children
-     * @param {object} objectParams
-     * @param {string} objectParams.containerUuid
-     * @param {objec}  objectParams.row, new data to change
-     * @param {objec}  objectParams.isEdit, if the row displayed to edit mode
-     * @param {objec}  objectParams.isNew, if insert data to new row
+     * @param {string} parentUuid
+     * @param {string} containerUuid
+     * @param {boolean}  isEdit, if the row displayed to edit mode
+     * @param {boolean}  isNew, if insert data to new row
+     * @param {objec}  row, new data to change
      */
     notifyRowTableChange({ commit, getters, rootGetters }, {
       parentUuid,
@@ -659,12 +669,16 @@ const data = {
           isAddDisplayColumn: true
         })
       }
+      if (Array.isArray(values)) {
+        values = convertArrayPairsToObject({
+          arrayToConvert: values
+        })
+      }
 
       const currentRow = getters.getRowData(containerUuid, values.UUID)
 
       const newRow = {
         ...values,
-        // ...objectParams.row,
         isEdit
       }
 

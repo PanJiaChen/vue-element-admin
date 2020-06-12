@@ -1,6 +1,13 @@
 <template>
-  <el-tooltip v-model="isShowed" :manual="true" :content="valueToDisplay" placement="top" effect="light">
+  <el-tooltip
+    v-model="isShowed"
+    manual
+    :content="valueToDisplay"
+    placement="top"
+    effect="light"
+  >
     <el-input-number
+      v-if="isFocus"
       :ref="metadata.columnName"
       v-model="value"
       type="number"
@@ -13,8 +20,22 @@
       :controls-position="controlsPosition"
       :class="cssClassStyle"
       @change="preHandleChange"
-      @blur="focusLost"
+      @blur="customFocusLost"
       @focus="focusGained"
+      @keydown.native="keyPressed"
+      @keyup.native="keyReleased"
+    />
+    <el-input
+      v-else
+      :ref="metadata.columnName"
+      v-model="displayedValue"
+      :placeholder="metadata.help"
+      :disabled="isDisabled"
+      :precision="precision"
+      :class="'display-type-amount ' + metadata.cssClassName"
+      readonly
+      @blur="customFocusLost"
+      @focus="customFocusGained"
       @keydown.native="keyPressed"
       @keyup.native="keyReleased"
     />
@@ -23,7 +44,7 @@
 
 <script>
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
-import { FIELDS_DECIMALS } from '@/utils/ADempiere/references'
+import { FIELDS_CURRENCY, FIELDS_DECIMALS } from '@/utils/ADempiere/references'
 
 export default {
   name: 'FieldNumber',
@@ -31,6 +52,7 @@ export default {
   data() {
     return {
       showControls: true,
+      isFocus: false,
       operation: '',
       expression: /[\d\/.()%\*\+\-]/gim,
       valueToDisplay: '',
@@ -55,8 +77,8 @@ export default {
     },
     precision() {
       // Amount, Costs+Prices, Number
-      if (FIELDS_DECIMALS.includes(this.metadata.displayType)) {
-        return 2
+      if (this.isDecimal) {
+        return this.currencyDefinition.stdPrecision
       }
       return undefined
     },
@@ -77,6 +99,61 @@ export default {
       }
       // show right controls
       return 'right'
+    },
+    isDecimal() {
+      return FIELDS_DECIMALS.includes(this.metadata.displayType)
+    },
+    isCurrency() {
+      return FIELDS_CURRENCY.includes(this.metadata.displayType)
+    },
+    displayedValue() {
+      let value = this.value
+      if (this.isEmptyValue(value)) {
+        value = 0
+      }
+      if (!this.isDecimal) {
+        return value
+      }
+
+      let options = {
+        useGrouping: true,
+        minimumIntegerDigits: 1,
+        minimumFractionDigits: this.precision,
+        maximumFractionDigits: this.precision
+      }
+      let lang
+      if (this.isCurrency) {
+        lang = this.countryLanguage
+        options = {
+          ...options,
+          style: 'currency',
+          currency: this.currencyCode
+        }
+      }
+
+      // TODO: Check the grouping of thousands
+      const formatterInstance = new Intl.NumberFormat(lang, options)
+      return formatterInstance.format(value)
+    },
+    countryLanguage() {
+      return this.$store.getters['user/getCountryLanguage']
+    },
+    currencyCode() {
+      return this.currencyDefinition.iSOCode
+    },
+    currencyDefinition() {
+      return this.$store.getters['user/getCurrency']
+    }
+  },
+  watch: {
+    isFocus(value) {
+      if (value) {
+        // focus into input number
+        this.$nextTick()
+          .then(() => {
+            this.$refs[this.metadata.columnName].$el.children[2].firstElementChild.focus()
+          })
+      }
     }
   },
   methods: {
@@ -85,6 +162,14 @@ export default {
         return undefined
       }
       return Number(value)
+    },
+    customFocusGained(event) {
+      this.isFocus = true
+      // this.focusGained(event)
+    },
+    customFocusLost(event) {
+      this.isFocus = false
+      // this.focusLost(event)
     },
     calculateValue(event) {
       const isAllowed = event.key.match(this.expression)

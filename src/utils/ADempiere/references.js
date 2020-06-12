@@ -23,8 +23,8 @@ export const ACCOUNT_ELEMENT = {
   }
 }
 
-// Number
-export const NUMBER = {
+// Amount (Number with 4 decimals)
+export const AMOUNT = {
   id: 12,
   isSupported: true,
   valueType: 'DECIMAL',
@@ -53,7 +53,7 @@ export const RESOURCE_ASSIGNMENT = {
   }
 }
 
-// Binary Data
+// Binary Data (display type BLOB)
 export const BINARY_DATA = {
   id: 23,
   isSupported: true,
@@ -220,7 +220,7 @@ export const ID = {
 }
 
 // Binary Image Data
-export const BINARY = {
+export const IMAGE = {
   id: 32,
   isSupported: true,
   valueType: 'INTEGER',
@@ -310,7 +310,7 @@ export const MEMO = {
 }
 
 // Float Number
-export const FLOAT = {
+export const NUMBER = {
   id: 22,
   isSupported: true,
   valueType: 'DECIMAL',
@@ -525,7 +525,7 @@ export function isLookup(displayType) {
  */
 const REFERENCES = [
   ACCOUNT_ELEMENT,
-  NUMBER,
+  AMOUNT,
   RESOURCE_ASSIGNMENT,
   BINARY_DATA,
   BUTTON,
@@ -538,13 +538,13 @@ const REFERENCES = [
   LOCAL_FILE_PATH,
   LOCAL_FILE_PATH_OR_NAME,
   ID,
-  BINARY,
+  IMAGE,
   INTEGER,
   LIST,
   LOCATION_ADDRESS,
   LOCATOR_WAREHOUSE,
   MEMO,
-  FLOAT,
+  NUMBER,
   PRINTER_NAME,
   PRODUCT_ATTRIBUTE,
   QUANTITY,
@@ -562,15 +562,16 @@ const REFERENCES = [
 export default REFERENCES
 
 export const FIELDS_RANGE = [
-  NUMBER,
+  AMOUNT,
   COSTS_PLUS_PRICES,
   DATE,
   DATE_PLUS_TIME,
   INTEGER,
-  FLOAT,
+  NUMBER,
   QUANTITY,
   TIME
 ]
+
 /**
  * Fields not showed in panel's
  */
@@ -603,14 +604,24 @@ export const FIELDS_READ_ONLY_FORM = [
 ]
 
 export const FIELDS_DECIMALS = [
+  AMOUNT.id,
   COSTS_PLUS_PRICES.id,
   NUMBER.id,
   QUANTITY.id
 ]
 
 export const FIELDS_QUANTITY = [
+  AMOUNT.id,
   COSTS_PLUS_PRICES.id,
   INTEGER.id,
   NUMBER.id,
   QUANTITY.id
+]
+
+/**
+ * Manage the currency prefix/sufix in the format to display
+ */
+export const FIELDS_CURRENCY = [
+  AMOUNT.id,
+  COSTS_PLUS_PRICES.id
 ]

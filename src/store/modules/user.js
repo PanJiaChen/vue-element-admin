@@ -13,7 +13,12 @@ import {
   removeCurrentWarehouse,
   removeCurrentOrganization
 } from '@/utils/auth'
-import { getOrganizationsList, getWarehousesList, listLanguages } from '@/api/ADempiere/system-core'
+import {
+  getCountryDefinition,
+  getOrganizationsList,
+  getWarehousesList,
+  listLanguages
+} from '@/api/ADempiere/system-core'
 import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
@@ -35,7 +40,8 @@ const state = {
   languagesList: [],
   warehouse: {},
   isSession: false,
-  sessionInfo: {}
+  sessionInfo: {},
+  country: {}
 }
 
 const mutations = {
@@ -81,6 +87,9 @@ const mutations = {
   setSessionInfo(state, payload) {
     state.sessionInfo = payload
   },
+  setCountry(state, payload) {
+    state.country = payload
+  },
   setLanguagesList: (state, payload) => {
     state.languagesList = Object.freeze(payload.map(language => {
       const languageDefinition = {
@@ -103,6 +112,22 @@ const actions = {
         })
         .catch(error => {
           console.warn(`Error getting Languages List: ${error.message}. Code: ${error.code}.`)
+        })
+    })
+  },
+  getCountryFormServer({ commit }, {
+    countryId,
+    countryUuid
+  }) {
+    return new Promise(resolve => {
+      getCountryDefinition({
+        countryId,
+        countryUuid
+      })
+        .then(responseCountry => {
+          commit('setCountry', responseCountry)
+
+          resolve(responseCountry)
         })
     })
   },
@@ -174,6 +199,15 @@ const actions = {
           resolve(sessionResponse)
 
           dispatch('getOrganizationsList', role.uuid)
+
+          const countryId = parseInt(
+            responseGetInfo.defaultContextMap.get('#C_Country_ID'),
+            10
+          )
+          // get country and currency
+          dispatch('getCountryFormServer', {
+            countryId
+          })
 
           dispatch('getUserInfoFromSession', sessionUuid)
             .catch(error => {
@@ -410,6 +444,15 @@ const actions = {
 }
 
 const getters = {
+  getCountry: (state) => {
+    return state.country
+  },
+  getCurrency: (state) => {
+    return state.country.currency
+  },
+  getCountryLanguage(state) {
+    return state.country.language.replace('_', '-')
+  },
   getLanguagesList: (state) => {
     return state.languagesList
   },
