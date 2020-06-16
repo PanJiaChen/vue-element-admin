@@ -7,7 +7,6 @@ services:
       dockerfile: ./Dockerfile
     container_name: vue-element-admin
     network_mode: bridge
-    build: .
     volumes:
       - /usr/app/
       - /usr/app/node_modules
