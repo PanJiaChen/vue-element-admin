@@ -204,10 +204,14 @@ const actions = {
             responseGetInfo.defaultContextMap.get('#C_Country_ID'),
             10
           )
-          // get country and currency
-          dispatch('getCountryFormServer', {
-            countryId
-          })
+          if (isEmptyValue(countryId)) {
+            console.info('context session without Country ID')
+          } else {
+            // get country and currency
+            dispatch('getCountryFormServer', {
+              countryId
+            })
+          }
 
           dispatch('getUserInfoFromSession', sessionUuid)
             .catch(error => {
@@ -448,7 +452,14 @@ const getters = {
     return state.country
   },
   getCurrency: (state) => {
-    return state.country.currency
+    const currency = state.country.currency
+    if (isEmptyValue(currency)) {
+      return {
+        stdPrecision: 2,
+        iSOCode: 'USD'
+      }
+    }
+    return currency
   },
   getCountryLanguage(state) {
     return state.country.language.replace('_', '-')

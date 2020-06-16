@@ -31,8 +31,7 @@
       v-model="displayedValue"
       :placeholder="metadata.help"
       :disabled="isDisabled"
-      :precision="precision"
-      :class="'display-type-amount ' + metadata.cssClassName"
+      :class="cssClassStyle"
       readonly
       @blur="customFocusLost"
       @focus="customFocusGained"
