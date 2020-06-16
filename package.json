@@ -45,11 +45,11 @@
   },
   "dependencies": {
     "@adempiere/grpc-access-client": "^1.2.2",
-    "@adempiere/grpc-core-client": "^1.1.6",
+    "@adempiere/grpc-core-client": "^1.1.7",
     "@adempiere/grpc-data-client": "^2.4.6",
     "@adempiere/grpc-dictionary-client": "^1.4.4",
     "@adempiere/grpc-enrollment-client": "^1.1.1",
-    "@adempiere/grpc-pos-client": "^1.3.3",
+    "@adempiere/grpc-pos-client": "^1.3.4",
     "axios": "0.19.2",
     "clipboard": "2.0.6",
     "codemirror": "5.53.2",
