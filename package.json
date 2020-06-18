@@ -5,14 +5,14 @@
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
+    "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
-    "new": "plop",
     "preview": "node build/index.js --preview",
+    "new": "plop",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
-    "lint": "eslint --ext .js,.vue src",
-    "test:ci": "npm run lint && npm run test:unit",
-    "test:unit": "jest --clearCache && vue-cli-service test:unit"
+    "test:unit": "jest --clearCache && vue-cli-service test:unit",
+    "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
     "axios": "0.18.1",
@@ -44,10 +44,10 @@
     "xlsx": "0.14.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "4.4.1",
-    "@vue/cli-plugin-eslint": "4.4.1",
-    "@vue/cli-plugin-unit-jest": "4.4.1",
-    "@vue/cli-service": "4.4.1",
+    "@vue/cli-plugin-babel": "4.4.4",
+    "@vue/cli-plugin-eslint": "4.4.4",
+    "@vue/cli-plugin-unit-jest": "4.4.4",
+    "@vue/cli-service": "4.4.4",
     "@vue/test-utils": "1.0.0-beta.29",
     "autoprefixer": "9.5.1",
     "babel-core": "7.0.0-bridge.0",
