@@ -39,10 +39,10 @@ import * as globalMethods from '@/utils/ADempiere/globalMethods' // global metho
  * you can execute: mockXHR()
  *
  * Currently MockJs will be used in the production environment,
- * please remove it before going online! ! !
+ * please remove it before going online ! ! !
  */
-import { mockXHR } from '../mock'
 if (process.env.NODE_ENV === 'production') {
+  const { mockXHR } = require('../mock')
   mockXHR()
 }
 Vue.use(VMarkdown)

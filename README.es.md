@@ -10,16 +10,16 @@
     <img src="https://img.shields.io/badge/element--ui-2.7.0-brightgreen.svg" alt="element-ui">
   </a>
   <a href="https://travis-ci.org/adempiere/adempiere-vue" rel="nofollow">
-    <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Build Status">
+    <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Estado de Construcción">
   </a>
   <a href="https://github.com/adempiere/adempiere-vue/blob/master/LICENSE">
-    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="license">
+    <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="Licencia">
   </a>
   <a href="https://github.com/adempiere/adempiere-vue/releases">
-    <img src="https://img.shields.io/github/release/adempiere/adempiere-vue.svg" alt="GitHub release">
+    <img src="https://img.shields.io/github/release/adempiere/adempiere-vue.svg" alt="Liberación Github">
   </a>
   <a href="https://gitter.im/adempiere/adempiere-vue">
-    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
+    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter">
   </a>
 </p>
 
@@ -27,32 +27,34 @@ Español | [Inglés](./README.md)
 
 ## Introducción
 
-[adempiere-vue](https://github.com/adempiere/adempiere-vue) es una nueva UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)]. Se basa en [vue](https://github.com/vuejs/vue) y usa el conjunto de herraminentas de UI [element-ui](https://github.com/ElemeFE/element).
+[adempiere-vue](https://github.com/adempiere/adempiere-vue) es una nueva UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)]. Está basada en [vue](https://github.com/vuejs/vue) y usa [element-ui](https://github.com/ElemeFE/element) como conjunto de herramientas de interfáz de usuario.
 
 Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)] basada en lo último desarrollado por vue, construido con i18n para manejo multi-idioma, plantillas para aplicaciones de negocio y muchas características asombrosas. Este proyecto es derivado de [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) originalmente escrito por [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) sobre [licencia MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) y cambiado a [licencia GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) por [Yamel Senih](https://github.com/yamelsenih) después de derivar el proyecto y con permisos del autor original [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) en el reporte ["Extend as GNU/Gpl v3 License #1434"](https://github.com/PanJiaChen/vue-element-admin/issues/1434).
 
 [adempiere-vue](https://github.com/adempiere/adempiere-vue) usa como RPC (Llamado a Procedimientos Remostos)[gRPC](https://grpc.io/) como [server](https://github.com/erpcya/adempiere-gRPC-Server).
 
-- [Vista Prévia](http://adempiere-ui.erpya.com:9526/)
+- [Vista Prévia de la Aplicación](http://adempiere-ui.erpya.com:9526/)
 
 - [Documentación](https://panjiachen.github.io/vue-element-admin-site/)
 
-- [Gitter](https://gitter.im/adempiere/adempiere-vue)
+- [Canal de Gitter](https://gitter.im/adempiere/adempiere-vue)
 
-- [Donar](https://www.paypal.me/?)
+- [Para Donaciones](https://www.paypal.me/?)
 
-- [Wikipedia](http://wiki.adempiere.net/ADempiere_ERP)
+- [Enlace de Wiki](http://wiki.adempiere.net/ADempiere_ERP)
 
 - [Derivado De](https://github.com/PanJiaChen/vue-element-admin)
 
-**La versión actual `v1.0+` está construida en `vue-cli`. Si encuentra algún problema, por favor escriba un [reporte de error](https://github.com/adempiere/adempiere-vue/issues/new).**
+**La versión actual `v1.0+` está construida con `vue-cli`. Si encuentra algún problema, por favor escriba un [reporte de error](https://github.com/adempiere/adempiere-vue/issues/new).**
 
-**Este proyecto no soporta versiones bajas de los navegadores (e.g. IE).**
+**Este proyecto no está soportado para versiones muy viejas de navegadores (e.g. IE).**
 
 ## Preparación
 
 Necesita instalar [node](https://nodejs.org/) y [git](https://git-scm.com/) localmente. El proyecto está basado en [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [gRPC](https://grpc.io/) y [element-ui](https://github.com/ElemeFE/element).
 Entendiendo y aprendiendo acerca de lo anterior le ayudará a conocer el proyecto.
+
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
 
 <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
@@ -65,7 +67,7 @@ Entendiendo y aprendiendo acerca de lo anterior le ayudará a conocer el proyect
 <a href="http://westfalia-it.com/"><img width="150px" src="https://i1.wp.com/spin-suite.com/westfalia/wp-content/uploads/sites/30/2017/12/logo_copy.jpg?fit=265%2C357" /></a>
 <a href="http://erpya.com/"><img width="250px" src="https://i0.wp.com/spin-suite.com/openupsolutions/wp-content/uploads/sites/32/2017/05/Openup-Solutions-Logo-2017-80x200px.png" /></a>
 
-Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un link a su sitio web. [Sea un Patrocinante](https://www.paypal.me/?)
+Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace directo a su sitio web. [Sea un Patrocinante](https://www.paypal.me/?)
 
 ## Características
 
@@ -125,10 +127,11 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un link a s
   - Adhesión de objetos
   - Contador hasta
 - Soporte a ADempiere
-    - Ventan
-    - Proceso
-    - Reporte
-    - Visor Inteligente
+  - Ventana
+  - Proceso
+  - Reporte
+  - Consulta Inteligente
+  - Formulario
 
 - Ejemplo Avanzado
 - Registro de Errores
@@ -145,7 +148,7 @@ Use [gRPC ADempiere Server](https://github.com/erpcya/adempiere-gRPC-Server) com
 
 ```bash
 # clone el proyecto
-git clone -b develop git@github.com:adempiere/vue-element-admin.git
+git clone -b develop git@github.com:adempiere/adempiere-vue.git
 
 # vaya al directorio clonado
 cd adempiere-vue
@@ -185,7 +188,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Vaya a [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información.
+Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información.
 
 ## Registro de Cambios
 
@@ -193,13 +196,13 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 
 ## Demostración en línea
 
-[Preview](http://adempiere-ui.erpya.com:9526/)
+[Vista Prévia de la Aplicación](http://adempiere-ui.erpya.com:9526/)
 
 ## Donación
 
 Si este proyecto es de mucha ayuda para ti, puedes ayudar a hacer una mejor UI
 
-[Dona por Paypal](https://www.paypal.me/?)
+[dona por Paypal](https://www.paypal.me/?)
 
 ## Navegadores Soportados
 
@@ -207,7 +210,7 @@ Navegadores modernos e Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+| IE10, IE11, Edge| últimas 2 versiones| últimas 2 versiones| últimas 2 versiones
 
 ## Licencia
 

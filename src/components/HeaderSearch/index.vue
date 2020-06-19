@@ -45,6 +45,9 @@ export default {
     },
     lang() {
       return this.$store.getters.language
+    },
+    supportPinyinSearch() {
+      return this.$store.state.settings.supportPinyinSearch
     }
   },
   watch: {
@@ -55,6 +58,10 @@ export default {
       this.searchPool = this.generateRoutes(this.routes)
     },
     searchPool(list) {
+      // Support pinyin search
+      if (this.lang === 'zh' && this.supportPinyinSearch) {
+        this.addPinyinField(list)
+      }
       this.initFuse(list)
     },
     show(value) {
@@ -70,6 +77,23 @@ export default {
   },
   methods: {
     generateTitle,
+    async addPinyinField(list) {
+      const { default: pinyin } = await import('pinyin')
+      if (Array.isArray(list)) {
+        list.forEach(element => {
+          const title = element.title
+          if (Array.isArray(title)) {
+            title.forEach(v => {
+              v = pinyin(v, {
+                style: pinyin.STYLE_NORMAL
+              }).join('')
+              element.pinyinTitle = v
+            })
+          }
+        })
+        return list
+      }
+    },
     click() {
       this.show = !this.show
       if (this.show) {
@@ -109,6 +133,9 @@ export default {
           name: 'title',
           weight: 0.7
         }, {
+          name: 'pinyinTitle',
+          weight: 0.3
+        }, {
           name: 'path',
           weight: 0.3
         }]
@@ -118,7 +145,6 @@ export default {
     // And generate the internationalized title
     generateRoutes(routes, basePath = '/', prefixTitle = []) {
       let res = []
-
       for (const router of routes) {
         // skip hidden router
         // if (router.meta && router.meta.isIndex) { continue }
@@ -128,7 +154,6 @@ export default {
           meta: router.meta,
           name: router.name
         }
-
         if (router.meta && router.meta.title) {
           // generate internationalized title
           const i18ntitle = this.generateTitle(router.meta.title)
@@ -139,7 +164,6 @@ export default {
             res.push(data)
           }
         }
-
         // recursive child routes
         if (router.children) {
           const tempRoutes = this.generateRoutes(router.children, data.path, data.title)
@@ -164,13 +188,11 @@ export default {
 <style lang="scss" scoped>
 .header-search {
   font-size: 0 !important;
-
   .search-icon {
     cursor: pointer;
     font-size: 18px;
     vertical-align: middle;
   }
-
   .header-search-select {
     font-size: 18px;
     transition: width 0.2s;
@@ -180,7 +202,6 @@ export default {
     border-radius: 0;
     display: inline-block;
     vertical-align: middle;
-
     /deep/ .el-input__inner {
       border-radius: 0;
       border: 0;
@@ -191,7 +212,6 @@ export default {
       vertical-align: middle;
     }
   }
-
   &.show {
     .header-search-select {
       width: 150px;

@@ -1,8 +1,14 @@
 {
   "name": "adempiere-vue",
-  "version": "4.1.0",
+  "version": "4.2.1",
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
+  "contributors": [
+    {
+      "name": "Edwin Betancourt",
+      "url": "https://github.com/EdwinBetanc0urt/"
+    }
+  ],
   "license": "GPL-3.0-or-later",
   "scripts": {
     "start": "vue-cli-service serve",
@@ -68,6 +74,7 @@
     "normalize.css": "8.0.1",
     "nprogress": "0.2.0",
     "path-to-regexp": "2.4.0",
+    "pinyin": "2.9.0",
     "screenfull": "5.0.2",
     "script-loader": "0.7.2",
     "showdown": "1.9.1",
@@ -124,7 +131,6 @@
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
+    "last 2 versions"
   ]
 }

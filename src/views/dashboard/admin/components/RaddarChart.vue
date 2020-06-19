@@ -5,11 +5,12 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import { debounce } from '@/utils'
+import resize from './mixins/resize'
 
 const animationDuration = 3000
 
 export default {
+  mixins: [resize],
   props: {
     className: {
       type: String,
@@ -30,19 +31,14 @@ export default {
     }
   },
   mounted() {
-    this.initChart()
-    this.__resizeHandler = debounce(() => {
-      if (this.chart) {
-        this.chart.resize()
-      }
-    }, 100)
-    window.addEventListener('resize', this.__resizeHandler)
+    this.$nextTick(() => {
+      this.initChart()
+    })
   },
   beforeDestroy() {
     if (!this.chart) {
       return
     }
-    window.removeEventListener('resize', this.__resizeHandler)
     this.chart.dispose()
     this.chart = null
   },
@@ -74,7 +70,7 @@ export default {
           indicator: [
             { name: 'Sales', max: 10000 },
             { name: 'Administration', max: 20000 },
-            { name: 'Information Techology', max: 20000 },
+            { name: 'Information Technology', max: 20000 },
             { name: 'Customer Support', max: 20000 },
             { name: 'Development', max: 20000 },
             { name: 'Marketing', max: 20000 }

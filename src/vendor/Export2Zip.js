@@ -1,5 +1,5 @@
 /* eslint-disable */
-require('script-loader!file-saver');
+import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 
 export function export_txt_to_zip(th, jsonData, txtName, zipName) {

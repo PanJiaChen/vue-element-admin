@@ -6,7 +6,11 @@
       </el-button>
     </el-badge>
 
-    <el-dialog :visible.sync="dialogTableVisible" title="Error Log" width="80%" append-to-body>
+    <el-dialog :visible.sync="dialogTableVisible" width="80%" append-to-body>
+      <div slot="title">
+        <span style="padding-right: 10px;">Error Log</span>
+        <el-button size="mini" type="primary" icon="el-icon-delete" @click="clearAll">Clear All</el-button>
+      </div>
       <el-table :data="errorLogs" border>
         <el-table-column label="Message">
           <template slot-scope="{row}">
@@ -53,6 +57,12 @@ export default {
   computed: {
     errorLogs() {
       return this.$store.getters.errorLogs
+    }
+  },
+  methods: {
+    clearAll() {
+      this.dialogTableVisible = false
+      this.$store.dispatch('errorLog/clearErrorLog')
     }
   }
 }

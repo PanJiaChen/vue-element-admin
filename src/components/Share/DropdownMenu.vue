@@ -44,6 +44,7 @@ $t: .1s;
   width: 250px;
   position: relative;
   z-index: 1;
+  height: auto!important;
   &-title {
     width: 100%;
     display: block;
@@ -65,10 +66,12 @@ $t: .1s;
     position: absolute;
     width: 100%;
     background: #e0e0e0;
+    color: #000;
     line-height: 60px;
     height: 60px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 18px;
+    overflow: hidden;
     opacity: 1;
     transition: transform 0.28s ease;
     &:hover {
@@ -90,7 +93,7 @@ $t: .1s;
     .share-dropdown-menu-item {
       @for $i from 1 through $n {
         &:nth-of-type(#{$i}) {
-         transition-delay: ($n - $i)*$t;
+          transition-delay: ($n - $i)*$t;
           transform: translate3d(0, ($i - 1)*60px, 0);
         }
       }

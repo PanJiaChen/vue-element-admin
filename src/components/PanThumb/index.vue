@@ -5,7 +5,8 @@
         <slot />
       </div>
     </div>
-    <img :src="image" class="pan-thumb">
+    <!-- eslint-disable-next-line -->
+    <div :style="{backgroundImage: `url(${image})`}" class="pan-thumb"></div>
   </div>
 </template>
 
@@ -52,7 +53,8 @@ export default {
 .pan-thumb {
   width: 100%;
   height: 100%;
-  background-size: 100%;
+  background-position: center center;
+  background-size: cover;
   border-radius: 50%;
   overflow: hidden;
   position: absolute;
@@ -60,7 +62,7 @@ export default {
   transition: all 0.3s ease-in-out;
 }
 
-.pan-thumb:after {
+/* .pan-thumb:after {
   content: '';
   width: 8px;
   height: 8px;
@@ -71,7 +73,7 @@ export default {
   margin: -4px 0 0 -4px;
   background: radial-gradient(ellipse at center, rgba(14, 14, 14, 1) 0%, rgba(125, 126, 125, 1) 100%);
   box-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
-}
+} */
 
 .pan-info {
   position: absolute;
