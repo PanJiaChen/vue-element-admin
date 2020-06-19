@@ -2,6 +2,7 @@
 export {
   zeroPad,
   tagStatus,
+  iconStatus,
   calculationValue,
   clearVariables
 } from '@/utils/ADempiere/valueUtils.js'

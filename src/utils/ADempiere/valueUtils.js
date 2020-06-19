@@ -13,6 +13,14 @@ export function isEmptyValue(value) {
   return isEmptyValue(value)
 }
 
+export function extractPagingToken(token) {
+  let onlyToken = token.slice(0, -2)
+  if (onlyToken.substr(-1, 1) === '-') {
+    onlyToken = onlyToken.slice(0, -1)
+  }
+  return onlyToken
+}
+
 export function typeValue(value) {
   if (typeof value === 'undefined' || value == null) {
     return value
@@ -336,6 +344,43 @@ export function tagStatus(tag) {
       break
   }
   return type
+}
+/**
+ * add a tab depending on the status of the document
+ * @param {string} tag, document status key
+ */
+export function iconStatus(iconElment) {
+  let icon
+  switch (iconElment) {
+    case 'A':
+      icon = 'el-icon-wallet'
+      break
+    case 'M':
+      icon = 'el-icon-wallet'
+      break
+    case 'K':
+      icon = 'el-icon-postcard'
+      break
+    case 'X':
+      icon = 'el-icon-money'
+      break
+    case 'Z':
+      icon = 'el-icon-coin'
+      break
+    case 'T':
+      icon = 'el-icon-bank-card'
+      break
+    case 'P':
+      icon = 'el-icon-mobile'
+      break
+    case 'C':
+      icon = 'el-icon-bank-card'
+      break
+    case 'D':
+      icon = 'el-icon-bank-card'
+      break
+  }
+  return icon
 }
 
 let partialValue = ''
