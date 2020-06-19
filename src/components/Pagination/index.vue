@@ -73,6 +73,14 @@ export default {
       }
     }
   },
+  watch: {
+    total() {
+      // 解决删除最后一条数据时，currentPage没有减一，页面列表为空的问题，缺点：此时列表会请求两次，暂未想到方法
+      if (this.total === (this.currentPage - 1) * this.limit && this.total !== 0) {
+        this.$emit('pagination', { page: this.currentPage - 1, limit: this.pageSize })
+      }
+    }
+  },
   methods: {
     handleSizeChange(val) {
       this.$emit('pagination', { page: this.currentPage, limit: val })
