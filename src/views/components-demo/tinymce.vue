@@ -29,7 +29,7 @@ export default {
 </script>
 
 <style scoped>
-.editor-content{
+.editor-content {
   margin-top: 20px;
 }
 </style>

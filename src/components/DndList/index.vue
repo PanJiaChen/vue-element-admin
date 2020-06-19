@@ -7,9 +7,9 @@
           <div class="list-complete-item-handle">
             {{ element.id }}[{{ element.author }}] {{ element.title }}
           </div>
-          <div style="position:absolute;right:0px;">
-            <span style="float: right ;margin-top: -20px;margin-right:5px;" @click="deleteEle(element)">
-              <i style="color:#ff4949" class="el-icon-delete" />
+          <div style="position: absolute;right: 0;">
+            <span style="float: right;margin-top: -20px;margin-right: 5px;" @click="deleteEle(element)">
+              <i style="color: #ff4949;" class="el-icon-delete" />
             </span>
           </div>
         </div>
@@ -108,17 +108,21 @@ export default {
 .dndList {
   background: #fff;
   padding-bottom: 40px;
-  &:after {
-    content: "";
+
+  &::after {
+    content: '';
     display: table;
     clear: both;
   }
+
   .dndList-list {
     float: left;
     padding-bottom: 30px;
+
     &:first-of-type {
       margin-right: 2%;
     }
+
     .dragArea {
       margin-top: 15px;
       min-height: 50px;
@@ -152,11 +156,11 @@ export default {
 }
 
 .list-complete-item.sortable-chosen {
-  background: #4AB7BD;
+  background: #4ab7bd;
 }
 
 .list-complete-item.sortable-ghost {
-  background: #30B08F;
+  background: #30b08f;
 }
 
 .list-complete-enter,

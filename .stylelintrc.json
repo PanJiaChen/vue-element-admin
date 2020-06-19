@@ -1,0 +1,27 @@
+{
+  "extends": "stylelint-config-sass-guidelines",
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "property-no-vendor-prefix": null,
+    "declaration-block-semicolon-newline-after": "always-multi-line",
+    "declaration-property-value-blacklist": null,
+    "selector-no-qualifying-type": null,
+    "selector-pseudo-element-no-unknown": null,
+    "selector-no-vendor-prefix": null,
+    "media-feature-name-no-vendor-prefix": null,
+    "scss/at-import-partial-extension-blacklist": null,
+    "scss/selector-no-redundant-nesting-selector": null,
+    "scss/at-mixin-pattern": null,
+    "scss/dollar-variable-pattern": null,
+    "order/properties-alphabetical-order": null,
+    "selector-max-id": null,
+    "property-no-unknown": null,
+    "color-named": null,
+    "value-no-vendor-prefix": null,
+    "selector-class-pattern": null,
+    "max-nesting-depth": 10,
+    "selector-max-compound-selectors": 10
+  }
+}

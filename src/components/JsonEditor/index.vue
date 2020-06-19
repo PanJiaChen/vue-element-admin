@@ -70,7 +70,7 @@ export default {
     }
 
     .cm-s-rubyblue span.cm-string {
-      color: #F08047;
+      color: #f08047;
     }
   }
 }

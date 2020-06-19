@@ -103,7 +103,6 @@ export default {
 <style lang="scss" scoped>
 .user-activity {
   .user-block {
-
     .username,
     .description {
       display: block;
@@ -111,12 +110,12 @@ export default {
       padding: 2px 0;
     }
 
-    .username{
+    .username {
       font-size: 16px;
       color: #000;
     }
 
-    :after {
+    ::after {
       clear: both;
     }
 
@@ -164,7 +163,6 @@ export default {
     }
 
     .link-black {
-
       &:hover,
       &:focus {
         color: #999;
