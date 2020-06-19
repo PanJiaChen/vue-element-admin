@@ -16,7 +16,6 @@
   },
   "dependencies": {
     "axios": "0.18.1",
-    "babel-plugin-dynamic-import-node": "2.3.3",
     "clipboard": "2.0.4",
     "codemirror": "5.45.0",
     "core-js": "3.6.5",
@@ -53,6 +52,7 @@
     "autoprefixer": "9.5.1",
     "babel-eslint": "10.1.0",
     "babel-jest": "23.6.0",
+    "babel-plugin-dynamic-import-node": "2.3.3",
     "chalk": "2.4.2",
     "chokidar": "2.1.5",
     "connect": "3.6.6",
