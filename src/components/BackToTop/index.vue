@@ -40,7 +40,7 @@ export default {
   data() {
     return {
       visible: false,
-      interval: null,
+      animationFrame: null,
       isMoving: false
     }
   },
@@ -49,8 +49,8 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('scroll', this.handleScroll)
-    if (this.interval) {
-      clearInterval(this.interval)
+    if (this.animationFrame) {
+      window.cancelAnimationFrame(this.animationFrame)
     }
   },
   methods: {
@@ -62,17 +62,18 @@ export default {
       const start = window.pageYOffset
       let i = 0
       this.isMoving = true
-      this.interval = setInterval(() => {
+      const stepAnimationFrame = () => {
         const next = Math.floor(this.easeInOutQuad(10 * i, start, -start, 500))
         if (next <= this.backPosition) {
           window.scrollTo(0, this.backPosition)
-          clearInterval(this.interval)
           this.isMoving = false
         } else {
           window.scrollTo(0, next)
+          this.animationFrame = window.requestAnimationFrame(stepAnimationFrame)
         }
         i++
-      }, 16.7)
+      }
+      this.animationFrame = window.requestAnimationFrame(stepAnimationFrame)
     },
     easeInOutQuad(t, b, c, d) {
       if ((t /= d / 2) < 1) return c / 2 * t * t + b
