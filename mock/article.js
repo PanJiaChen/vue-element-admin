@@ -1,4 +1,4 @@
-import Mock from 'mockjs'
+const Mock = require('mockjs')
 
 const List = []
 const count = 100
@@ -27,7 +27,7 @@ for (let i = 0; i < count; i++) {
   }))
 }
 
-export default [
+module.exports = [
   {
     url: '/vue-element-admin/article/list',
     type: 'get',
