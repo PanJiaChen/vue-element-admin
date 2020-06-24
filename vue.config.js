@@ -81,17 +81,6 @@ module.exports = {
       })
       .end()
 
-    // set preserveWhitespace
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .loader('vue-loader')
-      .tap(options => {
-        options.compilerOptions.preserveWhitespace = true
-        return options
-      })
-      .end()
-
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
