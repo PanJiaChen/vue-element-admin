@@ -6,6 +6,13 @@
 
 <script>
 export default {
-  name: 'App'
+  name: 'App',
+  watch: {
+    '$route.path': {
+      handler: function() {
+        window._carbonads && window._carbonads.refresh()
+      }
+    }
+  }
 }
 </script>
