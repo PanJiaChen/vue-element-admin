@@ -3,25 +3,9 @@ const bodyParser = require('body-parser')
 const chalk = require('chalk')
 const path = require('path')
 const Mock = require('mockjs')
+const express = require('express')
 
 const mockDir = path.join(process.cwd(), 'mock')
-
-function registerRoutes(app) {
-  let mockLastIndex
-  const { mocks } = require('./index.js')
-  const mocksForServer = mocks.map(route => {
-    return responseFake(route.url, route.type, route.response)
-  })
-  for (const mock of mocksForServer) {
-    app[mock.type](mock.url, mock.response)
-    mockLastIndex = app._router.stack.length
-  }
-  const mockRoutesLength = Object.keys(mocksForServer).length
-  return {
-    mockRoutesLength: mockRoutesLength,
-    mockStartIndex: mockLastIndex - mockRoutesLength
-  }
-}
 
 function unregisterRoutes() {
   Object.keys(require.cache).forEach(i => {
@@ -34,13 +18,26 @@ function unregisterRoutes() {
 // for mock server
 const responseFake = (url, type, respond) => {
   return {
-    url: new RegExp(`${process.env.VUE_APP_BASE_API}${url}`),
+    url: new RegExp(url),
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path)
       res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
     }
   }
+}
+
+let mockRouter
+function setupMocks(app) {
+  mockRouter = new express.Router()
+  const { mocks } = require('./index.js')
+  const mocksForServer = mocks.map(route => {
+    return responseFake(route.url, route.type, route.response)
+  })
+  for (const mock of mocksForServer) {
+    mockRouter[mock.type](mock.url, mock.response)
+  }
+
 }
 
 module.exports = app => {
@@ -51,9 +48,10 @@ module.exports = app => {
     extended: true
   }))
 
-  const mockRoutes = registerRoutes(app)
-  var mockRoutesLength = mockRoutes.mockRoutesLength
-  var mockStartIndex = mockRoutes.mockStartIndex
+  setupMocks(app)
+  app.use(process.env.VUE_APP_BASE_API, function replacableRouter(req, res, next) {
+    mockRouter(req, res, next)
+  })
 
   // watch files, hot reload mock server
   chokidar.watch(mockDir, {
@@ -62,15 +60,8 @@ module.exports = app => {
   }).on('all', (event, path) => {
     if (event === 'change' || event === 'add') {
       try {
-        // remove mock routes stack
-        app._router.stack.splice(mockStartIndex, mockRoutesLength)
-
-        // clear routes cache
         unregisterRoutes()
-
-        const mockRoutes = registerRoutes(app)
-        mockRoutesLength = mockRoutes.mockRoutesLength
-        mockStartIndex = mockRoutes.mockStartIndex
+        setupMocks(app)
 
         console.log(chalk.magentaBright(`\n > Mock Server hot reload success! changed  ${path}`))
       } catch (error) {
