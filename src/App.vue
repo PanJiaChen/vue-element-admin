@@ -10,7 +10,9 @@ export default {
   watch: {
     '$route.path': {
       handler: function() {
-        window._carbonads && window._carbonads.refresh()
+        if (document.getElementById('carbonads')) {
+          window._carbonads && window._carbonads.refresh()
+        }
       }
     }
   }
