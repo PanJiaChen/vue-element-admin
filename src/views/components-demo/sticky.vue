@@ -40,60 +40,11 @@
       <aside>
         Sticky header, When the page is scrolled to the preset position will be sticky on the top.
       </aside>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
+      <div v-for="i in 15" :key="i">placeholder</div>
       <sticky :sticky-top="200">
         <el-button type="primary"> placeholder</el-button>
       </sticky>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
-      <div>placeholder</div>
+      <div v-for="i in 20" :key="i">placeholder</div>
     </div>
   </div>
 </template>
