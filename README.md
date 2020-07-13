@@ -30,9 +30,9 @@ English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spa
 
 ## Introduction
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It based on [vue](https://github.com/vuejs/vue) and use the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It is based on [vue](https://github.com/vuejs/vue) and uses the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
 
-It is a magical vue admin based on the newest development stack of vue, built-in i18n solution, typical templates for enterprise applications, lots of awesome features. It helps you build a large complex Single-Page Applications. I believe whatever your needs are, this project will help you.
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is based on the newest development stack of vue and it has a built-in i18n solution, typical templates for enterprise applications, and lots of awesome features. It helps you build large and complex Single-Page Applications. I believe whatever your needs are, this project will help you.
 
 - [Preview](https://panjiachen.github.io/vue-element-admin)
 
@@ -49,6 +49,7 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 - Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
 **After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
 
@@ -61,7 +62,9 @@ It is a magical vue admin based on the newest development stack of vue, built-in
 You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
 Understanding and learning this knowledge in advance will greatly help the use of this project.
 
- <p align="center">
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
+
+<p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
@@ -83,7 +86,10 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Two-step login
 
 - Multi-environment build
-  - dev sit stage prod
+  - Develop (dev)
+  - sit
+  - Stage Test (stage)
+  - Production (prod)
 
 - Global Features
   - I18n
@@ -207,7 +213,7 @@ Modern browsers and Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+| IE10, IE11, Edge | last 2 versions | last 2 versions | last 2 versions |
 
 ## License
 

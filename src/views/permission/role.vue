@@ -228,7 +228,7 @@ export default {
         dangerouslyUseHTMLString: true,
         message: `
             <div>Role Key: ${key}</div>
-            <div>Role Nmae: ${name}</div>
+            <div>Role Name: ${name}</div>
             <div>Description: ${description}</div>
           `,
         type: 'success'

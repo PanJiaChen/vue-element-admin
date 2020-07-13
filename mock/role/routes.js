@@ -1,6 +1,6 @@
 // Just a mock data
 
-export const constantRoutes = [
+const constantRoutes = [
   {
     path: '/redirect',
     component: 'layout/Layout',
@@ -72,7 +72,7 @@ export const constantRoutes = [
   }
 ]
 
-export const asyncRoutes = [
+const asyncRoutes = [
   {
     path: '/permission',
     component: 'layout/Layout',
@@ -523,3 +523,8 @@ export const asyncRoutes = [
 
   { path: '*', redirect: '/404', hidden: true }
 ]
+
+module.exports = {
+  constantRoutes,
+  asyncRoutes
+}

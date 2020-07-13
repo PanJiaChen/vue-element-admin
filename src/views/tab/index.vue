@@ -13,11 +13,11 @@
 </template>
 
 <script>
-import tabPane from './components/TabPane'
+import TabPane from './components/TabPane'
 
 export default {
   name: 'Tab',
-  components: { tabPane },
+  components: { TabPane },
   data() {
     return {
       tabMapOptions: [
@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-    // init the default  selected tab
+    // init the default selected tab
     const tab = this.$route.query.tab
     if (tab) {
       this.activeName = tab

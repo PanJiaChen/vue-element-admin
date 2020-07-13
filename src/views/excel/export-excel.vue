@@ -5,7 +5,7 @@
       <FilenameOption v-model="filename" />
       <AutoWidthOption v-model="autoWidth" />
       <BookTypeOption v-model="bookType" />
-      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="document" @click="handleDownload">
+      <el-button :loading="downloadLoading" style="margin:0 0 20px 20px;" type="primary" icon="el-icon-document" @click="handleDownload">
         Export Excel
       </el-button>
       <a href="https://panjiachen.github.io/vue-element-admin-site/feature/component/excel.html" target="_blank" style="margin-left:15px;">
@@ -13,7 +13,7 @@
       </a>
     </div>
 
-    <el-table v-loading="listLoading" :data="list" element-loading-text="拼命加载中" border fit highlight-current-row>
+    <el-table v-loading="listLoading" :data="list" element-loading-text="Loading..." border fit highlight-current-row>
       <el-table-column align="center" label="Id" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}

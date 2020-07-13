@@ -170,8 +170,6 @@ export default {
     if (this.isEdit) {
       const id = this.$route.params && this.$route.params.id
       this.fetchData(id)
-    } else {
-      this.postForm = Object.assign({}, defaultForm)
     }
 
     // Why need to make a copy of this.$route here?
@@ -279,7 +277,7 @@ export default {
   }
 }
 
-.article-textarea /deep/ {
+.article-textarea ::v-deep {
   textarea {
     padding-right: 40px;
     resize: none;

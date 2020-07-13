@@ -31,7 +31,7 @@
 .fixed-width {
   .el-button--mini {
     padding: 7px 10px;
-    width: 60px;
+    min-width: 60px;
   }
 }
 
@@ -76,4 +76,9 @@
 // fix date-picker ui bug in filter-item
 .el-range-editor.el-input__inner {
   display: inline-flex !important;
+}
+
+// to fix el-date-picker css style
+.el-range-separator {
+  box-sizing: content-box;
 }

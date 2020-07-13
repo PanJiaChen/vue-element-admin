@@ -49,6 +49,7 @@
 - 基础模板建议使用: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
 - 桌面端: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript 版: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (鸣谢: [@Armour](https://github.com/Armour))
+- [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
 **`v4.1.0+`版本之后默认 master 分支将不支持国际化，有需要的请使用[i18n](https://github.com/PanJiaChen/vue-element-admin/tree/i18n)分支，它会和 master 保持同步更新**
 
@@ -76,7 +77,9 @@
 
 **如有问题请先看上述使用文档和文章，若不能满足，欢迎 issue 和 pr**
 
- <p align="center">
+[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
+
+<p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
@@ -98,7 +101,10 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - 二步登录
 
 - 多环境发布
-  - dev sit stage prod
+  - dev
+  - sit
+  - stage
+  - prod
 
 - 全局功能
   - 国际化多语言
@@ -220,13 +226,17 @@ Detailed changes for each release are documented in the [release notes](https://
 
 [Buy me a coffee](https://www.buymeacoffee.com/Pan)
 
+## 购买贴纸
+
+你也可以通过 购买[官方授权的贴纸](https://smallsticker.com/product/vue-element-admin) 的方式来支持 vue-element-admin - 每售出一张贴纸，本项目将获得 2 元的捐赠。
+
 ## Browsers support
 
 Modern browsers and Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| last 2 versions| last 2 versions| last 2 versions
+| IE10, IE11, Edge | last 2 versions | last 2 versions | last 2 versions |
 
 ## License
 
