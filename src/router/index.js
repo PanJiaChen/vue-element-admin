@@ -311,6 +311,38 @@ export const asyncRoutes = [
   },
 
   {
+    path: '/h5-page',
+    component: Layout,
+    redirect: '/h5-page/my-work',
+    name: 'H5',
+    meta: {
+      title: 'H5',
+      icon: 'excel'
+    },
+    children: [
+      {
+        path: 'my-work',
+        component: () => import('@/views/h5/my-work'),
+        name: 'MyWork',
+        meta: { title: 'H5编辑' }
+      },
+      {
+        path: 'my-data',
+        component: () => import('@/views/h5/my-work'),
+        name: 'MyData',
+        meta: { title: '我的数据' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/h5/add-data'),
+        name: 'AddH5',
+        hidden: true,
+        meta: { title: '新增页面' }
+      }
+    ]
+  },
+
+  {
     path: '/zip',
     component: Layout,
     redirect: '/zip/download',
