@@ -15,7 +15,7 @@
         <el-progress :percentage="18" />
       </div>
       <div class="progress-item">
-        <span>Css</span>
+        <span>CSS</span>
         <el-progress :percentage="12" />
       </div>
       <div class="progress-item">
