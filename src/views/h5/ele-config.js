@@ -1,5 +1,6 @@
 /*
 有关组件的一些配置文件,也可以写到数据库从接口来取
+这里是组件的通用描述，具体信息会在datamodel里被再次修改
 */
 export default [
   {
@@ -8,7 +9,7 @@ export default [
       {
         elName: 'qk-text',
         title: '文字',
-        icon: 'iconfont iconwenben',
+        icon: 'el-icon-edit',
         // 每个组件设置props来展示哪些显示哪些编辑项
         valueType: '', // 标识数据类型，用于表单组件
         defaultStyle: {

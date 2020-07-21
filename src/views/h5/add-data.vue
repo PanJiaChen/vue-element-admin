@@ -23,7 +23,14 @@
 
       <el-col :span="9">
         <!-- 内容编辑区 -->
-        <div class="edit-content" />
+        <div class="edit-content">
+          <!-- 顶部控制条 -->
+          <div class="controll-bar" />
+
+          <div class="edit-content-area">
+            <editorPan />
+          </div>
+        </div>
       </el-col>
 
       <el-col :span="7">
@@ -40,11 +47,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import componentLibs from './components/component-libs.vue'
+import componentLibs from './components/component-libs.vue' // 组件选择区域
+import editorPan from './components/editor-panel.vue' // 核心操作区域
 
 export default {
   components: {
-    componentLibs
+    componentLibs,
+    editorPan
   },
   data() {
     return {
