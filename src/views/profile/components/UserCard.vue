@@ -65,7 +65,7 @@ export default {
           name: '',
           email: '',
           avatar: '',
-          roles: ''
+          role: ''
         }
       }
     }

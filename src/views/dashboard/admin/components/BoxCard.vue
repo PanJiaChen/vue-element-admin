@@ -15,7 +15,7 @@
         <el-progress :percentage="18" />
       </div>
       <div class="progress-item">
-        <span>Css</span>
+        <span>CSS</span>
         <el-progress :percentage="12" />
       </div>
       <div class="progress-item">
@@ -101,7 +101,7 @@ export default {
     background-color: #fff;
     margin: auto;
     box-shadow: none!important;
-    /deep/ .pan-info {
+    ::v-deep .pan-info {
       box-shadow: none!important;
     }
   }
