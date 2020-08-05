@@ -1,25 +1,29 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <keep-alive :include="cachedViews">
+      <v-keep-alive :keyArray="cachedViews">
         <router-view :key="key" />
-      </keep-alive>
+      </v-keep-alive>
     </transition>
   </section>
 </template>
 
 <script>
+import vKeepAlive from "../../components/V/v-keep-alive";
 export default {
-  name: 'AppMain',
+  name: "AppMain",
+  components: {
+    vKeepAlive
+  },
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews
+      return this.$store.state.tagsView.cachedViews;
     },
     key() {
-      return this.$route.path
+      return this.$route.path;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -31,7 +35,7 @@ export default {
   overflow: hidden;
 }
 
-.fixed-header+.app-main {
+.fixed-header + .app-main {
   padding-top: 50px;
 }
 
@@ -41,7 +45,7 @@ export default {
     min-height: calc(100vh - 84px);
   }
 
-  .fixed-header+.app-main {
+  .fixed-header + .app-main {
     padding-top: 84px;
   }
 }
