@@ -1,7 +1,7 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <v-keep-alive :keyArray="cachedViews">
+      <v-keep-alive :keyarray="cachedViews">
         <router-view :key="key" />
       </v-keep-alive>
     </transition>
@@ -9,21 +9,22 @@
 </template>
 
 <script>
-import vKeepAlive from "../../components/V/v-keep-alive";
+import vKeepAlive from '../../components/V/v-keep-alive'
 export default {
-  name: "AppMain",
+  name: 'AppMain',
   components: {
     vKeepAlive
   },
   computed: {
     cachedViews() {
-      return this.$store.state.tagsView.cachedViews;
+      console.log('123', this.$store.state.tagsView.cachedViews)
+      return this.$store.state.tagsView.cachedViews
     },
     key() {
-      return this.$route.path;
+      return this.$route.fullPath
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
