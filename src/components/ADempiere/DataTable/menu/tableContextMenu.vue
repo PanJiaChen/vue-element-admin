@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/menuTableMixin'
+import menuTableMixin from './menuTableMixin.js'
 
 export default {
   name: 'TableContextMenu',

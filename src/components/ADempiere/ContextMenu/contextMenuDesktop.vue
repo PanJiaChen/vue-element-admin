@@ -2,7 +2,7 @@
   <div class="container-submenu container-context-menu">
     <el-menu
       ref="contextMenu"
-      v-shortkey="{ f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd'] }"
+      v-shortkey="shorcutKey"
       :default-active="activeMenu"
       :router="false"
       class="el-menu-demo"
@@ -23,7 +23,7 @@
         {{ $t('components.contextMenuRelations') }}
       </el-menu-item>
 
-      <el-submenu v-if="actions !== undefined && actions.length" class="el-menu-item" index="actions" @click.native="runAction(actions[0])">
+      <el-submenu v-if="!isEmptyValue(actions)" class="el-menu-item" index="actions" @click.native="runAction(actions[0])">
         <template slot="title">
           {{ $t('components.contextMenuActions') }}
         </template>
@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { contextMixin } from '@/components/ADempiere/ContextMenu/contextMenuMixin'
+import contextMixin from './contextMenuMixin.js'
 
 export default {
   name: 'ContextMenuDesktop',

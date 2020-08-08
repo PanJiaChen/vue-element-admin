@@ -1,4 +1,5 @@
-export const MixinInfo = {
+export default {
+  name: 'MixinContainerInfo',
   data() {
     return {
       currentKey: 100,
@@ -50,7 +51,7 @@ export const MixinInfo = {
   },
   methods: {
     sendComment() {
-      var chatTextLong = this.$store.getters.getChatTextLong
+      const chatTextLong = this.$store.getters.getChatTextLong
       if (!this.isEmptyValue(chatTextLong)) {
         this.$store.dispatch('createChatEntry', {
           tableName: this.$route.params.tableName,

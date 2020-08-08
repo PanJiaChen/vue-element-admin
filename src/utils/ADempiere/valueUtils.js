@@ -22,27 +22,13 @@ export function extractPagingToken(token) {
 }
 
 export function typeValue(value) {
-  if (typeof value === 'undefined' || value == null) {
-    return value
-  } else if (typeof value === 'string') {
-    return 'STRING'
-  } else if (typeof value === 'function') {
-    return 'FUNCTION'
-  } else if (typeof value === 'number') {
-    if (value.isInteger()) {
-      return 'INTEGER'
-    }
-    return 'DOUBLE'
-  } else if (typeof value === 'boolean') {
-    return 'BOOLEAN'
-  } else if (Object.prototype.toString.call(value) === '[object Date]') {
-    return 'DATE'
-  } else if (Array.isArray(value)) {
-    return 'ARRAY'
-  } else if (typeof value === 'object') {
-    return 'OBJECT'
-  }
-  return value
+  const typeOfValue = Object.prototype
+    .toString
+    .call(value)
+    .match(/^\[object\s(.*)\]$/)[1]
+    .toUpperCase()
+
+  return typeOfValue
 }
 
 /**

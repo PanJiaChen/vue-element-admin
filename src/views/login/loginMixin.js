@@ -1,7 +1,7 @@
 import LangSelect from '@/components/LangSelect'
 
-export const loginMixin = {
-  name: 'loginMixin',
+export default {
+  name: 'MixinLogin',
   components: {
     LangSelect
   },
@@ -16,9 +16,11 @@ export const loginMixin = {
         this.$refs.password.focus()
       })
     },
-    pathRedirect(path) {
+    pathRedirect(path = 'login') {
       this.$router.push({
         path
+      }).catch(error => {
+        console.info(`Login Mixin: ${error.name}, ${error.message}`)
       })
     }
   }

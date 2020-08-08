@@ -28,11 +28,16 @@ export default {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
     },
     cssClassStyle() {
-      return this.metadata.cssClassName
+      let styleClass = ''
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass = this.metadata.cssClassName
+      }
+      return styleClass
     },
     value: {
       get() {
         return this.$store.getters.getValueOfField({
+          parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
           columnName: this.metadata.columnName
         })
@@ -62,18 +67,6 @@ export default {
     if (this.metadata.handleRequestFocus) {
       this.requestFocus()
     }
-  },
-  watch: {
-    // valueModel(value) {
-    //   if (this.metadata.inTable) {
-    //     this.value = this.parseValue(value)
-    //   }
-    // },
-    // 'metadata.value'(value) {
-    //   if (!this.metadata.inTable) {
-    //     this.value = this.parseValue(value)
-    //   }
-    // }
   },
   methods: {
     /**
@@ -177,6 +170,11 @@ export default {
 
       // if is custom field, set custom handle change value
       if (this.metadata.isCustomField) {
+        if (this.metadata.isActiveLogics) {
+          this.$store.dispatch('changeDependentFieldsList', {
+            field: this.metadata
+          })
+        }
         return
       }
       this.$store.dispatch('notifyFieldChange', {

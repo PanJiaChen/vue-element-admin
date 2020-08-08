@@ -19,8 +19,10 @@ Asking questions about use
 
 #### Steps to reproduce
 1. [xxx]
+<!--
 2. [xxx]
 3. [xxxx]
+-->
 
 #### Screenshot or Gif
 
@@ -33,6 +35,7 @@ Please only use Codepen, JSFiddle, CodeSandbox or a github repo
 
 #### Other relevant information
 - Your OS:
+- Web Browser:
 - Node.js version:
 - vue-element-admin version:
 

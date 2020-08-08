@@ -77,24 +77,24 @@ export default {
   },
   methods: {
     redirect(item) {
+      let tabParent
       if (item.meta && item.meta.type === 'window') {
-        this.$router.push({
-          name: item.name,
-          params: {
-            childs: item.children
-          },
-          query: {
-            tabParent: 0
-          }
-        })
-      } else {
-        this.$router.push({
-          name: item.name,
-          params: {
-            childs: item.children
-          }
-        })
+        tabParent = 0
       }
+
+      this.$router.push({
+        name: item.name,
+        query: {
+          ...this.$router.query,
+          tabParent
+        },
+        params: {
+          ...this.$router.params,
+          childs: item.children
+        }
+      }).catch(error => {
+        console.info(`${this.name} Component: ${error.name}, ${error.message}`)
+      })
     }
   }
 }

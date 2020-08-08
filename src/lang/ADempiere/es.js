@@ -35,6 +35,7 @@ export default {
     processError: 'No fue ejecutado',
     //
     emptyValues: 'Parametro(s) con valores vacios',
+    fieldCannotBeEmpty: 'El valor del campo no puede estar vacío.',
     fieldMandatory: 'El campo es obligatorio',
     requestError: 'Error al ejecutar la petición',
     successChangeRole: 'El rol se ha cambiado',
@@ -238,7 +239,7 @@ export default {
     currentRole: 'Rol actual',
     clientName: 'Nombre del cliente',
     description: 'Descripción',
-    changeRole: 'Cambiar rol',
+    changeRole: 'Cambiar Rol',
     changeLanguage: 'Cambiar idioma',
     changeLanguagePlaceholder: 'Elija un idioma'
   },
@@ -297,6 +298,75 @@ export default {
   },
   quickAccess: {
     newRecord: 'Acceso Rápido para Crear Registro Nuevo',
-    listRecords: 'Acceso Rápido para Listar los Registros'
+    listRecords: 'Acceso Rápido para Listar los Registros',
+    searchWithEnter: 'Pulse enter para realizar la busqueda'
+  },
+  businessPartner: {
+    notFound: 'Socio de negocio no encontrado.'
+  },
+  form: {
+    pos: {
+      title: 'Punto de Venta',
+      optionsPoinSales: {
+        title: 'Opciones Rápidas del Punto de Ventas',
+        salesOrder: {
+          title: 'Orden de Venta',
+          newOrder: 'Nueva Orden',
+          ordersHistory: 'Histórico de Órdenes ',
+          generateImmediateInvoice: 'Generar Factura Inmediata',
+          completePreparedOrder: 'Completar Orden Preparada',
+          cancelSaleTransaction: 'Anular Transacción de Venta',
+          createPos: 'Crear Retiro de Punto de Venta',
+          toPrint: 'Imprimir'
+        },
+        cashManagement: {
+          title: 'Gestión de Caja',
+          cashOpening: 'Apertura de Caja',
+          cashwithdrawal: 'Retiro de Efectivo',
+          closeBox: 'Cierre de Caja'
+        },
+        generalOptions: {
+          title: 'Opciones Generales',
+          changePos: 'Cambiar Punto de Venta',
+          listProducts: 'Lista de Productos y Precios'
+        }
+      },
+      tableProduct: {
+        product: 'Producto',
+        quantity: 'Cantidad',
+        options: 'Opciones',
+        editQuantities: 'Editar Cantidades',
+        remove: 'Eliminar'
+      },
+      product: {
+        productInformation: 'Información de Producto',
+        code: 'Código',
+        name: 'Nombre',
+        description: 'Descripción',
+        price: 'Precio',
+        taxRate: 'Tasa de Impuesto',
+        quantityAvailable: 'Cantidad Disponible'
+      },
+      order: {
+        order: 'Orden',
+        seller: 'Vendedor',
+        date: 'Date',
+        subTotal: 'Sub-Total',
+        type: 'Tipo',
+        discount: 'Descuento',
+        tax: 'Impuesto',
+        total: 'Total',
+        itemQuantity: 'Cantidad de Árticulo',
+        numberLines: 'Cantidad de Lineas',
+        pointSale: 'Punto de Venta',
+        collect: 'Cobrar'
+      },
+      collect: {
+        orderTotal: 'Total de Orden',
+        pending: 'Pendiente',
+        payment: 'Pago',
+        change: 'Cambio'
+      }
+    }
   }
 }

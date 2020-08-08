@@ -1,6 +1,6 @@
 import Vue from 'vue'
 // Delete when get global context and account context
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
+import { isEmptyValue, typeValue } from '@/utils/ADempiere/valueUtils.js'
 
 const preference = {
   state: {
@@ -14,7 +14,7 @@ const preference = {
      * @param {string} payload.columnName
      * @param {mixed} payload.value
      */
-    setContext(state, payload) {
+    setPreferenceContext(state, payload) {
       let key = ''
       if (payload.parentUuid) {
         key += payload.parentUuid + '|'
@@ -51,8 +51,8 @@ const preference = {
     }
   },
   actions: {
-    setContext({ commit }, objectValue) {
-      commit('setContext', objectValue)
+    setPreferenceContext({ commit }, objectValue) {
+      commit('setPreferenceContext', objectValue)
     },
     setMultiplePreference({ dispatch }, {
       parentUuid,
@@ -60,7 +60,7 @@ const preference = {
       values
     }) {
       let actionToDispatch = 'setMultiplePreferenceObject'
-      if (Object.prototype.toString.call(values) === '[object Map]') {
+      if (typeValue(values) === 'MAP') {
         actionToDispatch = 'setMultiplePreferenceMap'
       }
       return dispatch(actionToDispatch, {
@@ -77,7 +77,7 @@ const preference = {
       return new Promise(resolve => {
         if (!isEmptyValue(containerUuid) || !isEmptyValue(parentUuid)) {
           Object.keys(values).forEach(key => {
-            commit('setContext', {
+            commit('setPreferenceContext', {
               parentUuid,
               containerUuid,
               columnName: key,
@@ -99,7 +99,7 @@ const preference = {
       return new Promise(resolve => {
         if (!isEmptyValue(containerUuid) || !isEmptyValue(parentUuid)) {
           values.forEach((value, key) => {
-            commit('setContext', {
+            commit('setPreferenceContext', {
               parentUuid,
               containerUuid,
               columnName: key,

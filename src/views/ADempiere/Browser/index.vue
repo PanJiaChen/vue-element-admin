@@ -152,6 +152,10 @@ export default {
   },
   created() {
     this.getBrowser()
+    this.$store.dispatch('settings/changeSetting', {
+      key: 'showContextMenu',
+      value: true
+    })
   },
   methods: {
     handleChange(value) {
@@ -203,15 +207,16 @@ export default {
       if (this.isLoadedRecords) {
         // not research
         return
-      } else {
-        if (this.isReadyToSearch) {
-          // first search by default
-          this.$store.dispatch('getBrowserSearch', {
-            containerUuid: this.browserUuid
-          })
-          return
-        }
       }
+
+      if (this.isReadyToSearch) {
+        // first search by default
+        this.$store.dispatch('getBrowserSearch', {
+          containerUuid: this.browserUuid
+        })
+        return
+      }
+
       // set default values into data
       this.$store.dispatch('setRecordSelection', {
         containerUuid: this.browserUuid,
@@ -281,7 +286,7 @@ export default {
   }
   .content-help {
     width: 100%;
-    height: 200%;
+    height: 100%;
     padding-left: 15px !important;
   }
   .content-help-mobile {

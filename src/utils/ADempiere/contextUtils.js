@@ -12,8 +12,10 @@ export const getContext = ({
   columnName
 }) => {
   let value
-  const isPreferenceValue = columnName.startsWith('$') || columnName.startsWith('#')
-  if (isPreferenceValue || columnName.startsWith(`P|${parentUuid}`) || columnName.startsWith(`P|${columnName}`)) {
+  const isPreferenceValue = columnName.startsWith('$') ||
+    columnName.startsWith('#') ||
+    columnName.startsWith(`P|`)
+  if (isPreferenceValue) {
     value = store.getters.getPreference({
       parentUuid,
       containerUuid,
@@ -21,7 +23,7 @@ export const getContext = ({
     })
   }
   if (!isPreferenceValue && isEmptyValue(value)) {
-    value = store.getters.getValueOfContainer({
+    value = store.getters.getValueOfField({
       parentUuid,
       containerUuid,
       columnName
@@ -169,7 +171,7 @@ export function parseContext({
       errorsList
     }
   }
-  value = String(value).replace('@SQL=')
+  value = String(value).replace('@SQL=', '')
   // const instances = value.length - value.replace('@', '').length
   // if ((instances > 0) && (instances % 2) !== 0) { // could be an email address
   //   return value

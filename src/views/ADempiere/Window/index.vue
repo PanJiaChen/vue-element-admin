@@ -482,9 +482,6 @@ export default {
       }
       return false
     },
-    getHeightPanelTop() {
-      return this.$store.getters.getSplitHeightTop
-    },
     getHeightPanelBottom() {
       return this.$store.getters.getSplitHeight - 11
     },
@@ -532,22 +529,20 @@ export default {
     },
     // current record
     getRecord() {
-      const record = this.getterDataRecords.find(record => {
-        if (record.UUID === this.$route.query.action) {
-          return record
-        }
+      return this.getterDataRecords.find(record => {
+        return record.UUID === this.$route.query.action
       })
-      return record
     },
     getCurrentRecord() {
-      if (this.isEmptyValue(this.$store.getters.getCurrentRecord)) {
+      const currentRecord = this.$store.getters.getCurrentRecord
+      if (this.isEmptyValue(currentRecord)) {
         return this.getterDataRecords[0]
       }
-      return this.$store.getters.getCurrentRecord
+      return currentRecord
     },
     isWorkflowBarStatus() {
       const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
-      if (!this.isEmptyValue(panel) && panel.isDocument && this.$route.meta.type === 'window' && this.$route.query.action !== 'create-new') {
+      if (!this.isEmptyValue(panel) && panel.isDocument && this.$route.query.action !== 'create-new') {
         return true
       }
       return false
@@ -573,6 +568,10 @@ export default {
     if (this.isShowedRecordNavigation) {
       this.handleResize()
     }
+    this.$store.dispatch('settings/changeSetting', {
+      key: 'showContextMenu',
+      value: true
+    })
   },
   methods: {
     handleResize() {
@@ -585,8 +584,19 @@ export default {
     conteInfo() {
       this.showContainerInfo = !this.showContainerInfo
       if (this.showContainerInfo) {
-        const tableName = this.getTableName
-        const recordId = this.getRecord[tableName + '_ID']
+        let tableName = this.$route.params.tableName
+        if (this.isEmptyValue(tableName)) {
+          tableName = this.getTableName
+        }
+        const recordId = this.getCurrentRecord[tableName + '_ID']
+        this.$router.push({
+          params: {
+            recordId,
+            tableName
+          }
+        }).catch(error => {
+          console.info(`Window View: ${error.name}, ${error.message}`)
+        })
         this.$store.dispatch('listWorkflowLogs', {
           tableName,
           recordUuid: this.$route.query.action,
@@ -600,10 +610,13 @@ export default {
       this.$store.dispatch('showContainerInfo', !this.getterShowContainerInfo)
     },
     handleClick(tab, event) {
-      const tableName = this.getTableName
+      let tableName = this.$route.params.tableName
+      if (this.isEmptyValue(tableName)) {
+        tableName = this.getTableName
+      }
       this.$store.dispatch(tab.name, {
         tableName,
-        recordId: this.getRecord[tableName + '_ID']
+        recordId: this.getCurrentRecord[tableName + '_ID']
       })
     },
     // callback new size
@@ -835,24 +848,24 @@ export default {
     top: 29%;
     position: absolute;
   }
-.vertical-panes {
-  width: 100%;
-  height: 85vh;
-  border: 1px solid #ccc;
-}
-.vertical-panes > .pane {
-  text-align: left;
-  padding: 15px;
-  overflow: hidden;
-  background: #fff;
-}
-.vertical-panes > .pane ~ .pane {
-  border-left: 1px solid #ccc;
-}
-.loading-window {
-  padding: 100px 100px;
-  height: 100%;
-}
+  .vertical-panes {
+    width: 100%;
+    height: 85vh;
+    border: 1px solid #ccc;
+  }
+  .vertical-panes > .pane {
+    text-align: left;
+    padding: 15px;
+    overflow: hidden;
+    background: #fff;
+  }
+  .vertical-panes > .pane ~ .pane {
+    border-left: 1px solid #ccc;
+  }
+  .loading-window {
+    padding: 100px 100px;
+    height: 100%;
+  }
 </style>
 <style>
   .el-step.is-simple .el-step__icon-inner {
@@ -919,28 +932,20 @@ export default {
     height: 100%;
   }
   .splitter-pane-resizer.vertical {
-    width: 9px !important;
+    width: 11px !important;
+    /* width: 9px; */
     height: 100%;
+    background: gray !important;
     margin-left: -10px;
+    /* margin-left: -5px; */
     border-left: 5px solid hsla(0,0%,100%,0);
     border-right: 5px solid hsla(0,0%,100%,0);
     cursor: col-resize;
-}
-.splitter-pane.vertical.splitter-paneR {
+  }
+  .splitter-pane.vertical.splitter-paneR {
     position: absolute;
     right: 0;
     height: 100%;
     padding-left: 10px;
-}
-</style>
-<style>
-.splitter-pane-resizer.vertical {
-    width: 11px;
-    height: 100%;
-    background: gray !important;
-    margin-left: -5px;
-    border-left: 5px solid hsla(0,0%,100%,0);
-    border-right: 5px solid hsla(0,0%,100%,0);
-    cursor: col-resize;
   }
 </style>

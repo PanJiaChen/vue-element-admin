@@ -97,6 +97,7 @@ export default {
   data() {
     return {
       fieldsList,
+      isCustomForm: true,
       unsubscribe: () => {}
     }
   },
@@ -161,12 +162,12 @@ export default {
   }
   .content-help {
     width: 100%;
-    height: 200%;
+    height: 100%;
     padding-left: 39px !important;
   }
   .el-card {
     width: 100% !important;
-    height: 200% !important;
+    height: 100% !important;
   }
   .content-collapse {
     padding-left: 20 px !important;

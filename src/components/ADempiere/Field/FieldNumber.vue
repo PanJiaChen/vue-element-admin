@@ -8,6 +8,7 @@
   >
     <el-input-number
       v-if="isFocus"
+      key="number-input-focus"
       :ref="metadata.columnName"
       v-model="value"
       type="number"
@@ -19,6 +20,7 @@
       :controls="isShowControls"
       :controls-position="controlsPosition"
       :class="cssClassStyle"
+      autofocus
       @change="preHandleChange"
       @blur="customFocusLost"
       @focus="focusGained"
@@ -27,16 +29,15 @@
     />
     <el-input
       v-else
+      key="number-displayed-blur"
       :ref="metadata.columnName"
       v-model="displayedValue"
       :placeholder="metadata.help"
       :disabled="isDisabled"
       :class="cssClassStyle"
       readonly
-      @blur="customFocusLost"
+      style="text-align-last: end !important"
       @focus="customFocusGained"
-      @keydown.native="keyPressed"
-      @keyup.native="keyReleased"
     />
   </el-tooltip>
 </template>
@@ -60,7 +61,11 @@ export default {
   },
   computed: {
     cssClassStyle() {
-      return this.metadata.cssClassName + ' custom-field-number'
+      let styleClass = ' custom-field-number '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     },
     maxValue() {
       if (this.isEmptyValue(this.metadata.valueMax)) {
@@ -144,17 +149,6 @@ export default {
       return this.$store.getters['user/getCurrency']
     }
   },
-  watch: {
-    isFocus(value) {
-      if (value) {
-        // focus into input number
-        this.$nextTick()
-          .then(() => {
-            this.$refs[this.metadata.columnName].$el.children[2].firstElementChild.focus()
-          })
-      }
-    }
-  },
   methods: {
     parseValue(value) {
       if (this.isEmptyValue(value)) {
@@ -165,6 +159,10 @@ export default {
     customFocusGained(event) {
       this.isFocus = true
       // this.focusGained(event)
+
+      this.$nextTick(() => {
+        this.$refs[this.metadata.columnName].focus()
+      })
     },
     customFocusLost(event) {
       this.isFocus = false
@@ -229,13 +227,5 @@ export default {
   /* Show input width 100% in container */
   .el-input-number, .el-input {
     width: 100% !important; /* ADempiere Custom */
-  }
-
-  /** Align text in right input **/
-  .custom-field-number {
-    text-align: right !important;
-    input, .el-input__inner {
-      text-align: right !important;
-    }
   }
 </style>

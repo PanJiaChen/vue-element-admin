@@ -1,9 +1,9 @@
-import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil'
-import { showNotification } from '@/utils/ADempiere/notification'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil.js'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { FIELDS_QUANTITY } from '@/utils/ADempiere/references'
 
-export const menuTableMixin = {
+export default {
+  name: 'MixinMenuTable',
   props: {
     parentUuid: {
       type: String,
@@ -155,7 +155,6 @@ export const menuTableMixin = {
     }
   },
   methods: {
-    showNotification,
     sortTab(actionSequence) {
       // TODO: Refactor and remove redundant dispatchs
       this.$store.dispatch('setShowDialog', {
@@ -260,6 +259,7 @@ export const menuTableMixin = {
       })
       this.$message({
         message: this.$t('notifications.mandatoryFieldMissing') + fieldsEmpty,
+        showClose: true,
         type: 'info'
       })
     },
@@ -305,18 +305,22 @@ export const menuTableMixin = {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(rowData => filterVal.map(j => rowData[j]))
+      return jsonData.map(row => {
+        return filterVal.map(column => {
+          return row[column]
+        })
+      })
     },
     zoomRecord() {
       const browserMetadata = this.$store.getters.getBrowser(this.$route.meta.uuid)
       const { elementName } = browserMetadata.fieldList.find(field => field.columnName === browserMetadata.keyColumn)
       const records = []
-      this.getDataSelection.forEach(record => {
-        if (isNaN(record[browserMetadata.keyColumn])) {
-          records.push(record[browserMetadata.keyColumn])
-        } else {
-          records.push(Number(record[browserMetadata.keyColumn]))
+      this.getDataSelection.forEach(recordItem => {
+        let record = recordItem[browserMetadata.keyColumn]
+        if (!isNaN(record)) {
+          record = Number(record)
         }
+        records.push(record)
       })
 
       const viewSearch = recursiveTreeSearch({
@@ -333,6 +337,8 @@ export const menuTableMixin = {
             action: 'advancedQuery',
             [elementName]: records
           }
+        }).catch(error => {
+          console.info(`Table Menu Mixin: ${error.name}, ${error.message}`)
         })
       }
     }

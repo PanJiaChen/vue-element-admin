@@ -4,7 +4,7 @@ import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils.js'
 import { parsedValueComponent } from '@/utils/ADempiere/valueUtils.js'
 import { convertObjectToKeyValue } from '@/utils/ADempiere/valueFormat.js'
 
-export const mainPanelMixin = {
+export default {
   name: 'MainPanelMixin',
   components: {
     FieldDefinition,
@@ -461,6 +461,10 @@ export const mainPanelMixin = {
 
       return groupsList
     },
+    /**
+     * Set title in tag view
+     * @param {string} actionValue
+     */
     setTagsViewTitle(actionValue) {
       if (actionValue !== 'create-new' && !this.isEmptyValue(actionValue) && this.panelMetadata.isDocument && this.getterDataStore.isLoaded) {
         this.$store.dispatch('listWorkflows', this.metadata.tableName)
@@ -476,11 +480,17 @@ export const mainPanelMixin = {
       } else {
         const { identifierColumns } = this.panelMetadata
         if (!this.isEmptyValue(identifierColumns)) {
-          if (this.dataRecords[identifierColumns[0]]) {
-            this.tagTitle.action = this.dataRecords[identifierColumns[0]]
+          const keyName = identifierColumns[0].columnName
+          if (this.dataRecords[keyName]) {
+            this.tagTitle.action = this.dataRecords[keyName]
           } else {
             const field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
-            this.tagTitle.action = field.value
+            const value = this.$store.getters.getValueOfField({
+              parentUuid: this.parentUuid,
+              containerUuid: this.containerUuid,
+              columnName: field.columnName
+            })
+            this.tagTitle.action = value
           }
         } else {
           this.tagTitle.action = this.$t('tagsView.seeRecord')
@@ -509,12 +519,15 @@ export const mainPanelMixin = {
           }
         })
       }
+
+      const currentRecord = this.getterDataStore.record.find(record => record.UUID === uuidRecord) || {}
+      this.dataRecords = currentRecord
+      this.$store.dispatch('currentRecord', currentRecord)
+
       this.setTagsViewTitle(uuidRecord)
       if (this.$route.query && this.$route.query.action === 'create-new') {
         this.setFocus()
       }
-      const currentRecord = this.getterDataStore.record.find(record => record.UUID === uuidRecord)
-      this.$store.dispatch('currentRecord', currentRecord)
     },
     async setFocus() {
       return new Promise(resolve => {

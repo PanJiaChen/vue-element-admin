@@ -38,17 +38,20 @@
           v-if="isDocuemntStatus"
           :field="fieldAttributes"
         />
+
         <translated
           v-if="field.isTranslatedField"
           :field-attributes="fieldAttributes"
           :record-uuid="field.recordUuid"
         />
+
         <calculator
           v-if="field.isNumericField && !field.isReadOnlyFromLogic"
           :field-attributes="fieldAttributes"
           :field-value="field.value"
         />
       </template>
+
       <component
         :is="componentRender"
         :ref="field.columnName"
@@ -130,6 +133,9 @@ export default {
 
       let field
       switch (this.field.componentPath) {
+        case 'FieldAutocomplete':
+          field = () => import('@/components/ADempiere/Field/FieldAutocomplete')
+          break
         case 'FieldBinary':
           field = () => import('@/components/ADempiere/Field/FieldBinary')
           break
@@ -144,6 +150,9 @@ export default {
           break
         case 'FieldImage':
           field = () => import('@/components/ADempiere/Field/FieldImage')
+          break
+        case 'FieldLocation':
+          field = () => import('@/components/ADempiere/Field/FieldLocation')
           break
         case 'FieldLocator':
           field = () => import('@/components/ADempiere/Field/FieldLocator')
@@ -187,7 +196,8 @@ export default {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
       }
-      return fieldIsDisplayed(this.field) && (this.isMandatory || this.field.isShowedFromUser || this.inTable)
+      return fieldIsDisplayed(this.field) &&
+        (this.isMandatory || this.field.isShowedFromUser || this.inTable)
     },
     isMandatory() {
       if (this.isAdvancedQuery) {
@@ -235,7 +245,7 @@ export default {
         return this.field.isReadOnlyFromLogic
       }
       // other type of panels (process/report)
-      return isUpdateableAllFields
+      return Boolean(isUpdateableAllFields)
     },
     isFieldOnly() {
       if (this.inTable || this.field.isFieldOnly) {
@@ -338,11 +348,11 @@ export default {
       return false
     },
     isContextInfo() {
-      if (!this.isAdvancedQuery) {
+      if (this.field.panelType !== 'window') {
         return false
       }
-      return (this.field.contextInfo && this.field.contextInfo.isActive) ||
-        (this.field.reference && this.field.reference.windowsList.length)
+      return Boolean(this.field.contextInfo && this.field.contextInfo.isActive) ||
+        Boolean(this.field.reference && this.field.reference.windowsList.length)
     }
   },
   watch: {

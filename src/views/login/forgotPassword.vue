@@ -48,11 +48,8 @@
 </template>
 
 <script>
-import { loginMixin } from '@/views/login/loginMixin'
-import router from '@/router'
-import { showMessage } from '@/utils/ADempiere/notification'
-import language from '@/lang'
-import { forgotPassword } from '@/api/ADempiere/enrollment'
+import loginMixin from './loginMixin.js'
+import { forgotPassword } from '@/api/ADempiere/enrollment.js'
 
 export default {
   name: 'ForgotPassword',
@@ -75,23 +72,25 @@ export default {
         forgotPassword(this.forgotForm.userName)
           .then(forgotPasswordResponse => {
             if (forgotPasswordResponse.responseTypeStatus === 'OK') {
-              showMessage({
-                message: language.t('login.passwordResetSendLink') + this.forgotForm.userName,
+              this.$message({
+                message: this.$t('login.passwordResetSendLink') + this.forgotForm.userName,
+                showClose: true,
                 type: 'success'
               })
-              router.push({
-                path: 'login'
-              })
+
+              this.pathRedirect()
             } else {
-              showMessage({
-                message: language.t('login.unexpectedError'),
+              this.$message({
+                message: this.$t('login.unexpectedError'),
+                showClose: true,
                 type: 'error'
               })
             }
           })
           .catch(error => {
-            showMessage({
-              message: language.t('login.unexpectedError'),
+            this.$message({
+              message: this.$t('login.unexpectedError'),
+              showClose: true,
               type: 'error'
             })
             console.warn(`Forgot Password - Error ${error.code}: ${error.message}`)

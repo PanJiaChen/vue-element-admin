@@ -13,12 +13,11 @@ export function login({
       userPass,
       role
     })
-  } else {
-    return Instance.call(this).requestLoginDefault({
-      userName,
-      userPass
-    })
   }
+  return Instance.call(this).requestLoginDefault({
+    userName,
+    userPass
+  })
 }
 
 // Get User Info from session Uuid or token
@@ -39,11 +38,6 @@ export function logout(sessionUuid) {
   return Instance.call(this).requestLogOut(sessionUuid)
 }
 
-// Get User menu from server
-export function getMenu(sessionUuid) {
-  return Instance.call(this).requestUserMenuFromSession(sessionUuid)
-}
-
 /**
  *
  * @param {string} attributes.sessionUuid
@@ -51,6 +45,10 @@ export function getMenu(sessionUuid) {
  * @param {string} attributes.organizationUuid
  * @param {string} attributes.warehouseUuid
  */
+// Get User menu from server
+export function getMenu(sessionUuid) {
+  return Instance.call(this).requestUserMenuFromSession(sessionUuid)
+}
 export function changeRole(attributes) {
   return Instance.call(this).requestChangeRole(attributes)
 }

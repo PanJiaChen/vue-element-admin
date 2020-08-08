@@ -21,7 +21,11 @@ export default {
   mixins: [fieldMixin],
   computed: {
     cssClassStyle() {
-      return this.metadata.cssClassName + ' custom-field-image'
+      let styleClass = ' custom-field-image '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     }
   },
   methods: {

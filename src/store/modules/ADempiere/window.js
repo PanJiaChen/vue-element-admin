@@ -5,7 +5,7 @@ import {
   rollbackEntity
 } from '@/api/ADempiere/persistence'
 import { getReferencesList } from '@/api/ADempiere/values'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
+import { isEmptyValue, typeValue } from '@/utils/ADempiere/valueUtils.js'
 import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
@@ -72,8 +72,9 @@ const windowControl = {
       value
     }) {
       //  get value from store
-      if (!value) {
+      if (isEmptyValue(value)) {
         value = getters.getValueOfField({
+          parentUuid: field.parentUuid,
           containerUuid: field.containerUuid,
           columnName: field.columnName
         })
@@ -157,6 +158,7 @@ const windowControl = {
     }) {
       //  get value from store
       const value = getters.getValueOfField({
+        parentUuid: field.parentUuid,
         containerUuid: field.containerUuid,
         columnName: field.columnName
       })
@@ -175,7 +177,7 @@ const windowControl = {
             value: sqlStatement,
             isSQL
           }).value
-          if (isSQL && String(sqlStatement) === '[object Object]') {
+          if (isSQL && typeValue(sqlStatement) === 'OBJECT') {
             sqlStatement = sqlStatement.query
           }
         }

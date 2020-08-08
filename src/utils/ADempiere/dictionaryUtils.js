@@ -25,9 +25,12 @@ export function generateField({
   }
 
   const componentReference = evalutateTypeField(fieldToGenerate.displayType)
-  let isDisplayedFromLogic = fieldToGenerate.isDisplayed
-  let isMandatoryFromLogic = false
-  let isReadOnlyFromLogic = false
+  let evaluatedLogics = {
+    isDisplayedFromLogic: fieldToGenerate.isDisplayed,
+    isMandatoryFromLogic: false,
+    isReadOnlyFromLogic: false
+  }
+
   let parentFieldsList = []
   let parsedDefaultValue = fieldToGenerate.defaultValue
   let parsedDefaultValueTo = fieldToGenerate.defaultValueTo
@@ -57,43 +60,12 @@ export function generateField({
       operator = 'LIKE'
     }
   } else {
-    if (String(parsedDefaultValue).includes('@') &&
-      String(parsedDefaultValue).trim() !== '-1') {
-      parsedDefaultValue = parseContext({
-        ...moreAttributes,
-        columnName: fieldToGenerate.columnName,
-        value: parsedDefaultValue,
-        isSOTrxMenu
-      }).value
-    }
-
-    if (isEmptyValue(parsedDefaultValue) &&
-      !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
-      String(parsedDefaultValue).trim() !== '-1') {
-      parsedDefaultValue = getPreference({
-        parentUuid: fieldToGenerate.parentUuid,
-        containerUuid: fieldToGenerate.containerUuid,
-        columnName: fieldToGenerate.columnName
-      })
-
-      // search value preference with elementName
-      if (!isEmptyValue(fieldToGenerate.elementName) &&
-        isEmptyValue(parsedDefaultValue)) {
-        parsedDefaultValue = getPreference({
-          parentUuid: fieldToGenerate.parentUuid,
-          containerUuid: fieldToGenerate.containerUuid,
-          columnName: fieldToGenerate.elementName
-        })
-      }
-    }
-
-    parsedDefaultValue = parsedValueComponent({
+    parsedDefaultValue = getDefaultValue({
+      ...fieldToGenerate,
+      parentUuid: moreAttributes.parentUuid,
+      containerUuid: moreAttributes.containerUuid,
       componentPath: componentReference.componentPath,
-      columnName: fieldToGenerate.columnName,
-      value: parsedDefaultValue,
-      displayType: fieldToGenerate.displayType,
-      isMandatory: fieldToGenerate.isMandatory,
-      isIdentifier: fieldToGenerate.columnName.includes('_ID')
+      isSOTrxMenu
     })
 
     if (String(fieldToGenerate.defaultValue).includes('@SQL=')) {
@@ -103,70 +75,26 @@ export function generateField({
 
     // VALUE TO
     if (fieldToGenerate.isRange) {
-      if (String(parsedDefaultValueTo).includes('@') &&
-        String(parsedDefaultValueTo).trim() !== '-1') {
-        parsedDefaultValueTo = parseContext({
-          ...moreAttributes,
-          columnName: `${fieldToGenerate.columnName}_To`,
-          value: parsedDefaultValueTo
-        }).value
-      }
-
-      if (isEmptyValue(parsedDefaultValueTo) &&
-        !(fieldToGenerate.isKey || fieldToGenerate.isParent) &&
-        String(parsedDefaultValueTo).trim() !== '-1') {
-        parsedDefaultValueTo = getPreference({
-          parentUuid: fieldToGenerate.parentUuid,
-          containerUuid: fieldToGenerate.containerUuid,
-          columnName: `${fieldToGenerate.columnName}_To`
-        })
-
-        // search value preference with elementName
-        if (!isEmptyValue(fieldToGenerate.elementName) &&
-          isEmptyValue(parsedDefaultValueTo)) {
-          parsedDefaultValueTo = getPreference({
-            parentUuid: fieldToGenerate.parentUuid,
-            containerUuid: fieldToGenerate.containerUuid,
-            columnName: `${fieldToGenerate.elementName}_To`
-          })
-        }
-      }
-
-      parsedDefaultValueTo = parsedValueComponent({
+      parsedDefaultValueTo = getDefaultValue({
+        ...fieldToGenerate,
+        parentUuid: moreAttributes.parentUuid,
+        containerUuid: moreAttributes.containerUuid,
         componentPath: componentReference.componentPath,
-        columnName: fieldToGenerate.columnName,
-        value: parsedDefaultValueTo,
-        displayType: fieldToGenerate.displayType,
-        isMandatory: fieldToGenerate.isMandatory,
-        isIdentifier: fieldToGenerate.columnName.includes('_ID')
+        defaultValue: fieldToGenerate.defaultValueTo,
+        columnName: `${fieldToGenerate.columnName}_To`,
+        elementName: `${fieldToGenerate.elementName}_To`,
+        isSOTrxMenu
       })
     }
+
     parentFieldsList = getParentFields(fieldToGenerate)
 
-    // evaluate logics
-    const setEvaluateLogics = {
+    // evaluate logics (diplayed, mandatory, readOnly)
+    evaluatedLogics = getEvaluatedLogics({
       parentUuid: moreAttributes.parentUuid,
       containerUuid: moreAttributes.containerUuid,
-      context: getContext
-    }
-    if (!isEmptyValue(fieldToGenerate.displayLogic)) {
-      isDisplayedFromLogic = evaluator.evaluateLogic({
-        ...setEvaluateLogics,
-        logic: fieldToGenerate.displayLogic
-      })
-    }
-    if (!isEmptyValue(fieldToGenerate.mandatoryLogic)) {
-      isMandatoryFromLogic = evaluator.evaluateLogic({
-        ...setEvaluateLogics,
-        logic: fieldToGenerate.mandatoryLogic
-      })
-    }
-    if (!isEmptyValue(fieldToGenerate.readOnlyLogic)) {
-      isReadOnlyFromLogic = evaluator.evaluateLogic({
-        ...setEvaluateLogics,
-        logic: fieldToGenerate.readOnlyLogic
-      })
-    }
+      ...fieldToGenerate
+    })
   }
 
   const field = {
@@ -179,6 +107,7 @@ export function generateField({
     componentPath: componentReference.componentPath,
     isSupported: componentReference.isSupported,
     size: componentReference.size || DEFAULT_SIZE,
+    // TODO: Property 'displayColumn' is @depecated
     displayColumn: undefined, // link to value from selects and table
     displayColumnName: `DisplayColumn_${fieldToGenerate.columnName}`, // key to display column
     // value attributes
@@ -187,10 +116,8 @@ export function generateField({
     valueTo: parsedDefaultValueTo,
     parsedDefaultValue,
     parsedDefaultValueTo,
-    // logics to app
-    isDisplayedFromLogic,
-    isReadOnlyFromLogic,
-    isMandatoryFromLogic,
+    // logics to app (isDisplayedFromLogic, isMandatoryFromLogic, isReadOnlyFromLogic)
+    ...evaluatedLogics,
     //
     parentFieldsList,
     dependentFieldsList: [],
@@ -240,6 +167,118 @@ export function generateField({
   }
 
   return field
+}
+
+/**
+ * Evaluate logics to definition field
+ * @param {object}
+ */
+export function getEvaluatedLogics({
+  parentUuid,
+  containerUuid,
+  isDisplayed = true,
+  displayLogic,
+  mandatoryLogic,
+  readOnlyLogic
+}) {
+  // evaluate logics
+  const commonParameters = {
+    parentUuid,
+    containerUuid,
+    context: getContext
+  }
+
+  let isDisplayedFromLogic = isDisplayed
+  if (!isEmptyValue(displayLogic)) {
+    isDisplayedFromLogic = evaluator.evaluateLogic({
+      ...commonParameters,
+      logic: displayLogic
+    })
+  }
+
+  let isMandatoryFromLogic = false
+  if (!isEmptyValue(mandatoryLogic)) {
+    isMandatoryFromLogic = evaluator.evaluateLogic({
+      ...commonParameters,
+      logic: mandatoryLogic
+    })
+  }
+
+  let isReadOnlyFromLogic = false
+  if (!isEmptyValue(readOnlyLogic)) {
+    isReadOnlyFromLogic = evaluator.evaluateLogic({
+      ...commonParameters,
+      logic: readOnlyLogic
+    })
+  }
+
+  return {
+    isDisplayedFromLogic,
+    isMandatoryFromLogic,
+    isReadOnlyFromLogic
+  }
+}
+
+/**
+ * Get parsed default value to set into field
+ * @param {*} param0
+ */
+export function getDefaultValue({
+  parentUuid,
+  containerUuid,
+  isSOTrxMenu,
+  columnName,
+  elementName,
+  componentPath,
+  displayType,
+  defaultValue,
+  isMandatory,
+  isParent,
+  isKey
+}) {
+  let parsedDefaultValue = defaultValue
+
+  if (String(parsedDefaultValue).includes('@') &&
+    String(parsedDefaultValue).trim() !== '-1') {
+    parsedDefaultValue = parseContext({
+      parentUuid,
+      containerUuid,
+      columnName,
+      value: parsedDefaultValue,
+      isSOTrxMenu
+    }).value
+  }
+
+  if (isEmptyValue(parsedDefaultValue) &&
+    !(isKey || isParent) &&
+    String(parsedDefaultValue).trim() !== '-1') {
+    parsedDefaultValue = getPreference({
+      parentUuid,
+      containerUuid,
+      columnName
+    })
+
+    // search value preference with elementName
+    if (!isEmptyValue(elementName) &&
+      isEmptyValue(parsedDefaultValue)) {
+      parsedDefaultValue = getPreference({
+        parentUuid,
+        containerUuid,
+        columnName: elementName
+      })
+    }
+  }
+
+  parsedDefaultValue = parsedValueComponent({
+    componentPath,
+    columnName,
+    value: parsedDefaultValue,
+    displayType,
+    isMandatory,
+    isIdentifier: columnName.includes('_ID')
+  })
+
+  return parsedDefaultValue
 }
 
 /**

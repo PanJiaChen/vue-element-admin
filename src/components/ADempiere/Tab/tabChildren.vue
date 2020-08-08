@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { tabMixin } from '@/components/ADempiere/Tab/tabMixin'
+import tabMixin from './tabMixin.js'
 import DataTable from '@/components/ADempiere/DataTable'
 
 export default {
@@ -76,6 +76,8 @@ export default {
           params: {
             ...this.$route.params
           }
+        }).catch(error => {
+          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
         })
       }
     },

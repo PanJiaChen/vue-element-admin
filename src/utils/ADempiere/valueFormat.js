@@ -3,14 +3,21 @@
 import moment from 'moment'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import store from '@/store'
-import { DATE, DATE_PLUS_TIME, TIME } from '@/utils/ADempiere/references'
+import { DATE, DATE_PLUS_TIME, TIME, AMOUNT, COSTS_PLUS_PRICES, NUMBER, QUANTITY } from '@/utils/ADempiere/references.js'
 
+/**
+ * Convert string values ('Y' or 'N') to component compatible Boolean values
+ * @param {mixed} valueToParsed
+ */
 export const convertStringToBoolean = (valueToParsed) => {
   const valueString = String(valueToParsed).trim()
   if (valueString === 'N' || valueString === 'false') {
     return false
+  } else if (valueString === 'Y' || valueString === 'true') {
+    return true
   }
-  return Boolean(valueToParsed)
+
+  return valueToParsed
 }
 
 export const convertBooleanToString = (booleanValue) => {
@@ -43,8 +50,8 @@ export function convertObjectToKeyValue({
 /**
  * Convert array pairs of object to literal object { key: value }
  * @param {array} array, Array to convert
- * @param {string} nameKey, name from key in pairs
- * @param {string} nameValue, name from value in pairs
+ * @param {string} keyName, name from key in pairs
+ * @param {string} valueName, name from value in pairs
  * @returns {object} { key: value, key2: value2 }
  */
 export function convertArrayKeyValueObject({
@@ -125,6 +132,56 @@ export function formatDate(date, isTime = false) {
   }))
 }
 
+//  Get Formatted Price
+export function formatPrice(number, currency) {
+  if (this.isEmptyValue(number)) {
+    return undefined
+  }
+  if (this.isEmptyValue(currency)) {
+    currency = getCurrency()
+  }
+  //  Get formatted number
+  return new Intl.NumberFormat(getCountryCode(), {
+    style: 'currency',
+    currency
+  }).format(number)
+}
+
+//  Format Quantity
+export function formatQuantity(number) {
+  if (this.isEmptyValue(number)) {
+    return undefined
+  }
+  if (!Number.isInteger(number)) {
+    return number
+  }
+  return Number.parseFloat(number).toFixed(2)
+  //  Get formatted number
+}
+
+// Format percentage based on Intl library
+export function formatPercent(number) {
+  if (this.isEmptyValue(number)) {
+    return undefined
+  }
+  //  Get formatted number
+  return new Intl.NumberFormat(getCountryCode(), {
+    style: 'percent'
+  }).format(number)
+}
+
+//  Get country code from store
+function getCountryCode() {
+  const languageDefinition = store.getters['user/getCurrentLanguageDefinition']
+  return languageDefinition.languageISO + '-' + languageDefinition.countryCode
+}
+
+// Get Default country
+function getCurrency() {
+  const currencyDefinition = store.getters['user/getCurrency']
+  return currencyDefinition.iSOCode
+}
+
 // Return a format for field depending of reference for him
 export function formatField(value, reference, optionalFormat) {
   if (isEmptyValue(value)) {
@@ -151,6 +208,18 @@ export function formatField(value, reference, optionalFormat) {
         isTime: true
       }))
       break
+    case AMOUNT.id:
+      formattedValue = formatPrice(value)
+      break
+    case COSTS_PLUS_PRICES.id:
+      formattedValue = formatPrice(value)
+      break
+    case NUMBER.id:
+      formattedValue = formatQuantity(value)
+      break
+    case QUANTITY.id:
+      formattedValue = formatQuantity(value)
+      break
     default:
       formattedValue = value
   }
@@ -163,6 +232,7 @@ export function getDefaultFormat(isTime) {
     isTime
   })
 }
+
 // Get default format or optional
 function getDateFormat({
   format,
@@ -176,4 +246,27 @@ function getDateFormat({
   if (languageDefinition) {
     return isTime ? languageDefinition.timePattern : languageDefinition.datePattern
   }
+}
+
+/**
+ * Removes the % of a text string, only from the beginning and end if they exist,
+ * this in case you need to use a match or local search to find matches between
+ * text strings.
+ * @param {string} stringToParsed ej: '%qwerty asd%' | '%zxc 123'
+ * @returns {string} ej: 'qwerty asd' | 'zxc 123'
+ */
+export function trimPercentage(stringToParsed) {
+  if (!isEmptyValue(stringToParsed) && String(stringToParsed).includes('%')) {
+    let parsedValue = stringToParsed
+    if (parsedValue[0] === '%') {
+      parsedValue = parsedValue.slice(1)
+    }
+
+    const wordSize = parsedValue.length - 1
+    if (parsedValue[wordSize] === '%') {
+      parsedValue = parsedValue.slice(0, wordSize)
+    }
+    return parsedValue
+  }
+  return stringToParsed
 }

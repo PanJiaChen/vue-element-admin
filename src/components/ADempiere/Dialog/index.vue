@@ -96,9 +96,6 @@ export default {
     },
     getterDataRecordsAndSelection() {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
-    },
-    getDataSelection() {
-      return this.getterDataRecordsAndSelection.selection
     }
   },
   watch: {
@@ -140,9 +137,11 @@ export default {
         this.$router.push({
           name: this.$route.name,
           query: {
-            action: this.windowRecordSelected.UUID,
-            ...this.$route.query
+            ...this.$route.query,
+            action: this.windowRecordSelected.UUID
           }
+        }).catch(error => {
+          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
         })
         this.closeDialog()
       } else if (action !== undefined) {

@@ -25,8 +25,9 @@
 </template>
 
 <script>
-import { tabMixin } from '@/components/ADempiere/Tab/tabMixin'
+import tabMixin from './tabMixin.js'
 import MainPanel from '@/components/ADempiere/Panel'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
 
 export default {
   name: 'TabParent',
@@ -72,7 +73,10 @@ export default {
           params: {
             ...this.$route.params
           }
+        }).catch(error => {
+          console.info(`Tab Component: ${error.name}, ${error.message}`)
         })
+
         this.$route.meta.tabUuid = this.tabUuid
       }
     },
@@ -88,6 +92,18 @@ export default {
         window: this.windowMetadata
       })
       this.$route.meta.tabUuid = this.tabUuid
+    },
+    handleBeforeLeave(activeName) {
+      const tabIndex = parseInt(activeName, 10)
+      const metadataTab = this.tabsList.find(tab => tab.tabParentIndex === tabIndex)
+      if (!this.isEmptyValue(metadataTab.whereClause) && metadataTab.whereClause.includes('@')) {
+        metadataTab.whereClause = parseContext({
+          parentUuid: metadataTab.parentUuid,
+          containerUuid: metadataTab.uuid,
+          value: metadataTab.whereClause,
+          isBooleanToString: true
+        }).value
+      }
     }
   }
 }

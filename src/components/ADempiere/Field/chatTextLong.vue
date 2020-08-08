@@ -118,7 +118,7 @@ export default {
       })
     },
     preHandleChange(value) {
-      if (this.clean) {
+      if (this.isEmptyValue(value)) {
         this.$store.dispatch('setchatText', value)
           .then(responseComment => {
             this.$store.dispatch('setMarkDown', false)

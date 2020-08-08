@@ -35,7 +35,11 @@ export default {
   },
   computed: {
     cssClassStyle() {
-      return this.metadata.cssClassName + ' custom-field-yes-no'
+      let styleClass = ' custom-field-yes-no '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     }
   },
   methods: {

@@ -118,7 +118,6 @@ const browserControl = {
               // datatables attributes
               isNew: false,
               isEdit: false,
-              isSelected: false,
               isReadOnlyFromRow: false
             }
           })

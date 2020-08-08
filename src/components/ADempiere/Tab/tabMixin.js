@@ -1,6 +1,5 @@
-import { parseContext } from '@/utils/ADempiere/contextUtils'
-
-export const tabMixin = {
+export default {
+  name: 'MixinTab',
   props: {
     windowUuid: {
       type: String,
@@ -45,17 +44,6 @@ export const tabMixin = {
     handleClick(tabHTML) {
       if (this.tabUuid !== tabHTML.$attrs.tabuuid) {
         this.tabUuid = tabHTML.$attrs.tabuuid
-      }
-    },
-    handleBeforeLeave(activeName) {
-      const metadataTab = this.tabsList.find(tab => tab.index === parseInt(activeName, 10))
-      if (!this.isEmptyValue(metadataTab.whereClause) && metadataTab.whereClause.includes('@')) {
-        metadataTab.whereClause = parseContext({
-          parentUuid: metadataTab.parentUuid,
-          containerUuid: metadataTab.uuid,
-          value: metadataTab.whereClause,
-          isBooleanToString: true
-        }).value
       }
     }
   }

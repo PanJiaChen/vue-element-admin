@@ -29,7 +29,13 @@ const initStateUtils = {
     isLoaded: false
   },
   panelRight: '',
-  currentRecord: {}
+  currentRecord: {},
+  showOrder: false,
+  showTitleFrom: false,
+  showPanelRightPos: false,
+  showCollectionPos: false,
+  splitWidthRight: 3,
+  splitWidthLeft: 3
 }
 
 const utils = {
@@ -101,6 +107,24 @@ const utils = {
     },
     setCurrentRecor(state, payload) {
       state.currentRecord = payload
+    },
+    setShowOrder(state, showOrder) {
+      state.showOrder = showOrder
+    },
+    setShowTitleFrom(state, showTitleFrom) {
+      state.showTitleFrom = showTitleFrom
+    },
+    setShowPanelRightPos(state, showPanelRightPos) {
+      state.showPanelRightPos = showPanelRightPos
+    },
+    setShowCollectionPos(state, showCollectionPos) {
+      state.showCollectionPos = showCollectionPos
+    },
+    setSplitWidthRight(state, splitWidthRight) {
+      state.splitWidthRight = splitWidthRight
+    },
+    setSplitWidthLeft(state, splitWidthLeft) {
+      state.splitWidthLeft = splitWidthLeft
     }
   },
   actions: {
@@ -167,6 +191,24 @@ const utils = {
     },
     currentRecord({ commit }, record) {
       commit('setCurrentRecor', record)
+    },
+    showOrder({ commit }, isOrder) {
+      commit('setShowOrder', isOrder)
+    },
+    showTitleFrom({ commit }, isTitleFrom) {
+      commit('setShowTitleFrom', isTitleFrom)
+    },
+    showPanelRightPos({ commit }, isPanelRight) {
+      commit('setShowPanelRightPos', isPanelRight)
+    },
+    showCollectionPos({ commit }, isCollection) {
+      commit('setShowCollectionPos', isCollection)
+    },
+    changeWidthRight({ commit }, newWidthRight) {
+      commit('setSplitWidthRight', newWidthRight)
+    },
+    changeWidthLeft({ commit }, newWidthLeft) {
+      commit('setSplitWidthLeft', newWidthLeft)
     }
   },
   getters: {
@@ -242,6 +284,24 @@ const utils = {
     },
     getCurrentRecord: (state) => {
       return state.currentRecord
+    },
+    getShowPanelLeft: (state) => {
+      return state.showOrder
+    },
+    getShowTitleFrom: (state) => {
+      return state.showTitleFrom
+    },
+    getShowPanelRightPos: (state) => {
+      return state.showPanelRightPos
+    },
+    getShowCollectionPos: (state) => {
+      return state.showCollectionPos
+    },
+    getWidthRight: (state) => {
+      return state.splitWidthRight
+    },
+    getWidthLeft: (state) => {
+      return state.splitWidthLeft
     }
   }
 }

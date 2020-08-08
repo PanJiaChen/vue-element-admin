@@ -112,7 +112,11 @@ export default {
       return picker
     },
     cssClassStyle() {
-      return this.metadata.cssClassName + ' custom-field-date'
+      let styleClass = ' custom-field-date '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     },
     /**
      * Parse the date format to be compatible with element-ui
@@ -150,6 +154,7 @@ export default {
     value: {
       get() {
         let value = this.$store.getters.getValueOfField({
+          parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
           columnName: this.metadata.columnName
         })
@@ -158,6 +163,7 @@ export default {
         }
 
         const valueTo = this.$store.getters.getValueOfField({
+          parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
           columnName: this.metadata.columnNameTo
         })

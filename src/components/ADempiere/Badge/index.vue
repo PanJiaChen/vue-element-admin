@@ -44,6 +44,7 @@
     </el-popover>
   </el-badge>
 </template>
+
 <script>
 export default {
   name: 'Badge',
@@ -82,10 +83,14 @@ export default {
               instanceUuid: getRecordNotification.instanceUuid,
               fileName: getRecordNotification.download
             }
+          }).catch(error => {
+            console.info(`${this.name} Component: ${error.name}, ${error.message}`)
           })
         } else {
           this.$router.push({
             name: 'ProcessActivity'
+          }).catch(error => {
+            console.info(`${this.name} Component: ${error.name}, ${error.message}`)
           })
         }
       }

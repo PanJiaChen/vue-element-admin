@@ -202,7 +202,8 @@ export default {
     border-radius: 0;
     display: inline-block;
     vertical-align: middle;
-    /deep/ .el-input__inner {
+
+    ::v-deep .el-input__inner {
       border-radius: 0;
       border: 0;
       padding-left: 0;

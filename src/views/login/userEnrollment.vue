@@ -118,11 +118,8 @@
 </template>
 
 <script>
-import { loginMixin } from '@/views/login/loginMixin'
-import router from '@/router'
-import { showMessage } from '@/utils/ADempiere/notification'
-import language from '@/lang'
-import { enrollmentUser } from '@/api/ADempiere/enrollment'
+import loginMixin from './loginMixin.js'
+import { enrollmentUser } from '@/api/ADempiere/enrollment.js'
 
 export default {
   name: 'UserEnrollment',
@@ -249,7 +246,7 @@ export default {
     handleSubmit() {
       if (this.isReadyFormSubmit) {
         this.loading = true
-        var dataToSubmit = {
+        const dataToSubmit = {
           name: this.enrollmentUserForm.name,
           userName: this.enrollmentUserForm.userName,
           eMail: this.enrollmentUserForm.eMail
@@ -259,17 +256,18 @@ export default {
         }
         enrollmentUser(dataToSubmit)
           .then(() => {
-            showMessage({
-              message: language.t('login.userEnrollmentSuccessful'),
+            this.$message({
+              message: this.$t('login.userEnrollmentSuccessful'),
+              showClose: true,
               type: 'success'
             })
-            router.push({
-              path: 'login'
-            })
+
+            this.pathRedirect()
           })
           .catch(error => {
-            showMessage({
-              message: language.t('login.unexpectedError'),
+            this.$message({
+              message: this.$t('login.unexpectedError'),
+              showClose: true,
               type: 'error'
             })
             console.warn(`Enrollment User - Error ${error.code}: ${error.message}`)

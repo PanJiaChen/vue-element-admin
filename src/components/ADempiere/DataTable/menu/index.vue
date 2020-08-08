@@ -27,7 +27,7 @@
           v-for="(process, key) in processMenu"
           :key="key"
           :disabled="process.type === 'application' ? false : Boolean(getDataSelection.length < 1)"
-          index="process"
+          :index="'process' + key"
           @click="process.type === 'application' ? sortTab(process) : showModalTable(process)"
         >
           {{ process.name }}
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { menuTableMixin } from '@/components/ADempiere/DataTable/menu/menuTableMixin'
+import menuTableMixin from './menuTableMixin.js'
 
 export default {
   name: 'TableMainMenu',
@@ -97,32 +97,32 @@ export default {
 </script>
 
 <style>
-.el-menu--vertical .nest-menu .el-submenu>.el-submenu__title:hover, .el-menu--vertical .el-menu-item:hover {
-  background-color: #74bcff94 !important;
-  background: #74bcff94 !important;
-}
-.el-menu--collapse {
-  width: auto;
-}
-.el-menu-item:hover {
-  background-color: #ffffff !important
-}
-.hover {
-  background-color: initial !important;
-}
-.el-menu-item {
-  height: 56px;
-  line-height: 56px;
-  font-size: 14px;
-  color: #303133;
-  padding: 0 20px;
-  list-style: none;
-  cursor: pointer;
-  position: relative;
-  -webkit-transition: border-color .3s, background-color .3s, color .3s;
-  transition: border-color .3s, background-color .3s, color .3s;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  white-space: nowrap;
-}
+  .el-menu--vertical .nest-menu .el-submenu>.el-submenu__title:hover, .el-menu--vertical .el-menu-item:hover {
+    background-color: #74bcff94 !important;
+    background: #74bcff94 !important;
+  }
+  .el-menu--collapse {
+    width: auto;
+  }
+  .el-menu-item:hover {
+    background-color: #ffffff !important
+  }
+  .hover {
+    background-color: initial !important;
+  }
+  .el-menu-item {
+    height: 56px;
+    line-height: 56px;
+    font-size: 14px;
+    color: #303133;
+    padding: 0 20px;
+    list-style: none;
+    cursor: pointer;
+    position: relative;
+    -webkit-transition: border-color .3s, background-color .3s, color .3s;
+    transition: border-color .3s, background-color .3s, color .3s;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    white-space: nowrap;
+  }
 </style>

@@ -28,7 +28,11 @@ export default {
   mixins: [fieldMixin],
   computed: {
     cssClassStyle() {
-      return this.metadata.cssClassName + ' image-uploader'
+      let styleClass = ' image-uploader '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     }
   },
   methods: {

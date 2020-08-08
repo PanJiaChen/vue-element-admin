@@ -47,10 +47,10 @@
 // - displayColumn
 // - defaultValue
 
-import { CHAR, DEFAULT_SIZE, TEXT, TABLE_DIRECT } from '@/utils/ADempiere/references'
-import { evalutateTypeField } from '@/utils/ADempiere/dictionaryUtils'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
-import evaluator, { getContext, getParentFields } from '@/utils/ADempiere/contextUtils'
+import { CHAR, DEFAULT_SIZE, TABLE_DIRECT } from '@/utils/ADempiere/references.js'
+import { evalutateTypeField, getDefaultValue, getEvaluatedLogics } from '@/utils/ADempiere/dictionaryUtils.js'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
+import { getParentFields } from '@/utils/ADempiere/contextUtils.js'
 import store from '@/store'
 
 // Create a Field from UUID based on server meta-data
@@ -65,20 +65,27 @@ export function createFieldFromDictionary({
   overwriteDefinition
 }) {
   let field
+  let valueToMatch
   if (fieldUuid) {
     field = store.getters.getFieldFromUuid(fieldUuid)
+    valueToMatch = fieldUuid
   } else if (columnUuid) {
     field = store.getters.getFieldFromColumnUuid(columnUuid)
+    valueToMatch = columnUuid
   } else if (elementUuid) {
     field = store.getters.getFieldFromElementUuid(elementUuid)
+    valueToMatch = elementUuid
   } if (elementColumnName) {
     field = store.getters.getFieldFromElementColumnName(elementColumnName)
+    valueToMatch = elementColumnName
   } else if (tableName && columnName) {
     field = store.getters.getFieldFromElementColumnName({
       tableName,
       columnName
     })
+    valueToMatch = columnName
   }
+
   if (isEmptyValue(field)) {
     return new Promise(resolve => {
       store.dispatch('getFieldFromServer', {
@@ -90,17 +97,43 @@ export function createFieldFromDictionary({
         columnName
       })
         .then(response => {
-          resolve(getFactoryFromField({
+          const newField = getFactoryFromField({
             containerUuid,
             field: response,
             overwriteDefinition
-          }))
+          })
+
+          resolve(newField)
         }).catch(error => {
-          console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+          console.warn(`LookupFactory: Get Field (match: ${valueToMatch}) From Server (State) - Error ${error.code}: ${error.message}.`)
+
+          const templateField = createFieldFromDefinition({
+            containerUuid,
+            columnName,
+            definition: {
+              fieldUuid,
+              columnUuid,
+              elementUuid,
+              elementColumnName,
+              tableName,
+              columnName,
+              ...overwriteDefinition
+            }
+          })
+
+          resolve(templateField)
         })
     })
   }
-  return new Promise(resolve => { resolve(getFactoryFromField({ containerUuid, field })) })
+  return new Promise(resolve => {
+    const fieldWithStore = getFactoryFromField({
+      containerUuid,
+      field,
+      overwriteDefinition
+    })
+
+    resolve(fieldWithStore)
+  })
 }
 
 // Convert field getted from server to factory
@@ -109,50 +142,11 @@ function getFactoryFromField({
   field,
   overwriteDefinition = {}
 }) {
-  const fieldAttributes = isEmptyValue(field.fieldResponse) ? field : field.fieldResponse
-  const fieldDefinition = {
-    displayType: fieldAttributes.displayType,
-    tableName: fieldAttributes.reference.tableName,
-    directQuery: fieldAttributes.directQuery,
-    query: fieldAttributes.reference.query,
-    keyColumnName: fieldAttributes.reference.keyColumnName,
-    validationCode: fieldAttributes.reference.validationCode,
-    windowsList: fieldAttributes.reference.windowsList,
-    id: fieldAttributes.id,
-    uuid: fieldAttributes.uuid,
-    name: fieldAttributes.name,
-    description: fieldAttributes.description,
-    help: fieldAttributes.help,
-    fieldGroup: fieldAttributes.fieldGroup,
-    isFieldOnly: fieldAttributes.isFieldOnly,
-    isRange: fieldAttributes.isRange,
-    isSameLine: fieldAttributes.isSameLine,
-    sequence: fieldAttributes.sequence,
-    seqNoGrid: fieldAttributes.seqNoGrid,
-    isIdentifier: fieldAttributes.isIdentifier,
-    isKey: fieldAttributes.isKey,
-    isSelectionColumn: fieldAttributes.isSelectionColumn,
-    isUpdateable: fieldAttributes.isUpdateable,
-    formatPattern: fieldAttributes.formatPattern,
-    vFormat: fieldAttributes.vFormat,
-    defaultValue: fieldAttributes.defaultValue,
-    defaultValueTo: fieldAttributes.defaultValueTo,
-    valueMin: fieldAttributes.valueMin,
-    valueMax: fieldAttributes.valueMax,
-    isActive: fieldAttributes.isActive,
-    isMandatory: fieldAttributes.isMandatory,
-    isReadOnly: fieldAttributes.isReadOnly,
-    isDisplayedFromLogic: fieldAttributes.isDisplayedFromLogic,
-    isReadOnlyFromLogic: fieldAttributes.isReadOnlyFromLogic,
-    isMandatoryFromLogic: fieldAttributes.isMandatoryFromLogic,
-    callout: fieldAttributes.callout,
-    isQueryCriteria: fieldAttributes.isQueryCriteria,
-    displayLogic: fieldAttributes.displayLogic,
-    mandatoryLogic: fieldAttributes.mandatoryLogic,
-    readOnlyLogic: fieldAttributes.readOnlyLogic,
-    parentFieldsList: fieldAttributes.parentFieldsList,
-    dependentFieldsList: fieldAttributes.dependentFieldsList,
-    contextInfo: fieldAttributes.contextInfo,
+  const definition = {
+    parentFieldsList: field.parentFieldsList || [],
+    dependentFieldsList: field.dependentFieldsList || [],
+    ...field,
+    isDisplayed: true,
     // Overwrite definition
     ...overwriteDefinition
   }
@@ -160,12 +154,15 @@ function getFactoryFromField({
   //  Convert it
   return createFieldFromDefinition({
     containerUuid,
-    columnName: field.columnName,
-    definition: fieldDefinition
+    columnName: definition.columnName,
+    definition
   })
 }
 
-// Create a field, it assumed that you define all behavior from source code
+/**
+ * Create a field, it assumed that you define all behavior from source code
+ * TODO: Join with generateField function
+ */
 export function createFieldFromDefinition({
   parentUuid,
   containerUuid,
@@ -175,7 +172,7 @@ export function createFieldFromDefinition({
 }) {
   if (!isEmptyValue(definition)) {
     if (isEmptyValue(definition.displayType)) {
-      definition.displayType = TEXT.id
+      definition.displayType = CHAR.id
     } else if (definition.displayType === TABLE_DIRECT.id &&
       isEmptyValue(definition.tableName) &&
       columnName.indexOf('_ID') > 0) {
@@ -186,9 +183,6 @@ export function createFieldFromDefinition({
     }
     if (isEmptyValue(definition.isDisplayed)) {
       definition.isDisplayed = true
-    }
-    if (isEmptyValue(definition.isDisplayedFromLogic)) {
-      definition.isDisplayedFromLogic = true
     }
     if (isEmptyValue(definition.isReadOnly)) {
       definition.isReadOnly = false
@@ -203,25 +197,8 @@ export function createFieldFromDefinition({
         definition.sequence = 10
       }
     }
-
-    let reference = {}
-    if (!isEmptyValue(definition.directQuery) || !isEmptyValue(definition.query)) {
-      reference = {
-        directQuery: definition.directQuery,
-        query: definition.query,
-        tableName: definition.tableName || undefined,
-        keyColumnName: definition.keyColumnName || undefined,
-        validationCode: definition.validationCode || undefined,
-        windowsList: definition.windowsList || []
-      }
-      delete definition.directQuery
-      delete definition.query
-      delete definition.tableName
-      delete definition.validationCode
-      delete definition.windowsList
-    }
-    definition.reference = reference
   }
+
   return getFieldTemplate({
     panelType,
     ...definition,
@@ -269,6 +246,7 @@ export function getFieldTemplate(overwriteDefinition) {
     description: '',
     help: '',
     columnName: '',
+    displayColumnName: `DisplayColumn_${overwriteDefinition.columnName}`, // key to display column
     fieldGroup: {
       name: '',
       fieldGroupType: ''
@@ -311,7 +289,6 @@ export function getFieldTemplate(overwriteDefinition) {
     displayLogic: undefined,
     mandatoryLogic: undefined,
     readOnlyLogic: undefined,
-    parentFieldsList: undefined,
     handleFocusGained: false,
     handleFocusLost: false,
     handleKeyPressed: false,
@@ -332,33 +309,35 @@ export function getFieldTemplate(overwriteDefinition) {
     isFixedTableColumn: false,
     ...overwriteDefinition
   }
+
   // get parsed parent fields list
-  fieldTemplateMetadata.parentFieldsList = getParentFields(fieldTemplateMetadata)
+  const parentFieldsList = getParentFields(fieldTemplateMetadata)
 
-  // evaluate logics
-  const setEvaluateLogics = {
-    parentUuid: fieldTemplateMetadata.parentUuid,
-    containerUuid: fieldTemplateMetadata.containerUuid,
-    context: getContext
-  }
-  if (!isEmptyValue(fieldTemplateMetadata.displayLogic)) {
-    fieldTemplateMetadata.isDisplayedFromLogic = evaluator.evaluateLogic({
-      ...setEvaluateLogics,
-      logic: fieldTemplateMetadata.displayLogic
-    })
-  }
-  if (!isEmptyValue(fieldTemplateMetadata.mandatoryLogic)) {
-    fieldTemplateMetadata.isMandatoryFromLogic = evaluator.evaluateLogic({
-      ...setEvaluateLogics,
-      logic: fieldTemplateMetadata.mandatoryLogic
-    })
-  }
-  if (!isEmptyValue(fieldTemplateMetadata.readOnlyLogic)) {
-    fieldTemplateMetadata.isReadOnlyFromLogic = evaluator.evaluateLogic({
-      ...setEvaluateLogics,
-      logic: fieldTemplateMetadata.readOnlyLogic
+  // TODO: Add support to isSOTrxMenu
+  const parsedDefaultValue = getDefaultValue({
+    ...fieldTemplateMetadata
+  })
+
+  let parsedDefaultValueTo
+  if (fieldTemplateMetadata.isRange) {
+    parsedDefaultValueTo = getDefaultValue({
+      ...fieldTemplateMetadata,
+      defaultValue: fieldTemplateMetadata.defaultValueTo,
+      columnName: `${fieldTemplateMetadata.columnName}_To`,
+      elementName: `${fieldTemplateMetadata.elementName}_To`
     })
   }
 
-  return fieldTemplateMetadata
+  // evaluate logics (diplayed, mandatory, readOnly)
+  const evaluatedLogics = getEvaluatedLogics({
+    ...fieldTemplateMetadata
+  })
+
+  return {
+    ...fieldTemplateMetadata,
+    ...evaluatedLogics,
+    parsedDefaultValue,
+    parsedDefaultValueTo,
+    parentFieldsList
+  }
 }

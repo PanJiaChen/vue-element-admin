@@ -101,6 +101,10 @@ export default {
   },
   created() {
     this.getProcess()
+    this.$store.dispatch('settings/changeSetting', {
+      key: 'showContextMenu',
+      value: true
+    })
   },
   methods: {
     getProcess() {
@@ -155,12 +159,12 @@ export default {
   }
   .content-help {
     width: 100%;
-    height: 200%;
+    height: 100%;
     padding-left: 39px !important;
   }
   .el-card {
     width: 100% !important;
-    height: 200% !important;
+    height: 100% !important;
   }
   .sticky-submenu {
     position: absolute !important;

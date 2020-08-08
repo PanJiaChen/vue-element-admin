@@ -72,7 +72,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;
@@ -93,7 +93,7 @@ export default {
       vertical-align: middle;
       height: 28px;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;
@@ -117,7 +117,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;
@@ -136,7 +136,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;

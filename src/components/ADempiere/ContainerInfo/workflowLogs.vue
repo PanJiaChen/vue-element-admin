@@ -64,8 +64,10 @@
     </el-card>
   </div>
 </template>
+
 <script>
-import { MixinInfo } from '@/components/ADempiere/ContainerInfo/mixinInfo'
+import MixinInfo from './mixinInfo.js'
+
 export default {
   name: 'WorkflowLogs',
   mixins: [MixinInfo]

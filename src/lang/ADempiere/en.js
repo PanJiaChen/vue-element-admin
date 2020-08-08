@@ -35,6 +35,7 @@ export default {
     processError: 'Was not executed',
     //
     emptyValues: 'Parameter(s) empty value',
+    fieldCannotBeEmpty: 'The field value cannot be empty.',
     fieldMandatory: 'The field is mandatory',
     requestError: 'Error executing the request',
     successChangeRole: 'The role has been changed',
@@ -322,6 +323,75 @@ export default {
   },
   quickAccess: {
     newRecord: 'Quick Access to Create New Record',
-    listRecords: 'Quick Access to List All Records'
+    listRecords: 'Quick Access to List All Records',
+    searchWithEnter: 'Press enter to search'
+  },
+  businessPartner: {
+    notFound: 'Business partner not found.'
+  },
+  form: {
+    pos: {
+      title: 'POS',
+      optionsPoinSales: {
+        title: 'Quick Point of Sales Options',
+        salesOrder: {
+          title: 'Sale Order',
+          newOrder: 'New Order',
+          ordersHistory: 'Orders History',
+          generateImmediateInvoice: 'Generate Immediate Invoice',
+          completePreparedOrder: 'Complete Prepared Order',
+          cancelSaleTransaction: 'Cancel Sale Transaction',
+          createPos: 'Create Point of Sale Withdrawal',
+          toPrint: 'To Print'
+        },
+        cashManagement: {
+          title: 'Cash Management',
+          cashOpening: 'Cash Opening',
+          cashwithdrawal: 'Cash withdrawa',
+          closeBox: 'Close the box'
+        },
+        generalOptions: {
+          title: 'General Options',
+          changePos: 'Change Point of Sale',
+          listProducts: 'Change Point of Sale'
+        }
+      },
+      tableProduct: {
+        product: 'Product',
+        quantity: 'Quantity',
+        options: 'Options',
+        editQuantities: 'Edit Quantities',
+        remove: 'Remove'
+      },
+      product: {
+        productInformation: 'Product information',
+        code: 'Code',
+        name: 'Name',
+        description: 'Description',
+        price: 'Price',
+        taxRate: 'Tax Rate',
+        quantityAvailable: 'Quantity Avalible'
+      },
+      order: {
+        order: 'Order',
+        seller: 'Seller',
+        date: 'Date',
+        subTotal: 'Sub-Total',
+        type: 'Type',
+        discount: 'Descuento',
+        tax: 'Tax',
+        total: 'Total',
+        itemQuantity: 'Item Quantity',
+        numberLines: 'Number of Lines',
+        pointSale: 'Point of Sale',
+        collect: 'Collect'
+      },
+      collect: {
+        orderTotal: 'Order Total',
+        pending: 'Pending',
+        payment: 'Payment',
+        change: 'Change'
+      }
+    }
   }
 }

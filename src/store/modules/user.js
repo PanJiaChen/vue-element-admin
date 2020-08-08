@@ -23,7 +23,7 @@ import router, { resetRouter } from '@/router'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { convertDateFormat } from '@/utils/ADempiere/valueFormat'
-import language, { getLanguage } from '@/lang'
+import language from '@/lang'
 
 const state = {
   token: getToken(),
@@ -116,18 +116,21 @@ const actions = {
     })
   },
   getCountryFormServer({ commit }, {
-    countryId,
-    countryUuid
+    id,
+    uuid
   }) {
     return new Promise(resolve => {
       getCountryDefinition({
-        countryId,
-        countryUuid
+        id,
+        uuid
       })
         .then(responseCountry => {
           commit('setCountry', responseCountry)
 
           resolve(responseCountry)
+        })
+        .catch(error => {
+          console.warn(`Error getting Country Definition: ${error.message}. Code: ${error.code}.`)
         })
     })
   },
@@ -162,9 +165,8 @@ const actions = {
 
     return new Promise((resolve, reject) => {
       getSessionInfo(sessionUuid)
-        .then(responseGetInfo => {
+        .then(async responseGetInfo => {
           const { role } = responseGetInfo
-
           commit('setIsSession', true)
           commit('setSessionInfo', {
             id: responseGetInfo.id,
@@ -196,9 +198,8 @@ const actions = {
           commit('SET_ROLE', role)
           setCurrentRole(role.uuid)
 
+          await dispatch('getOrganizationsList', role.uuid)
           resolve(sessionResponse)
-
-          dispatch('getOrganizationsList', role.uuid)
 
           const countryId = parseInt(
             responseGetInfo.defaultContextMap.get('#C_Country_ID'),
@@ -209,7 +210,7 @@ const actions = {
           } else {
             // get country and currency
             dispatch('getCountryFormServer', {
-              countryId
+              id: countryId
             })
           }
 
@@ -278,30 +279,30 @@ const actions = {
   },
   // user logout
   logout({ commit, state, dispatch }) {
+    const token = state.token
     return new Promise((resolve, reject) => {
-      logout(state.token).then(() => {
-        commit('SET_TOKEN', '')
-        commit('SET_ROLES', [])
-        commit('setIsSession', false)
-        dispatch('resetStateBusinessData', null, {
-          root: true
-        })
-        dispatch('dictionaryResetCache', null, {
-          root: true
-        })
+      commit('SET_TOKEN', '')
+      commit('SET_ROLES', [])
+      removeToken()
 
-        dispatch('tagsView/delAllViews', null, { root: true })
-        removeToken()
-        removeCurrentRole()
-        resetRouter()
+      commit('setIsSession', false)
+      dispatch('resetStateBusinessData', null, {
+        root: true
+      })
+      dispatch('dictionaryResetCache', null, {
+        root: true
+      })
 
-        // reset visited views and cached views
-        // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
-        dispatch('tagsView/delAllViews', null, { root: true })
+      // reset visited views and cached views
+      // to fixed https://github.com/PanJiaChen/vue-element-admin/issues/2485
+      dispatch('tagsView/delAllViews', null, { root: true })
 
+      removeCurrentRole()
+      resetRouter()
+      logout(token).catch(error => {
+        console.warn(error)
+      }).finally(() => {
         resolve()
-      }).catch(error => {
-        reject(error)
       })
     })
   },
@@ -318,11 +319,14 @@ const actions = {
     if (isEmptyValue(roleUuid)) {
       roleUuid = getCurrentRole()
     }
-
     return getOrganizationsList({ roleUuid })
       .then(response => {
         commit('SET_ORGANIZATIONS_LIST', response.organizationsList)
-        let organization = response.organizationsList.find(item => item.uuid === getCurrentOrganization())
+        let organization = response.organizationsList.find(item => {
+          if (item.uuid === getCurrentOrganization()) {
+            return item
+          }
+        })
         if (isEmptyValue(organization)) {
           organization = response.organizationsList[0]
         }
@@ -340,19 +344,57 @@ const actions = {
         console.warn(`Error ${error.code} getting Organizations list: ${error.message}.`)
       })
   },
-  changeOrganization({ dispatch }, {
-    organizationUuid
+  changeOrganization({ commit, dispatch, getters }, {
+    organizationUuid,
+    organizationId,
+    isCloseAllViews = true
   }) {
     setCurrentOrganization(organizationUuid)
+    const organization = getters.getOrganizations.find(org => org.uuid === organizationUuid)
+    commit('SET_ORGANIZATION', organization)
+
     dispatch('getWarehousesList', organizationUuid)
+
+    // TODO: Check if there are no tagViews in the new routes to close them, and
+    // if they exist, reload with the new route using name (uuid)
+    const route = router.app._route
+    const selectedTag = {
+      fullPath: route.fullPath,
+      hash: route.hash,
+      matched: route.matched,
+      meta: route.meta,
+      name: route.name,
+      params: route.params,
+      path: route.path,
+      query: route.query,
+      title: route.meta.title
+    }
+
+    let actionToDispatch = 'tagsView/delOthersViews'
+    if (isCloseAllViews) {
+      actionToDispatch = 'tagsView/delAllViews'
+    }
+    dispatch(actionToDispatch, selectedTag, { root: true })
+
+    resetRouter()
+    dispatch('permission/generateRoutes', organizationId, {
+      root: true
+    })
+      .then(response => {
+        router.addRoutes(response)
+      })
   },
   getWarehousesList({ commit }, organizationUuid) {
     if (isEmptyValue(organizationUuid)) {
       organizationUuid = getCurrentOrganization()
     }
-    return getWarehousesList({ organizationUuid })
+
+    return getWarehousesList({
+      organizationUuid
+    })
       .then(response => {
         commit('SET_WAREHOUSES_LIST', response.warehousesList)
+
         let warehouse = response.warehousesList.find(item => item.uuid === getCurrentWarehouse())
         if (isEmptyValue(warehouse)) {
           warehouse = response.warehousesList[0]
@@ -409,6 +451,7 @@ const actions = {
     })
       .then(changeRoleResponse => {
         const { role } = changeRoleResponse
+
         commit('SET_ROLE', role)
         setCurrentRole(role.uuid)
         commit('SET_TOKEN', changeRoleResponse.uuid)
@@ -466,14 +509,14 @@ const getters = {
     }
     return currency
   },
-  getCountryLanguage(state) {
+  getCountryLanguage: (state) => {
     return state.country.language.replace('_', '-')
   },
   getLanguagesList: (state) => {
     return state.languagesList
   },
   getCurrentLanguageDefinition: (state) => {
-    return state.languagesList.find(definition => definition.languageISO === getLanguage())
+    return state.languagesList.find(definition => definition.language === state.country.language)
   },
   getRoles: (state) => {
     return state.rolesList

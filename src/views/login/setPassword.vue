@@ -78,11 +78,9 @@
 </template>
 
 <script>
-import { loginMixin } from '@/views/login/loginMixin'
-import { resetPasswordFromToken } from '@/api/ADempiere/enrollment'
-import { showMessage } from '@/utils/ADempiere/notification'
-import language from '@/lang'
-import router from '@/router'
+import loginMixin from './loginMixin.js'
+import { resetPasswordFromToken } from '@/api/ADempiere/enrollment.js'
+
 export default {
   name: 'ChangePassword',
   mixins: [loginMixin],
@@ -184,23 +182,25 @@ export default {
       })
         .then(createPasswordResponse => {
           if (createPasswordResponse.responseTypeStatus === 'OK') {
-            showMessage({
-              message: language.t('login.createPasswordSuccessful'),
+            this.$message({
+              message: this.$t('login.createPasswordSuccessful'),
+              showClose: true,
               type: 'success'
             })
           } else {
-            showMessage({
-              message: language.t('login.unexpectedError'),
+            this.$message({
+              message: this.$t('login.unexpectedError'),
+              showClose: true,
               type: 'error'
             })
           }
-          router.push({
-            path: 'login'
-          })
+
+          this.pathRedirect()
         })
         .catch(error => {
-          showMessage({
-            message: language.t('login.unexpectedError'),
+          this.$message({
+            message: this.$t('login.unexpectedError'),
+            showClose: true,
             type: 'error'
           })
           console.warn(`Create Password - Error ${error.code}: ${error.message}`)
@@ -208,13 +208,11 @@ export default {
         .finally(this.loading = false)
     },
     verifyToken() {
-      if (this.$route.query && this.$route.query.token && !this.isEmptyValue(this.$route.query.token)) {
+      if (this.$route.query && !this.isEmptyValue(this.$route.query.token)) {
         return true
       }
       this.$message.error(this.$t('login.invalidToken'))
-      this.$router.push({
-        path: 'login'
-      })
+      this.pathRedirect()
       return false
     }
   }

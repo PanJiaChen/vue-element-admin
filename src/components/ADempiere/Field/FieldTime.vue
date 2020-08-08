@@ -46,7 +46,11 @@ export default {
       return -Infinity
     },
     cssClassStyle() {
-      return this.metadata.cssClassName + ' custom-field-time'
+      let styleClass = ' custom-field-time '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
     }
   },
   methods: {

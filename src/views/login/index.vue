@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { loginMixin } from '@/views/login/loginMixin'
+import loginMixin from './loginMixin.js'
 import SocialSign from './components/SocialSignin'
 
 export default {
@@ -169,7 +169,12 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.$router.push({
+                path: this.redirect || '/',
+                query: this.otherQuery
+              }).catch(error => {
+                console.info(`Login View: ${error.name}, ${error.message}`)
+              })
             })
             .catch(error => {
               let message = this.$t('login.unexpectedError')

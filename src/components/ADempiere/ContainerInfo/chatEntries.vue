@@ -36,9 +36,11 @@
     </el-card>
   </div>
 </template>
+
 <script>
-import { MixinInfo } from '@/components/ADempiere/ContainerInfo/mixinInfo'
+import MixinInfo from './mixinInfo.js'
 import chatTextLong from '@/components/ADempiere/Field/chatTextLong'
+
 export default {
   name: 'ChatEntries',
   components: {

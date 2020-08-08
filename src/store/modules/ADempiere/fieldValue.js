@@ -14,19 +14,41 @@ const value = {
         field: {}
       }
     },
-    updateValueOfField(state, payload) {
+    /**
+     *
+     * @param {string}  parentUuid
+     * @param {string}  containerUuid
+     * @param {string}  columnName
+     * @param {mixed}   value
+     * @param {boolean} isOverWriteParent // overwite parent context values
+     */
+    updateValueOfField(state, {
+      parentUuid,
+      containerUuid,
+      columnName,
+      value,
+      isOverWriteParent = true
+    }) {
       //  Only Parent
-      if (payload.parentUuid) {
-        const keyParent = payload.parentUuid + '_' + payload.columnName
-        if (payload.value !== state.field[keyParent]) {
-          Vue.set(state.field, keyParent, payload.value)
+      if (parentUuid) {
+        const keyParent = parentUuid + '_' + columnName
+        const valueParent = state.field[keyParent]
+        if (value !== valueParent) {
+          if (isOverWriteParent) {
+            Vue.set(state.field, keyParent, value)
+          } else {
+            if (isEmptyValue(value)) {
+              // tab child no replace parent context with empty
+              Vue.set(state.field, keyParent, value)
+            }
+          }
         }
       }
       //  Only Container
-      if (payload.containerUuid) {
-        const keyContainer = payload.containerUuid + '_' + payload.columnName
-        if (payload.value !== state.field[keyContainer]) {
-          Vue.set(state.field, keyContainer, payload.value)
+      if (containerUuid) {
+        const keyContainer = containerUuid + '_' + columnName
+        if (value !== state.field[keyContainer]) {
+          Vue.set(state.field, keyContainer, value)
         }
       }
     },
@@ -65,16 +87,26 @@ const value = {
     }
   },
   getters: {
-    getValueOfField: (state) => ({ containerUuid, columnName }) => {
-      return state.field[containerUuid + '_' + columnName]
-    },
-    getValueOfContainer: (state) => ({ parentUuid, containerUuid, columnName }) => {
-      // get in tab level
-      let value = state.field[containerUuid + '_' + columnName]
-      if (isEmptyValue(value) && parentUuid) {
+    getValueOfField: (state) => ({
+      parentUuid,
+      containerUuid,
+      columnName
+    }) => {
+      let key = ''
+      let value
+      if (containerUuid) {
+        // get in tab level
+        key += containerUuid + '_'
+      }
+      key += columnName
+      value = state.field[key]
+
+      if (parentUuid && isEmptyValue(value)) {
         // get in window level
+        key = parentUuid + '_' + columnName
         value = state.field[parentUuid + '_' + columnName]
       }
+
       return value
     },
     /**
@@ -87,9 +119,9 @@ const value = {
     getValuesView: (state) => ({
       parentUuid,
       containerUuid,
+      isOnlyColumns = true,
       format = 'array'
     }) => {
-      console.log(parentUuid, containerUuid)
       // generate context with parent uuid or container uuid associated
       const contextAllContainers = {}
       Object.keys(state.field).forEach(key => {
@@ -102,26 +134,15 @@ const value = {
       const objectValues = {}
       const pairsValues = Object.keys(contextAllContainers).map(key => {
         const value = contextAllContainers[key]
-        if (isEmptyValue(value)) {
-          return
+        if (isOnlyColumns) {
+          key = key
+            .replace(`${parentUuid}_`, '')
+            .replace(`${containerUuid}_`, '')
         }
-        let columnName
-        if (parentUuid) {
-          if (!key.includes(containerUuid)) {
-            columnName = key
-              .replace(`${parentUuid}_`, '')
-              .replace(`${containerUuid}_`, '')
-            // set window parent context
-            objectValues[columnName] = value
-          }
-          // next if is tab context
-          return {
-            columnName,
-            value
-          }
-        }
+        // TODO: Verify if overwrite key with empty value
+        const columnName = key
+
         // set container context (smart browser, process/report, form)
-        columnName = key.replace(`${containerUuid}_`, '')
         objectValues[columnName] = value
         return {
           columnName,

@@ -8,7 +8,7 @@ const mockDir = path.join(process.cwd(), 'mock')
 
 function registerRoutes(app) {
   let mockLastIndex
-  const { default: mocks } = require('./index.js')
+  const { mocks } = require('./index.js')
   const mocksForServer = mocks.map(route => {
     return responseFake(route.url, route.type, route.response)
   })
@@ -44,9 +44,6 @@ const responseFake = (url, type, respond) => {
 }
 
 module.exports = app => {
-  // es6 polyfill
-  require('@babel/register')
-
   // parse app.body
   // https://expressjs.com/en/4x/api.html#req.body
   app.use(bodyParser.json())

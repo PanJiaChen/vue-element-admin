@@ -66,6 +66,9 @@ const window = {
           const tabsListChildren = []
 
           const tabsSequence = []
+          // indexes related to visualization
+          let tabParentIndex = 0
+          let tabChildrenIndex = 0
           // TODO Add source tab on the server for tabs Translation and Sort
           const tabs = responseWindow.tabsList.filter(itemTab => {
             if (itemTab.isSortTab) {
@@ -103,7 +106,7 @@ const window = {
               isAssociatedTabSequence: false, // show modal with order tab
               isShowedRecordNavigation: !(tabItem.isSingleRow),
               isLoadFieldsList: false,
-              index
+              index // this index is not related to the index in which the tabs are displayed
             }
             delete tab.processesList
 
@@ -213,10 +216,14 @@ const window = {
             })
 
             if (tab.isParentTab) {
+              tab.tabParentIndex = tabParentIndex
+              tabParentIndex++
               tabsListParent.push(tab)
               return tab
             }
             if (!tab.isSortTab) {
+              tab.tabChildrenIndex = tabChildrenIndex
+              tabChildrenIndex++
               tabsListChildren.push(tab)
             }
             return tab

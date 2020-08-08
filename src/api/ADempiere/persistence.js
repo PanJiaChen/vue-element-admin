@@ -6,10 +6,15 @@ import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
  * @param {string}  tableName
  * @param {array}   attributesList
  */
-export function createEntity({ tableName, attributes }) {
+export function createEntity({
+  tableName,
+  attributes,
+  formatReturn = 'array'
+}) {
   return Instance.call(this).requestCreateEntity({
     tableName,
-    attributesList: attributes
+    attributesList: attributes,
+    formatToConvert: formatReturn
   })
 }
 
@@ -20,12 +25,19 @@ export function createEntity({ tableName, attributes }) {
  * @param {string}  recordUuid
  * @param {array}   attributesList
  */
-export function updateEntity({ tableName, recordId, recordUuid, attributes }) {
+export function updateEntity({
+  tableName,
+  recordId,
+  recordUuid,
+  attributes,
+  formatReturn = 'array'
+}) {
   return Instance.call(this).requestUpdateEntity({
     tableName,
     recordId,
     recordUuid,
-    attributesList: attributes
+    attributesList: attributes,
+    formatToConvert: formatReturn
   })
 }
 
@@ -104,7 +116,7 @@ export function getEntitiesList({
  * @param {string} tableName
  * @param {string} language
  * @param {string} recordUuid
- * @param {integer} recordId
+ * @param {number} recordId
  */
 export function requestTranslations({ tableName, language, recordUuid, recordId, pageToken, pageSize }) {
   return Instance.call(this).requestListTranslations({
@@ -115,4 +127,21 @@ export function requestTranslations({ tableName, language, recordUuid, recordId,
     pageToken,
     pageSize
   })
+}
+
+// Download a resource from file name
+export function getResource({ resourceUuid }, callBack = {
+  onData: () => {},
+  onStatus: () => {},
+  onEnd: () => {}
+}) {
+  const stream = Instance.call(this).getResource({
+    resourceUuid
+  })
+
+  stream.on('data', (response) => callBack.onData(response))
+  stream.on('status', (status) => callBack.onStatus(status))
+  stream.on('end', (end) => callBack.onEnd(end))
+
+  return stream
 }

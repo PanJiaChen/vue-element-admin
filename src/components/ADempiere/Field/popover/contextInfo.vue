@@ -34,8 +34,7 @@
 </template>
 
 <script>
-import { showMessage } from '@/utils/ADempiere/notification'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 
 export default {
   name: 'FieldContextInfo',
@@ -65,7 +64,6 @@ export default {
     }
   },
   methods: {
-    showMessage,
     redirect({ window }) {
       const viewSearch = recursiveTreeSearch({
         treeData: this.permissionRoutes,
@@ -83,10 +81,13 @@ export default {
             tabParent: 0,
             [this.fieldAttributes.columnName]: this.value
           }
+        }).catch(error => {
+          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
         })
       } else {
-        this.showMessage({
+        this.$message({
           type: 'error',
+          showClose: true,
           message: this.$t('notifications.noRoleAccess')
         })
       }

@@ -8,7 +8,7 @@
       @change="changeRole"
     >
       <el-option
-        v-for="(role, key) in getRolesList"
+        v-for="(role, key) in rolesList"
         :key="key"
         :label="role.name"
         :value="role.uuid"
@@ -38,7 +38,7 @@
       @change="changeWarehouse"
     >
       <el-option
-        v-for="(warehouse, key) in getWarehousesList"
+        v-for="(warehouse, key) in warehousesList"
         :key="key"
         :label="warehouse.name"
         :value="warehouse.uuid"
@@ -49,8 +49,6 @@
 </template>
 
 <script>
-import { showMessage } from '@/utils/ADempiere/notification'
-
 export default {
   name: 'RolesNavbar',
   data() {
@@ -61,39 +59,44 @@ export default {
     }
   },
   computed: {
-    getRole() {
+    // TODO: Add double chanel
+    currentRole() {
       return this.$store.getters['user/getRole']
+    },
+    rolesList() {
+      return this.$store.getters['user/getRoles']
     },
     getOrganization() {
       return this.$store.getters['user/getOrganization']
     },
-    getWarehouse() {
-      return this.$store.getters['user/getWarehouse']
-    },
-    getRolesList() {
-      return this.$store.getters['user/getRoles']
-    },
     getOrganizationsList() {
       return this.$store.getters['user/getOrganizations']
     },
-    getWarehousesList() {
+    currentWarehouse() {
+      return this.$store.getters['user/getWarehouse']
+    },
+    warehousesList() {
       return this.$store.getters['user/getWarehouses']
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
+    }
+  },
+  watch: {
+    getOrganizationsList(value) {
+      this.organizationUuid = this.isEmptyValue(value) ? '' : value[0].uuid
     },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
+    warehousesList(value) {
+      this.warehouseUuid = this.isEmptyValue(value) ? '' : value[0].uuid
     }
   },
   created() {
-    this.roleUuid = this.getRole.uuid
+    this.roleUuid = this.currentRole.uuid
     this.organizationUuid = this.getOrganization.uuid
-    this.warehouseUuid = this.getWarehouse.uuid
-    this.getLanguageData()
+    this.warehouseUuid = this.currentWarehouse.uuid
+    this.getLanguages()
   },
   methods: {
-    showMessage,
     changeRole(roleUuid) {
       this.$message({
         message: this.$t('notifications.loading'),
@@ -106,23 +109,35 @@ export default {
       })
         .then(response => {
           if (this.$route.name !== 'Dashboard') {
-            this.$router.push({ path: '/' })
+            this.$router.push({
+              path: '/'
+            }).catch(error => {
+              console.info(`${this.name} Component: ${error.name}, ${error.message}`)
+            })
           }
           this.$store.dispatch('listDashboard', response.uuid)
         })
     },
     changeOrganization(organizationUuid) {
-      this.$store.dispatch('user/changeOrganization', {
-        organizationUuid
+      const currentOrganization = this.getOrganizationsList.find(element => element.uuid === organizationUuid)
+      this.$router.push({
+        path: '/'
+      }).catch(error => {
+        console.info(`${this.name} Component: ${error.name}, ${error.message}`)
       })
-      this.warehouseUuid = this.getWarehouse
+      this.$store.dispatch('user/changeOrganization', {
+        organizationUuid: organizationUuid,
+        organizationId: currentOrganization.id
+      })
+      this.warehouseUuid = this.currentWarehouse
     },
+    // TODO: Add change local list with server list
     changeWarehouse(warehouseUuid) {
       this.$store.dispatch('user/changeWarehouse', {
         warehouseUuid
       })
     },
-    getLanguageData() {
+    getLanguages() {
       if (this.isEmptyValue(this.getLanguageList)) {
         this.$store.dispatch('user/getLanguagesFromServer')
       }

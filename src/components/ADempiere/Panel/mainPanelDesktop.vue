@@ -121,7 +121,7 @@
 </template>
 
 <script>
-import { mainPanelMixin } from '@/components/ADempiere/Panel/mainPanelMixin.js'
+import mainPanelMixin from './mainPanelMixin.js'
 import draggable from 'vuedraggable'
 
 export default {

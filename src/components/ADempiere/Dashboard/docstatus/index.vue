@@ -13,7 +13,9 @@
               size="mini"
               :metadata="scope"
               :placeholder="$t('table.dataTable.search')"
-            />
+            >
+              <svg-icon slot="prefix" icon-class="search" />
+            </el-input>
           </template>
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
@@ -26,36 +28,22 @@
 
 <script>
 import { getPendingDocumentsFromServer } from '@/api/ADempiere/dashboard/dashboard'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
-import { showMessage } from '@/utils/ADempiere/notification'
+import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 
 export default {
   name: 'PendingDocuments',
-  props: {
-    metadata: {
-      type: Object,
-      required: true
-    }
-  },
+  mixins: [mixinDashboard],
   data() {
     return {
-      documents: [],
-      unsubscribe: () => {},
-      search: ''
+      documents: []
     }
   },
   computed: {
-    cachedViews() {
-      return this.$store.getters.cachedViews
-    },
     dataResult() {
       if (this.search.length) {
         return this.filterResult(this.search)
       }
       return this.documents
-    },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
     }
   },
   mounted() {
@@ -67,7 +55,6 @@ export default {
     this.unsubscribe()
   },
   methods: {
-    showMessage,
     getPendingDocuments() {
       const userUuid = this.$store.getters['user/getUserUuid']
       const roleUuid = this.$store.getters.getRoleUuid
@@ -97,37 +84,39 @@ export default {
       })
     },
     handleClick(row) {
-      const viewSearch = recursiveTreeSearch({
+      const viewSearch = this.recursiveTreeSearch({
         treeData: this.permissionRoutes,
         attributeValue: row.windowUuid,
         attributeName: 'meta',
         secondAttribute: 'uuid',
         attributeChilds: 'children'
       })
+
       if (viewSearch) {
+        let tabParent
+        if (row.action === 'window') {
+          tabParent = 0
+        }
+
         this.$router.push({
           name: viewSearch.name,
           params: {
             ...row.criteria
           },
           query: {
-            action: 'criteria'
+            action: 'criteria',
+            tabParent
           }
+        }).catch(error => {
+          console.info(`Dashboard/docstatus Component: ${error.name}, ${error.message}`)
         })
       } else {
-        this.showMessage({
+        this.$message({
           type: 'error',
           message: this.$t('notifications.noRoleAccess')
         })
       }
       // conditions for the registration amount (operador: row.criteria.whereClause)
-    },
-    filterResult(search) {
-      return this.documents.filter(item => this.ignoreAccent(item.name).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
-    },
-    ignoreAccent(s) {
-      if (!s) { return '' }
-      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     }
   }
 }

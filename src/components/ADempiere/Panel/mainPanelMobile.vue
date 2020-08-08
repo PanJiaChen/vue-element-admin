@@ -112,7 +112,7 @@
 </template>
 
 <script>
-import { mainPanelMixin } from '@/components/ADempiere/Panel/mainPanelMixin'
+import mainPanelMixin from './mainPanelMixin.js'
 
 export default {
   name: 'MainPanelMobile',

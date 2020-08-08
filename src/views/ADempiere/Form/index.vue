@@ -15,14 +15,14 @@
         :panel-type="panelType"
       />
     </el-header>
-    <el-main>
+    <el-main style="padding-right: 10px !important;">
       <el-row :gutter="20">
         <el-col :span="24">
           <el-card
             class="content-collapse"
-            :style="isEmptyValue(formMetadata.fieldList) ? ( showTitle ? 'height: 75vh !important;' : 'height: 78vh !important;') : ''"
+            :style="isEmptyValue(formMetadata.fieldList) ? ( showTitleFrom ? 'height: 100%!important;' : 'height: 100%!important;') : ''"
           >
-            <h3 v-if="showTitle" class="warn-content text-center">
+            <h3 v-if="showTitleFrom" class="warn-content text-center">
               <el-popover
                 v-if="!isEmptyValue(formMetadata.help)"
                 ref="helpTitle"
@@ -40,9 +40,9 @@
               >
                 {{ formTitle }}
               </el-button>
-              <el-button v-if="showTitle" type="text" style="float: right" :circle="true" icon="el-icon-arrow-up" @click="title" />
+              <el-button v-if="showTitleFrom" type="text" style="float: right" :circle="true" icon="el-icon-arrow-up" @click="title" />
             </h3>
-            <el-button v-if="!showTitle" type="text" style="float: right" :circle="true" icon="el-icon-arrow-down" @click="title" />
+            <el-button v-if="!showTitleFrom" type="text" style="position: absolute;right: 10px;" :circle="true" icon="el-icon-arrow-down" @click="title" />
             <form-panel
               :metadata="{
                 ...formMetadata,
@@ -80,19 +80,29 @@ export default {
       formUuid: this.$route.meta.uuid,
       formMetadata: {},
       isLoaded: false,
-      showTitle: true,
       panelType: 'form'
     }
   },
   computed: {
-    showContextMenu() {
-      return this.$store.state.settings.showContextMenu
-    },
     formTitle() {
       return this.formMetadata.name || this.$route.meta.title
     },
     getterForm() {
       return this.$store.getters.getForm(this.formUuid)
+    },
+    showContextMenu: {
+      get() {
+        return this.$store.state.settings.showContextMenu
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showContextMenu',
+          value: val
+        })
+      }
+    },
+    showTitleFrom() {
+      return this.$store.getters.getShowTitleFrom
     }
   },
   created() {
@@ -100,7 +110,7 @@ export default {
   },
   methods: {
     title() {
-      this.showTitle = !this.showTitle
+      this.$store.dispatch('showTitleFrom', !this.showTitleFrom)
     },
     getForm() {
       const panel = this.getterForm
@@ -127,12 +137,23 @@ export default {
 <style>
   .el-card__body {
     padding-top: 0px !important;
-    padding-right: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
+    padding-right: 0px !important;
+    padding-bottom: 2px !important;
+    padding-left: 0px !important;
+    height: 100%!important;
   }
 </style>
 <style scoped >
+  .el-row {
+    position: relative;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    height: 100%!important;
+  }
+  .el-col-24 {
+    width: 100%;
+    height: 100%!important;
+  }
   .view-base {
     height: 100%;
     min-height: calc(100vh - 84px);
@@ -167,7 +188,7 @@ export default {
   }
   .el-card {
     width: 100% !important;
-    height: 200% !important;
+    height: 100% !important;
   }
   .content-collapse {
     padding-left: 20 px !important;

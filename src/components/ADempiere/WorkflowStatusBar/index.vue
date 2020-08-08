@@ -3,17 +3,18 @@
     <el-step
       v-for="(node, index) in listDocumentStatus"
       :key="index"
-      :icon="index < getActive ? 'el-icon-finished' : ( index === getActive ? 'el-icon-s-flag' : 'el-icon-d-arrow-right')"
+      :icon="index < getActive ? 'el-icon-finished' : (index === getActive ? 'el-icon-s-flag' : 'el-icon-d-arrow-right')"
     >
       <template slot="title">
         <el-popover
           v-if="index === getActive"
+          index="popver-active"
           placement="top-start"
           width="400"
           trigger="click"
         >
           <el-select
-            v-model="valueActionDocument"
+            v-model="value"
             @change="documentActionChange"
             @visible-change="listActionDocument"
           >
@@ -24,27 +25,41 @@
               :value="item.value"
             />
           </el-select>
+
           <el-tag
-            v-if="isEmptyValue(valueActionDocument)"
-            :type="tagStatus(getValueStatus)"
+            v-if="!isEmptyValue(value)"
+            index="tag-with-value"
+            :type="tagStatus(value)"
           >
-            {{ getValue.displayColumn }}
+            {{ displayedValue }}
           </el-tag>
           <el-tag
             v-else
-            :type="tagStatus(valueActionDocument)"
+            index="tag-without-value"
+            :type="tagStatus(value)"
           >
-            {{ labelDocumentActions }}
+            {{ infoDocumentAction.name }}
           </el-tag>
-          <p v-if="isEmptyValue(descriptionDocumentActions)"> {{ getValue.description }} </p>
-          <p v-else> {{ descriptionDocumentActions }} </p>
-          <el-link slot="reference" :autofocus="true" :underline="false" class="title"> {{ node.name }} </el-link>
+
+          <p v-if="!isEmptyValue(infoDocumentAction.description)" index="with-description">
+            {{ infoDocumentAction.description }}
+          </p>
+          <p v-else index="without-description">
+            {{ fieldDocStatus.description }}
+          </p>
+
+          <el-link slot="reference" :autofocus="true" :underline="false" class="title">
+            {{ node.name }}
+          </el-link>
         </el-popover>
-        <span v-else> {{ node.name }} </span>
+        <span v-else index="node-name">
+          {{ node.name }}
+        </span>
       </template>
     </el-step>
   </el-steps>
 </template>
+
 <script>
 export default {
   name: 'WorkflowStatusBar',
@@ -67,102 +82,82 @@ export default {
     }
   },
   data() {
+    // TODO: See 'DocAction'
+    const columnName = 'DocStatus'
+
     return {
       currentKey: 100,
       typeAction: 0,
       chatNote: '',
-      documentStatusesList: [],
-      valueActionDocument: ''
+      columnName,
+      displayColumnName: `DisplayColumn_${columnName}`,
+      documentStatusesList: []
     }
   },
   computed: {
-    getPanelRight() {
-      return this.$store.getters.getPanelRight
+    value: {
+      get() {
+        return this.$store.getters.getValueOfField({
+          parentUuid: this.parentUuid,
+          containerUuid: this.containerUuid,
+          columnName: this.columnName
+        })
+      },
+      set(value) {
+        this.$store.commit('updateValueOfField', {
+          parentUuid: this.parentUuid,
+          containerUuid: this.containerUuid,
+          columnName: this.columnName,
+          value
+        })
+      }
     },
-    getterPanel() {
-      return this.$store.getters.getPanel(this.containerUuid)
+    displayedValue() {
+      return this.$store.getters.getValueOfField({
+        parentUuid: this.parentUuid,
+        containerUuid: this.containerUuid,
+        // DisplayColumn_'ColumnName'
+        columnName: this.displayColumnName
+      })
     },
-    getValueStatus() {
-      const panel = this.getterPanel
-      var status
+    fieldDocStatus() {
+      const panel = this.$store.getters.getPanel(this.containerUuid)
       if (!this.isEmptyValue(panel)) {
-        status = panel.fieldList.find(field => {
-          if (field.columnName === 'DocStatus') {
-            return field
-          }
+        const field = panel.fieldList.find(fieldItem => {
+          return fieldItem.columnName === this.columnName
         })
+        return field
       }
-      if (!this.isEmptyValue(status)) {
-        return status.value
-      }
-      return 'CL'
-    },
-    getValue() {
-      if (!this.isEmptyValue(this.getterPanel)) {
-        var value = this.getterPanel.fieldList.find(field => {
-          if (field.columnName === 'DocStatus') {
-            return field
-          }
-        })
-        return value
-      }
-      return 'CL'
+      return undefined
     },
     getActive() {
-      const active = this.listDocumentStatus.findIndex(index => index.value === this.getValueStatus)
-      return active
-    },
-    gettersNodeList() {
-      var node = this.$store.getters.getNodeWorkflow
-      if (!this.isEmptyValue(node.workflowsList)) {
-        return node.workflowsList[0].workflowNodesList
-      }
-      return node.workflowsList
+      const valueStatus = this.value
+      return this.listDocumentStatus.findIndex(index => index.value === valueStatus)
     },
     listDocumentStatus() {
       return this.$store.getters.getListDocumentStatus.documentActionsList
-    },
-    typeStatus() {
-      if (this.getValueStatus === 'VO') {
-        return 'error'
-      } else {
-        return 'success'
-      }
     },
     documentActions() {
       return this.$store.getters.getListDocumentActions
     },
     listDocumentActions() {
+      // TODO: Add current value in disabled
       return this.documentActions.documentActionsList
     },
-    labelDocumentActions() {
+    infoDocumentAction() {
+      const value = this.value
       const found = this.listDocumentActions.find(element => {
-        if (element.value === this.valueActionDocument) {
-          return element
-        }
+        return element.value === value
       })
+
       if (this.isEmptyValue(found)) {
-        return this.valueActionDocument
+        return value
       }
-      return found.name
-    },
-    descriptionDocumentActions() {
-      const found = this.listDocumentActions.find(element => {
-        if (element.value === this.valueActionDocument) {
-          return element
-        }
-      })
-      if (this.isEmptyValue(found)) {
-        return this.valueActionDocument
-      }
-      return found.description
+      return found
     },
     processOrderUuid() {
       return this.$store.getters.getOrders
     }
-  },
-  created() {
-    this.gettersNodeList
   },
   methods: {
     listActionDocument(isShowList) {
@@ -197,14 +192,14 @@ export default {
       //       recordUuid: this.$route.query.action,
       //       parametersList: [{
       //         columnName: 'DocAction',
-      //         value: this.valueActionDocument
+      //         value: this.value
       //       }],
       //       isActionDocument: true,
       //       parentUuid: this.parentUuid,
       //       panelType: this.panelType,
       //       containerUuid: this.containerUuid// determinate if get table name and record id (window) or selection (browser)
       //     })
-      //     this.valueActionDocument = ''
+      //     this.value = ''
       //   })
     }
   }
@@ -217,7 +212,6 @@ export default {
     color: #000000;
   }
 </style>
-
 <style>
   .scroll-window-log-change {
     max-height: 74vh !important;

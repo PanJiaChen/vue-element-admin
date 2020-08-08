@@ -13,7 +13,13 @@
           ref="tag"
           :key="tag.path"
           :class="isActive(tag)?'active':''"
-          :to="{ name: tag.name, path: tag.path, query: tag.query, fullPath: tag.fullPath, params: tag.params }"
+          :to="{
+            name: tag.name,
+            path: tag.path,
+            query: tag.query,
+            fullPath: tag.fullPath,
+            params: tag.params
+          }"
           tag="span"
           class="tags-view-item"
           @click.middle.native="!isAffix(tag) ? closeSelectedTag(tag) : ''"

@@ -1,15 +1,15 @@
 <template>
   <el-form>
     <el-form-item :label="$t('profile.currentRole')">
-      {{ getRole.name }}
+      {{ currentRole.name }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.clientName')">
-      {{ getRole.clientName }}
+      {{ currentRole.clientName }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.description')">
-      {{ getRole.description }}
+      {{ currentRole.description }}
     </el-form-item>
 
     <el-form-item :label="$t('profile.changeRole')">
@@ -20,7 +20,7 @@
         @change="handleChange"
       >
         <el-option
-          v-for="(rol, key) in getRolesList"
+          v-for="(rol, key) in rolesList"
           :key="key"
           :label="rol.name"
           :value="rol.uuid"
@@ -38,7 +38,7 @@
         @change="changeLanguage"
       >
         <el-option
-          v-for="item in getLanguageList"
+          v-for="item in languagesList"
           :key="item.value"
           :label="item.languageName"
           :value="item.languageISO"
@@ -50,7 +50,6 @@
 
 <script>
 import { getLanguage } from '@/lang'
-import { showMessage } from '@/utils/ADempiere'
 
 export default {
   name: 'ProfileRole',
@@ -62,36 +61,33 @@ export default {
     }
   },
   computed: {
-    getRole() {
+    currentRole() {
       return this.$store.getters['user/getRole']
     },
-    getRolesList() {
+    rolesList() {
       return this.$store.getters['user/getRoles']
     },
-    getLanguageList() {
+    languagesList() {
       return this.$store.getters.getLanguagesList
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
-    },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
     }
   },
   watch: {
-    'getRole.uuid'(uuidRol) {
+    'currentRole.uuid'(uuidRol) {
       this.valueRol = uuidRol
     }
   },
   created() {
-    this.valueRol = this.getRole.uuid
-    this.getLanguageData()
+    this.valueRol = this.currentRole.uuid
+    this.getLanguages()
   },
   methods: {
-    showMessage,
     handleChange(valueSelected) {
       this.$message({
         message: this.$t('notifications.loading'),
+        showClose: true,
         iconClass: 'el-icon-loading'
       })
       this.$store.dispatch('user/changeRole', {
@@ -104,11 +100,11 @@ export default {
     },
     loadLanguageList(open) {
       if (open) {
-        this.getLanguageData()
+        this.getLanguages()
       }
     },
-    getLanguageData() {
-      if (this.isEmptyValue(this.getLanguageList)) {
+    getLanguages() {
+      if (this.isEmptyValue(this.languagesList)) {
         this.$store.dispatch('user/getLanguagesFromServer')
       }
     }

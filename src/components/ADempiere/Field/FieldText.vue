@@ -12,12 +12,14 @@
     :maxlength="maxLength"
     :show-password="Boolean(metadata.isEncrypted)"
     :autofocus="metadata.inTable"
+    :size="inputSize"
     @change="preHandleChange"
     @blur="focusLost"
     @focus="focusGained"
     @keydown.native="keyPressed"
     @keyup.native="keyReleased"
     @keyup.native.enter="actionKeyPerformed"
+    @submit="false"
   />
 </template>
 
@@ -49,6 +51,13 @@ export default {
     }
   },
   computed: {
+    cssClassStyle() {
+      let styleClass = ' custom-field-text '
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
+      }
+      return styleClass
+    },
     // Only used when input type='TextArea'
     rows() {
       if (this.metadata.inTable) {
@@ -68,6 +77,12 @@ export default {
       }
       return typeInput
     },
+    inputSize() {
+      if (this.isEmptyValue(this.metadata.inputSize)) {
+        return 'medium'
+      }
+      return this.metadata.inputSize
+    },
     maxLength() {
       if (!this.isEmptyValue(this.metadata.fieldLength) && this.metadata.fieldLength > 0) {
         return Number(this.metadata.fieldLength)
@@ -77,3 +92,9 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .custom-field-text {
+    max-height: 34px;
+  }
+</style>

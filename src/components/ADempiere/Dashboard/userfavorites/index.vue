@@ -14,7 +14,9 @@
               size="mini"
               :metadata="scope"
               :placeholder="$t('table.dataTable.search')"
-            />
+            >
+              <svg-icon slot="prefix" icon-class="search" />
+            </el-input>
           </template>
           <template slot-scope="{row}">
             <span>{{ row.name }}</span>
@@ -24,10 +26,24 @@
             <br>
             <el-button-group class="actions-buttons">
               <el-tooltip :content="$t('quickAccess.newRecord')" placement="top">
-                <el-button v-if="row.action === 'window'" size="mini" circle @click.stop="windowAction(row, 'create-new')"><i class="el-icon-circle-plus-outline" /></el-button>
+                <el-button
+                  v-if="row.action === 'window'"
+                  size="mini"
+                  circle
+                  @click.stop="windowAction(row, 'create-new')"
+                >
+                  <i class="el-icon-circle-plus-outline" />
+                </el-button>
               </el-tooltip>
               <el-tooltip :content="$t('quickAccess.listRecords')" placement="top">
-                <el-button v-if="row.action === 'window'" size="mini" circle @click.stop="windowAction(row, 'listRecords')"><i class="el-icon-search" /></el-button>
+                <el-button
+                  v-if="row.action === 'window'"
+                  size="mini"
+                  circle
+                  @click.stop="windowAction(row, 'listRecords')"
+                >
+                  <i class="el-icon-search" />
+                </el-button>
               </el-tooltip>
             </el-button-group>
           </template>
@@ -38,40 +54,25 @@
 </template>
 
 <script>
-import { getFavoritesFromServer } from '@/api/ADempiere/dashboard/dashboard'
-import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
-import { showMessage } from '@/utils/ADempiere/notification'
+import { getFavoritesFromServer } from '@/api/ADempiere/dashboard/dashboard.js'
+import { convertAction } from '@/utils/ADempiere/dictionaryUtils.js'
+import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 
 export default {
   name: 'Favorites',
-  props: {
-    metadata: {
-      type: Object,
-      required: true
-    }
-  },
+  mixins: [mixinDashboard],
   data() {
     return {
       favorites: [],
-      unsubscribe: () => {},
-      isLoaded: true,
-      search: '',
-      accentRegexp: /[\u0300-\u036f]/g
+      isLoaded: true
     }
   },
   computed: {
-    cachedViews() {
-      return this.$store.getters.cachedViews
-    },
     dataResult() {
       if (this.search.length) {
         return this.filterResult(this.search)
       }
       return this.favorites
-    },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
     }
   },
   mounted() {
@@ -83,7 +84,6 @@ export default {
     this.unsubscribe()
   },
   methods: {
-    showMessage,
     getFavoritesList() {
       const userUuid = this.$store.getters['user/getUserUuid']
       return new Promise(resolve => {
@@ -115,51 +115,8 @@ export default {
         }
       })
     },
-    handleClick(row) {
-      const viewSearch = recursiveTreeSearch({
-        treeData: this.permissionRoutes,
-        attributeValue: row.referenceUuid,
-        attributeName: 'meta',
-        secondAttribute: 'uuid',
-        attributeChilds: 'children'
-      })
-
-      if (viewSearch) {
-        let recordUuid
-        if (!this.isEmptyValue(row.uuidRecord)) {
-          recordUuid = row.uuidRecord
-        }
-        let tabParent
-        if (row.action === 'window') {
-          tabParent = 0
-        }
-
-        this.$router.push({
-          name: viewSearch.name,
-          query: {
-            action: recordUuid,
-            tabParent
-          }
-        })
-      } else {
-        this.showMessage({
-          type: 'error',
-          message: this.$t('notifications.noRoleAccess')
-        })
-      }
-    },
-    filterResult(search) {
-      return this.favorites.filter(item => this.ignoreAccent(item.name).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
-    },
-    ignoreAccent(s) {
-      if (!s) { return '' }
-      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    },
-    translateDate(value) {
-      return this.$d(new Date(value), 'long', this.language)
-    },
     windowAction(row, param) {
-      const viewSearch = recursiveTreeSearch({
+      const viewSearch = this.recursiveTreeSearch({
         treeData: this.permissionRoutes,
         attributeValue: row.referenceUuid,
         attributeName: 'meta',
@@ -174,9 +131,11 @@ export default {
             action: param,
             tabParent: 0
           }
+        }).catch(error => {
+          console.info(`Dashboard/userfavorites Component: ${error.name}, ${error.message}`)
         })
       } else {
-        this.showMessage({
+        this.$message({
           type: 'error',
           message: this.$t('notifications.noRoleAccess')
         })

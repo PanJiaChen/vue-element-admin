@@ -20,10 +20,17 @@ const form = {
       if (payload.attributeNameControl) {
         value = payload.form[payload.attributeNameControl]
       }
-      payload.form[payload.attributeName] = value
+      if (isEmptyValue(payload.attributeName)) {
+        payload.form[payload.attributeName] = value
+      }
     }
   },
   actions: {
+    addForm({ commit, getters }, metadataForm) {
+      if (!getters.getForm(metadataForm.uuid)) {
+        commit('addForm', metadataForm)
+      }
+    },
     getFormFromServer({ commit, dispatch }, {
       id,
       containerUuid,

@@ -4,7 +4,7 @@
     <right-menu>
       <el-menu
         ref="contextMenu"
-        v-shortkey="{ f2: ['f2'], f3: ['f3'], f5: ['f5'], f3:['ctrl', 'd'] }"
+        v-shortkey="shorcutKey"
         :default-active="activeMenu"
         :router="false"
         class="el-menu-demo"
@@ -119,7 +119,7 @@
 </template>
 
 <script>
-import { contextMixin } from '@/components/ADempiere/ContextMenu/contextMenuMixin'
+import contextMixin from './contextMenuMixin.js'
 import RightMenu from '@/components/RightPanel/menu'
 
 export default {
@@ -130,13 +130,13 @@ export default {
   mixins: [contextMixin],
   computed: {
     isPanelTypeMobile() {
-      if (this.$route.meta.type === 'process' || this.$route.meta.type === 'report') {
+      if (['process', 'report'].includes(this.$route.meta.type)) {
         return true
       }
       return false
     },
     iconDefault() {
-      if (this.$route.meta.type === 'process') {
+      if (this.isPanelTypeMobile) {
         return 'component'
       }
       return 'skill'
@@ -144,6 +144,7 @@ export default {
   }
 }
 </script>
+
 <style scoped>
   .svg-icon {
     width: 1em;

@@ -1,9 +1,11 @@
 import { getMenu } from '@/api/user'
 import { getToken } from '@/utils/auth'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
+import store from '@/store'
 
 /* Layout  */
 import Layout from '@/layout'
+import { isEmptyValue } from '@adempiere/grpc-core-client'
 
 const staticRoutes = [
   {
@@ -71,22 +73,22 @@ const staticRoutes = [
 ]
 
 // Get Menu from server
-export function loadMainMenu() {
+export function loadMainMenu(organizationId = 0) {
   return new Promise(resolve => {
+    organizationId = isEmptyValue(store.getters['user/getOrganization']) ? 0 : store.getters['user/getOrganization'].id
     getMenu(getToken()).then(menuResponse => {
       const asyncRoutesMap = []
       menuResponse.childsList.forEach(menuElement => {
-        const optionMenu = getRouteFromMenuItem(menuElement)
+        const optionMenu = getRouteFromMenuItem(menuElement, organizationId)
         if (menuElement.isSummary) {
           menuElement.childsList.forEach(menu => {
-            const childsSumaryConverted = getChildFromAction(menu, 0)
-
+            const childsSumaryConverted = getChildFromAction({ menu, index: 0, organizationId })
             optionMenu.children.push(childsSumaryConverted)
             optionMenu.children[0].meta.childs.push(childsSumaryConverted)
             optionMenu.meta.childs.push(childsSumaryConverted)
           })
         } else {
-          const childsConverted = getChildFromAction(menuElement)
+          const childsConverted = getChildFromAction({ menu: menuElement, index: undefined, organizationId })
 
           optionMenu.children.push(childsConverted)
           optionMenu.meta.childs.push(childsConverted)
@@ -101,16 +103,17 @@ export function loadMainMenu() {
 }
 
 // Get Only Child
-function getChildFromAction(menu, index) {
+function getChildFromAction({ menu, index, organizationId }) {
   const action = menu.action
   const actionAttributes = convertAction(action)
+  const clientId = store.getters['user/getRole'].clientId
   let routeIdentifier = actionAttributes.name + '/' + menu.id
   if (menu.isSummary) {
     routeIdentifier = '/' + menu.id
   }
 
   const option = {
-    path: routeIdentifier,
+    path: '/' + clientId + '/' + organizationId + '/' + routeIdentifier,
     component: actionAttributes.component,
     name: menu.uuid,
     hidden: index > 0,
@@ -136,7 +139,7 @@ function getChildFromAction(menu, index) {
   if (actionAttributes.isIndex || actionAttributes.name === 'summary') {
     option['children'] = []
     menu.childsList.forEach(child => {
-      const menuConverted = getChildFromAction(child, 1)
+      const menuConverted = getChildFromAction({ menu: child, index: 1, organizationId })
       option.children.push(menuConverted)
       option.meta.childs.push(menuConverted)
     })
@@ -145,11 +148,12 @@ function getChildFromAction(menu, index) {
 }
 
 // Convert menu item from server to Route
-function getRouteFromMenuItem(menu) {
+function getRouteFromMenuItem(menu, organizationId) {
   const action = menu.action
   const actionAttributes = convertAction(action)
+  const clientId = store.getters['user/getRole'].clientId
   const optionMenu = {
-    path: '/' + menu.id,
+    path: '/' + clientId + '/' + organizationId + '/' + menu.id,
     redirect: '/' + menu.id + '/index',
     component: Layout,
     name: menu.uuid,

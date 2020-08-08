@@ -14,7 +14,9 @@
               size="mini"
               :metadata="scope"
               :placeholder="$t('table.dataTable.search')"
-            />
+            >
+              <svg-icon slot="prefix" icon-class="search" />
+            </el-input>
           </template>
           <template slot-scope="{row}">
             <span>{{ row.displayName }}</span>
@@ -35,45 +37,27 @@
 <script>
 import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere/dashboard/dashboard'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
-import { showMessage } from '@/utils/ADempiere/notification'
+import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 
 export default {
   name: 'RecentItems',
-  props: {
-    metadata: {
-      type: Object,
-      required: true
-    }
-  },
+  mixins: [mixinDashboard],
   data() {
     return {
       recentItems: [],
-      unsubscribe: () => {},
-      isLoaded: true,
-      search: '',
-      accentRegexp: /[\u0300-\u036f]/g
+      isLoaded: true
     }
   },
   computed: {
-    getterRecentItems() {
-      return this.$store.getters.getRecentItems
-    },
-    cachedViews() {
-      return this.$store.getters.cachedViews
-    },
     dataResult() {
       if (this.search.length) {
         return this.filterResult(this.search)
       }
       return this.recentItems
-    },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
     }
   },
   mounted() {
-    this.getRecentItems({ pageToken: undefined, pageSize: undefined })
+    this.getRecentItems({})
 
     this.unsubscribe = this.subscribeChanges()
   },
@@ -81,10 +65,6 @@ export default {
     this.unsubscribe()
   },
   methods: {
-    showMessage,
-    checkOpened(uuid) {
-      return this.cachedViews.includes(uuid)
-    },
     getRecentItems({ pageToken, pageSize }) {
       return new Promise(resolve => {
         getRecentItemsFromServer({ pageToken, pageSize })
@@ -111,52 +91,12 @@ export default {
           })
       })
     },
-    handleClick(row) {
-      const viewSearch = recursiveTreeSearch({
-        treeData: this.permissionRoutes,
-        attributeValue: row.referenceUuid,
-        attributeName: 'meta',
-        secondAttribute: 'uuid',
-        attributeChilds: 'children'
-      })
-
-      if (viewSearch) {
-        let recordUuid
-        if (!this.isEmptyValue(row.uuidRecord)) {
-          recordUuid = row.uuidRecord
-        }
-        let tabParent
-        if (row.action === 'window') {
-          tabParent = 0
-        }
-
-        this.$router.push({
-          name: viewSearch.name,
-          query: {
-            action: recordUuid,
-            tabParent
-          }
-        })
-      } else {
-        this.showMessage({
-          type: 'error',
-          message: this.$t('notifications.noRoleAccess')
-        })
-      }
-    },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'notifyDashboardRefresh') {
           this.getRecentItems()
         }
       })
-    },
-    filterResult(search) {
-      return this.recentItems.filter(item => this.ignoreAccent(item.displayName).toLowerCase().includes(this.ignoreAccent(search.toLowerCase())))
-    },
-    ignoreAccent(s) {
-      if (!s) { return '' }
-      return s.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     },
     translateDate(value) {
       return this.$d(new Date(value), 'long', this.language)

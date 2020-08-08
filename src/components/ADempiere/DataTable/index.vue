@@ -249,6 +249,7 @@ import TableContextMenu from '@/components/ADempiere/DataTable/menu/tableContext
 import TableMainMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatField } from '@/utils/ADempiere/valueFormat'
+import { typeValue } from '@/utils/ADempiere/valueUtils.js'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
 import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
@@ -620,7 +621,7 @@ export default {
         return row[field.columnName] ? this.$t('components.switchActiveText') : this.$t('components.switchInactiveText')
       } else if (field.componentPath === 'FieldDate' || field.componentPath === 'FieldTime') {
         let cell = row[field.columnName]
-        if (Object.prototype.toString.call(cell) === '[object Date]') {
+        if (typeValue(cell) === 'DATE') {
           cell = cell.getTime()
         }
         // replace number timestamp value for date
@@ -1234,7 +1235,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;
@@ -1259,7 +1260,7 @@ export default {
       display: inline-block;
       vertical-align: middle;
 
-      /deep/ .el-input__inner {
+      ::v-deep .el-input__inner {
         border-radius: 0;
         border: 0;
         padding-left: 0;

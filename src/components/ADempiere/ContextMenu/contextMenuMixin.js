@@ -1,10 +1,11 @@
-import { showNotification, showMessage } from '@/utils/ADempiere/notification'
+import { showNotification } from '@/utils/ADempiere/notification.js'
 import Item from './items'
-import { convertFieldListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
-import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil'
+import { convertFieldListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil.js'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
 
-export const contextMixin = {
+export default {
+  name: 'MixinContextMenu',
   components: {
     Item
   },
@@ -192,6 +193,14 @@ export const contextMixin = {
     },
     isManageDataRecords() {
       return ['browser', 'window'].includes(this.panelType)
+    },
+    shorcutKey() {
+      return {
+        defaultValues: ['f2'],
+        deleteRecord: ['f3'],
+        deleteRecord2: ['ctrl', 'd'],
+        refreshData: ['f5']
+      }
     }
   },
   watch: {
@@ -229,11 +238,10 @@ export const contextMixin = {
     this.getReferences()
   },
   methods: {
-    showMessage,
     showNotification,
     actionContextMenu(event) {
       switch (event.srcKey) {
-        case 'f2':
+        case 'defaultValues':
           this.$store.dispatch('setDefaultValues', {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
@@ -242,14 +250,15 @@ export const contextMixin = {
             isNewRecord: true
           })
           break
-        case 'f3':
+        case 'deleteRecord':
+        case 'deleteRecord2':
           this.$store.dispatch('deleteEntity', {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
             recordUuid: this.recordUuid
           })
           break
-        case 'f5':
+        case 'refreshData':
           this.refreshData()
           break
       }
@@ -271,7 +280,7 @@ export const contextMixin = {
           fieldsList: this.getterFieldList
         })
         if (fieldsEmpty.length) {
-          this.showMessage({
+          this.$message({
             message: this.$t('notifications.mandatoryFieldMissing') + fieldsEmpty,
             type: 'info'
           })
@@ -328,7 +337,11 @@ export const contextMixin = {
       })
     },
     formatJson(filterVal, jsonData) {
-      return jsonData.map(v => filterVal.map(j => v[j]))
+      return jsonData.map(row => {
+        return filterVal.map(column => {
+          return row[column]
+        })
+      })
     },
     generateContextMenu() {
       this.metadataMenu = this.getterContextMenu
@@ -392,7 +405,7 @@ export const contextMixin = {
     },
     showModal(action) {
       // TODO: Refactor and remove redundant dispatchs
-      if (action.type === 'process') {
+      if (['process'].includes(action.type)) {
         // Add context from view open in process to opening
         if (action.parentUuidAssociated || action.containerUuidAssociated) {
           const attributes = this.$store.getters.getValuesView({
@@ -431,6 +444,8 @@ export const contextMixin = {
             query: {
               ...this.getOldRouteOfWindow.query
             }
+          }).catch(error => {
+            console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
           })
         } else {
           this.$store.dispatch(action.action, {
@@ -575,9 +590,11 @@ export const contextMixin = {
               // windowUuid: this.parentUuid,
               tabParent: 0
             }
+          }).catch(error => {
+            console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
           })
         } else {
-          this.showMessage({
+          this.$message({
             type: 'error',
             message: this.$t('notifications.noRoleAccess')
           })
@@ -639,6 +656,7 @@ export const contextMixin = {
       this.$message({
         message: message,
         type: 'success',
+        showClose: true,
         duration: 1500
       })
     },
@@ -649,45 +667,33 @@ export const contextMixin = {
           action: this.getReportDefinition.output.printFormatUuid,
           tabParent: ROUTES.PRINT_FORMAT_SETUP_WINDOW.tabParent
         }
+      }).catch(error => {
+        console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
       })
     },
     validatePrivateAccess({ isLocked, tableName, recordId }) {
       if (this.isPersonalLock) {
+        let isHiddenLock = false
         if (isLocked) {
-          this.actions = this.actions.map(actionItem => {
-            if (actionItem.action === 'unlockRecord') {
-              return {
-                ...actionItem,
-                hidden: false,
-                tableName,
-                recordId
-              }
-            } else if (actionItem.action === 'lockRecord') {
-              return {
-                ...actionItem,
-                hidden: true
-              }
-            }
-            return actionItem
-          })
-        } else {
-          this.actions = this.actions.map(actionItem => {
-            if (actionItem.action === 'lockRecord') {
-              return {
-                ...actionItem,
-                hidden: false,
-                tableName,
-                recordId
-              }
-            } else if (actionItem.action === 'unlockRecord') {
-              return {
-                ...actionItem,
-                hidden: true
-              }
-            }
-            return actionItem
-          })
+          isHiddenLock = true
         }
+
+        this.actions = this.actions.map(actionItem => {
+          if (actionItem.action === 'lockRecord') {
+            return {
+              ...actionItem,
+              hidden: isHiddenLock,
+              tableName,
+              recordId
+            }
+          } else if (actionItem.action === 'unlockRecord') {
+            return {
+              ...actionItem,
+              hidden: !isHiddenLock
+            }
+          }
+          return actionItem
+        })
       }
     }
   }

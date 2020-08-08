@@ -123,7 +123,11 @@ export default {
     },
     async logout() {
       await this.$store.dispatch('user/logout')
-      this.$router.push({ path: '/login', query: { redirect: this.$route.fullPath }})
+      this.$router.push({
+        path: '/login'
+      }).catch(error => {
+        console.info(error)
+      })
     },
     handleClick() {
       this.$router.push({ name: 'Profile' })

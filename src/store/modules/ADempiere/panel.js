@@ -5,7 +5,11 @@
 // - Window: Just need storage tab and fields
 // - Process & Report: Always save a panel and parameters
 // - Smart Browser: Can have a search panel, table panel and process panel
-import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils.js'
+import {
+  isEmptyValue,
+  parsedValueComponent,
+  typeValue
+} from '@/utils/ADempiere/valueUtils.js'
 import { convertObjectToKeyValue } from '@/utils/ADempiere/valueFormat.js'
 import evaluator, { getContext, parseContext, specialColumns } from '@/utils/ADempiere/contextUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -25,7 +29,7 @@ const panel = {
       payload.panel = payload.newPanel
     },
     changeFieldLogic(state, payload) {
-      if (payload.isDisplayedFromLogic !== undefined && payload.isDisplayedFromLogic !== null) {
+      if (!isEmptyValue(payload.isDisplayedFromLogic)) {
         payload.field.isDisplayedFromLogic = Boolean(payload.isDisplayedFromLogic)
       }
       payload.field.isMandatoryFromLogic = Boolean(payload.isMandatoryFromLogic)
@@ -57,7 +61,12 @@ const panel = {
   },
   actions: {
     addPanel({ commit, dispatch, getters }, params) {
-      const { panelType, uuid: containerUuid } = params
+      const {
+        panelType,
+        // isParentTab,
+        // parentUuid,
+        uuid: containerUuid
+      } = params
       let keyColumn = ''
       let selectionColumn = []
       let identifierColumns = []
@@ -86,13 +95,16 @@ const panel = {
             }
           }
           //  For all
-          if (['browser', 'process', 'report', 'form', 'table'].includes(panelType) || (panelType === 'window' && params.isParentTab)) {
-            dispatch('setContext', {
-              parentUuid: params.parentUuid,
-              containerUuid,
-              columnName: itemField.columnName,
-              value: itemField.value
-            })
+          if (['browser', 'process', 'report', 'form', 'table'].includes(panelType) ||
+            (panelType === 'window' && params.isParentTab)) {
+            // TODO: Verity with updateValueOfField, setContext, setPreferenceContext
+            // commit('updateValueOfField', {
+            //   parentUuid,
+            //   containerUuid,
+            //   // isOverWriteParent: Boolean(isParentTab),
+            //   columnName: itemField.columnName,
+            //   value: itemField.value
+            // })
           }
           //  Get dependent fields
           if (!isEmptyValue(itemField.parentFieldsList) && itemField.isActive) {
@@ -138,12 +150,16 @@ const panel = {
 
       commit('addPanel', params)
 
-      if (!['form', 'table'].includes(panelType)) {
+      if (!['table'].includes(panelType)) {
         dispatch('setDefaultValues', {
           parentUuid: params.parentUuid,
           containerUuid,
+          // isOverWriteParent: Boolean(isParentTab),
           panelType
         })
+      }
+      if (params.isCustomForm) {
+        dispatch('addForm', params)
       }
 
       return params
@@ -317,6 +333,7 @@ const panel = {
       parentUuid,
       containerUuid,
       panelType = 'window',
+      isOverWriteParent = true,
       isNewRecord = false
     }) {
       return new Promise(resolve => {
@@ -346,6 +363,8 @@ const panel = {
                 ...oldRoute.query,
                 action: 'create-new'
               }
+            }).catch(error => {
+              console.info(`Panel Store: ${error.message}`)
             })
           }
           showMessage({
@@ -381,6 +400,7 @@ const panel = {
         dispatch('updateValuesOfContainer', {
           parentUuid,
           containerUuid,
+          isOverWriteParent,
           attributes: defaultAttributes
         })
         // .then(() => {
@@ -421,11 +441,16 @@ const panel = {
       })
     },
     // Change all values of panel and dispatch actions for each field
-    notifyPanelChange({ commit }, {
+    notifyPanelChange({ commit, dispatch }, {
       parentUuid,
       containerUuid,
       attributes = []
     }) {
+      if (typeValue(attributes) === 'OBJECT') {
+        attributes = convertObjectToKeyValue({
+          object: attributes
+        })
+      }
       // Update field
       commit('updateValuesOfContainer', {
         parentUuid,
@@ -517,6 +542,10 @@ const panel = {
       //     }
       //   }
       // })
+
+      dispatch('setIsloadContext', {
+        containerUuid
+      })
     },
     /**
      * Handle all trigger for a field:
@@ -539,6 +568,7 @@ const panel = {
           field = fieldsList.find(fieldItem => fieldItem.columnName === columnName)
         }
         const value = getters.getValueOfField({
+          parentUuid: field.parentUuid,
           containerUuid: field.containerUuid,
           columnName: field.columnName
         })
@@ -596,6 +626,11 @@ const panel = {
           })
       })
     },
+    /**
+     * Change dependent fields (default value, logics displayed, mandatory and read only)
+     * @param {object} field, definition and attributes
+     * TODO: Not working with fields generated on lookupFactory
+     */
     changeDependentFieldsList({ commit, dispatch, getters }, {
       field
     }) {
@@ -669,7 +704,7 @@ const panel = {
               columnName: fieldDependent.columnName,
               value: newValue
             })
-            //
+
             // dispatch('notifyFieldChange', {
             //   parentUuid,
             //   containerUuid,
@@ -841,6 +876,7 @@ const panel = {
       // all optionals (not mandatory) fields
       fieldsList.forEach(fieldItem => {
         const value = getters.getValueOfField({
+          parentUuid: fieldItem.parentUuid,
           containerUuid,
           columnName: fieldItem.columnName
         })
@@ -1023,7 +1059,7 @@ const panel = {
             }
           }
 
-          if (String(valueToReturn) === '[object Object]') {
+          if (typeValue(valueToReturn) === 'OBJECT') {
             if (!valueToReturn.isSQL) {
               valueToReturn = valueToReturn.value
             }
@@ -1066,7 +1102,7 @@ const panel = {
                   isSQL: isSQLTo
                 })
               }
-
+              // TODO: Check with typeValue function
               if (typeof valueTo === 'object') {
                 valueTo = {
                   ...valueTo,
@@ -1074,7 +1110,7 @@ const panel = {
                 }
               }
             }
-            if (String(valueTo) === '[object Object]') {
+            if (typeValue(valueTo) === 'OBJECT') {
               if (!valueTo.isSQL) {
                 valueTo = valueTo.value
               }
@@ -1251,12 +1287,14 @@ const panel = {
 
             // from field value
             const value = rootGetters.getValueOfField({
+              parentUuid: fieldItem.parentUuid,
               containerUuid,
               columnName
             })
             let valueTo
             if (fieldItem.isRange && fieldItem.componentPath !== 'FieldNumber') {
               valueTo = rootGetters.getValueOfField({
+                parentUuid: fieldItem.parentUuid,
                 containerUuid,
                 columnName: fieldItem.columnNameTo
               })
@@ -1281,6 +1319,7 @@ const panel = {
             valueTo = row[parameterItem.columnNameTo]
           } else {
             value = rootGetters.getValueOfField({
+              parentUuid: parameterItem.parentUuid,
               containerUuid,
               columnName: columnName
             })
@@ -1315,6 +1354,7 @@ const panel = {
           // manage as Array = [value, valueTo]
           if (isRange && parameterItem.componentPath !== 'FieldNumber') {
             valueTo = rootGetters.getValueOfField({
+              parentUuid: parameterItem.parentUuid,
               containerUuid,
               columnName: parameterItem.columnNameTo
             })

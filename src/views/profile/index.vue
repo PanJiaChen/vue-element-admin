@@ -29,7 +29,10 @@ import Role from '@/views/profile/components/role'
 
 export default {
   name: 'Profile',
-  components: { UserCard, Role },
+  components: {
+    UserCard,
+    Role
+  },
   data() {
     return {
       user: {},

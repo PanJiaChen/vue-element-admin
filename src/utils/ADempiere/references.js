@@ -267,9 +267,9 @@ export const LIST = {
 // Location Address
 export const LOCATION_ADDRESS = {
   id: 21,
-  isSupported: false,
+  isSupported: true,
   valueType: 'INTEGER',
-  componentPath: 'FieldText',
+  componentPath: 'FieldLocation',
   size: {
     xs: 24,
     sm: 12,

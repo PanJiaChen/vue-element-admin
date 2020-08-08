@@ -40,9 +40,12 @@ export default {
   },
   computed: {
     cssClassStyle() {
-      let styleClass = this.metadata.cssClassName
+      let styleClass = ' custom-field-text-long '
       if (this.isDisabled) {
-        styleClass += ' custom-field-text-long-disable'
+        styleClass += ' custom-field-text-long-disable '
+      }
+      if (!this.isEmptyValue(this.metadata.cssClassName)) {
+        styleClass += this.metadata.cssClassName
       }
       return styleClass
     },

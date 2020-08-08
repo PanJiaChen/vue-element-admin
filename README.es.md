@@ -74,7 +74,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
 ```
 - Iniciar / Cerrar Sesión
 
-- Permisos de Authentication
+- Permisos de Autenticación
   - Permisos basado en ADempiere
   - Página de Permisos
   - Directivas de permisos
@@ -82,18 +82,21 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
   - Autenticación por dos pasos
 
 - Construcción Multi-entorno
-  - dev sit stage  producción
+  - Desarrollo (dev)
+  - sit
+  - Escenario de pruebas (stage),
+  - Producción (prod)
 
 - Características Globales
   - I18n
   - Temas dinámicos
-  - Dynamic sidebar (soporte a rutas multi-nivel)
+  - Menu lateral dinámico (soporte a rutas multi-nivel)
   - Barra de rutas dinámica
-  - Tags-view (Tab page Support right-click operation)
+  - Tags-view (Pestañas de página, Soporta operación de clic derecho)
   - Svg Sprite
   - Datos de simulación con Mock
   - Pantalla completa
-  - Responsive Sidebar
+  - Menu lateral responsivo
 
 - Editor
   - Editor de Texto Enriquecido
@@ -104,7 +107,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
   - Exportación a Excel
   - Carga de Excel
   - Visualización de Excel
-  - Exportación como zip
+  - Exportación como ZIP
 
 - Tabla
   - Tabla Dinámica
@@ -139,7 +142,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
 - Página de Guías
 - ECharts (Gráficos)
 - Portapapeles
-- Convertidor de Markdown a html
+- Convertidor de Markdown a HTML
 ```
 
 ## Iniciando
@@ -210,7 +213,7 @@ Navegadores modernos e Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
-| IE10, IE11, Edge| últimas 2 versiones| últimas 2 versiones| últimas 2 versiones
+| IE10, IE11, Edge | últimas 2 versiones | últimas 2 versiones | últimas 2 versiones |
 
 ## Licencia
 

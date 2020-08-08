@@ -64,7 +64,8 @@ const lookup = {
           const label = lookupItemResponse.values.DisplayColumn
           const option = {
             label: isEmptyValue(label) ? ' ' : label,
-            key: value // lookupItemResponse.values.KeyColumn
+            uuid: lookupItemResponse.uuid,
+            id: value // lookupItemResponse.values.KeyColumn
           }
 
           commit('addLoockupItem', {
@@ -121,21 +122,23 @@ const lookup = {
           const list = []
           lookupListResponse.recordsList.forEach(itemLookup => {
             const {
-              KeyColumn: key,
+              KeyColumn: id,
               DisplayColumn: label
             } = itemLookup.values
 
-            if (!isEmptyValue(key)) {
+            if (!isEmptyValue(id)) {
               list.push({
                 label,
-                key
+                id,
+                uuid: itemLookup.uuid
               })
             }
           })
           if (isAddBlankValue) {
             list.unshift({
               label: ' ',
-              key: blankValue
+              id: blankValue,
+              uuid: undefined
             })
           }
           commit('addLoockupList', {

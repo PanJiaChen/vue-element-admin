@@ -9,9 +9,11 @@ import {
   unlockPrivateAccessFromServer
 } from '@/api/ADempiere/private-access'
 import {
-  isEmptyValue,
-  convertArrayPairsToObject
+  extractPagingToken,
+  isEmptyValue
 } from '@/utils/ADempiere/valueUtils.js'
+import { convertArrayKeyValueObject } from '@/utils/ADempiere/valueFormat.js'
+import { typeValue } from '@/utils/ADempiere/valueUtils.js'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
@@ -210,14 +212,14 @@ const data = {
             // TODO: Evaluate if is field is read only and FieldSelect
             .filter(itemField => {
               return itemField.componentPath === 'FieldSelect' ||
-                String(values[itemField.columnName]) === '[object Object]' ||
+                typeValue(values[itemField.columnName]) === 'OBJECT' ||
                 itemField.isSQLValue
             })
             .map(async itemField => {
               const { columnName, componentPath } = itemField
               let valueGetDisplayColumn = values[columnName]
 
-              if (String(values[columnName]) === '[object Object]') {
+              if (typeValue(values[columnName]) === 'OBJECT') {
                 if (componentPath === 'FieldSelect') {
                   values[columnName] = ' '
                   values[itemField.displayColumnName] = ' '
@@ -248,7 +250,7 @@ const data = {
               }
 
               if (!isEmptyValue(valueGetDisplayColumn) &&
-                String(valueGetDisplayColumn) === '[object Object]' &&
+                typeValue(valueGetDisplayColumn) === 'OBJECT' &&
                 valueGetDisplayColumn.isSQL) {
                 // get value from Query
                 valueGetDisplayColumn = await dispatch('getValueBySQL', {
@@ -532,14 +534,10 @@ const data = {
           const recordsList = dataResponse.recordsList.map(itemRecord => {
             const values = itemRecord.values
 
-            // datatables attributes
-            values.isNew = false
-            values.isEdit = false
-            values.isSelected = false
-            values.isReadOnlyFromRow = false
+            let isEdit = false
             if (isAddDefaultValues) {
               if (inEdited.find(itemEdit => itemEdit.UUID === values.UUID)) {
-                values.isEdit = true
+                isEdit = true
               }
             }
 
@@ -547,7 +545,11 @@ const data = {
             // server (empty fields are not brought from the server)
             return {
               ...defaultValues,
-              ...values
+              ...values,
+              // datatables attributes
+              isNew: false,
+              isEdit,
+              isReadOnlyFromRow: false
             }
           })
 
@@ -556,10 +558,7 @@ const data = {
           if (isEmptyValue(token)) {
             token = dataStore.nextPageToken
           } else {
-            token = token.slice(0, -2)
-            if (token.substr(-1, 1) === '-') {
-              token = token.slice(0, -1)
-            }
+            token = extractPagingToken(token)
           }
           if (isShowNotification) {
             let searchMessage = 'searchWithOutRecords'
@@ -579,7 +578,7 @@ const data = {
             selection: dataStore.selection,
             recordCount: dataResponse.recordCount,
             nextPageToken: token,
-            originalNextPageToken: originalNextPageToken,
+            originalNextPageToken,
             isAddRecord,
             pageNumber: dataStore.pageNumber,
             tableName,
@@ -670,7 +669,7 @@ const data = {
         })
       }
       if (Array.isArray(values)) {
-        values = convertArrayPairsToObject({
+        values = convertArrayKeyValueObject({
           arrayToConvert: values
         })
       }
@@ -702,7 +701,7 @@ const data = {
       displayColumn,
       withOutColumnNames = []
     }) {
-      dispatch('setContext', {
+      dispatch('setPreferenceContext', {
         parentUuid,
         containerUuid,
         columnName,
@@ -985,7 +984,7 @@ const data = {
      */
     getSelectionToServer: (state, getters, rootState, rootGetters) => ({ containerUuid, selection = [] }) => {
       const selectionToServer = []
-      const withOut = ['isEdit', 'isSelected', 'isSendToServer']
+      const withOut = ['isEdit', 'isSendToServer']
 
       if (selection.length <= 0) {
         selection = getters.getDataRecordSelection(containerUuid)
