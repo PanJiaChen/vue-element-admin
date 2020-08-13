@@ -5,10 +5,7 @@ const state = {
 
 const mutations = {
   ADD_VISITED_VIEW: (state, view) => {
-    console.log(view)
     if (state.visitedViews.some(v => v.fullPath === view.fullPath)) return
-    console.log(3)
-    console.log('添加新页签')
     state.visitedViews.push(
       Object.assign({}, view, {
         title: view.meta.title || 'no-name'
