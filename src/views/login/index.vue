@@ -158,7 +158,10 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || '/', query: this.otherQuery })
+              this.$router.push({
+                path: this.redirect || '/',
+                query: this.otherQuery
+              }, () => {})
               this.loading = false
             })
             .catch(() => {
@@ -189,7 +192,9 @@ export default {
     //     const codeName = code[type]
     //     if (codeName) {
     //       this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-    //         this.$router.push({ path: this.redirect || '/' })
+    //         this.$router.push({
+    //           path: this.redirect || '/'
+    //         }, () => {})
     //       })
     //     } else {
     //       alert('第三方登录失败')

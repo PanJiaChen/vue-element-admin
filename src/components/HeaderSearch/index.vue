@@ -12,7 +12,12 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="item in options" :key="item.path" :value="item" :label="item.title.join(' > ')" />
+      <el-option
+        v-for="element in options"
+        :key="element.item.path"
+        :value="element.item.path"
+        :label="element.item.title.join(' > ')"
+      />
     </el-select>
   </div>
 </template>
@@ -69,8 +74,8 @@ export default {
       this.options = []
       this.show = false
     },
-    change(val) {
-      this.$router.push(val.path)
+    change(path) {
+      this.$router.push(path, () => {})
       this.search = ''
       this.options = []
       this.$nextTick(() => {
