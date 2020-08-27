@@ -15,8 +15,14 @@ import XLSX from 'xlsx'
 
 export default {
   props: {
-    beforeUpload: Function, // eslint-disable-line
-    onSuccess: Function// eslint-disable-line
+    beforeUpload: {
+      type: Function,
+      default: () => {}
+    },
+    onSuccess: {
+      type: Function,
+      default: () => {}
+    }
   },
   data() {
     return {
@@ -36,7 +42,9 @@ export default {
     handleDrop(e) {
       e.stopPropagation()
       e.preventDefault()
-      if (this.loading) return
+      if (this.loading) {
+        return
+      }
       const files = e.dataTransfer.files
       if (files.length !== 1) {
         this.$message.error('Only support uploading one file!')
@@ -63,7 +71,9 @@ export default {
     handleClick(e) {
       const files = e.target.files
       const rawFile = files[0] // only use files[0]
-      if (!rawFile) return
+      if (!rawFile) {
+        return
+      }
       this.upload(rawFile)
     },
     upload(rawFile) {
@@ -106,7 +116,9 @@ export default {
         const cell = sheet[XLSX.utils.encode_cell({ c: C, r: R })]
         /* find the cell in the first row */
         let hdr = 'UNKNOWN ' + C // <-- replace with your desired default
-        if (cell && cell.t) hdr = XLSX.utils.format_cell(cell)
+        if (cell && cell.t) {
+          hdr = XLSX.utils.format_cell(cell)
+        }
         headers.push(hdr)
       }
       return headers

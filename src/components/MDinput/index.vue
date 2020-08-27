@@ -111,26 +111,38 @@
 
 <script>
 // source:https://github.com/wemake-services/vue-material-input/blob/master/src/components/MaterialInput.vue
+const propString = {
+  type: String,
+  default: undefined
+}
 
 export default {
   name: 'MdInput',
   props: {
-    /* eslint-disable */
-    icon: String,
-    name: String,
+    icon: propString,
+    name: propString,
     type: {
       type: String,
       default: 'text'
     },
-    value: [String, Number],
-    placeholder: String,
+    value: {
+      type: [String, Number],
+      default: undefined
+    },
+    placeholder: propString,
     readonly: Boolean,
     disabled: Boolean,
-    min: String,
-    max: String,
-    step: String,
-    minlength: Number,
-    maxlength: Number,
+    min: propString,
+    max: propString,
+    step: propString,
+    minlength: {
+      type: Number,
+      default: -Infinity
+    },
+    maxlength: {
+      type: Number,
+      default: +Infinity
+    },
     required: {
       type: Boolean,
       default: true
