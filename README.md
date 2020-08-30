@@ -74,12 +74,6 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
 
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
 
-### GitAds
-
-> vue-element-admin is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
-
-[<img src="https://images.gitads.io/vue-element-admin" alt="GitAds" />](https://tracking.gitads.io/?repo=vue-element-admin)
-
 ## Features
 
 ```
