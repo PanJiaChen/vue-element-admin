@@ -38,7 +38,7 @@ export default {
   margin: 50px;
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
+  justify-content: flex-start;
 
   .document-btn {
     flex-shrink: 0;
@@ -47,8 +47,8 @@ export default {
     background: black;
     color: white;
     height: 60px;
-    width: 200px;
-    margin-bottom: 16px;
+    padding: 0 16px;
+    margin: 16px;
     line-height: 60px;
     font-size: 20px;
     text-align: center;
