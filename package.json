@@ -43,6 +43,7 @@
     "vue-splitpane": "1.0.4",
     "vuedraggable": "2.20.0",
     "vuex": "3.1.0",
+    "exceljs": "^1.10.0",
     "xlsx": "0.14.1"
   },
   "devDependencies": {
