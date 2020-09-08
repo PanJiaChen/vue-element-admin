@@ -1,5 +1,7 @@
 import Cookies from 'js-cookie'
 import { getLanguage } from '@/lang/index'
+import router from '@/router'
+import getPageTitle from '@/utils/get-page-title'
 
 const state = {
   sidebar: {
@@ -30,6 +32,7 @@ const mutations = {
     state.device = device
   },
   SET_LANGUAGE: (state, language) => {
+    document.title = getPageTitle(router.currentRoute.meta.title)
     state.language = language
     Cookies.set('language', language)
   },
