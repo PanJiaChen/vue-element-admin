@@ -14,11 +14,13 @@ describe('Utils:validate', () => {
     expect(validLowerCase('abc')).toBe(true)
     expect(validLowerCase('Abc')).toBe(false)
     expect(validLowerCase('123abc')).toBe(false)
+    expect(validLowerCase()).toBe(false)
   })
   it('validUpperCase', () => {
     expect(validUpperCase('ABC')).toBe(true)
     expect(validUpperCase('Abc')).toBe(false)
     expect(validUpperCase('123ABC')).toBe(false)
+    expect(validUpperCase()).toBe(false)
   })
   it('validAlphabets', () => {
     expect(validAlphabets('ABC')).toBe(true)

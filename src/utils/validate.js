@@ -33,6 +33,7 @@ export function validURL(url) {
  * @returns {Boolean}
  */
 export function validLowerCase(str) {
+  if (str === undefined || str === null) return false
   const reg = /^[a-z]+$/
   return reg.test(str)
 }
@@ -42,6 +43,7 @@ export function validLowerCase(str) {
  * @returns {Boolean}
  */
 export function validUpperCase(str) {
+  if (str === undefined || str === null) return false
   const reg = /^[A-Z]+$/
   return reg.test(str)
 }
