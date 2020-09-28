@@ -49,7 +49,7 @@
     "@vue/cli-plugin-unit-jest": "4.5.6",
     "@vue/cli-service": "4.5.6",
     "@vue/test-utils": "1.1.0",
-    "autoprefixer": "10.0.1",
+    "autoprefixer": "9.8.6",
     "babel-eslint": "10.1.0",
     "babel-jest": "26.3.0",
     "babel-plugin-dynamic-import-node": "2.3.3",
