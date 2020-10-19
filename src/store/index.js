@@ -21,5 +21,5 @@ const store = new Vuex.Store({
   modules,
   getters
 })
-
+// 测试
 export default store
