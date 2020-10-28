@@ -1,11 +1,11 @@
-import { getCountryDefinition } from '@/api/ADempiere/system-core.js'
+import { requestGetCountryDefinition } from '@/api/ADempiere/system-core.js'
 import { requestGetLocationAddress } from '@/api/ADempiere/field/location.js'
 
 export default {
   name: 'MixinLocationField',
   computed: {
     currentCountryDefinition() {
-      return this.$store.getters['user/getCountry']
+      return this.$store.getters.getCountry
     },
     isShowedLocationForm: {
       get() {
@@ -18,7 +18,7 @@ export default {
   },
   methods: {
     requestGetLocationAddress,
-    getCountryDefinition,
+    requestGetCountryDefinition,
     toggleShowedLocationForm() {
       this.$store.commit('setShowedLocation', !this.isShowedLocationForm)
     },

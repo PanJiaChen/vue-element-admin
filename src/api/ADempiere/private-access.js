@@ -1,29 +1,66 @@
 // Get Instance for connection
-import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
+import { convertPrivateAccess } from '@/utils/ADempiere/apiConverts/privateAccess.js'
 
 // Get private access for a record
-export function getPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).requestGetPrivateAccess({
-    tableName,
-    recordId,
-    userUuid
+export function requestGetPrivateAccess({
+  tableName,
+  recordId,
+  recordUuid
+}) {
+  return requestRest({
+    url: '/ui/get-private-access',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid
+    }
   })
+    .then(evaluateResponse)
+    .then(responsePrivateAccess => {
+      return convertPrivateAccess(responsePrivateAccess)
+    })
 }
 
 // Lock a record for a user
-export function lockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).requestLockPrivateAccess({
-    tableName,
-    recordId,
-    userUuid
+export function requestLockPrivateAccess({
+  tableName,
+  recordId,
+  recordUuid
+}) {
+  return requestRest({
+    url: '/ui/lock-private-access',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid
+    }
   })
+    .then(evaluateResponse)
+    .then(responsePrivateAccess => {
+      return convertPrivateAccess(responsePrivateAccess)
+    })
 }
 
 // Unlock a record from a user
-export function unlockPrivateAccessFromServer({ tableName, recordId, userUuid }) {
-  return Instance.call(this).requestUnlockPrivateAccess({
-    tableName,
-    recordId,
-    userUuid
+export function requestUnlockPrivateAccess({
+  tableName,
+  recordId,
+  recordUuid
+}) {
+  return requestRest({
+    url: '/ui/unlock-private-access',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid
+    }
   })
+    .then(evaluateResponse)
+    .then(responsePrivateAccess => {
+      return convertPrivateAccess(responsePrivateAccess)
+    })
 }

@@ -10,14 +10,11 @@ const initStateUtils = {
   oldAction: undefined,
   reportType: '',
   isShowedTable: false,
-  recordUuidTable: 0,
   isShowedTabChildren: false,
   recordTable: 0,
   selectionProcess: [],
   isContainerInfo: false,
   documentAction: [],
-  chatText: '',
-  markDown: false,
   openRoute: {
     path: '',
     name: '',
@@ -28,17 +25,11 @@ const initStateUtils = {
     isReaded: false,
     isLoaded: false
   },
-  panelRight: '',
-  currentRecord: {},
-  showOrder: false,
-  showTitleFrom: false,
-  showPanelRightPos: false,
-  showCollectionPos: false,
   splitWidthRight: 3,
   splitWidthLeft: 3
 }
 
-const utils = {
+export default {
   state: initStateUtils,
   mutations: {
     setWidth(state, width) {
@@ -71,20 +62,11 @@ const utils = {
     setOrder(state, payload) {
       state.documentAction = payload
     },
-    setChatText(state, payload) {
-      state.chatText = payload
-    },
-    setMarkDown(state, payload) {
-      state.markDown = payload
-    },
     setProcessSelecetion(state, selectionProcess) {
       state.selectionProcess = selectionProcess
     },
     setTempShareLink(state, payload) {
       state.tempShareLink = payload
-    },
-    setOldAction(state, payload) {
-      state.oldAction = payload
     },
     setReportTypeToShareLink(state, payload) {
       state.reportType = payload
@@ -99,26 +81,8 @@ const utils = {
       Vue.set(state.openRoute, 'definedParameters', payload.parameters)
       Vue.set(state.openRoute, 'isLoaded', true)
     },
-    setPanelRight(state, payload) {
-      state.panelRight = payload
-    },
     resetStateUtils(state) {
       state = initStateUtils
-    },
-    setCurrentRecor(state, payload) {
-      state.currentRecord = payload
-    },
-    setShowOrder(state, showOrder) {
-      state.showOrder = showOrder
-    },
-    setShowTitleFrom(state, showTitleFrom) {
-      state.showTitleFrom = showTitleFrom
-    },
-    setShowPanelRightPos(state, showPanelRightPos) {
-      state.showPanelRightPos = showPanelRightPos
-    },
-    setShowCollectionPos(state, showCollectionPos) {
-      state.showCollectionPos = showCollectionPos
     },
     setSplitWidthRight(state, splitWidthRight) {
       state.splitWidthRight = splitWidthRight
@@ -158,12 +122,6 @@ const utils = {
     setProcessSelect({ commit }, params) {
       commit('setProcessSelecetion', params)
     },
-    setchatText({ commit }, params) {
-      commit('setChatText', params)
-    },
-    setMarkDown({ commit }, send) {
-      commit('setMarkDown', send)
-    },
     setOpenRoute({ commit }, routeParameters) {
       commit('setOpenRoute', {
         ...routeParameters
@@ -177,32 +135,11 @@ const utils = {
         commit('setTempShareLink', parameters.href)
       }
     },
-    setOldAction({ commit }, value) {
-      commit('setOldAction', value)
-    },
     setReportTypeToShareLink({ commit }, value) {
       commit('setReportTypeToShareLink', value)
     },
     setOrder({ commit }, params) {
       commit('setOrder', params)
-    },
-    setPanelRight({ commit }, panelRight) {
-      commit('setPanelRight', panelRight)
-    },
-    currentRecord({ commit }, record) {
-      commit('setCurrentRecor', record)
-    },
-    showOrder({ commit }, isOrder) {
-      commit('setShowOrder', isOrder)
-    },
-    showTitleFrom({ commit }, isTitleFrom) {
-      commit('setShowTitleFrom', isTitleFrom)
-    },
-    showPanelRightPos({ commit }, isPanelRight) {
-      commit('setShowPanelRightPos', isPanelRight)
-    },
-    showCollectionPos({ commit }, isCollection) {
-      commit('setShowCollectionPos', isCollection)
     },
     changeWidthRight({ commit }, newWidthRight) {
       commit('setSplitWidthRight', newWidthRight)
@@ -247,19 +184,13 @@ const utils = {
     },
     getSplitHeight: (state) => {
       const split = state.splitHeight
-      var panelHeight = 0
       if (split !== 50) {
-        panelHeight = split.splitHeight
-      } else {
-        panelHeight = 50
+        return split.splitHeight
       }
-      return panelHeight
+      return 50
     },
     getTempShareLink: (state) => {
       return state.tempShareLink
-    },
-    getOldAction: (state) => {
-      return state.oldAction
     },
     getReportType: (state) => {
       return state.reportType
@@ -273,30 +204,6 @@ const utils = {
     getOrders: (state) => {
       return state.documentAction
     },
-    getChatTextLong: (state) => {
-      return state.chatText
-    },
-    getMarkDown: (state) => {
-      return state.markDown
-    },
-    getPanelRight: (state) => {
-      return state.panelRight
-    },
-    getCurrentRecord: (state) => {
-      return state.currentRecord
-    },
-    getShowPanelLeft: (state) => {
-      return state.showOrder
-    },
-    getShowTitleFrom: (state) => {
-      return state.showTitleFrom
-    },
-    getShowPanelRightPos: (state) => {
-      return state.showPanelRightPos
-    },
-    getShowCollectionPos: (state) => {
-      return state.showCollectionPos
-    },
     getWidthRight: (state) => {
       return state.splitWidthRight
     },
@@ -305,4 +212,3 @@ const utils = {
     }
   }
 }
-export default utils

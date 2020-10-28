@@ -6,6 +6,7 @@ import language from '@/lang'
 
 const form = {
   state: {
+    isShowedTitleForm: false,
     form: []
   },
   mutations: {
@@ -23,6 +24,9 @@ const form = {
       if (isEmptyValue(payload.attributeName)) {
         payload.form[payload.attributeName] = value
       }
+    },
+    changeShowTitleForm(state, isShowed) {
+      state.isShowedTitleForm = isShowed
     }
   },
   actions: {
@@ -48,7 +52,7 @@ const form = {
             const newForm = {
               ...formResponse,
               containerUuid,
-              fieldList: [],
+              fieldsList: [],
               panelType
             }
 
@@ -67,7 +71,9 @@ const form = {
             })
           })
           .catch(error => {
-            router.push({ path: '/dashboard' })
+            router.push({
+              path: '/dashboard'
+            }, () => {})
             dispatch('tagsView/delView', routeToDelete)
             showMessage({
               message: language.t('login.unexpectedError'),
@@ -100,6 +106,9 @@ const form = {
       return state.form.find(
         item => item.uuid === formUuid
       )
+    },
+    getIsShowTitleForm: (state) => {
+      return state.isShowedTitleForm
     }
   }
 }

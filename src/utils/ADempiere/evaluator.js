@@ -1,19 +1,23 @@
 import { convertStringToBoolean } from '@/utils/ADempiere/valueFormat.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
-// This class is used for evaluate a conditional
-// format := {expression} [{logic} {expression}]<br>
-// expression := @{context}@{operand}{value} or @{context}@{operand}{value}<br>
-// logic := {|}|{&}<br>
-// context := any global or window context <br>
-// value := strings or numbers<br>
-// logic operators  := AND or OR with the previous result from left to right <br>
-// operand := eq{=}, gt{&gt;}, le{&lt;}, not{~^!} <br>
-// Examples: <br>
-// @AD_Table_ID@=14 | @Language@!GERGER <br>
-// @PriceLimit@>10 | @PriceList@>@PriceActual@<br>
-// @Name@>J<br>
-// Strings may be in single quotes (optional)
+/**
+ * This class is used for evaluate a conditional
+ * format          := {expression} [{logic} {expression}]
+ * expression      := @{context}@{exLogic}{value} or  @{context}@{operand}{value}
+ * logic operators := AND or OR with the prevoius result from left to right
+ * logic           := {|} | {&}
+ * exLogic         := {=} | {!} | {^} | {<} | {>}
+ * operand         := eq{=}, gt{>}, le{<}, not{~^!}
+ * context         := any global or window context
+ * value           := strings can be with ' or ", numbers
+ *
+ * Examples:
+ *  - @AD_Table_ID@=Test | @Language@!GERGER
+ *  - @PriceLimit@>10 | @PriceList@>@PriceActual@
+ *  - @Name@>J
+ *  - Strings may be in single quotes (optional)
+ */
 class evaluator {
   /**
    * Evaluate logic's
@@ -21,6 +25,7 @@ class evaluator {
    * @param {function} context
    * @param {string} logic
    * @param {boolean} defaultReturned value to return if logic or context is undefined
+   * @return locic result
    */
   static evaluateLogic({
     parentUuid,
@@ -106,12 +111,12 @@ class evaluator {
     /**
      * fist group: (['"@#\w\d-_\s]{0,}) only values aphabetic (\w), numerics (\d),
      * space (\d) and '"@#$-_ characters, at least ocurrency to 0 position
-     * second group: (<>|<=|==|>=|!=|<|=|>|!|\^) coincides only with some of the
+     * second group: (<>|<=|==|>=|!=|<|=|>|!|\^|~) coincides only with some of the
      * conditions <>, <=, ==, >=, !=, <, =, >, !, ^
      * third group: same as the first group
      * flag: global match (g), insensitive case (i), multiline (m)
      */
-    let expr = /^(['"@#$-_\w\d\s]{0,})(<>|<=|==|>=|!=|<|=|>|!|\^)(['"@#$-_\w\d\s]{0,})/gim
+    let expr = /^(['"@#$-_\w\d\s]{0,})(<>|<=|==|>=|!=|<|=|>|!|\^|~)(['"@#$-_\w\d\s]{0,})/gim
     let st = expr.test(logic)
 
     if (!st) {
@@ -119,7 +124,7 @@ class evaluator {
       return defaultReturned
     }
 
-    expr = /(<>|<=|==|>=|!=|<|=|>|!|\^)/gm
+    expr = /(<>|<=|==|>=|!=|<|=|>|!|\^|~)/gm
     st = logic.split(expr)
 
     // First Part (or column name)
@@ -143,16 +148,16 @@ class evaluator {
         columnName: first
       })
       // in context exists this column name
-      if (isEmptyValue(value)) {
-      // console.info(`.The column ${first} not exists in context.`)
-        return defaultReturned
-      }
+      // if (isEmptyValue(value)) {
+      // // console.info(`.The column ${first} not exists in context.`)
+      //   return defaultReturned
+      // }
       firstEval = value // replace with it's value
     }
 
-    if (isEmptyValue(firstEval)) {
-      return defaultReturned
-    }
+    // if (isEmptyValue(firstEval)) {
+    //   return defaultReturned
+    // }
     if (typeof firstEval === 'string') {
       firstEval = firstEval.replace(/['"]/g, '').trim() // strip ' and "
     }
@@ -175,10 +180,10 @@ class evaluator {
     }
 
     // Handling of ID compare (null => 0)
-    if (first.includes('_ID') && firstEval.length === 0) {
+    if (first.includes('_ID') && isEmptyValue(firstEval)) {
       firstEval = '0'
     }
-    if (second.includes('_ID') && secondEval.length === 0) {
+    if (second.includes('_ID') && isEmptyValue(secondEval)) {
       secondEval = '0'
     }
 
@@ -202,35 +207,39 @@ class evaluator {
     // Convert value 2 string value to boolean value
     value2 = convertStringToBoolean(value2)
 
+    // if both values are empty, but not equal (" ", NaN, null, undefined)
+    const isBothEmptyValues = isEmptyValue(value1) && isEmptyValue(value2)
+
     let isValueLogic
-    // TODO: Add '^' operand comparison
     switch (operand) {
       case '=':
       case '==':
-        isValueLogic = value1 === value2
+        isValueLogic = value1 === value2 || isBothEmptyValues
         break
 
       case '<':
-        isValueLogic = value1 < value2
+        isValueLogic = value1 < value2 && !isBothEmptyValues
         break
 
       case '<=':
-        isValueLogic = value1 <= value2
+        isValueLogic = value1 <= value2 || isBothEmptyValues
         break
 
       case '>':
-        isValueLogic = value1 > value2
+        isValueLogic = value1 > value2 && !isBothEmptyValues
         break
 
       case '>=':
-        isValueLogic = value1 >= value2
+        isValueLogic = value1 >= value2 || isBothEmptyValues
         break
 
+      case '~':
+      case '^':
       case '!':
       case '!=':
       case '<>':
       default:
-        isValueLogic = value1 !== value2
+        isValueLogic = value1 !== value2 && !isBothEmptyValues
         break
     }
     return isValueLogic

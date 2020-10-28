@@ -87,7 +87,9 @@ export default {
     getFavoritesList() {
       const userUuid = this.$store.getters['user/getUserUuid']
       return new Promise(resolve => {
-        getFavoritesFromServer({ userUuid })
+        getFavoritesFromServer({
+          userUuid
+        })
           .then(response => {
             const favorites = response.favoritesList.map(favoriteElement => {
               const actionConverted = convertAction(favoriteElement.action)
@@ -131,9 +133,7 @@ export default {
             action: param,
             tabParent: 0
           }
-        }).catch(error => {
-          console.info(`Dashboard/userfavorites Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       } else {
         this.$message({
           type: 'error',

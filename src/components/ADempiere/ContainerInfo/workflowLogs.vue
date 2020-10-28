@@ -32,7 +32,10 @@
                         width="400"
                         trigger="hover"
                       >
-                        <p><b> {{ $t('login.userName') }}:</b> {{ nodeList.userName }} </p>
+                        <p>
+                          <b> {{ $t('login.userName') }}:</b>
+                          {{ nodeList.userName }}
+                        </p>
                         <p v-if="!isEmptyValue(nodeList.textMessage)">
                           <b> {{ $t('window.containerInfo.logWorkflow.message') }}:</b>
                           {{ nodeList.textMessage }}
@@ -70,7 +73,18 @@ import MixinInfo from './mixinInfo.js'
 
 export default {
   name: 'WorkflowLogs',
-  mixins: [MixinInfo]
+  mixins: [MixinInfo],
+  computed: {
+    gettersListWorkflow() {
+      return this.$store.getters.getWorkflow
+    },
+    getIsWorkflowLog() {
+      if (this.isEmptyValue(this.gettersListWorkflow)) {
+        return false
+      }
+      return true
+    }
+  }
 }
 </script>
 

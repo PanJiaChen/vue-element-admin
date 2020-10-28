@@ -113,7 +113,6 @@
       key="panel-loading"
       v-loading="!isLoadPanel"
       :element-loading-text="$t('notifications.loading')"
-      element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(255, 255, 255, 0.8)"
       class="loading-panel"
     />
@@ -140,31 +139,5 @@ export default {
 }
 </script>
 
-<style scoped>
-  .loading-panel {
-    padding: 100px;
-    height: 100%;
-  }
-
-  .cards-in-group {
-    column-count: 2;  /*numbers of columns */
-    column-gap: 1em;
-  }
-  .cards-not-group {
-    column-count: 1; /* numbers of columns */
-    column-gap: 1em;
-    margin-bottom: 5px;
-  }
-
-  .card {
-    /* padding: 10px; */
-    width: 100% !important;
-    transition: all 100ms ease-in-out;
-    display: inline-block;
-    perspective: 1000;
-    backface-visibility: hidden;
-  }
-  .el-card {
-    width: 100% !important;
-  }
+<style scoped src="./index.css">
 </style>

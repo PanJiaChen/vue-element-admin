@@ -1,8 +1,8 @@
 import {
-  requestReportViews,
-  requestPrintFormats,
-  requestDrillTables,
-  getReportOutput
+  requestListReportsViews,
+  requestListPrintFormats,
+  requestListDrillTables,
+  requestGetReportOutput
 } from '@/api/ADempiere/report'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
@@ -40,15 +40,15 @@ const reportControl = {
     }) {
 
     },
-    requestPrintFormats({ commit }, {
+    getListPrintFormats({ commit }, {
       processId,
       processUuid,
       instanceUuid
     }) {
       return new Promise(resolve => {
-        requestPrintFormats({ processUuid })
+        requestListPrintFormats({ processUuid })
           .then(printFormatResponse => {
-            const printFormatList = printFormatResponse.printFormatsList.map(printFormatItem => {
+            const printFormatList = printFormatResponse.records.map(printFormatItem => {
               return {
                 ...printFormatItem,
                 type: 'updateReport',
@@ -70,14 +70,14 @@ const reportControl = {
           })
       })
     },
-    requestReportViews({ commit }, {
+    getReportViewsFromServer({ commit }, {
       processId,
       processUuid,
       instanceUuid,
       printFormatUuid
     }) {
       return new Promise(resolve => {
-        requestReportViews({ processUuid })
+        requestListReportsViews({ processUuid })
           .then(reportViewResponse => {
             const reportViewList = reportViewResponse.reportViewsList.map(reportViewItem => {
               return {
@@ -102,7 +102,7 @@ const reportControl = {
           })
       })
     },
-    requestDrillTables({ commit }, {
+    getDrillTablesFromServer({ commit }, {
       processId,
       processUuid,
       instanceUuid,
@@ -111,7 +111,7 @@ const reportControl = {
       reportViewUuid
     }) {
       return new Promise(resolve => {
-        requestDrillTables({ tableName })
+        requestListDrillTables({ tableName })
           .then(responseDrillTables => {
             const drillTablesList = responseDrillTables.drillTablesList.map(drillTableItem => {
               return {
@@ -157,7 +157,7 @@ const reportControl = {
         const parametersList = rootGetters.getParametersToServer({
           containerUuid: processUuid
         })
-        getReportOutput({
+        requestGetReportOutput({
           parametersList,
           printFormatUuid,
           reportViewUuid,

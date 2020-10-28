@@ -1,5 +1,5 @@
 import {
-  runProcess,
+  requestRunProcess,
   requestListProcessesLogs
 } from '@/api/ADempiere/process'
 import { showNotification } from '@/utils/ADempiere/notification'
@@ -255,7 +255,9 @@ const processControl = {
         } else if (panelType === 'browser') {
           if (allData.record.length <= 100) {
             // close view if is browser.
-            router.push({ path: '/dashboard' })
+            router.push({
+              path: '/dashboard'
+            }, () => {})
             dispatch('tagsView/delView', routeToDelete)
             // delete data associate to browser
             dispatch('deleteRecordContainer', {
@@ -264,7 +266,9 @@ const processControl = {
           }
         } else {
           // close view if is process, report.
-          router.push({ path: '/dashboard' })
+          router.push({
+            path: '/dashboard'
+          }, () => {})
           dispatch('tagsView/delView', routeToDelete)
 
           // reset panel and set defalt isShowedFromUser
@@ -285,7 +289,7 @@ const processControl = {
             const countRequest = state.totalRequest + 1
             commit('setTotalRequest', countRequest)
             if (!windowSelectionProcess.finish) {
-              runProcess({
+              requestRunProcess({
                 uuid: processDefinition.uuid,
                 id: processDefinition.id,
                 reportType,
@@ -327,7 +331,7 @@ const processControl = {
                     }
                     reportViewList.childs = getters.getReportViewList(processResult.processUuid)
                     if (reportViewList && isEmptyValue(reportViewList.childs)) {
-                      dispatch('requestReportViews', {
+                      dispatch('getReportViewsFromServer', {
                         processUuid: processResult.processUuid,
                         instanceUuid,
                         processId: processDefinition.id,
@@ -355,7 +359,7 @@ const processControl = {
                     }
                     printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
                     if (printFormatList && isEmptyValue(printFormatList.childs.length)) {
-                      dispatch('requestPrintFormats', {
+                      dispatch('getListPrintFormats', {
                         processUuid: processResult.processUuid,
                         instanceUuid,
                         processId: processDefinition.id,
@@ -384,7 +388,7 @@ const processControl = {
                     if (!isEmptyValue(output.tableName)) {
                       drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
                       if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
-                        dispatch('requestDrillTables', {
+                        dispatch('getDrillTablesFromServer', {
                           processUuid: processResult.processUuid,
                           instanceUuid,
                           processId: processDefinition.id,
@@ -438,9 +442,18 @@ const processControl = {
                   commit('setTotalResponse', countResponse)
                   if (state.totalResponse === state.totalRequest) {
                     if (isSession) {
+                      const message = `
+                        ${language.t('notifications.totalProcess')}
+                        ${countResponse}
+                        ${language.t('notifications.error')}
+                        ${state.errorSelection}
+                        ${language.t('notifications.succesful')}
+                        ${state.successSelection}
+                        ${language.t('notifications.processExecuted')}
+                      `
                       showNotification({
                         title: language.t('notifications.succesful'),
-                        message: language.t('notifications.totalProcess') + countResponse + language.t('notifications.error') + state.errorSelection + language.t('notifications.succesful') + state.successSelection + language.t('notifications.processExecuted'),
+                        message,
                         type: 'success'
                       })
                     }
@@ -464,7 +477,7 @@ const processControl = {
             }
           })
         } else {
-          runProcess({
+          requestRunProcess({
             uuid: processDefinition.uuid,
             id: processDefinition.id,
             reportType,
@@ -506,7 +519,7 @@ const processControl = {
                 }
                 reportViewList.childs = getters.getReportViewList(processResult.processUuid)
                 if (reportViewList && !reportViewList.childs.length) {
-                  dispatch('requestReportViews', {
+                  dispatch('getReportViewsFromServer', {
                     processUuid: processResult.processUuid,
                     instanceUuid,
                     processId: processDefinition.id,
@@ -533,7 +546,7 @@ const processControl = {
                 }
                 printFormatList.childs = rootGetters.getPrintFormatList(processResult.processUuid)
                 if (printFormatList && !printFormatList.childs.length) {
-                  dispatch('requestPrintFormats', {
+                  dispatch('getListPrintFormats', {
                     processUuid: processResult.processUuid,
                     instanceUuid,
                     processId: processDefinition.id,
@@ -566,7 +579,7 @@ const processControl = {
                 if (!isEmptyValue(output.tableName)) {
                   drillTablesList.childs = rootGetters.getDrillTablesList(processResult.processUuid)
                   if (drillTablesList && isEmptyValue(drillTablesList.childs)) {
-                    dispatch('requestDrillTables', {
+                    dispatch('getDrillTablesFromServer', {
                       processUuid: processResult.processUuid,
                       instanceUuid,
                       processId: processDefinition.id,
@@ -719,7 +732,7 @@ const processControl = {
           commit('addInExecution', processResult)
           commit('setTotalRequest', countRequest)
           if (!windowSelectionProcess.finish) {
-            return runProcess({
+            return requestRunProcess({
               uuid: processDefinition.uuid,
               id: processDefinition.id,
               reportType,
@@ -787,9 +800,18 @@ const processControl = {
                 commit('setTotalResponse', countResponse)
                 if (state.totalResponse === state.totalRequest) {
                   if (isSession) {
+                    const message = `
+                      ${language.t('notifications.totalProcess')}
+                      ${countResponse}
+                      ${language.t('notifications.error')}
+                      ${state.errorSelection}
+                      ${language.t('notifications.succesful')}
+                      ${state.successSelection}
+                      ${language.t('notifications.processExecuted')}
+                    `
                     showNotification({
                       title: language.t('notifications.succesful'),
-                      message: language.t('notifications.totalProcess') + countResponse + language.t('notifications.error') + state.errorSelection + language.t('notifications.succesful') + state.successSelection + language.t('notifications.processExecuted'),
+                      message,
                       type: 'success'
                     })
                   }
@@ -945,7 +967,7 @@ const processControl = {
             menuParentUuid,
             tableName
           }
-        })
+        }, () => {})
       }
       const isSession = !isEmptyValue(getToken())
       if (isSession) {

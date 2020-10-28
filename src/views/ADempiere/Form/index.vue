@@ -20,9 +20,9 @@
         <el-col :span="24">
           <el-card
             class="content-collapse"
-            :style="isEmptyValue(formMetadata.fieldList) ? ( showTitleFrom ? 'height: 100%!important;' : 'height: 100%!important;') : ''"
+            :style="isEmptyValue(formMetadata.fieldsList) ? 'height: 100% !important;' : ''"
           >
-            <h3 v-if="showTitleFrom" class="warn-content text-center">
+            <h3 v-if="isShowTitleForm" class="warn-content text-center">
               <el-popover
                 v-if="!isEmptyValue(formMetadata.help)"
                 ref="helpTitle"
@@ -40,9 +40,23 @@
               >
                 {{ formTitle }}
               </el-button>
-              <el-button v-if="showTitleFrom" type="text" style="float: right" :circle="true" icon="el-icon-arrow-up" @click="title" />
+              <el-button
+                v-if="isShowTitleForm"
+                type="text"
+                style="float: right"
+                :circle="true"
+                icon="el-icon-arrow-up"
+                @click="changeDisplatedTitle"
+              />
             </h3>
-            <el-button v-if="!showTitleFrom" type="text" style="position: absolute;right: 10px;" :circle="true" icon="el-icon-arrow-down" @click="title" />
+            <el-button
+              v-if="!isShowTitleForm"
+              type="text"
+              style="position: absolute; right: 10px;"
+              :circle="true"
+              icon="el-icon-arrow-down"
+              @click="changeDisplatedTitle"
+            />
             <form-panel
               :metadata="{
                 ...formMetadata,
@@ -101,16 +115,16 @@ export default {
         })
       }
     },
-    showTitleFrom() {
-      return this.$store.getters.getShowTitleFrom
+    isShowTitleForm() {
+      return this.$store.getters.getIsShowTitleForm
     }
   },
   created() {
     this.getForm()
   },
   methods: {
-    title() {
-      this.$store.dispatch('showTitleFrom', !this.showTitleFrom)
+    changeDisplatedTitle() {
+      this.$store.commit('changeShowTitleForm', !this.isShowTitleForm)
     },
     getForm() {
       const panel = this.getterForm
@@ -118,9 +132,10 @@ export default {
         this.formMetadata = panel
         this.isLoaded = true
       } else {
-        this.$store.dispatch('getFormFromServer', {
+        this.$store.dispatch('getPanelAndFields', {
           containerUuid: this.formUuid,
-          routeToDelete: this.$rote
+          panelType: this.panelType,
+          routeToDelete: this.$route
         })
           .then(responseForm => {
             this.formMetadata = responseForm

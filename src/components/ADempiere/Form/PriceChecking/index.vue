@@ -7,27 +7,27 @@
     <el-container style="height: 100% !important;">
       <img
         fit="contain"
-        :src="valuesImage.length > 1 ? valuesImage.value : getDefaultImage()"
+        :src="backgroundForm"
         class="background-price-checking"
       >
       <el-main>
-        <div class="inquiry-form">
-          <el-form
-            key="form-loaded"
-            label-position="top"
-            label-width="10px"
-            @submit.native.prevent="notSubmitForm"
-          >
-            <field
-              v-for="(field) in fieldsList"
-              ref="ProductValue"
-              :key="field.columnName"
-              :metadata-field="field"
-              :v-model="field.value"
-              class="product-value"
-            />
-          </el-form>
-        </div>
+        <el-form
+          key="form-loaded"
+          class="inquiry-form"
+          label-position="top"
+          label-width="10px"
+          @submit.native.prevent="notSubmitForm"
+        >
+          <field
+            v-for="(field) in fieldsList"
+            ref="ProductValue"
+            :key="field.columnName"
+            :metadata-field="field"
+            :v-model="field.value"
+            class="product-value"
+          />
+        </el-form>
+
         <div class="inquiry-product">
           <el-row v-if="!isEmptyValue(productPrice)" :gutter="20">
             <el-col style="padding-left: 0px; padding-right: 0%;">
@@ -70,102 +70,79 @@
     element-loading-background="rgba(255, 255, 255, 0.8)"
     class="loading-panel"
   />
-  <!-- </div> -->
 </template>
 
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import fieldsList from './fieldsList.js'
-import { getProductPrice } from '@/api/ADempiere/form/price-checking.js'
+import { requestGetProductPrice } from '@/api/ADempiere/form/price-checking.js'
 import { formatPercent, formatPrice } from '@/utils/ADempiere/valueFormat.js'
-import { getResource } from '@/api/ADempiere/persistence.js'
-import { mergeByteArray, buildImageFromArray } from '@/utils/ADempiere/resource.js'
+import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
+import { requestImage } from '@/api/ADempiere/persistence.js'
 
 export default {
   name: 'PriceChecking',
-  mixins: [formMixin],
+  mixins: [
+    formMixin
+  ],
   data() {
     return {
       fieldsList,
       productPrice: {},
-      resource: {},
-      valuesImage: [{
-        identifier: 'undefined',
-        value: 'price-checking-background',
-        isLoaded: true
-      }],
+      organizationBackground: '',
+      currentImageOfProduct: '',
       unsubscribe: () => {}
+    }
+  },
+  computed: {
+    organizationImagePath() {
+      return this.$store.getters.avatar
+    },
+    defaultImage() {
+      return require('@/image/ADempiere/priceChecking/no-image.jpg')
+    },
+    backgroundForm() {
+      if (this.isEmptyValue(this.currentImageOfProduct)) {
+        return this.organizationBackground
+      }
+      return this.currentImageOfProduct
     }
   },
   created() {
     this.unsubscribe = this.subscribeChanges()
   },
+  mounted() {
+    this.getImage()
+  },
   beforeDestroy() {
     this.unsubscribe()
   },
   methods: {
-    buildImageFromArray,
-    getDefaultImage() {
-      return require('@/image/ADempiere/priceChecking/price-checking-background.png')
-    },
-    getImage(resource) {
-      let isImage
-      if (resource) {
-        if (resource.image) {
-          if (!this.valuesImage.some(item => item.identifier === resource.image)) {
-            this.valuesImage.push({
-              identifier: resource.image,
-              value: '',
-              isLoaded: false
-            })
-          }
-          if (this.resource[resource.image]) {
-            this.valuesImage.map(item => {
-              if (item.identifier === resource.image) {
-                return {
-                  ...item,
-                  value: this.buildImageFromArray(resource, this.resource[resource.image]),
-                  isLoaded: true
-                }
-              }
-              return item
-            })
-          } else { //  Reload
-            if (!this.valuesImage.some(item => item.identifier === resource.image)) {
-              this.valuesImage.push({
-                identifier: resource.image,
-                value: '',
-                isLoaded: false
-              })
-            }
-            let result = new Uint8Array()
-            const callBack = {}
-            callBack.onData = (response) => {
-              result = mergeByteArray(result, response.getData())
-            }
-            callBack.onStatus = (status) => {
-
-            }
-            callBack.onEnd = (end) => {
-              this.resource[resource.image] = result
-              this.valuesImage.map(item => {
-                if (item.identifier === resource.image) {
-                  return {
-                    ...item,
-                    value: this.buildImageFromArray(resource, this.resource[isImage]),
-                    isLoaded: true
-                  }
-                }
-                return item
-              })
-            }
-            getResource({
-              resourceUuid: '1816f354-a868-4f4f-9a83-b0eb98cf1d05'
-            },
-            callBack)
-          }
+    async getImage(imageName = '') {
+      let isSetOrg = false
+      if (this.isEmptyValue(imageName)) {
+        if (!this.isEmptyValue(this.organizationBackground)) {
+          return this.organizationBackground
         }
+        isSetOrg = true
+        imageName = this.organizationImagePath
       }
+      const imageBuffer = await requestImage({
+        file: imageName
+      }).then(responseImage => {
+        const arrayBufferAsImage = buildImageFromArrayBuffer({
+          arrayBuffer: responseImage
+        })
+
+        if (isSetOrg) {
+          this.organizationBackground = arrayBufferAsImage
+          return arrayBufferAsImage
+        }
+
+        this.currentImageOfProduct = arrayBufferAsImage
+        return arrayBufferAsImage
+      })
+      return imageBuffer
     },
     focusProductValue() {
       this.$refs.ProductValue[0].$children[0].$children[0].$children[1].$children[0].focus()
@@ -176,22 +153,23 @@ export default {
       return this.$store.subscribe((mutation, state) => {
         if (mutation.type === 'addActionKeyPerformed' && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
-          getProductPrice({
+          requestGetProductPrice({
             searchValue: mutation.payload.value
           })
             .then(productPrice => {
-              const { product, taxRate, priceStd: priceBase } = productPrice
+              const { product, taxRate, priceStandard: priceBase } = productPrice
               const { rate } = taxRate
+              const { imageURL: image } = product
 
               this.productPrice = {
                 productName: product.name,
                 productDescription: product.description,
                 priceBase,
-                priceStd: productPrice.priceStd,
+                priceStandard: productPrice.priceStandard,
                 priceList: productPrice.priceList,
                 priceLimit: productPrice.priceLimit,
                 taxRate: rate,
-                image: product.imageURL,
+                image,
                 taxName: taxRate.name,
                 taxIndicator: taxRate.taxIndicator,
                 taxAmt: this.getTaxAmount(priceBase, rate),
@@ -202,7 +180,8 @@ export default {
             .catch(error => {
               this.$message({
                 type: 'info',
-                message: error.message
+                message: error.message,
+                showClose: true
               })
               this.productPrice = {}
             })
@@ -212,7 +191,11 @@ export default {
                 columnName: 'ProductValue',
                 value: ''
               })
-              this.getImage(this.productPrice)
+
+              this.currentImageOfProduct = ''
+              if (this.isEmptyValue(this.productPrice.image)) {
+                this.getImage(this.productPrice.image)
+              }
             })
         }
       })

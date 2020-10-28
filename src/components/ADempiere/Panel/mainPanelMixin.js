@@ -47,7 +47,7 @@ export default {
   data() {
     return {
       panelMetadata: {},
-      fieldList: [], // groups list of fields
+      fieldsList: [], // groups list of fields
       dataRecords: {},
       isLoadPanel: false,
       isLoadRecord: false,
@@ -96,16 +96,16 @@ export default {
       return false
     },
     getterPanel() {
-      return this.$store.getters.getPanel(this.containerUuid, this.isAdvancedQuery)
+      return this.$store.getters.getPanel(this.containerUuid)
     },
-    fieldsList() {
+    getterFieldsList() {
       let panel = this.panelMetadata
-      if (!this.isEmptyValue(panel) && panel.fieldList) {
-        return panel.fieldList
+      if (!this.isEmptyValue(panel) && panel.fieldsList) {
+        return panel.fieldsList
       }
       panel = this.getterPanel
       if (panel) {
-        return panel.fieldList
+        return panel.fieldsList
       }
       return undefined
     },
@@ -136,7 +136,7 @@ export default {
     // used only panel modal (process associated in browser or window)
     containerUuid() {
       if (['report', 'process'].includes(this.panelType)) {
-        this.generatePanel(this.metadata.fieldList)
+        this.generatePanel(this.metadata.fieldsList)
       }
     },
     '$route.query.action'(newValue, oldValue) {
@@ -163,9 +163,9 @@ export default {
      */
     getPanel() {
       const panel = this.getterPanel
-      if (!this.isEmptyValue(panel) && panel.fieldList) {
+      if (!this.isEmptyValue(panel) && panel.fieldsList) {
         this.panelMetadata = panel
-        const fieldsList = panel.fieldList
+        const fieldsList = panel.fieldsList
         if (fieldsList && Array.isArray(fieldsList)) {
           this.generatePanel(fieldsList)
         }
@@ -178,7 +178,7 @@ export default {
           isAdvancedQuery: this.isAdvancedQuery
         }).then(panelResponse => {
           this.panelMetadata = panelResponse
-          this.generatePanel(panelResponse.fieldList)
+          this.generatePanel(panelResponse.fieldsList)
         }).catch(error => {
           console.warn(`Field Load Error: ${error.message}. Code: ${error.code}.`)
         })
@@ -186,7 +186,7 @@ export default {
     },
     generatePanel(fieldsList) {
       // order and assign groups
-      this.fieldList = fieldsList
+      this.fieldsList = fieldsList
       if (fieldsList.length) {
         this.fieldGroups = this.sortAndGroup(fieldsList)
       }
@@ -213,31 +213,30 @@ export default {
       const route = this.$route
       if (this.isPanelWindow) {
         // TODO: use action notifyPanelChange with isShowedField in true
-        this.fieldsList.forEach(fieldItem => {
-          if (Object.prototype.hasOwnProperty.call(route.query, fieldItem.columnName) && !fieldItem.isAdvancedQuery) {
+        this.getterFieldsList.forEach(fieldItem => {
+          const { columnName, componentPath, displayType, isAdvancedQuery, isMandatory } = fieldItem
+          if (Object.prototype.hasOwnProperty.call(route.query, columnName) && !isAdvancedQuery) {
             fieldItem.isShowedFromUser = true
             fieldItem.value = parsedValueComponent({
-              componentPath: fieldItem.componentPath,
-              columnName: fieldItem.columnName,
-              value: route.query[fieldItem.columnName],
-              displayType: fieldItem.displayType,
-              isIdentifier: fieldItem.columnName.includes('_ID')
+              columnName,
+              componentPath,
+              displayType,
+              isMandatory,
+              value: route.query[columnName]
             })
-            if (String(route.query.isAdvancedQuery) === String(fieldItem.isAdvancedQuery)) {
+            if (String(route.query.isAdvancedQuery) === String(isAdvancedQuery)) {
               fieldItem.value = parsedValueComponent({
-                componentPath: fieldItem.componentPath,
-                columnName: fieldItem.columnName,
-                value: route.query[fieldItem.columnName],
-                displayType: fieldItem.displayType,
-                isIdentifier: fieldItem.columnName.includes('_ID')
+                columnName,
+                componentPath,
+                displayType,
+                value: route.query[columnName]
               })
-              if (fieldItem.isRange && this.$route.query[`${fieldItem.columnName}_To`]) {
+              if (fieldItem.isRange && this.$route.query[`${columnName}_To`]) {
                 fieldItem.valueTo = parsedValueComponent({
-                  componentPath: fieldItem.componentPath,
-                  columnName: fieldItem.componentPath,
-                  value: route.query[`${fieldItem.columnName}_To`],
-                  displayType: fieldItem.displayType,
-                  isIdentifier: fieldItem.columnName.includes('_ID')
+                  columnName,
+                  componentPath,
+                  displayType,
+                  value: route.query[`${columnName}_To`]
                 })
               }
             }
@@ -287,23 +286,25 @@ export default {
       } else {
         if (this.panelType === 'table' && route.query.action === 'advancedQuery') {
           // TODO: use action notifyPanelChange with isShowedField in true
-          this.fieldList.forEach(fieldItem => {
-            if (Object.prototype.hasOwnProperty.call(route.query, fieldItem.columnName) && fieldItem.isAdvancedQuery) {
+          this.fieldsList.forEach(fieldItem => {
+            const { columnName, componentPath, displayType, isAdvancedQuery } = fieldItem
+
+            if (Object.prototype.hasOwnProperty.call(route.query, columnName) && isAdvancedQuery) {
               fieldItem.isShowedFromUser = true
 
-              if (route.query.action === 'advancedQuery' && fieldItem.isAdvancedQuery) {
-                this.dataRecords[fieldItem.columnName] = parsedValueComponent({
-                  componentPath: fieldItem.componentPath,
-                  columnName: fieldItem.columnName,
-                  value: route.query[fieldItem.columnName],
-                  isIdentifier: fieldItem.columnName.includes('_ID')
+              if (route.query.action === 'advancedQuery' && isAdvancedQuery) {
+                this.dataRecords[columnName] = parsedValueComponent({
+                  columnName,
+                  componentPath,
+                  displayType,
+                  value: route.query[columnName]
                 })
-                if (fieldItem.isRange && route.query[`${fieldItem.columnName}_To`]) {
-                  this.dataRecords[fieldItem.columnName] = parsedValueComponent({
-                    componentPath: fieldItem.componentPath,
-                    columnName: fieldItem.columnName,
-                    value: route.query[`${fieldItem.columnName}_To`],
-                    isIdentifier: fieldItem.columnName.includes('_ID')
+                if (fieldItem.isRange && route.query[`${columnName}_To`]) {
+                  this.dataRecords[columnName] = parsedValueComponent({
+                    columnName,
+                    componentPath,
+                    displayType,
+                    value: route.query[`${columnName}_To`]
                   })
                 }
               }
@@ -317,7 +318,7 @@ export default {
             newValues: this.dataRecords,
             isSendToServer: true,
             isSendCallout: false,
-            fieldList: this.fieldList,
+            fieldsList: this.fieldsList,
             panelType: this.panelType
           })
         } else if (['process', 'browser'].includes(this.panelType)) {
@@ -381,9 +382,7 @@ export default {
                 ...this.$route.query,
                 action
               }
-            }).catch(error => {
-              console.info(`Panel Component: ${error.name}, ${error.message}`)
-            })
+            }, () => {})
 
             if (action === 'create-new') {
               this.$store.dispatch('setDefaultValues', {
@@ -484,7 +483,7 @@ export default {
           if (this.dataRecords[keyName]) {
             this.tagTitle.action = this.dataRecords[keyName]
           } else {
-            const field = this.fieldList.find(fieldItem => fieldItem.isIdentifier)
+            const field = this.fieldsList.find(fieldItem => fieldItem.isIdentifier)
             const value = this.$store.getters.getValueOfField({
               parentUuid: this.parentUuid,
               containerUuid: this.containerUuid,
@@ -522,7 +521,7 @@ export default {
 
       const currentRecord = this.getterDataStore.record.find(record => record.UUID === uuidRecord) || {}
       this.dataRecords = currentRecord
-      this.$store.dispatch('currentRecord', currentRecord)
+      this.$store.commit('setCurrentRecord', currentRecord)
 
       this.setTagsViewTitle(uuidRecord)
       if (this.$route.query && this.$route.query.action === 'create-new') {
@@ -531,7 +530,7 @@ export default {
     },
     async setFocus() {
       return new Promise(resolve => {
-        const fieldFocus = this.fieldsList.find(itemField => {
+        const fieldFocus = this.getterFieldsList.find(itemField => {
           if (itemField.handleRequestFocus) {
             return true
           }

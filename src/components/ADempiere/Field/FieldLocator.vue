@@ -18,11 +18,13 @@
 
 <script>
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
-import { getLocatorList } from '@/api/ADempiere/field/locator'
+import { requestLocatorList } from '@/api/ADempiere/field/locator.js'
 
 export default {
   name: 'FieldLocation',
-  mixins: [fieldMixin],
+  mixins: [
+    fieldMixin
+  ],
   data() {
     return {
       options: [],
@@ -58,16 +60,18 @@ export default {
       if (Array.isArray(value)) {
         selected = value[value.length - 1]
       }
-      this.handleFieldChange({ value: selected })
+      this.handleFieldChange({
+        value: selected
+      })
       this.value = value
     },
     searchLocatorByWarehouse(node, resolve) {
-      getLocatorList({
+      requestLocatorList({
         warehouseId: node.value
       })
         .then(responseData => {
           const locatorList = responseData.recordsList.map(item => {
-            const { values } = item
+            const { attributes: values } = item
             return {
               label: values.Value,
               value: values.M_Locator_ID,

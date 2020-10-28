@@ -8,15 +8,17 @@ export default [
       name: 'Web',
       handleRequestFocus: true,
       handleContentSelection: true,
+      isCustomField: true,
+      isActiveLogics: true, // enable logics
       displayType: URL.id
     }
   },
-  // From Field UUID
+  // From Field UUID, Business Partner lookup field
   {
     isFromDictionary: true,
-    fieldUuid: '8ceabe8a-fb40-11e8-a479-7a0060f0aa01'
+    uuid: '8ceabe8a-fb40-11e8-a479-7a0060f0aa01'
   },
-  // From Column UUID
+  // From Column UUID, Paid yes-no field
   {
     isFromDictionary: true,
     columnUuid: '8b4bbb7e-fb40-11e8-a479-7a0060f0aa01'
@@ -46,7 +48,9 @@ export default [
       reference: {
         directQuery: 'SELECT C_Currency.C_Currency_ID,NULL,C_Currency.ISO_Code,C_Currency.IsActive FROM C_Currency WHERE C_Currency.C_Currency_ID=?',
         query: 'SELECT C_Currency.C_Currency_ID,NULL,C_Currency.ISO_Code,C_Currency.IsActive FROM C_Currency ORDER BY 3'
-      }
+      },
+      isCustomField: true,
+      isActiveLogics: true // enable logics
     }
   },
   // Text
@@ -56,7 +60,9 @@ export default [
       name: 'Only Name',
       displayType: TEXT.id,
       displayLogic: '@URL@!""',
-      handleActionKeyPerformed: true
+      handleActionKeyPerformed: true,
+      isCustomField: true,
+      isActiveLogics: true // enable logics
     }
   },
   // Amount
@@ -66,7 +72,9 @@ export default [
       name: 'Amount for it',
       displayType: AMOUNT.id,
       readOnlyLogic: '@C_Currency_ID@<>""',
-      handleActionKeyPerformed: true
+      handleActionKeyPerformed: true,
+      isCustomField: true,
+      isActiveLogics: true // enable logics
     }
   },
   // Integer
@@ -76,7 +84,9 @@ export default [
       name: 'Sequence for record',
       displayType: INTEGER.id,
       mandatoryLogic: '@URL@!""',
-      showControl: 1
+      showControl: 1,
+      isCustomField: true,
+      isActiveLogics: true // enable logics
     }
   },
   // Text Long

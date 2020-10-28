@@ -164,6 +164,15 @@ export default {
       this.capsTooltip = key && key.length === 1 && (key >= 'A' && key <= 'Z')
     },
     handleLogin() {
+      const query = this.$route.query.redirect
+      const expr = '/'
+      if (!this.isEmptyValue(query)) {
+        this.loginForm = {
+          ...this.loginForm,
+          roleId: this.clientIdRedirect(query, expr),
+          organizationId: this.organizationIdRedirect(query, expr)
+        }
+      }
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -172,13 +181,11 @@ export default {
               this.$router.push({
                 path: this.redirect || '/',
                 query: this.otherQuery
-              }).catch(error => {
-                console.info(`Login View: ${error.name}, ${error.message}`)
-              })
+              }, () => {})
             })
             .catch(error => {
               let message = this.$t('login.unexpectedError')
-              if (error.code === 13) {
+              if ([13, 500].includes(error.code)) {
                 message = this.$t('login.invalidLogin')
               }
 
@@ -200,6 +207,14 @@ export default {
         }
         return acc
       }, {})
+    },
+    clientIdRedirect(query, expr) {
+      const redirect = query.split(expr)
+      return redirect[1]
+    },
+    organizationIdRedirect(query, expr) {
+      const redirect = query.split(expr)
+      return redirect[2]
     }
   }
 }

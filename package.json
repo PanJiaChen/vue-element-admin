@@ -22,12 +22,7 @@
     "test:ci": "npm run lint && npm run test:unit"
   },
   "dependencies": {
-    "@adempiere/grpc-access-client": "^1.2.3",
-    "@adempiere/grpc-core-client": "^1.2.4",
-    "@adempiere/grpc-data-client": "^2.4.9",
-    "@adempiere/grpc-dictionary-client": "^1.4.5",
-    "@adempiere/grpc-enrollment-client": "^1.1.2",
-    "@adempiere/grpc-pos-client": "^1.4.1",
+    "@toast-ui/vue-editor": "^2.4.0",
     "axios": "0.19.2",
     "clipboard": "2.0.6",
     "codemirror": "5.56.0",
@@ -57,7 +52,7 @@
     "vue-i18n": "8.19.0",
     "vue-multipane": "^0.9.5",
     "vue-resize": "^0.5.0",
-    "vue-router": "3.3.4",
+    "vue-router": "3.4.3",
     "vue-shortkey": "^3.1.7",
     "vue-split-panel": "^1.0.4",
     "vue-splitpane": "1.0.6",
@@ -68,6 +63,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "4.4.6",
     "@vue/cli-plugin-eslint": "4.4.6",
+    "@vue/cli-plugin-pwa": "4.5.6",
     "@vue/cli-plugin-unit-jest": "4.4.6",
     "@vue/cli-service": "4.4.6",
     "@vue/test-utils": "1.0.3",
@@ -80,6 +76,7 @@
     "connect": "3.7.0",
     "eslint": "7.5.0",
     "eslint-plugin-vue": "6.2.2",
+    "fs": "0.0.1-security",
     "html-webpack-plugin": "4.3.0",
     "husky": "4.2.5",
     "lint-staged": "10.2.11",

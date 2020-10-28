@@ -16,7 +16,7 @@
         </span>
         {{ fieldAttributes.help }}
       </div>
-      <template v-for="(zoomItem, index) in fieldAttributes.reference.windowsList">
+      <template v-for="(zoomItem, index) in fieldAttributes.reference.zoomWindows">
         <el-button
           :key="index"
           type="text"
@@ -81,9 +81,7 @@ export default {
             tabParent: 0,
             [this.fieldAttributes.columnName]: this.value
           }
-        }).catch(error => {
-          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       } else {
         this.$message({
           type: 'error',

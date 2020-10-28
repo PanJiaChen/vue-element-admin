@@ -4,7 +4,7 @@
   >
     <el-submenu
       index="xlsx"
-      @click.native="exportRecord(defaultFromatExport)"
+      @click.native="exporRecordTable(defaultFromatExport)"
     >
       <template slot="title">
         {{ $t('data.exportRecord') }}
@@ -13,7 +13,7 @@
         v-for="(format, keyFormat) in supportedTypes"
         :key="keyFormat"
         :index="keyFormat"
-        @click.native="exportRecord(keyFormat)"
+        @click.native="exporRecordTable(keyFormat)"
       >
         {{ format }}
       </el-menu-item>

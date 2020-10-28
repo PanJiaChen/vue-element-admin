@@ -2,10 +2,9 @@
   <el-form>
     {{ $t('route.role') }}
     <el-select
-      v-model="roleUuid"
-      :filterable="!isMobile"
+      v-model="currentRoleUuid"
+      :filterable="isFiltrable"
       value-key="key"
-      @change="changeRole"
     >
       <el-option
         v-for="(role, key) in rolesList"
@@ -15,27 +14,29 @@
         :disabled="isEmptyValue(role.uuid)"
       />
     </el-select>
+
     {{ $t('route.organization') }}
     <el-select
-      v-model="organizationUuid"
-      :filterable="!isMobile"
+      v-model="currentOrganizationUuid"
+      :filterable="isFiltrable"
       value-key="key"
-      @change="changeOrganization"
+      @visible-change="showOrganizationsList"
     >
       <el-option
-        v-for="(organization, key) in getOrganizationsList"
+        v-for="(organization, key) in organizationsList"
         :key="key"
         :label="organization.name"
         :value="organization.uuid"
         :disabled="isEmptyValue(organization.uuid)"
       />
     </el-select>
+
     {{ $t('route.warehouse') }}
     <el-select
-      v-model="warehouseUuid"
-      :filterable="!isMobile"
+      v-model="currentWarehouseUuid"
+      :filterable="isFiltrable"
       value-key="key"
-      @change="changeWarehouse"
+      @visible-change="showWarehouseList"
     >
       <el-option
         v-for="(warehouse, key) in warehousesList"
@@ -51,49 +52,53 @@
 <script>
 export default {
   name: 'RolesNavbar',
-  data() {
-    return {
-      roleUuid: '',
-      organizationUuid: '',
-      warehouseUuid: ''
-    }
-  },
   computed: {
-    // TODO: Add double chanel
-    currentRole() {
-      return this.$store.getters['user/getRole']
+    currentRoleUuid: {
+      get() {
+        return this.$store.getters['user/getRole'].uuid
+      },
+      set(roleToSet) {
+        this.changeRole(roleToSet)
+      }
     },
     rolesList() {
       return this.$store.getters['user/getRoles']
     },
-    getOrganization() {
-      return this.$store.getters['user/getOrganization']
+    currentOrganizationUuid: {
+      get() {
+        const organization = this.$store.getters['user/getOrganization']
+        if (organization) {
+          return organization.uuid
+        }
+        return ''
+      },
+      set(organizationToSet) {
+        this.changeOrganization(organizationToSet)
+      }
     },
-    getOrganizationsList() {
+    organizationsList() {
       return this.$store.getters['user/getOrganizations']
     },
-    currentWarehouse() {
-      return this.$store.getters['user/getWarehouse']
+    currentWarehouseUuid: {
+      get() {
+        const warehouse = this.$store.getters['user/getWarehouse']
+        if (warehouse) {
+          return warehouse.uuid
+        }
+        return ''
+      },
+      set(warehouseToSet) {
+        this.changeWarehouse(warehouseToSet)
+      }
     },
     warehousesList() {
       return this.$store.getters['user/getWarehouses']
     },
-    isMobile() {
-      return this.$store.state.app.device === 'mobile'
-    }
-  },
-  watch: {
-    getOrganizationsList(value) {
-      this.organizationUuid = this.isEmptyValue(value) ? '' : value[0].uuid
-    },
-    warehousesList(value) {
-      this.warehouseUuid = this.isEmptyValue(value) ? '' : value[0].uuid
+    isFiltrable() {
+      return this.$store.state.app.device !== 'mobile'
     }
   },
   created() {
-    this.roleUuid = this.currentRole.uuid
-    this.organizationUuid = this.getOrganization.uuid
-    this.warehouseUuid = this.currentWarehouse.uuid
     this.getLanguages()
   },
   methods: {
@@ -104,42 +109,49 @@ export default {
       })
       this.$store.dispatch('user/changeRole', {
         roleUuid,
-        organizationUuid: this.organizationUuid,
+        organizationUuid: this.currentOrganizationUuid,
         warehouseUuid: this.warehouseUuid
       })
         .then(response => {
           if (this.$route.name !== 'Dashboard') {
             this.$router.push({
               path: '/'
-            }).catch(error => {
-              console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-            })
+            }, () => {})
           }
-          this.$store.dispatch('listDashboard', response.uuid)
+          this.$store.dispatch('listDashboard', {
+            roleId: response.id,
+            roleUuid: response.uuid
+          })
         })
     },
     changeOrganization(organizationUuid) {
-      const currentOrganization = this.getOrganizationsList.find(element => element.uuid === organizationUuid)
+      const currentOrganization = this.organizationsList.find(element => element.uuid === organizationUuid)
       this.$router.push({
         path: '/'
-      }).catch(error => {
-        console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-      })
+      }, () => {})
       this.$store.dispatch('user/changeOrganization', {
-        organizationUuid: organizationUuid,
+        organizationUuid,
         organizationId: currentOrganization.id
       })
-      this.warehouseUuid = this.currentWarehouse
     },
-    // TODO: Add change local list with server list
+    showOrganizationsList(isShow) {
+      if (isShow && this.isEmptyValue(this.organizationsList)) {
+        this.$store.dispatch('user/getOrganizationsListFromServer', this.currentRoleUuid)
+      }
+    },
     changeWarehouse(warehouseUuid) {
       this.$store.dispatch('user/changeWarehouse', {
         warehouseUuid
       })
     },
+    showWarehouseList(isShow) {
+      if (isShow && this.isEmptyValue(this.warehousesList)) {
+        this.$store.dispatch('user/getWarehousesList', this.currentOrganizationUuid)
+      }
+    },
     getLanguages() {
       if (this.isEmptyValue(this.getLanguageList)) {
-        this.$store.dispatch('user/getLanguagesFromServer')
+        this.$store.dispatch('getLanguagesFromServer')
       }
     }
   }

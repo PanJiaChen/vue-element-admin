@@ -62,9 +62,6 @@ export default {
     isPanelWindow() {
       return this.metadata.panelType === 'window'
     },
-    isMobile() {
-      return this.$store.state.app.device === 'mobile'
-    },
     isSelectMultiple() {
       return ['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery
     },
@@ -110,11 +107,23 @@ export default {
     },
     value: {
       get() {
-        const value = this.$store.getters.getValueOfField({
-          parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
-          columnName: this.metadata.columnName
-        })
+        const { columnName, containerUuid } = this.metadata
+        let value
+        // table records values
+        if (this.metadata.inTable) {
+          const row = this.$store.getters.getRowData({
+            containerUuid,
+            index: this.metadata.tableIndex
+          })
+          value = row[columnName]
+        } else {
+          value = this.$store.getters.getValueOfField({
+            parentUuid: this.metadata.parentUuid,
+            containerUuid,
+            columnName
+          })
+        }
+
         if (this.isEmptyValue(value)) {
           /* eslint-disable */
           this.displayedValue = undefined
@@ -152,6 +161,9 @@ export default {
     },
     uuidValue: {
       get() {
+        if (this.metadata.inTable) {
+          return undefined
+        }
         return this.$store.getters.getValueOfField({
           parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
@@ -160,6 +172,9 @@ export default {
         })
       },
       set(value) {
+        if (this.metadata.inTable) {
+          return undefined
+        }
         this.$store.commit('updateValueOfField', {
           parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
@@ -171,11 +186,21 @@ export default {
     },
     displayedValue: {
       get() {
+        const { displayColumnName: columnName, containerUuid } = this.metadata
+        // table records values
+        if (this.metadata.inTable) {
+          const row = this.$store.getters.getRowData({
+            containerUuid,
+            index: this.metadata.tableIndex
+          })
+          // DisplayColumn_'ColumnName'
+          return row[columnName]
+        }
         return this.$store.getters.getValueOfField({
           parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
+          containerUuid,
           // DisplayColumn_'ColumnName'
-          columnName: this.metadata.displayColumnName
+          columnName
         })
       },
       set(value) {
@@ -240,8 +265,8 @@ export default {
             })
           } else {
             if (!this.isPanelWindow || (this.isPanelWindow &&
-              (this.isEmptyValue(this.metadata.optionCRUD) ||
-              this.metadata.optionCRUD === 'create-new'))) {
+              !this.isEmptyValue(this.$route.query) &&
+              this.$route.query.action === 'create-new')) {
               this.getDataLookupItem()
             }
           }
@@ -259,11 +284,11 @@ export default {
     },
     changeBlankOption() {
       if (Number(this.metadata.defaultValue) === -1) {
-        this.blankOption.id = -1
+        this.blankOption.id = this.metadata.defaultValue
       }
     },
     preHandleChange(value) {
-      const label = this.findLabel(this.value)
+      const { label } = this.findOption(value)
       this.displayedValue = label
       this.handleFieldChange({
         value,
@@ -281,17 +306,6 @@ export default {
         uuid: undefined
       }
     },
-    /**
-     * TODO: Verify used
-     * @deprecated use findOption
-     */
-    findLabel(value) {
-      const selected = this.optionsList.find(item => item.id === value)
-      if (selected) {
-        return selected.label
-      }
-      return selected
-    },
     async getDataLookupItem() {
       if (this.isEmptyValue(this.metadata.reference.directQuery) ||
         (this.metadata.isAdvancedQuery && this.isSelectMultiple)) {
@@ -301,6 +315,7 @@ export default {
       this.$store.dispatch('getLookupItemFromServer', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
         tableName: this.metadata.reference.tableName,
         directQuery: this.metadata.reference.directQuery,
         value: this.value
@@ -308,7 +323,9 @@ export default {
         .then(responseLookupItem => {
           this.displayedValue = responseLookupItem.label
           this.uuidValue = responseLookupItem.uuid
-          this.optionsList = this.getterLookupAll
+          this.$nextTick(() => {
+            this.optionsList = this.getterLookupAll
+          })
         })
         .finally(() => {
           this.isLoading = false
@@ -331,8 +348,10 @@ export default {
       this.$store.dispatch('getLookupListFromServer', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
+        columnName: this.metadata.columnName,
         tableName: this.metadata.reference.tableName,
         query: this.metadata.reference.query,
+        whereClause: this.metadata.validationCode,
         // valuesList: this.value
         isAddBlankValue: true,
         blankValue: this.blankOption.id

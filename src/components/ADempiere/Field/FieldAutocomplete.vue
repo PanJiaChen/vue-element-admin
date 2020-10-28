@@ -48,9 +48,6 @@ export default {
     isPanelWindow() {
       return this.metadata.panelType === 'window'
     },
-    isMobile() {
-      return this.$store.state.app.device === 'mobile'
-    },
     isSelectMultiple() {
       return ['IN', 'NOT_IN'].includes(this.metadata.operator) && this.metadata.isAdvancedQuery
     },

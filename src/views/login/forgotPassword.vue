@@ -49,7 +49,7 @@
 
 <script>
 import loginMixin from './loginMixin.js'
-import { forgotPassword } from '@/api/ADempiere/enrollment.js'
+import { requestForgotPassword } from '@/api/ADempiere/enrollment.js'
 
 export default {
   name: 'ForgotPassword',
@@ -69,7 +69,7 @@ export default {
     handleSubmit() {
       if (!this.isEmptyValue(this.forgotForm.userName)) {
         this.loading = true
-        forgotPassword(this.forgotForm.userName)
+        requestForgotPassword(this.forgotForm.userName)
           .then(forgotPasswordResponse => {
             if (forgotPasswordResponse.responseTypeStatus === 'OK') {
               this.$message({

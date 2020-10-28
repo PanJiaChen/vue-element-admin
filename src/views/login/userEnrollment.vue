@@ -119,7 +119,7 @@
 
 <script>
 import loginMixin from './loginMixin.js'
-import { enrollmentUser } from '@/api/ADempiere/enrollment.js'
+import { requestEnrollUser } from '@/api/ADempiere/enrollment.js'
 
 export default {
   name: 'UserEnrollment',
@@ -254,7 +254,7 @@ export default {
         if (this.isShowPassword) {
           dataToSubmit.password = this.enrollmentUserForm.password
         }
-        enrollmentUser(dataToSubmit)
+        requestEnrollUser(dataToSubmit)
           .then(() => {
             this.$message({
               message: this.$t('login.userEnrollmentSuccessful'),
@@ -266,7 +266,8 @@ export default {
           })
           .catch(error => {
             this.$message({
-              message: this.$t('login.unexpectedError'),
+              message: error.message,
+              // message: this.$t('login.unexpectedError'),
               showClose: true,
               type: 'error'
             })

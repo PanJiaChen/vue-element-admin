@@ -3,24 +3,77 @@ import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references.js'
 
 /**
  * Checks if value is empty. Deep-checks arrays and objects
- * Note: isEmpty([]) == true, isEmpty({}) == true, isEmpty([{0:false},"",0]) == true, isEmpty({0:1}) == false
- * @param  {boolean|array|object|number|string|date|map|set|function} value
+ * Note: isEmpty([]) == true, isEmpty({}) == true,
+ * isEmpty([{0: false}, "", 0]) == true, isEmpty({0: 1}) == false
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @link https://gist.github.com/EdwinBetanc0urt/3fc02172ada073ded4b52e46543553ce
+ * @param {boolean|array|object|number|string|date|map|set|function} value
  * @returns {boolean}
  */
-export function isEmptyValue(value) {
-  const { isEmptyValue } = require('@/api/ADempiere/system-core')
-
-  return isEmptyValue(value)
-}
-
-export function extractPagingToken(token) {
-  let onlyToken = token.slice(0, -2)
-  if (onlyToken.substr(-1, 1) === '-') {
-    onlyToken = onlyToken.slice(0, -1)
+export const isEmptyValue = function(value) {
+  // Custom empty value ADempiere to lookup
+  if (String(value).trim() === '-1') {
+    return true
   }
-  return onlyToken
+
+  let isEmpty = false
+  const typeOfValue = typeValue(value)
+
+  switch (typeOfValue) {
+    case 'UNDEFINED':
+    case 'ERRORR':
+    case 'NULL':
+      isEmpty = true
+      break
+    case 'BOOLEAN':
+    case 'DATE':
+    case 'FUNCTION': // Or class
+    case 'PROMISE':
+    case 'REGEXP':
+      isEmpty = false
+      break
+    case 'STRING':
+      isEmpty = Boolean(!value.trim().length)
+      break
+    case 'MATH':
+    case 'NUMBER':
+      if (Number.isNaN(value)) {
+        isEmpty = true
+        break
+      }
+      isEmpty = false
+      break
+    case 'JSON':
+      if (value.trim().length) {
+        isEmpty = Boolean(value.trim() === '{}')
+        break
+      }
+      isEmpty = true
+      break
+    case 'OBJECT':
+      isEmpty = Boolean(!Object.keys(value).length)
+      break
+    case 'ARGUMENTS':
+    case 'ARRAY':
+      isEmpty = Boolean(!value.length)
+      break
+    case 'MAP':
+    case 'SET':
+      isEmpty = Boolean(!value.size)
+      break
+  }
+
+  return isEmpty
 }
 
+/**
+ * Evaluates the type of data sent, useful with 'array' type data as the typeof
+ * function returns 'object' in this and other cases.
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @link https://gist.github.com/EdwinBetanc0urt/3fc02172ada073ded4b52e46543553ce
+ * @param {boolean|array|object|number|string|date|map|set|function} value
+ * @returns {string} value type in capital letters (STRING, NUMBER, BOOLEAN, ...)
+ */
 export function typeValue(value) {
   const typeOfValue = Object.prototype
     .toString
@@ -32,13 +85,28 @@ export function typeValue(value) {
 }
 
 /**
+ * Return token of pagination.
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @param {string} token
+ * @returns {string}
+ */
+export function extractPagingToken(token) {
+  let onlyToken = token.slice(0, -2)
+  if (onlyToken.substr(-1, 1) === '-') {
+    onlyToken = onlyToken.slice(0, -1)
+  }
+  return onlyToken
+}
+
+/**
  * zero pad
- * @param {number} number
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @param {number|string} number
  * @param {number} pad
  * @returns {string}
  */
 export function zeroPad(number, pad = 2) {
-  var zero = Number(pad) - number.toString().length + 1
+  const zero = Number(pad) - number.toString().length + 1
   return Array(+(zero > 0 && zero)).join('0') + number
 }
 
@@ -82,12 +150,12 @@ export function clientDateTime(date = null, type = '') {
   return currentDateTime.date + ' ' + currentDateTime.time
 }
 
-export function convertFieldListToShareLink(fieldList) {
-  var attributesListLink = ''
-  fieldList.map(fieldItem => {
+export function convertFieldsListToShareLink(fieldsList) {
+  let attributesListLink = ''
+  fieldsList.map(fieldItem => {
     // assign values
-    var value = fieldItem.value
-    var valueTo = fieldItem.valueTo
+    let value = fieldItem.value
+    let valueTo = fieldItem.valueTo
 
     if (!isEmptyValue(value)) {
       if (['FieldDate', 'FieldTime'].includes(fieldItem.componentPath) || typeof value === 'object') {
@@ -192,8 +260,7 @@ export function parsedValueComponent({
   value,
   columnName,
   displayType,
-  isMandatory = false,
-  isIdentifier = false
+  isMandatory = false
 }) {
   const isEmpty = isEmptyValue(value)
   if (isEmpty && !isMandatory) {
@@ -206,7 +273,7 @@ export function parsedValueComponent({
     }
     return undefined
   }
-  var returnValue
+  let returnValue
 
   switch (componentPath) {
     // data type Number
@@ -233,6 +300,7 @@ export function parsedValueComponent({
         returnValue = value
       }
       returnValue = convertStringToBoolean(value)
+      returnValue = Boolean(returnValue)
       break
 
     // data type String
@@ -270,11 +338,12 @@ export function parsedValueComponent({
         value = convertBooleanToString(value)
       }
       // Table (18) or Table Direct (19)
-      if (displayType === TABLE_DIRECT.id || (displayType === TABLE.id && isIdentifier)) {
+      if (TABLE_DIRECT.id === displayType || TABLE.id === displayType && columnName.includes('_ID')) {
         if (!isEmptyValue(value)) {
           value = Number(value)
         }
-      } // Search or List
+      }
+      // Search or List
       returnValue = value
       break
 

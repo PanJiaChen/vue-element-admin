@@ -1,54 +1,89 @@
 // Instance for connection
-import { AccessInstance as Instance } from '@/api/ADempiere/instances.js'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
-// Make login by UserName and password, this function can return user data for show
+/**
+ * Make login by UserName and password, this function can return user data for show
+ * @param {string} userName
+ * @param {string} password
+ */
 export function login({
   userName,
-  password: userPass,
-  role
+  password
 }) {
-  if (role && role.trim() !== '') {
-    return Instance.call(this).requestLogin({
-      userName,
-      userPass,
-      role
-    })
-  }
-  return Instance.call(this).requestLoginDefault({
-    userName,
-    userPass
+  return requestRest({
+    url: '/user/login',
+    method: 'post',
+    data: {
+      username: userName,
+      password
+    }
   })
 }
 
-// Get User Info from session Uuid or token
+/**
+ * Get User Info
+ * @param {string} token or session UUID
+ */
 export function requestUserInfoFromSession(token) {
-  return Instance.call(this).requestUserInfoFromSession(token)
+  return requestRest({
+    url: '/user/info',
+    method: 'get',
+    params: {
+      token
+    }
+  })
+    .then(evaluateResponse)
 }
 
 /**
  * Get session info
- * @param {string} sessionUuid
+ * @param {string} token or session UUID
  */
-export function getSessionInfo(sessionUuid) {
-  return Instance.call(this).getSession(sessionUuid)
-}
+export function requestSessionInfo(token) {
+  return requestRest({
+    url: '/user/session',
+    method: 'get',
+    params: {
+      token
+    }
+  })
+    .then(evaluateResponse)
+    .then(responseSession => {
+      const { convertSession } = require('@/utils/ADempiere/apiConverts/user.js')
 
-// Logout from server
-export function logout(sessionUuid) {
-  return Instance.call(this).requestLogOut(sessionUuid)
+      return convertSession(responseSession)
+    })
 }
 
 /**
- *
- * @param {string} attributes.sessionUuid
- * @param {string} attributes.roleUuid
- * @param {string} attributes.organizationUuid
- * @param {string} attributes.warehouseUuid
+ * Logout from server
+ * @param {string} token or session UUID
  */
-// Get User menu from server
-export function getMenu(sessionUuid) {
-  return Instance.call(this).requestUserMenuFromSession(sessionUuid)
+export function logout(token) {
+  return requestRest({
+    url: '/user/logout',
+    data: {
+      token
+    }
+  })
 }
-export function changeRole(attributes) {
-  return Instance.call(this).requestChangeRole(attributes)
+
+/**
+ * Get User menu from server
+ * @param {string} sessionUuid
+ */
+export function requestMenu({
+  sessionUuid
+}) {
+  return requestRest({
+    url: '/user/menu',
+    method: 'get',
+    params: {
+      token: sessionUuid
+    }
+  })
+    .then(evaluateResponse)
 }

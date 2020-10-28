@@ -365,7 +365,11 @@ export default {
         orderTotal: 'Total de Orden',
         pending: 'Pendiente',
         payment: 'Pago',
-        change: 'Cambio'
+        change: 'Cambio',
+        convertAmount: 'Convertir Cantidad'
+      },
+      keyLayout: {
+        noProducto: 'No hay producto disponible Regresar al Principio'
       }
     }
   }

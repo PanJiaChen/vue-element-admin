@@ -37,7 +37,7 @@ export default {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
-    getterFieldList() {
+    fieldsList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     }
   },
@@ -46,18 +46,18 @@ export default {
   },
   methods: {
     getPanel() {
-      var fieldList = this.getterFieldList
-      if (fieldList && fieldList.length) {
-        this.generatePanel(fieldList)
+      const fieldsList = this.fieldsList
+      if (!this.isEmptyValue(fieldsList)) {
+        this.generatePanel(fieldsList)
       }
     },
-    generatePanel(fieldList) {
-      this.columnListAvailable = fieldList.filter(fieldItem => {
+    generatePanel(fieldsList) {
+      this.columnListAvailable = fieldsList.filter(fieldItem => {
         return this.isDisplayed(fieldItem)
       })
     },
     isDisplayed(field) {
-      var isDisplayed = field.isActive && field.isDisplayed && field.isDisplayedFromLogic && !field.isKey
+      const isDisplayed = field.isActive && field.isDisplayed && field.isDisplayedFromLogic && !field.isKey
       if (field.isFixedTableColumn && field.isDisplayed) {
         this.columnsFixed.push(field.columnName)
       }

@@ -221,7 +221,8 @@ export function getEvaluatedLogics({
 
 /**
  * Get parsed default value to set into field
- * @param {*} param0
+ * @param {object}  field
+ * @param {boolean} isSOTrxMenu
  */
 export function getDefaultValue({
   parentUuid,
@@ -233,7 +234,6 @@ export function getDefaultValue({
   displayType,
   defaultValue,
   isMandatory,
-  isParent,
   isKey
 }) {
   let parsedDefaultValue = defaultValue
@@ -249,8 +249,7 @@ export function getDefaultValue({
     }).value
   }
 
-  if (isEmptyValue(parsedDefaultValue) &&
-    !(isKey || isParent) &&
+  if (isEmptyValue(parsedDefaultValue) && !isKey &&
     String(parsedDefaultValue).trim() !== '-1') {
     parsedDefaultValue = getPreference({
       parentUuid,
@@ -270,12 +269,11 @@ export function getDefaultValue({
   }
 
   parsedDefaultValue = parsedValueComponent({
-    componentPath,
     columnName,
-    value: parsedDefaultValue,
+    componentPath,
     displayType,
     isMandatory,
-    isIdentifier: columnName.includes('_ID')
+    value: parsedDefaultValue
   })
 
   return parsedDefaultValue
@@ -300,10 +298,10 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
 
   //  Convert from gRPC
   let fieldDefinitionList
-  if (processToGenerate.parametersList) {
+  if (processToGenerate.parameters) {
     const fieldsRangeList = []
 
-    fieldDefinitionList = processToGenerate.parametersList
+    fieldDefinitionList = processToGenerate.parameters
       .map(fieldItem => {
         const field = generateField({
           fieldToGenerate: fieldItem,
@@ -370,8 +368,8 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
     isDirectPrint: processToGenerate.isDirectPrint
   }
 
-  processToGenerate.reportExportTypesList.forEach(actionValue => {
-    //  Push values
+  processToGenerate.reportExportTypes.forEach(actionValue => {
+    // push values
     summaryAction.childs.push({
       name: `${language.t('components.ExportTo')} (${actionValue.name})`,
       processName: processToGenerate.name,
@@ -423,10 +421,10 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
 
   const processDefinition = {
     ...processToGenerate,
-    panelType,
+    ...additionalAttributes,
     isAssociated: Boolean(containerUuidAssociated),
     containerUuidAssociated,
-    fieldList: fieldDefinitionList
+    fieldsList: fieldDefinitionList
   }
 
   return {
@@ -451,8 +449,8 @@ export function evalutateTypeField(displayTypeId, isAllInfo = true) {
 
 /**
  * [assignedGroup]
- * @param  {array} fieldList Field of List with
- * @return {array} fieldList
+ * @param  {array} fieldsList Field of List with
+ * @return {array} fieldsList
  */
 export function assignedGroup({ fieldsList, groupToAssigned, orderBy }) {
   if (fieldsList === undefined || fieldsList.length <= 0) {

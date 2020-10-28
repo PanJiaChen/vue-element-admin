@@ -1,10 +1,10 @@
-import { getField as getFieldFromDictionary } from '@/api/ADempiere/dictionary'
+import { requestFieldMetadata } from '@/api/ADempiere/dictionary'
 
 const initStateLookup = {
   referenceList: [],
-  fieldList: [],
+  fieldsList: [],
   validationRuleList: [],
-  fieldListLocation: [],
+  fieldsListLocation: [],
   isShowedLocation: false
 }
 
@@ -12,7 +12,7 @@ const field = {
   state: initStateLookup,
   mutations: {
     addField(state, payload) {
-      state.fieldList.push(payload)
+      state.fieldsList.push(payload)
     },
     addReference(state, payload) {
       state.referenceList.push(payload)
@@ -26,22 +26,22 @@ const field = {
     setShowedLocation(state, isShowed) {
       state.isShowedLocation = isShowed
     },
-    setfieldListLocation(state, fieldListLocation) {
-      state.fieldListLocation = fieldListLocation
+    setFieldsListLocation(state, fieldsListLocation) {
+      state.fieldsListLocation = fieldsListLocation
     }
   },
   actions: {
     // Get Reference from Server based on criteria
     getFieldFromServer({ commit }, {
-      fieldUuid,
+      uuid,
       columnUuid,
       elementUuid,
       tableName,
       columnName,
       elementColumnName
     }) {
-      return getFieldFromDictionary({
-        fieldUuid,
+      return requestFieldMetadata({
+        uuid,
         columnUuid,
         elementUuid,
         // TableName + ColumnName
@@ -70,7 +70,7 @@ const field = {
         })
     },
     changeSequence({ commit }, params) {
-      commit('setfieldListLocation', params)
+      commit('setFieldsListLocation', params)
     }
   },
   getters: {
@@ -78,22 +78,22 @@ const field = {
       return state.isShowedLocation
     },
     getFieldFromUuid: (state) => (uuid) => {
-      return state.fieldList.find(fieldItem => {
+      return state.fieldsList.find(fieldItem => {
         return fieldItem.uuid === uuid
       })
     },
     getFieldFromColumnUuid: (state) => (columnUuid) => {
-      return state.fieldList.find(fieldItem => {
+      return state.fieldsList.find(fieldItem => {
         return fieldItem.columnUuid === columnUuid
       })
     },
     getFieldFromElementUuid: (state) => (elementUuid) => {
-      return state.fieldList.find(fieldItem => {
+      return state.fieldsList.find(fieldItem => {
         return fieldItem.elementUuid === elementUuid
       })
     },
     getFieldFromElementColumnName: (state) => (elementColumnName) => {
-      return state.fieldList.find(fieldItem => {
+      return state.fieldsList.find(fieldItem => {
         return fieldItem.elementColumnName === elementColumnName
       })
     },
@@ -101,12 +101,12 @@ const field = {
       tableName,
       columnName
     }) => {
-      return state.fieldList.find(fieldItem => {
+      return state.fieldsList.find(fieldItem => {
         return fieldItem.tableName === tableName && fieldItem.columnName === columnName
       })
     },
     getFieldLocation: (state) => {
-      return state.fieldListLocation
+      return state.fieldsListLocation
     }
   }
 }

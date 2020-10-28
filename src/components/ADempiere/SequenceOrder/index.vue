@@ -141,13 +141,13 @@ export default {
           this.movedItem(value[action])
           break
         case 'removed':
-          this.delItem(value[action])
+          this.deleteItem(value[action])
           break
       }
     },
     /**
-     * @param newIndex: the index of the added element
-     * @param element: the added element
+     * @param {number} newIndex: the index of the added element
+     * @param {object} element: the added element
      */
     addItem({ element, newIndex }) {
       const newSequence = (newIndex + 1) * 10
@@ -166,9 +166,9 @@ export default {
       this.$store.dispatch('setTabSequenceRecord', this.getOrder(dataSequence))
     },
     /**
-     * @param newIndex: the current index of the moved element
-     * @param oldIndex: the old index of the moved element
-     * @param element: the moved element
+     * @param {number} newIndex: the current index of the moved element
+     * @param {number} oldIndex: the old index of the moved element
+     * @param {object} element: the moved element
      */
     movedItem({ newIndex, oldIndex, element }) {
       let indexEnabledSequence = 0
@@ -203,10 +203,10 @@ export default {
       this.$store.dispatch('setTabSequenceRecord', this.getOrder(dataSequence))
     },
     /**
-     * @param oldIndex: the index of the element before remove
-     * @param element: the removed element
+     * @param {number} oldIndex: the index of the element before remove
+     * @param {object} element: the removed element
      */
-    delItem({ element, oldIndex }) {
+    deleteItem({ element, oldIndex }) {
       const oldSequence = element[this.order] // (oldIndex + 1) * 10
       const dataSequence = this.getterDataRecords.map(itemSequence => {
         if (itemSequence.UUID === element.UUID) {
@@ -219,6 +219,7 @@ export default {
         }
         return itemSequence
       })
+
       this.$store.dispatch('setTabSequenceRecord', this.getOrder(dataSequence))
     },
     getOrder(arrayToSort, orderBy = this.order) {

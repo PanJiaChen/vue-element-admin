@@ -10,7 +10,7 @@
     @change="addField"
   >
     <el-option
-      v-for="(item, key) in getterFieldListOptional"
+      v-for="(item, key) in fieldsListOptional"
       :key="key"
       :label="item.name"
       :value="item.columnName"
@@ -48,7 +48,7 @@ export default {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
-    getterFieldListOptional() {
+    fieldsListOptional() {
       if (this.panelType === 'table') {
         // fields to search without taking into account the mandatory
         return this.$store.getters.getFieldsListFromPanel(this.containerUuid, this.isAdvancedQuery)
@@ -66,7 +66,7 @@ export default {
       return this.$store.getters.getFieldsListNotMandatory({ containerUuid: this.containerUuid })
     },
     getFieldSelected() {
-      return this.getterFieldListOptional
+      return this.fieldsListOptional
         .filter(fieldItem => {
           return fieldItem.isShowedFromUser
         })

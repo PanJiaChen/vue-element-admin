@@ -3,8 +3,8 @@ export {
   zeroPad,
   tagStatus,
   iconStatus,
+  isEmptyValue,
   calculationValue,
-  clearVariables
+  clearVariables,
+  typeValue
 } from '@/utils/ADempiere/valueUtils.js'
-
-export { isEmptyValue } from '@/api/ADempiere/system-core.js'

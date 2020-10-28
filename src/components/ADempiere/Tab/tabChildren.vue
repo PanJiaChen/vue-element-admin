@@ -12,9 +12,19 @@
       >
         <el-col :span="24">
           <data-table
+            v-if="isLoadedFieldsTabParent"
+            key="data-tables-lodaded"
             :parent-uuid="windowUuid"
             :container-uuid="tabAttributes.uuid"
             :panel-type="panelType"
+          />
+          <div
+            v-else
+            key="data-tables-loading"
+            v-loading="!isLoadedFieldsTabParent"
+            :element-loading-text="$t('notifications.loading')"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            class="loading-panel"
           />
         </el-col>
       </el-tab-pane>
@@ -55,6 +65,14 @@ export default {
     isReadyFromGetData() {
       const { isLoaded, isLoadedContext } = this.getterDataParentTab
       return !this.getDataSelection.isLoaded && isLoaded && isLoadedContext
+    },
+    // load the child tabs only after loading the parent tab
+    isLoadedFieldsTabParent() {
+      const panel = this.$store.getters.getPanel(this.firstTabUuid)
+      if (panel) {
+        return panel.isLoadFieldsList
+      }
+      return false
     }
   },
   watch: {
@@ -76,9 +94,7 @@ export default {
           params: {
             ...this.$route.params
           }
-        }).catch(error => {
-          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       }
     },
     // Refrest the records of the TabChildren

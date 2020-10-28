@@ -1,20 +1,22 @@
 import {
-  createEntity,
-  updateEntity,
-  deleteEntity,
+  requestCreateEntity,
+  requestUpdateEntity,
+  requestDeleteEntity,
   rollbackEntity
 } from '@/api/ADempiere/persistence'
-import { getReferencesList } from '@/api/ADempiere/values'
+import { requestReferencesList } from '@/api/ADempiere/values'
 import { isEmptyValue, typeValue } from '@/utils/ADempiere/valueUtils.js'
 import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 import router from '@/router'
+import { convertObjectToKeyValue } from '@/utils/ADempiere/valueFormat.js'
 
 const initStateWindowControl = {
   inCreate: [],
   references: [],
+  currentRecord: {},
   windowOldRoute: {
     path: '',
     fullPath: '',
@@ -29,6 +31,9 @@ const initStateWindowControl = {
 const windowControl = {
   state: initStateWindowControl,
   mutations: {
+    setCurrentRecord(state, payload) {
+      state.currentRecord = payload
+    },
     addInCreate(state, payload) {
       state.inCreate.push(payload)
     },
@@ -62,30 +67,75 @@ const windowControl = {
       field,
       value
     }) {
-      // console.log({
-      //   field,
-      //   value
-      // })
+      if (fieldIsDisplayed(field) && field.isShowedFromUser) {
+        // change action to advanced query on field value is changed in this panel
+        if (router.currentRoute.query.action !== 'advancedQuery') {
+          router.push({
+            query: {
+              ...router.currentRoute.query,
+              action: 'advancedQuery'
+            }
+          }, () => {})
+        }
+        const { parentUuid, containerUuid, tabTableName, tabQuery, tabWhereClause } = field
+        let parsedQuery = tabQuery
+        if (!isEmptyValue(parsedQuery) && parsedQuery.includes('@')) {
+          parsedQuery = parseContext({
+            parentUuid,
+            containerUuid,
+            value: tabQuery,
+            isBooleanToString: true
+          }).value
+        }
+
+        let parsedWhereClause = tabWhereClause
+        if (!isEmptyValue(parsedWhereClause) && parsedWhereClause.includes('@')) {
+          parsedWhereClause = parseContext({
+            parentUuid,
+            containerUuid,
+            value: tabWhereClause,
+            isBooleanToString: true
+          }).value
+        }
+
+        const conditionsList = getters.getParametersToServer({
+          containerUuid,
+          isEvaluateMandatory: false
+        })
+
+        dispatch('getObjectListFromCriteria', {
+          parentUuid,
+          containerUuid,
+          tableName: tabTableName,
+          query: parsedQuery,
+          whereClause: parsedWhereClause,
+          conditionsList
+        })
+          .catch(error => {
+            console.warn('Error getting Advanced Query (notifyFieldChange):', error.message + '. Code: ', error.code)
+          })
+      }
     },
     windowActionPerformed({ dispatch, getters }, {
       field,
       value
     }) {
+      const { parentUuid, containerUuid, columnName } = field
       //  get value from store
       if (isEmptyValue(value)) {
         value = getters.getValueOfField({
-          parentUuid: field.parentUuid,
-          containerUuid: field.containerUuid,
-          columnName: field.columnName
+          parentUuid,
+          containerUuid,
+          columnName
         })
       }
       return new Promise((resolve, reject) => {
         // request callouts
         dispatch('runCallout', {
-          parentUuid: field.parentUuid,
-          containerUuid: field.containerUuid,
+          parentUuid,
+          containerUuid,
           tableName: field.tableName,
-          columnName: field.columnName,
+          columnName,
           callout: field.callout,
           oldValue: field.oldValue,
           valueType: field.valueType,
@@ -117,7 +167,7 @@ const windowControl = {
             ...field,
             value
           })
-          const emptyFields = getters.getFieldListEmptyMandatory({
+          const emptyFields = getters.getFieldsListEmptyMandatory({
             containerUuid: field.containerUuid
           })
           if (!isEmptyValue(emptyFields)) {
@@ -145,7 +195,7 @@ const windowControl = {
                       ...oldRoute.query,
                       action: response.uuid
                     }
-                  })
+                  }, () => {})
                 }
               })
               .catch(error => reject(error))
@@ -184,6 +234,7 @@ const windowControl = {
         const contextInfo = dispatch('getContextInfoValueFromServer', {
           parentUuid: field.parentUuid,
           containerUuid: field.containerUuid,
+          contextInfoId: field.contextInfo.id,
           contextInfoUuid: field.contextInfo.uuid,
           columnName: field.columnName,
           sqlStatement
@@ -220,7 +271,7 @@ const windowControl = {
     //       })
     //     }
     //
-    //     const { tableName, fieldList } = rootGetters.getPanel(containerUuid)
+    //     const { tableName, fieldsList } = rootGetters.getPanel(containerUuid)
     //     // delete key from attributes
     //     const attributesList = rootGetters.getColumnNamesAndValues({
     //       containerUuid,
@@ -228,13 +279,12 @@ const windowControl = {
     //       isEvaluateValues: true,
     //       isAddDisplayColumn: false
     //     })
-    //     console.log(attributesList)
     //     commit('addInCreate', {
     //       containerUuid,
     //       tableName,
     //       attributesList
     //     })
-    //     createEntity({
+    //     requestCreateEntity({
     //       tableName,
     //       attributesList
     //     })
@@ -266,7 +316,7 @@ const windowControl = {
     //         })
     //
     //         // set data log to undo action
-    //         const fieldId = fieldList.find(itemField => itemField.isKey)
+    //         const fieldId = fieldsList.find(itemField => itemField.isKey)
     //         dispatch('setDataLog', {
     //           containerUuid,
     //           tableName,
@@ -355,7 +405,7 @@ const windowControl = {
       })
 
       let isError = false
-      return createEntity({
+      return requestCreateEntity({
         tableName,
         attributesList
       })
@@ -376,7 +426,7 @@ const windowControl = {
                 ...oldRoute.query,
                 action: createEntityResponse.recordUuid
               }
-            })
+            }, () => {})
           }
           return {
             data: createEntityResponse.values,
@@ -420,7 +470,7 @@ const windowControl = {
     // }) {
     //   const panel = rootGetters.getPanel(containerUuid)
     //   if (!recordUuid) {
-    //     recordUuid = rootGetters.getUuid(containerUuid)
+    //     recordUuid = rootGetters.getUuidOfContainer(containerUuid)
     //   }
     //
     //   // TODO: Add support to Binary columns (BinaryData)
@@ -436,13 +486,13 @@ const windowControl = {
     //     if (columnsToDontSend.includes(itemAttribute.columnName) || itemAttribute.columnName.includes('DisplayColumn')) {
     //       return false
     //     }
-    //     const field = panel.fieldList.find(itemField => itemField.columnName === itemAttribute.columnName)
+    //     const field = panel.fieldsList.find(itemField => itemField.columnName === itemAttribute.columnName)
     //     if (!field || !field.isUpdateable || !field.isDisplayed) {
     //       return false
     //     }
     //     return true
     //   })
-    //   return updateEntity({
+    //   return requestUpdateEntity({
     //     tableName: panel.tableName,
     //     recordUuid,
     //     attributesList: finalAttributes
@@ -456,7 +506,7 @@ const windowControl = {
     //         recordId = newValues[`${panel.tableName}_ID`]
     //       }
     //       if (isEmptyValue(recordId)) {
-    //         const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+    //         const fieldId = panel.fieldsList.find(itemField => itemField.isKey)
     //         recordId = fieldId.value
     //       }
     //
@@ -490,45 +540,51 @@ const windowControl = {
     //       console.warn(`Update Entity Error ${error.code}: ${error.message}`)
     //     })
     // },
-    // updateCurrentEntityFromTable({ rootGetters }, {
-    //   containerUuid,
-    //   row
-    // }) {
-    //   const { tableName, fieldList } = rootGetters.getPanel(containerUuid)
-    //
-    //   // TODO: Add support to Binary columns (BinaryData)
-    //   const columnsToDontSend = ['BinaryData', 'isEdit', 'isNew', 'isSendServer']
-    //
-    //   // TODO: Evaluate peformance without filter using delete(prop) before convert object to array
-    //   // attributes or fields
-    //   let finalAttributes = convertObjectToKeyValue({ object: row })
-    //   finalAttributes = finalAttributes.filter(itemAttribute => {
-    //     if (columnsToDontSend.includes(itemAttribute.columnName) || itemAttribute.columnName.includes('DisplayColumn')) {
-    //       return false
-    //     }
-    //     const field = fieldList.find(itemField => itemField.columnName === itemAttribute.columnName)
-    //     if (!field || !field.isUpdateable || !field.isDisplayed) {
-    //       return false
-    //     }
-    //     return true
-    //   })
-    //
-    //   return updateEntity({
-    //     tableName,
-    //     recordUuid: row.UUID,
-    //     attributesList: finalAttributes
-    //   })
-    //     .then(response => {
-    //       return response
-    //     })
-    //     .catch(error => {
-    //       showMessage({
-    //         message: error.message,
-    //         type: 'error'
-    //       })
-    //       console.warn(`Update Entity Table Error ${error.code}: ${error.message}.`)
-    //     })
-    // },
+    updateCurrentEntityFromTable({ rootGetters }, {
+      containerUuid,
+      row
+    }) {
+      const { tableName, fieldsList } = rootGetters.getPanel(containerUuid)
+
+      // TODO: Add support to Binary columns (BinaryData)
+      const columnsToDontSend = ['BinaryData', 'isEdit', 'isNew', 'isSendServer']
+      columnsToDontSend.forEach(appAttribute => {
+        delete row[appAttribute]
+      })
+
+      // attributes or fields
+      let finalAttributes = convertObjectToKeyValue({
+        object: row
+      })
+      finalAttributes = finalAttributes.filter(itemAttribute => {
+        const { columnName } = itemAttribute
+        if (columnName.includes('DisplayColumn')) {
+          return false
+        }
+
+        const field = fieldsList.find(itemField => itemField.columnName === columnName)
+        if (!field || !field.isUpdateable || !field.isDisplayed) {
+          return false
+        }
+        return true
+      })
+
+      return requestUpdateEntity({
+        tableName,
+        recordUuid: row.UUID,
+        attributesList: finalAttributes
+      })
+        .then(response => {
+          return response
+        })
+        .catch(error => {
+          showMessage({
+            message: error.message,
+            type: 'error'
+          })
+          console.warn(`Update Entity Table Error ${error.code}: ${error.message}.`)
+        })
+    },
     /**
      * Update record after run process associated with window
      * @param {string} parentUuid
@@ -540,7 +596,7 @@ const windowControl = {
       containerUuid,
       tab
     }) {
-      const recordUuid = rootGetters.getUuid(containerUuid)
+      const recordUuid = rootGetters.getUuidOfContainer(containerUuid)
       // get new values
       dispatch('getEntity', {
         parentUuid,
@@ -582,7 +638,7 @@ const windowControl = {
           recordId = row[`${panel.tableName}_ID`]
         }
 
-        deleteEntity({
+        requestDeleteEntity({
           tableName: panel.tableName,
           recordUuid,
           recordId
@@ -615,7 +671,7 @@ const windowControl = {
                         ...oldRoute.query,
                         action: responseDataList[0].UUID
                       }
-                    })
+                    }, () => {})
                   }
                 }
               })
@@ -629,7 +685,7 @@ const windowControl = {
 
             if (isEmptyValue(recordId)) {
               // TODO: Verify performance with tableName_ID
-              const fieldId = panel.fieldList.find(itemField => itemField.isKey)
+              const fieldId = panel.fieldsList.find(itemField => itemField.isKey)
               recordId = fieldId.value
             }
             // set data log to undo action
@@ -688,7 +744,7 @@ const windowControl = {
             })
           return
         }
-        deleteEntity({
+        requestDeleteEntity({
           tableName,
           recordUuid: record.UUID
         })
@@ -706,7 +762,7 @@ const windowControl = {
                     ...oldRoute.query,
                     action: 'create-new'
                   }
-                })
+                }, () => {})
                 // clear fields with default values
                 dispatch('setDefaultValues', {
                   parentUuid,
@@ -935,7 +991,7 @@ const windowControl = {
         tableName = rootGetters.getTab(windowUuid, containerUuid).tableName
       }
       return new Promise(resolve => {
-        getReferencesList({
+        requestReferencesList({
           windowUuid,
           tableName,
           recordUuid
@@ -1002,7 +1058,7 @@ const windowControl = {
         const countRequest = state.totalRequest + 1
         commit('setTotalRequest', countRequest)
 
-        updateEntity({
+        requestUpdateEntity({
           tableName,
           recordUuid: itemData.UUID,
           attributesList: valuesToSend
@@ -1050,6 +1106,9 @@ const windowControl = {
     }
   },
   getters: {
+    getCurrentRecord: (state) => {
+      return state.currentRecord
+    },
     getInCreate: (state) => (containerUuid) => {
       return state.inCreate.find(item => item.containerUuid === containerUuid)
     },

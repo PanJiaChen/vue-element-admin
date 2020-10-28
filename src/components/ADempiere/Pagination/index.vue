@@ -2,9 +2,9 @@
   <el-footer style="height: 30px;">
     <div style="float: right;">
       <el-pagination
-        :current-page="currentPage"
         small
         layout="slot, total, prev, pager, next"
+        :current-page="currentPage"
         :page-size="pageSize"
         :total="total"
         @current-change="handleChangePage"

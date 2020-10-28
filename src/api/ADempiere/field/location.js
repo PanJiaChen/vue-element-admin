@@ -2,17 +2,16 @@ const tableName = 'C_Location'
 
 /**
  * Create a location and return the created entity
- * @param {array} attributes
+ * @param {array} attributesList
  */
 export function requestCreateLocationAddress({
-  attributes
+  attributesList
 }) {
-  const { createEntity } = require('@/api/ADempiere/persistence.js')
+  const { requestCreateEntity } = require('@/api/ADempiere/persistence.js')
 
-  return createEntity({
+  return requestCreateEntity({
     tableName,
-    attributes,
-    formatReturn: 'object'
+    attributesList
   })
 }
 
@@ -25,9 +24,9 @@ export function requestGetLocationAddress({
   id,
   uuid
 }) {
-  const { getEntity } = require('@/api/ADempiere/persistence.js')
+  const { requestGetEntity } = require('@/api/ADempiere/persistence.js')
 
-  return getEntity({
+  return requestGetEntity({
     tableName,
     recordId: id,
     recordUuid: uuid
@@ -38,20 +37,19 @@ export function requestGetLocationAddress({
  * Update an existing location by id or uuid
  * @param {number} id as C_Location_ID
  * @param {string} uuid
- * @param {array} attributes, all attributes (including empty values)
+ * @param {array} attributesList, all attributes (including empty values)
  */
 export function requestUpdateLocationAddress({
   id,
   uuid,
-  attributes
+  attributesList
 }) {
-  const { updateEntity } = require('@/api/ADempiere/persistence.js')
+  const { requestUpdateEntity } = require('@/api/ADempiere/persistence.js')
 
-  return updateEntity({
+  return requestUpdateEntity({
     tableName,
     recordId: id,
     recordUuid: uuid,
-    attributes,
-    formatReturn: 'object'
+    attributesList
   })
 }

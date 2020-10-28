@@ -1,4 +1,4 @@
-import { getBrowser as getBrowserMetadata } from '@/api/ADempiere/dictionary'
+import { requestBrowserMetadata } from '@/api/ADempiere/dictionary.js'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { generateField } from '@/utils/ADempiere/dictionaryUtils'
@@ -37,7 +37,7 @@ const browser = {
       routeToDelete
     }) {
       return new Promise(resolve => {
-        getBrowserMetadata({
+        requestBrowserMetadata({
           uuid: containerUuid,
           id: browserId
         })
@@ -58,15 +58,15 @@ const browser = {
             const fieldsRangeList = []
             let isShowedCriteria = false
             let awaitForValues = 0
-            let fieldsList = browserResponse.fieldsList.map((fieldItem, index) => {
+            let fieldsList = browserResponse.fields.map((fieldItem, index) => {
               const someAttributes = {
                 ...additionalAttributes,
-                fieldListIndex: index
+                fieldsListIndex: index
               }
               const field = generateField({
                 fieldToGenerate: fieldItem,
                 moreAttributes: someAttributes,
-                isSOTrxMenu: routeToDelete.meta.isSOTrx
+                isSOTrxMenu: routeToDelete.meta.isSalesTransaction
               })
               // Add new field if is range number
               if (field.isRange && field.componentPath === 'FieldNumber') {
@@ -116,7 +116,7 @@ const browser = {
             const newBrowser = {
               ...browserResponse,
               containerUuid,
-              fieldList: fieldsList,
+              fieldsList,
               panelType,
               // app attributes
               awaitForValues, // control to values
@@ -158,7 +158,9 @@ const browser = {
             })
           })
           .catch(error => {
-            router.push({ path: '/dashboard' })
+            router.push({
+              path: '/dashboard'
+            }, () => {})
             dispatch('tagsView/delView', routeToDelete)
             showMessage({
               message: language.t('login.unexpectedError'),

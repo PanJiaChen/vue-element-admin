@@ -138,8 +138,8 @@ export default {
           if (mutation.payload.columnName === 'C_Country_ID') {
             const values = []
             // Get country definition to sequence fields and displayed value
-            if (mutation.value !== this.currentCountryDefinition.id) {
-              this.getCountryDefinition({
+            if (mutation.value !== this.currentCountryDefinition.countryId) {
+              this.requestGetCountryDefinition({
                 id: mutation.payload.value
               })
                 .then(responseCountry => {
@@ -209,14 +209,35 @@ export default {
         value: this.getDisplayedValue(values)
       })
 
-      // active update record to server
-      this.$store.dispatch('notifyFieldChange', {
+      this.$store.commit('updateValueOfField', {
+        parentUuid,
         containerUuid,
-        field: this.parentMetadata
+        columnName: 'Postal',
+        value: values.Postal
       })
+
+      this.$store.commit('updateValueOfField', {
+        parentUuid,
+        containerUuid,
+        columnName: 'C_Country_ID',
+        value: values.C_Country_ID
+      })
+
+      this.$store.commit('updateValueOfField', {
+        parentUuid,
+        containerUuid,
+        columnName: 'C_City_ID',
+        value: values.C_City_ID
+      })
+
+      // active update record to server
+      // this.$store.dispatch('notifyFieldChange', {
+      //   containerUuid,
+      //   field: this.parentMetadata
+      // })
     },
     sendValuesToServer() {
-      const fieldsNotReady = this.$store.getters.getFieldListEmptyMandatory({
+      const fieldsNotReady = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid: this.containerUuid
       })
       if (!this.isEmptyValue(fieldsNotReady)) {
@@ -247,15 +268,13 @@ export default {
       })
 
       const updateLocation = (responseLocation) => {
-        const { values } = responseLocation
-
         // set form values
         this.setValues({
-          values
+          values: responseLocation.attributes
         })
 
         // set field parent values
-        this.setParentValues(values)
+        this.setParentValues(responseLocation.attributes)
         this.setShowedLocationForm(false)
 
         // set context values to parent continer
@@ -270,7 +289,7 @@ export default {
 
       if (this.isEmptyValue(locationId) || locationId === 0) {
         requestCreateLocationAddress({
-          attributes: attributesToServer
+          attributesList: attributesToServer
         })
           .then(updateLocation)
           .catch(error => {
@@ -286,7 +305,7 @@ export default {
       }
       requestUpdateLocationAddress({
         id: locationId,
-        attributes: attributesToServer
+        attributesList: attributesToServer
       })
         .then(updateLocation)
         .catch(error => {

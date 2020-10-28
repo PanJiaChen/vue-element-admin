@@ -54,7 +54,7 @@ export function convertObjectToKeyValue({
  * @param {string} valueName, name from value in pairs
  * @returns {object} { key: value, key2: value2 }
  */
-export function convertArrayKeyValueObject({
+export function convertArrayKeyValueToObject({
   array,
   keyName = 'columnName',
   valueName = 'value'
@@ -172,13 +172,13 @@ export function formatPercent(number) {
 
 //  Get country code from store
 function getCountryCode() {
-  const languageDefinition = store.getters['user/getCurrentLanguageDefinition']
+  const languageDefinition = store.getters.getCurrentLanguageDefinition
   return languageDefinition.languageISO + '-' + languageDefinition.countryCode
 }
 
 // Get Default country
 function getCurrency() {
-  const currencyDefinition = store.getters['user/getCurrency']
+  const currencyDefinition = store.getters.getCurrency
   return currencyDefinition.iSOCode
 }
 

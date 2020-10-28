@@ -82,7 +82,7 @@ export default {
     precision() {
       // Amount, Costs+Prices, Number
       if (this.isDecimal) {
-        return this.currencyDefinition.stdPrecision
+        return this.currencyDefinition.standardPrecision
       }
       return undefined
     },
@@ -140,13 +140,13 @@ export default {
       return formatterInstance.format(value)
     },
     countryLanguage() {
-      return this.$store.getters['user/getCountryLanguage']
+      return this.$store.getters.getCountryLanguage
     },
     currencyCode() {
       return this.currencyDefinition.iSOCode
     },
     currencyDefinition() {
-      return this.$store.getters['user/getCurrency']
+      return this.$store.getters.getCurrency
     }
   },
   methods: {

@@ -1,41 +1,21 @@
 import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil.js'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { FIELDS_QUANTITY } from '@/utils/ADempiere/references'
+import TableMixin from '@/components/ADempiere/DataTable/mixin/tableMixin.js'
 
 export default {
   name: 'MixinMenuTable',
+  mixins: [
+    TableMixin
+  ],
   props: {
-    parentUuid: {
-      type: String,
-      default: undefined
-    },
-    containerUuid: {
-      type: String,
-      required: true
-    },
-    panelType: {
-      type: String,
-      default: 'window'
-    },
     currentRow: {
       type: Object,
       default: () => {}
     },
-    isParent: {
-      type: Boolean,
-      default: false
-    },
     processMenu: {
       type: Array,
       default: () => []
-    },
-    isPanelWindow: {
-      type: Boolean,
-      default: false
-    },
-    isMobile: {
-      type: Boolean,
-      default: false
     },
     panelMetadata: {
       type: Object,
@@ -60,73 +40,23 @@ export default {
       }
       return 'menu-table'
     },
-    getterDataRecordsAndSelection() {
-      return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
-    },
-    getterNewRecords() {
-      if (this.isPanelWindow && !this.isParent) {
-        const newRecordTable = this.getterDataRecordsAndSelection.record.filter(recordItem => {
-          return recordItem.isNew
-        })
-        return newRecordTable.length
-      }
-      return 0
-    },
-    getDataSelection() {
-      return this.getterDataRecordsAndSelection.selection
-    },
-    getDataAllRecord() {
-      return this.getterDataRecordsAndSelection.record
-    },
     fieldsList() {
-      if (this.panelMetadata && this.panelMetadata.fieldList) {
-        return this.panelMetadata.fieldList
+      if (this.panelMetadata && this.panelMetadata.fieldsList) {
+        return this.panelMetadata.fieldsList
       }
       return []
     },
-    isReadOnlyParent() {
-      if (this.isPanelWindow) {
-        if (!this.$store.getters.getContainerIsActive(this.parentUuid)) {
-          return true
-        }
-        if (this.$store.getters.getContainerProcessing(this.parentUuid)) {
-          return true
-        }
-        if (this.$store.getters.getContainerProcessed(this.parentUuid)) {
-          return true
-        }
-      }
-      return false
-    },
-    isDisabledAddNew() {
-      if (this.isParent) {
-        return true
-      }
-      if (this.$route.query.action === 'create-new') {
-        return true
-      }
-      if (!this.panelMetadata.isInsertRecord) {
-        return true
-      }
-      if (this.isReadOnlyParent) {
-        return true
-      }
-      if (this.getterNewRecords) {
-        return true
-      }
-      return false
-    },
     isFieldsQuantity() {
-      const fieldsQuantity = this.getterFieldList.filter(fieldItem => {
+      const fieldsQuantity = this.getterFieldsList.filter(fieldItem => {
         return FIELDS_QUANTITY.includes(fieldItem.displayType)
       }).length
       return !fieldsQuantity
     },
-    getterFieldList() {
+    getterFieldsList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
-    getterFieldListHeader() {
-      const header = this.getterFieldList.filter(fieldItem => {
+    getterFieldsListHeader() {
+      const header = this.getterFieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem.name
@@ -136,8 +66,8 @@ export default {
         return fieldItem.name
       })
     },
-    getterFieldListValue() {
-      const value = this.getterFieldList.filter(fieldItem => {
+    getterFieldsListValue() {
+      const value = this.getterFieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem
@@ -163,16 +93,12 @@ export default {
         parentRecordUuid: this.$route.query.action
       })
     },
-    closeMenu() {
-      // TODO: Validate to dispatch one action
-      this.$store.dispatch('showMenuTable', {
-        isShowedTable: false
-      })
-      this.$store.dispatch('showMenuTabChildren', {
-        isShowedTabChildren: false
-      })
-    },
     showModalTable(process) {
+      if (process.type === 'application') {
+        this.sortTab(process)
+        return
+      }
+
       const processData = this.$store.getters.getProcess(process.uuid)
       if (!this.currentRow) {
         this.$store.dispatch('setProcessSelect', {
@@ -231,30 +157,18 @@ export default {
         containerUuid: this.containerUuid
       })
     },
-    deleteSelection() {
-      this.$store.dispatch('deleteSelectionDataList', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid
-      }).then(() => {
-        this.$store.dispatch('setRecordSelection', {
-          parentUuid: this.parentUuid,
-          containerUuid: this.containerUuid,
-          panelType: this.panelType
-        })
-      })
-    },
     addNewRow() {
-      if (this.getterNewRecords <= 0) {
+      if (this.newRecordsQuantity <= 0) {
         this.$store.dispatch('addNewRow', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
-          fieldList: this.fieldsList,
+          fieldsList: this.fieldsList,
           isEdit: true,
           isSendServer: false
         })
         return
       }
-      const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({
+      const fieldsEmpty = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid: this.containerUuid
       })
       this.$message({
@@ -273,11 +187,14 @@ export default {
      * @param {string} formatToExport
      */
     exporRecordTable(formatToExport) {
-      const header = this.getterFieldListHeader
-      const filterVal = this.getterFieldListValue
-      let list = this.getDataSelection
+      const header = this.getterFieldsListHeader
+      const filterVal = this.getterFieldsListValue
+
+      let list = []
       if (this.menuType === 'tableContextMenu') {
         list = [this.currentRow]
+      } else {
+        list = this.getDataSelection
       }
 
       const data = this.formatJson(filterVal, list)
@@ -290,11 +207,11 @@ export default {
       this.closeMenu()
     },
     exporZipRecordTable() {
-      const header = this.getterFieldListHeader
-      const filterVal = this.getterFieldListValue
+      const header = this.getterFieldsListHeader
+      const filterVal = this.getterFieldsListValue
       let list = this.getDataSelection
       if (this.getDataSelection.length <= 0) {
-        list = this.getDataAllRecord
+        list = this.recordsData
       }
       const data = this.formatJson(filterVal, list)
       exportFileZip({
@@ -313,7 +230,7 @@ export default {
     },
     zoomRecord() {
       const browserMetadata = this.$store.getters.getBrowser(this.$route.meta.uuid)
-      const { elementName } = browserMetadata.fieldList.find(field => field.columnName === browserMetadata.keyColumn)
+      const { elementName } = browserMetadata.fieldsList.find(field => field.columnName === browserMetadata.keyColumn)
       const records = []
       this.getDataSelection.forEach(recordItem => {
         let record = recordItem[browserMetadata.keyColumn]
@@ -337,9 +254,7 @@ export default {
             action: 'advancedQuery',
             [elementName]: records
           }
-        }).catch(error => {
-          console.info(`Table Menu Mixin: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       }
     }
   }

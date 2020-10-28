@@ -107,13 +107,22 @@ export default {
     },
     change(val) {
       if (val.name) {
+        const query = {}
         if (val.meta && val.meta.type === 'window') {
-          this.$router.push({ name: val.name, query: { tabParent: 0 }, params: { childs: val.meta.childs }})
-        } else {
-          this.$router.push({ name: val.name, params: { childs: val.meta.childs }})
+          query.tabParent = 0
         }
+
+        this.$router.push({
+          name: val.name,
+          params: {
+            childs: val.meta.childs
+          },
+          query
+        }, () => {})
       } else {
-        this.$router.push({ path: val.path })
+        this.$router.push({
+          path: val.path
+        }, () => {})
       }
       this.search = ''
       this.options = []

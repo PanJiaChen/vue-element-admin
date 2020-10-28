@@ -1,5 +1,8 @@
 'use strict'
 const path = require('path')
+// use fs to get certificates files
+// const fs = require('fs')
+
 const defaultSettings = require('./src/settings.js')
 
 function resolve(dir) {
@@ -31,6 +34,13 @@ module.exports = {
   productionSourceMap: false,
   devServer: {
     port: port,
+    public: `0.0.0.0:${port}`,
+    // uncomment to enable tls/ssl with the paths to the certificates
+    // https: {
+    //   key: fs.readFileSync('./certs/localhost.key'),
+    //   cert: fs.readFileSync('./certs/localhost.crt')
+    // },
+    hot: true,
     open: true,
     overlay: {
       warnings: false,

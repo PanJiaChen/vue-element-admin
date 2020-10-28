@@ -11,19 +11,10 @@ export default {
       default: null
     }
   },
-  data() {
-    // value render
-    let value1 = this.metadata.value
-    if (this.metadata.inTable) {
-      value1 = this.valueModel
-    }
-    value1 = this.parseValue(value1)
-
-    return {
-      value1
-    }
-  },
   computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
     isDisabled() {
       return Boolean(this.metadata.readonly || this.metadata.disabled)
     },
@@ -36,13 +27,34 @@ export default {
     },
     value: {
       get() {
+        const { columnName, containerUuid } = this.metadata
+
+        // table records values
+        if (this.metadata.inTable) {
+          const row = this.$store.getters.getRowData({
+            containerUuid,
+            index: this.metadata.tableIndex
+          })
+          return row[columnName]
+        }
+
+        // main panel values
         return this.$store.getters.getValueOfField({
           parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
-          columnName: this.metadata.columnName
+          containerUuid,
+          columnName
         })
       },
       set(value) {
+        if (this.metadata.inTable) {
+          this.$store.dispatch('notifyCellTableChange', {
+            parentUuid: this.metadata.parentUuid,
+            containerUuid: this.metadata.containerUuid,
+            newValue: value,
+            field: this.metadata
+          })
+          return
+        }
         this.$store.commit('updateValueOfField', {
           parentUuid: this.metadata.parentUuid,
           containerUuid: this.metadata.containerUuid,
@@ -176,6 +188,14 @@ export default {
           })
         }
         return
+      }
+
+      if (this.metadata.inTable) {
+        this.$store.dispatch('notifyCellTableChange', {
+          parentUuid: this.metadata.parentUuid,
+          containerUuid: this.metadata.containerUuid,
+          field: this.metadata
+        })
       }
       this.$store.dispatch('notifyFieldChange', {
         containerUuid: this.metadata.containerUuid,

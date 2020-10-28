@@ -16,16 +16,17 @@
                       <div class="w">
                         <div class="open-left" />
                         <div :class="styleTableNavigation">
+                          <!-- close record navigation and advanced query panel -->
                           <el-button
-                            v-show="!isPanel"
                             :icon="iconShowedRecordNavigation"
                             circle
                             style="margin-left: 10px;"
                             class="el-button-window"
                             @click="handleChangeShowedRecordNavigation(false)"
                           />
+                          <!-- complete expand record navigation and advanced query panel  -->
                           <el-button
-                            v-show="!isPanel && !isMobile"
+                            v-show="!isMobile"
                             :icon="iconIsShowedAside"
                             circle
                             class="el-button-window"
@@ -39,15 +40,6 @@
                           :is-showed-panel-record="true"
                           :is-parent="true"
                         />
-                        <div class="close-datatable">
-                          <el-button
-                            v-show="isPanel"
-                            icon="el-icon-caret-left"
-                            circle
-                            class="el-button-window"
-                            @click="handleChangeShowedPanel()"
-                          />
-                        </div>
                       </div>
                     </div>
                   </el-aside>
@@ -63,7 +55,7 @@
                         :style="isWorkflowBarStatus ? 'height: 45px; background: #F5F7FA' : 'height: 40px'"
                       >
                         <el-container>
-                          <el-aside width="100%" style="width: 78vw;overflow: hidden;">
+                          <el-aside width="100%" style="width: 78vw; overflow: hidden;">
                             <el-scrollbar>
                               <workflow-status-bar
                                 v-if="isWorkflowBarStatus"
@@ -104,10 +96,12 @@
                                   <i class="el-icon-s-comment" />
                                   {{ $t('window.containerInfo.notes') }}
                                 </span>
-                                <div>
-                                  <chat-entries />
-                                </div>
+                                <chat-entries
+                                  :table-name="getTableName"
+                                  :record-id="recordId"
+                                />
                               </el-tab-pane>
+
                               <el-tab-pane
                                 name="listRecordLogs"
                               >
@@ -121,6 +115,7 @@
                                   <record-logs />
                                 </div>
                               </el-tab-pane>
+
                               <el-tab-pane
                                 v-if="getIsWorkflowLog"
                                 name="listWorkflowLogs"
@@ -140,7 +135,16 @@
                           </el-card>
                         </div>
                         <div style="right: 0%; top: 40%; position: absolute;">
-                          <el-button v-show="!showContainerInfo && !isMobile" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
+                          <!-- open container info -->
+                          <el-button
+                            v-show="!showContainerInfo && !isMobile"
+                            type="info"
+                            icon="el-icon-info"
+                            circle
+                            style="float: right;"
+                            class="el-button-window"
+                            @click="contentInfo"
+                          />
                         </div>
                         <div class="small-4 columns">
                           <div class="wrapper">
@@ -148,6 +152,7 @@
                               v-show="!isEmptyValue(windowMetadata.tabsListChildren)"
                               class="open-detail"
                             />
+                            <!-- open childs tabs -->
                             <el-button
                               v-if="windowMetadata.tabsListChildren.length &&
                                 (isMobile && !isShowedRecordNavigation || !isMobile)"
@@ -167,6 +172,7 @@
                         <div class="small-4 columns">
                           <div class="w">
                             <div class="open-left" />
+                            <!-- open record navigation and advanced query if is closed -->
                             <el-button
                               v-show="!isShowedRecordNavigation"
                               :icon="iconShowedRecordNavigation"
@@ -186,6 +192,7 @@
                       >
                         <div class="w-33">
                           <div class="center">
+                            <!-- close tab children if is openend -->
                             <el-button
                               icon="el-icon-caret-bottom"
                               circle
@@ -212,7 +219,16 @@
         <SplitArea :size="showContainerInfo ? isSize : 0">
           <el-main>
             <div :class="isCloseInfo">
-              <el-button v-show="showContainerInfo" type="info" icon="el-icon-info" circle style="float: right;" class="el-button-window" @click="conteInfo" />
+              <!-- close container info if is opened -->
+              <el-button
+                v-show="showContainerInfo"
+                type="info"
+                icon="el-icon-info"
+                circle
+                style="float: right;"
+                class="el-button-window"
+                @click="contentInfo"
+              />
             </div>
             <div id="example-1">
               <transition name="slide-fade">
@@ -226,10 +242,12 @@
                           <i class="el-icon-s-comment" />
                           {{ $t('window.containerInfo.notes') }}
                         </span>
-                        <div>
-                          <chat-entries />
-                        </div>
+                        <chat-entries
+                          :table-name="getTableName"
+                          :record-id="recordId"
+                        />
                       </el-tab-pane>
+
                       <el-tab-pane
                         name="listRecordLogs"
                       >
@@ -244,6 +262,7 @@
                           <record-logs />
                         </div>
                       </el-tab-pane>
+
                       <el-tab-pane
                         v-if="getIsWorkflowLog"
                         name="listWorkflowLogs"
@@ -274,7 +293,6 @@
     key="window-loading"
     v-loading="!isLoaded"
     :element-loading-text="$t('notifications.loading')"
-    element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(255, 255, 255, 0.8)"
     class="loading-window"
   />
@@ -290,7 +308,7 @@ import ModalDialog from '@/components/ADempiere/Dialog'
 import DataTable from '@/components/ADempiere/DataTable'
 import splitPane from 'vue-splitpane'
 // Container Info
-import ChatEntries from '@/components/ADempiere/ContainerInfo/chatEntries'
+import ChatEntries from '@/components/ADempiere/ChatEntries'
 import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
 // Workflow
@@ -322,7 +340,7 @@ export default {
       windowUuid: this.$route.meta.uuid,
       panelType: 'window',
       isLoaded: false,
-      isPanel: false,
+      // TODO: Manage attribute with store
       activeInfo: 'listChatEntries',
       showContainerInfo: false,
       // TODO: Manage attribute with store
@@ -370,12 +388,6 @@ export default {
         return 'open-table-detail-mobile'
       }
       return 'open-table-detail'
-    },
-    classIsContainerInfo() {
-      if (this.isMobile) {
-        return 'container-info-mobile'
-      }
-      return 'container-info'
     },
     isSize() {
       if (this.isMobile && this.showContainerInfo) {
@@ -489,10 +501,11 @@ export default {
       return this.$store.getters.getDataRecordsList(this.windowMetadata.currentTabUuid).length
     },
     gettersListRecordLogs() {
-      const changeLog = this.$store.getters.getRecordLogs.recorLogs
+      const changeLog = this.$store.getters.getRecordLogs.entityLogs
       if (this.isEmptyValue(changeLog)) {
         return changeLog
       }
+      // TODO: Verify it, parse date value
       changeLog.sort((a, b) => {
         const c = new Date(a.logDate)
         const d = new Date(b.logDate)
@@ -529,11 +542,22 @@ export default {
     },
     // current record
     getRecord() {
-      return this.getterDataRecords.find(record => {
-        return record.UUID === this.$route.query.action
-      })
+      const { action } = this.$route.query
+      if (!this.isEmptyValue(action) && action !== 'create-new') {
+        return this.getterDataRecords.find(record => {
+          return record.UUID === action
+        })
+      }
+      return undefined
     },
-    getCurrentRecord() {
+    recordId() {
+      const currentRecord = this.getRecord
+      if (this.isEmptyValue(currentRecord)) {
+        return undefined
+      }
+      return currentRecord[`${this.getTableName}_ID`]
+    },
+    currentRecord() {
       const currentRecord = this.$store.getters.getCurrentRecord
       if (this.isEmptyValue(currentRecord)) {
         return this.getterDataRecords[0]
@@ -557,7 +581,7 @@ export default {
         })
           .then(response => {
             if (value.query.action === 'create-new') {
-              this.$store.dispatch('isNote', false)
+              this.$store.commit('isNote', false)
             }
           })
       }
@@ -578,33 +602,48 @@ export default {
       const panelRight = document.getElementById('PanelRight')
       if (!this.isEmptyValue(panelRight)) {
         const widthPanel = panelRight.clientWidth - 350
-        this.$store.dispatch('setPanelRight', widthPanel)
+        this.$store.commit('setPanelRight', widthPanel)
       }
     },
-    conteInfo() {
+    contentInfo() {
       this.showContainerInfo = !this.showContainerInfo
       if (this.showContainerInfo) {
         let tableName = this.$route.params.tableName
         if (this.isEmptyValue(tableName)) {
           tableName = this.getTableName
         }
-        const recordId = this.getCurrentRecord[tableName + '_ID']
+
+        const record = this.currentRecord
+        let recordId
+        if (!this.isEmptyValue(record)) {
+          recordId = record[tableName + '_ID']
+        }
         this.$router.push({
           params: {
             recordId,
             tableName
+          },
+          query: {
+            ...this.$route.query
           }
-        }).catch(error => {
-          console.info(`Window View: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
+
+        const action = this.$route.query.action
+        let recordUuid
+        if (!this.isEmptyValue(action) && action !== 'create-new') {
+          recordUuid = action
+        }
+
+        // TODO: Verify if first tab is document
         this.$store.dispatch('listWorkflowLogs', {
           tableName,
-          recordUuid: this.$route.query.action,
+          recordUuid,
           recordId
         })
         this.$store.dispatch(this.activeInfo, {
           tableName,
-          recordId
+          recordId,
+          recordUuid
         })
       }
       this.$store.dispatch('showContainerInfo', !this.getterShowContainerInfo)
@@ -614,9 +653,23 @@ export default {
       if (this.isEmptyValue(tableName)) {
         tableName = this.getTableName
       }
+
+      const action = this.$route.query.action
+      let recordUuid
+      if (!this.isEmptyValue(action) && action !== 'create-new') {
+        recordUuid = action
+      }
+
+      const record = this.currentRecord
+      let recordId
+      if (!this.isEmptyValue(record)) {
+        recordId = record[tableName + '_ID']
+      }
+
       this.$store.dispatch(tab.name, {
         tableName,
-        recordId: this.getCurrentRecord[tableName + '_ID']
+        recordId,
+        recordUuid
       })
     },
     // callback new size
@@ -669,7 +722,6 @@ export default {
       })
     },
     handleChangeShowedPanel(value) {
-      this.isPanel = !this.isPanel
       this.isShowedRecordPanel = !this.isShowedRecordPanel
     },
     handleChangeShowedTabChildren(isShowedChilds) {
@@ -787,13 +839,6 @@ export default {
     z-index: 5;
     right: 1%!important;
   }
-  .close-datatable {
-    position: absolute;
-    top: 45%;
-    display: none;
-    z-index: 5;
-    right: 0%!important;
-  }
   .button {
     display: none;
   }
@@ -805,9 +850,6 @@ export default {
   }
   .w:hover .open-datatable-aside {
     display: grid;
-  }
-  .w:hover .close-datatable {
-    display: inline-block;
   }
   .open-detail {
     width: 100%;
@@ -829,16 +871,6 @@ export default {
     border-color: #DCDFE6;
     color: white;
     background: #008fd3;
-  }
-  .container-info-mobile {
-    top: 29%;
-    position: absolute;
-    right: 0%;
-  }
-  .container-info {
-    top: 40%;
-    position: absolute;
-    right: 0%;
   }
   .close-info {
     top: 40%;

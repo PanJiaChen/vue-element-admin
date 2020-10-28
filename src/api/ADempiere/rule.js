@@ -1,5 +1,8 @@
 // Get Instance for connection
-import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
 /**
  * Run callout request
@@ -14,17 +17,30 @@ import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
  * @param {array}   attributesList
  * @returns {Map} Entity
  */
-export function runCallOutRequest({ windowUuid, windowNo, tabUuid, tableName, columnName, value, oldValue, valueType, callout, attributesList = [] }) {
-  return Instance.call(this).requestRunCallout({
-    windowUuid,
-    windowNo,
-    tabUuid,
-    tableName,
-    columnName,
-    value,
-    oldValue,
-    valueType,
-    callout,
-    attributesList
+export function runCallOutRequest({
+  windowUuid,
+  windowNo,
+  tabUuid,
+  tableName,
+  columnName,
+  value,
+  oldValue,
+  callout,
+  attributesList = []
+}) {
+  return requestRest({
+    url: '/ui/run-callout',
+    data: {
+      table_name: tableName,
+      window_uuid: windowUuid,
+      tab_uuid: tabUuid,
+      callout,
+      column_name: columnName,
+      old_value: oldValue,
+      value,
+      window_no: windowNo,
+      attributes: attributesList
+    }
   })
+    .then(evaluateResponse)
 }

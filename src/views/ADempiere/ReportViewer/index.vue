@@ -161,8 +161,8 @@ export default {
               })
 
               this.$store.dispatch('tagsView/delView', this.$route)
-                .then(({ visitedViews }) => {
-                  this.$router.push('/')
+                .then(() => {
+                  this.$router.push('/', () => {})
                 })
               return
             }

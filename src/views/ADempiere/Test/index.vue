@@ -1,6 +1,5 @@
 <template>
   <el-container
-    key="form-loaded"
     class="view-base"
     style="height: max-content!important;"
   >
@@ -16,8 +15,9 @@
         <el-col :span="24">
           <el-card
             v-if="isLoaded"
+            key="form-loaded"
             class="content-collapse"
-            :style="isEmptyValue(metadata.fieldList) ? 'height: max-content!important;' : ''"
+            :style="isEmptyValue(metadata.fieldsList) ? 'height: max-content !important;' : ''"
           >
             <h3 class="warn-content text-center">
               <el-popover
@@ -62,7 +62,6 @@
             key="form-loading"
             v-loading="!isLoaded"
             :element-loading-text="$t('notifications.loading')"
-            element-loading-spinner="el-icon-loading"
             element-loading-background="rgba(255, 255, 255, 0.8)"
             class="view-loading"
           />

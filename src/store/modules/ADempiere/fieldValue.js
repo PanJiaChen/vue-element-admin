@@ -29,7 +29,7 @@ const value = {
       value,
       isOverWriteParent = true
     }) {
-      //  Only Parent
+      // Only Parent
       if (parentUuid) {
         const keyParent = parentUuid + '_' + columnName
         const valueParent = state.field[keyParent]
@@ -37,14 +37,15 @@ const value = {
           if (isOverWriteParent) {
             Vue.set(state.field, keyParent, value)
           } else {
-            if (isEmptyValue(value)) {
+            if (!isEmptyValue(value)) {
               // tab child no replace parent context with empty
               Vue.set(state.field, keyParent, value)
             }
           }
         }
       }
-      //  Only Container
+
+      // Only Container
       if (containerUuid) {
         const keyContainer = containerUuid + '_' + columnName
         if (value !== state.field[keyContainer]) {
@@ -53,19 +54,29 @@ const value = {
       }
     },
     updateValuesOfContainer(state, payload) {
+      const { parentUuid, containerUuid, isOverWriteParent } = payload
       payload.attributes.forEach(attribute => {
         const { value, columnName } = attribute
 
-        //  Only Parent
-        if (payload.parentUuid) {
-          const keyParent = payload.parentUuid + '_' + columnName
-          if (value !== state.field[keyParent]) {
-            Vue.set(state.field, keyParent, value)
+        // Only Parent
+        if (parentUuid) {
+          const keyParent = parentUuid + '_' + columnName
+          const valueParent = state.field[keyParent]
+          if (value !== valueParent) {
+            if (isOverWriteParent) {
+              Vue.set(state.field, keyParent, value)
+            } else {
+              if (!isEmptyValue(value)) {
+                // tab child no replace parent context with empty
+                Vue.set(state.field, keyParent, value)
+              }
+            }
           }
         }
-        //  Only Container
-        if (payload.containerUuid) {
-          const keyContainer = payload.containerUuid + '_' + columnName
+
+        // Only Container
+        if (containerUuid) {
+          const keyContainer = containerUuid + '_' + columnName
           if (value !== state.field[keyContainer]) {
             Vue.set(state.field, keyContainer, value)
           }
@@ -77,11 +88,13 @@ const value = {
     updateValuesOfContainer({ commit }, {
       parentUuid,
       containerUuid,
+      isOverWriteParent,
       attributes = []
     }) {
       commit('updateValuesOfContainer', {
         parentUuid,
         containerUuid,
+        isOverWriteParent,
         attributes
       })
     }

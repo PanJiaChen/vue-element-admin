@@ -1,6 +1,6 @@
 <template>
   <el-select
-    v-model="getterFieldListShowed"
+    v-model="fieldsListShowed"
     :filterable="!isMobile"
     :placeholder="$t('components.filterableItems')"
     multiple
@@ -10,7 +10,7 @@
     class="select"
   >
     <el-option
-      v-for="(item, key) in getterFieldListAvailable"
+      v-for="(item, key) in fieldsListAvailable"
       :key="key"
       :label="item.name"
       :value="item.columnName"
@@ -31,20 +31,20 @@ export default {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
-    getterFieldList() {
+    fieldsList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
     // available fields
-    getterFieldListAvailable() {
-      return this.getterFieldList.filter(fieldItem => {
+    fieldsListAvailable() {
+      return this.fieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         return fieldItem.isActive && isDisplayed && !fieldItem.isKey
       })
     },
-    getterFieldListShowed: {
-      get: function() {
+    fieldsListShowed: {
+      get() {
         // columns showed
-        return this.getterFieldList.filter(itemField => {
+        return this.fieldsList.filter(itemField => {
           if (itemField.isShowedTableFromUser && (itemField.isDisplayed || itemField.isDisplayedFromLogic) && !itemField.isKey) {
             return true
           }
@@ -52,7 +52,7 @@ export default {
           return itemField.columnName
         })
       },
-      set: function(selecteds) {
+      set(selecteds) {
         // set columns to show/hidden in vuex store
         this.addField(selecteds)
       }

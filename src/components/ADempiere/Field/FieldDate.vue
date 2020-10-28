@@ -123,8 +123,8 @@ export default {
      */
     formatView() {
       let format = ''
-      if (!this.isEmptyValue(this.metadata.VFormat)) {
-        format = this.metadata.VFormat
+      if (!this.isEmptyValue(this.metadata.vFormat)) {
+        format = this.metadata.vFormat
           .replace(/[Y]/gi, 'y')
           .replace(/[m]/gi, 'M')
           .replace(/[D]/gi, 'd')
@@ -153,10 +153,22 @@ export default {
     },
     value: {
       get() {
+        const { columnName, containerUuid } = this.metadata
+
+        // table records values
+        if (this.metadata.inTable) {
+          const row = this.$store.getters.getRowData({
+            containerUuid,
+            index: this.metadata.tableIndex
+          })
+          return row[columnName]
+        }
+
+        // main panel values
         let value = this.$store.getters.getValueOfField({
           parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
-          columnName: this.metadata.columnName
+          containerUuid,
+          columnName
         })
         if (!this.metadata.isRange) {
           return this.parseValue(value)
@@ -164,7 +176,7 @@ export default {
 
         const valueTo = this.$store.getters.getValueOfField({
           parentUuid: this.metadata.parentUuid,
-          containerUuid: this.metadata.containerUuid,
+          containerUuid,
           columnName: this.metadata.columnNameTo
         })
 

@@ -3,63 +3,64 @@
     this v-show is to indicate that if the field is not shown,
     therefore you should not leave the column size spacing of your
     <el-col></el-col> container-->
-  <el-col
-    v-if="!inTable"
-    v-show="isDisplayed"
-    key="is-panel-template"
-    :xs="sizeFieldResponsive.xs"
-    :sm="sizeFieldResponsive.sm"
-    :md="sizeFieldResponsive.md"
-    :lg="sizeFieldResponsive.lg"
-    :xl="sizeFieldResponsive.xl"
-    :class="classField"
-  >
-    <el-form-item
-      :required="isMandatory"
+  <div v-if="!inTable">
+    <el-col
+      v-if="isDisplayed"
+      key="is-panel-template"
+      :xs="sizeFieldResponsive.xs"
+      :sm="sizeFieldResponsive.sm"
+      :md="sizeFieldResponsive.md"
+      :lg="sizeFieldResponsive.lg"
+      :xl="sizeFieldResponsive.xl"
+      :class="classField"
     >
-      <template slot="label">
-        <operator-comparison
-          v-if="field.isComparisonField"
-          key="is-field-operator-comparison"
-          :field-attributes="fieldAttributes"
-          :field-value="field.value"
-        />
-        <context-info
-          v-else-if="isContextInfo"
-          key="is-field-context-info"
-          :field-attributes="fieldAttributes"
-          :field-value="field.value"
-        />
-        <span v-else key="is-field-name">
-          {{ isFieldOnly }}
-        </span>
+      <el-form-item
+        :required="isMandatory"
+      >
+        <template slot="label">
+          <operator-comparison
+            v-if="field.isComparisonField"
+            key="is-field-operator-comparison"
+            :field-attributes="fieldAttributes"
+            :field-value="field.value"
+          />
+          <context-info
+            v-else-if="isContextInfo"
+            key="is-field-context-info"
+            :field-attributes="fieldAttributes"
+            :field-value="field.value"
+          />
+          <span v-else key="is-field-name">
+            {{ isFieldOnly }}
+          </span>
 
-        <document-status
-          v-if="isDocuemntStatus"
-          :field="fieldAttributes"
-        />
+          <document-status
+            v-if="isDocuemntStatus"
+            :field="fieldAttributes"
+          />
 
-        <translated
-          v-if="field.isTranslatedField"
-          :field-attributes="fieldAttributes"
-          :record-uuid="field.recordUuid"
-        />
+          <translated
+            v-if="field.isTranslatedField"
+            :field-attributes="fieldAttributes"
+            :record-uuid="field.recordUuid"
+          />
 
-        <calculator
-          v-if="field.isNumericField && !field.isReadOnlyFromLogic"
-          :field-attributes="fieldAttributes"
-          :field-value="field.value"
-        />
-      </template>
+          <calculator
+            v-if="field.isNumericField && !field.isReadOnlyFromLogic"
+            :field-attributes="fieldAttributes"
+            :field-value="field.value"
+          />
+        </template>
 
-      <component
-        :is="componentRender"
-        :ref="field.columnName"
-        :metadata="fieldAttributes"
-        :value-model="recordDataFields"
-      />
-    </el-form-item>
-  </el-col>
+        <component
+          :is="componentRender"
+          :ref="field.columnName"
+          :metadata="fieldAttributes"
+          :value-model="recordDataFields"
+        />
+      </el-form-item>
+    </el-col>
+  </div>
   <component
     :is="componentRender"
     v-else
@@ -352,7 +353,7 @@ export default {
         return false
       }
       return Boolean(this.field.contextInfo && this.field.contextInfo.isActive) ||
-        Boolean(this.field.reference && this.field.reference.windowsList.length)
+        Boolean(this.field.reference && this.field.reference.zoomWindows.length)
     }
   },
   watch: {

@@ -140,9 +140,7 @@ export default {
             ...this.$route.query,
             action: this.windowRecordSelected.UUID
           }
-        }).catch(error => {
-          console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
         this.closeDialog()
       } else if (action !== undefined) {
         const fieldNotReady = this.$store.getters.isNotReadyForSubmit(action.uuid)

@@ -6,7 +6,7 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
+        <pan-thumb :image="avatarResize" :height="'100px'" :width="'100px'" :hoverable="false">
           <div>Hello</div>
           {{ currentRole.name }}
         </pan-thumb>
@@ -15,8 +15,12 @@
         <div class="user-name text-center">
           {{ currentRole.name }}
         </div>
+        <br>
+
         <div class="user-role text-muted">
-          {{ $t('profile.availableRoles') }}
+          <div class="user-header">
+            {{ $t('profile.availableRoles') }}
+          </div>
           <li v-for="(item, key) in rolesList" :key="key">
             {{ item.name | uppercaseFirst }}
           </li>
@@ -61,6 +65,7 @@
 
 <script>
 import PanThumb from '@/components/PanThumb'
+import { getImagePath } from '@/utils/ADempiere/resource.js'
 
 export default {
   components: { PanThumb },
@@ -83,6 +88,20 @@ export default {
     },
     rolesList() {
       return this.$store.getters['user/getRoles']
+    },
+    avatarResize() {
+      const defaultAvatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4?imageView2/1/w/80/h/80'
+      if (this.isEmptyValue(this.user.avatar) || defaultAvatar.includes(this.user.avatar)) {
+        return defaultAvatar
+      }
+
+      const { uri } = getImagePath({
+        file: this.user.avatar,
+        width: 100,
+        height: 100
+      })
+
+      return uri
     }
   }
 }
@@ -111,6 +130,12 @@ export default {
     padding-top: 10px;
     font-weight: 400;
     font-size: 14px;
+    .user-header {
+      border-bottom: 1px solid #dfe6ec;
+      font-weight: bold;
+      padding-bottom: 10px;
+      margin-bottom: 10px;
+    }
   }
 
   .box-social {

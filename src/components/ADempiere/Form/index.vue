@@ -22,6 +22,9 @@ export default {
         case 'PriceChecking':
           form = import('@/components/ADempiere/Form/PriceChecking')
           break
+        case 'VPOS':
+          form = import('@/components/ADempiere/Form/VPOS')
+          break
         default:
           form = import('@/views/ADempiere/Unsupported')
           break

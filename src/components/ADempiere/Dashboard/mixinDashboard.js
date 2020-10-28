@@ -24,7 +24,7 @@ export default {
     handleClick(row) {
       const viewSearch = this.recursiveTreeSearch({
         treeData: this.permissionRoutes,
-        attributeValue: row.windowUuid,
+        attributeValue: row.referenceUuid,
         attributeName: 'meta',
         secondAttribute: 'uuid',
         attributeChilds: 'children'
@@ -46,9 +46,7 @@ export default {
             action: recordUuid,
             tabParent
           }
-        }).catch(error => {
-          console.info(`Dashboard ${this.name}: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       } else {
         this.$message({
           type: 'error',

@@ -58,18 +58,23 @@
         trigger="click"
       >
         <div>
-          <user-card :user="user" />
+          <profile-preview
+            :user="user"
+            :avatar="avatar"
+          />
           <el-button type="text" style="float: left;" @click="handleClick">{{ $t('navbar.profile') }}</el-button>
           <el-button type="text" style="float: right;" @click="logout">{{ $t('navbar.logOut') }}</el-button>
         </div>
-        <el-button slot="reference" type="text" style="padding-top: 0px;"><img :src="avatar+'?imageView2/1/w/40/h/40'" class="user-avatar"></el-button>
+        <el-button slot="reference" type="text" style="padding-top: 0px;">
+          <img :src="avatarResize" class="user-avatar">
+        </el-button>
       </el-popover>
     </div>
   </div>
 </template>
 
 <script>
-import UserCard from '@/views/profile/components/Profile'
+import ProfilePreview from '@/layout/components/ProfilePreview'
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
@@ -79,6 +84,7 @@ import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import Badge from '@/components/ADempiere/Badge'
+import { getImagePath } from '@/utils/ADempiere/resource.js'
 
 export default {
   components: {
@@ -89,7 +95,7 @@ export default {
     Screenfull,
     SizeSelect,
     LangSelect,
-    UserCard,
+    ProfilePreview,
     Search
   },
   data() {
@@ -106,7 +112,20 @@ export default {
       'sidebar',
       'avatar',
       'device'
-    ])
+    ]),
+    avatarResize() {
+      if (this.isEmptyValue(this.avatar)) {
+        return 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4?imageView2/1/w/80/h/80'
+      }
+
+      const { uri } = getImagePath({
+        file: this.avatar,
+        width: 40,
+        height: 40
+      })
+
+      return uri
+    }
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -125,12 +144,12 @@ export default {
       await this.$store.dispatch('user/logout')
       this.$router.push({
         path: '/login'
-      }).catch(error => {
-        console.info(error)
-      })
+      }, () => {})
     },
     handleClick() {
-      this.$router.push({ name: 'Profile' })
+      this.$router.push({
+        name: 'Profile'
+      }, () => {})
     }
   }
 }

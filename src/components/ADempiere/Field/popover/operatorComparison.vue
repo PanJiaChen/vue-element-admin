@@ -55,7 +55,6 @@ export default {
       this.$store.dispatch('changeFieldAttribure', {
         containerUuid: this.fieldAttributes.containerUuid,
         columnName: this.fieldAttributes.columnName,
-        isAdvancedQuery: true,
         attributeName: 'operator',
         attributeValue: operatorValue
       })

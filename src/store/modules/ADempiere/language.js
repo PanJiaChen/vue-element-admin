@@ -1,4 +1,7 @@
-import { requestTranslations, updateEntity } from '@/api/ADempiere/persistence'
+import {
+  requestTranslations,
+  requestUpdateEntity
+} from '@/api/ADempiere/persistence.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const languageControl = {
@@ -90,6 +93,8 @@ const languageControl = {
             console.warn(translationResponse)
             return
           }
+
+          const { values, uuid } = translationResponse.translationsList[0]
           dispatch('setTranslation', {
             containerUuid,
             tableName,
@@ -97,11 +102,11 @@ const languageControl = {
             recordId,
             translations: [{
               language,
-              translationUuid: translationResponse.translationsList[0].translationUuid,
-              values: translationResponse.translationsList[0].values
+              uuid,
+              values
             }]
           })
-          return translationResponse.translationsList[0].values
+          return values
         })
         .catch(error => {
           console.warn(`Error Get Translations List ${error.message}. Code: ${error.code}.`)
@@ -128,9 +133,9 @@ const languageControl = {
           return value
         }
 
-        updateEntity({
+        requestUpdateEntity({
           tableName: `${translationData.tableName}_Trl`, // '_Trl' is suffix for translation tables
-          recordUuid: translationSelected.translationUuid,
+          recordUuid: translationSelected.uuid,
           attributesList: [{
             columnName,
             value

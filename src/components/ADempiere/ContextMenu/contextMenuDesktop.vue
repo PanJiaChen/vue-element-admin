@@ -69,14 +69,27 @@
           <template slot="title">
             {{ $t('data.exportRecord') }}
           </template>
-          <el-menu-item v-for="(format, keyFormat) in supportedTypes" :key="keyFormat" :index="keyFormat" @click.native="exportRecord(keyFormat)">
+          <el-menu-item
+            v-for="(format, keyFormat) in supportedTypes"
+            :key="keyFormat"
+            :index="keyFormat"
+            @click.native="exportRecord(keyFormat)"
+          >
             {{ format }}
           </el-menu-item>
         </el-submenu>
-        <el-menu-item v-show="$route.name === 'Report Viewer'" index="printFormat" @click="redirect">
+        <el-menu-item
+          v-show="$route.name === 'Report Viewer'"
+          index="printFormat"
+          @click="redirect"
+        >
           {{ $t('components.contextMenuPrintFormatSetup') }}
         </el-menu-item>
-        <el-menu-item v-if="isManageDataRecords" index="refreshData" @click="refreshData">
+        <el-menu-item
+          v-if="isManageDataRecords"
+          index="refreshData"
+          @click="refreshData"
+        >
           {{ $t('components.contextMenuRefresh') }}
         </el-menu-item>
         <el-menu-item index="shareLink" @click="setShareLink">
@@ -87,7 +100,11 @@
         {{ $t('components.contextMenuActions') }}
       </el-menu-item>
 
-      <el-submenu :disabled="!(isReferecesContent && isLoadedReferences)" class="el-menu-item" index="references">
+      <el-submenu
+        :disabled="!(isReferecesContent && isLoadedReferences)"
+        class="el-menu-item"
+        index="references"
+      >
         <template slot="title">
           {{ $t('components.contextMenuReferences') }}
         </template>

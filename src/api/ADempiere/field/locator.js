@@ -1,10 +1,12 @@
-export function getLocatorList({
+const tableName = 'M_Locator'
+
+export function requestLocatorList({
   warehouseId
 }) {
-  const { getEntitiesList } = require('@/api/ADempiere/persistence')
+  const { requestListEntities } = require('@/api/ADempiere/persistence.js')
 
-  return getEntitiesList({
-    tableName: 'M_Locator',
+  return requestListEntities({
+    tableName,
     whereClause: `M_Warehouse_ID = ${warehouseId}`
   })
 }

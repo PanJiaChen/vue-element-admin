@@ -1,22 +1,13 @@
 import {
-  requestListRecordsLogs,
+  requestListEntityLogs,
   requestListWorkflowsLogs,
-  requestListWorkflows,
-  requestListRecordChats,
-  requestListChatEntries,
-  requestCreateChatEntry
+  requestListWorkflows
 } from '@/api/ADempiere/window'
-import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 
 const initStateContainerInfo = {
   listworkflowLog: [],
   listRecordLogs: [],
-  listRecordChats: [],
-  listChatEntries: [],
-  listWorkflows: [],
-  chat: [],
-  note: [],
-  isNote: false
+  listWorkflows: []
 }
 
 const containerInfo = {
@@ -31,99 +22,29 @@ const containerInfo = {
     addListRecordLogs(state, payload) {
       state.listRecordLogs = payload
     },
-    addListRecordChats(state, payload) {
-      state.listRecordChats = payload
-    },
-    addListChatEntries(state, payload) {
-      state.listChatEntries = payload
-    },
-    addListChat(state, payload) {
-      state.chat = payload
-    },
-    addNote(state, payload) {
-      state.note = payload
-    },
-    isNote(state, payload) {
-      state.isNote = payload
-    },
     resetStateContainerInfo(state) {
       state = initStateContainerInfo
     }
   },
   actions: {
-    createChatEntry({ commit, dispatch }, params) {
-      const tableName = params.tableName
-      const recordId = params.recordId
-      const comment = params.comment
-      return requestCreateChatEntry({ tableName, recordId, comment })
-        .then(response => {
-          commit('isNote', true)
-          dispatch('listChatEntries', {
-            tableName: tableName,
-            recordId: recordId
-          })
-          commit('addNote', response)
-        })
-        .catch(error => {
-          console.warn(`Error getting epale error en guardar: ${error.message}. Code: ${error.code}.`)
-        })
-    },
-    isNote({ commit }, params) {
-      commit('isNote', params)
-    },
-    listChatEntries({ commit, state }, params) {
-      const tableName = params.tableName
-      const recordId = params.recordId
+    listRecordLogs({ commit }, {
+      tableName,
+      recordId,
+      recordUuid
+    }) {
       const pageSize = 0
       const pageToken = 0
-      return requestListRecordChats({ tableName, recordId, pageSize, pageToken })
-        .then(response => {
-          const chatList = response.recordChatsList
-          const listRecord = {
-            recordChatsList: response.recordChatsList,
-            recordCount: response.recordCount,
-            nextPageToken: response.nextPageToken
-          }
-          chatList.forEach(chat => {
-            const uuid = chat.chatUuid
-            requestListChatEntries({ uuid, pageSize, pageToken })
-              .then(response => {
-                const listlogsChat = state.chat
-                let chatUpgrade = []
-                let chatAll
-                if (recordId === chat.recordId) {
-                  chatUpgrade = response.chatEntriesList
-                  listlogsChat.concat(chatUpgrade)
-                  chatAll = listlogsChat.concat(chatUpgrade)
-                  commit('addListChat', response.chatEntriesList)
-                }
-                if (isEmptyValue(listlogsChat)) {
-                  commit('addListChatEntries', chatAll)
-                } else {
-                  commit('addListChatEntries', listlogsChat)
-                }
-              })
-              .catch(error => {
-                console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)
-              })
-          })
-          commit('isNote', !isEmptyValue(response.recordChatsList))
-          commit('addListRecordChats', listRecord)
-        })
-        .catch(error => {
-          console.warn(`Error getting List Chat: ${error.message}. Code: ${error.code}.`)
-        })
-    },
-    listRecordLogs({ commit }, params) {
-      const tableName = params.tableName
-      const recordId = params.recordId
-      const pageSize = 0
-      const pageToken = 0
-      return requestListRecordsLogs({ tableName, recordId, pageSize, pageToken })
+      return requestListEntityLogs({
+        tableName,
+        recordId,
+        recordUuid,
+        pageSize,
+        pageToken
+      })
         .then(response => {
           const listRecord = {
             recordCount: response.recordCount,
-            recorLogs: response.recordLogsList
+            entityLogs: response.entityLogsList
           }
           commit('addListRecordLogs', listRecord)
           return listRecord
@@ -132,13 +53,21 @@ const containerInfo = {
           console.warn(`Error getting List Record Logs: ${error.message}. Code: ${error.code}.`)
         })
     },
-    listWorkflowLogs({ commit, dispatch }, params) {
-      const tableName = params.tableName
-      const recordId = params.recordId
+    listWorkflowLogs({ commit, dispatch }, {
+      tableName,
+      recordId,
+      recordUuid
+    }) {
       const pageSize = 0
       const pageToken = 0
       dispatch('listWorkflows', tableName)
-      return requestListWorkflowsLogs({ tableName, recordId, pageSize, pageToken })
+      return requestListWorkflowsLogs({
+        tableName,
+        recordId,
+        recordUuid,
+        pageSize,
+        pageToken
+      })
         .then(response => {
           const workflowLog = {
             recordCount: response.recordCount,
@@ -155,15 +84,14 @@ const containerInfo = {
     listWorkflows({ commit }, tableName) {
       const pageSize = 0
       const pageToken = 0
-      return requestListWorkflows({ tableName, pageSize, pageToken })
-        .then(response => {
-          const nodeWorflow = {
-            nextPageToken: response.nextPageToken,
-            recordCount: response.recordCount,
-            workflowsList: response.workflowsList
-          }
-          commit('addListWorkflows', nodeWorflow)
-          return nodeWorflow
+      return requestListWorkflows({
+        tableName,
+        pageSize,
+        pageToken
+      })
+        .then(responseWorkFlowList => {
+          commit('addListWorkflows', responseWorkFlowList)
+          return responseWorkFlowList
         })
         .catch(error => {
           console.warn(`Error getting List workflow: ${error.message}. Code: ${error.code}.`)
@@ -179,18 +107,6 @@ const containerInfo = {
     },
     getRecordLogs: (state) => {
       return state.listRecordLogs
-    },
-    getListRecordChats: (state) => {
-      return state.listRecordChats.recordChatsList
-    },
-    getChatEntries: (state) => {
-      return state.listChatEntries
-    },
-    getAddNote: (state) => {
-      return state.note
-    },
-    getIsNote: (state) => {
-      return state.isNote
     }
   }
 }

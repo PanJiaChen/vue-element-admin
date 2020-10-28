@@ -15,8 +15,8 @@ export default {
   methods: {
     redirect() {
       this.$store.dispatch('tagsView/delView', this.$route)
-        .then(({ visitedViews }) => {
-          this.$router.push('/dashboard')
+        .then(() => {
+          this.$router.push('/dashboard', () => {})
         })
     }
   }

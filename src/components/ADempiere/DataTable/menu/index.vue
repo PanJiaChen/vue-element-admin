@@ -17,7 +17,7 @@
       </el-menu-item>
       <el-menu-item
         v-if="isPanelWindow"
-        :disabled="Boolean(getDataSelection.length < 1 || (isReadOnlyParent && !isParent))"
+        :disabled="isEmptyValue(getDataSelection) || (isReadOnlyParent && !isParent)"
         @click="deleteSelection()"
       >
         {{ $t('table.dataTable.deleteSelection') }}
@@ -26,9 +26,9 @@
         <el-menu-item
           v-for="(process, key) in processMenu"
           :key="key"
-          :disabled="process.type === 'application' ? false : Boolean(getDataSelection.length < 1)"
+          :disabled="process.type === 'application' ? false : isEmptyValue(getDataSelection)"
           :index="'process' + key"
-          @click="process.type === 'application' ? sortTab(process) : showModalTable(process)"
+          @click="showModalTable(process)"
         >
           {{ process.name }}
         </el-menu-item>
@@ -39,7 +39,7 @@
         {{ $t('table.dataTable.exportZip') }}
       </el-menu-item>
       <el-submenu
-        :disabled="Boolean(getDataSelection.length < 1)"
+        :disabled="isEmptyValue(getDataSelection)"
         index="xlsx"
         @click.native="exporRecordTable(defaultFromatExport)"
       >
@@ -72,7 +72,7 @@
       </el-menu-item>
       <el-menu-item
         v-if="!isPanelWindow"
-        :disabled="Boolean(getDataSelection.length < 1)"
+        :disabled="isEmptyValue(getDataSelection)"
         index="zoom-record"
         @click="zoomRecord()"
       >

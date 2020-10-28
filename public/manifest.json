@@ -1,0 +1,15 @@
+{
+  "name": "ADempiere-Vue",
+  "short_name": "AD-Vue",
+  "icons": [
+    {
+      "src": "./logo.png",
+      "sizes": "200x200",
+      "type": "image/png"
+    }
+  ],
+  "start_url": "/adempiere-vue/",
+  "display": "standalone",
+  "background_color": "#2d3a4b",
+  "theme_color": "#3d5165"
+}

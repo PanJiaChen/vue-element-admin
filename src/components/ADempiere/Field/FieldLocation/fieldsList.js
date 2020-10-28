@@ -12,6 +12,7 @@ export default [
     ...fieldBase,
     columnName: 'C_Location_ID',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       isDisplayed: false,
       index: 1
@@ -21,6 +22,7 @@ export default [
     ...fieldBase,
     columnName: 'C_Country_ID',
     overwriteDefinition: {
+      isCustomField: true,
       isActiveLogics: true, // enable logics
       defaultValue: '@#C_Country_ID@',
       size: 24,
@@ -32,6 +34,7 @@ export default [
     ...fieldBase,
     columnName: 'C_Region_ID',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'R',
       index: 3
@@ -41,6 +44,7 @@ export default [
     ...fieldBase,
     columnName: 'C_City_ID',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'C',
       index: 4
@@ -50,6 +54,7 @@ export default [
     ...fieldBase,
     columnName: 'Address1',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'A1',
       index: 5
@@ -59,6 +64,7 @@ export default [
     ...fieldBase,
     columnName: 'Address2',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'A2',
       index: 6
@@ -68,6 +74,7 @@ export default [
     ...fieldBase,
     columnName: 'Address3',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'A3',
       index: 7
@@ -77,6 +84,7 @@ export default [
     ...fieldBase,
     columnName: 'Address4',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'A4',
       index: 8
@@ -86,6 +94,7 @@ export default [
     ...fieldBase,
     columnName: 'Postal',
     overwriteDefinition: {
+      isCustomField: true,
       size: 24,
       sequenceFields: 'P',
       index: 9

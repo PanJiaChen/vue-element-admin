@@ -1,7 +1,11 @@
-// Get Instance for connection
-import { POSInstance as Instance } from '@/api/ADempiere/instances.js'
+// Get Instance for connectionimport {
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
-export function getProductPrice({
+// List Point of sales
+export function requestGetProductPrice({
   searchValue,
   upc,
   value,
@@ -11,14 +15,23 @@ export function getProductPrice({
   warehouseUuid,
   validFrom
 }) {
-  return Instance.call(this).getProductPrice({
-    searchValue,
-    upc,
-    value,
-    name,
-    priceListUuid,
-    businessPartnerUuid,
-    warehouseUuid,
-    validFrom
+  return requestRest({
+    url: '/pos/get-product-price',
+    data: {
+      search_value: searchValue,
+      upc,
+      value,
+      name,
+      price_list_uuid: priceListUuid,
+      business_partner_uuid: businessPartnerUuid,
+      warehouse_uuid: warehouseUuid,
+      valid_from: validFrom
+    }
   })
+    .then(evaluateResponse)
+    .then(productPriceResponse => {
+      const { convertProductPrice } = require('@/utils/ADempiere/apiConverts/core.js')
+
+      return convertProductPrice(productPriceResponse)
+    })
 }

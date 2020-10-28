@@ -39,7 +39,7 @@ Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere
 
 - [Canal de Gitter](https://gitter.im/adempiere/adempiere-vue)
 
-- [Para Donaciones](https://www.paypal.me/?)
+- [Para Donaciones](https://www.paypal.me/YamelSenih)
 
 - [Enlace de Wiki](http://wiki.adempiere.net/ADempiere_ERP)
 
@@ -129,6 +129,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
   - Componente para soltar archivos
   - Adhesión de objetos
   - Contador hasta
+
 - Soporte a ADempiere
   - Ventana
   - Proceso
@@ -205,7 +206,7 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 
 Si este proyecto es de mucha ayuda para ti, puedes ayudar a hacer una mejor UI
 
-[dona por Paypal](https://www.paypal.me/?)
+[dona por Paypal](https://www.paypal.me/YamelSenih)
 
 ## Navegadores Soportados
 

@@ -24,6 +24,8 @@ import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
  */
 export default {
   name: 'FieldSelectMultiple',
-  mixins: [fieldMixin]
+  mixins: [
+    fieldMixin
+  ]
 }
 </script>

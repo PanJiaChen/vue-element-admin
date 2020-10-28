@@ -1,0 +1,132 @@
+// used in cell type number
+td.cell-align-right, .cell-align-right {
+  text-align: right !important;
+}
+
+// options to record with contextual menu
+.contextual-menu {
+  margin: 0;
+  background: #fff;
+  z-index: 3000;
+  position: absolute;
+  list-style-type: none;
+  padding: 5px 0;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 400;
+  color: #333;
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+  li {
+    margin: 0;
+    padding: 7px 16px;
+    cursor: pointer;
+    &:hover {
+      background: #eee;
+    }
+  }
+}
+.el-submenu__title {
+  border-bottom: 0px !important;
+  color: #303133;
+}
+// .el-menu.el-menu--horizontal {
+//   border-bottom: solid 0px transparent !important;
+// }
+
+
+// Quick options menu (more options in line and center)
+ul.menu-table > .el-submenu {
+  height: 39px !important;
+  line-height: 39px !important;
+  padding: 0px;
+  border: 0px;
+}
+ul.menu-table > .el-submenu > .el-submenu__title {
+  line-height: 39px !important;
+  height: 39px !important;
+  padding: 0px;
+  border: 0px;
+}
+
+
+.panel-expand {
+  float: right;
+  padding-right: 40px;
+  display: flex;
+  line-height: 39px !important;
+}
+
+
+// .el-collapse {
+//   border-top: 1px solid #e6ebf5;
+//   border-bottom: 1px solid #e6ebf5;
+//   overflow: hidden;
+//   width: 100%;
+// }
+// if advanced query is open, show in vertical
+.collapse_item_wrap {
+  min-height: 180px;
+  max-height: 180px;
+  will-change: height;
+  background-color: #fff;
+  overflow: auto;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e6ebf5;
+}
+
+
+.el-table .warning-row {
+  background: rgba(161, 250, 223, 0.945);
+}
+.el-table .success-row {
+  background: #f0f9eb;
+}
+
+
+.el-table > .cell, .el-table .cell {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow: hidden;
+  max-height: 41px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-break: break-all;
+  line-height: 23px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.el-table .cell {
+  max-height: 50px;
+}
+
+
+// .tr.current-row > td {
+//   background-color: initial !important;
+//   /* background-color: #e8f4ff; */
+// }
+// .hover-row > tr {
+//   background-color: initial !important;
+// }
+// .hover-row > td {
+//   background-color: initial !important;
+// }
+// .header-table-records {
+//   height: 45px !important;
+//   padding: 0 !important;
+// }
+// .icon-mobile {
+//   padding-right: 5%;
+// }
+.el-table th, .el-table td {
+  padding: 12px 0;
+  min-width: 0;
+  height: 64px;
+  max-height: 407px;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  vertical-align: middle;
+  position: relative;
+  text-align: left;
+}

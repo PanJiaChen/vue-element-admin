@@ -123,7 +123,7 @@ export default {
     fieldDocStatus() {
       const panel = this.$store.getters.getPanel(this.containerUuid)
       if (!this.isEmptyValue(panel)) {
-        const field = panel.fieldList.find(fieldItem => {
+        const field = panel.fieldsList.find(fieldItem => {
           return fieldItem.columnName === this.columnName
         })
         return field

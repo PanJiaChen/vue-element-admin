@@ -84,7 +84,7 @@ export default {
   },
   computed: {
     languageList() {
-      return this.$store.getters['user/getLanguagesList'].filter(itemLanguage => {
+      return this.$store.getters.getLanguagesList.filter(itemLanguage => {
         return !itemLanguage.isBaseLanguage
       })
     },

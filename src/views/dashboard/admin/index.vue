@@ -28,6 +28,9 @@ export default {
     getterDashboard() {
       return this.$store.getters.getDashboardByRole(this.roleUuid)
     },
+    currentRole() {
+      return this.$store.getters['user/getRole']
+    },
     getterRol() {
       return this.$store.getters.getRoleUuid
     }
@@ -42,7 +45,10 @@ export default {
   },
   methods: {
     getDashboardListFromServer() {
-      this.$store.dispatch('listDashboard')
+      this.$store.dispatch('listDashboard', {
+        roleId: this.currentRole.id,
+        roleUuid: this.currentRole.uuid
+      })
         .then(response => {
           this.dashboardList = response.dashboardsList
           this.$forceUpdate()

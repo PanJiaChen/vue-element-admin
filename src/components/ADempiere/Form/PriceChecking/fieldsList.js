@@ -4,7 +4,7 @@ export default [
     elementColumnName: 'ProductValue',
     isFromDictionary: true,
     overwriteDefinition: {
-      size: 12,
+      size: 24,
       sequence: 10,
       cssClassName: 'price-inquiry',
       inputSize: 'large',

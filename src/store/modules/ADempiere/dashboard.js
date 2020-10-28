@@ -23,7 +23,10 @@ const dashboard = {
     refreshDashboard({ commit }, parameters) {
       commit('notifyDashboardRefresh', parameters)
     },
-    listDashboard({ commit, rootGetters }, roleUuid) {
+    listDashboard({ commit, rootGetters }, {
+      roleId,
+      roleUuid
+    }) {
       if (isEmptyValue(roleUuid)) {
         roleUuid = rootGetters.getRoleUuid
         if (isEmptyValue(roleUuid)) {
@@ -32,8 +35,12 @@ const dashboard = {
       }
 
       return new Promise(resolve => {
-        requestLisDashboards({ roleUuid })
+        requestLisDashboards({
+          roleId,
+          roleUuid
+        })
           .then(dashboardResponse => {
+            // TODO: verify it with uuid
             const roleDashboards = {
               roleUuid: roleUuid,
               ...dashboardResponse

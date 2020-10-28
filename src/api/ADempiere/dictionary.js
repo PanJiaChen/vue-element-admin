@@ -1,78 +1,177 @@
 // Get Instance for connection
-import { DictionaryInstance as Instance } from '@/api/ADempiere/instances.js'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
-export function getWindow({ uuid, id, isWithTabs = true }) {
-  return Instance.call(this).requestWindow({
-    uuid,
-    id,
-    isWithTabs
+/**
+ * Request dictionary Window metadata
+ * @param {string} uuid universally unique identifier
+ * @param {number} id, identifier
+ */
+export function requestWindowMetadata({
+  uuid,
+  id
+}) {
+  return requestRest({
+    url: '/dictionary/window',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
+    .then(evaluateResponse)
+    .then(windowResponse => {
+      const { convertWindow } = require('@/utils/ADempiere/apiConverts/dictionary.js')
+
+      return convertWindow(windowResponse)
+    })
 }
 
-export function getProcess({ uuid, id }) {
-  return Instance.call(this).requestProcess({
-    uuid,
-    id,
-    isWithFields: true
+/**
+ * Request dictionary Process/Report metadata
+ * @param {string} uuid universally unique identifier
+ * @param {number} id, identifier
+ */
+export function requestProcessMetadata({
+  uuid,
+  id
+}) {
+  return requestRest({
+    url: '/dictionary/process',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
+    .then(evaluateResponse)
+    .then(processResponse => {
+      const { convertProcess } = require('@/utils/ADempiere/apiConverts/dictionary.js')
+
+      return convertProcess(processResponse)
+    })
 }
 
-export function getBrowser({ uuid, id }) {
-  return Instance.call(this).requestBrowser({
-    uuid,
-    id
+/**
+ * Request dictionary Smart Browser metadata
+ * @param {string} uuid universally unique identifier
+ * @param {number} id, identifier
+ */
+export function requestBrowserMetadata({
+  uuid,
+  id
+}) {
+  return requestRest({
+    url: '/dictionary/browser',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
+    .then(evaluateResponse)
+    .then(browserResponse => {
+      const { convertBrowser } = require('@/utils/ADempiere/apiConverts/dictionary.js')
+
+      return convertBrowser(browserResponse)
+    })
 }
 
-export function getTab({ uuid, id, isWithFields = true }) {
-  return Instance.call(this).requestTab({
-    uuid,
-    id,
-    isWithFields
+/**
+ * Request dictionary Form metadata
+ * @param {string} uuid universally unique identifier
+ * @param {number} id, integer identifier
+ */
+export function requestForm({
+  uuid,
+  id
+}) {
+  return requestRest({
+    url: '/dictionary/form',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
+    .then(evaluateResponse)
+    .then(formResponse => {
+      const { convertForm } = require('@/utils/ADempiere/apiConverts/dictionary.js')
+
+      return convertForm(formResponse)
+    })
 }
 
-export function getField({
-  fieldUuid,
+export function requestFieldMetadata({
+  uuid,
   columnUuid,
   elementUuid,
+  fieldUuid,
   // TableName + ColumnName
   tableName,
   columnName,
   elementColumnName
 }) {
-  return Instance.call(this).requestField({
-    fieldUuid,
-    columnUuid,
-    elementUuid,
-    // TableName + ColumnName
-    tableName,
-    columnName,
-    elementColumnName
+  return requestRest({
+    url: '/dictionary/field',
+    method: 'get',
+    params: {
+      uuid,
+      column_uuid: columnUuid,
+      element_uuid: elementUuid,
+      field_uuid: fieldUuid,
+      // TableName + ColumnName
+      table_name: tableName,
+      column_name: columnName,
+      element_column_name: elementColumnName
+    }
   })
+    .then(evaluateResponse)
+    .then(fieldResponse => {
+      const { convertField } = require('@/utils/ADempiere/apiConverts/field.js')
+
+      return convertField(fieldResponse)
+    })
 }
 
-/**
- * Request Form
- * @param {string} uuid
- * @param {number} id, integer identifier
- */
-export function requestForm({ uuid, id }) {
-  return Instance.call(this).requestForm({
-    uuid,
-    id
+export function requestReference({
+  uuid,
+  columnName
+}) {
+  return requestRest({
+    url: '/dictionary/reference',
+    method: 'get',
+    params: {
+      uuid,
+      column_name: columnName
+    }
   })
+    .then(evaluateResponse)
+    .then(validationResponse => {
+      const { convertReference } = require('@/utils/ADempiere/apiConverts/field.js')
+
+      return convertReference(validationResponse)
+    })
 }
 
-export function requestReference({ referenceUuid, columnName }) {
-  return Instance.call(this).requestReference({
-    referenceUuid,
-    columnName
+export function requestValidationRule({
+  uuid,
+  id
+}) {
+  return requestRest({
+    url: '/dictionary/validation',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
-}
+    .then(evaluateResponse)
+    .then(validationResponse => {
+      const { convertValidationRule } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 
-export function requestValidationRule({ validationRuleUuid }) {
-  return Instance.call(this).requestValidationRule({
-    validationRuleUuid
-  })
+      return convertValidationRule(validationResponse)
+    })
 }

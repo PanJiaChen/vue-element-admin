@@ -16,13 +16,39 @@
             <el-card shadow="hover" class="clearfix">
               <div>
                 {{ listLogs.userName }}
-                <el-link type="primary" style="float: right;" @click="showkey(key)"> {{ $t('window.containerInfo.changeDetail') }} </el-link>
+                <el-link
+                  type="primary"
+                  style="float: right;"
+                  @click="showkey(key)"
+                >
+                  {{ $t('window.containerInfo.changeDetail') }}
+                </el-link>
               </div>
               <el-collapse-transition>
                 <div v-show="(currentKey === key)">
                   <span v-for="(list, index) in listLogs.changeLogs" :key="index">
-                    <p v-if="list.columnName === 'DocStatus'"><b> {{ list.displayColumnName }} :</b> <strike> <el-tag :type="tagStatus(list.oldValue)"> {{ list.oldDisplayValue }} </el-tag> </strike> <el-tag :type="tagStatus(list.newValue)"> {{ list.newDisplayValue }} </el-tag> </p>
-                    <p v-else><b> {{ list.displayColumnName }} :</b> <strike> <el-link type="danger"> {{ list.oldDisplayValue }} </el-link> </strike> <el-link type="success"> {{ list.newDisplayValue }} </el-link> </p>
+                    <p v-if="list.columnName === 'DocStatus'">
+                      <b> {{ list.displayColumnName }} :</b>
+                      <strike>
+                        <el-tag :type="tagStatus(list.oldValue)">
+                          {{ list.oldDisplayValue }}
+                        </el-tag>
+                      </strike>
+                      <el-tag :type="tagStatus(list.newValue)">
+                        {{ list.newDisplayValue }}
+                      </el-tag>
+                    </p>
+                    <p v-else>
+                      <b> {{ list.displayColumnName }} :</b>
+                      <strike>
+                        <el-link type="danger">
+                          {{ list.oldDisplayValue }}
+                        </el-link>
+                      </strike>
+                      <el-link type="success">
+                        {{ list.newDisplayValue }}
+                      </el-link>
+                    </p>
                   </span>
                 </div>
               </el-collapse-transition>
@@ -39,7 +65,15 @@ import MixinInfo from './mixinInfo.js'
 
 export default {
   name: 'RecordLogs',
-  mixins: [MixinInfo],
+  mixins: [
+    MixinInfo
+  ],
+  data() {
+    return {
+      currentKey: 100,
+      typeAction: 0
+    }
+  },
   computed: {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -55,6 +89,25 @@ export default {
         return 'panel-mobile'
       }
       return 'panel'
+    },
+    gettersListRecordLogs() {
+      return this.$store.getters.getRecordLogs.entityLogs
+    },
+    getIsChangeLog() {
+      if (this.isEmptyValue(this.gettersListRecordLogs)) {
+        return false
+      }
+      return true
+    }
+  },
+  methods: {
+    showkey(key, index) {
+      if (key === this.currentKey && index === this.typeAction) {
+        this.currentKey = 1000
+      } else {
+        this.currentKey = key
+        this.typeAction = index
+      }
     }
   }
 }

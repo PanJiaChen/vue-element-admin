@@ -1,4 +1,4 @@
-import { getProcess as getProcessMetadata } from '@/api/ADempiere'
+import { requestProcessMetadata } from '@/api/ADempiere/dictionary.js'
 import { showMessage } from '@/utils/ADempiere'
 import { generateProcess } from '@/utils/ADempiere/dictionaryUtils'
 import language from '@/lang'
@@ -29,14 +29,14 @@ const process = {
       routeToDelete
     }) {
       return new Promise(resolve => {
-        getProcessMetadata({
+        requestProcessMetadata({
           uuid: containerUuid,
           id: processId
         })
           .then(async responseProcess => {
             let printFormatsAvailable = []
             if (responseProcess.isReport) {
-              printFormatsAvailable = await dispatch('requestPrintFormats', {
+              printFormatsAvailable = await dispatch('getListPrintFormats', {
                 processUuid: containerUuid
               })
             }
@@ -61,7 +61,7 @@ const process = {
           .catch(error => {
             router.push({
               path: '/dashboard'
-            })
+            }, () => {})
             dispatch('tagsView/delView', routeToDelete)
             showMessage({
               message: language.t('login.unexpectedError'),

@@ -504,17 +504,21 @@ export const YES_NO = {
   }
 }
 
+export const FIELDS_LOOKUP = [
+  LIST.id,
+  TABLE.id,
+  TABLE_DIRECT.id,
+  SEARCH.id,
+  ACCOUNT_ELEMENT.id,
+  LOCATION_ADDRESS.id,
+  LOCATOR_WAREHOUSE.id,
+  PRODUCT_ATTRIBUTE.id,
+  RESOURCE_ASSIGNMENT.id
+]
+
 // Some helper methods
 export function isLookup(displayType) {
-  return displayType === LIST.id ||
-  displayType === TABLE.id ||
-  displayType === TABLE_DIRECT.id ||
-  displayType === SEARCH.id ||
-  displayType === ACCOUNT_ELEMENT.id ||
-  displayType === LOCATION_ADDRESS.id ||
-  displayType === LOCATOR_WAREHOUSE.id ||
-  displayType === PRODUCT_ATTRIBUTE.id ||
-  displayType === RESOURCE_ASSIGNMENT.id
+  return FIELDS_LOOKUP.includes(displayType)
 }
 
 /**

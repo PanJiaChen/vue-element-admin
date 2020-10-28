@@ -1,4 +1,8 @@
 import request from '@/utils/request'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
 export function getRoutes() {
   return request({
@@ -12,6 +16,25 @@ export function getRoles() {
     url: '/vue-element-admin/roles',
     method: 'get'
   })
+}
+
+export function requestRolesList(token) {
+  return requestRest({
+    url: 'user/roles',
+    method: 'get',
+    params: {
+      token
+    }
+  })
+    .then(evaluateResponse)
+    .then(responseRoles => {
+      const { convertRole } = require('@/utils/ADempiere/apiConverts/user.js')
+      const rolesList = responseRoles.map(itemRol => {
+        return convertRole(itemRol)
+      })
+
+      return rolesList
+    })
 }
 
 export function addRole(data) {
@@ -35,4 +58,32 @@ export function deleteRole(id) {
     url: `/vue-element-admin/role/${id}`,
     method: 'delete'
   })
+}
+
+/**
+ * Change role of access
+ * @param {string} roleUuid
+ * @param {string} organizationUuid
+ * @param {string} warehouseUuid
+ */
+export function requestChangeRole({
+  roleUuid,
+  organizationUuid,
+  warehouseUuid
+}) {
+  return requestRest({
+    url: 'user/change-role',
+    method: 'post',
+    data: {
+      role: roleUuid,
+      organization: organizationUuid,
+      warehouse: warehouseUuid
+    }
+  })
+    .then(evaluateResponse)
+    .then(responseChangeRole => {
+      const { convertSession } = require('@/utils/ADempiere/apiConverts/user.js')
+
+      return convertSession(responseChangeRole)
+    })
 }

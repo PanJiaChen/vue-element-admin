@@ -55,7 +55,7 @@ export default {
     async getPanel() {
       const panel = this.getterPanel
       if (!this.isEmptyValue(panel)) {
-        this.fieldsList = panel.fieldList
+        this.fieldsList = panel.fieldsList
         this.isLoaded = true
         this.panelMetadata = panel
       } else {
@@ -65,14 +65,14 @@ export default {
           isCustomForm: this.isCustomForm,
           uuid: this.containerUuid,
           panelType: this.panelType,
-          fieldList: this.fieldsList
+          fieldsList: this.fieldsList
         })
           .then(responsePanel => {
-            this.fieldsList = responsePanel.fieldList
+            this.fieldsList = responsePanel.fieldsList
 
             this.$store.dispatch('changeFormAttribute', {
               containerUuid: this.containerUuid,
-              attributeName: 'fieldList',
+              attributeName: 'fieldsList',
               attributeValue: this.fieldsList
             })
             this.panelMetadata = responsePanel

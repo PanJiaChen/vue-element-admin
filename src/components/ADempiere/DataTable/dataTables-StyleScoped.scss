@@ -1,0 +1,104 @@
+// style in cursor if cell is no edit
+.cell-no-edit {
+  cursor: not-allowed !important;
+}
+.cell-edit {
+  cursor: pointer !important;
+}
+
+
+.field-optional {
+  margin: 3px 10px;
+  float: right;
+}
+
+
+// Local search input
+.local-search-container {
+  font-size: 0 !important;
+  float: right;
+  color: #5a5e66;
+  height: 39px !important;
+  line-height: 39px !important;
+  .search-icon {
+    cursor: pointer;
+    font-size: 18px;
+    vertical-align: middle;
+  }
+  .header-search-input {
+    transition: width 0.2s;
+    width: 0 !important;
+    overflow: hidden;
+    background: transparent;
+    border-radius: 0;
+    display: inline-block;
+    vertical-align: middle;
+
+    ::v-deep .el-input__inner {
+      border-radius: 0;
+      border: 0;
+      padding-left: 0;
+      padding-right: 0;
+      box-shadow: none !important;
+      border-bottom: 1px solid #d9d9d9;
+      vertical-align: middle;
+    }
+  }
+  &.show {
+    .header-search-input {
+      width: 190px !important;
+      margin-left: 10px;
+    }
+  }
+  &.mobile {
+    .header-search-input {
+      width: 120px !important;
+      margin-left: 5px;
+    }
+  }
+}
+
+
+.table-root {
+  padding-right: 0px;
+  .table-footer {
+    bottom: 0px;
+    float: right;
+    text-align: right;
+    padding: 10px;
+  }
+}
+
+
+// Quick options menu (new record, fixed columns...)
+.menu-table {
+  width: 75px;
+  float: right;
+  height: 39px !important;
+}
+.menu-table-mobile {
+  height: 39px !important;
+  width: 35px;
+  float: right;
+}
+
+.el-table__header-wrapper {
+  /* totals or summary row */
+  .el-table__footer-wrapper {
+    overflow: auto;
+    /* background: black; */
+  }
+}
+
+
+// with mouse change color to current row
+.el-table-row {
+  .hover-row {
+    background-color: black;
+  }
+  .current-row {
+    .hover-row {
+      background-color: initial !important;
+    }
+  }
+}

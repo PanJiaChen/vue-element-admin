@@ -107,9 +107,7 @@ export default {
             action: 'criteria',
             tabParent
           }
-        }).catch(error => {
-          console.info(`Dashboard/docstatus Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
       } else {
         this.$message({
           type: 'error',

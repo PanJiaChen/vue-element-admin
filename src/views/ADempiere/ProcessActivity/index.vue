@@ -212,7 +212,7 @@ export default {
             instanceUuid: activity.instanceUuid,
             fileName: activity.output.fileName
           }
-        })
+        }, () => {})
       } else if (activity.command === 'zoomIn') {
         const viewSearch = recursiveTreeSearch({
           treeData: this.permissionRoutes,
@@ -228,7 +228,7 @@ export default {
               ...this.$route.query,
               ...activity.parametersList
             }
-          })
+          }, () => {})
         }
       }
     },

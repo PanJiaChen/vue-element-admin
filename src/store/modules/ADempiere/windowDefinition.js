@@ -1,7 +1,4 @@
-import {
-  getWindow as getWindowMetadata,
-  getTab as getTabMetadata
-} from '@/api/ADempiere/dictionary'
+import { requestWindowMetadata } from '@/api/ADempiere/dictionary'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'
@@ -11,7 +8,8 @@ import { getFieldTemplate } from '@/utils/ADempiere/lookupFactory'
 
 const initStateWindow = {
   window: [],
-  windowIndex: 0
+  windowIndex: 0,
+  panelRight: ''
 }
 
 const window = {
@@ -41,6 +39,9 @@ const window = {
         value = payload.tab[payload.attributeNameControl]
       }
       payload.tab[payload.attributeName] = value
+    },
+    setPanelRight(state, payload) {
+      state.panelRight = payload
     }
   },
   actions: {
@@ -55,13 +56,13 @@ const window = {
       windowId,
       routeToDelete
     }) {
-      return getWindowMetadata({
+      return requestWindowMetadata({
         uuid: windowUuid,
         id: windowId
       })
         .then(responseWindow => {
-          const firstTabTableName = responseWindow.tabsList[0].tableName
-          const firstTabUuid = responseWindow.tabsList[0].uuid
+          const firstTabTableName = responseWindow.tabs[0].tableName
+          const firstTabUuid = responseWindow.tabs[0].uuid
           const tabsListParent = []
           const tabsListChildren = []
 
@@ -70,7 +71,7 @@ const window = {
           let tabParentIndex = 0
           let tabChildrenIndex = 0
           // TODO Add source tab on the server for tabs Translation and Sort
-          const tabs = responseWindow.tabsList.filter(itemTab => {
+          const tabs = responseWindow.tabs.filter(itemTab => {
             if (itemTab.isSortTab) {
               // TODO: Add convert tab as process function
               tabsSequence.push({
@@ -89,7 +90,7 @@ const window = {
                 sortYesNoColumnName: itemTab.sortYesNoColumnName // included column
               })
             }
-            // TODO: Add support to isAdvancedTab, isTranslationTab and isHasTree
+            // TODO: Add support to isAdvancedTab and isHasTree
             return !itemTab.isTranslationTab
           }).map((tabItem, index, list) => {
             // let tab = tabItem
@@ -184,8 +185,8 @@ const window = {
             }
 
             // get processess associated in tab
-            if (tabItem.processesList && tabItem.processesList.length) {
-              const processList = tabItem.processesList.map(processItem => {
+            if (!isEmptyValue(tabItem.processes)) {
+              const processList = tabItem.processes.map(processItem => {
                 // TODO: No list of parameters
                 // add process associated in vuex store
                 // dispatch('addProcessAssociated', {
@@ -249,7 +250,9 @@ const window = {
           return newWindow
         })
         .catch(error => {
-          router.push({ path: '/dashboard' })
+          router.push({
+            path: '/dashboard'
+          }, () => {})
           dispatch('tagsView/delView', routeToDelete)
           showMessage({
             message: language.t('login.unexpectedError'),
@@ -258,107 +261,101 @@ const window = {
           console.warn(`Dictionary Window (State Window) - Error ${error.code}: ${error.message}.`)
         })
     },
-    getTabAndFieldFromServer({ dispatch, getters }, {
+    getFieldsFromTab({ dispatch, getters }, {
       parentUuid,
       containerUuid,
-      tabId,
+      // tabId,
       panelType = 'window',
-      panelMetadata,
+      panelMetadata: tabMetadata = {},
       isAdvancedQuery = false
     }) {
-      return new Promise((resolve, reject) => {
-        getTabMetadata({
-          uuid: containerUuid,
-          id: tabId
+      return new Promise(resolve => {
+        if (isEmptyValue(tabMetadata)) {
+          tabMetadata = getters.getTab(parentUuid, containerUuid)
+        }
+
+        const additionalAttributes = {
+          parentUuid,
+          containerUuid,
+          isShowedFromUser: true,
+          panelType,
+          //
+          tableName: tabMetadata.tableName, // @deprecated
+          tabTableName: tabMetadata.tableName,
+          tabQuery: tabMetadata.query,
+          tabWhereClause: tabMetadata.whereClause,
+          //
+          isReadOnlyFromForm: false,
+          isAdvancedQuery,
+          isEvaluateValueChanges: !isAdvancedQuery
+        }
+
+        let isWithUuidField = false // indicates it contains the uuid field
+        let fieldLinkColumnName
+
+        //  Convert and add to app attributes
+        const fieldsList = tabMetadata.fields.map((fieldItem, index) => {
+          fieldItem = generateField({
+            fieldToGenerate: fieldItem,
+            moreAttributes: {
+              ...additionalAttributes,
+              fieldsListIndex: index
+            }
+          })
+
+          if (!isWithUuidField && fieldItem.columnName === 'UUID') {
+            isWithUuidField = true
+          }
+
+          if (fieldItem.isParent) {
+            fieldLinkColumnName = fieldItem.columnName
+          }
+
+          return fieldItem
         })
-          .then(tabResponse => {
-            const additionalAttributes = {
-              parentUuid,
-              containerUuid,
-              isShowedFromUser: true,
-              panelType,
-              tableName: tabResponse.tableName,
-              //
-              isReadOnlyFromForm: false,
-              isAdvancedQuery,
-              isEvaluateValueChanges: !isAdvancedQuery
-            }
 
-            let isWithUuidField = false // indicates it contains the uuid field
-            let fieldLinkColumnName
-            //  Convert and add to app attributes
-            const fieldsList = tabResponse.fieldsList.map((fieldItem, index) => {
-              fieldItem = generateField({
-                fieldToGenerate: fieldItem,
-                moreAttributes: {
-                  ...additionalAttributes,
-                  fieldListIndex: index
-                }
-              })
+        let isTabsChildren = false
+        if (!isAdvancedQuery) {
+          const window = getters.getWindow(parentUuid)
+          isTabsChildren = Boolean(window.tabsListChildren.length)
+        }
 
-              if (!isWithUuidField && fieldItem.columnName === 'UUID') {
-                isWithUuidField = true
-              }
-
-              if (fieldItem.isParent) {
-                fieldLinkColumnName = fieldItem.columnName
-              }
-
-              return fieldItem
-            })
-
-            let isTabsChildren = false
-            if (!isAdvancedQuery) {
-              const window = getters.getWindow(parentUuid)
-              isTabsChildren = Boolean(window.tabsListChildren.length)
-            }
-
-            if (!isWithUuidField) {
-              const fieldUuid = getFieldTemplate({
-                ...additionalAttributes,
-                isShowedFromUser: false,
-                name: 'UUID',
-                columnName: 'UUID',
-                componentPath: 'FieldText'
-              })
-              fieldsList.push(fieldUuid)
-            }
-
-            if (isEmptyValue(panelMetadata)) {
-              panelMetadata = getters.getTab(parentUuid, containerUuid)
-            }
-            //  Panel for save on store
-            const panel = {
-              ...panelMetadata,
-              isAdvancedQuery,
-              fieldLinkColumnName,
-              fieldList: fieldsList,
-              panelType,
-              // app attributes
-              isLoadFieldsList: true,
-              isShowedTotals: false,
-              isTabsChildren // to delete records assiciated
-            }
-
-            dispatch('addPanel', panel)
-            resolve(panel)
-
-            dispatch('changeTabAttribute', {
-              parentUuid,
-              containerUuid,
-              tab: panelMetadata,
-              attributeName: 'isLoadFieldsList',
-              attributeValue: true
-            })
+        if (!isWithUuidField) {
+          const fieldUuid = getFieldTemplate({
+            ...additionalAttributes,
+            isShowedFromUser: false,
+            name: 'UUID',
+            columnName: 'UUID',
+            componentPath: 'FieldText'
           })
-          .catch(error => {
-            showMessage({
-              message: language.t('login.unexpectedError'),
-              type: 'error'
-            })
-            console.warn(`Get Dictionary Tab (State Window) - Error ${error.code}: ${error.message}.`, error)
-            reject(error)
-          })
+          fieldsList.push(fieldUuid)
+        }
+
+        // panel for save on store
+        const panel = {
+          ...tabMetadata,
+          containerUuid,
+          isAdvancedQuery,
+          fieldLinkColumnName,
+          fieldsList,
+          panelType,
+          // app attributes
+          isLoadFieldsList: true,
+          isShowedTotals: false,
+          isTabsChildren // to delete records assiciated
+        }
+
+        dispatch('addPanel', panel)
+        resolve(panel)
+
+        dispatch('changeTabAttribute', {
+          tab: tabMetadata,
+          // replace if is 'table_'
+          parentUuid,
+          containerUuid,
+          attributeName: 'isLoadFieldsList',
+          attributeValue: true
+        })
       })
     },
     setCurrentTab({ commit, getters }, {
@@ -429,6 +426,9 @@ const window = {
         return window.isShowedRecordNavigation
       }
       return window
+    },
+    getPanelRight: (state) => {
+      return state.panelRight
     },
     getTab: (state, getters) => (windowUuid, tabUuid) => {
       const window = getters.getWindow(windowUuid)

@@ -56,7 +56,7 @@ import store from '@/store'
 // Create a Field from UUID based on server meta-data
 export function createFieldFromDictionary({
   containerUuid,
-  fieldUuid,
+  uuid,
   columnUuid,
   elementUuid,
   elementColumnName,
@@ -66,9 +66,9 @@ export function createFieldFromDictionary({
 }) {
   let field
   let valueToMatch
-  if (fieldUuid) {
-    field = store.getters.getFieldFromUuid(fieldUuid)
-    valueToMatch = fieldUuid
+  if (uuid) {
+    field = store.getters.getFieldFromUuid(uuid)
+    valueToMatch = uuid
   } else if (columnUuid) {
     field = store.getters.getFieldFromColumnUuid(columnUuid)
     valueToMatch = columnUuid
@@ -89,7 +89,7 @@ export function createFieldFromDictionary({
   if (isEmptyValue(field)) {
     return new Promise(resolve => {
       store.dispatch('getFieldFromServer', {
-        fieldUuid,
+        uuid,
         columnUuid,
         elementUuid,
         elementColumnName,
@@ -111,7 +111,7 @@ export function createFieldFromDictionary({
             containerUuid,
             columnName,
             definition: {
-              fieldUuid,
+              uuid,
               columnUuid,
               elementUuid,
               elementColumnName,
@@ -265,7 +265,7 @@ export function getFieldTemplate(overwriteDefinition) {
     isUpdateable: true,
     //
     formatPattern: undefined,
-    VFormat: undefined,
+    vFormat: undefined,
     value: undefined,
     valueTo: undefined,
     defaultValue: undefined,
@@ -302,7 +302,7 @@ export function getFieldTemplate(overwriteDefinition) {
       query: '',
       directQuery: '',
       validationCode: '',
-      windowsList: []
+      zoomWindows: []
     },
     contextInfo: undefined,
     isShowedFromUser: false,

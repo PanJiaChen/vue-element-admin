@@ -94,7 +94,7 @@ export function getPreference({
   })
 
   return value
-} //  getPreference
+} // get preference value
 
 /**
  * Extracts the associated fields from the logics or default values
@@ -232,7 +232,7 @@ export function parseContext({
       contextInfo = convertBooleanToString(contextInfo)
     }
 
-    if (contextInfo === undefined || contextInfo.length === 0) {
+    if (isEmptyValue(contextInfo)) {
       // console.info(`No Context for: ${token}`)
       isError = true
       errorsList.push(token)

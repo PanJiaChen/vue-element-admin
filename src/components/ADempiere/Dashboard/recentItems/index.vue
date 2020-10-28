@@ -35,13 +35,15 @@
 </template>
 
 <script>
-import { getRecentItems as getRecentItemsFromServer } from '@/api/ADempiere/dashboard/dashboard'
+import { requestListRecentItems } from '@/api/ADempiere/dashboard/dashboard'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 
 export default {
   name: 'RecentItems',
-  mixins: [mixinDashboard],
+  mixins: [
+    mixinDashboard
+  ],
   data() {
     return {
       recentItems: [],
@@ -54,6 +56,12 @@ export default {
         return this.filterResult(this.search)
       }
       return this.recentItems
+    },
+    userUuid() {
+      return this.$store.getters['user/getUserUuid']
+    },
+    roleUuid() {
+      return this.$store.getters['user/getRole'].uuid
     }
   },
   mounted() {
@@ -67,10 +75,16 @@ export default {
   methods: {
     getRecentItems({ pageToken, pageSize }) {
       return new Promise(resolve => {
-        getRecentItemsFromServer({ pageToken, pageSize })
+        requestListRecentItems({
+          userUuid: this.userUuid,
+          roleUuid: this.roleUuid,
+          pageToken,
+          pageSize
+        })
           .then(response => {
             const recentItems = response.recentItemsList.map(item => {
               const actionConverted = convertAction(item.action)
+
               return {
                 ...item,
                 action: actionConverted.name,

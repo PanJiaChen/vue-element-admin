@@ -105,7 +105,7 @@ export default {
     },
     getLanguages() {
       if (this.isEmptyValue(this.languagesList)) {
-        this.$store.dispatch('user/getLanguagesFromServer')
+        this.$store.dispatch('getLanguagesFromServer')
       }
     }
   }

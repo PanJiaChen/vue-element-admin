@@ -15,8 +15,6 @@ const getters = {
   getRoleUuid: state => state.user.role.uuid,
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,
-  errorLogs: state => state.errorLog.logs,
-  getLanguagesList: state => state.user.getLanguagesList,
-  getCurrentLanguageDefinition: state => state.user.getCurrentLanguageDefinition
+  errorLogs: state => state.errorLog.logs
 }
 export default getters

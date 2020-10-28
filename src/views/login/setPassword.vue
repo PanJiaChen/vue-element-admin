@@ -79,7 +79,7 @@
 
 <script>
 import loginMixin from './loginMixin.js'
-import { resetPasswordFromToken } from '@/api/ADempiere/enrollment.js'
+import { requestChangePassword } from '@/api/ADempiere/enrollment.js'
 
 export default {
   name: 'ChangePassword',
@@ -176,7 +176,7 @@ export default {
       token,
       password
     }) {
-      resetPasswordFromToken({
+      requestChangePassword({
         token: token,
         password: password
       })

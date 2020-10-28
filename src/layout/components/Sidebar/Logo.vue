@@ -46,10 +46,14 @@ export default {
   },
   methods: {
     profile() {
-      this.$router.push({ path: '/profile/index?' })
+      this.$router.push({
+        path: '/profile/index?'
+      }, () => {})
     },
     dashboard() {
-      this.$router.push({ path: '/' })
+      this.$router.push({
+        path: '/'
+      }, () => {})
     }
   }
 }

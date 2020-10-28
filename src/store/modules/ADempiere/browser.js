@@ -1,4 +1,4 @@
-import { getBrowserSearch } from '@/api/ADempiere/browser'
+import { requestBrowserSearch } from '@/api/ADempiere/browser'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
@@ -12,7 +12,7 @@ const browserControl = {
       field,
       value
     }) {
-      const fieldsEmpty = getters.getFieldListEmptyMandatory({
+      const fieldsEmpty = getters.getFieldsListEmptyMandatory({
         containerUuid,
         fieldsList: getters.getFieldsListFromPanel(containerUuid)
       })
@@ -76,7 +76,7 @@ const browserControl = {
       // parameters isQueryCriteria
       const parametersList = rootGetters.getParametersToServer({
         containerUuid,
-        fieldList: browser.fieldList
+        fieldsList: browser.fieldsList
       })
 
       let parsedQuery = browser.query
@@ -102,8 +102,8 @@ const browserControl = {
         nextPageToken = allData.nextPageToken + '-' + allData.pageNumber
       }
 
-      // Add validation compare browserSearchQueryParameters
-      return getBrowserSearch({
+      // TODO: Add validation compare browserSearchQueryParameters
+      return requestBrowserSearch({
         uuid: containerUuid,
         query: parsedQuery,
         whereClause: parsedWhereClause,
@@ -113,8 +113,10 @@ const browserControl = {
       })
         .then(browserSearchResponse => {
           const recordsList = browserSearchResponse.recordsList.map(itemRecord => {
+            const values = itemRecord.attributes
+
             return {
-              ...itemRecord.values,
+              ...values,
               // datatables attributes
               isNew: false,
               isEdit: false,

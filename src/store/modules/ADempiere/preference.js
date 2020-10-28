@@ -59,14 +59,37 @@ const preference = {
       containerUuid,
       values
     }) {
+      const typeOfValue = typeValue(values)
+
       let actionToDispatch = 'setMultiplePreferenceObject'
-      if (typeValue(values) === 'MAP') {
+      if (typeOfValue === 'MAP') {
         actionToDispatch = 'setMultiplePreferenceMap'
+      } else if (typeOfValue === 'ARRAY') {
+        actionToDispatch = 'setMultiplePreferenceArray'
       }
+
       return dispatch(actionToDispatch, {
         parentUuid,
         containerUuid,
         values
+      })
+    },
+    setMultiplePreferenceArray({ commit }, {
+      parentUuid,
+      containerUuid,
+      values
+    }) {
+      return new Promise(resolve => {
+        values.forEach(element => {
+          commit('setPreferenceContext', {
+            parentUuid,
+            containerUuid,
+            columnName: element.key,
+            value: element.value
+          })
+        })
+
+        resolve()
       })
     },
     setMultiplePreferenceObject({ commit }, {

@@ -1,21 +1,38 @@
 // Get Instance for connection
-import { BusinessDataInstance as Instance } from '@/api/ADempiere/instances.js'
+import {
+  ApiRest as requestRest,
+  evaluateResponse
+} from '@/api/ADempiere/instances.js'
 
 /**
  * Create entity
  * @param {string}  tableName
  * @param {array}   attributesList
  */
-export function createEntity({
+export function requestCreateEntity({
   tableName,
-  attributes,
-  formatReturn = 'array'
+  attributesList
 }) {
-  return Instance.call(this).requestCreateEntity({
-    tableName,
-    attributesList: attributes,
-    formatToConvert: formatReturn
+  attributesList = attributesList.map(parameter => {
+    return {
+      key: parameter.columnName,
+      value: parameter.value
+    }
   })
+
+  return requestRest({
+    url: '/data/create',
+    data: {
+      table_name: tableName,
+      attributes: attributesList
+    }
+  })
+    .then(evaluateResponse)
+    .then(entityCreateResponse => {
+      const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return convertEntity(entityCreateResponse)
+    })
 }
 
 /**
@@ -25,20 +42,34 @@ export function createEntity({
  * @param {string}  recordUuid
  * @param {array}   attributesList
  */
-export function updateEntity({
+export function requestUpdateEntity({
   tableName,
   recordId,
   recordUuid,
-  attributes,
-  formatReturn = 'array'
+  attributesList
 }) {
-  return Instance.call(this).requestUpdateEntity({
-    tableName,
-    recordId,
-    recordUuid,
-    attributesList: attributes,
-    formatToConvert: formatReturn
+  attributesList = attributesList.map(parameter => {
+    return {
+      key: parameter.columnName,
+      value: parameter.value
+    }
   })
+
+  return requestRest({
+    url: '/data/update',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid,
+      attributes: attributesList
+    }
+  })
+    .then(evaluateResponse)
+    .then(entityUpdateResponse => {
+      const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return convertEntity(entityUpdateResponse)
+    })
 }
 
 /**
@@ -47,12 +78,19 @@ export function updateEntity({
  * @param {number}  recordId
  * @param {string}  recordUuid
  */
-export function deleteEntity({ tableName, recordId, recordUuid }) {
-  return Instance.call(this).requestDeleteEntity({
-    tableName,
-    recordId,
-    recordUuid
-  })
+export function requestDeleteEntity({
+  tableName,
+  recordId,
+  recordUuid
+}) {
+  return requestRest({
+    url: '/data/delete',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid
+    }
+  }).then(evaluateResponse)
 }
 
 /**
@@ -64,22 +102,47 @@ export function deleteEntity({ tableName, recordId, recordUuid }) {
 export function rollbackEntity({
   tableName,
   recordId,
+  recordUuid,
   eventType
 }) {
-  return Instance.call(this).requestRollbackEntity({
-    tableName,
-    recordId,
-    eventTypeExecuted: eventType
+  return requestRest({
+    url: '/data/rollback-entity',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid,
+      event_type: eventType
+    }
   })
+    .then(evaluateResponse)
+    .then(entityResponse => {
+      const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return convertEntity(entityResponse)
+    })
 }
 
 // Get entity from table name and record id or record uuid
-export function getEntity({ tableName, recordId, recordUuid }) {
-  return Instance.call(this).requestGetEntity({
-    tableName,
-    recordId,
-    recordUuid
+export function requestGetEntity({
+  tableName,
+  recordId,
+  recordUuid
+}) {
+  return requestRest({
+    url: '/data/entity',
+    method: 'get',
+    params: {
+      table_name: tableName,
+      uuid: recordUuid,
+      id: recordId
+    }
   })
+    .then(evaluateResponse)
+    .then(entityResponse => {
+      const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return convertEntity(entityResponse)
+    })
 }
 
 /**
@@ -88,27 +151,57 @@ export function getEntity({ tableName, recordId, recordUuid }) {
  * @param {string} query
  * @param {string} whereClause
  * @param {array}  conditionsList
+ * @param {array}  columnsList // TODO: Add support on adempiere-vue
  * @param {string} orderByClause
  * @param {string} pageToken
  */
-export function getEntitiesList({
+export function requestListEntities({
   tableName,
   query,
   whereClause,
   conditionsList = [],
+  columnsList = [],
   orderByClause,
+  limit,
   pageToken,
   pageSize
 }) {
-  return Instance.call(this).requestListEntities({
-    tableName,
-    query,
-    whereClause,
-    conditionsList,
-    orderByClause,
-    pageToken,
-    pageSize
+  const filters = conditionsList.map(condition => {
+    const { value, operator, columnName, valueTo, values } = condition
+    return {
+      column_name: columnName,
+      value,
+      operator,
+      value_to: valueTo,
+      values
+    }
   })
+
+  return requestRest({
+    url: '/data/list',
+    data: {
+      table_name: tableName,
+      // DSL Query
+      filters,
+      columns: columnsList,
+      // Custom Query
+      query,
+      where_clause: whereClause,
+      order_by_clause: orderByClause,
+      limit
+    },
+    params: {
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(evaluateResponse)
+    .then(entitiesListResponse => {
+      const { convertEntityList } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return convertEntityList(entitiesListResponse)
+    })
 }
 
 /**
@@ -118,25 +211,54 @@ export function getEntitiesList({
  * @param {string} recordUuid
  * @param {number} recordId
  */
-export function requestTranslations({ tableName, language, recordUuid, recordId, pageToken, pageSize }) {
-  return Instance.call(this).requestListTranslations({
-    tableName,
-    recordUuid,
-    recordId,
-    language,
-    pageToken,
-    pageSize
+export function requestTranslations({
+  tableName,
+  language,
+  recordUuid,
+  recordId,
+  pageToken,
+  pageSize
+}) {
+  return requestRest({
+    url: '/ui/list-translations',
+    data: {
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid
+    },
+    params: {
+      language,
+      // Page Data
+      pageToken,
+      pageSize
+    }
   })
+    .then(evaluateResponse)
+    .then(languageListResponse => {
+      const { convertTranslation } = require('@/utils/ADempiere/apiConverts/persistence.js')
+
+      return {
+        nextPageToken: languageListResponse.next_page_token,
+        recordCount: languageListResponse.record_count,
+        translationsList: languageListResponse.records.map(record => {
+          return convertTranslation(record)
+        })
+      }
+    })
 }
 
 // Download a resource from file name
-export function getResource({ resourceUuid }, callBack = {
+export function requestResource({ resourceUuid }, callBack = {
   onData: () => {},
   onStatus: () => {},
   onEnd: () => {}
 }) {
-  const stream = Instance.call(this).getResource({
-    resourceUuid
+  const stream = requestRest({
+    url: '/resource',
+    method: 'get',
+    params: {
+      resource_uuid: resourceUuid
+    }
   })
 
   stream.on('data', (response) => callBack.onData(response))
@@ -144,4 +266,35 @@ export function getResource({ resourceUuid }, callBack = {
   stream.on('end', (end) => callBack.onEnd(end))
 
   return stream
+}
+
+/**
+ * Get image with uri request
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @param {string} file
+ * @param {number} width
+ * @param {number} height
+ * @param {string} operation fit, resize
+ * @returns {promise} with array buffer in response
+ */
+export function requestImage({
+  file,
+  width = 300,
+  height = 300,
+  operation = 'fit'
+}) {
+  const { getImagePath } = require('@/utils/ADempiere/resource.js')
+
+  const { urn } = getImagePath({
+    file,
+    width,
+    height,
+    operation
+  })
+
+  return requestRest({
+    url: urn,
+    method: 'get',
+    responseType: 'arraybuffer'
+  })
 }

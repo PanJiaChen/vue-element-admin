@@ -20,7 +20,7 @@ export function hasTranslation(text) {
  * @param {string} name
  * @param {array} logs
  */
-export function showNotification({ type, title, message, summary, name, logs = [], isRedirect = true }) {
+export function showNotification({ type = 'success', title, message, summary, name, logs = [], isRedirect = true }) {
   title = hasTranslation(title)
   if (message) {
     message = hasTranslation(message)
@@ -42,12 +42,16 @@ export function showNotification({ type, title, message, summary, name, logs = [
     })
   }
   if (name) {
-    message = name + message
+    message = `${name} ${message}`
   }
 
   return Notification({
     title,
-    message: `<div style="max-height: 100px; overflow-y: auto;">${message}</div>`,
+    message: `
+      <div style="max-height: 100px; overflow-y: auto;">
+        ${message}
+      </div>
+    `,
     type,
     position: 'bottom-right',
     dangerouslyUseHTMLString: true,
@@ -55,7 +59,7 @@ export function showNotification({ type, title, message, summary, name, logs = [
       if (isRedirect) {
         router.push({
           name: 'ProcessActivity'
-        })
+        }, () => {})
       }
     }
   })
@@ -67,7 +71,7 @@ export function showNotification({ type, title, message, summary, name, logs = [
  * @param {string} message
  * @param {number} duration
  */
-export function showMessage({ type, message, duration = 0 }) {
+export function showMessage({ type = 'success', message, duration = 0 }) {
   let delay = 3000
   if (type === 'info') {
     delay = 2000

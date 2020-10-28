@@ -37,6 +37,7 @@ const lookup = {
     getLookupItemFromServer({ commit, rootGetters }, {
       parentUuid,
       containerUuid,
+      columnName,
       tableName,
       directQuery,
       value
@@ -56,6 +57,7 @@ const lookup = {
       }
 
       return requestLookup({
+        columnName,
         tableName,
         directQuery: parsedDirectQuery,
         value
@@ -88,6 +90,7 @@ const lookup = {
     * @param {string}  containerUuid
     * @param {string}  tableName
     * @param {string}  query
+    * @param {string}  whereClause
     * @param {boolean} isAddBlankValue
     * @param {mixed}   blankValue
     * @param {Array<String>|<Number>}  valuesList
@@ -95,8 +98,10 @@ const lookup = {
     getLookupListFromServer({ commit, rootGetters }, {
       parentUuid,
       containerUuid,
+      columnName,
       tableName,
       query,
+      whereClause,
       isAddBlankValue = false,
       blankValue,
       valuesList = []
@@ -105,7 +110,7 @@ const lookup = {
         return
       }
       let parsedQuery = query
-      if (parsedQuery.includes('@')) {
+      if (String(parsedQuery).includes('@')) {
         parsedQuery = parseContext({
           parentUuid,
           containerUuid,
@@ -113,9 +118,22 @@ const lookup = {
           isBooleanToString: true
         }).value
       }
+
+      let parsedWhereClause = whereClause
+      if (String(parsedWhereClause).includes('@')) {
+        parsedWhereClause = parseContext({
+          parentUuid,
+          containerUuid,
+          value: parsedWhereClause,
+          isBooleanToString: true
+        }).value
+      }
+
       return requestLookupList({
+        columnName,
         tableName,
         query: parsedQuery,
+        whereClause: parsedWhereClause,
         valuesList
       })
         .then(lookupListResponse => {

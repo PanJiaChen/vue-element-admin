@@ -75,24 +75,21 @@ export default {
     },
     handleCurrentChange(getRecordNotification, val, index, rows) {
       if (val !== null) {
+        let options = {
+          name: 'ProcessActivity'
+        }
         if (getRecordNotification && getRecordNotification.isReport && val.className !== 'procesActivity') {
-          this.$router.push({
+          options = {
             name: 'Report Viewer',
             params: {
               processId: getRecordNotification.processId,
               instanceUuid: getRecordNotification.instanceUuid,
               fileName: getRecordNotification.download
             }
-          }).catch(error => {
-            console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-          })
-        } else {
-          this.$router.push({
-            name: 'ProcessActivity'
-          }).catch(error => {
-            console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-          })
+          }
         }
+
+        this.$router.push(options, () => {})
       }
     },
     deleteRow(index, rows) {

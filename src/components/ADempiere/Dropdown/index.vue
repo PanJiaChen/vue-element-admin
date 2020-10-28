@@ -92,9 +92,7 @@ export default {
           ...this.$router.params,
           childs: item.children
         }
-      }).catch(error => {
-        console.info(`${this.name} Component: ${error.name}, ${error.message}`)
-      })
+      }, () => {})
     }
   }
 }

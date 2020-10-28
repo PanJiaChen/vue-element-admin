@@ -1,7 +1,8 @@
 <template>
   <div class="user-profi">
     <router-link to="/profile/index">
-      <img v-if="logo" :src="logo" class="sidebar-logo">
+      <img v-if="avatarResize" :src="avatarResize" class="sidebar-logo">
+
       <p style="float: right;max-width: 150px;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;">
         {{ currentRole.clientName }}
       </p>
@@ -12,8 +13,10 @@
 
 <script>
 import RolesNavbar from '@/views/profile/components/RolesNavbar'
+import { getImagePath } from '@/utils/ADempiere/resource.js'
 
 export default {
+  name: 'ProfilePreview',
   components: {
     RolesNavbar
   },
@@ -24,20 +27,32 @@ export default {
         return {
           name: '',
           email: '',
-          avatar: '',
           roles: ''
         }
       }
-    }
-  },
-  data() {
-    return {
-      logo: 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4?imageView2/1/w/80/h/80'
+    },
+    avatar: {
+      type: String,
+      default: ''
     }
   },
   computed: {
     currentRole() {
       return this.$store.getters['user/getRole']
+    },
+    avatarResize() {
+      const defaultAvatar = 'https://avatars1.githubusercontent.com/u/1263359?s=200&v=4?imageView2/1/w/40/h/40'
+      if (this.isEmptyValue(this.avatar) || defaultAvatar.includes(this.avatar)) {
+        return defaultAvatar
+      }
+
+      const { uri } = getImagePath({
+        file: this.avatar,
+        width: 40,
+        height: 40
+      })
+
+      return uri
     }
   }
 }

@@ -21,7 +21,7 @@ export default {
         path
       }).catch(error => {
         console.info(`Login Mixin: ${error.name}, ${error.message}`)
-      })
+      }, () => {})
     }
   }
 }

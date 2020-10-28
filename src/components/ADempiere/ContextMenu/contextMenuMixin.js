@@ -1,6 +1,6 @@
 import { showNotification } from '@/utils/ADempiere/notification.js'
 import Item from './items'
-import { convertFieldListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { convertFieldsListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil.js'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
 
@@ -67,9 +67,7 @@ export default {
       downloads: this.$store.getters.getProcessResult.url,
       metadataMenu: {},
       recordUuid: this.$route.query.action,
-      isLoadedReferences: false,
-      exportDefault: 'xls',
-      ROUTES
+      isLoadedReferences: false
     }
   },
   computed: {
@@ -111,17 +109,21 @@ export default {
       return this.$store.getters.permission_routes
     },
     valuesPanelToShare() {
+      let containerUuid = this.containerUuid
+      if (this.$route.query.action === 'advancedQuery') {
+        containerUuid = 'table_' + containerUuid
+      }
+
       return this.$store.getters.getParametersToShare({
-        containerUuid: this.containerUuid,
-        isOnlyDisplayed: true,
-        isAdvancedQuery: this.$route.query.action === 'advancedQuery'
+        containerUuid,
+        isOnlyDisplayed: true
       })
     },
-    getterFieldList() {
+    getterFieldsList() {
       return this.$store.getters.getFieldsListFromPanel(this.containerUuid)
     },
-    getterFieldListHeader() {
-      const header = this.getterFieldList.filter(fieldItem => {
+    getterFieldsListHeader() {
+      const header = this.getterFieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem.name
@@ -131,8 +133,8 @@ export default {
         return fieldItem.name
       })
     },
-    getterFieldListValue() {
-      const value = this.getterFieldList.filter(fieldItem => {
+    getterFieldsListValue() {
+      const value = this.getterFieldsList.filter(fieldItem => {
         const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
         if (fieldItem.isActive && isDisplayed && !fieldItem.isKey) {
           return fieldItem
@@ -275,14 +277,15 @@ export default {
             console.warn(`Error getting data list tab. Message: ${error.message}, code ${error.code}.`)
           })
       } else if (this.panelType === 'browser') {
-        const fieldsEmpty = this.$store.getters.getFieldListEmptyMandatory({
+        const fieldsEmpty = this.$store.getters.getFieldsListEmptyMandatory({
           containerUuid: this.containerUuid,
-          fieldsList: this.getterFieldList
+          fieldsList: this.getterFieldsList
         })
         if (fieldsEmpty.length) {
           this.$message({
             message: this.$t('notifications.mandatoryFieldMissing') + fieldsEmpty,
-            type: 'info'
+            type: 'info',
+            showClose: true
           })
         } else {
           this.$store.dispatch('getBrowserSearch', {
@@ -319,8 +322,8 @@ export default {
       }
     },
     exportRecord(fotmatToExport) {
-      const tHeader = this.getterFieldListHeader
-      const filterVal = this.getterFieldListValue
+      const tHeader = this.getterFieldsListHeader
+      const filterVal = this.getterFieldsListValue
       let list = []
       if (this.panelType === 'window') {
         list = this.getDataRecord
@@ -355,7 +358,9 @@ export default {
       this.actions = this.metadataMenu.actions
 
       // TODO: Add store attribute to avoid making repeated requests
-      if (this.panelType === 'window') {
+      let isChangePrivateAccess = true
+      if (this.isReferecesContent) {
+        isChangePrivateAccess = false
         if (!this.isEmptyValue(this.$route.params.tableName)) {
           this.$store.dispatch('getPrivateAccessFromServer', {
             tableName: this.$route.params.tableName,
@@ -371,6 +376,7 @@ export default {
         }
 
         const processAction = this.actions.find(item => {
+          // TODO: Compare with 'action' attribute and not with 'name' (this change with language)
           if (item.name === 'Procesar Orden' || (item.name === 'Process Order')) {
             return item
           }
@@ -380,24 +386,32 @@ export default {
 
       if (this.actions && this.actions.length) {
         this.actions.forEach(itemAction => {
-          if (this.$route.meta.type === 'report' && itemAction.action === 'startProcess') {
+          const { action } = itemAction
+          if (this.$route.meta.type === 'report' && action === 'startProcess') {
             itemAction.reportExportType = 'html'
           }
 
           // if no exists set prop with value
           itemAction.disabled = false
-          if ((this.$route.name !== 'Report Viewer' && itemAction.action === 'changeParameters') ||
+          if ((this.$route.name !== 'Report Viewer' && action === 'changeParameters') ||
              (this.$route.meta.type === 'process' && itemAction.type === 'summary')) {
             itemAction.disabled = true
           }
 
           if (this.$route.meta.type === 'window') {
-            if (this.recordUuid === 'create-new' || !this.isInsertRecord) {
-              itemAction.disabled = true
+            if (isChangePrivateAccess) {
+              if (action === 'lockRecord') {
+                itemAction.hidden = false
+              } else if (action === 'unlockRecord') {
+                itemAction.hidden = true
+              }
             }
+
             // rollback
             if (itemAction.action === 'undoModifyData') {
               itemAction.disabled = Boolean(!this.getDataLog && !this.getOldRouteOfWindow)
+            } else if (this.recordUuid === 'create-new' || !this.isInsertRecord) {
+              itemAction.disabled = true
             }
           }
         })
@@ -444,10 +458,12 @@ export default {
             query: {
               ...this.getOldRouteOfWindow.query
             }
-          }).catch(error => {
-            console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
-          })
+          }, () => {})
         } else {
+          if (action.action === 'setDefaultValues' && this.$route.query.action === 'create-new') {
+            return
+          }
+
           this.$store.dispatch(action.action, {
             parentUuid: this.parentUuid,
             containerUuid: this.containerUuid,
@@ -472,7 +488,7 @@ export default {
       if (this.lastParameter !== undefined) {
         containerParams = this.lastParameter
       }
-      const fieldsNotReady = this.$store.getters.getFieldListEmptyMandatory({
+      const fieldsNotReady = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid: containerParams
       })
 
@@ -590,13 +606,12 @@ export default {
               // windowUuid: this.parentUuid,
               tabParent: 0
             }
-          }).catch(error => {
-            console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
-          })
+          }, () => {})
         } else {
           this.$message({
             type: 'error',
-            message: this.$t('notifications.noRoleAccess')
+            message: this.$t('notifications.noRoleAccess'),
+            showClose: true
           })
         }
       }
@@ -604,7 +619,7 @@ export default {
     setShareLink() {
       let shareLink = this.panelType === 'window' || window.location.href.includes('?') ? `${window.location.href}&` : `${window.location.href}?`
       if (this.$route.name === 'Report Viewer') {
-        const processParameters = convertFieldListToShareLink(this.processParametersExecuted)
+        const processParameters = convertFieldsListToShareLink(this.processParametersExecuted)
         const reportFormat = this.$store.getters.getReportType
         shareLink = this.$store.getters.getTempShareLink
         if (String(processParameters).length) {
@@ -661,15 +676,14 @@ export default {
       })
     },
     redirect() {
+      const { uuid: name, tabParent } = ROUTES.PRINT_FORMAT_SETUP_WINDOW
       this.$router.push({
-        name: ROUTES.PRINT_FORMAT_SETUP_WINDOW.uuid,
+        name,
         query: {
           action: this.getReportDefinition.output.printFormatUuid,
-          tabParent: ROUTES.PRINT_FORMAT_SETUP_WINDOW.tabParent
+          tabParent
         }
-      }).catch(error => {
-        console.info(`Context Menu Mixin: ${error.name}, ${error.message}`)
-      })
+      }, () => {})
     },
     validatePrivateAccess({ isLocked, tableName, recordId }) {
       if (this.isPersonalLock) {

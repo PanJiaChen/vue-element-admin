@@ -1,3 +1,5 @@
+import router from '@/router'
+
 const state = {
   visitedViews: [],
   cachedViews: []
@@ -162,6 +164,29 @@ const actions = {
 
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
+  },
+
+  setCustomTagView({ dispatch }, {
+    isCloseAllViews = true
+  }) {
+    const route = router.app._route
+    const selectedTag = {
+      fullPath: route.fullPath,
+      hash: route.hash,
+      matched: route.matched,
+      meta: route.meta,
+      name: route.name,
+      params: route.params,
+      path: route.path,
+      query: route.query,
+      title: route.meta.title
+    }
+
+    let actionToDispatch = 'delOthersViews'
+    if (isCloseAllViews) {
+      actionToDispatch = 'delAllViews'
+    }
+    dispatch(actionToDispatch, selectedTag)
   }
 }
 

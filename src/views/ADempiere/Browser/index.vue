@@ -6,6 +6,7 @@
     style="height: 86vh;"
   >
     <modal-dialog
+      :parent-uuid="browserMetadata.uuid"
       :container-uuid="browserUuid"
       :panel-type="panelType"
     />
@@ -41,6 +42,7 @@
       </el-popover>
     </el-header>
     <el-main>
+
       <el-collapse
         v-model="activeSearch"
         class="container-collasep-open"

@@ -73,9 +73,7 @@ export default {
           params: {
             ...this.$route.params
           }
-        }).catch(error => {
-          console.info(`Tab Component: ${error.name}, ${error.message}`)
-        })
+        }, () => {})
 
         this.$route.meta.tabUuid = this.tabUuid
       }

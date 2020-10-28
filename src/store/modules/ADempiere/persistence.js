@@ -1,4 +1,7 @@
-import { createEntity, updateEntity } from '@/api/ADempiere/persistence.js'
+import {
+  requestCreateEntity,
+  requestUpdateEntity
+} from '@/api/ADempiere/persistence.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
 const persistence = {
@@ -14,7 +17,7 @@ const persistence = {
     addChangeToPersistenceQueue(state, {
       containerUuid,
       columnName,
-      valueType,
+      // valueType,
       value
     }) {
       if (isEmptyValue(state.persistence[containerUuid])) {
@@ -22,8 +25,8 @@ const persistence = {
       }
       // Set value
       state.persistence[containerUuid].set(columnName, {
-        columnName,
-        valueType,
+        columnName: columnName,
+        // valueType,
         value
       })
     }
@@ -39,10 +42,10 @@ const persistence = {
         if (attributes) {
           if (recordUuid) {
             // Update existing entity
-            updateEntity({
+            requestUpdateEntity({
               tableName,
               recordUuid,
-              attributes
+              attributesList: attributes
             })
               .then(response => resolve(response))
               .catch(error => reject(error))
@@ -50,9 +53,9 @@ const persistence = {
             attributes = attributes.filter(itemAttribute => !isEmptyValue(itemAttribute.value))
 
             // Create new entity
-            createEntity({
+            requestCreateEntity({
               tableName,
-              attributes
+              attributesList: attributes
             })
               .then(response => resolve(response))
               .catch(error => reject(error))
