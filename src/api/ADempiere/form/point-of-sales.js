@@ -268,7 +268,7 @@ export function requestCreateOrderLine({
 }
 
 // updateOrderLine orders from pos uuid
-export function updateOrderLine({
+export function requestUpdateOrderLine({
   orderLineUuid,
   description,
   quantity,
@@ -278,7 +278,7 @@ export function updateOrderLine({
   return requestRest({
     url: '/pos/update-order-line',
     data: {
-      is_add_quantity: true,
+      // is_add_quantity: true,
       order_line_uuid: orderLineUuid,
       description,
       quantity,
@@ -299,7 +299,7 @@ export function requestDeleteOrderLine({
   orderLineUuid
 }) {
   return requestRest({
-    url: '/pos/create-order-line',
+    url: '/pos/delete-order-line',
     data: {
       order_line_uuid: orderLineUuid
     }

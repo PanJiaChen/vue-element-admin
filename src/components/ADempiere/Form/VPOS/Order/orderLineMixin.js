@@ -1,6 +1,6 @@
 import {
   requestCreateOrderLine,
-  updateOrderLine,
+  requestUpdateOrderLine,
   requestDeleteOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { formatPercent } from '@/utils/ADempiere/valueFormat.js'
@@ -107,7 +107,7 @@ export default {
           break
       }
 
-      updateOrderLine({
+      requestUpdateOrderLine({
         orderLineUuid: this.currentOrderLine.uuid,
         quantity,
         price,
