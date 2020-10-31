@@ -31,7 +31,7 @@ Español | [Inglés](./README.md)
 
 Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere/adempiere)] basada en lo último desarrollado por vue, construido con i18n para manejo multi-idioma, plantillas para aplicaciones de negocio y muchas características asombrosas. Este proyecto es derivado de [Vue-Element-Admin](https://github.com/PanJiaChen/vue-element-admin) originalmente escrito por [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) sobre [licencia MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE) y cambiado a [licencia GNU/GPL v3](https://github.com/adempiere/adempiere-vue/blob/master/LICENSE) por [Yamel Senih](https://github.com/yamelsenih) después de derivar el proyecto y con permisos del autor original [PanJiaChen / 花裤衩](https://github.com/PanJiaChen) en el reporte ["Extend as GNU/Gpl v3 License #1434"](https://github.com/PanJiaChen/vue-element-admin/issues/1434).
 
-[adempiere-vue](https://github.com/adempiere/adempiere-vue) usa como RPC (Llamado a Procedimientos Remostos)[gRPC](https://grpc.io/) como [server](https://github.com/erpcya/adempiere-gRPC-Server).
+[adempiere-vue](https://github.com/adempiere/adempiere-vue) usa como RPC (Llamado a Procedimientos Remostos)[gRPC](https://grpc.io/) como [server](https://github.com/adempiere/adempiere-gRPC-Server).
 
 - [Vista Prévia de la Aplicación](http://adempiere-ui.erpya.com:9526/)
 
@@ -162,7 +162,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
 
 ## Iniciando
 
-Use [gRPC ADempiere Server](https://github.com/erpcya/adempiere-gRPC-Server) como proveedor de gRPC.
+Use [gRPC ADempiere Server](https://github.com/adempiere/adempiere-gRPC-Server) como proveedor de gRPC.
 
 ```bash
 # clone el proyecto
