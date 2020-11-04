@@ -1,5 +1,6 @@
 /**
  * Instance for connection to API RESTful with axios
+ * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
  * @author elsiosanchez <elsiosanches@gmail.com>
  * @param {string} url to resource request
  * @param {string} method rest, 'get' and 'post' (as default)
@@ -23,7 +24,7 @@ export function ApiRest({
     })
     return request.interceptors
   }
-  const config = require('@/api/ADempiere/config.json')
+  const config = require('../../../config/config.json')
   const apiRestAddress = config.adempiereStore.images.protocol + config.adempiereStore.images.baseUrl + config.adempiereStore.images.port + config.service
   const axios = require('axios')
   const request = axios.create({
@@ -56,6 +57,7 @@ export function ApiRest({
 /**
  * Evaluate the response if is a success or error
  * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @author elsiosanchez <elsiosanches@gmail.com>
  * @param {object} response
  * @returns {mixed}
  */
