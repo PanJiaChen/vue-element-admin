@@ -25,7 +25,7 @@ export function buildImageFromArray({
 
 /**
  * Build a base 64 image from arrayBuffer
- * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @author elsiosanchez <Elsiosanches@gmail.com>
  * @param {array} arrayBuffer
  * @param {string} contentType
  * @returns {string} image as base64 encoded
@@ -43,7 +43,7 @@ export function buildImageFromArrayBuffer({
 
 /**
  * Get path to get file
- * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @author elsiosanchez <Elsiosanches@gmail.com>
  * @param {string} file
  * @param {number} width
  * @param {number} height
@@ -57,7 +57,8 @@ export function getImagePath({
   operation = 'fit'
 }) {
   // TODO: Evaluate path url 'http://domain:port/adempiere-api', 'adempiere-api' is part of urn
-  const { API_REST_ADDRESS: url } = require('@/api/ADempiere/constants.js')
+  const config = require('@/api/ADempiere/config.json')
+  const url = config.adempiereStore.images.protocol + config.adempiereStore.images.baseUrl + config.adempiereStore.images.port + config.service
   const urn = `/img?action=${operation}&width=${width}&height=${height}&url=${file}`
   const uri = `${url}${urn}`
 

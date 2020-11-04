@@ -1,6 +1,6 @@
 /**
  * Instance for connection to API RESTful with axios
- * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @author elsiosanchez <elsiosanches@gmail.com>
  * @param {string} url to resource request
  * @param {string} method rest, 'get' and 'post' (as default)
  * @param {object} data body to send post request
@@ -23,11 +23,11 @@ export function ApiRest({
     })
     return request.interceptors
   }
-  const { API_REST_ADDRESS } = require('@/api/ADempiere/constants.js')
+  const config = require('@/api/ADempiere/config.json')
+  const apiRestAddress = config.adempiereStore.images.protocol + config.adempiereStore.images.baseUrl + config.adempiereStore.images.port + config.service
   const axios = require('axios')
-
   const request = axios.create({
-    baseURL: API_REST_ADDRESS,
+    baseURL: apiRestAddress,
     // timeout: 10000, // 10s
     headers: {
       'Content-Type': 'application/json;charset=UTF-8'
