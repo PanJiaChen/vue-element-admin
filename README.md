@@ -35,13 +35,13 @@ It is a great UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/ade
 
 - [Preview](http://adempiere-ui.erpya.com:9526/)
 
-- [Documentation](https://panjiachen.github.io/vue-element-admin-site/)
+- [Documentation](https://adempiere.github.io/adempiere-vue-site/)
 
 - [Gitter](https://gitter.im/adempiere/adempiere-vue)
 
-- [Donate](https://www.paypal.me/?)
+- [Donate](https://www.paypal.me/YamelSenih)
 
-- [Wiki](http://wiki.adempiere.net/ADempiere_ERP)
+- [Wiki](http://wiki.adempiere.io/ADempiere_ERP)
 
 - [Forked From](https://github.com/PanJiaChen/vue-element-admin)
 
