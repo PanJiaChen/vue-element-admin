@@ -1,0 +1,16 @@
+{
+  "server": {
+    "host": "localhost",
+    "port": 9527
+  },
+  "adempiere": {
+    "api": {
+      "url": "http://localhost:8085",
+      "service": "/adempiere-api"
+    },
+    "images": {
+      "url": "http://localhost:8085",
+      "service": "/adempiere-api"
+    }
+  }
+}
