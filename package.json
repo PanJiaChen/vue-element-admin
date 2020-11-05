@@ -5,6 +5,10 @@
   "author": "Pan <panfree23@gmail.com>",
   "contributors": [
     {
+      "name": "Yamel Senih",
+      "url": "https://github.com/YamelSenih/"
+    },
+    {
       "name": "Edwin Betancourt",
       "url": "https://github.com/EdwinBetanc0urt/"
     }
@@ -96,7 +100,7 @@
     "last 2 versions"
   ],
   "bugs": {
-    "url": "https://github.com/PanJiaChen/vue-element-admin/issues"
+    "url": "https://github.com/adempiere/adempiere-vue/issues"
   },
   "engines": {
     "node": ">=8.9",
@@ -125,6 +129,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PanJiaChen/vue-element-admin.git"
+    "url": "git+https://github.com/adempiere/adempiere-vue.git"
   }
 }
