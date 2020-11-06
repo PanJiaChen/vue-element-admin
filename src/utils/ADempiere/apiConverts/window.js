@@ -27,7 +27,7 @@ export function convertChangeLog(changeLogToConvert) {
     oldValue: changeLogToConvert.old_value,
     newValue: changeLogToConvert.new_value,
     oldDisplayValue: changeLogToConvert.old_display_value,
-    newDisplayValye: changeLogToConvert.new_display_value,
+    newDisplayValue: changeLogToConvert.new_display_value,
     description: changeLogToConvert.description
   }
 }

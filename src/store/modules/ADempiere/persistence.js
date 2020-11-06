@@ -32,7 +32,7 @@ const persistence = {
     }
   },
   actions: {
-    flushPersistenceQueue({ getters }, {
+    flushPersistenceQueue({ getters, dispatch }, {
       containerUuid,
       tableName,
       recordUuid
@@ -47,7 +47,14 @@ const persistence = {
               recordUuid,
               attributesList: attributes
             })
-              .then(response => resolve(response))
+              .then(response => {
+                dispatch('listRecordLogs', {
+                  tableName: response.tableName,
+                  recordId: response.id,
+                  recordUuid: response.uuid
+                })
+                resolve(response)
+              })
               .catch(error => reject(error))
           } else {
             attributes = attributes.filter(itemAttribute => !isEmptyValue(itemAttribute.value))
