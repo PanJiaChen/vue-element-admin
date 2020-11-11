@@ -90,7 +90,7 @@ const containerInfo = {
         pageToken
       })
         .then(responseWorkFlowList => {
-          commit('addListWorkflows', responseWorkFlowList)
+          commit('addListWorkflows', responseWorkFlowList.workflowsList)
           return responseWorkFlowList
         })
         .catch(error => {

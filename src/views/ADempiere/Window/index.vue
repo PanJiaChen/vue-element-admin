@@ -264,7 +264,6 @@
                       </el-tab-pane>
 
                       <el-tab-pane
-                        v-if="getIsWorkflowLog"
                         name="listWorkflowLogs"
                       >
                         <span slot="label">
@@ -272,7 +271,6 @@
                           {{ $t('window.containerInfo.workflowLog') }}
                         </span>
                         <div
-                          v-if="getIsWorkflowLog"
                           key="workflow-log-loaded"
                         >
                           <workflow-logs />
@@ -520,7 +518,7 @@ export default {
       return true
     },
     getIsWorkflowLog() {
-      if (this.isEmptyValue(this.$store.getters.getWorkflow)) {
+      if (this.isEmptyValue(this.$store.getters.getNodeWorkflow)) {
         return false
       }
       return true
@@ -564,9 +562,13 @@ export default {
       }
       return currentRecord
     },
+    isDocument() {
+      const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
+      return panel.isDocument
+    },
     isWorkflowBarStatus() {
       const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
-      if (!this.isEmptyValue(panel) && panel.isDocument && this.$route.query.action !== 'create-new') {
+      if (!this.isEmptyValue(panel) && this.isDocument && this.$route.query.action !== 'create-new') {
         return true
       }
       return false
@@ -712,6 +714,12 @@ export default {
         this.handleChangeShowedRecordNavigation(isShowRecords)
       }
       this.isLoaded = true
+      const record = this.currentRecord
+      this.$store.dispatch('listDocumentStatus', {
+        tableName: this.getTableName,
+        recordUuid: this.$route.query.action,
+        recordId: record[this.getTableName + '_ID']
+      })
     },
     handleChangeShowedRecordNavigation(valueToChange) {
       this.$store.dispatch('changeWindowAttribute', {

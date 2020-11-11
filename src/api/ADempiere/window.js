@@ -226,17 +226,15 @@ export function requestListDocumentStatuses({
   recordId,
   recordUuid,
   documentStatus,
-  documentAction,
   pageSize,
   pageToken
 }) {
   return requestRest({
-    url: '/workflow/list-document-actions',
+    url: '/workflow/list-document-statuses',
     data: {
       id: recordId,
       uuid: recordUuid,
       table_name: tableName,
-      document_action: documentAction,
       document_status: documentStatus
     },
     params: {
