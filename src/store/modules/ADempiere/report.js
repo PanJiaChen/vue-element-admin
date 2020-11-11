@@ -74,10 +74,11 @@ const reportControl = {
       processId,
       processUuid,
       instanceUuid,
-      printFormatUuid
+      printFormatUuid,
+      tableName
     }) {
       return new Promise(resolve => {
-        requestListReportsViews({ processUuid })
+        requestListReportsViews({ processUuid, tableName })
           .then(reportViewResponse => {
             const reportViewList = reportViewResponse.reportViewsList.map(reportViewItem => {
               return {

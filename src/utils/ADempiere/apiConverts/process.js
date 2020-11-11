@@ -1,3 +1,4 @@
+import { isEmptyValue } from '../valueUtils.js'
 import { convertReportOutput } from './report.js'
 
 export function convertProcessLog(processLogToConvert) {
@@ -13,6 +14,6 @@ export function convertProcessLog(processLogToConvert) {
     //   return convertEntity(parameter)
     // }),
     paramenters: [],
-    output: convertReportOutput(processLogToConvert.output)
+    output: isEmptyValue(processLogToConvert.output) ? {} : convertReportOutput(processLogToConvert.output)
   }
 }
