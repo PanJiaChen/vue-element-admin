@@ -37,7 +37,7 @@ Please only use Codepen, JSFiddle, CodeSandbox or a github repo
 - Your OS:
 - Web Browser:
 - Node.js version:
-- vue-element-admin version:
+- adempiere-vue version:
 
 #### Additional context
 Add any other context about the problem here.

@@ -1,7 +1,13 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <el-button v-if="isMenuMobile && isMobile" type="text" icon="el-icon-close" style="padding-top: 13px; color: #000000;font-size: 121%;font-weight: 615!important;" @click="isMenuOption()" />
+    <el-button
+      v-if="isMenuMobile && isMobile"
+      type="text"
+      icon="el-icon-close"
+      style="padding-top: 13px; color: #000000;font-size: 121%;font-weight: 615!important;"
+      @click="isMenuOption()"
+    />
     <breadcrumb v-show="!isMenuMobile || device!=='mobile'" id="breadcrumb-container" class="breadcrumb-container" :style="isMobile ? { width: '40%' } : { width: 'auto' } " />
     <div v-show="isMenuMobile && isMobile" style="display: inline-flex; float: right;">
       <search id="header-search" class="right-menu-item" style="padding-top: 10px;" />

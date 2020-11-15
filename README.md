@@ -76,10 +76,15 @@ docker pull erpya/adempiere-vue
 
 ## Sponsors
 
-<a href="http://erpya.com/"><img width="250px" src="https://erpya.com/wp-content/uploads/2017/11/ERP-logotipo-H-color.png" /></a>
-<a href="http://www.e-evolution.com/"><img width="250px" src="https://i0.wp.com/mysmart.business/evolution/wp-content/uploads/sites/29/2017/10/e-evolution-logo-v2.png?fit=150%2C92" /></a>
-<a href="http://westfalia-it.com/"><img width="150px" src="https://i1.wp.com/spin-suite.com/westfalia/wp-content/uploads/sites/30/2017/12/logo_copy.jpg?fit=265%2C357" /></a>
-<a href="http://openupsolutions.com/"><img width="250px" src="https://i0.wp.com/spin-suite.com/openupsolutions/wp-content/uploads/sites/32/2017/05/Openup-Solutions-Logo-2017-80x200px.png" /></a>
+<a href="http://erpya.com/">
+  <img alt="ERP Consultores y Asociados" width="250px" src="https://erpya.com/wp-content/uploads/2017/11/ERP-logotipo-H-color.png" />
+</a>
+<a href="http://westfalia-it.com/">
+  <img width="150px" src="https://i2.wp.com/www.westfalia-it.com/wp-content/uploads/sites/30/2017/12/logo_copy.jpg?fit=265%2C357" />
+</a>
+<a href="http://openupsolutions.com/">
+  <img width="250px" src="https://i2.wp.com/openupsolutions.com/wp-content/uploads/sites/32/2017/05/Openup-Solutions-Logo-2017-80x200px.png?fit=243%2C40" />
+</a>
 
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [Become a sponsor](https://www.paypal.me/YamelSenih)
 
@@ -149,6 +154,8 @@ Become a sponsor and get your logo on our README on GitHub with a link to your s
   - Process
   - Report
   - Smart Browser
+  - Form
+  - Workflow
 
 - Advanced Example
 - Error Log
@@ -165,7 +172,7 @@ Use [gRPC ADempiere Server](https://github.com/adempiere/adempiere-gRPC-Server) 
 
 ```bash
 # clone the project
-git clone -b develop git@github.com:adempiere/vue-element-admin.git
+git clone -b develop git@github.com:adempiere/adempiere-vue-.git
 
 # enter the project directory
 cd adempiere-vue

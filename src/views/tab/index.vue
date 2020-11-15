@@ -32,7 +32,7 @@ export default {
   },
   watch: {
     activeName(val) {
-      this.$router.push(`${this.$route.path}?tab=${val}`)
+      this.$router.push(`${this.$route.path}?tab=${val}`, () => {})
     }
   },
   created() {

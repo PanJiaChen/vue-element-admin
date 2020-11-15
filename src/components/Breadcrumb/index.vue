@@ -39,7 +39,7 @@
 
 <script>
 import { generateTitle } from '@/utils/i18n'
-import pathToRegexp from 'path-to-regexp'
+import { compile } from 'path-to-regexp'
 
 export default {
   data() {
@@ -90,12 +90,17 @@ export default {
     pathCompile(path) {
       // To solve this problem https://github.com/PanJiaChen/vue-element-admin/issues/561
       const { params } = this.$route
-      var toPath = pathToRegexp.compile(path)
+      const toPath = compile(path)
       return toPath(params)
     },
     handleLink(item) {
       if (this.$route.name !== item.name) {
-        this.$router.push({ name: item.name, params: { childs: item.meta.childs }})
+        this.$router.push({
+          name: item.name,
+          params: {
+            childs: item.meta.childs
+          }
+        }, () => {})
       }
     }
   }

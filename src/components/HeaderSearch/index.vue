@@ -12,7 +12,12 @@
       class="header-search-select"
       @change="change"
     >
-      <el-option v-for="(item, key) in options" :key="key" :value="item" :label="item.title.join(' > ')" />
+      <el-option
+        v-for="element in options"
+        :key="element.item.path"
+        :value="element.item"
+        :label="element.item.title.join(' > ')"
+      />
     </el-select>
   </div>
 </template>

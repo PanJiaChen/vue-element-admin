@@ -8,9 +8,9 @@
         <SplitArea :size="sizePanel" :min-size="100">
           <el-aside width="100%">
             <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
-              <template>
+              <template slot="paneL">
                 <!-- this slot is 'paneL' (with 'L' in uppercase) do not change -->
-                <div slot="paneL" class="left-container">
+                <div class="left-container">
                   <el-aside v-show="isShowedRecordNavigation" width="100%">
                     <div class="small-4 columns">
                       <div class="w">
@@ -326,6 +326,19 @@ export default {
     WorkflowLogs,
     WorkflowStatusBar
   },
+  beforeRouteUpdate(to, from, next) {
+    this.$store.dispatch('setWindowOldRoute', {
+      path: from.path,
+      fullPath: from.fullPath,
+      params: {
+        ...from.params
+      },
+      query: {
+        ...from.query
+      }
+    })
+    next()
+  },
   props: {
     styleSteps: {
       type: Object,
@@ -344,19 +357,6 @@ export default {
       // TODO: Manage attribute with store
       isShowedRecordPanel: false
     }
-  },
-  beforeRouteUpdate(to, from, next) {
-    this.$store.dispatch('setWindowOldRoute', {
-      path: from.path,
-      fullPath: from.fullPath,
-      params: {
-        ...from.params
-      },
-      query: {
-        ...from.query
-      }
-    })
-    next()
   },
   computed: {
     showContextMenu() {
