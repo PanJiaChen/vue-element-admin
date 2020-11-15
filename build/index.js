@@ -1,16 +1,15 @@
 const { sh } = require('tasksfile')
-const chalk = require('chalk')
-const config = require('../vue.config.js')
 const rawArgv = process.argv.slice(2)
 const args = rawArgv.join(' ')
 
 sh(`vue-cli-service build ${args}`)
 
 if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
+  const config = require('../vue.config.js')
   const publicPath = config.publicPath
 
-  var connect = require('connect')
-  var serveStatic = require('serve-static')
+  const connect = require('connect')
+  const serveStatic = require('serve-static')
   const app = connect()
 
   app.use(
@@ -21,13 +20,12 @@ if (process.env.npm_config_preview || rawArgv.includes('--preview')) {
   )
 
   const port = 9526
-  app.listen(port, function () {
+  app.listen(port, function() {
+    const chalk = require('chalk')
     console.log(chalk.green(`> Preview at  http://localhost:${port}${publicPath}`))
 
-    const isWithReport = rawArgv.includes('--report')
-    if (isWithReport) {
+    if (rawArgv.includes('--report')) {
       console.log(chalk.green(`> Report at  http://localhost:${port}${publicPath}report.html`))
     }
-
   })
 }
