@@ -61,20 +61,21 @@ export function convertCriteria(criteriaToConvert) {
   }
 }
 
-export function convertOrganization(organizationToConvert) {
-  const { id, uuid, name, description } = organizationToConvert
+export function convertOrganization(organization) {
+  const { id, uuid, name, description } = organization
 
   return {
     id,
     uuid,
     name,
     description,
-    isReadOnly: organizationToConvert.is_read_only,
-    duns: organizationToConvert.duns,
-    taxId: organizationToConvert.tax_id,
-    phone: organizationToConvert.phone,
-    phone2: organizationToConvert.phone2,
-    fax: organizationToConvert.fax
+    isReadOnly: organization.is_read_only,
+    duns: organization.duns,
+    taxId: organization.tax_id,
+    phone: organization.phone,
+    phone2: organization.phone2,
+    fax: organization.fax,
+    corporateBrandingImage: organization.corporate_branding_image
   }
 }
 

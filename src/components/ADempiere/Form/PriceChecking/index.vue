@@ -96,7 +96,7 @@ export default {
   },
   computed: {
     organizationImagePath() {
-      return this.$store.getters.avatar
+      return this.$store.getters.corporateBrandingImage
     },
     defaultImage() {
       return require('@/image/ADempiere/priceChecking/no-image.jpg')

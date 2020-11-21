@@ -45,7 +45,8 @@ const state = {
   warehousesList: [],
   warehouse: {},
   isSession: false,
-  sessionInfo: {}
+  sessionInfo: {},
+  corporateBrandingImage: ''
 }
 
 const mutations = {
@@ -72,6 +73,9 @@ const mutations = {
   },
   SET_ORGANIZATION: (state, organization) => {
     state.organization = organization
+    if (organization) {
+      state.corporateBrandingImage = organization.corporateBrandingImage
+    }
   },
   SET_WAREHOUSES_LIST: (state, payload) => {
     state.warehousesList = payload
