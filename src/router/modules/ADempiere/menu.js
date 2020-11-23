@@ -4,7 +4,13 @@ import staticRoutes from '@/router/modules/ADempiere/staticRoutes.js'
 /* Layout  */
 import Layout from '@/layout'
 
-// Get Menu from server
+/**
+ * Get Menu from server
+ * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
+ * @param {string} sessionUuid
+ * @param {string} roleUuid
+ * @param {string} organizationUuid
+ */
 export function loadMainMenu({
   sessionUuid,
   roleUuid = 0,
@@ -32,7 +38,6 @@ export function loadMainMenu({
               organizationUuid
             })
             optionMenu.children.push(childsSumaryConverted)
-            optionMenu.children[0].meta.childs.push(childsSumaryConverted)
             optionMenu.meta.childs.push(childsSumaryConverted)
           })
         } else {
@@ -58,15 +63,16 @@ export function loadMainMenu({
 
 /**
  * Get Only Child
+ * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
  * @param {object} menu
  * @param {number} index
- * @param {number} roleUuid
- * @param {number} organizationUuid
+ * @param {string} roleUuid
+ * @param {string} organizationUuid
  */
 function getChildFromAction({ menu, index, roleUuid, organizationUuid }) {
-  const { component, icon, name, isIndex } = convertAction(menu.action)
-  const routeIdentifier = name + '/' + menu.id
-
+  const { component, icon, name: type } = convertAction(menu.action)
+  const routeIdentifier = type + '/' + menu.id
+  const isIndex = menu.is_summary
   const option = {
     path: '/' + roleUuid + '/' + organizationUuid + '/' + routeIdentifier,
     component,
@@ -85,14 +91,14 @@ function getChildFromAction({ menu, index, roleUuid, organizationUuid }) {
       referenceUuid: menu.reference_uuid,
       tabUuid: '',
       title: menu.name,
-      type: name,
+      type,
       uuid: menu.reference_uuid,
       childs: []
-    }
+    },
+    children: []
   }
 
-  if (isIndex || name === 'summary') {
-    option['children'] = []
+  if (isIndex) {
     menu.childs.forEach(child => {
       const menuConverted = getChildFromAction({
         menu: child,
@@ -111,50 +117,34 @@ function getChildFromAction({ menu, index, roleUuid, organizationUuid }) {
 /**
  * Convert menu item from server to Route
  * @author elsiosanchez <elsiosanches@gmail.com>
+ * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
  * @param {object} menu
- * @param {number} roleUuid
- * @param {number} organizationUuid
+ * @param {string} roleUuid
+ * @param {string} organizationUuid
  */
 function getRouteFromMenuItem({ menu, roleUuid, organizationUuid }) {
-  const { component, icon, name, isIndex } = convertAction(menu.action)
-
+  // use component of convertAction
+  const { icon, name: type } = convertAction(menu.action)
+  const isIndex = menu.is_summary
   const optionMenu = {
     path: '/' + roleUuid + '/' + organizationUuid + '/' + menu.id,
-    redirect: '/' + menu.id + '/index',
+    redirect: '/' + menu.id,
     component: Layout,
     name: menu.uuid,
     meta: {
       description: menu.description,
       icon,
+      isIndex,
       isReadOnly: menu.is_read_only,
       isSummary: menu.is_summary,
       isSalesTransaction: menu.is_sales_transaction,
       noCache: true,
       referenceUuid: menu.reference_uuid,
       title: menu.name,
-      type: name,
+      type,
       childs: []
     },
-    children: [{
-      path: 'index',
-      component,
-      name: menu.uuid + '-index',
-      hidden: true,
-      meta: {
-        breadcrumb: false,
-        description: menu.description,
-        icon,
-        isIndex,
-        isReadOnly: menu.is_read_only,
-        isSalesTransaction: menu.is_sales_transaction,
-        noCache: true,
-        parentUuid: menu.uuid,
-        referenceUuid: menu.reference_uuid,
-        title: menu.name,
-        type: name,
-        childs: []
-      }
-    }]
+    children: []
   }
   return optionMenu
 }

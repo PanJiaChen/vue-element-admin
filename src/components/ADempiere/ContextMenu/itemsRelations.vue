@@ -1,4 +1,5 @@
 <template>
+  <!-- summary elememts view -->
   <el-submenu
     v-if="item.meta.type === 'summary'"
     key="is-summary"
@@ -9,10 +10,18 @@
       <svg-icon v-if="isMobile" icon-class="nested" />
       {{ item.meta.title }}
     </template>
-    <item v-for="(child, subKey) in item.children" :key="subKey" :item="child">
-      {{ child.meta.title }}
-    </item>
+    <el-scrollbar wrap-class="scroll-child">
+      <el-menu-item
+        v-for="(child, subKey) in getChilds(item)"
+        :key="subKey"
+        :index="child.meta.uuid"
+      >
+        {{ child.meta.title }}
+      </el-menu-item>
+    </el-scrollbar>
   </el-submenu>
+
+  <!-- item menu views -->
   <el-menu-item
     v-else
     v-show="item.meta.uuid !== $route.meta.uuid"
@@ -29,7 +38,7 @@
 import { icon } from '@/components/ADempiere/ContextMenu/icon'
 
 export default {
-  name: 'Item',
+  name: 'ItemsContextMenu',
   props: {
     item: {
       type: Object,
@@ -55,6 +64,15 @@ export default {
           tabParent: 0
         }
       }, () => {})
+    },
+    getChilds(item) {
+      if (!this.isEmptyValue(item.children)) {
+        return item.children
+      }
+      if (item.meta && !this.isEmptyValue(item.meta.childs)) {
+        return item.meta.childs
+      }
+      return []
     }
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <el-col v-if="items.children" key="is-desktop-dropdown" :span="24">
+  <el-col v-if="!isEmptyValue(items.children)" key="is-desktop-dropdown" :span="24">
     <el-collapse v-model="activeNames">
       <el-collapse-item :title="title" name="1" class="collapse-item">
         <el-row justify="space-around">
@@ -46,7 +46,7 @@
 
 <script>
 export default {
-  name: 'Dropdown',
+  name: 'DropdownMenu',
   props: {
     items: {
       type: Object,

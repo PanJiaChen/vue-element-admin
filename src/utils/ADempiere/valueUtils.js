@@ -177,29 +177,35 @@ export function convertFieldsListToShareLink(fieldsList) {
 
 /**
  * Find element in an array recursively
- * @param {object|array} treeData
- * @param {string} attributeName, key to get value, default id
+ * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
+ * @param {object|array} treeData object recursive array
+ * @param {string} attributeName, key to get value, default 'id'
+ * @param {string} secondAttributeName, key to get value, default 'meta'
  * @param {mixed}  attributeValue, value to compare with search
- * @param {string} attributeChilds, childs list into element
+ * @param {string} attributeChilds, 'childs' list into element
  */
 export const recursiveTreeSearch = ({
   treeData,
   attributeValue,
   attributeName = 'id',
-  secondAttribute = false,
+  secondAttributeName = '',
   attributeChilds = 'childsList',
   isParent = false
 }) => {
   if (Array.isArray(treeData)) {
+    // search in childs attribute
     let index = 0
     const length = treeData.length
     while (index < length) {
       let value = treeData[index]
-      if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
+      if (!isEmptyValue(value) &&
+        Object.prototype.hasOwnProperty.call(value, attributeName)) {
         value = value[attributeName]
       }
-      if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
-        value = value[secondAttribute]
+      if (!isEmptyValue(value) &&
+        secondAttributeName &&
+        Object.prototype.hasOwnProperty.call(value, secondAttributeName)) {
+        value = value[secondAttributeName]
       }
 
       // compare item to search
@@ -208,11 +214,12 @@ export const recursiveTreeSearch = ({
       }
 
       if (treeData[index] && treeData[index][attributeChilds]) {
+        const newTree = treeData[index][attributeChilds]
         const found = recursiveTreeSearch({
-          treeData: treeData[index][attributeChilds],
+          treeData: newTree,
           attributeValue,
           attributeName,
-          secondAttribute,
+          secondAttributeName,
           attributeChilds,
           isParent
         })
@@ -223,12 +230,16 @@ export const recursiveTreeSearch = ({
       index++
     }
   } else {
+    // search into meta attribute
     let value = treeData
-    if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
+    if (!isEmptyValue(value) &&
+      Object.prototype.hasOwnProperty.call(value, attributeName)) {
       value = value[attributeName]
     }
-    if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
-      value = value[secondAttribute]
+    if (!isEmptyValue(value) &&
+      secondAttributeName &&
+      Object.prototype.hasOwnProperty.call(value, secondAttributeName)) {
+      value = value[secondAttributeName]
     }
 
     // compare item to search
@@ -240,7 +251,7 @@ export const recursiveTreeSearch = ({
       treeData: treeData[attributeChilds],
       attributeValue,
       attributeName,
-      secondAttribute,
+      secondAttributeName,
       attributeChilds
     })
     return found
@@ -400,6 +411,7 @@ export function tagStatus(tag) {
   }
   return type
 }
+
 /**
  * add a tab depending on the status of the document
  * @param {string} tag, document status key

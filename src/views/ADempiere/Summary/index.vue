@@ -10,14 +10,24 @@
     />
     <h3 v-popover:routeDescription class="description">{{ $route.meta.title }}</h3>
     <el-row :gutter="10">
-      <template v-if="optionList.children">
+      <template v-if="!isEmptyValue(optionList.children)">
         <template v-for="(item, key) in optionList.children">
-          <dropdown v-if="$route.name !== item.name" :key="key" :items="item" :title="item.meta.title" />
+          <dropdown-menu
+            v-if="$route.name !== item.name"
+            :key="key"
+            :items="item"
+            :title="item.meta.title"
+          />
         </template>
       </template>
       <template v-else>
         <template v-for="(item, key) in optionList">
-          <dropdown v-if="$route.name !== item.name" :key="key" :items="item" :title="item.meta.title" />
+          <dropdown-menu
+            v-if="$route.name !== item.name"
+            :key="key"
+            :items="item"
+            :title="item.meta.title"
+          />
         </template>
       </template>
     </el-row>
@@ -28,12 +38,12 @@
 </template>
 
 <script>
-import Dropdown from '@/components/ADempiere/Dropdown'
+import DropdownMenu from '@/components/ADempiere/DropdownMenu'
 
 export default {
-  name: 'Summary',
+  name: 'SummaryView',
   components: {
-    Dropdown
+    DropdownMenu
   },
   data() {
     return {

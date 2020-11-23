@@ -424,7 +424,7 @@ const actions = {
         console.warn(`Error change role: ${error.message}. Code: ${error.code}.`)
       })
       .finally(() => {
-        dispatch('permission/sendRequestMenu', organizationId, {
+        dispatch('permission/sendRequestMenu', null, {
           root: true
         })
       })

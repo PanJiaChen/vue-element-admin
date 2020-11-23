@@ -24,30 +24,25 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit, rootGetters }, organizationId = 0) {
+  generateRoutes({ commit, rootGetters }) {
     return new Promise(resolve => {
       const organization = rootGetters['user/getOrganization']
       let organizationUuid
       if (!isEmptyValue(organization)) {
-        organizationId = organization.id
         organizationUuid = organization.uuid
       }
 
       const role = rootGetters['user/getRole']
       let roleUuid
-      let clientId = 0
       if (!isEmptyValue(role)) {
         roleUuid = role.uuid
-        clientId = role.clientId
       }
 
       const sessionUuid = getToken()
 
       loadMainMenu({
         sessionUuid,
-        clientId,
         roleUuid,
-        organizationId,
         organizationUuid
       }).then(menuResponse => {
         commit('SET_ROUTES', menuResponse)
@@ -55,7 +50,7 @@ const actions = {
       })
     })
   },
-  sendRequestMenu({ commit, dispatch }, organizationId = null) {
+  sendRequestMenu({ commit, dispatch }) {
     commit('clearTimeOutMenu')
     const timeOutMenu = setTimeout(async() => {
       NProgress
@@ -66,7 +61,7 @@ const actions = {
         .start()
 
       resetRouter()
-      dispatch('generateRoutes', organizationId)
+      dispatch('generateRoutes')
         .then(accessRoutes => {
           router.addRoutes(accessRoutes)
         })

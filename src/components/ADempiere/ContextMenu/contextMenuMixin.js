@@ -1,13 +1,17 @@
 import { showNotification } from '@/utils/ADempiere/notification.js'
-import Item from './items'
+import ItemsRelations from './itemsRelations'
 import { convertFieldsListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil.js'
 import ROUTES from '@/utils/ADempiere/zoomWindow'
+import relationsMixin from './relationsMixin.js'
 
 export default {
   name: 'MixinContextMenu',
+  mixins: [
+    relationsMixin
+  ],
   components: {
-    Item
+    ItemsRelations
   },
   props: {
     menuParentUuid: {
@@ -91,17 +95,6 @@ export default {
     getterReferences() {
       if (this.isReferecesContent) {
         return this.$store.getters.getReferencesList(this.parentUuid, this.recordUuid)
-      }
-      return []
-    },
-    relationsList() {
-      let menuUuid = this.$route.params.menuParentUuid
-      if (this.isEmptyValue(menuUuid)) {
-        menuUuid = this.menuParentUuid
-      }
-      const relations = this.$store.getters.getRelations(menuUuid)
-      if (relations) {
-        return relations.children
       }
       return []
     },

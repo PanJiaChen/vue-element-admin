@@ -145,12 +145,12 @@ const contextMenu = {
     getContextMenu: (state) => (containerUuid) => {
       return state.contextMenu.find(item => item.containerUuid === containerUuid)
     },
-    getRelations: (state, getters, rootState, rootGetters) => (containerUuid) => {
+    getRelations: (state, getters, rootState, rootGetters) => (containerOrMenuUuid) => {
       const dataTree = rootGetters.permission_routes
       return recursiveTreeSearch({
         treeData: dataTree,
         attributeName: 'name',
-        attributeValue: containerUuid,
+        attributeValue: containerOrMenuUuid,
         attributeChilds: 'children'
       })
     },
