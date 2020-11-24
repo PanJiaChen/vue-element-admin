@@ -1,4 +1,4 @@
-import { getConfig } from '@/utils/ADempiere/config'
+import { config } from '@/utils/ADempiere/config'
 /**
  * Instance for connection to API RESTful with axios
  * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
@@ -25,8 +25,8 @@ export function ApiRest({
     })
     return request.interceptors
   }
-  var config = getConfig()
-  const apiRestAddress = config.adempiere.api.url + config.adempiere.api.service
+
+  const apiRestAddress = config.adempiere.api.fullPath
   const axios = require('axios')
   const request = axios.create({
     baseURL: apiRestAddress,

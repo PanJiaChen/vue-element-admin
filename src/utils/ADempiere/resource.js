@@ -1,7 +1,8 @@
 // This file allows generate util functions for handle arrays, resources and all
 // related to upload to server side and downdload from server side to client side.
 // Please add the necessary functions here:
-import { getConfig } from '@/utils/ADempiere/config'
+import { config } from '@/utils/ADempiere/config'
+
 // Merge two arrays and return merged array
 export function mergeByteArray(currentArray, arrayToMerge) {
   const mergedArray = new currentArray.constructor(currentArray.length + arrayToMerge.length)
@@ -58,9 +59,8 @@ export function getImagePath({
   height = 300,
   operation = 'fit'
 }) {
-  var config = getConfig()
-  const url = config.adempiere.images.url + config.adempiere.images.service
-  const urn = `/img?action=${operation}&width=${width}&height=${height}&url=${file}`
+  const url = config.adempiere.images.fullPath
+  const urn = `/?action=${operation}&width=${width}&height=${height}&url=${file}`
   const uri = `${url}${urn}`
 
   return {
