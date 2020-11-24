@@ -271,6 +271,7 @@ export function requestResource({ resourceUuid }, callBack = {
 /**
  * Get image with uri request
  * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
+ * @author Elsio15 <elsiiosanches@gmail.com>
  * @param {string} file
  * @param {number} width
  * @param {number} height
@@ -279,8 +280,8 @@ export function requestResource({ resourceUuid }, callBack = {
  */
 export function requestImage({
   file,
-  width = 300,
-  height = 300,
+  width,
+  height,
   operation = 'fit'
 }) {
   const { getImagePath } = require('@/utils/ADempiere/resource.js')

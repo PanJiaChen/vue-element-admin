@@ -2,7 +2,6 @@
   <div
     v-if="isLoaded"
     style="height: 100% !important;"
-    @click="focusProductValue"
   >
     <el-container style="height: 100% !important;">
       <img
@@ -91,6 +90,7 @@ export default {
       productPrice: {},
       organizationBackground: '',
       currentImageOfProduct: '',
+      search: 'sad',
       unsubscribe: () => {}
     }
   },
@@ -127,13 +127,15 @@ export default {
         isSetOrg = true
         imageName = this.organizationImagePath
       }
+      // the name of the image plus the height and width of the container is sent
       const imageBuffer = await requestImage({
-        file: imageName
+        file: imageName,
+        width: 750,
+        height: 380
       }).then(responseImage => {
         const arrayBufferAsImage = buildImageFromArrayBuffer({
           arrayBuffer: responseImage
         })
-
         if (isSetOrg) {
           this.organizationBackground = arrayBufferAsImage
           return arrayBufferAsImage
@@ -151,52 +153,56 @@ export default {
     formatPrice,
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'addActionKeyPerformed' && mutation.payload.columnName === 'ProductValue') {
+        // console.log(mutation.type.length)
+        if ((mutation.type === 'updateValueOfField' || mutation.type === 'addFocusGained') && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
-          requestGetProductPrice({
-            searchValue: mutation.payload.value
-          })
-            .then(productPrice => {
-              const { product, taxRate, priceStandard: priceBase } = productPrice
-              const { rate } = taxRate
-              const { imageURL: image } = product
+          this.search = mutation.payload.value
+          if (this.search.length >= 6) {
+            requestGetProductPrice({
+              searchValue: mutation.payload.value
+            })
+              .then(productPrice => {
+                const { product, taxRate, priceStandard: priceBase } = productPrice
+                const { rate } = taxRate
+                const { imageURL: image } = product
 
-              this.productPrice = {
-                productName: product.name,
-                productDescription: product.description,
-                priceBase,
-                priceStandard: productPrice.priceStandard,
-                priceList: productPrice.priceList,
-                priceLimit: productPrice.priceLimit,
-                taxRate: rate,
-                image,
-                taxName: taxRate.name,
-                taxIndicator: taxRate.taxIndicator,
-                taxAmt: this.getTaxAmount(priceBase, rate),
-                grandTotal: this.getGrandTotal(priceBase, rate),
-                currency: productPrice.currency
-              }
-            })
-            .catch(error => {
-              this.$message({
-                type: 'info',
-                message: error.message,
-                showClose: true
+                this.productPrice = {
+                  productName: product.name,
+                  productDescription: product.description,
+                  priceBase,
+                  priceStandard: productPrice.priceStandard,
+                  priceList: productPrice.priceList,
+                  priceLimit: productPrice.priceLimit,
+                  taxRate: rate,
+                  image,
+                  taxName: taxRate.name,
+                  taxIndicator: taxRate.taxIndicator,
+                  taxAmt: this.getTaxAmount(priceBase, rate),
+                  grandTotal: this.getGrandTotal(priceBase, rate),
+                  currency: productPrice.currency
+                }
               })
-              this.productPrice = {}
-            })
-            .finally(() => {
-              this.$store.commit('updateValueOfField', {
-                containerUuid: this.containerUuid,
-                columnName: 'ProductValue',
-                value: ''
+              .catch(error => {
+                this.$message({
+                  type: 'info',
+                  message: error.message,
+                  showClose: true
+                })
+                this.productPrice = {}
               })
-
-              this.currentImageOfProduct = ''
-              if (this.isEmptyValue(this.productPrice.image)) {
-                this.getImage(this.productPrice.image)
-              }
-            })
+              .finally(() => {
+                this.$store.commit('updateValueOfField', {
+                  containerUuid: this.containerUuid,
+                  columnName: 'ProductValue',
+                  value: ''
+                })
+                this.search = ''
+                this.currentImageOfProduct = ''
+                if (this.isEmptyValue(this.productPrice.image)) {
+                  this.getImage(this.productPrice.image)
+                }
+              })
+          }
         }
       })
     },
@@ -227,12 +233,12 @@ export default {
 
   .product-description {
     color: #32363a;
-    font-size: 25px;
+    font-size: 30px;
     float: right;
     padding-bottom: 0px;
   }
   .product-price-base, .product-tax {
-    font-size: 35px;
+    font-size: 30px;
     float: right;
   }
   .product-price {
@@ -250,7 +256,7 @@ export default {
   }
   .inquiry-product {
     position: absolute;
-    right: 5%;
+    right: 20%;
     width: 100%;
     top: 33%;
     .amount {

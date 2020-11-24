@@ -5,43 +5,42 @@
 </template>
 
 <script>
-import screenfull from 'screenfull'
 
 export default {
   name: 'Screenfull',
   data() {
     return {
+      elem: document.documentElement,
       isFullscreen: false
     }
   },
-  mounted() {
-    this.init()
-  },
-  beforeDestroy() {
-    this.destroy()
-  },
   methods: {
     click() {
-      if (!screenfull.enabled) {
-        this.$message({
-          message: 'you browser can not work',
-          type: 'warning'
-        })
-        return false
+      if (this.isFullscreen) {
+        this.closeFullscreen()
+        this.isFullscreen = true
+        return this.isFullscreen
       }
-      screenfull.toggle()
+      this.openFullscreen()
+      this.isFullscreen = false
+      return this.isFullscreen
     },
-    change() {
-      this.isFullscreen = screenfull.isFullscreen
-    },
-    init() {
-      if (screenfull.enabled) {
-        screenfull.on('change', this.change)
+    openFullscreen() {
+      if (this.elem.requestFullscreen) {
+        this.elem.requestFullscreen()
+      } else if (this.elem.webkitRequestFullscreen) { /* Safari */
+        this.elem.webkitRequestFullscreen()
+      } else if (this.elem.msRequestFullscreen) { /* IE11 */
+        this.elem.msRequestFullscreen()
       }
     },
-    destroy() {
-      if (screenfull.enabled) {
-        screenfull.off('change', this.change)
+    closeFullscreen() {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen()
+      } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen()
       }
     }
   }

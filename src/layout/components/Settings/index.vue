@@ -24,6 +24,16 @@
       </div>
 
       <div class="drawer-item">
+        <span>Show Header</span>
+        <el-switch v-model="showNavar" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
+        <span>Show Menu</span>
+        <el-switch v-model="showMenu" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
         <span>{{ $t('settings.sidebarLogo') }}</span>
         <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
@@ -63,6 +73,28 @@ export default {
       set(val) {
         this.$store.dispatch('settings/changeSetting', {
           key: 'fixedHeader',
+          value: val
+        })
+      }
+    },
+    showNavar: {
+      get() {
+        return this.$store.state.settings.showNavar
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showNavar',
+          value: val
+        })
+      }
+    },
+    showMenu: {
+      get() {
+        return this.$store.state.settings.showMenu
+      },
+      set(val) {
+        this.$store.dispatch('settings/changeSetting', {
+          key: 'showMenu',
           value: val
         })
       }

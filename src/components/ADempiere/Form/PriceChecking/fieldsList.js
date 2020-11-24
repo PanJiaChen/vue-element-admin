@@ -8,7 +8,11 @@ export default [
       sequence: 10,
       cssClassName: 'price-inquiry',
       inputSize: 'large',
-      handleActionKeyPerformed: true
+      handleFocusGained: true,
+      handleFocusLost: true,
+      handleActionKeyPerformed: true,
+      isDisplayed: true,
+      isReadOnly: false
     }
   }
 ]

@@ -202,8 +202,11 @@ export default {
             isLoaded: false
           })
         }
+        // the name of the image plus the height and width of the container is sent
         requestImage({
-          file: fileName
+          file: fileName,
+          width: 300,
+          height: 300
         }).then(responseImage => {
           const arrayBufferAsImage = buildImageFromArrayBuffer({
             arrayBuffer: responseImage,
