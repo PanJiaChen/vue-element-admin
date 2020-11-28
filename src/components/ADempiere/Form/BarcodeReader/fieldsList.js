@@ -3,6 +3,7 @@ export default [
   {
     elementColumnName: 'ProductValue',
     isFromDictionary: true,
+    value: '',
     overwriteDefinition: {
       size: 24,
       sequence: 10,
@@ -12,8 +13,7 @@ export default [
       handleFocusLost: true,
       handleActionKeyPerformed: true,
       isDisplayed: true,
-      isReadOnly: false
-      // componentPath: 'FieldSelect'
+      isReadOnly: true
     }
   }
 ]

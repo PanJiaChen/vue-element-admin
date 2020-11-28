@@ -21,6 +21,21 @@ export default {
       switch (this.metadata.fileName) {
         case 'PriceChecking':
           form = import('@/components/ADempiere/Form/PriceChecking')
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'showNavar',
+            value: true
+          })
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'showMenu',
+            value: false
+          })
+          this.$store.dispatch('settings/changeSetting', {
+            key: 'tagsView',
+            value: false
+          })
+          break
+        case 'BarcodeReader':
+          form = import('@/components/ADempiere/Form/BarcodeReader')
           break
         case 'VPOS':
           form = import('@/components/ADempiere/Form/VPOS')

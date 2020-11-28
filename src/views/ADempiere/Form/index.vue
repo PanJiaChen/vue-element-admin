@@ -2,7 +2,7 @@
   <el-container
     v-if="isLoaded"
     key="form-loaded"
-    class="view-base"
+    :class="showNavar ? 'view-base' : 'show-header-view-base'"
     style="height: 84vh;"
   >
     <el-header
@@ -15,8 +15,8 @@
         :panel-type="panelType"
       />
     </el-header>
-    <el-main style="padding-right: 10px !important;">
-      <el-row :gutter="20">
+    <el-main style="padding-right: 0px !important; padding-bottom: 0px !important;">
+      <el-row>
         <el-col :span="24">
           <el-card
             class="content-collapse"
@@ -60,6 +60,7 @@
             <form-panel
               :metadata="{
                 ...formMetadata,
+                fileName: fromFileName,
                 title: formTitle
               }"
             />
@@ -101,6 +102,9 @@ export default {
     formTitle() {
       return this.formMetadata.name || this.$route.meta.title
     },
+    fromFileName() {
+      return this.formMetadata.fileName || this.$route.meta.title
+    },
     getterForm() {
       return this.$store.getters.getForm(this.formUuid)
     },
@@ -114,6 +118,9 @@ export default {
           value: val
         })
       }
+    },
+    showNavar() {
+      return this.$store.state.settings.showNavar
     },
     isShowTitleForm() {
       return this.$store.getters.getIsShowTitleForm
@@ -172,8 +179,13 @@ export default {
   .view-base {
     height: 100%;
     min-height: calc(100vh - 84px);
+    overflow: hidden;
   }
-
+  .show-header-view-base {
+    height: 100%;
+    min-height: calc(100vh - 26px);
+    overflow: hidden;
+  }
   .view-loading {
     padding: 100px 100px;
     height: 100%;

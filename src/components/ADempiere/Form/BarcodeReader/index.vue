@@ -2,63 +2,64 @@
   <div
     v-if="isLoaded"
     style="height: 100% !important;"
-    @click="focusProductValue"
   >
     <el-container style="height: 100% !important;">
+      <!-- <el-main> -->
       <img
         fit="contain"
-        :src="defaultImageLogo"
+        :src="backgroundForm"
         class="background-price-checking"
       >
-      <el-main>
-        <el-form
-          key="form-loaded"
-          class="inquiry-form"
-          label-position="top"
-          label-width="10px"
-          @submit.native.prevent="notSubmitForm"
-        >
+      <el-form
+        key="form-loaded"
+        class="inquiry-form"
+        label-position="top"
+        label-width="10px"
+        @submit.native.prevent="notSubmitForm"
+      >
+        <template v-for="(field) in fieldsList">
+          ---------------------------------------------------{{ field }} {{ typeof field.values }}
           <field
-            v-for="(field) in fieldsList"
             ref="ProductValue"
             :key="field.columnName"
             :metadata-field="field"
-            :v-model="field.value"
+            :v-model="field.defaultValue"
             class="product-value"
           />
-        </el-form>
+        </template>
+      </el-form>
 
-        <div class="inquiry-product">
-          <el-row v-if="!isEmptyValue(productPrice)" :gutter="20">
-            <el-col style="padding-left: 0px; padding-right: 0%;">
-              <div class="product-description">
-                {{ productPrice.productName }} {{ productPrice.productDescription }}
-              </div>
-              <br><br><br>
+      <div class="inquiry-product">
+        <el-row v-if="!isEmptyValue(productPrice)" :gutter="20">
+          <el-col style="padding-left: 0px; padding-right: 0%;">
+            <div class="product-description">
+              {{ productPrice.productName }} {{ productPrice.productDescription }}
+            </div>
+            <br><br><br>
 
-              <div class="product-price-base">
-                Precio Base
-                <span class="amount">
-                  {{ formatPrice(productPrice.priceBase, productPrice.currency.iSOCode) }}
-                </span>
-              </div>
-              <br><br><br>
+            <div class="product-price-base">
+              Precio Base
+              <span class="amount">
+                {{ formatPrice(productPrice.priceBase, productPrice.currency.iSOCode) }}
+              </span>
+            </div>
+            <br><br><br>
 
-              <div class="product-tax">
-                {{ productPrice.taxName }}
-                <span class="amount">
-                  {{ formatPrice(productPrice.taxAmt, productPrice.currency.iSOCode) }}
-                </span>
-              </div>
-              <br><br><br>
+            <div class="product-tax">
+              {{ productPrice.taxName }}
+              <span class="amount">
+                {{ formatPrice(productPrice.taxAmt, productPrice.currency.iSOCode) }}
+              </span>
+            </div>
+            <br><br><br>
 
-              <div class="product-price amount">
-                {{ formatPrice(productPrice.grandTotal, productPrice.currency.iSOCode) }}
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </el-main>
+            <div class="product-price amount">
+              {{ formatPrice(productPrice.grandTotal, productPrice.currency.iSOCode) }}
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <!-- </el-main> -->
     </el-container>
   </div>
   <div
@@ -81,7 +82,7 @@ import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
 import { requestImage } from '@/api/ADempiere/persistence.js'
 
 export default {
-  name: 'PriceChecking',
+  name: 'BarcodeReader',
   mixins: [
     formMixin
   ],
@@ -92,6 +93,7 @@ export default {
       organizationBackground: '',
       currentImageOfProduct: '',
       search: 'sad',
+      input: '',
       unsubscribe: () => {}
     }
   },
@@ -101,9 +103,6 @@ export default {
     },
     defaultImage() {
       return require('@/image/ADempiere/priceChecking/no-image.jpg')
-    },
-    defaultImageLogo() {
-      return require('@/image/ADempiere/priceChecking/todoagro.png')
     },
     backgroundForm() {
       if (this.isEmptyValue(this.currentImageOfProduct)) {
@@ -157,11 +156,11 @@ export default {
     formatPrice,
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        // console.log(mutation.type.length)
-        if ((mutation.type === 'updateValueOfField' || mutation.type === 'addActionKeyPerformed') && mutation.payload.columnName === 'ProductValue') {
+        console.log(mutation.type)
+        if ((mutation.type === 'addActionKeyPerformed') && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
           this.search = mutation.payload.value
-          if (this.search.length >= 6) {
+          if (this.search.length) {
             requestGetProductPrice({
               searchValue: mutation.payload.value
             })
@@ -231,6 +230,7 @@ export default {
     width: 100%;
     height: 100%;
     float: inherit;
+    z-index: 0;
     // color: white;
     // opacity: 0.5;
   }
@@ -256,7 +256,7 @@ export default {
     right: 5%;
     width: 100%;
     top: 10%;
-    z-index: 0;
+    z-index: 1;
   }
   .inquiry-product {
     position: absolute;

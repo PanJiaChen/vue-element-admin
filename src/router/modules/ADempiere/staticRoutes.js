@@ -64,6 +64,38 @@ const staticRoutes = [
         }
       }
     ]
+  },
+  {
+    path: '/PriceChecking',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/PriceChecking',
+        component: () => import('@/views/ADempiere/Form'),
+        name: 'PriceChecking',
+        meta: {
+          title: 'PriceChecking',
+          isIndex: true
+        }
+      }
+    ]
+  },
+  {
+    path: '/BarcodeReader',
+    component: Layout,
+    hidden: false,
+    children: [
+      {
+        path: '/BarcodeReader',
+        component: () => import('@/views/ADempiere/Form'),
+        name: 'BarcodeReader',
+        meta: {
+          title: 'BarcodeReader',
+          isIndex: true
+        }
+      }
+    ]
   }
 ]
 

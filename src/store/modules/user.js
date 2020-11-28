@@ -117,9 +117,7 @@ const actions = {
             reject(logInResponse)
             return
           }
-
           const { result: token } = logInResponse
-
           commit('SET_TOKEN', token)
           setToken(token)
 

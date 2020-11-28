@@ -19,6 +19,11 @@
       </div>
 
       <div class="drawer-item">
+        <span>show Title</span>
+        <el-switch v-model="isShowTitleForm" class="drawer-switch" />
+      </div>
+
+      <div class="drawer-item">
         <span>{{ $t('settings.fixedHeader') }}</span>
         <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
@@ -63,6 +68,14 @@ export default {
     return {}
   },
   computed: {
+    isShowTitleForm: {
+      get() {
+        return this.$store.getters.getIsShowTitleForm
+      },
+      set(val) {
+        this.$store.commit('changeShowTitleForm', val)
+      }
+    },
     isShowJob() {
       return this.$store.getters.language === 'zh'
     },
@@ -148,6 +161,9 @@ export default {
     }
   },
   methods: {
+    changeDisplatedTitle() {
+      this.$store.commit('changeShowTitleForm', !this.isShowTitleForm)
+    },
     themeChange(val) {
       this.$store.dispatch('settings/changeSetting', {
         key: 'theme',
