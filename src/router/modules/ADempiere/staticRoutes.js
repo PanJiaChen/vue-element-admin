@@ -68,13 +68,14 @@ const staticRoutes = [
   {
     path: '/PriceChecking',
     component: Layout,
-    hidden: true,
+    hidden: false,
     children: [
       {
         path: '/PriceChecking',
         component: () => import('@/views/ADempiere/Form'),
         name: 'PriceChecking',
         meta: {
+          icon: 'shopping',
           title: 'PriceChecking',
           isIndex: true
         }
@@ -84,7 +85,7 @@ const staticRoutes = [
   {
     path: '/BarcodeReader',
     component: Layout,
-    hidden: false,
+    hidden: true,
     children: [
       {
         path: '/BarcodeReader',

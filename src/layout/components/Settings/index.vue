@@ -106,6 +106,7 @@ export default {
         return this.$store.state.settings.showMenu
       },
       set(val) {
+        this.$store.dispatch('app/toggleSideBar')
         this.$store.dispatch('settings/changeSetting', {
           key: 'showMenu',
           value: val
