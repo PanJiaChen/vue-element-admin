@@ -23,6 +23,7 @@ export default {
   // to fixed bug when cached by keep-alive
   // https://github.com/PanJiaChen/vue-element-admin/issues/2116
   activated() {
+    this.resize()
     this.$_initResizeEvent()
     this.$_initSidebarResizeEvent()
   },
@@ -50,6 +51,10 @@ export default {
     },
     $_destroySidebarResizeEvent() {
       this.$_sidebarElm && this.$_sidebarElm.removeEventListener('transitionend', this.$_sidebarResizeHandler)
+    },
+    resize() {
+      const { chart } = this
+      chart && chart.resize()
     }
   }
 }
