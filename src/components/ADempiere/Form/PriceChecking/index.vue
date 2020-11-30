@@ -7,7 +7,7 @@
     <el-container style="height: 100% !important;">
       <img
         fit="contain"
-        :src="defaultImageLogo"
+        :src="defaultImage"
         class="background-price-checking"
       >
       <el-main>
@@ -101,9 +101,6 @@ export default {
     },
     defaultImage() {
       return require('@/image/ADempiere/priceChecking/no-image.jpg')
-    },
-    defaultImageLogo() {
-      return require('@/image/ADempiere/priceChecking/todoagro.png')
     },
     backgroundForm() {
       if (this.isEmptyValue(this.currentImageOfProduct)) {
