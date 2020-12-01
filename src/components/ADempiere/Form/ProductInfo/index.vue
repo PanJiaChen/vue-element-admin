@@ -1,91 +1,6 @@
 <template>
   <div>
-    <el-popover
-      ref="productsList"
-      v-model="isShowProductsPriceList"
-      placement="right"
-      width="800"
-      trigger="manual"
-    >
-      <product-info-list
-        v-if="isShowProductsPriceList"
-      />
-    </el-popover>
-
-    <el-form-item>
-      <template slot="label">
-        Código Producto
-        <!-- Ver Lista de Productos Y Precios -->
-        <el-button
-          v-popover:productsList
-          type="text"
-          icon="el-icon-search"
-          style="color: black"
-          @click="isShowProductsPriceList = !isShowProductsPriceList"
-        />
-      </template>
-
-      <el-autocomplete
-        v-model="value"
-        v-shortkey="keyShortcuts"
-        :placeholder="$t('quickAccess.searchWithEnter')"
-        clearable
-        style="width: 100%;"
-        popper-class="custom-field-prodcut-info"
-        :fetch-suggestions="localSearch"
-        @shortkey.native="shortcutKeyMethod"
-        @select="handleSelect"
-      >
-        <template slot="prefix">
-          <svg-icon
-            icon-class="shopping"
-            class="el-input__icon"
-          />
-          <!--
-          <i
-            class="el-icon-shopping-cart-full el-input__icon"
-          />
-          -->
-        </template>
-
-        <template slot-scope="props">
-          <div class="header">
-            <b> {{ props.item.product.value }} - {{ props.item.product.name }} </b>
-          </div>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <span class="upc">
-                <!-- <b>UPC / EAN Barras:</b> <br> -->
-                {{ props.item.product.upc }} <br>
-                <span class="description">
-                  {{ props.item.product.description }}
-                </span>
-              </span>
-            </el-col>
-            <!-- <el-col :span="6">
-              <span class="upc">
-                {{ props.item.product.description }}
-              </span>
-            </el-col> -->
-            <!-- <el-col :span="6">
-              <span class="upc">
-                {{ props.item.quantityAvailable }}
-              </span>
-            </el-col> -->
-            <el-col :span="12">
-              <span class="price">
-                {{ formatPrice(props.item.priceStandard, props.item.currency.iSOCode) }}
-                <br>
-                <span class="quantityAvailable">
-                  {{ formatQuantity(props.item.quantityAvailable) }}
-                </span>
-                <!-- {{ props.item.currency.curSymbol }} -->
-              </span>
-            </el-col>
-          </el-row>
-        </template>
-      </el-autocomplete>
-    </el-form-item>
+    <product-info-list />
   </div>
 </template>
 
@@ -101,7 +16,7 @@ import {
 } from '@/utils/ADempiere/valueFormat.js'
 
 export default {
-  name: 'FieldProductInfo',
+  name: 'ProductInfo',
   components: {
     ProductInfoList
   },
@@ -145,10 +60,11 @@ export default {
     formatPrice,
     formatQuantity,
     shortcutKeyMethod(event) {
+      console.log(event)
       switch (event.srcKey) {
         case 'refreshList':
         case 'refreshList2':
-          this.$store.dispatch('listProductPriceFromServer', {})
+          this.$store.dispatch('listProductPriceFromServerProductInfo', {})
           break
       }
     },
@@ -158,6 +74,7 @@ export default {
         callBack([])
         return
       }
+      console.log(stringToMatch, callBack)
 
       let results = this.listWithPrice
       if (stringToMatch) {
@@ -179,10 +96,11 @@ export default {
         // Remote search
         if (this.isEmptyValue(results) && String(stringToMatch.length > 3)) {
           clearTimeout(this.timeOut)
-
+          const epa = this.$store.getters.getSearchProduct
+          console.log({ epa })
           this.timeOut = setTimeout(() => {
-            this.$store.dispatch('listProductPriceFromServer', {
-              containerUuid: 'Products-Price-List',
+            this.$store.dispatch('listProductPriceFromServerProductInfo', {
+              containerUuid: 'Products-Price-List-ProductInfo',
               pageNumber: 1,
               searchValue: stringToMatch
             })

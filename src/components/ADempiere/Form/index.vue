@@ -34,6 +34,9 @@ export default {
         case 'BarcodeReader':
           form = import('@/components/ADempiere/Form/BarcodeReader')
           break
+        case 'ProductInfo':
+          form = import('@/components/ADempiere/Form/ProductInfo')
+          break
         case 'VPOS':
           form = import('@/components/ADempiere/Form/VPOS')
           break

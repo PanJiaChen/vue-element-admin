@@ -18,7 +18,8 @@ const listProductPrice = {
       ...withoutResponse,
       isShowPopoverField: false, // with field
       isShowPopoverMenu: false // with menu
-    }
+    },
+    searchProduct: ''
   },
   mutations: {
     setListProductPrice(state, productsPrices) {
@@ -36,6 +37,9 @@ const listProductPrice = {
     setIsReloadProductPrice(state) {
       Vue.set(state.productPrice, 'isReload', true)
       Vue.set(state.productPrice, 'isLoaded', false)
+    },
+    updtaeSearchProduct(state, searchProduct) {
+      state.searchProduct = searchProduct
     }
   },
   actions: {
@@ -61,7 +65,6 @@ const listProductPrice = {
         console.warn(message)
         return
       }
-
       commit('setIsReloadProductPrice')
       let pageToken, token
       if (isEmptyValue(pageNumber)) {
@@ -87,7 +90,6 @@ const listProductPrice = {
           columnName: 'ProductValue'
         })
       }
-
       return new Promise(resolve => {
         requestListProductPrice({
           searchValue,
@@ -120,6 +122,82 @@ const listProductPrice = {
           })
         })
       })
+    },
+    listProductPriceFromServerProductInfo({ state, commit, rootGetters }, {
+      containerUuid = 'Products-Price-List-ProductInfo',
+      pageNumber, // 1
+      searchValue
+    }) {
+      const posUuid = rootGetters.getPointOfSalesUuid
+      if (isEmptyValue(posUuid)) {
+        const message = 'Sin punto de venta seleccionado'
+        showMessage({
+          type: 'info',
+          message
+        })
+        console.warn(message)
+        return
+      }
+      commit('setIsReloadProductPrice')
+      let pageToken, token
+      if (isEmptyValue(pageNumber)) {
+        pageNumber = state.productPrice.pageNumber
+        if (isEmptyValue(pageNumber)) {
+          pageNumber = 1
+        }
+
+        token = state.productPrice.token
+        if (!isEmptyValue(token)) {
+          pageToken = token + '-' + pageNumber
+        }
+      }
+
+      const { priceList, templateBusinessPartner } = rootGetters.getCurrentPOS
+      const { uuid: businessPartnerUuid } = templateBusinessPartner
+      const { uuid: priceListUuid } = priceList
+      const { uuid: warehouseUuid } = rootGetters['user/getWarehouse']
+
+      if (isEmptyValue(searchValue)) {
+        searchValue = rootGetters.getValueOfField({
+          containerUuid,
+          columnName: 'ProductValue'
+        })
+      }
+      return new Promise(resolve => {
+        requestListProductPrice({
+          searchValue,
+          priceListUuid,
+          businessPartnerUuid,
+          warehouseUuid,
+          pageToken
+        }).then(responseProductPrice => {
+          if (isEmptyValue(token) || isEmptyValue(pageToken)) {
+            token = extractPagingToken(responseProductPrice.nextPageToken)
+          }
+
+          commit('setListProductPrice', {
+            ...responseProductPrice,
+            isLoaded: true,
+            isReload: false,
+            businessPartnerUuid,
+            warehouseUuid,
+            token,
+            pageNumber
+          })
+
+          resolve(responseProductPrice)
+        }).catch(error => {
+          console.warn(`getKeyLayoutFromServer: ${error.message}. Code: ${error.code}.`)
+          showMessage({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+      })
+    },
+    updateSearch({ commit }, newValue) {
+      commit('updtaeSearchProduct', newValue)
     }
   },
   getters: {
@@ -131,6 +209,9 @@ const listProductPrice = {
         }
       }
       return state.productPrice
+    },
+    getSearchProduct: (state) => {
+      return state.searchProduct
     }
   }
 }
