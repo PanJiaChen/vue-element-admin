@@ -103,14 +103,16 @@ const actions = {
     userName,
     password,
     roleUuid,
-    organizationUuid
+    organizationUuid,
+    token
   }) {
     return new Promise((resolve, reject) => {
       login({
         userName,
         password,
         roleUuid,
-        organizationUuid
+        organizationUuid,
+        token
       })
         .then(logInResponse => {
           if ([13, 500].includes(logInResponse.code)) {

@@ -11,14 +11,16 @@ import {
  */
 export function login({
   userName,
-  password
+  password,
+  token
 }) {
   return requestRest({
     url: '/user/login',
     method: 'post',
     data: {
       username: userName,
-      password
+      password,
+      token
     }
   })
 }

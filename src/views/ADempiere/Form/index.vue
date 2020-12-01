@@ -15,7 +15,7 @@
         :panel-type="panelType"
       />
     </el-header>
-    <el-main style="padding-right: 0px !important; padding-bottom: 0px !important;">
+    <el-main style="padding-right: 0px !important; padding-bottom: 0px !important;padding-top: 0px !important;padding-left: 0px !important;">
       <el-row>
         <el-col :span="24">
           <el-card

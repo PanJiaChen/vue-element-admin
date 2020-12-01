@@ -92,6 +92,7 @@ const staticRoutes = [
         component: () => import('@/views/ADempiere/Form'),
         name: 'BarcodeReader',
         meta: {
+          icon: 'search',
           title: 'BarcodeReader',
           isIndex: true
         }

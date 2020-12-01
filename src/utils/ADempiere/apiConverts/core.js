@@ -265,6 +265,12 @@ export function convertProductPrice(productPriceToConvert) {
     product: convertProduct(
       productPriceToConvert.product
     ),
+    schemaCurrency: convertCurrency(
+      productPriceToConvert.schema_currency
+    ),
+    schemaPriceLimit: productPriceToConvert.schema_price_limit,
+    schemaPriceList: productPriceToConvert.schema_price_list,
+    schemaPriceStandard: productPriceToConvert.schema_price_standard,
     priceList: productPriceToConvert.price_list,
     priceStandard: productPriceToConvert.price_standard,
     priceLimit: productPriceToConvert.price_limit,

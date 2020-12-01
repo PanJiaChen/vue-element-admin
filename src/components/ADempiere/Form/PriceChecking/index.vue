@@ -9,6 +9,7 @@
         fit="contain"
         :src="defaultImage"
         class="background-price-checking"
+        style="z-index: 2;"
       >
       <el-main>
         <el-form
@@ -28,7 +29,7 @@
           />
         </el-form>
 
-        <div class="inquiry-product">
+        <div class="inquiry-product" style="z-index: 4;">
           <el-row v-if="!isEmptyValue(productPrice)" :gutter="20">
             <el-col style="padding-left: 0px; padding-right: 0%;">
               <div class="product-description">
@@ -37,7 +38,7 @@
               <br><br><br>
 
               <div class="product-price-base">
-                Precio Base
+                {{ $t('form.priceChecking.basePrice') }}
                 <span class="amount">
                   {{ formatPrice(productPrice.priceBase, productPrice.currency.iSOCode) }}
                 </span>
@@ -53,7 +54,17 @@
               <br><br><br>
 
               <div class="product-price amount">
-                {{ formatPrice(productPrice.grandTotal, productPrice.currency.iSOCode) }}
+                <span style="float: right;"> {{ formatPrice(productPrice.grandTotal, productPrice.currency.iSOCode) }} </span> <br>
+                {{ formatPrice(productPrice.schemaGrandTotal, productPrice.schemaCurrency.iSOCode) }}
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="inquiry-product" style="z-index: 4;">
+          <el-row v-if="!messageError" :gutter="20">
+            <el-col style="padding-left: 0px; padding-right: 0%;">
+              <div class="product-price amount">
+                {{ $t('form.priceChecking.messageError') }}
               </div>
             </el-col>
           </el-row>
@@ -87,11 +98,14 @@ export default {
   ],
   data() {
     return {
+      messageError: true,
       fieldsList,
       productPrice: {},
       organizationBackground: '',
       currentImageOfProduct: '',
       search: 'sad',
+      resul: '',
+      load: '',
       unsubscribe: () => {}
     }
   },
@@ -154,41 +168,43 @@ export default {
     formatPrice,
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        // console.log(mutation.type.length)
         if ((mutation.type === 'updateValueOfField' || mutation.type === 'addActionKeyPerformed') && mutation.payload.columnName === 'ProductValue') {
           // cleans all values except column name 'ProductValue'
           this.search = mutation.payload.value
-          if (this.search.length >= 6) {
+          if (!this.isEmptyValue(this.search) && this.search.length >= 4) {
             requestGetProductPrice({
               searchValue: mutation.payload.value
             })
               .then(productPrice => {
+                this.messageError = true
                 const { product, taxRate, priceStandard: priceBase } = productPrice
                 const { rate } = taxRate
                 const { imageURL: image } = product
 
                 this.productPrice = {
+                  currency: productPrice.currency,
+                  image,
+                  grandTotal: this.getGrandTotal(priceBase, rate),
                   productName: product.name,
                   productDescription: product.description,
                   priceBase,
                   priceStandard: productPrice.priceStandard,
                   priceList: productPrice.priceList,
                   priceLimit: productPrice.priceLimit,
+                  schemaCurrency: productPrice.schemaCurrency,
+                  schemaGrandTotal: this.getGrandTotal(productPrice.schemaPriceStandard, rate),
+                  schemaPriceStandard: productPrice.schemaPriceStandard,
+                  schemaPriceList: productPrice.schemaPriceList,
+                  schemaPriceLimit: productPrice.schemaPriceLimit,
                   taxRate: rate,
-                  image,
                   taxName: taxRate.name,
                   taxIndicator: taxRate.taxIndicator,
-                  taxAmt: this.getTaxAmount(priceBase, rate),
-                  grandTotal: this.getGrandTotal(priceBase, rate),
-                  currency: productPrice.currency
+                  taxAmt: this.getTaxAmount(priceBase, rate)
                 }
               })
-              .catch(error => {
-                this.$message({
-                  type: 'info',
-                  message: error.message,
-                  showClose: true
-                })
+              .catch(() => {
+                this.messageError = false
+                this.timeMessage()
                 this.productPrice = {}
               })
               .finally(() => {
@@ -206,6 +222,11 @@ export default {
           }
         }
       })
+    },
+    timeMessage() {
+      setTimeout(() => {
+        this.messageError = true
+      }, 2000)
     },
     getTaxAmount(basePrice, taxRate) {
       if (this.isEmptyValue(basePrice) || this.isEmptyValue(taxRate)) {
