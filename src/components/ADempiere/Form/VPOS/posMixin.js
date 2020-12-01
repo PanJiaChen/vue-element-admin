@@ -189,7 +189,7 @@ export default {
       let customerUuid
       if (update.columnName === 'C_BPartner_ID_UUID') {
         customerUuid = update.value
-        if (this.isEmptyValue(customerUuid)) {
+        if (this.isEmptyValue(customerUuid) && !this.isEmptyValue(this.currentPoint)) {
           customerUuid = this.currentPoint.templateBusinessPartner.uuid
         }
       }
@@ -426,13 +426,14 @@ export default {
 
             case 'C_BPartner_ID_UUID': {
               const bPartnerValue = mutation.payload.value
-              const bPartnerPOS = this.currentPoint.templateBusinessPartner.uuid
-              // Does not send values to server, when empty values are set or
-              // if BPartner set equal to BPartner POS template
-              if (this.isEmptyValue(bPartnerValue) || bPartnerValue === bPartnerPOS) {
-                break
+              if (!this.isEmptyValue(this.currentPoint)) {
+                const bPartnerPOS = this.currentPoint.templateBusinessPartner.uuid
+                // Does not send values to server, when empty values are set or
+                // if BPartner set equal to BPartner POS template
+                if (this.isEmptyValue(bPartnerValue) || bPartnerValue === bPartnerPOS) {
+                  break
+                }
               }
-
               this.updateOrder(mutation.payload)
               break
             }
