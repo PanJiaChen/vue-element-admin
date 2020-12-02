@@ -15,7 +15,8 @@ export default {
     role: 'Role',
     organization: 'Organization',
     warehouse: 'Warehouse',
-    reportViewer: 'Report Viewer'
+    reportViewer: 'Report Viewer',
+    PriceChecking: 'Price checking'
   },
   notifications: {
     // simplex

@@ -100,9 +100,15 @@ export default {
   },
   computed: {
     formTitle() {
+      if (this.$route.meta.title === 'PriceChecking') {
+        return this.$t('route.PriceChecking')
+      } else if (this.$route.meta.title === 'ProductInfo') {
+        return this.$t('route.ProductInfo')
+      }
       return this.formMetadata.name || this.$route.meta.title
     },
     fromFileName() {
+      console.log(this.$route)
       return this.formMetadata.fileName || this.$route.meta.title
     },
     getterForm() {

@@ -15,7 +15,8 @@ export default {
     role: 'Rol',
     organization: 'Organización',
     warehouse: 'Almacén',
-    reportViewer: 'Visor de Reportes'
+    reportViewer: 'Visor de Reportes',
+    PriceChecking: 'Consulta del precio'
   },
   notifications: {
     // simplex
