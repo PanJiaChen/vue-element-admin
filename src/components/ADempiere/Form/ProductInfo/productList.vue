@@ -29,7 +29,7 @@
     >
       <el-table-column
         prop="product.value"
-        label="Codigo"
+        :label="$t('form.productInfo.code')"
       />
       <el-table-column
         label="Producto"
@@ -38,11 +38,11 @@
           <el-popover trigger="click" placement="right" width="300">
             <b><i> {{ scope.row.product.name }} </i> </b>
             <el-divider />
-            <p><b style="float: left"> Codigo :</b><spam style="float: right">{{ scope.row.product.value }}</spam></p><br>
-            <p><b style="float: left">Precio :</b><spam style="float: right"> {{ formatPrice(scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">Tax :</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">Gran Total :</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate) + scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">UPC :</b><spam style="float: right"> {{ scope.row.product.upc }} </spam></p>
+            <p><b style="float: left">{{ $t('form.productInfo.code') }}</b><spam style="float: right">{{ scope.row.product.value }}</spam></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.price') }}</b><spam style="float: right"> {{ formatPrice(scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.taxAmount') }}</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }} </spam></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.grandTotal') }}</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate) + scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.upc') }}</b><spam style="float: right"> {{ scope.row.product.upc }} </spam></p>
             <div slot="reference" class="name-wrapper">
               {{ scope.row.product.name }}
             </div>
@@ -50,7 +50,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Tax"
+        :label="$t('form.productInfo.taxAmount')"
         align="right"
         width="150"
       >
@@ -59,7 +59,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Precio"
+        :label="$t('form.productInfo.price')"
         align="right"
         width="200"
       >
@@ -68,7 +68,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        label="Gran Total"
+        :label="$t('form.productInfo.grandTotal')"
         align="right"
         width="300"
       >

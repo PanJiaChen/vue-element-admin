@@ -338,15 +338,6 @@ export default {
         editQuantities: 'Editar Cantidades',
         remove: 'Eliminar'
       },
-      product: {
-        productInformation: 'Información de Producto',
-        code: 'Código',
-        name: 'Nombre',
-        description: 'Descripción',
-        price: 'Precio',
-        taxRate: 'Tasa de Impuesto',
-        quantityAvailable: 'Cantidad Disponible'
-      },
       order: {
         order: 'Orden',
         seller: 'Vendedor',
@@ -375,6 +366,17 @@ export default {
     priceChecking: {
       messageError: 'Este Producto No Disponible',
       basePrice: 'Precio Base'
+    },
+    productInfo: {
+      productInformation: 'Product information',
+      code: 'Código',
+      name: 'Nombre',
+      description: 'Descripción',
+      price: 'Precio',
+      taxAmount: 'Monto de Impuesto',
+      grandTotal: 'Total General',
+      quantityAvailable: 'Cantidad Disponible',
+      upc: 'Código de Barras'
     }
   }
 }

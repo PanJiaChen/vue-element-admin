@@ -363,15 +363,6 @@ export default {
         editQuantities: 'Edit Quantities',
         remove: 'Remove'
       },
-      product: {
-        productInformation: 'Product information',
-        code: 'Code',
-        name: 'Name',
-        description: 'Description',
-        price: 'Price',
-        taxRate: 'Tax Rate',
-        quantityAvailable: 'Quantity Avalible'
-      },
       order: {
         order: 'Order',
         seller: 'Seller',
@@ -400,6 +391,17 @@ export default {
     priceChecking: {
       messageError: 'This Product Not Available',
       basePrice: 'Base price'
+    },
+    productInfo: {
+      productInformation: 'Product information',
+      code: 'Code',
+      name: 'Name',
+      description: 'Description',
+      price: 'Price',
+      taxAmount: 'Tax Amount',
+      grandTotal: 'Grand Total',
+      quantityAvailable: 'Quantity Avalible',
+      upc: 'UPC / EAN'
     }
   }
 }
