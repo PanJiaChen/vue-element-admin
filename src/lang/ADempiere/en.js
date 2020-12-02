@@ -402,6 +402,7 @@ export default {
       price: 'Price',
       taxAmount: 'Tax Amount',
       grandTotal: 'Grand Total',
+      grandTotalConverted: 'Grand Total Converted',
       quantityAvailable: 'Quantity Avalible',
       upc: 'UPC / EAN'
     }

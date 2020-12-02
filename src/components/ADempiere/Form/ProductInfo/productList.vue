@@ -35,14 +35,15 @@
         label="Producto"
       >
         <template slot-scope="scope">
-          <el-popover trigger="click" placement="right" width="300">
+          <el-popover trigger="click" placement="right" width="450">
             <b><i> {{ scope.row.product.name }} </i> </b>
             <el-divider />
-            <p><b style="float: left">{{ $t('form.productInfo.code') }}</b><spam style="float: right">{{ scope.row.product.value }}</spam></p><br>
-            <p><b style="float: left">{{ $t('form.productInfo.price') }}</b><spam style="float: right"> {{ formatPrice(scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">{{ $t('form.productInfo.taxAmount') }}</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">{{ $t('form.productInfo.grandTotal') }}</b><spam style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate) + scope.row.priceStandard, scope.row.currency.iSOCode) }} </spam></p><br>
-            <p><b style="float: left">{{ $t('form.productInfo.upc') }}</b><spam style="float: right"> {{ scope.row.product.upc }} </spam></p>
+            <p><b style="float: left">{{ $t('form.productInfo.code') }}</b><span style="float: right">{{ scope.row.product.value }}</span></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.upc') }}</b><span style="float: right"> {{ scope.row.product.upc }} </span></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.price') }}</b><span style="float: right"> {{ formatPrice(scope.row.priceStandard, scope.row.currency.iSOCode) }} </span></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.taxAmount') }}</b><span style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }} </span></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.grandTotal') }}</b><span style="float: right"> {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate) + scope.row.priceStandard, scope.row.currency.iSOCode) }} </span></p><br>
+            <p><b style="float: left">{{ $t('form.productInfo.grandTotalConverted') }} {{ scope.row.schemaCurrency.iSOCode }} </b><span style="float: right"> {{ formatPrice(getTaxAmount(scope.row.schemaPriceStandard, scope.row.taxRate.rate) + scope.row.schemaPriceStandard, scope.row.schemaCurrency.iSOCode) }} </span></p>
             <div slot="reference" class="name-wrapper">
               {{ scope.row.product.name }}
             </div>
