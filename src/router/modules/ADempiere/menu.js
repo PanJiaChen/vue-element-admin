@@ -15,7 +15,8 @@ import Layout from '@/layout'
 export function loadMainMenu({
   sessionUuid,
   roleUuid = 0,
-  organizationUuid = 0
+  organizationUuid = 0,
+  role
 }) {
   return new Promise(resolve => {
     requestMenu({
@@ -54,8 +55,8 @@ export function loadMainMenu({
         }
         asyncRoutesMap.push(optionMenu)
       })
-
-      resolve(staticRoutes.concat(asyncRoutesMap))
+      const permiseStactiRoutes = hidenStactiRoutes({ staticRoutes, permiseRole: role })
+      resolve(permiseStactiRoutes.concat(asyncRoutesMap))
     }).catch(error => {
       console.warn(`Error getting menu: ${error.message}. Code: ${error.code}.`)
     })
@@ -149,4 +150,24 @@ function getRouteFromMenuItem({ menu, roleUuid, organizationUuid }) {
     children: []
   }
   return optionMenu
+}
+
+/**
+ * Grant visibility to static routes based on current role permissions
+ * @author elsiosanchez <elsiosanches@gmail.com>
+ * @param {object} staticRoutes static routes
+ * @param {object} permiseRole role permissions
+ */
+function hidenStactiRoutes({ staticRoutes, permiseRole }) {
+  return staticRoutes.map(route => {
+    if (route.path === '/ProductInfo') {
+      return {
+        ...route,
+        hidden: !permiseRole.isAllowInfoProduct
+      }
+    }
+    return {
+      ...route
+    }
+  })
 }

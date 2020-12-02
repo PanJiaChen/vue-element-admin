@@ -43,7 +43,8 @@ const actions = {
       loadMainMenu({
         sessionUuid,
         roleUuid,
-        organizationUuid
+        organizationUuid,
+        role
       }).then(menuResponse => {
         commit('SET_ROUTES', menuResponse)
         resolve(menuResponse)
