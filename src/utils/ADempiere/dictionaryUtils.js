@@ -380,7 +380,7 @@ export function generateProcess({ processToGenerate, containerUuidAssociated = u
       description: actionValue.description,
       isReport: processToGenerate.isReport,
       isDirectPrint: processToGenerate.isDirectPrint,
-      reportExportType: actionValue.reportExportType
+      reportExportType: actionValue.type
     })
   })
 

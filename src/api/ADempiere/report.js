@@ -74,7 +74,7 @@ export function requestListDrillTables({
   pageToken,
   pageSize
 }) {
-  requestRest({
+  return requestRest({
     url: '/ui/list-drill-tables',
     data: {
       table_name: tableName
