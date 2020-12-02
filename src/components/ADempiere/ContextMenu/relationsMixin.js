@@ -8,12 +8,13 @@ export default {
         menuUuid = this.menuParentUuid
       }
       const relations = this.$store.getters.getRelations(menuUuid)
-
-      if (!this.isEmptyValue(relations.children)) {
-        return relations.children
-      }
-      if (relations.meta && !this.isEmptyValue(relations.meta.childs)) {
-        return relations.meta.childs
+      if (!this.isEmptyValue(relations)) {
+        if (!this.isEmptyValue(relations.children)) {
+          return relations.children
+        }
+        if (relations.meta && !this.isEmptyValue(relations.meta.childs)) {
+          return relations.meta.childs
+        }
       }
       return []
     },

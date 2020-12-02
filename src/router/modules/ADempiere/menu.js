@@ -6,6 +6,7 @@ import Layout from '@/layout'
 
 /**
  * Get Menu from server
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
  * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
  * @param {string} sessionUuid
  * @param {string} roleUuid
@@ -63,6 +64,7 @@ export function loadMainMenu({
 
 /**
  * Get Only Child
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
  * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
  * @param {object} menu
  * @param {number} index

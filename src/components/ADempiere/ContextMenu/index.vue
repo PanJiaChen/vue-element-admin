@@ -29,7 +29,7 @@ export default {
     // uuid of the component where it is called
     containerUuid: {
       type: String,
-      required: true
+      default: undefined
     },
     panelType: {
       type: String,

@@ -188,24 +188,20 @@ export const recursiveTreeSearch = ({
   treeData,
   attributeValue,
   attributeName = 'id',
-  secondAttributeName = '',
+  secondAttribute = false,
   attributeChilds = 'childsList',
   isParent = false
 }) => {
   if (Array.isArray(treeData)) {
-    // search in childs attribute
     let index = 0
     const length = treeData.length
     while (index < length) {
       let value = treeData[index]
-      if (!isEmptyValue(value) &&
-        Object.prototype.hasOwnProperty.call(value, attributeName)) {
+      if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
         value = value[attributeName]
       }
-      if (!isEmptyValue(value) &&
-        secondAttributeName &&
-        Object.prototype.hasOwnProperty.call(value, secondAttributeName)) {
-        value = value[secondAttributeName]
+      if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
+        value = value[secondAttribute]
       }
 
       // compare item to search
@@ -214,12 +210,11 @@ export const recursiveTreeSearch = ({
       }
 
       if (treeData[index] && treeData[index][attributeChilds]) {
-        const newTree = treeData[index][attributeChilds]
         const found = recursiveTreeSearch({
-          treeData: newTree,
+          treeData: treeData[index][attributeChilds],
           attributeValue,
           attributeName,
-          secondAttributeName,
+          secondAttribute,
           attributeChilds,
           isParent
         })
@@ -230,16 +225,12 @@ export const recursiveTreeSearch = ({
       index++
     }
   } else {
-    // search into meta attribute
     let value = treeData
-    if (!isEmptyValue(value) &&
-      Object.prototype.hasOwnProperty.call(value, attributeName)) {
+    if (!isEmptyValue(value) && Object.prototype.hasOwnProperty.call(value, attributeName)) {
       value = value[attributeName]
     }
-    if (!isEmptyValue(value) &&
-      secondAttributeName &&
-      Object.prototype.hasOwnProperty.call(value, secondAttributeName)) {
-      value = value[secondAttributeName]
+    if (!isEmptyValue(value) && secondAttribute && Object.prototype.hasOwnProperty.call(value, secondAttribute)) {
+      value = value[secondAttribute]
     }
 
     // compare item to search
@@ -251,7 +242,7 @@ export const recursiveTreeSearch = ({
       treeData: treeData[attributeChilds],
       attributeValue,
       attributeName,
-      secondAttributeName,
+      secondAttribute,
       attributeChilds
     })
     return found
