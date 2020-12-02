@@ -11,6 +11,7 @@ export default {
     page404: '404',
     profile: 'Perfil',
     ProcessActivity: 'Histórico Procesos',
+    ProductInfo: 'Informacion de Producto',
     role: 'Rol',
     organization: 'Organización',
     warehouse: 'Almacén',
@@ -48,7 +49,8 @@ export default {
     invalidEmailFormat: 'Formato de correo electronico invalido',
     recordLocked: 'Este registro ha sido bloqueado',
     recordUnlocked: 'Este registro ha sido desbloqueado',
-    noRoleAccess: 'Con su rol y configuración actuales, no puede ver esta información.'
+    noRoleAccess: 'Con su rol y configuración actuales, no puede ver esta información.',
+    errorPointOfSale: 'Sin punto de venta seleccionado'
   },
   navbar: {
     badge: {

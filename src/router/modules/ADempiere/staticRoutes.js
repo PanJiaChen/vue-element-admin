@@ -110,6 +110,7 @@ const staticRoutes = [
         name: 'ProductInfo',
         meta: {
           title: 'ProductInfo',
+          icon: 'search',
           isIndex: true
         }
       }

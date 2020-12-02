@@ -166,7 +166,6 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('listPointOfSalesFromServer')
     this.unsubscribe = this.subscribeChanges()
 
     if (this.isReadyFromGetData) {

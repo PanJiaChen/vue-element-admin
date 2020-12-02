@@ -56,11 +56,13 @@ export default {
       }
     }
   },
+  beforeMount() {
+    this.$store.dispatch('listPointOfSalesFromServer')
+  },
   methods: {
     formatPrice,
     formatQuantity,
     shortcutKeyMethod(event) {
-      console.log(event)
       switch (event.srcKey) {
         case 'refreshList':
         case 'refreshList2':
@@ -74,7 +76,6 @@ export default {
         callBack([])
         return
       }
-      console.log(stringToMatch, callBack)
 
       let results = this.listWithPrice
       if (stringToMatch) {
@@ -96,8 +97,6 @@ export default {
         // Remote search
         if (this.isEmptyValue(results) && String(stringToMatch.length > 3)) {
           clearTimeout(this.timeOut)
-          const epa = this.$store.getters.getSearchProduct
-          console.log({ epa })
           this.timeOut = setTimeout(() => {
             this.$store.dispatch('listProductPriceFromServerProductInfo', {
               containerUuid: 'Products-Price-List-ProductInfo',

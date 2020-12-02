@@ -4,6 +4,7 @@ import {
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue, extractPagingToken } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
+import language from '@/lang'
 
 const withoutResponse = {
   isLoaded: false,
@@ -57,7 +58,7 @@ const listProductPrice = {
     }) {
       const posUuid = rootGetters.getPointOfSalesUuid
       if (isEmptyValue(posUuid)) {
-        const message = 'Sin punto de venta seleccionado'
+        const message = language.t('notifications.errorPointOfSale')
         showMessage({
           type: 'info',
           message
