@@ -497,11 +497,11 @@ const processControl = {
                 href: undefined,
                 download: undefined
               }
-              if (runProcessResponse.isReport || processDefinition.isReport) {
-                const blob = new Blob(
-                  [output.outputStream],
-                  { type: output.mimeType }
-                )
+              if ((runProcessResponse.isReport || processDefinition.isReport) && output.outputStream) {
+                const reportObject = Object.values(output.outputStream)
+                const blob = new Blob([Uint8Array.from(reportObject)], {
+                  type: output.mimeType
+                })
                 link = document.createElement('a')
                 link.href = window.URL.createObjectURL(blob)
                 link.download = output.fileName
