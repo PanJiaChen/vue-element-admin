@@ -7,7 +7,7 @@
     <el-container style="height: 100% !important;">
       <img
         fit="contain"
-        :src="defaultImage"
+        :src="backgroundForm"
         class="background-price-checking"
         style="z-index: 2;"
       >
