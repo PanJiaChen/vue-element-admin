@@ -392,7 +392,7 @@ export default {
       }
     },
     priceChecking: {
-      messageError: 'This Product Not Available',
+      productNotFound: 'Unavailable Product',
       basePrice: 'Base price'
     },
     productInfo: {

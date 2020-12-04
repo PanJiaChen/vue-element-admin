@@ -367,7 +367,7 @@ export default {
       }
     },
     priceChecking: {
-      messageError: 'Este Producto No Disponible',
+      productNotFound: 'Producto No Disponible',
       basePrice: 'Precio Base'
     },
     productInfo: {
