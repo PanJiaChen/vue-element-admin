@@ -8,13 +8,11 @@ import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 /**
  * Request a Lookup data from Reference
  * The main attributes that function hope are:
- * @param {string} columnName
  * @param {string} tableName
  * @param {string} directQuery
  * @param {string|number} value
  */
 export function requestLookup({
-  columnName,
   tableName,
   directQuery,
   value
@@ -22,7 +20,6 @@ export function requestLookup({
   let filters = []
   if (!isEmptyValue(value)) {
     filters = [{
-      column_name: columnName,
       value
     }]
   }

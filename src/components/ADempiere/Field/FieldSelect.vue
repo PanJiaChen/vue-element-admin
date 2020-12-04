@@ -315,7 +315,6 @@ export default {
       this.$store.dispatch('getLookupItemFromServer', {
         parentUuid: this.metadata.parentUuid,
         containerUuid: this.metadata.containerUuid,
-        columnName: this.metadata.columnName,
         tableName: this.metadata.reference.tableName,
         directQuery: this.metadata.reference.directQuery,
         value: this.value

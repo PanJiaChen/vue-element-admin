@@ -37,7 +37,6 @@ const lookup = {
     getLookupItemFromServer({ commit, rootGetters }, {
       parentUuid,
       containerUuid,
-      columnName,
       tableName,
       directQuery,
       value
@@ -57,7 +56,6 @@ const lookup = {
       }
 
       return requestLookup({
-        columnName,
         tableName,
         directQuery: parsedDirectQuery,
         value

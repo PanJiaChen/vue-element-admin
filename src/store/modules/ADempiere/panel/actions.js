@@ -468,7 +468,6 @@ const actions = {
     //         lookup = await dispatch('getLookupItemFromServer', {
     //           parentUuid,
     //           containerUuid,
-    //           columnName: actionField.columnName,
     //           tableName: actionField.reference.tableName,
     //           directQuery: actionField.reference.parsedDirectQuery,
     //           value: newValues[actionField.columnName]
