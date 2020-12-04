@@ -32,7 +32,7 @@
         :label="$t('form.productInfo.code')"
       />
       <el-table-column
-        label="Producto"
+        :label="$t('form.productInfo.product')"
       >
         <template slot-scope="scope">
           <el-popover trigger="click" placement="right" width="450">
@@ -51,12 +51,12 @@
         </template>
       </el-table-column>
       <el-table-column
-        :label="$t('form.productInfo.taxAmount')"
+        :label="$t('form.productInfo.quantityOnHand')"
         align="right"
-        width="150"
+        width="200"
       >
         <template slot-scope="scope">
-          {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }}
+          {{ formatQuantity(scope.row.quantityOnHand) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -66,6 +66,15 @@
       >
         <template slot-scope="scope">
           {{ formatPrice(scope.row.priceStandard, scope.row.currency.iSOCode) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('form.productInfo.taxAmount')"
+        align="right"
+        width="150"
+      >
+        <template slot-scope="scope">
+          {{ formatPrice(getTaxAmount(scope.row.priceStandard, scope.row.taxRate.rate), scope.row.currency.iSOCode) }}
         </template>
       </el-table-column>
       <el-table-column
@@ -90,7 +99,7 @@
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import CustomPagination from '@/components/ADempiere/Pagination'
 import fieldsListProductPrice from './fieldsList.js'
-import { formatPrice } from '@/utils/ADempiere/valueFormat.js'
+import { formatPrice, formatQuantity } from '@/utils/ADempiere/valueFormat.js'
 
 export default {
   name: 'ProductList',
@@ -151,7 +160,7 @@ export default {
     shortsKey() {
       return {
         closeProductList: ['esc'],
-        refreshList: ['f5']
+        refreshList: ['enter']
       }
     },
     isReadyFromGetData() {
@@ -178,6 +187,7 @@ export default {
   },
   methods: {
     formatPrice,
+    formatQuantity,
     srcImage(keyValue) {
       if (this.isEmptyValue(keyValue)) {
         return this.defaultImage

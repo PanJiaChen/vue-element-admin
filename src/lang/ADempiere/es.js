@@ -371,10 +371,12 @@ export default {
       basePrice: 'Precio Base'
     },
     productInfo: {
-      productInformation: 'Product information',
+      product: 'Producto',
+      productInformation: 'Información de Producto',
       code: 'Código',
       name: 'Nombre',
       description: 'Descripción',
+      quantityOnHand: 'Existencia',
       price: 'Precio',
       taxAmount: 'Monto de Impuesto',
       grandTotal: 'Total General',

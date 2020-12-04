@@ -396,11 +396,13 @@ export default {
       basePrice: 'Base price'
     },
     productInfo: {
+      product: 'Product',
       productInformation: 'Product information',
       code: 'Code',
       name: 'Name',
       description: 'Description',
       price: 'Price',
+      quantityOnHand: 'Quantity On Hand',
       taxAmount: 'Tax Amount',
       grandTotal: 'Grand Total',
       grandTotalConverted: 'Grand Total Converted',
