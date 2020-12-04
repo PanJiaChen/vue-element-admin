@@ -58,6 +58,9 @@ export default {
       this.$emit('toggleTodo', todo)
     },
     doneEdit(e) {
+      if (!this.editing) {
+        return
+      }
       const value = e.target.value.trim()
       const { todo } = this
       if (!value) {
