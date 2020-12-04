@@ -117,6 +117,9 @@ export default {
       return require('@/image/ADempiere/priceChecking/no-image.jpg')
     },
     backgroundForm() {
+      if (this.isEmptyValue(this.organizationImagePath)) {
+        return this.defaultImage
+      }
       if (this.isEmptyValue(this.currentImageOfProduct)) {
         return this.organizationBackground
       }
