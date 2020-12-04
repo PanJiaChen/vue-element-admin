@@ -52,7 +52,7 @@ import TodoList from './components/TodoList'
 import BoxCard from './components/BoxCard'
 
 const lineChartData = {
-  newVisitis: {
+  newVisitors: {
     expectedData: [100, 120, 161, 134, 105, 160, 165],
     actualData: [120, 82, 91, 154, 162, 140, 145]
   },
@@ -85,7 +85,7 @@ export default {
   },
   data() {
     return {
-      lineChartData: lineChartData.newVisitis
+      lineChartData: lineChartData.newVisitors
     }
   },
   methods: {

@@ -1,54 +1,15 @@
 <template>
   <el-row :gutter="40" class="panel-group">
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="peoples" class-name="card-panel-icon" />
+    <el-col v-for="(panelData,index) in panelGroupData" :key="index" :xs="12" :sm="12" :lg="6" class="card-panel-col">
+      <div class="card-panel" @click="handleSetLineChartData(panelData.name)">
+        <div :class="panelData.divClass" class="card-panel-icon-wrapper">
+          <svg-icon :icon-class="panelData.iconClass" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            New Visits
+            {{ panelData.text }}
           </div>
-          <count-to :start-val="0" :end-val="102400" :duration="2600" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('messages')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Messages
-          </div>
-          <count-to :start-val="0" :end-val="81212" :duration="3000" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('purchases')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="money" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Purchases
-          </div>
-          <count-to :start-val="0" :end-val="9280" :duration="3200" class="card-panel-num" />
-        </div>
-      </div>
-    </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('shoppings')">
-        <div class="card-panel-icon-wrapper icon-shopping">
-          <svg-icon icon-class="shopping" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Shoppings
-          </div>
-          <count-to :start-val="0" :end-val="13600" :duration="3600" class="card-panel-num" />
+          <count-to :start-val="panelData.countTo.startVal" :end-val="panelData.countTo.endVal" :duration="panelData.countTo.duration" class="card-panel-num" />
         </div>
       </div>
     </el-col>
@@ -61,6 +22,56 @@ import CountTo from 'vue-count-to'
 export default {
   components: {
     CountTo
+  },
+  data() {
+    return {
+      panelGroupData: [
+        {
+          name: 'newVisitors',
+          divClass: 'icon-people',
+          iconClass: 'peoples',
+          text: 'New Visitors',
+          countTo: {
+            startVal: 0,
+            endVal: 102400,
+            duration: 2600
+          }
+        },
+        {
+          name: 'messages',
+          divClass: 'icon-message',
+          iconClass: 'message',
+          text: 'Messages',
+          countTo: {
+            startVal: 0,
+            endVal: 81212,
+            duration: 3000
+          }
+        },
+        {
+          name: 'purchases',
+          divClass: 'icon-money',
+          iconClass: 'money',
+          text: 'Purchases',
+          countTo: {
+            startVal: 0,
+            endVal: 9280,
+            duration: 3200
+          }
+        },
+        {
+          name: 'shoppings',
+          divClass: 'icon-shopping',
+          iconClass: 'shopping',
+          text: 'Shoppings',
+          countTo: {
+            startVal: 0,
+            endVal: 13600,
+            duration: 3600
+          }
+        }
+      ]
+    }
   },
   methods: {
     handleSetLineChartData(type) {
