@@ -2,7 +2,7 @@ import { showNotification } from '@/utils/ADempiere/notification.js'
 import ItemsRelations from './itemsRelations'
 import { convertFieldsListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil.js'
-import ROUTES from '@/utils/ADempiere/zoomWindow'
+import ROUTES from '@/utils/ADempiere/constants/zoomWindow'
 import relationsMixin from './relationsMixin.js'
 
 export default {
