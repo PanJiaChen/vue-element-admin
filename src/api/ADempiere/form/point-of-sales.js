@@ -152,8 +152,8 @@ export function requestListOrders({
   isProcessed,
   isAisleSeller,
   isInvoiced,
-  dateOrderedFrom,
-  dateOrderedTo,
+  // dateOrderedFrom,
+  // dateOrderedTo,
   salesRepresentativeUuid,
   pageSize,
   pageToken
@@ -212,9 +212,9 @@ export function requestListOrders({
       is_paid: isPaid,
       is_processed: isProcessed,
       is_aisle_seller: isAisleSeller,
-      is_invoiced: isInvoiced,
-      date_ordered_from: dateOrderedFrom,
-      date_ordered_to: dateOrderedTo
+      is_invoiced: isInvoiced
+      // date_ordered_from: dateOrderedFrom,
+      // date_ordered_to: dateOrderedTo
     },
     params: {
       page_size: pageSize,
@@ -223,7 +223,7 @@ export function requestListOrders({
   })
     .then(evaluateResponse)
     .then(ordersListResponse => {
-      const { convertOrder } = require('@/utils/ADempiere/apiConverts/core.js')
+      const { convertOrder } = require('@/utils/ADempiere/apiConverts/pos.js')
 
       return {
         nextPageToken: ordersListResponse.next_page_token,

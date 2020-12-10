@@ -188,13 +188,13 @@ export default {
       }
     }
   },
-  watch: {
-    isReadyFromGetData(isToLoad) {
-      if (isToLoad) {
-        this.loadOrdersList()
-      }
-    }
-  },
+  // watch: {
+  //   isReadyFromGetData(isToLoad) {
+  //     if (isToLoad) {
+  //       this.loadOrdersList()
+  //     }
+  //   }
+  // },
   created() {
     this.unsubscribe = this.subscribeChanges()
 
@@ -223,7 +223,6 @@ export default {
       let values = this.$store.getters.getValuesView({
         containerUuid: this.metadata.containerUuid
       })
-
       values = this.convertValuesToSend(values)
 
       this.$store.dispatch('listOrdersFromServer', {
@@ -257,7 +256,6 @@ export default {
           !mutation.payload.columnName.includes('_UUID') &&
           mutation.payload.containerUuid === this.metadata.containerUuid) {
           clearTimeout(this.timeOut)
-
           this.timeOut = setTimeout(() => {
             this.loadOrdersList()
           }, 2000)

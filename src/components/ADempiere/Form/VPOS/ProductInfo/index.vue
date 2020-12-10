@@ -1,17 +1,13 @@
 <template>
   <div>
-    <el-popover
-      ref="productsList"
-      v-model="isShowProductsPriceList"
-      placement="right"
-      width="800"
-      trigger="manual"
-    >
-      <product-info-list
-        v-if="isShowProductsPriceList"
-      />
-    </el-popover>
-
+    <el-collapse-transition name="el-fade-in">
+      <el-card
+        v-show="isShowProductsPriceList"
+        class="transition-box"
+      >
+        <product-info-list />
+      </el-card>
+    </el-collapse-transition>
     <el-form-item>
       <template slot="label">
         Código Producto
@@ -108,6 +104,12 @@ export default {
   mixins: [
     fieldMixin
   ],
+  props: {
+    popoverName: {
+      type: String,
+      default: 'isShowPopoverField'
+    }
+  },
   data() {
     return {
       timeOut: null
@@ -137,7 +139,8 @@ export default {
     keyShortcuts() {
       return {
         refreshList: ['f5'],
-        refreshList2: ['shift', 'f5']
+        refreshList2: ['shift', 'f5'],
+        closeProductList: ['esc']
       }
     }
   },
@@ -149,6 +152,12 @@ export default {
         case 'refreshList':
         case 'refreshList2':
           this.$store.dispatch('listProductPriceFromServer', {})
+          break
+        case 'closeProductList':
+          this.$store.commit('showListProductPrice', {
+            attribute: this.popoverName,
+            isShowed: false
+          })
           break
       }
     },
@@ -221,6 +230,12 @@ export default {
 </script>
 
 <style lang="scss" scope>
+  .transition-box {
+    z-index: 3;
+    position: absolute;
+    width: 800px;
+    left: 15%;
+  }
   .custom-field-prodcut-info {
     li {
       line-height: normal;
