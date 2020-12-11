@@ -55,6 +55,7 @@
     "babel-plugin-dynamic-import-node": "2.3.3",
     "chalk": "2.4.2",
     "chokidar": "2.1.5",
+    "compression-webpack-plugin": "^3.1.0",
     "connect": "3.6.6",
     "eslint": "6.7.2",
     "eslint-plugin-vue": "6.2.2",

@@ -1,7 +1,17 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
-
+const webpackPlugins = []
+if (process.env.NODE_ENV === 'production') {
+  const CompressionPlugin = require('compression-webpack-plugin')
+  webpackPlugins.push(new CompressionPlugin({
+    algorithm: 'gzip',
+    test: /\.js$|\.html$|\.css$|\.jpg$|\.jpeg$|\.png/, // 需要压缩的文件类型
+    threshold: 10240, // 归档需要进行压缩的文件大小最小值，我这个是10K以上的进行压缩
+    deleteOriginalAssets: false, // 是否删除原文件
+    minRatio: 0.5
+  }))
+}
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
@@ -46,7 +56,8 @@ module.exports = {
       alias: {
         '@': resolve('src')
       }
-    }
+    },
+    plugins: webpackPlugins
   },
   chainWebpack(config) {
     // it can improve the speed of the first screen, it is recommended to turn on preload
@@ -88,7 +99,7 @@ module.exports = {
             .plugin('ScriptExtHtmlWebpackPlugin')
             .after('html')
             .use('script-ext-html-webpack-plugin', [{
-            // `runtime` must same as runtimeChunk name. default is `runtime`
+              // `runtime` must same as runtimeChunk name. default is `runtime`
               inline: /runtime\..*\.js$/
             }])
             .end()
