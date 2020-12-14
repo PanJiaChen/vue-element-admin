@@ -77,31 +77,28 @@ const collection = {
     conversionMultiplyRate({ commit }, {
       conversionTypeUuid,
       currencyFromUuid,
-      currencyToUuid,
-      conversionDate
+      currencyToUuid
+      // conversionDate
     }) {
-      return Promise(resolve => {
-        requestGetConversionRate({
-          conversionTypeUuid,
-          currencyFromUuid,
-          currencyToUuid,
-          conversionDate
-        })
-          .then(response => {
-            const multiplyRate = isEmptyValue(response.multiplyRate) ? 1 : response.multiplyRate
-
-            commit('currencyMultiplyRate', multiplyRate)
-            resolve(multiplyRate)
-          })
-          .catch(error => {
-            console.warn(`conversionMultiplyRate: ${error.message}. Code: ${error.code}.`)
-            showMessage({
-              type: 'error',
-              message: error.message,
-              showClose: true
-            })
-          })
+      requestGetConversionRate({
+        conversionTypeUuid,
+        currencyFromUuid,
+        currencyToUuid
+        // conversionDate
       })
+        .then(response => {
+          const multiplyRate = isEmptyValue(response.multiplyRate) ? 1 : response.multiplyRate
+
+          commit('currencyMultiplyRate', multiplyRate)
+        })
+        .catch(error => {
+          console.warn(`conversionMultiplyRate: ${error.message}. Code: ${error.code}.`)
+          showMessage({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
     },
     changeMultiplyRate({ commit }, params) {
       commit('currencyMultiplyRate', params)

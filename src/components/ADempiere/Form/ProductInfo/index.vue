@@ -1,6 +1,8 @@
 <template>
   <div>
-    <product-info-list />
+    <product-info-list
+      :report-asociated="process"
+    />
   </div>
 </template>
 
@@ -10,6 +12,7 @@
  */
 import ProductInfoList from './productList'
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import staticReportRoutes from '@/utils/ADempiere/constants/zoomReport'
 import {
   formatPrice,
   formatQuantity
@@ -25,7 +28,8 @@ export default {
   ],
   data() {
     return {
-      timeOut: null
+      timeOut: null,
+      process: staticReportRoutes
     }
   },
   computed: {
@@ -49,6 +53,9 @@ export default {
       }
       return []
     },
+    currentPos() {
+      return this.$store.getters.getCurrentPOS
+    },
     keyShortcuts() {
       return {
         refreshList: ['f5'],
@@ -56,8 +63,16 @@ export default {
       }
     }
   },
-  beforeMount() {
+  // beforeMount() {
+  //   if (this.isEmptyValue(this.currentPos)) {
+  //     this.$store.dispatch('listPointOfSalesFromServer')
+  //   }
+  // },
+  created() {
+    // if (this.isEmptyValue(this.currentPos)) {
     this.$store.dispatch('listPointOfSalesFromServer')
+    this.findProcess(this.process)
+    // }
   },
   methods: {
     formatPrice,
@@ -132,6 +147,13 @@ export default {
         // TODO: Verify with 'value' or 'searchValue' attribute
         value: valueProduct
       })
+    },
+    findProcess(procces) {
+      // if (this.isEmptyValue(this.currentPos)) {
+      procces.forEach(report => {
+        this.$store.dispatch('getProcessFromServer', { containerUuid: report.uuid })
+      })
+      // }
     }
   }
 }

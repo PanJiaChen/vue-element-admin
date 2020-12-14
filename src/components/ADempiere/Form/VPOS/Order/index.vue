@@ -234,7 +234,27 @@
               <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b class="order-info">{{ formatPrice(order.totalLines, currencyPoint.iSOCode) }}</b></p>
               <p class="total"> {{ $t('form.pos.order.discount') }}:<b class="order-info">{{ formatPrice(0, currencyPoint.iSOCode) }}</b> </p>
               <p class="total"> {{ $t('form.pos.order.tax') }}:<b style="float: right;">{{ getOrderTax(currencyPoint.iSOCode) }}</b> </p>
-              <p class="total"><b>{{ $t('form.pos.order.total') }}:</b><b style="float: right;">{{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}</b></p>
+              <p class="total">
+                <b>
+                  {{ $t('form.pos.order.total') }}:
+                </b>
+                <b style="float: right;">
+                  <el-popover
+                    placement="top-start"
+                    trigger="click"
+                  >
+                    <convert-amount
+                      :convert="multiplyRate"
+                      :amount="order.grandTotal"
+                      :currency="currencyPoint"
+                    />
+                    <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;">
+                      {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}
+                    </el-button>
+                  </el-popover>
+                  <!-- {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }} -->
+                </b>
+              </p>
             </span>
             <span style="float: right;padding-right: 40px;">
               <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ order.documentNo }}</b></p>
@@ -288,12 +308,14 @@ import fieldsListOrder from './fieldsListOrder.js'
 import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import BusinessPartner from '@/components/ADempiere/Form/VPOS/BusinessPartner'
 import ProductInfo from '@/components/ADempiere/Form/VPOS/ProductInfo'
+import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
 
 export default {
   name: 'Order',
   components: {
     BusinessPartner,
-    ProductInfo
+    ProductInfo,
+    convertAmount
   },
   mixins: [
     formMixin,
@@ -367,6 +389,49 @@ export default {
         uuid: '',
         iSOCode: '',
         curSymbol: ''
+      }
+    },
+    multiplyRate() {
+      return this.$store.getters.getMultiplyRate
+    },
+    converCurrency() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: 'Collection-Convert-Amount',
+        columnName: 'C_Currency_ID_UUID'
+      })
+    },
+    currencyUuid() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: this.containerUuid,
+        columnName: 'C_Currency_ID_UUID'
+      })
+    },
+    displayeTypeCurrency() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: this.containerUuid,
+        columnName: 'DisplayColumn_C_Currency_ID'
+      })
+    }
+  },
+  watch: {
+    currencyUuid(value) {
+      if (!this.isEmptyValue(value)) {
+        this.$store.dispatch('conversionDivideRate', {
+          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+          currencyFromUuid: this.currencyPoint.uuid,
+          currencyToUuid: value
+        })
+      }
+    },
+    converCurrency(value) {
+      if (!this.isEmptyValue(value)) {
+        this.$store.dispatch('conversionMultiplyRate', {
+          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+          currencyFromUuid: this.currencyPoint.uuid,
+          currencyToUuid: value
+        })
+      } else {
+        this.$store.commit('currencyMultiplyRate', 1)
       }
     }
   },
@@ -528,7 +593,12 @@ export default {
     color: #333;
     line-height: 10px;
   }
-
+  .el-button--text {
+    border-color: transparent;
+    color: #1890ff;
+    background: transparent;
+    padding: 0px;
+  }
   .el-aside {
     color: #333;
   }

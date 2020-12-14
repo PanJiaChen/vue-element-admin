@@ -108,7 +108,6 @@ export default {
       return this.formMetadata.name || this.$route.meta.title
     },
     fromFileName() {
-      console.log(this.$route)
       return this.formMetadata.fileName || this.$route.meta.title
     },
     getterForm() {

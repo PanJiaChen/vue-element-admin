@@ -414,12 +414,14 @@ export default {
       })
     },
     currencyUuid(value) {
-      this.$store.dispatch('conversionDivideRate', {
-        conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-        currencyFromUuid: this.currencyPoint.uuid,
-        currencyToUuid: value,
-        conversionDate: this.currentOrder.dateOrdered
-      })
+      if (!this.isEmptyValue(value)) {
+        this.$store.dispatch('conversionDivideRate', {
+          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+          currencyFromUuid: this.currencyPoint.uuid,
+          currencyToUuid: value,
+          conversionDate: this.currentOrder.dateOrdered
+        })
+      }
     },
     convertAllPayment(value) {
       if (!this.isEmptyValue(value)) {
@@ -428,12 +430,16 @@ export default {
       this.allPayCurrency = this.pay
     },
     converCurrency(value) {
-      this.$store.dispatch('conversionMultiplyRate', {
-        conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-        currencyFromUuid: this.currencyPoint.uuid,
-        currencyToUuid: value,
-        conversionDate: this.currentOrder.dateOrdered
-      })
+      if (!this.isEmptyValue(value)) {
+        this.$store.dispatch('conversionMultiplyRate', {
+          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+          currencyFromUuid: this.currencyPoint.uuid,
+          currencyToUuid: value,
+          conversionDate: this.currentOrder.dateOrdered
+        })
+      } else {
+        this.$store.commit('currencyMultiplyRate', 1)
+      }
     },
     isLoaded(value) {
       if (value) {

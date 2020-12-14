@@ -49,7 +49,6 @@ const pointOfSales = {
      */
     listPointOfSalesFromServer({ commit, getters, dispatch }, posToSet = null) {
       const userUuid = getters['user/getUserUuid']
-
       requestListPointOfSales({
         userUuid
       })
