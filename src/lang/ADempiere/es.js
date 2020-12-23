@@ -354,7 +354,11 @@ export default {
         itemQuantity: 'Cantidad de Árticulo',
         numberLines: 'Cantidad de Lineas',
         pointSale: 'Punto de Venta',
-        collect: 'Cobrar'
+        collect: 'Cobrar',
+        BusinessPartnerCreate: {
+          businessPartner: 'Socio de Negocios',
+          successfullyCreated: 'Socio de Negocio Creado Exitosamente'
+        }
       },
       collect: {
         orderTotal: 'Total de Orden',

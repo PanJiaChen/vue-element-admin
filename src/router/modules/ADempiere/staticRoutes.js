@@ -68,7 +68,7 @@ const staticRoutes = [
   {
     path: '/PriceChecking',
     component: Layout,
-    hidden: false,
+    hidden: true,
     children: [
       {
         path: '/PriceChecking',

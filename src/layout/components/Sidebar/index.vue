@@ -12,7 +12,7 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
+        <sidebar-item v-for="route in menu" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -23,6 +23,7 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
 
 export default {
   components: { SidebarItem, Logo },
@@ -48,6 +49,25 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    },
+    menu() {
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permission_routes,
+        attributeValue: '5aacaab1-1ba0-4cf0-992a-0da34c460ffe',
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
+      })
+      const router = this.permission_routes.map(menu => {
+        if (menu.path === '/PriceChecking') {
+          return {
+            ...viewSearch,
+            hidden: false
+          }
+        }
+        return menu
+      })
+      return router
     }
   }
 }

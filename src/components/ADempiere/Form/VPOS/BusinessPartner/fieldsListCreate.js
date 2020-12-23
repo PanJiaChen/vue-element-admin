@@ -1,54 +1,51 @@
 // List of fields to send for create new
+const tableName = 'C_BPartner'
 export default [
   {
     columnName: 'Value',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'Search Key',
+    tableName,
+    isFromDictionary: true,
+    overwriteDefinition: {
+      // name: 'Search Key',
       isCustomField: true,
       size: 24
     }
   },
   {
     columnName: 'Name',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'Name',
+    tableName,
+    isFromDictionary: true,
+    overwriteDefinition: {
+      // name: 'Name',
       isCustomField: true,
       size: 24
     }
   },
   {
-    columnName: 'Contact',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'Contact Name',
+    columnName: 'Name2',
+    tableName,
+    isFromDictionary: true,
+    overwriteDefinition: {
+      // name: 'Contact Name',
       isCustomField: true,
       size: 24
     }
   },
   {
     columnName: 'EMail',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'E-Mail Address',
-      isCustomField: true,
-      size: 24
-    }
-  },
-  {
-    columnName: 'Postal',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'Postal Code',
+    tableName: 'AD_user',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      // name: 'E-Mail Address',
       isCustomField: true,
       size: 24
     }
   },
   {
     columnName: 'Phone',
-    // displayType: CHAR.id,
-    definition: {
+    tableName: 'AD_user',
+    isFromDictionary: true,
+    overwriteDefinition: {
       name: 'Phone',
       isCustomField: true,
       size: 24

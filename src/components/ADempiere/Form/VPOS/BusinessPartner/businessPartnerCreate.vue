@@ -70,6 +70,14 @@ export default {
       unsubscribe: () => {}
     }
   },
+  computed: {
+    emptyMandatoryFields() {
+      const field = this.$store.getters.getFieldsListEmptyMandatory({
+        containerUuid: this.containerUuid
+      })
+      return field
+    }
+  },
   beforeDestroy() {
     this.unsubscribe()
   },
@@ -84,33 +92,41 @@ export default {
         return
       }
       values = this.convertValuesToSend(values)
-
-      this.isLoadingRecord = true
-      requestCreateBusinessPartner(values)
-        .then(responseBPartner => {
-          // TODO: Add new record into vuex store.
-          this.setBusinessPartner(responseBPartner)
-          this.clearValues()
-          this.$message({
-            type: 'success',
-            message: 'Socio de negocio creado exitosamente',
-            duration: 1500,
-            showClose: true
+      if (this.isEmptyValue(this.emptyMandatoryFields)) {
+        this.isLoadingRecord = true
+        requestCreateBusinessPartner(values)
+          .then(responseBPartner => {
+            // TODO: Add new record into vuex store.
+            this.setBusinessPartner(responseBPartner)
+            this.clearValues()
+            this.$message({
+              type: 'success',
+              message: this.$t('form.pos.order.BusinessPartnerCreate.businessPartner'),
+              duration: 1500,
+              showClose: true
+            })
           })
-        })
-        .catch(error => {
-          this.showsPopovers.isShowCreate = true
-          this.$message({
-            type: 'warning',
-            message: error.message,
-            duration: 1500,
-            showClose: true
+          .catch(error => {
+            this.showsPopovers.isShowCreate = true
+            this.$message({
+              type: 'warning',
+              message: error.message,
+              duration: 1500,
+              showClose: true
+            })
+            console.warn(`Error create Business Partner. Message: ${error.message}, code ${error.code}.`)
           })
-          console.warn(`Error create Business Partner. Message: ${error.message}, code ${error.code}.`)
+          .finally(() => {
+            this.isLoadingRecord = false
+          })
+      } else {
+        this.$message({
+          type: 'warn',
+          message: this.$t('notifications.mandatoryFieldMissing') + this.emptyMandatoryFields,
+          duration: 1500,
+          showClose: true
         })
-        .finally(() => {
-          this.isLoadingRecord = false
-        })
+      }
     },
     clearValues() {
       this.showsPopovers.isShowCreate = false

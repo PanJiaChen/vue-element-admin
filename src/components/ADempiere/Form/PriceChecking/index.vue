@@ -224,6 +224,9 @@ export default {
               })
           }
         }
+        if (mutation.type === 'changeFormAttribute') {
+          this.focusProductValue()
+        }
       })
     },
     timeMessage() {
