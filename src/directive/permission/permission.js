@@ -24,7 +24,7 @@ function checkPermission(el, binding) {
 export default {
   inserted(el, binding) {
     checkPermission(el, binding)
-  },
+  },111111
   update(el, binding) {
     checkPermission(el, binding)
   }
