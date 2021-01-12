@@ -2,6 +2,18 @@ import { export_json_to_excel } from '@/vendor/Export2Excel'
 import { export_txt_to_zip } from '@/vendor/Export2Zip'
 import language from '@/lang'
 
+export const reportFormatsList = [
+  'ps',
+  'xml',
+  'pdf',
+  'txt',
+  'ssv',
+  'csv',
+  'xls',
+  'xlsx',
+  'arxml'
+]
+
 export const supportedTypes = {
   xlsx: language.t('report.ExportXlsx'),
   xls: language.t('report.ExportXls'),
@@ -10,15 +22,25 @@ export const supportedTypes = {
   txt: language.t('report.ExportTxt'),
   html: language.t('report.ExportHtml')
 }
+
+/**
+ * Export data from json
+ * @autor Edwin Betancourt <EdwinBetanc0urt@outlook.com>
+ * @param {array} header
+ * @param {array} data
+ * @param {string} exportType, supportedTypes array
+ */
 export function exportFileFromJson({
   header,
   data,
   exportType
 }) {
-  var Json = data.map(dataJson => {
+  const Json = data.map(dataJson => {
     Object.keys(dataJson).forEach(key => {
       if (typeof dataJson[key] === 'boolean') {
-        dataJson[key] = dataJson[key] ? language.t('components.switchActiveText') : language.t('components.switchInactiveText')
+        dataJson[key] = dataJson[key]
+          ? language.t('components.switchActiveText')
+          : language.t('components.switchInactiveText')
       }
     })
     return dataJson
@@ -31,19 +53,29 @@ export function exportFileFromJson({
   })
 }
 
+/**
+ * Export txt data into zip file
+ * @autor Edwin Betancourt <EdwinBetanc0urt@outlook.com>
+ * @param {array} header
+ * @param {array} data
+ * @param {string} title
+ */
 export function exportFileZip({
   header,
   data,
   title
 }) {
-  var Json = data.map(dataJson => {
+  const Json = data.map(dataJson => {
     Object.keys(dataJson).forEach(key => {
       if (typeof dataJson[key] === 'boolean') {
-        dataJson[key] = dataJson[key] ? language.t('components.switchActiveText') : language.t('components.switchInactiveText')
+        dataJson[key] = dataJson[key]
+          ? language.t('components.switchActiveText')
+          : language.t('components.switchInactiveText')
       }
     })
     return dataJson
   })
+
   export_txt_to_zip(
     header,
     Json,

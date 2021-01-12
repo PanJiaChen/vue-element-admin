@@ -127,6 +127,7 @@ const reportControl = {
                 processId
               }
             })
+
             commit('setDrillTablesList', {
               containerUuid: processUuid,
               drillTablesList

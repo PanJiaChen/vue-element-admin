@@ -8,6 +8,7 @@
       :last-parameter="reportResult.processUuid"
       :report-format="reportFormat"
     />
+
     <el-row type="flex" style="min-height: inherit;">
       <el-col :span="24">
         <div class="content">
@@ -39,13 +40,7 @@
             height="100%"
           />
           <div
-            v-else-if="collectionReportFormat.includes(reportFormat)"
-            key="report-content-all"
-            class="content-api"
-            :src="url"
-          />
-          <div
-            v-else-if="reportFormat === 'html'"
+            v-else-if="['html', 'txt'].includes(reportFormat)"
             key="report-content-html"
             class="content-txt"
           >
@@ -58,9 +53,16 @@
               </el-main>
             </el-container>
           </div>
+          <div
+            v-else-if="reportFormatsList.includes(reportFormat)"
+            key="report-content-all"
+            class="content-api"
+            :src="url"
+          />
         </div>
       </el-col>
     </el-row>
+
     <modal-dialog
       :metadata="processMetadata"
       :parent-uuid="reportResult.processUuid"
@@ -83,6 +85,7 @@
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import { showNotification } from '@/utils/ADempiere/notification'
+import { reportFormatsList } from '@/utils/ADempiere/exportUtil.js'
 
 export default {
   name: 'ReportViewer',
@@ -95,17 +98,7 @@ export default {
       panelType: 'process',
       processMetadata: {},
       reportFormat: '',
-      collectionReportFormat: [
-        'ps',
-        'xml',
-        'pdf',
-        'txt',
-        'ssv',
-        'csv',
-        'xls',
-        'xlsx',
-        'arxml'
-      ],
+      reportFormatsList,
       reportContent: '',
       isLoading: false,
       reportResult: {}
@@ -141,8 +134,12 @@ export default {
     displayReport(reportResult) {
       if (!reportResult.isError) {
         const { output } = reportResult
-        this.reportFormat = this.isEmptyValue(output.reportType) ? reportResult.reportType : output.reportType
-        this.reportContent = this.isEmptyValue(output.output) ? reportResult.output : output.output
+        this.reportFormat = this.isEmptyValue(output.reportType)
+          ? reportResult.reportType
+          : output.reportType
+        this.reportContent = this.isEmptyValue(output.output)
+          ? reportResult.output
+          : output.output
 
         this.isLoading = true
       }
@@ -150,7 +147,12 @@ export default {
     getCachedReport() {
       this.reportResult = this.getterCachedReport
       if (this.reportResult === undefined) {
-        this.$store.dispatch('getSessionProcessFromServer')
+        const pageSize = undefined
+        const pageToken = undefined
+        this.$store.dispatch('getSessionProcessFromServer', {
+          pageSize,
+          pageToken
+        })
           .then(response => {
             this.reportResult = this.getterCachedReport
             if (this.reportResult === undefined) {
