@@ -17,7 +17,10 @@
         :key="element.item.path"
         :value="element.item"
         :label="element.item.title.join(' > ')"
-      />
+      >
+        {{ element.item.title.join(' > ') }}
+        <svg-icon :icon-class="element.item.meta.icon" />
+      </el-option>
     </el-select>
   </div>
 </template>
