@@ -17,7 +17,7 @@ export default {
         },
         currentPrice: {
           columnName: 'CurrentPrice',
-          label: this.$t('form.pos.product.price'),
+          label: this.$t('form.productInfo.price'),
           isNumeric: true
         },
         quantityOrdered: {
