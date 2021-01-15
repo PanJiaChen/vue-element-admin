@@ -10,6 +10,7 @@ const fieldBase = {
 export default [
   {
     ...fieldBase,
+    elementColumnName: 'C_Location_ID',
     columnName: 'C_Location_ID',
     overwriteDefinition: {
       isCustomField: true,
@@ -20,6 +21,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'C_Country_ID',
     columnName: 'C_Country_ID',
     overwriteDefinition: {
       isCustomField: true,
@@ -32,6 +34,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'C_Region_ID',
     columnName: 'C_Region_ID',
     overwriteDefinition: {
       isCustomField: true,
@@ -42,6 +45,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'C_City_ID',
     columnName: 'C_City_ID',
     overwriteDefinition: {
       isCustomField: true,
@@ -52,6 +56,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'Address1',
     columnName: 'Address1',
     overwriteDefinition: {
       isCustomField: true,
@@ -62,6 +67,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'Address2',
     columnName: 'Address2',
     overwriteDefinition: {
       isCustomField: true,
@@ -72,6 +78,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'Address3',
     columnName: 'Address3',
     overwriteDefinition: {
       isCustomField: true,
@@ -82,6 +89,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'Address4',
     columnName: 'Address4',
     overwriteDefinition: {
       isCustomField: true,
@@ -92,6 +100,7 @@ export default [
   },
   {
     ...fieldBase,
+    elementColumnName: 'Postal',
     columnName: 'Postal',
     overwriteDefinition: {
       isCustomField: true,

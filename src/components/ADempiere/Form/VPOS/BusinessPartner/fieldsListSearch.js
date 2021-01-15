@@ -1,58 +1,54 @@
 // List of fields to send in search
 export default [
   {
-    columnName: 'Code',
-    // displayType: CHAR.id,
-    definition: {
-      name: 'Search Value',
-      isCustomField: true
-    }
-  },
-  {
+    elementColumnName: 'Value',
     columnName: 'Value',
-    // displayType: CHAR.id,
+    tableName: 'C_BPartner',
+    isFromDictionary: true,
     definition: {
-      name: 'Search Key',
       isCustomField: true
     }
   },
   {
+    elementColumnName: 'Name',
     columnName: 'Name',
-    // displayType: CHAR.id,
+    tableName: 'C_BPartner',
+    isFromDictionary: true,
     definition: {
-      name: 'Name',
       isCustomField: true
     }
   },
   {
-    columnName: 'Contact',
-    // displayType: CHAR.id,
+    elementColumnName: 'Name2',
+    columnName: 'Name2',
+    tableName: 'C_BPartner',
+    isFromDictionary: true,
     definition: {
-      name: 'Contact Name',
       isCustomField: true
     }
   },
   {
+    elementColumnName: 'EMail',
     columnName: 'EMail',
-    // displayType: CHAR.id,
+    tableName: 'AD_user',
+    isFromDictionary: true,
     definition: {
-      name: 'E-Mail Address',
       isCustomField: true
     }
   },
   {
+    elementColumnName: 'Postal',
     columnName: 'Postal',
-    // displayType: CHAR.id,
+    isFromDictionary: true,
     definition: {
-      name: 'Postal Code',
       isCustomField: true
     }
   },
   {
+    elementColumnName: 'Phone',
     columnName: 'Phone',
-    // displayType: CHAR.id,
+    isFromDictionary: true,
     definition: {
-      name: 'Phone',
       isCustomField: true
     }
   }
