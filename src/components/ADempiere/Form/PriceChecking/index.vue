@@ -124,6 +124,9 @@ export default {
         return this.organizationBackground
       }
       return this.currentImageOfProduct
+    },
+    currentPoint() {
+      return this.$store.getters.getCurrentPOS
     }
   },
   created() {
@@ -176,7 +179,8 @@ export default {
           this.search = mutation.payload.value
           if (!this.isEmptyValue(this.search) && this.search.length >= 4) {
             requestGetProductPrice({
-              searchValue: mutation.payload.value
+              searchValue: mutation.payload.value,
+              priceListUuid: this.currentPoint.priceList.uuid
             })
               .then(productPrice => {
                 this.messageError = true
@@ -227,7 +231,8 @@ export default {
           clearTimeout(this.timeOut)
           this.timeOut = setTimeout(() => {
             requestGetProductPrice({
-              searchValue: mutation.payload.value
+              searchValue: mutation.payload.value,
+              priceListUuid: this.currentPoint.priceList.uuid
             })
               .then(productPrice => {
                 this.messageError = true
