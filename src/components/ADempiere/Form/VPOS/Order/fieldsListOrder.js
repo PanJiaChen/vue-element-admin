@@ -7,6 +7,7 @@ export default [
     overwriteDefinition: {
       size: 24,
       sequence: 10,
+      handleActionPerformed: true,
       handleActionKeyPerformed: true
     }
   },

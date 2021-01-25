@@ -50,12 +50,14 @@
           <el-main style="padding-top: 0px; padding-right: 10px; padding-bottom: 0px; padding-left: 10px;">
             <el-table
               ref="linesTable"
+              v-shortkey="shortsKey"
               :data="allOrderLines"
               border
               style="width: 100%; max-width: 100%; background-color: #FFFFFF; font-size: 14px; overflow: auto; color: #606266;"
               highlight-current-row
               fit
               @current-change="handleCurrentLineChange"
+              @shortkey.native="shortcutKeyMethod"
             >
               <el-table-column
                 v-for="(valueOrder, item, key) in orderLineDefinition"
@@ -240,19 +242,19 @@
                 </b>
                 <b style="float: right;">
                   <el-popover
+                    :v-model="seeConversion"
                     placement="top-start"
-                    trigger="click"
                   >
                     <convert-amount
+                      v-show="seeConversion"
                       :convert="multiplyRate"
                       :amount="order.grandTotal"
                       :currency="currencyPoint"
                     />
-                    <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;">
+                    <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;" @click="seeConversion = !seeConversion">
                       {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}
                     </el-button>
                   </el-popover>
-                  <!-- {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }} -->
                 </b>
               </p>
             </span>
@@ -324,10 +326,16 @@ export default {
   ],
   data() {
     return {
-      fieldsList: fieldsListOrder
+      fieldsList: fieldsListOrder,
+      seeConversion: false
     }
   },
   computed: {
+    shortsKey() {
+      return {
+        popoverConvet: ['ctrl', 'x']
+      }
+    },
     isShowedPOSKeyLayout: {
       get() {
         return this.$store.getters.getShowPOSKeyLayout
@@ -484,6 +492,11 @@ export default {
 
         this.$store.dispatch('listOrderLine', [])
       })
+    },
+    open() {
+      if (!this.seeConversion) {
+        this.seeConversion = true
+      }
     }
   }
 }
@@ -636,5 +649,12 @@ export default {
   .order-info {
     float: right;
     padding-left: 9px;
+  }
+  .transition-box {
+    z-index: 1;
+    width: auto;
+    position: fixed;
+    bottom: 5%;
+    right: 5%;
   }
 </style>

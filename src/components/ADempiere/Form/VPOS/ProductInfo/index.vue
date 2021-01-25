@@ -28,6 +28,7 @@
         style="width: 100%;"
         popper-class="custom-field-prodcut-info"
         :fetch-suggestions="localSearch"
+        :select-when-unmatched="true"
         @shortkey.native="shortcutKeyMethod"
         @select="handleSelect"
       >
@@ -216,7 +217,7 @@ export default {
       callBack(results)
     },
     handleSelect(elementSelected) {
-      const valueProduct = elementSelected.product.value
+      const valueProduct = this.isEmptyValue(elementSelected.product) ? elementSelected.value : elementSelected.product.value
       this.$store.dispatch('notifyActionKeyPerformed', {
         containerUuid: 'POS',
         columnName: 'ProductValue',
