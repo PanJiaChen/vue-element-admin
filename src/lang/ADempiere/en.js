@@ -382,7 +382,8 @@ export default {
         collect: 'Collect',
         BusinessPartnerCreate: {
           businessPartner: 'Business Partner',
-          successfullyCreated: 'Successful Business Partner'
+          successfullyCreated: 'Socio de Negocio Creado Exitosamente',
+          taxId: 'Tax Identification'
         }
       },
       collect: {
@@ -390,7 +391,19 @@ export default {
         pending: 'Pending',
         payment: 'Payment',
         change: 'Change',
-        convertAmount: 'Convert Quantity'
+        convertAmount: 'Convert Quantity',
+        fullPayment: 'Full Payment',
+        TenderType: {
+          directDeposit: 'Direct Deposit',
+          creditCard: 'Credit Card',
+          directDebit: 'Direct Debit',
+          check: 'Check',
+          creditNote: 'Credit Note',
+          mobilePayment: 'Interbank mobile payment',
+          account: 'Account',
+          cash: 'Cash',
+          zelle: 'Zelle'
+        }
       },
       keyLayout: {
         noProducto: 'No product available. Back to top'
@@ -402,9 +415,12 @@ export default {
     },
     productInfo: {
       product: 'Product',
+      codeProduct: 'Códe Product',
       productInformation: 'Product information',
       code: 'Code',
       name: 'Name',
+      lastName: 'Nombre2',
+      id: 'ID',
       description: 'Description',
       price: 'Price',
       quantityOnHand: 'Quantity On Hand',

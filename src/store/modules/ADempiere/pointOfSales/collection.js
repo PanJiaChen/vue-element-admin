@@ -25,11 +25,7 @@ const collection = {
      * creating boxes with the payment list
      */
     setPaymentBox({ state, commit, getters }, params) {
-      const payments = getters.getPaymentBox.find(element => {
-        if (element.tenderType === params.tenderType && element.currency.id === params.currency.id) {
-          return element
-        }
-      })
+      const payments = undefined
       if (isEmptyValue(payments)) {
         commit('addPaymentBox', params)
       } else {
@@ -58,8 +54,7 @@ const collection = {
       requestGetConversionRate({
         conversionTypeUuid: params.conversionTypeUuid,
         currencyFromUuid: params.currencyFromUuid,
-        currencyToUuid: params.currencyToUuid,
-        conversionDate: params.conversionDate
+        currencyToUuid: params.currencyToUuid
       })
         .then(response => {
           const divideRate = isEmptyValue(response.divideRate) ? 1 : response.divideRate

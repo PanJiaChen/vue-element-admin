@@ -18,15 +18,15 @@ export default [
       isCustomField: true
     }
   },
-  {
-    elementColumnName: 'Name2',
-    columnName: 'Name2',
-    tableName: 'C_BPartner',
-    isFromDictionary: true,
-    definition: {
-      isCustomField: true
-    }
-  },
+  // {
+  //   elementColumnName: 'Name2',
+  //   columnName: 'Name2',
+  //   tableName: 'C_BPartner',
+  //   isFromDictionary: true,
+  //   definition: {
+  //     isCustomField: true
+  //   }
+  // },
   {
     elementColumnName: 'EMail',
     columnName: 'EMail',

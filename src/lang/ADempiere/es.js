@@ -345,7 +345,7 @@ export default {
       order: {
         order: 'Orden',
         seller: 'Vendedor',
-        date: 'Date',
+        date: 'Fecha',
         subTotal: 'Sub-Total',
         type: 'Tipo',
         discount: 'Descuento',
@@ -357,7 +357,8 @@ export default {
         collect: 'Cobrar',
         BusinessPartnerCreate: {
           businessPartner: 'Socio de Negocios',
-          successfullyCreated: 'Socio de Negocio Creado Exitosamente'
+          successfullyCreated: 'Socio de Negocio Creado Exitosamente',
+          taxId: 'Identificación Fiscal'
         }
       },
       collect: {
@@ -365,7 +366,19 @@ export default {
         pending: 'Pendiente',
         payment: 'Pago',
         change: 'Cambio',
-        convertAmount: 'Convertir Cantidad'
+        convertAmount: 'Convertir Cantidad',
+        fullPayment: 'Cobro Completo',
+        TenderType: {
+          directDeposit: 'Depósito Directo',
+          creditCard: 'Tarjeta de Crédito',
+          directDebit: 'Débito Directo',
+          check: 'Cheque',
+          creditNote: 'Nota de crédito',
+          mobilePayment: 'Pago Móvil Interbancario',
+          account: 'Cuenta',
+          cash: 'Efectivo',
+          zelle: 'Zelle'
+        }
       },
       keyLayout: {
         noProducto: 'No hay producto disponible Regresar al Principio'
@@ -377,9 +390,12 @@ export default {
     },
     productInfo: {
       product: 'Producto',
+      codeProduct: 'Código de Producto',
       productInformation: 'Información de Producto',
       code: 'Código',
       name: 'Nombre',
+      id: 'ID',
+      lastName: 'Nombre2',
       description: 'Descripción',
       quantityOnHand: 'Existencia',
       price: 'Precio',
