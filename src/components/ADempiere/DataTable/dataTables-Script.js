@@ -140,7 +140,7 @@ export default {
           }
         }
         return {
-          height: '17%',
+          height: '11%',
           overflow: 'hidden'
         }
       }

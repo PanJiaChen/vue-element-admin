@@ -130,6 +130,9 @@ export default {
     }
   },
   created() {
+    if (this.isEmptyValue(this.currentPoint)) {
+      this.$store.dispatch('listPointOfSalesFromServer')
+    }
     this.unsubscribe = this.subscribeChanges()
   },
   mounted() {

@@ -12,12 +12,13 @@
                 <!-- this slot is 'paneL' (with 'L' in uppercase) do not change -->
                 <div class="left-container">
                   <el-aside v-show="isShowedRecordNavigation" width="100%">
-                    <div class="small-4 columns">
+                    <div class="small-4 columns" style="height: 100%;">
                       <div class="w">
                         <div class="open-left" />
                         <div :class="styleTableNavigation">
                           <!-- close record navigation and advanced query panel -->
                           <el-button
+                            v-show="!isShowedRecordPanel"
                             :icon="iconShowedRecordNavigation"
                             circle
                             style="margin-left: 10px;"
@@ -722,6 +723,9 @@ export default {
       })
     },
     handleChangeShowedRecordNavigation(valueToChange) {
+      const panelRight = document.getElementById('PanelRight')
+      const heightPanel = panelRight.clientHeight + 50
+      this.$store.dispatch('setHeight', heightPanel)
       this.$store.dispatch('changeWindowAttribute', {
         parentUuid: this.windowUuid, // act as parentUuid
         window: this.windowMetadata,
@@ -815,6 +819,9 @@ export default {
   .w-33 {
     width: 100%;
     background-color: transparent;
+  }
+  .w {
+    height: 100%;
   }
   .open-table-detail-mobile {
     position: absolute;
