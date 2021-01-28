@@ -420,7 +420,12 @@ export default {
     margin-left: 0px;
     margin-right: 0px;
   }
-
+  .el-textarea {
+    position: relative;
+    display: contents;
+    width: 100%;
+    vertical-align: bottom;
+  }
   /* Global Styles */
   .el-textarea__inner:not(.in-table) {
     min-height: 36px !important;

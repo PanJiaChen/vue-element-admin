@@ -18,7 +18,10 @@ import {
 } from '@/utils/ADempiere/valueUtils.js'
 import { convertArrayKeyValueToObject } from '@/utils/ADempiere/valueFormat.js'
 import { typeValue } from '@/utils/ADempiere/valueUtils.js'
-import { parseContext } from '@/utils/ADempiere/contextUtils'
+import {
+  parseContext,
+  getPreference
+} from '@/utils/ADempiere/contextUtils'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { TABLE, TABLE_DIRECT } from '@/utils/ADempiere/references'
 import language from '@/lang'
@@ -129,7 +132,7 @@ const actions = {
       let valueLink
       // get context value if link column exists and does not exist in row
       if (!isEmptyValue(linkColumnName)) {
-        valueLink = rootGetters.getContext({
+        valueLink = getPreference({
           parentUuid,
           containerUuid,
           columnName: linkColumnName
@@ -220,7 +223,7 @@ const actions = {
             }
             if (linkColumnName === columnName) {
               // get context value if link column exists and does not exist in row
-              const nameParent = rootGetters.getContext({
+              const nameParent = getPreference({
                 parentUuid,
                 containerUuid,
                 columnName: 'Name'
