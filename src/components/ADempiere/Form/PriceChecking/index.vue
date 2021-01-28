@@ -137,6 +137,9 @@ export default {
   },
   mounted() {
     this.getImage()
+    setTimeout(() => {
+      this.focusProductValue()
+    }, 1000)
   },
   beforeDestroy() {
     this.unsubscribe()
@@ -171,7 +174,9 @@ export default {
       return imageBuffer
     },
     focusProductValue() {
-      this.$refs.ProductValue[0].$children[0].$children[0].$children[1].$children[0].focus()
+      if (!this.isEmptyValue(this.$refs.ProductValue[0])) {
+        this.$refs.ProductValue[0].$children[0].$children[0].$children[1].$children[0].focus()
+      }
     },
     formatPercent,
     formatPrice,
