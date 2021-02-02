@@ -34,7 +34,6 @@ export default [
   // Bank
   {
     tableName,
-    elementColumnName: 'C_Bank_ID',
     columnName: 'C_Bank_ID',
     isFromDictionary: true,
     overwriteDefinition: {

@@ -410,7 +410,7 @@ export default {
     },
     currencyUuid() {
       return this.$store.getters.getValueOfField({
-        containerUuid: this.containerUuid,
+        containerUuid: 'Collection-Convert-Amount',
         columnName: 'C_Currency_ID_UUID'
       })
     },
@@ -434,6 +434,7 @@ export default {
     converCurrency(value) {
       if (!this.isEmptyValue(value)) {
         this.$store.dispatch('conversionMultiplyRate', {
+          containerUuid: 'Order',
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
           currencyFromUuid: this.currencyPoint.uuid,
           currencyToUuid: value
@@ -449,7 +450,7 @@ export default {
       this.newOrder()
     },
     openCollectionPanel() {
-      this.$store.commit('setShowPOSCollection', !this.$store.getters.getShowCollectionPos)
+      this.$store.commit('setShowPOSCollection', true)
       this.isShowedPOSKeyLayout = true
       this.$store.commit('setShowPOSOptions', false)
     },

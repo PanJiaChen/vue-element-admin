@@ -73,8 +73,20 @@ export default {
   computed: {
     displayCurrency() {
       return this.$store.getters.getValueOfField({
-        containerUuid: this.containerUuid,
+        containerUuid: 'Collection-Convert-Amount',
         columnName: 'DisplayColumn_C_Currency_ID'
+      })
+    },
+    typeCurrency() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: 'Collection-Convert-Amount',
+        columnName: 'C_Currency_ID'
+      })
+    },
+    currencyUuid() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: 'Collection-Convert-Amount',
+        columnName: 'C_Currency_ID_UUID'
       })
     }
   },

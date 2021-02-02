@@ -73,7 +73,7 @@
                 </b>
               </el-link>
             </el-checkbox>
-            <el-button type="danger" icon="el-icon-close" @click="cancel" />
+            <el-button type="danger" icon="el-icon-close" @click="exit" />
             <el-button type="primary" :disabled="validPay || addPay" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
             <el-button type="success" :disabled="validateCompleteCollection" icon="el-icon-shopping-cart-full" />
           </samp>
@@ -233,14 +233,17 @@ export default {
   },
   computed: {
     validateCompleteCollection() {
-      if (this.order.grandTotal === this.pay) {
-        return false
-      } else if (this.isCashAmt >= this.change) {
-        return false
-      } else if (this.pay >= this.order.grandTotal && this.checked) {
-        return false
+      let collection
+      if (this.pay === this.order.grandTotal) {
+        collection = false
+      } else {
+        if (this.pay >= this.order.grandTotal && (this.isCashAmt >= this.change) || this.checked) {
+          collection = false
+        } else {
+          collection = true
+        }
       }
-      return true
+      return collection
     },
     fullCopper() {
       if ((this.change > this.isCashAmt) && this.pay > this.order.grandTotal) {
@@ -406,7 +409,7 @@ export default {
     },
     currencyUuid() {
       return this.$store.getters.getValueOfField({
-        containerUuid: this.containerUuid,
+        containerUuid: 'Collection',
         columnName: 'C_Currency_ID_UUID'
       })
     },
@@ -419,9 +422,12 @@ export default {
     multiplyRate() {
       return this.$store.getters.getMultiplyRate
     },
+    multiplyRateCollection() {
+      return this.$store.getters.getMultiplyRateCollection
+    },
     converCurrency() {
       return this.$store.getters.getValueOfField({
-        containerUuid: 'Collection-Convert-Amount',
+        containerUuid: 'Collection',
         columnName: 'C_Currency_ID_UUID'
       })
     },
@@ -442,7 +448,7 @@ export default {
       return true
     },
     fieldpending() {
-      return this.pending * this.multiplyRate
+      return this.pending * this.multiplyRateCollection
     }
   },
   watch: {
@@ -470,12 +476,13 @@ export default {
       }
       if (!this.isEmptyValue(value)) {
         this.$store.dispatch('conversionMultiplyRate', {
+          containerUuid: 'Collection',
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
           currencyFromUuid: this.currencyPoint.uuid,
           currencyToUuid: value
         })
       } else {
-        this.$store.commit('currencyMultiplyRate', 1)
+        this.$store.commit('currencyMultiplyRateCollection', 1)
       }
     },
     convertAllPayment(value) {
@@ -487,6 +494,7 @@ export default {
     converCurrency(value) {
       if (!this.isEmptyValue(value)) {
         this.$store.dispatch('conversionMultiplyRate', {
+          containerUuid: 'Collection',
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
           currencyFromUuid: this.currencyPoint.uuid,
           currencyToUuid: value
@@ -631,6 +639,9 @@ export default {
       this.defaultValueCurrency()
       this.$store.dispatch('conversionDivideRate', 1)
       this.$store.commit('currencyMultiplyRate', 1)
+    },
+    exit() {
+      this.$store.commit('setShowPOSCollection', false)
     },
     getPriceApplyingDiscount(price, discount) {
       if (this.isEmptyValue(price)) {

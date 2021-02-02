@@ -224,10 +224,12 @@ export default {
         containerUuid: this.metadata.containerUuid
       })
       values = this.convertValuesToSend(values)
-
-      this.$store.dispatch('listOrdersFromServer', {
-        ...values
-      })
+      const point = this.$store.getters.getPointOfSalesUuid
+      if (!this.isEmptyValue(point)) {
+        this.$store.dispatch('listOrdersFromServer', {
+          ...values
+        })
+      }
     },
     handleChangePage(newPage) {
       this.$store.dispatch('setOrdersListPageNumber', newPage)
