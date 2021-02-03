@@ -249,6 +249,9 @@ export default {
             action: row.uuid
           }
         }, () => {})
+        const posUuid = this.$store.getters.getCurrentPOS.uuid
+        const orderUuid = this.$route.query.action
+        this.$store.dispatch('listPayments', { posUuid, orderUuid })
       }
     },
     subscribeChanges() {

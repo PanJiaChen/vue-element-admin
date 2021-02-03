@@ -1,5 +1,11 @@
 
-import { requestGetConversionRate } from '@/api/ADempiere/form/point-of-sales.js'
+import {
+  requestGetConversionRate,
+  requestCreatePayment,
+  requestDeletePayment,
+  requestUpdatePayment,
+  requestListPayments
+} from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
 
@@ -9,7 +15,9 @@ const collection = {
     multiplyRate: 1,
     divideRate: 1,
     multiplyRateCollection: 1,
-    divideRateCollection: 1
+    divideRateCollection: 1,
+    listPayments: [],
+    tenderTypeDisplaye: []
   },
   mutations: {
     addPaymentBox(state, paymentBox) {
@@ -26,27 +34,51 @@ const collection = {
     },
     currencyDivideRateCollection(state, divideRateCollection) {
       state.divideRateCollection = divideRateCollection
+    },
+    setListPayments(state, list) {
+      state.listPayments = list
+    },
+    setTenderTypeDisplaye(state, tenderTypeDisplaye) {
+      state.tenderTypeDisplaye = tenderTypeDisplaye
     }
   },
   actions: {
     /**
      * creating boxes with the payment list
      */
-    setPaymentBox({ state, commit, getters }, params) {
+    setPaymentBox({ state, commit, getters }, {
+      quantityCahs,
+      bankUuid,
+      referenceNo,
+      description,
+      amount,
+      paymentDate,
+      tenderTypeCode,
+      currencyUuid
+    }) {
       const payments = getters.getPaymentBox.find(element => {
-        if (params.tenderType === 'X' && element.currency.id === params.currency.id) {
+        if (tenderTypeCode === 'X' && element.currencyUuid === currencyUuid) {
           return element
         }
       })
       if (isEmptyValue(payments)) {
-        commit('addPaymentBox', params)
+        commit('addPaymentBox', {
+          quantityCahs,
+          bankUuid,
+          referenceNo,
+          description,
+          amount,
+          paymentDate,
+          tenderTypeCode,
+          currencyUuid
+        })
       } else {
         const addPayment = getters.getPaymentBox.map(item => {
-          if ((item.tenderType === params.tenderType) && item.currency.id === params.currency.id) {
+          if ((item.tenderTypeCode === tenderTypeCode) && item.currencyUuid === currencyUuid) {
             return {
               ...item,
-              payAmt: item.payAmt + params.payAmt,
-              quantityCahs: item.quantityCahs + params.quantityCahs
+              payAmt: item.amount + amount,
+              quantityCahs: item.quantityCahs + quantityCahs
             }
           }
           return item
@@ -120,6 +152,121 @@ const collection = {
     },
     changeDivideRate({ commit }, divideRate) {
       commit('currencyDivideRate', divideRate)
+    },
+    createPayments({ dispatch, state, getters }, {
+      posUuid,
+      orderUuid,
+      invoiceUuid,
+      bankUuid,
+      referenceNo,
+      description,
+      amount,
+      paymentDate,
+      tenderTypeCode,
+      currencyUuid
+    }) {
+      const listPayments = getters.getListPayments.find(payment => {
+        if ((payment.tenderTypeCode === tenderTypeCode) && (payment.tenderTypeCode === 'X') && (currencyUuid === payment.currencyUuid)) {
+          return payment
+        }
+        return undefined
+      })
+      if (isEmptyValue(listPayments)) {
+        requestCreatePayment({
+          posUuid,
+          orderUuid,
+          invoiceUuid,
+          bankUuid,
+          referenceNo,
+          description,
+          amount,
+          paymentDate,
+          tenderTypeCode,
+          currencyUuid
+        })
+          .then(response => {
+            const orderUuid = response.order_uuid
+            dispatch('listPayments', { orderUuid })
+          })
+          .catch(error => {
+            console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
+            showMessage({
+              type: 'error',
+              message: error.message,
+              showClose: true
+            })
+          })
+      } else {
+        requestUpdatePayment({
+          paymentUuid: listPayments.uuid,
+          bankUuid,
+          referenceNo,
+          description,
+          amount: listPayments.amount + amount,
+          paymentDate,
+          tenderTypeCode
+        })
+          .then(response => {
+            const orderUuid = response.order_uuid
+            dispatch('listPayments', { orderUuid })
+          })
+          .catch(error => {
+            console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
+            showMessage({
+              type: 'error',
+              message: error.message,
+              showClose: true
+            })
+          })
+      }
+    },
+    deletetPayments({ dispatch }, {
+      orderUuid,
+      paymentUuid
+    }) {
+      console.log(paymentUuid, orderUuid)
+      requestDeletePayment({
+        paymentUuid
+      })
+        .then(response => {
+          console.log(response.listPayments)
+          dispatch('listPayments', { orderUuid })
+        })
+        .catch(error => {
+          console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
+          showMessage({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+    },
+    listPayments({ commit }, { posUuid, orderUuid }) {
+      requestListPayments({
+        posUuid,
+        orderUuid
+      })
+        .then(response => {
+          console.log(response.listPayments)
+          commit('setListPayments', response.listPayments)
+        })
+        .catch(error => {
+          console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
+          showMessage({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+    },
+    tenderTypeDisplaye({ commit }, tenderType) {
+      const displayTenderType = tenderType.map(item => {
+        return {
+          tenderTypeCode: item.id,
+          tenderTypeDisplay: item.label
+        }
+      })
+      commit('setTenderTypeDisplaye', displayTenderType)
     }
   },
   getters: {
@@ -137,6 +284,13 @@ const collection = {
     },
     getDivideRateCollection: (state) => {
       return state.divideRateCollection
+    },
+    getListPayments: (state) => {
+      console.log(state.listPayments)
+      return state.listPayments
+    },
+    getTenderTypeDisplaye: (state) => {
+      return state.tenderTypeDisplaye
     }
   }
 }

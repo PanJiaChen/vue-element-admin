@@ -393,7 +393,9 @@ export default {
         //   documentStatus: {},
         //   salesRepresentative: this.currentPOS.salesRepresentative
         //
+        this.$store.commit('setListPayments', [])
         this.$store.dispatch('listOrderLine', [])
+        this.$store.commit('setShowPOSCollection', false)
       })
     },
     printOrder() {

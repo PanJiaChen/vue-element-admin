@@ -6,6 +6,7 @@ import {
 
 /**
  * method in api/price-checking.js as requestGetProductPrice
+ * @author elsiosanchez <elsiosanches@gmail.com>
  */
 export { requestGetProductPrice as findProduct } from '@/api/ADempiere/form/price-checking.js'
 export { requestGetConversionRate } from '@/api/ADempiere/system-core.js'
@@ -434,4 +435,111 @@ export function requestCashClosing({
   posUuid
 }) {
   console.info(`Cash closing with POS id ${posId}, and uuid ${posUuid}`)
+}
+
+// Create Payment
+
+export function requestCreatePayment({
+  posUuid,
+  orderUuid,
+  invoiceUuid,
+  bankUuid,
+  referenceNo,
+  description,
+  amount,
+  paymentDate,
+  tenderTypeCode,
+  currencyUuid
+}) {
+  return requestRest({
+    url: '/pos/create-payment',
+    data: {
+      pos_uuid: posUuid,
+      order_uuid: orderUuid,
+      invoice_uuid: invoiceUuid,
+      bank_uuid: bankUuid,
+      reference_no: referenceNo,
+      description: description,
+      amount: amount,
+      payment_date: paymentDate,
+      tender_type_code: tenderTypeCode,
+      currency_uuid: currencyUuid
+    }
+  })
+    .then(evaluateResponse)
+    .then(createPaymentResponse => {
+      return createPaymentResponse
+    })
+}
+
+// Update Payment
+
+export function requestUpdatePayment({
+  paymentUuid,
+  bankUuid,
+  referenceNo,
+  description,
+  amount,
+  paymentDate,
+  tenderTypeCode
+}) {
+  return requestRest({
+    url: '/pos/update-payment',
+    data: {
+      payment_uuid: paymentUuid,
+      bank_uuid: bankUuid,
+      reference_no: referenceNo,
+      description: description,
+      amount: amount,
+      payment_date: paymentDate,
+      tender_type_code: tenderTypeCode
+    }
+  })
+    .then(evaluateResponse)
+    .then(updatePaymentResponse => {
+      return updatePaymentResponse
+    })
+}
+
+// Delete Payment
+
+export function requestDeletePayment({
+  paymentUuid
+}) {
+  return requestRest({
+    url: '/pos/delete-payment',
+    data: {
+      payment_uuid: paymentUuid
+    }
+  })
+    .then(evaluateResponse)
+    .then(deletePaymentResponse => {
+      return deletePaymentResponse
+    })
+}
+
+// List Payments
+
+export function requestListPayments({
+  posUuid,
+  orderUuid
+}) {
+  return requestRest({
+    url: '/pos/list-payments',
+    data: {
+      pos_uuid: posUuid,
+      order_uuid: orderUuid
+    }
+  })
+    .then(evaluateResponse)
+    .then(listPaymentsResponse => {
+      const { paymentsMethod } = require('@/utils/ADempiere/apiConverts/pos.js')
+      return {
+        nextPageToken: listPaymentsResponse.next_page_token,
+        recordCount: listPaymentsResponse.record_count,
+        listPayments: listPaymentsResponse.records.map(payments => {
+          return paymentsMethod(payments)
+        })
+      }
+    })
 }

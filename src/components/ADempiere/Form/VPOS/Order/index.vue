@@ -450,8 +450,13 @@ export default {
       this.newOrder()
     },
     openCollectionPanel() {
+      this.isShowedPOSKeyLayout = !this.isShowedPOSKeyLayout
       this.$store.commit('setShowPOSCollection', true)
-      this.isShowedPOSKeyLayout = true
+      // this.isShowedPOSKeyLayout = true
+      const posUuid = this.$store.getters.getCurrentPOS.uuid
+      const orderUuid = this.$route.query.action
+      this.$store.dispatch('listPayments', { posUuid, orderUuid })
+      this.isShowedPOSKeyLaout = !this.isShowedPOSKeyLaout
       this.$store.commit('setShowPOSOptions', false)
     },
     newOrder() {

@@ -136,3 +136,23 @@ export function convertResourceReference(resourceReferenceToConvert) {
   }
   return undefined
 }
+export function paymentsMethod(payments) {
+  if (payments) {
+    return {
+      amount: payments.amount,
+      bankUuid: payments.bank_uuid,
+      businessPartner: payments.business_partner,
+      currencyUuid: payments.currency_uuid,
+      description: payments.description,
+      documentNo: payments.document_no,
+      documentStatus: payments.document_status,
+      id: payments.id,
+      orderUuid: payments.order_uuid,
+      paymentDate: payments.payment_date,
+      referenceNo: payments.reference_no,
+      tenderTypeCode: payments.tender_type_code,
+      uuid: payments.uuid
+    }
+  }
+  return undefined
+}
