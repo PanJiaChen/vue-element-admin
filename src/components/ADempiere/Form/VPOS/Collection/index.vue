@@ -63,17 +63,8 @@
             </div>
           </el-card>
           <samp style="float: right;padding-right: 10px;">
-            <el-checkbox v-show="fullCopper" v-model="checked">
-              <el-link
-                type="danger"
-                class="stylefullPayment"
-              >
-                <b>
-                  {{ $t('form.pos.collect.fullPayment') }}
-                </b>
-              </el-link>
-            </el-checkbox>
             <el-button type="danger" icon="el-icon-close" @click="exit" />
+            <el-button type="info" icon="el-icon-minus" @click="undoPatment" />
             <el-button type="primary" :disabled="validPay || addPay" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
             <el-button type="success" :disabled="validateCompleteCollection" icon="el-icon-shopping-cart-full" />
           </samp>
@@ -228,7 +219,9 @@ export default {
       allPayCurrency: 0,
       labelTenderType: '',
       defaultLabel: '',
-      fieldsList: fieldsListCollection
+      fieldsList: fieldsListCollection,
+      sendToServer: false,
+      amontSend: 0
     }
   },
   computed: {
@@ -265,7 +258,12 @@ export default {
       return false
     },
     listPayments() {
-      return this.$store.getters.getListPayments
+      const listLocal = this.$store.getters.getPaymentBox
+      const listServer = this.$store.getters.getListPayments
+      if (!this.sendToServer) {
+        return listServer.reverse()
+      }
+      return listLocal
     },
     paymentBox() {
       const payment = this.isPaymentBox.filter(pay => {
@@ -451,7 +449,13 @@ export default {
       return true
     },
     fieldpending() {
-      return this.pending * this.multiplyRateCollection
+      return this.pending
+    },
+    displayCurrency() {
+      return this.$store.getters.getListCurrency
+    },
+    convert() {
+      return this.$store.getters.getConvertionPayment
     }
   },
   watch: {
@@ -522,7 +526,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.tenderTypeDisplaye()
+      this.convertCurrency()
     }, 1000)
   },
   methods: {
@@ -547,7 +551,7 @@ export default {
         containerUuid,
         columnName: 'C_Bank_ID_UUID'
       })
-      const amount = this.$store.getters.getValueOfField({
+      this.amontSend = this.$store.getters.getValueOfField({
         containerUuid,
         columnName: 'PayAmt'
       })
@@ -567,18 +571,45 @@ export default {
         containerUuid,
         columnName: 'C_Currency_ID_UUID'
       })
-
-      this.$store.dispatch('createPayments', {
-        posUuid,
-        orderUuid,
-        bankUuid,
-        referenceNo,
-        amount,
-        paymentDate,
-        tenderTypeCode,
-        currencyUuid
+      const currencyId = this.$store.getters.getValueOfField({
+        containerUuid,
+        columnName: 'C_Currency_ID'
       })
+      const currencyToPay = this.isEmptyValue(currencyUuid) ? currencyId : currencyUuid
+      if (this.currencyDisplay(currencyToPay).currencyUuid !== this.currencyPoint.uuid) {
+        this.amontSend = this.convert.divideRate * this.amontSend
+      }
+      if (this.sendToServer) {
+        this.$store.dispatch('setPaymentBox', {
+          posUuid,
+          orderUuid,
+          bankUuid,
+          referenceNo,
+          amount: this.amontSend,
+          paymentDate,
+          tenderTypeCode,
+          currencyUuid
+        })
+      } else {
+        this.$store.dispatch('createPayments', {
+          posUuid,
+          orderUuid,
+          bankUuid,
+          referenceNo,
+          amount: this.amontSend,
+          paymentDate,
+          tenderTypeCode,
+          currencyUuid: this.currencyDisplay(currencyToPay).currencyUuid
+        })
+      }
+      this.amontSend = 0
       this.addCollect()
+    },
+    updateServer(listPaymentsLocal) {
+      // const listLocal = this.$store.getters.getPaymentBox
+      const posUuid = this.$store.getters.getCurrentPOS.uuid
+      const orderUuid = this.$route.query.action
+      this.$store.dispatch('uploadOrdersToServer', { listPaymentsLocal, posUuid, orderUuid })
     },
     addCollect() {
       this.fieldsList.forEach(element => {
@@ -693,17 +724,33 @@ export default {
         value: this.$t('form.pos.collect.TenderType.cash')
       })
     },
-    tenderTypeDisplaye() {
-      if (!this.isEmptyValue(this.fieldsList)) {
-        const tenderType = this.fieldsList[1].reference
-        this.$store.dispatch('getLookupListFromServer', {
-          tableName: tenderType.tableName,
-          query: tenderType.query
-        })
-          .then(response => {
-            this.$store.dispatch('tenderTypeDisplaye', response)
-          })
+    currencyDisplay(currency) {
+      const display = this.displayCurrency.find(item => {
+        if (item.currencyUuid === currency || (item.currencyId === currency)) {
+          return item
+        }
+      })
+      if (display) {
+        return display
       }
+      return currency
+    },
+    convertCurrency() {
+      const convertCurrency = this.currencyDisplay(100)
+      this.$store.dispatch('convertionPayment', {
+        conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+        currencyFromUuid: this.currencyPoint.uuid,
+        currencyToUuid: convertCurrency.currencyUuid
+      })
+    },
+    undoPatment() {
+      const list = this.listPayments[this.listPayments.length - 1]
+      const orderUuid = list.orderUuid
+      const paymentUuid = list.uuid
+      this.$store.dispatch('deletetPayments', {
+        orderUuid,
+        paymentUuid
+      })
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {

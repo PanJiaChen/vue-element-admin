@@ -18,7 +18,14 @@
                   />
                   <div style="padding-right: 10px; padding-top: 10%;">
                     <div class="top clearfix">
-                      <span>{{ tenderTypeDisplay(value.tenderTypeCode) }}</span>
+                      <span>
+                        {{
+                          tenderTypeFind({
+                            currentPayment: value.tenderTypeCode,
+                            listTypePayment: typesPayment
+                          })
+                        }}
+                      </span>
                     </div>
                     <div class="bottom clearfix" style="margin-top: 0px !important!">
                       <el-button
@@ -37,17 +44,41 @@
                       >
                         {{ formatDate(value.paymentDate) }}
                       </el-button>
-
-                      <div slot="header" class="clearfix">
-                        <p class="total" :style="value.currencyUuid === currency.id ? 'padding-top: 5%;' : ''">
-                          <b style="float: right; padding-bottom: 10px">
+                      <div
+                        v-if="currencyFind({
+                          currencyCurrent: value.currencyUuid,
+                          listCurrency: listCurrency,
+                          defaultCurrency: currency
+                        }).currencyDisplay !== currency.iSOCode"
+                        slot="header"
+                        class="clearfix"
+                        style="padding-bottom: 20px;"
+                      >
+                        <p class="total">
+                          <b style="float: right;">
                             {{ formatPrice(value.amount, currency.iSOCode) }}
                           </b>
                         </p>
                         <br>
-                        <p v-if="value.currencyUuid !== currency.id" class="total">
-                          <b style="float: right; padding-bottom: 10px">
-                            {{ formatPrice(value.quantityCahs) }}
+                        <p class="total">
+                          <b style="float: right;">
+                            {{
+                              formatPrice(
+                                (amountConvertion(value)),
+                                currencyFind({
+                                  currencyCurrent: value.currencyUuid,
+                                  listCurrency: listCurrency,
+                                  defaultCurrency: currency
+                                }).currencyDisplay
+                              )
+                            }}
+                          </b>
+                        </p>
+                      </div>
+                      <div v-else slot="header" class="clearfix">
+                        <p class="total">
+                          <b style="float: right;padding-top: 18px;padding-bottom: 20px;">
+                            {{ formatPrice(value.amount, currency.iSOCode) }}
                           </b>
                         </p>
                       </div>
@@ -81,9 +112,20 @@ export default {
       default: undefined
     }
   },
+  data() {
+    return {
+      conevertion: 0
+    }
+  },
   computed: {
-    label() {
-      return this.$store.getters.getTenderTypeDisplaye
+    typesPayment() {
+      return this.$store.getters.getListsPaymentTypes
+    },
+    listCurrency() {
+      return this.$store.getters.getListCurrency
+    },
+    conevertionAmount() {
+      return this.$store.getters.getConvertionPayment
     }
   },
   methods: {
@@ -139,16 +181,8 @@ export default {
         paymentUuid
       })
     },
-    tenderTypeDisplay(payments) {
-      const display = this.label.find(item => {
-        if (item.tenderTypeCode === payments) {
-          return item.tenderTypeDisplay
-        }
-      })
-      if (display) {
-        return display.tenderTypeDisplay
-      }
-      return payments
+    amountConvertion(payment) {
+      return payment.amount * this.conevertionAmount.multiplyRate
     }
   }
 }

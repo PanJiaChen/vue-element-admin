@@ -6,5 +6,7 @@ export {
   isEmptyValue,
   calculationValue,
   clearVariables,
+  currencyFind,
+  tenderTypeFind,
   typeValue
 } from '@/utils/ADempiere/valueUtils.js'

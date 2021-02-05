@@ -1,33 +1,5 @@
 <template>
   <div>
-    <el-popover
-      ref="businessPartnerCreate"
-      v-model="showsPopovers.isShowCreate"
-      placement="right"
-      width="400"
-      trigger="click"
-    >
-      <business-partner-create
-        v-if="showsPopovers.isShowCreate"
-        :parent-metadata="parentMetadata"
-        :shows-popovers="showsPopovers"
-      />
-    </el-popover>
-
-    <el-popover
-      ref="businessPartnersList"
-      v-model="showsPopovers.isShowList"
-      placement="right"
-      width="800"
-      trigger="click"
-    >
-      <!-- v-if="showsPopovers.isShowList" -->
-      <business-partners-list
-        :parent-metadata="parentMetadata"
-        :shows-popovers="showsPopovers"
-      />
-    </el-popover>
-
     <el-form-item>
       <template slot="label">
         {{ $t('form.pos.order.BusinessPartnerCreate.businessPartner') }}
@@ -73,6 +45,32 @@
         </template>
       </el-autocomplete>
     </el-form-item>
+    <el-popover
+      ref="businessPartnerCreate"
+      v-model="showsPopovers.isShowCreate"
+      placement="right"
+      width="400"
+      trigger="click"
+    >
+      <business-partner-create
+        v-if="showsPopovers.isShowCreate"
+        :parent-metadata="parentMetadata"
+        :shows-popovers="showsPopovers"
+      />
+    </el-popover>
+
+    <el-popover
+      ref="businessPartnersList"
+      v-model="showsPopovers.isShowList"
+      placement="right"
+      width="800"
+      trigger="click"
+    >
+      <business-partners-list
+        :parent-metadata="parentMetadata"
+        :shows-popovers="showsPopovers"
+      />
+    </el-popover>
   </div>
 </template>
 

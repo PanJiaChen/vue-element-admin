@@ -251,6 +251,7 @@ export const recursiveTreeSearch = ({
 
 /**
  * Parsed value to component type
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
  * @param {mixed} value, value to parsed
  * @param {string} componentPath
  * @param {number} displayType, reference in ADempiere
@@ -358,6 +359,7 @@ export function parsedValueComponent({
 
 /**
  * add a tab depending on the status of the document
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
  * @param {string} tag, document status key
  */
 export function tagStatus(tag) {
@@ -405,7 +407,8 @@ export function tagStatus(tag) {
 
 /**
  * add a tab depending on the status of the document
- * @param {string} tag, document status key
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
+ * @param {string} iconElment, icon the Elment
  */
 export function iconStatus(iconElment) {
   let icon
@@ -479,7 +482,51 @@ export function calculationValue(value, event) {
     }
   }
 }
+/**
+ * Search in the currency lists for the current currency
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
+ * @param {string} currencyCurrent current currency to search
+ * @param {array} listCurrency Currency Listing
+ * @param {object} currencyCurrent Default Currency
+ */
+export function currencyFind({
+  currencyCurrent,
+  listCurrency,
+  defaultCurrency
+}) {
+  if (!isEmptyValue(listCurrency)) {
+    const currency = listCurrency.find(item => {
+      if (item.currencyUuid === currencyCurrent) {
+        return item
+      }
+    })
+    if (currency) {
+      return currency
+    }
+  }
+  return defaultCurrency.iSOCode
+}
+/**
+ * Search the Payment List for the Current Payment
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
+ * @param {string} currentPayment Current Payment
+ * @param {array} listTypePayment Payment Type Listings
+ */
 
+export function tenderTypeFind({
+  currentPayment,
+  listTypePayment
+}) {
+  const payment = listTypePayment.find(item => {
+    if (item.tenderTypeCode === currentPayment) {
+      return item.tenderTypeDisplay
+    }
+  })
+  if (payment) {
+    return payment.tenderTypeDisplay
+  }
+  return currentPayment
+}
 export function clearVariables() {
   partialValue = ''
 }
