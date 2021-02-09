@@ -242,7 +242,7 @@ function getDateFormat({
     return format
   }
   //  Else
-  const languageDefinition = store.getters['user/getCurrentLanguageDefinition']
+  const languageDefinition = store.getters['getCurrentLanguageDefinition']
   if (languageDefinition) {
     return isTime ? languageDefinition.timePattern : languageDefinition.datePattern
   }
