@@ -10,26 +10,30 @@
     close-on-click-modal
   >
     {{ modalMetadata.description }}<br><br>
-    <sequence-order
-      v-if="modalMetadata.isSortTab"
-      key="order"
-      :parent-uuid="parentUuid"
-      :container-uuid="modalMetadata.uuid"
-      :order="modalMetadata.sortOrderColumnName"
-      :included="modalMetadata.sortYesNoColumnName"
-      :identifiers-list="modalMetadata.identifierColumns"
-      :key-column="modalMetadata.keyColumn"
-    />
-    <template v-else>
-      <main-panel
-        v-if="!isEmptyValue(modalMetadata.uuid)"
-        key="main-panel"
+    <div
+      v-if="panelType !== 'From'"
+    >
+      <sequence-order
+        v-if="modalMetadata.isSortTab"
+        key="order"
         :parent-uuid="parentUuid"
         :container-uuid="modalMetadata.uuid"
-        :metadata="modalMetadata"
-        :panel-type="modalMetadata.panelType"
+        :order="modalMetadata.sortOrderColumnName"
+        :included="modalMetadata.sortYesNoColumnName"
+        :identifiers-list="modalMetadata.identifierColumns"
+        :key-column="modalMetadata.keyColumn"
       />
-    </template>
+      <template v-else>
+        <main-panel
+          v-if="!isEmptyValue(modalMetadata.uuid)"
+          key="main-panel"
+          :parent-uuid="parentUuid"
+          :container-uuid="modalMetadata.uuid"
+          :metadata="modalMetadata"
+          :panel-type="modalMetadata.panelType"
+        />
+      </template>
+    </div>
     <span slot="footer" class="dialog-footer">
       <el-button
         @click="closeDialog"
@@ -144,44 +148,59 @@ export default {
         this.closeDialog()
       } else if (action !== undefined) {
         const fieldNotReady = this.$store.getters.isNotReadyForSubmit(action.uuid)
-        if (!fieldNotReady) {
-          this.closeDialog()
-          const porcesTabla = this.$store.getters.getProcessSelect.processTablaSelection
-          const selection = this.$store.getters.getProcessSelect
-          if (porcesTabla) {
-            // selection.forEach(element => {
-            this.$store.dispatch('selectionProcess', {
-              action: action, // process metadata
-              parentUuid: this.parentUuid,
-              containerUuid: this.containerUuid,
-              panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-              reportFormat: this.reportExportType,
-              recordUuidSelection: selection,
-              isProcessTableSelection: true,
-              routeToDelete: this.$route
-            })
-            // })
-          } else {
-            this.$store.dispatch('startProcess', {
-              action: action, // process metadata
-              parentUuid: this.parentUuid,
-              isProcessTableSelection: false,
-              containerUuid: this.containerUuid,
-              panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
-              reportFormat: this.reportExportType,
-              routeToDelete: this.$route
-            })
-              .catch(error => {
-                console.warn(error)
-              })
-          }
-        } else {
-          this.showNotification({
-            type: 'warning',
-            title: this.$t('notifications.emptyValues'),
-            name: '<b>' + fieldNotReady.name + '.</b> ',
-            message: this.$t('notifications.fieldMandatory')
+        if (this.panelType === 'From') {
+          this.$store.dispatch('processPos', {
+            action: action, // process metadata
+            parentUuid: this.parentUuid,
+            idProcess: this.$store.getters.getFindOrder.id,
+            containerUuid: this.containerUuid,
+            panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+            parametersList: this.$store.getters.getPosParameters
           })
+            .catch(error => {
+              console.warn(error)
+            })
+          this.closeDialog()
+        } else {
+          if (!fieldNotReady) {
+            this.closeDialog()
+            const porcesTabla = this.$store.getters.getProcessSelect.processTablaSelection
+            const selection = this.$store.getters.getProcessSelect
+            if (porcesTabla) {
+              // selection.forEach(element => {
+              this.$store.dispatch('selectionProcess', {
+                action: action, // process metadata
+                parentUuid: this.parentUuid,
+                containerUuid: this.containerUuid,
+                panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+                reportFormat: this.reportExportType,
+                recordUuidSelection: selection,
+                isProcessTableSelection: true,
+                routeToDelete: this.$route
+              })
+              // })
+            } else {
+              this.$store.dispatch('startProcess', {
+                action: action, // process metadata
+                parentUuid: this.parentUuid,
+                isProcessTableSelection: false,
+                containerUuid: this.containerUuid,
+                panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
+                reportFormat: this.reportExportType,
+                routeToDelete: this.$route
+              })
+                .catch(error => {
+                  console.warn(error)
+                })
+            }
+          } else {
+            this.showNotification({
+              type: 'warning',
+              title: this.$t('notifications.emptyValues'),
+              name: '<b>' + fieldNotReady.name + '.</b> ',
+              message: this.$t('notifications.fieldMandatory')
+            })
+          }
         }
       }
     }

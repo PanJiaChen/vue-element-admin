@@ -147,7 +147,7 @@ export default {
         processResult = {
           ...processResult,
           menuParentUuid,
-          processIdPath: routeToDelete.path,
+          processIdPath: isEmptyValue(routeToDelete) ? '' : routeToDelete.path,
           printFormatUuid: action.printFormatUuid,
           // process attributes
           action: processDefinition.name,
@@ -1137,5 +1137,153 @@ export default {
     if (!isEmptyValue(reportFormat)) {
       commit('changeFormatReport', reportFormat)
     }
+  },
+  /**
+   * Ejecutar Procesos del POS
+   */
+  processPos({ commit, state, dispatch, getters, rootGetters }, {
+    parentUuid,
+    containerUuid,
+    panelType,
+    action,
+    parametersList,
+    idProcess,
+    isActionDocument,
+    menuParentUuid,
+    routeToDelete
+  }) {
+    return new Promise((resolve, reject) => {
+      const processDefinition = !isEmptyValue(isActionDocument) ? action : rootGetters.getProcess(action.uuid)
+      if (isEmptyValue(parametersList)) {
+        parametersList = rootGetters.getParametersToServer({
+          containerUuid: processDefinition.uuid
+        })
+      }
+
+      const isSession = !isEmptyValue(getToken())
+      let procesingMessage = {
+        close: () => false
+      }
+      if (isSession) {
+        procesingMessage = showNotification({
+          title: language.t('notifications.processing'),
+          message: processDefinition.name,
+          summary: processDefinition.description,
+          type: 'info'
+        })
+      }
+      const timeInitialized = (new Date()).getTime()
+      let processResult = {
+        // panel attributes from where it was executed
+        parentUuid,
+        containerUuid,
+        panelType,
+        lastRun: timeInitialized,
+        parametersList,
+        logs: [],
+        isError: false,
+        isProcessing: true,
+        summary: '',
+        resultTableName: '',
+        output: {
+          uuid: '',
+          name: '',
+          description: '',
+          fileName: '',
+          output: '',
+          outputStream: '',
+          reportType: ''
+        }
+      }
+      if (!isEmptyValue(isActionDocument)) {
+        processResult = {
+          ...processResult,
+          processUuid: action.uuid,
+          processId: action.id,
+          processName: 'Procesar Orden',
+          parameters: parametersList
+        }
+      } else {
+        // Run process on server and wait for it for notify
+        // uuid of process
+        processResult = {
+          ...processResult,
+          menuParentUuid,
+          processIdPath: isEmptyValue(routeToDelete) ? '' : routeToDelete.path,
+          printFormatUuid: action.printFormatUuid,
+          // process attributes
+          action: processDefinition.name,
+          name: processDefinition.name,
+          description: processDefinition.description,
+          instanceUuid: '',
+          processUuid: processDefinition.uuid,
+          processId: processDefinition.id,
+          processName: processDefinition.processName,
+          parameters: parametersList,
+          isReport: processDefinition.isReport
+        }
+      }
+      commit('addInExecution', processResult)
+      requestRunProcess({
+        uuid: processDefinition.uuid,
+        recordId: idProcess,
+        parametersList
+      })
+        .then(runProcessResponse => {
+          const { output } = runProcessResponse
+          let logList = []
+          if (!isEmptyValue(runProcessResponse.logsList)) {
+            logList = runProcessResponse.logsList
+          }
+
+          const link = {
+            href: undefined,
+            download: undefined
+          }
+          // assign new attributes
+          Object.assign(processResult, {
+            ...runProcessResponse,
+            url: link.href,
+            download: link.download,
+            logs: logList,
+            output
+          })
+          resolve(processResult)
+          if (!isEmptyValue(processResult.output)) {
+            dispatch('setReportTypeToShareLink', processResult.output.reportType)
+          }
+        })
+        .catch(error => {
+          Object.assign(processResult, {
+            isError: true,
+            message: error.message,
+            isProcessing: false
+          })
+          console.warn(`Error running the process ${error.message}. Code: ${error.code}.`)
+          reject(error)
+        })
+        .finally(() => {
+          commit('addNotificationProcess', processResult)
+          dispatch('finishProcess', {
+            processOutput: processResult,
+            procesingMessage,
+            routeToDelete
+          })
+
+          commit('deleteInExecution', {
+            containerUuid
+          })
+
+          dispatch('setProcessTable', {
+            valueRecord: 0,
+            tableName: '',
+            processTable: false
+          })
+          dispatch('setProcessSelect', {
+            finish: true
+          })
+          dispatch('updateOrderPos', true)
+        })
+    })
   }
 }

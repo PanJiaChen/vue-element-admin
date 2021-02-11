@@ -321,7 +321,9 @@ export default {
           cancelSaleTransaction: 'Anular Transacción de Venta',
           createPos: 'Crear Retiro de Punto de Venta',
           print: 'Imprimir Documento',
-          cancelOrder: 'Cancelar Orden'
+          cancelOrder: 'Cancelar Orden',
+          copyOrderLine: 'Copiar Lineas de la Orden',
+          copyOrder: 'Copiar Orden'
         },
         cashManagement: {
           title: 'Gestión de Caja',

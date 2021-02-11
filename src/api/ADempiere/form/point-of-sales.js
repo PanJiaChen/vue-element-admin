@@ -125,18 +125,20 @@ export function requestGetOrder(orderUuid) {
 
 // Create order from POS
 export function requestDeleteOrder({
-  posUuid,
-  customerUuid,
-  documentTypeUuid,
-  salesRepresentativeUuid
+  orderUuid
+  // posUuid,
+  // customerUuid,
+  // documentTypeUuid,
+  // salesRepresentativeUuid
 }) {
   return requestRest({
     url: '/pos/delete-order',
     data: {
-      pos_uuid: posUuid,
-      customer_uuid: customerUuid,
-      document_type_uuid: documentTypeUuid,
-      sales_representative_uuid: salesRepresentativeUuid
+      order_uuid: orderUuid
+      // pos_uuid: posUuid,
+      // customer_uuid: customerUuid,
+      // document_type_uuid: documentTypeUuid,
+      // sales_representative_uuid: salesRepresentativeUuid
     }
   })
     .then(evaluateResponse)

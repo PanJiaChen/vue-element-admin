@@ -294,11 +294,6 @@ const collection = {
         })
         .catch(error => {
           console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
-          showMessage({
-            type: 'error',
-            message: error.message,
-            showClose: true
-          })
         })
     },
     tenderTypeDisplaye({ commit }, tenderType) {

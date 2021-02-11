@@ -26,7 +26,9 @@ const initStateUtils = {
     isLoaded: false
   },
   splitWidthRight: 3,
-  splitWidthLeft: 3
+  splitWidthLeft: 3,
+  parametersProcessPos: [],
+  updateOrder: false
 }
 
 export default {
@@ -89,6 +91,12 @@ export default {
     },
     setSplitWidthLeft(state, splitWidthLeft) {
       state.splitWidthLeft = splitWidthLeft
+    },
+    parametersProcessPos(state, params) {
+      state.parametersProcessPos = params
+    },
+    setUpdateOrder(state, order) {
+      state.updateOrder = order
     }
   },
   actions: {
@@ -146,6 +154,12 @@ export default {
     },
     changeWidthLeft({ commit }, newWidthLeft) {
       commit('setSplitWidthLeft', newWidthLeft)
+    },
+    addParametersProcessPos({ commit }, params) {
+      commit('parametersProcessPos', params)
+    },
+    updateOrderPos({ commit }, params) {
+      commit('setUpdateOrder', params)
     }
   },
   getters: {
@@ -209,6 +223,12 @@ export default {
     },
     getWidthLeft: (state) => {
       return state.splitWidthLeft
+    },
+    getPosParameters: (state) => {
+      return state.parametersProcessPos
+    },
+    getUpdateOrderPos: (state) => {
+      return state.updateOrder
     }
   }
 }

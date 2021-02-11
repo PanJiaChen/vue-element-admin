@@ -10,6 +10,7 @@ import {
   formatPrice,
   formatQuantity
 } from '@/utils/ADempiere/valueFormat.js'
+import posProcess from '@/utils/ADempiere/constants/posProcess'
 
 export default {
   name: 'POSMixin',
@@ -51,7 +52,8 @@ export default {
         quantityAvailable: 0
       },
       edit: false,
-      displayType: ''
+      displayType: '',
+      process: posProcess
     }
   },
   computed: {
@@ -80,7 +82,18 @@ export default {
         }
       }
 
-      return this.$store.getters.getFindOrder
+      return {
+        documentType: {},
+        documentStatus: {
+          value: ''
+        },
+        totalLines: 0,
+        grandTotal: 0,
+        salesRepresentative: {},
+        businessPartner: {
+          value: ''
+        }
+      }
     },
     currentPoint() {
       return this.$store.getters.getCurrentPOS
@@ -103,6 +116,9 @@ export default {
         return currentPOS.templateBusinessPartner
       }
       return false
+    },
+    updateOrderProcessPos() {
+      return this.$store.getters.getUpdateOrderPos
     }
   },
   watch: {
@@ -129,6 +145,12 @@ export default {
       if (bPartnerToSet) {
         this.setBusinessPartner(bPartnerToSet)
       }
+    },
+    updateOrderProcessPos(value) {
+      if (value) {
+        this.reloadOrder(true)
+        this.$store.dispatch('updateOrderPos', false)
+      }
     }
   },
   created() {
@@ -141,11 +163,16 @@ export default {
         this.listOrderLines(this.currentOrder)
       }
     }
-
+    this.findProcess(this.process)
     this.unsubscribe = this.subscribeChanges()
   },
   beforeDestroy() {
     this.unsubscribe()
+  },
+  mounted() {
+    if (this.isEmptyValue(this.currentOrder)) {
+      this.reloadOrder(true, this.$route.query.action)
+    }
   },
   methods: {
     formatDate,
@@ -295,7 +322,6 @@ export default {
 
         // user session
         const salesRepresentativeUuid = this.$store.getters['user/getUserUuid']
-
         requestCreateOrder({
           posUuid,
           customerUuid,
@@ -342,12 +368,11 @@ export default {
             orderUuid = this.$store.getters.getOrder.uuid // this.currentOrder.uuid
           }
         }
-
         if (!this.isEmptyValue(orderUuid)) {
           requestGetOrder(orderUuid)
             .then(orderResponse => {
-              this.fillOrder(orderResponse)
               this.$store.dispatch('currentOrder', orderResponse)
+              this.fillOrder(orderResponse)
               this.listOrderLines(orderResponse)
             })
             .catch(error => {
@@ -449,7 +474,6 @@ export default {
       this.$refs.linesTable.setCurrentRow(this.listOrderLine[0])
     },
     shortcutKeyMethod(event) {
-      console.log(event.srcKey)
       switch (event.srcKey) {
         // case 'options':
         case 'up':
@@ -499,6 +523,11 @@ export default {
             })
           break
       }
+    },
+    findProcess(processPos) {
+      processPos.forEach(item => {
+        this.$store.dispatch('getProcessFromServer', { containerUuid: item.uuid })
+      })
     }
   }
 }

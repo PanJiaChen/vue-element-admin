@@ -5,7 +5,11 @@
       <br>
       {{ $t('form.pos.optionsPoinSales.title') }}
     </div>
-
+    <modal-dialog
+      :parent-uuid="processPos"
+      :container-uuid="processPos"
+      panel-type="From"
+    />
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item :title="$t('form.pos.optionsPoinSales.salesOrder.title')" name="salesOrder">
         <el-row :gutter="12" style="padding-right: 10px;">
@@ -121,6 +125,30 @@
               </p>
             </el-card>
           </el-col>
+          <el-col :span="size">
+            <el-card shadow="hover">
+              <p
+                :style="blockOption"
+                @click="copyLineOrder "
+              >
+                <i class="el-icon-document-copy" />
+                <br>
+                {{ $t('form.pos.optionsPoinSales.salesOrder.copyOrderLine') }}
+              </p>
+            </el-card>
+          </el-col>
+          <!-- <el-col :span="size">
+            <el-card shadow="hover">
+              <p
+                :style="blockOption"
+                @click="copyOrder "
+              >
+                <i class="el-icon-document-copy" />
+                <br>
+                {{ $t('form.pos.optionsPoinSales.salesOrder.copyOrder') }}
+              </p>
+            </el-card>
+          </el-col> -->
           <el-col :span="size">
             <el-card shadow="hover">
               <p
@@ -266,19 +294,26 @@ import {
   requestPrintOrder,
   requestGenerateImmediateInvoice,
   requestCompletePreparedOrder,
-  requestReverseSalesTransaction,
+  // requestReverseSalesTransaction,
   requestCreateWithdrawal,
   requestCreateNewCustomerReturnOrder,
   requestCashClosing,
   requestDeleteOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
+import ModalDialog from '@/components/ADempiere/Dialog'
+import posProcess from '@/utils/ADempiere/constants/posProcess'
+import orderLineMixin from '@/components/ADempiere/Form/VPOS/Order/orderLineMixin.js'
 
 export default {
   name: 'Options',
   components: {
     ListProductPrice,
-    OrdersList
+    OrdersList,
+    ModalDialog
   },
+  mixins: [
+    orderLineMixin
+  ],
   props: {
     metadata: {
       type: Object,
@@ -287,7 +322,8 @@ export default {
   },
   data() {
     return {
-      activeName: ''
+      activeName: '',
+      processPos: ''
     }
   },
   computed: {
@@ -318,6 +354,9 @@ export default {
       return this.$store.getters.getSellingPointsList
     },
     currentPOS() {
+      return this.$store.getters.getOrder
+    },
+    currentPoint() {
       return this.$store.getters.getCurrentPOS
     },
     pointOfSalesId() {
@@ -361,8 +400,7 @@ export default {
       }).catch(error => {
         console.info(`VPOS/Options component (New Order): ${error.message}`)
       }).finally(() => {
-        const { templateBusinessPartner } = this.currentPOS
-
+        // const { templateBusinessPartner } = this.currentPOS
         this.$store.commit('updateValuesOfContainer', {
           containerUuid: this.metadata.containerUuid,
           attributes: [{
@@ -375,15 +413,15 @@ export default {
           },
           {
             columnName: 'C_BPartner_ID',
-            value: templateBusinessPartner.id
+            value: 1000006
           },
           {
             columnName: 'DisplayColumn_C_BPartner_ID',
-            value: templateBusinessPartner.name
+            value: 'Cliente Unico'
           },
           {
             columnName: ' C_BPartner_ID_UUID',
-            value: templateBusinessPartner.uuid
+            value: '9f6cf428-9209-11e9-8046-0242ac140002'
           }]
         })
 
@@ -417,9 +455,33 @@ export default {
       })
     },
     reverseSalesTransaction() {
-      // TODO: Add BPartner
-      requestReverseSalesTransaction({
-        orderUuid: this.$route.query.action
+      const process = this.$store.getters.getProcess(posProcess[1].uuid)
+      this.$store.dispatch('startProcess', {
+        action: process,
+        isProcessTableSelection: false,
+        containerUuid: process.containerUuid,
+        parametersList: [
+          {
+            columnName: 'C_Order_ID',
+            value: this.currentPOS.id
+          },
+          {
+            columnName: 'Bill_BPartner_ID',
+            value: this.currentPOS.businessPartner.id
+          },
+          {
+            columnName: 'IsCancelled',
+            value: false
+          },
+          {
+            columnName: 'IsShipConfirm',
+            value: true
+          },
+          {
+            columnName: 'C_DocTypeRMA_ID',
+            value: 'VO'
+          }
+        ]
       })
     },
     createWithdrawal() {
@@ -435,6 +497,25 @@ export default {
         orderUuid: this.$route.query.action
       })
     },
+    showModal(action) {
+      this.$store.dispatch('setShowDialog', {
+        type: action.type,
+        action: {
+          ...action,
+          containerUuid: action.uuid
+        }
+      })
+    },
+    copyOrder() {
+      this.processPos = posProcess[5].uuid
+      const process = this.$store.getters.getProcess(posProcess[5].uuid)
+      this.showModal(process)
+    },
+    copyLineOrder() {
+      this.processPos = posProcess[5].uuid
+      const process = this.$store.getters.getProcess(posProcess[5].uuid)
+      this.showModal(process)
+    },
     cashClosing() {
       const { uuid: posUuid, id: posId } = this.getCurrentPOS
       requestCashClosing({
@@ -446,7 +527,19 @@ export default {
       requestDeleteOrder({
         orderUuid: this.$route.query.action
       })
-      this.newOrder()
+        .then(response => {
+          this.changePos(this.$store.getters.getCurrentPOS)
+        })
+        .finally(() => {
+          this.$store.dispatch('listOrdersFromServer', {
+            posUuid: this.$store.getters.getCurrentPOS.uuid
+          })
+          this.$message({
+            type: 'success',
+            message: 'Orden Cancelada',
+            showClose: true
+          })
+        })
     }
   }
 }

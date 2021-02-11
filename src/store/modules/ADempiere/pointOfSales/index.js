@@ -10,6 +10,7 @@ const withoutResponse = {
   isLoaded: false,
   isReload: true,
   recordCount: 0,
+  currentPOS: {},
   nextPageToken: undefined
 }
 
@@ -58,7 +59,6 @@ const pointOfSales = {
             ...response,
             userUuid
           })
-
           const posList = response.sellingPointsList
           const getterPos = getters.getPointOfSalesUuid
           let pos
@@ -138,14 +138,21 @@ const pointOfSales = {
     // current pos info
     getCurrentPOS: (state, getters) => {
       const userUuid = getters['user/getUserUuid']
-      const sellingPointsList = state.pointOfSales.sellingPointsList.length
-      if (sellingPointsList > 1) {
-        return state.pointOfSales.sellingPointsList.find(elem => elem.salesRepresentative.uuid === userUuid)
+      let currentPOS
+      const sellingPointsList = state.pointOfSales.sellingPointsList
+      if (!isEmptyValue(sellingPointsList) && (sellingPointsList.length > 1)) {
+        currentPOS = state.pointOfSales.sellingPointsList.find(elem => elem.salesRepresentative.uuid === userUuid)
       }
-      if (isEmptyValue(state.pointOfSales)) {
-        return undefined
+      if (!isEmptyValue(currentPOS)) {
+        return currentPOS
       }
-      return state.pointOfSales.currentPOS
+      if (isEmptyValue(state.pointOfSales.currentPOS) && (!isEmptyValue(sellingPointsList))) {
+        return state.pointOfSales.sellingPointsList[0]
+      }
+      if (state.pointOfSales.currentPOS) {
+        return state.pointOfSales.currentPOS
+      }
+      return undefined
     },
     getSellingPointsList: (state, getters) => {
       return getters.getPointOfSales.sellingPointsList

@@ -45,7 +45,8 @@
       :highlight-current-row="highlightRow"
       :height="heightTable"
       @shortkey.native="keyAction"
-      @current-change="handleCurrentChange"
+      @current-change="orderPrpcess"
+      @row-dblclick="handleCurrentChange"
     >
       <el-table-column
         prop="documentNo"
@@ -197,9 +198,16 @@ export default {
   // },
   created() {
     this.unsubscribe = this.subscribeChanges()
-
     if (this.isReadyFromGetData) {
       this.loadOrdersList()
+    }
+  },
+  mounted() {
+    const listOrder = this.$store.getters.getListOrderLine
+    if (this.isEmptyValue(listOrder)) {
+      this.$store.dispatch('listOrdersFromServer', {
+        posUuid: this.$store.getters.getCurrentPOS.uuid
+      })
     }
   },
   beforeDestroy() {
@@ -315,6 +323,13 @@ export default {
       })
 
       return valuesToSend
+    },
+    orderPrpcess(row) {
+      const parametersList = [{
+        columnName: 'C_Order_ID',
+        value: row.id
+      }]
+      this.$store.dispatch('addParametersProcessPos', parametersList)
     }
   }
 }

@@ -124,8 +124,8 @@ const ordes = {
     setOrder({ commit }, order) {
       commit('setOrder', order)
     },
-    currentOrder({ commit }, current) {
-      commit('findOrder', current)
+    currentOrder({ commit }, findOrder) {
+      commit('findOrder', findOrder)
     },
     findOrderServer({ commit }, orderUuid) {
       if (typeof orderUuid === 'string' && !isEmptyValue(orderUuid)) {

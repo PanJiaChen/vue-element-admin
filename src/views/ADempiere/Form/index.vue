@@ -9,6 +9,11 @@
       v-if="showContextMenu"
       style="height: 39px; background: white;"
     >
+      <modal-dialog
+        :parent-uuid="$route.meta.parentUuid"
+        :container-uuid="formUuid"
+        :panel-type="panelType"
+      />
       <context-menu
         :menu-parent-uuid="$route.meta.parentUuid"
         :container-uuid="formUuid"
@@ -83,12 +88,14 @@
 <script>
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import FormPanel from '@/components/ADempiere/Form'
+import ModalDialog from '@/components/ADempiere/Dialog'
 
 export default {
   name: 'FormView',
   components: {
     ContextMenu,
-    FormPanel
+    FormPanel,
+    ModalDialog
   },
   data() {
     return {
