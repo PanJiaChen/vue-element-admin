@@ -32,6 +32,7 @@
                 placement="right"
                 width="800"
                 trigger="click"
+                @show="seeOrderList"
               >
                 <orders-list
                   :parent-metadata="metadata"
@@ -129,18 +130,6 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="copyLineOrder "
-              >
-                <i class="el-icon-document-copy" />
-                <br>
-                {{ $t('form.pos.optionsPoinSales.salesOrder.copyOrderLine') }}
-              </p>
-            </el-card>
-          </el-col>
-          <!-- <el-col :span="size">
-            <el-card shadow="hover">
-              <p
-                :style="blockOption"
                 @click="copyOrder "
               >
                 <i class="el-icon-document-copy" />
@@ -148,7 +137,7 @@
                 {{ $t('form.pos.optionsPoinSales.salesOrder.copyOrder') }}
               </p>
             </el-card>
-          </el-col> -->
+          </el-col>
           <el-col :span="size">
             <el-card shadow="hover">
               <p
@@ -205,32 +194,6 @@
 
       <el-collapse-item :title="$t('form.pos.optionsPoinSales.generalOptions.title')" name="generalOptions">
         <el-row :gutter="12" style="padding-right: 10px;">
-          <!--
-          <el-col :span="size">
-            <el-card shadow="hover">
-              <el-popover
-                placement="right"
-                width="400"
-                trigger="click"
-              >
-                <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                  <field
-                    :key="typeDocumentMetadata.columnName"
-                    :metadata-field="typeDocumentMetadata"
-                    :v-model="typeDocumentMetadata.value"
-                    style="padding-left: 0px; padding-right: 0px;"
-                  />
-                </el-form>
-                <p slot="reference" :style="blockOption">
-                  <i class="el-icon-document-copy" />
-                  <br>
-                  Cambiar Tipo de Documento
-                </p>
-              </el-popover>
-            </el-card>
-          </el-col>
-          -->
-
           <el-col :span="size">
             <el-card shadow="hover">
               <el-dropdown trigger="click" style="padding-top: 8px; color: black;" @command="changePos">
@@ -298,7 +261,8 @@ import {
   requestCreateWithdrawal,
   requestCreateNewCustomerReturnOrder,
   requestCashClosing,
-  requestDeleteOrder
+  requestDeleteOrder,
+  requestCreateOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
@@ -376,6 +340,9 @@ export default {
       const size = this.$store.getters.getWidthLeft
       return 24 / size
     }
+  },
+  created() {
+    this.findProcess()
   },
   methods: {
     notSubmitForm(event) {
@@ -455,34 +422,31 @@ export default {
       })
     },
     reverseSalesTransaction() {
-      const process = this.$store.getters.getProcess(posProcess[1].uuid)
-      this.$store.dispatch('startProcess', {
-        action: process,
-        isProcessTableSelection: false,
-        containerUuid: process.containerUuid,
-        parametersList: [
-          {
-            columnName: 'C_Order_ID',
-            value: this.currentPOS.id
-          },
-          {
-            columnName: 'Bill_BPartner_ID',
-            value: this.currentPOS.businessPartner.id
-          },
-          {
-            columnName: 'IsCancelled',
-            value: false
-          },
-          {
-            columnName: 'IsShipConfirm',
-            value: true
-          },
-          {
-            columnName: 'C_DocTypeRMA_ID',
-            value: 'VO'
-          }
-        ]
-      })
+      const process = this.$store.getters.getProcess(posProcess[0].uuid)
+      this.showModal(process)
+      const parametersList = [
+        {
+          columnName: 'C_Order_ID',
+          value: this.$store.getters.getOrder.id
+        },
+        {
+          columnName: 'Bill_BPartner_ID',
+          value: this.$store.getters.getOrder.businessPartner.id
+        },
+        {
+          columnName: 'IsCancelled',
+          value: false
+        },
+        {
+          columnName: 'IsShipConfirm',
+          value: true
+        },
+        {
+          columnName: 'C_DocTypeRMA_ID',
+          value: 'VO'
+        }
+      ]
+      this.$store.dispatch('addParametersProcessPos', parametersList)
     },
     createWithdrawal() {
       const { uuid: posUuid, id: posId } = this.getCurrentPOS
@@ -507,13 +471,50 @@ export default {
       })
     },
     copyOrder() {
-      this.processPos = posProcess[5].uuid
-      const process = this.$store.getters.getProcess(posProcess[5].uuid)
-      this.showModal(process)
+      this.processPos = posProcess[1].uuid
+      const posUuid = this.currentPoint.uuid
+      const parametersList = [{
+        columnName: 'C_Order_ID',
+        value: this.$store.getters.getOrder.id
+      }]
+      this.$store.dispatch('addParametersProcessPos', parametersList)
+      requestCreateOrder({
+        posUuid,
+        customerUuid: this.currentPOS.businessPartner.uuid,
+        salesRepresentativeUuid: this.currentPOS.salesRepresentative.uuid
+      })
+        .then(order => {
+          this.$store.dispatch('currentOrder', order)
+
+          this.$router.push({
+            params: {
+              ...this.$route.params
+            },
+            query: {
+              ...this.$route.query,
+              action: order.uuid
+            }
+          }).then(() => {
+          }).catch(() => {})
+
+          this.$store.commit('setIsReloadListOrders')
+        })
+        .catch(error => {
+          console.error(error.message)
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+        .finally(() => {
+          const process = this.$store.getters.getProcess(posProcess[1].uuid)
+          this.showModal(process)
+        })
     },
     copyLineOrder() {
-      this.processPos = posProcess[5].uuid
-      const process = this.$store.getters.getProcess(posProcess[5].uuid)
+      this.processPos = posProcess[1].uuid
+      const process = this.$store.getters.getProcess(posProcess[1].uuid)
       this.showModal(process)
     },
     cashClosing() {
@@ -524,6 +525,7 @@ export default {
       })
     },
     deleteOrder() {
+      this.$store.dispatch('updateOrderPos', true)
       requestDeleteOrder({
         orderUuid: this.$route.query.action
       })
@@ -536,10 +538,24 @@ export default {
           })
           this.$message({
             type: 'success',
-            message: 'Orden Cancelada',
+            message: this.$t('form.pos.optionsPoinSales.salesOrder.orderRemoved'),
             showClose: true
           })
+          this.$store.dispatch('updateOrderPos', false)
         })
+    },
+    seeOrderList() {
+      if (this.$store.getters.getListOrder.recordCount <= 0) {
+        this.$store.dispatch('listOrdersFromServer', {})
+      }
+    },
+    findProcess() {
+      const findServer = this.$store.getters.getProcess('a42ad0c6-fb40-11e8-a479-7a0060f0aa01')
+      if (this.isEmptyValue(findServer)) {
+        posProcess.forEach(item => {
+          this.$store.dispatch('getProcessFromServer', { containerUuid: item.uuid, processId: item.id })
+        })
+      }
     }
   }
 }

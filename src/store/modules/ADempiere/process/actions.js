@@ -1172,8 +1172,9 @@ export default {
           type: 'info'
         })
       }
+      dispatch('updateOrderPos', true)
       const timeInitialized = (new Date()).getTime()
-      let processResult = {
+      const processResult = {
         // panel attributes from where it was executed
         parentUuid,
         containerUuid,
@@ -1193,35 +1194,20 @@ export default {
           output: '',
           outputStream: '',
           reportType: ''
-        }
-      }
-      if (!isEmptyValue(isActionDocument)) {
-        processResult = {
-          ...processResult,
-          processUuid: action.uuid,
-          processId: action.id,
-          processName: 'Procesar Orden',
-          parameters: parametersList
-        }
-      } else {
-        // Run process on server and wait for it for notify
-        // uuid of process
-        processResult = {
-          ...processResult,
-          menuParentUuid,
-          processIdPath: isEmptyValue(routeToDelete) ? '' : routeToDelete.path,
-          printFormatUuid: action.printFormatUuid,
-          // process attributes
-          action: processDefinition.name,
-          name: processDefinition.name,
-          description: processDefinition.description,
-          instanceUuid: '',
-          processUuid: processDefinition.uuid,
-          processId: processDefinition.id,
-          processName: processDefinition.processName,
-          parameters: parametersList,
-          isReport: processDefinition.isReport
-        }
+        },
+        menuParentUuid,
+        processIdPath: isEmptyValue(routeToDelete) ? '' : routeToDelete.path,
+        printFormatUuid: action.printFormatUuid,
+        // process attributes
+        action: processDefinition.name,
+        name: processDefinition.name,
+        description: processDefinition.description,
+        instanceUuid: '',
+        processUuid: processDefinition.uuid,
+        processId: processDefinition.id,
+        processName: processDefinition.processName,
+        parameters: parametersList,
+        isReport: processDefinition.isReport
       }
       commit('addInExecution', processResult)
       requestRunProcess({
@@ -1282,7 +1268,7 @@ export default {
           dispatch('setProcessSelect', {
             finish: true
           })
-          dispatch('updateOrderPos', true)
+          dispatch('updateOrderPos', false)
         })
     })
   }
