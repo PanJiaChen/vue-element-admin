@@ -1,0 +1,81 @@
+
+.el-step.is-simple .el-step__icon-inner {
+  font-size: 18px;
+  padding-top: 30px;
+}
+.el-steps--simple {
+  /* padding: 13px 8%; */
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0%;
+  padding-right: 0px;
+  border-radius: 4px;
+  background: #F5F7FA;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: auto;
+}
+.scroll-window-log-change {
+  max-height: 74vh !important;
+}
+.scroll-window-log-workflow {
+  max-height: 68vh !important;
+}
+.scroll-window-log-chat {
+  max-height: 28vh !important;
+}
+.el-card__header {
+  background: rgba(245, 247, 250, 0.75);
+  padding: 18px 20px;
+  border-bottom: 1px solid #f5f7fa;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.split {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  height: 102%;
+  width: 100%;
+}
+.components-container {
+  position: relative;
+  height: 100vh;
+}
+.left-container {
+  background-color: #ffffff;
+  height: 100%;
+}
+.right-container {
+  background-color: #ffffff;
+  height: 200px;
+}
+.top-container {
+  background-color: #ffffff;
+  width: 100%;
+  height: 100%;
+}
+.bottom-container {
+  width: 100%;
+  background-color: #95E1D3;
+  height: 100%;
+}
+.splitter-pane-resizer.vertical {
+  width: 11px !important;
+  /* width: 9px; */
+  height: 100%;
+  background: gray !important;
+  margin-left: -10px;
+  /* margin-left: -5px; */
+  border-left: 5px solid hsla(0,0%,100%,0);
+  border-right: 5px solid hsla(0,0%,100%,0);
+  cursor: col-resize;
+}
+.splitter-pane.vertical.splitter-paneR {
+  position: absolute;
+  right: 0;
+  height: 100%;
+  padding-left: 10px;
+}

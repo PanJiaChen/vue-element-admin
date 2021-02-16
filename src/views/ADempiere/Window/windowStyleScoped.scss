@@ -1,0 +1,164 @@
+.scroll {
+  max-height: 60vh;
+}
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  transition: all .2s ease;
+}
+.slide-fade-leave-active {
+  transition: all .3s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+.el-tabs__content {
+  overflow: hidden;
+  position: relative;
+  padding-top: 0px !important;
+  padding-right: 15px !important;
+  padding-bottom: 0px !important;
+  padding-left: 15px !important;
+}
+.el-header {
+  background-color: #fff;
+  color: #333;
+  line-height: 21px;
+}
+.el-aside {
+  height: 100%;
+  color: #333;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+aside {
+  background: #fff;
+  padding: 0px;
+  margin-bottom: 0px;
+  border-radius: 2px;
+  display: block;
+  line-height: 32px;
+  font-size: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  color: #2c3e50;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.el-main {
+  display: block;
+  -webkit-box-flex: 1;
+  flex: 1;
+  flex-basis: auto;
+  overflow: hidden;
+  height: 90vh;
+  box-sizing: border-box;
+  padding-top: 0px !important;
+  padding-right: 0px !important;
+  padding-bottom: 0px !important;
+  padding-left: 0px !important;
+}
+.center{
+  text-align: center;
+}
+.close{
+  text-align: right;
+}
+.w-33 {
+  width: 100%;
+  background-color: transparent;
+}
+.w {
+  height: 100%;
+}
+.open-table-detail-mobile {
+  position: absolute;
+  right: 50%;
+  bottom: 4%;
+}
+.open-table-detail {
+  position: absolute;
+  right: 50%;
+  bottom: 4%;
+  display: none;
+}
+.open-navegation {
+  position: fixed;
+  top: 50%;
+  display: none;
+  z-index: 5;
+}
+.open-datatable-aside {
+  position: absolute;
+  top: 41%;
+  display: none;
+  z-index: 5;
+  right: 1%!important;
+}
+.open-datatable-aside-mobile {
+  position: absolute;
+  top: 41%;
+  display: grid;
+  z-index: 5;
+  right: 1%!important;
+}
+.button {
+  display: none;
+}
+.wrapper:hover .open-table-detail {
+  display: inline-block;
+}
+.w:hover .open-navegation {
+  display: inline-block;
+}
+.w:hover .open-datatable-aside {
+  display: grid;
+}
+.open-detail {
+  width: 100%;
+  height: 20px;
+  position: absolute;
+  bottom: 5%;
+}
+.open-left {
+  width: 2%;
+  height: 97%;
+  position: absolute;
+  top: 2%;
+  left: 1%;
+}
+.el-button-window {
+  cursor: pointer;
+  background: #FFFFFF;
+  border: 1px solid #DCDFE6;
+  border-color: #DCDFE6;
+  color: white;
+  background: #008fd3;
+}
+.close-info {
+  top: 40%;
+  position: absolute;
+}
+.close-info-mobile {
+  top: 29%;
+  position: absolute;
+}
+.vertical-panes {
+  width: 100%;
+  height: 85vh;
+  border: 1px solid #ccc;
+}
+.vertical-panes > .pane {
+  text-align: left;
+  padding: 15px;
+  overflow: hidden;
+  background: #fff;
+}
+.vertical-panes > .pane ~ .pane {
+  border-left: 1px solid #ccc;
+}
+.loading-window {
+  padding: 100px 100px;
+  height: 100%;
+}
