@@ -20,7 +20,7 @@ jobs:
       - run: npm test
       - run: npm run build:prod --if-present
 
-  publish-npm:
+  publish-dist:
     needs: build
     runs-on: ubuntu-latest
     steps:
