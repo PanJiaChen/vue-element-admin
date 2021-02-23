@@ -203,7 +203,7 @@ export default {
   },
   mounted() {
     const listOrder = this.$store.getters.getListOrderLine
-    if (this.isEmptyValue(listOrder)) {
+    if (this.isEmptyValue(listOrder) && !this.isEmptyValue(this.$store.getters.getCurrentPOS.uuid)) {
       this.$store.dispatch('listOrdersFromServer', {
         posUuid: this.$store.getters.getCurrentPOS.uuid
       })
@@ -256,9 +256,8 @@ export default {
             action: row.uuid
           }
         }, () => {})
-        const posUuid = this.$store.getters.getCurrentPOS.uuid
         const orderUuid = this.$route.query.action
-        this.$store.dispatch('listPayments', { posUuid, orderUuid })
+        this.$store.dispatch('listPayments', { orderUuid })
       }
     },
     subscribeChanges() {

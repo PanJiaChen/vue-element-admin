@@ -266,7 +266,7 @@ export default {
       return listLocal
     },
     paymentBox() {
-      const payment = this.isPaymentBox.filter(pay => {
+      const payment = this.listPayments.filter(pay => {
         return pay.isVisible
       })
       if (this.isEmptyValue(payment)) {
@@ -527,7 +527,7 @@ export default {
   mounted() {
     setTimeout(() => {
       this.convertCurrency()
-    }, 1000)
+    }, 2000)
   },
   methods: {
     formatDate,
@@ -602,7 +602,6 @@ export default {
           currencyUuid: this.currencyDisplay(currencyToPay).currencyUuid
         })
       }
-      this.amontSend = 0
       this.addCollect()
     },
     updateServer(listPaymentsLocal) {

@@ -216,7 +216,7 @@
                 >
                   <p>
                     <i class="el-icon-mobile-phone" />
-                    {{ $t('form.pos.order.pointSale') }}: <b style="cursor: pointer"> {{ namePointOfSales }} </b>
+                    {{ $t('form.pos.order.pointSale') }}: <b style="cursor: pointer"> {{ namePointOfSales.name }} </b>
                   </p>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
@@ -355,7 +355,7 @@ export default {
     namePointOfSales() {
       const currentPOS = this.$store.getters.getCurrentPOS
       if (currentPOS && !this.isEmptyValue(currentPOS.name)) {
-        return currentPOS.name
+        return currentPOS
       }
       return undefined
     },
@@ -443,13 +443,22 @@ export default {
       } else {
         this.$store.commit('currencyMultiplyRate', 1)
       }
+    },
+    namePo1intOfSales(value) {
+      if (!this.isEmptyValue(value)) {
+        this.$router.push({
+          query: {
+            pos: value.id
+          }
+        })
+      }
     }
   },
   mounted() {
-    // setTimeout(() => {
-    //   this.tenderTypeDisplaye()
-    //   this.currencyDisplaye()
-    // }, 1500)
+    setTimeout(() => {
+      this.tenderTypeDisplaye()
+      this.currencyDisplaye()
+    }, 1500)
   },
   methods: {
     changePos(posElement) {
@@ -460,9 +469,8 @@ export default {
       this.isShowedPOSKeyLayout = !this.isShowedPOSKeyLayout
       this.$store.commit('setShowPOSCollection', true)
       // this.isShowedPOSKeyLayout = true
-      const posUuid = this.$store.getters.getCurrentPOS.uuid
       const orderUuid = this.$route.query.action
-      this.$store.dispatch('listPayments', { posUuid, orderUuid })
+      this.$store.dispatch('listPayments', { orderUuid })
       this.isShowedPOSKeyLaout = !this.isShowedPOSKeyLaout
       this.$store.commit('setShowPOSOptions', false)
     },

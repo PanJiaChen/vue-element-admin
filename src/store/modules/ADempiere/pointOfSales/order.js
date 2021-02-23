@@ -82,7 +82,6 @@ const ordes = {
       if (!isEmptyValue(token)) {
         pageToken = token + '-' + pageNumber
       }
-
       requestListOrders({
         posUuid,
         documentNo,
@@ -114,11 +113,11 @@ const ordes = {
         })
         .catch(error => {
           console.warn(`listOrdersFromServer: ${error.message}. Code: ${error.code}.`)
-          showMessage({
-            type: 'info',
-            message: error.message,
-            showClose: true
-          })
+          // showMessage({
+          //   type: 'info',
+          //   message: error.message,
+          //   showClose: true
+          // })
         })
     },
     setOrder({ commit }, order) {
