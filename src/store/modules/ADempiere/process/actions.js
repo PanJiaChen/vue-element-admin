@@ -47,17 +47,17 @@ export default {
       // }
 
       // additional attributes to send server, selection to browser, or table name and record id to window
-      let selection = []
+      let selectionsList = []
       let allData = {}
       let tab, tableName, recordId
       if (panelType) {
         if (panelType === 'browser') {
           allData = getters.getDataRecordAndSelection(containerUuid)
-          selection = rootGetters.getSelectionToServer({
+          selectionsList = rootGetters.getSelectionToServer({
             containerUuid,
             selection: allData.selection
           })
-          if (selection.length < 1) {
+          if (isEmptyValue(selectionsList)) {
             showNotification({
               title: language.t('data.selectionRequired'),
               type: 'warning'
@@ -89,7 +89,10 @@ export default {
         }
       }
       // get info metadata process
-      const processDefinition = !isEmptyValue(isActionDocument) ? action : rootGetters.getProcess(action.uuid)
+      const processDefinition = !isEmptyValue(isActionDocument)
+        ? action
+        : rootGetters.getProcess(action.uuid)
+
       let reportType = reportFormat
 
       if (isEmptyValue(parametersList)) {
@@ -193,22 +196,22 @@ export default {
       }
       if (isProcessTableSelection) {
         const windowSelectionProcess = getters.getProcessSelect
-        windowSelectionProcess.selection.forEach(selection => {
+        windowSelectionProcess.selection.forEach(selectionWindow => {
           Object.assign(processResult, {
-            selection: selection.UUID,
-            record: selection[windowSelectionProcess.tableName]
+            selection: selectionWindow.UUID,
+            record: selectionWindow[windowSelectionProcess.tableName]
           })
           const countRequest = state.totalRequest + 1
           commit('setTotalRequest', countRequest)
           if (!windowSelectionProcess.finish) {
+            // TODO: Add backend support to selectionsList records in window
             requestRunProcess({
               uuid: processDefinition.uuid,
               id: processDefinition.id,
               reportType,
               parametersList,
-              selectionsList: selection,
               tableName: windowSelectionProcess.tableName,
-              recordId: selection[windowSelectionProcess.tableName]
+              recordId: selectionWindow[windowSelectionProcess.tableName]
             })
               .then(runProcessResponse => {
                 const { instanceUuid, output } = runProcessResponse
@@ -394,7 +397,7 @@ export default {
           id: processDefinition.id,
           reportType,
           parametersList,
-          selectionsList: selection,
+          selectionsList,
           tableName,
           recordId
         })

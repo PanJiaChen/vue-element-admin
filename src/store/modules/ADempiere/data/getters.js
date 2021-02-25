@@ -50,42 +50,52 @@ const getters = {
    *    selectionValues: [{ columnName, value }]
    * }]
    */
-  getSelectionToServer: (state, getters, rootState, rootGetters) => ({ containerUuid, selection = [] }) => {
+  getSelectionToServer: (state, getters, rootState, rootGetters) => ({
+    containerUuid,
+    selection = []
+  }) => {
     const selectionToServer = []
     const withOut = ['isEdit', 'isSendToServer']
 
-    if (selection.length <= 0) {
+    if (isEmptyValue(selection)) {
       selection = getters.getDataRecordSelection(containerUuid)
     }
-    if (selection.length) {
-      const { fieldsList, keyColumn } = rootGetters.getPanel(containerUuid)
-      // reduce list
-      const fieldsListSelection = fieldsList.filter(itemField => {
+
+    if (isEmptyValue(selection)) {
+      return selectionToServer
+    }
+
+    const { fieldsList, keyColumn } = rootGetters.getPanel(containerUuid)
+    // reduce list
+    const fieldsListSelection = fieldsList
+      .filter(itemField => {
         return itemField.isIdentifier || itemField.isUpdateable
       })
-
-      selection.forEach(itemRow => {
-        const records = []
-
-        Object.keys(itemRow).forEach(key => {
-          if (!key.includes('DisplayColumn') && !withOut.includes(key)) {
-            // evaluate metadata attributes before to convert
-            const field = fieldsListSelection.find(itemField => itemField.columnName === key)
-            if (field) {
-              records.push({
-                columnName: key,
-                value: itemRow[key]
-              })
-            }
-          }
-        })
-
-        selectionToServer.push({
-          selectionId: itemRow[keyColumn],
-          selectionValues: records
-        })
+      .map(itemField => {
+        return itemField.columnName
       })
-    }
+
+    selection.forEach(itemRow => {
+      const records = []
+
+      Object.keys(itemRow).forEach(key => {
+        if (!key.includes('DisplayColumn') && !withOut.includes(key)) {
+          // evaluate metadata attributes before to convert
+          if (fieldsListSelection.includes(key)) {
+            records.push({
+              columnName: key,
+              value: itemRow[key]
+            })
+          }
+        }
+      })
+
+      selectionToServer.push({
+        selectionId: itemRow[keyColumn],
+        selectionValues: records
+      })
+    })
+
     return selectionToServer
   },
   getContextInfoField: (state) => (contextInfoUuid, sqlStatement) => {
