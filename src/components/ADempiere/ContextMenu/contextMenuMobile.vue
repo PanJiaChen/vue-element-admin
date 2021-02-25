@@ -1,6 +1,12 @@
 <template>
   <div class="container-submenu-mobile container-context-menu">
-    <svg-icon v-if="isPanelTypeMobile" :icon-class="iconDefault" @click="runAction(actions[0])" />
+    <el-button
+      type="text"
+      style="right: 70%;position: absolute;"
+      @click="runAction(actions[0])"
+    >
+      {{ $t('components.RunProcess') }}
+    </el-button>
     <right-menu>
       <el-menu
         ref="contextMenu"
