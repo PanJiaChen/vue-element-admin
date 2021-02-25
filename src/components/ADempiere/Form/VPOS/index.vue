@@ -123,9 +123,6 @@ export default {
     }
 
     this.unsubscribePOSList = this.posListWithOrganization()
-    if (!this.isEmptyValue(this.$route.query.action)) {
-      this.$store.dispatch('findOrderServer', this.$route.query.action)
-    }
   },
   mounted() {
     if (this.isEmptyValue(this.$route.query) || this.isEmptyValue(this.$route.query.pos)) {

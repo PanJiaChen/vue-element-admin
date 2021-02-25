@@ -14,11 +14,11 @@
                   >
                     <convert-amount
                       :convert="multiplyRate"
-                      :amount="order.grandTotal"
+                      :amount="currentOrder.grandTotal"
                       :currency="currencyPoint"
                     />
                     <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;">
-                      {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}
+                      {{ formatPrice(currentOrder.grandTotal, currencyPoint.iSOCode) }}
                     </el-button>
                   </el-popover>
                 </b>
@@ -71,18 +71,9 @@
         </el-header>
         <el-main style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
           <type-collection
-            v-if="isLoaded"
             :is-add-type-pay="listPayments"
             :currency="currencyPoint"
-          />
-          <div
-            v-else
-            key="form-loading"
-            v-loading="!isLoaded"
-            :element-loading-text="$t('notifications.loading')"
-            element-loading-spinner="el-icon-loading"
-            element-loading-background="rgba(0, 0, 0, 0.8)"
-            class="loading-panel"
+            :list-types-payment="fieldsList[2]"
           />
         </el-main>
 
@@ -101,11 +92,11 @@
                     >
                       <convert-amount
                         :convert="multiplyRate"
-                        :amount="order.grandTotal"
+                        :amount="currentOrder.grandTotal"
                         :currency="currencyPoint"
                       />
                       <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;">
-                        {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}
+                        {{ formatPrice(currentOrder.grandTotal, currencyPoint.iSOCode) }}
                       </el-button>
                     </el-popover>
                   </b>
@@ -227,19 +218,20 @@ export default {
   computed: {
     validateCompleteCollection() {
       let collection
-      if (this.pay === this.order.grandTotal) {
+      if (this.pay === this.currentOrder.grandTotal) {
         collection = false
       } else {
-        if (this.pay >= this.order.grandTotal && (this.isCashAmt >= this.change) || this.checked) {
+        if (this.pay >= this.currentOrder.grandTotal && (this.isCashAmt >= this.change) || this.checked) {
           collection = false
         } else {
           collection = true
         }
       }
       return collection
+      // return false
     },
     fullCopper() {
-      if ((this.change > this.isCashAmt) && this.pay > this.order.grandTotal) {
+      if ((this.change > this.isCashAmt) && this.pay > this.currentOrder.grandTotal) {
         return true
       }
       return false
@@ -312,7 +304,7 @@ export default {
       })
       const allPay = this.cashPayment + amount
       if (typePay !== 'X') {
-        if (allPay <= this.order.grandTotal) {
+        if (allPay <= this.currentOrder.grandTotal) {
           return false
         }
         return true
@@ -347,11 +339,11 @@ export default {
       return this.sumCash(this.listPayments)
     },
     pending() {
-      const missing = this.order.grandTotal - this.pay
-      if (this.pay > 0 && this.pay < this.order.grandTotal) {
+      const missing = this.currentOrder.grandTotal - this.pay
+      if (this.pay > 0 && this.pay < this.currentOrder.grandTotal) {
         return missing
       }
-      const pending = this.order.grandTotal <= this.pay ? 0 : this.order.grandTotal
+      const pending = this.currentOrder.grandTotal <= this.pay ? 0 : this.currentOrder.grandTotal
       return pending
     },
     isMandatory() {
@@ -378,14 +370,11 @@ export default {
       return !this.isEmptyValue(fieldsEmpty)
     },
     change() {
-      const missing = this.pay - this.order.grandTotal
-      if (this.pay > 0 && this.pay > this.order.grandTotal) {
+      const missing = this.pay - this.currentOrder.grandTotal
+      if (this.pay > 0 && this.pay > this.currentOrder.grandTotal) {
         return missing
       }
       return 0
-    },
-    order() {
-      return this.$store.getters.getFindOrder
     },
     currencyPoint() {
       const currency = this.$store.getters.getCurrentPOS
@@ -400,7 +389,7 @@ export default {
       }
     },
     currentOrder() {
-      return this.$store.getters.getFindOrder
+      return this.$store.getters.getOrder
     },
     typeCurrency() {
       return this.$store.getters.getValueOfField({

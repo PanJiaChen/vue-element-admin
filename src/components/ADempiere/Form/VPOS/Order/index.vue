@@ -34,12 +34,12 @@
             </el-col>
             <el-col :span="2" :style="styleTab">
               <el-tag
-                :type="tagStatus(order.documentStatus.value)"
+                :type="tagStatus(getOrder.documentStatus.value)"
               >
-                <span v-if="isEmptyValue(order.documentStatus.value)">
+                <span v-if="isEmptyValue(getOrder.documentStatus.value)">
                   Borrador
                 </span>
-                {{ order.documentStatus.name }}
+                {{ getOrder.documentStatus.name }}
               </el-tag>
             </el-col>
           </el-row>
@@ -232,9 +232,9 @@
             </div>
             <span style="float: right;">
               <p class="total">{{ $t('form.pos.order.seller') }}:<b style="float: right;">
-                {{ order.salesRepresentative.name }}
+                {{ getOrder.salesRepresentative.name }}
               </b></p>
-              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b class="order-info">{{ formatPrice(order.totalLines, currencyPoint.iSOCode) }}</b></p>
+              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b class="order-info">{{ formatPrice(getOrder.totalLines, currencyPoint.iSOCode) }}</b></p>
               <p class="total"> {{ $t('form.pos.order.discount') }}:<b class="order-info">{{ formatPrice(0, currencyPoint.iSOCode) }}</b> </p>
               <p class="total"> {{ $t('form.pos.order.tax') }}:<b style="float: right;">{{ getOrderTax(currencyPoint.iSOCode) }}</b> </p>
               <p class="total">
@@ -249,25 +249,25 @@
                     <convert-amount
                       v-show="seeConversion"
                       :convert="multiplyRate"
-                      :amount="order.grandTotal"
+                      :amount="getOrder.grandTotal"
                       :currency="currencyPoint"
                     />
                     <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;" @click="seeConversion = !seeConversion">
-                      {{ formatPrice(order.grandTotal, currencyPoint.iSOCode) }}
+                      {{ formatPrice(getOrder.grandTotal, currencyPoint.iSOCode) }}
                     </el-button>
                   </el-popover>
                 </b>
               </p>
             </span>
             <span style="float: right;padding-right: 40px;">
-              <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ order.documentNo }}</b></p>
+              <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ getOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
                 <b class="order-info">
                   {{ orderDate }}
                 </b>
               </p>
-              <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ order.documentType.name }}</b></p>
+              <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ getOrder.documentType.name }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.itemQuantity') }}
                 <b class="order-info">
@@ -357,19 +357,22 @@ export default {
       if (currentPOS && !this.isEmptyValue(currentPOS.name)) {
         return currentPOS
       }
-      return undefined
+      return {
+        name: '',
+        uuid: ''
+      }
     },
     sellingPointsList() {
       return this.$store.getters.getSellingPointsList
     },
     orderDate() {
-      if (this.isEmptyValue(this.order) || this.isEmptyValue(this.order.dateOrdered)) {
+      if (this.isEmptyValue(this.getOrder) || this.isEmptyValue(this.getOrder.dateOrdered)) {
         return this.formatDate(new Date())
       }
-      return this.formatDate(this.order.dateOrdered)
+      return this.formatDate(this.getOrder.dateOrdered)
     },
     getItemQuantity() {
-      if (this.isEmptyValue(this.currentOrder)) {
+      if (this.isEmptyValue(this.getOrder)) {
         return 0
       }
       const result = this.allOrderLines.map(order => {
@@ -384,7 +387,7 @@ export default {
       return 0
     },
     numberOfLines() {
-      if (this.isEmptyValue(this.currentOrder)) {
+      if (this.isEmptyValue(this.getOrder)) {
         return
       }
       return this.allOrderLines.length
@@ -456,7 +459,6 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      this.tenderTypeDisplaye()
       this.currencyDisplaye()
     }, 1500)
   },
@@ -468,14 +470,12 @@ export default {
     openCollectionPanel() {
       this.isShowedPOSKeyLayout = !this.isShowedPOSKeyLayout
       this.$store.commit('setShowPOSCollection', true)
-      // this.isShowedPOSKeyLayout = true
       const orderUuid = this.$route.query.action
       this.$store.dispatch('listPayments', { orderUuid })
       this.isShowedPOSKeyLaout = !this.isShowedPOSKeyLaout
       this.$store.commit('setShowPOSOptions', false)
     },
     newOrder() {
-      this.$store.dispatch('findOrderServer', {})
       this.$router.push({
         params: {
           ...this.$route.params
@@ -486,7 +486,6 @@ export default {
       }).catch(() => {
       }).finally(() => {
         const { templateBusinessPartner } = this.currentPoint
-
         this.$store.commit('updateValuesOfContainer', {
           containerUuid: this.metadata.containerUuid,
           attributes: [{
@@ -510,7 +509,19 @@ export default {
             value: templateBusinessPartner.uuid
           }]
         })
-
+        this.$store.dispatch('setOrder', {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        })
         this.$store.dispatch('listOrderLine', [])
       })
     },
@@ -522,25 +533,29 @@ export default {
     tenderTypeDisplaye() {
       if (!this.isEmptyValue(this.fieldsList)) {
         const tenderType = this.fieldsList[5].reference
-        this.$store.dispatch('getLookupListFromServer', {
-          tableName: tenderType.tableName,
-          query: tenderType.query
-        })
-          .then(response => {
-            this.$store.dispatch('tenderTypeDisplaye', response)
+        if (!this.isEmptyValue(tenderType)) {
+          this.$store.dispatch('getLookupListFromServer', {
+            tableName: tenderType.tableName,
+            query: tenderType.query
           })
+            .then(response => {
+              this.$store.dispatch('tenderTypeDisplaye', response)
+            })
+        }
       }
     },
     currencyDisplaye() {
       if (!this.isEmptyValue(this.fieldsList)) {
         const currency = this.fieldsList[4].reference
-        this.$store.dispatch('getLookupListFromServer', {
-          tableName: currency.tableName,
-          query: currency.query
-        })
-          .then(response => {
-            this.$store.dispatch('currencyDisplaye', response)
+        if (!this.isEmptyValue(currency)) {
+          this.$store.dispatch('getLookupListFromServer', {
+            tableName: currency.tableName,
+            query: currency.query
           })
+            .then(response => {
+              this.$store.dispatch('currencyDisplaye', response)
+            })
+        }
       }
     }
   }

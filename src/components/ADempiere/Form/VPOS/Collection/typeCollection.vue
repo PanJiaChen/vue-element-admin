@@ -110,6 +110,10 @@ export default {
     currency: {
       type: Object,
       default: undefined
+    },
+    listTypesPayment: {
+      type: Object,
+      default: undefined
     }
   },
   data() {
@@ -119,6 +123,7 @@ export default {
   },
   computed: {
     typesPayment() {
+      console.log(this.$store.getters.getListsPaymentTypes)
       return this.$store.getters.getListsPaymentTypes
     },
     listCurrency() {
@@ -126,6 +131,13 @@ export default {
     },
     conevertionAmount() {
       return this.$store.getters.getConvertionPayment
+    }
+  },
+  watch: {
+    listTypesPayment(value) {
+      if (!this.isEmptyValue(value) && this.typesPayment.length <= 1) {
+        this.tenderTypeDisplaye(value)
+      }
     }
   },
   methods: {
@@ -183,6 +195,21 @@ export default {
     },
     amountConvertion(payment) {
       return payment.amount * this.conevertionAmount.multiplyRate
+    },
+    tenderTypeDisplaye(value) {
+      if (!this.isEmptyValue(value.reference)) {
+        const tenderType = value.reference
+        if (!this.isEmptyValue(tenderType)) {
+          this.$store.dispatch('getLookupListFromServer', {
+            tableName: tenderType.tableName,
+            query: tenderType.query,
+            filters: []
+          })
+            .then(response => {
+              this.$store.dispatch('tenderTypeDisplaye', response)
+            })
+        }
+      }
     }
   }
 }

@@ -354,8 +354,6 @@ export default {
       this.newOrder()
     },
     newOrder() {
-      this.$store.dispatch('findOrderServer', {})
-
       const pos = this.pointOfSalesId || this.$route.query.pos
       this.$router.push({
         params: {
@@ -367,7 +365,24 @@ export default {
       }).catch(error => {
         console.info(`VPOS/Options component (New Order): ${error.message}`)
       }).finally(() => {
-        // const { templateBusinessPartner } = this.currentPOS
+        const { templateBusinessPartner } = this.$store.getters.getCurrentPOS
+        // TODO: Set order with POS Terminal default values
+        this.$store.commit('setListPayments', [])
+        this.$store.dispatch('setOrder', {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        })
+        this.$store.dispatch('listOrderLine', [])
+        this.$store.commit('setShowPOSCollection', false)
         this.$store.commit('updateValuesOfContainer', {
           containerUuid: this.metadata.containerUuid,
           attributes: [{
@@ -380,27 +395,17 @@ export default {
           },
           {
             columnName: 'C_BPartner_ID',
-            value: 1000006
+            value: templateBusinessPartner.id
           },
           {
             columnName: 'DisplayColumn_C_BPartner_ID',
-            value: 'Cliente Unico'
+            value: templateBusinessPartner.name
           },
           {
             columnName: ' C_BPartner_ID_UUID',
-            value: '9f6cf428-9209-11e9-8046-0242ac140002'
+            value: this.$store.getters['user/getUserUuid']
           }]
         })
-
-        // TODO: Set order with POS Terminal default values
-        // this.order = {
-        //   documentType: {},
-        //   documentStatus: {},
-        //   salesRepresentative: this.currentPOS.salesRepresentative
-        //
-        this.$store.commit('setListPayments', [])
-        this.$store.dispatch('listOrderLine', [])
-        this.$store.commit('setShowPOSCollection', false)
       })
     },
     printOrder() {

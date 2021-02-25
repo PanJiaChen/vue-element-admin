@@ -5,7 +5,6 @@
 
 export default {
   getPaymentBox: (state) => {
-    console.log({ state })
     return state
   },
   getMultiplyRate: (state) => {
@@ -21,7 +20,6 @@ export default {
     return state.divideRateCollection
   },
   getListPayments: (state) => {
-    console.log({ state }, 1)
     return state.listPayments
   },
   getListsPaymentTypes: (state) => {
