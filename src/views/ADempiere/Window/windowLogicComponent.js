@@ -68,6 +68,11 @@ export default {
     }
   },
   computed: {
+    isNewRecord() {
+      return this.isEmptyValue(this.$route.query) ||
+        this.isEmptyValue(this.$route.query.action) ||
+        this.$route.query.action === 'create-new'
+    },
     showContextMenu() {
       return this.$store.state.settings.showContextMenu
     },
@@ -249,8 +254,8 @@ export default {
     },
     // current record
     getRecord() {
-      const { action } = this.$route.query
-      if (!this.isEmptyValue(action) && action !== 'create-new') {
+      if (!this.isNewRecord) {
+        const { action } = this.$route.query
         return this.getterDataRecords.find(record => {
           return record.UUID === action
         })
@@ -271,13 +276,17 @@ export default {
       }
       return currentRecord
     },
-    isDocument() {
+    isDocumentTab() {
       const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
-      return panel.isDocument
+      if (!this.isEmptyValue(panel)) {
+        return panel.isDocument
+      }
+
+      return this.windowMetadata.firstTab.isDocument
     },
     isWorkflowBarStatus() {
       const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
-      if (!this.isEmptyValue(panel) && this.isDocument && this.$route.query.action !== 'create-new') {
+      if (!this.isEmptyValue(panel) && this.isDocumentTab && !this.isNewRecord) {
         return true
       }
       return false
@@ -339,18 +348,18 @@ export default {
           }
         }, () => {})
 
-        const action = this.$route.query.action
         let recordUuid
-        if (!this.isEmptyValue(action) && action !== 'create-new') {
-          recordUuid = action
+        if (!this.isNewRecord) {
+          recordUuid = this.$route.query.action
         }
 
-        // TODO: Verify if first tab is document
-        this.$store.dispatch('listWorkflowLogs', {
-          tableName,
-          recordUuid,
-          recordId
-        })
+        if (this.isDocumentTab) {
+          this.$store.dispatch('listWorkflowLogs', {
+            tableName,
+            recordUuid,
+            recordId
+          })
+        }
         this.$store.dispatch(this.activeInfo, {
           tableName,
           recordId,
@@ -365,10 +374,9 @@ export default {
         tableName = this.getTableName
       }
 
-      const action = this.$route.query.action
       let recordUuid
-      if (!this.isEmptyValue(action) && action !== 'create-new') {
-        recordUuid = action
+      if (!this.isNewRecord) {
+        recordUuid = this.$route.query.action
       }
 
       const record = this.currentRecord
@@ -411,10 +419,12 @@ export default {
       this.windowMetadata = window
       let isShowRecords = this.isShowedRecordNavigation
       if (isShowRecords === undefined) {
-        if ((['M', 'Q'].includes(this.windowMetadata.windowType) && this.getterRecordList >= 10 && this.$route.query.action !== 'create-new') ||
+        if ((['M', 'Q'].includes(this.windowMetadata.windowType) &&
+          this.getterRecordList >= 10 &&
+          !this.isNewRecord) ||
           this.$route.query.action === 'advancedQuery') {
           isShowRecords = true
-        } else if (this.windowMetadata.windowType === 'T' || this.$route.query.action === 'create-new') {
+        } else if (this.windowMetadata.windowType === 'T' || this.isNewRecord) {
           isShowRecords = false
         } else if (this.$route.query.action === 'listRecords') {
           isShowRecords = true
@@ -430,11 +440,14 @@ export default {
       if (!this.isEmptyValue(record)) {
         recordId = record[tableName + '_ID']
       }
-      this.$store.dispatch('listDocumentStatus', {
-        tableName,
-        recordUuid: this.$route.query.action,
-        recordId
-      })
+
+      if (this.isDocumentTab) {
+        this.$store.dispatch('listDocumentStatus', {
+          tableName,
+          recordUuid: this.$route.query.action,
+          recordId
+        })
+      }
     },
     handleChangeShowedRecordNavigation(valueToChange) {
       const panelRight = document.getElementById('PanelRight')
