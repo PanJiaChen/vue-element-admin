@@ -33,7 +33,7 @@ Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere
 
 [adempiere-vue](https://github.com/adempiere/adempiere-vue) usa como RPC (Llamado a Procedimientos Remostos)[gRPC](https://grpc.io/) como [server](https://github.com/adempiere/adempiere-gRPC-Server).
 
-- [Vista Prévia de la Aplicación](http://adempiere-ui.erpya.com:9526/)
+- [Vista Prévia de la Aplicación](https://demo-ui.erpya.com/)
 
 - [Documentación](https://adempiere.github.io/adempiere-vue-site/)
 
@@ -220,7 +220,7 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 
 ## Demostración en línea
 
-[Vista Prévia de la Aplicación](http://adempiere-ui.erpya.com:9526/)
+[Vista Prévia de la Aplicación](https://demo-ui.erpya.com/)
 
 ## Donación
 

@@ -34,7 +34,7 @@ It is a great UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/ade
 
 [adempiere-vue](https://github.com/adempiere/adempiere-vue) use the modern open source high performance RPC framework that can run in any environment [gRPC](https://grpc.io/) as [server](https://github.com/adempiere/adempiere-gRPC-Server).
 
-- [Preview](http://adempiere-ui.erpya.com:9526/)
+- [Preview](https://demo-ui.erpya.com/)
 
 - [Documentation](https://adempiere.github.io/adempiere-vue-site/)
 
