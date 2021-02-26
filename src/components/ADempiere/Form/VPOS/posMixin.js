@@ -199,7 +199,7 @@ export default {
     },
     updateOrder(update) {
       // user session
-      if (update.value !== this.getOrder.businessPartner.uuid) {
+      if (update.value !== this.getOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPoint)) {
         this.$store.dispatch('updateOrder', {
           orderUuid: this.$route.query.action,
           posUuid: this.currentPoint.uuid,

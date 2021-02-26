@@ -427,7 +427,7 @@ export default {
   },
   watch: {
     currencyUuid(value) {
-      if (!this.isEmptyValue(value)) {
+      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPoint)) {
         this.$store.dispatch('conversionDivideRate', {
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
           currencyFromUuid: this.currencyPoint.uuid,
@@ -436,7 +436,7 @@ export default {
       }
     },
     converCurrency(value) {
-      if (!this.isEmptyValue(value)) {
+      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPoint)) {
         this.$store.dispatch('conversionMultiplyRate', {
           containerUuid: 'Order',
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
