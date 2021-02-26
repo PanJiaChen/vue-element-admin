@@ -55,13 +55,9 @@ export default {
       }
       // conditions for the registration amount (operador: row.criteria.whereClause)
     },
-    filterResult(search) {
+    filterResult(search, list) {
       const searchFilter = this.ignoreAccent(search.toLowerCase())
-      return this.documents.filter(item => {
-        return this.ignoreAccent(item.name)
-          .toLowerCase()
-          .includes(searchFilter)
-      })
+      return list.filter(data => !searchFilter || data.name.toLowerCase().includes(searchFilter.toLowerCase()))
     },
     ignoreAccent(s) {
       if (!s) {

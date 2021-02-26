@@ -70,7 +70,7 @@ export default {
   computed: {
     dataResult() {
       if (this.search.length) {
-        return this.filterResult(this.search)
+        return this.filterResult(this.search, this.favorites)
       }
       return this.favorites
     }
