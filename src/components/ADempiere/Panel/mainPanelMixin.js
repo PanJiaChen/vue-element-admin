@@ -3,6 +3,7 @@ import FilterFields from '@/components/ADempiere/Panel/filterFields'
 import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils.js'
 import { parsedValueComponent } from '@/utils/ADempiere/valueUtils.js'
 import { convertObjectToKeyValue } from '@/utils/ADempiere/valueFormat.js'
+import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 
 export default {
   name: 'MainPanelMixin',
@@ -536,7 +537,9 @@ export default {
           }
           if (Object.prototype.hasOwnProperty.call(this.$refs, itemField.columnName)) {
             if (fieldIsDisplayed(itemField) &&
-              !itemField.isReadOnly &&
+              !(itemField.isReadOnly ||
+              // records in columns manage by backend
+              LOG_COLUMNS_NAME_LIST.includes(itemField.columnName)) &&
               itemField.isUpdateable &&
               itemField.componentPath !== 'FieldSelect') {
               return true

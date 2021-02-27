@@ -7,6 +7,7 @@ import {
   fieldIsDisplayed,
   getDefaultValue
 } from '@/utils/ADempiere/dictionaryUtils.js'
+import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 
 const getters = {
   getPanel: (state) => (containerUuid) => {
@@ -15,6 +16,7 @@ const getters = {
       return item.containerUuid === containerUuid
     })
   },
+
   getFieldsListFromPanel: (state, getters) => (containerUuid) => {
     const panel = getters.getPanel(containerUuid)
     if (isEmptyValue(panel)) {
@@ -22,11 +24,13 @@ const getters = {
     }
     return panel.fieldsList
   },
+
   getFieldFromColumnName: (state, getters) => ({ containerUuid, columnName }) => {
     return getters.getFieldsListFromPanel(containerUuid).find(itemField => {
       return itemField.columnName === columnName
     })
   },
+
   /**
    * Determinate if panel is ready fron send, all fiedls mandatory and displayed with values
    * @param {string}  containerUuid
@@ -41,6 +45,12 @@ const getters = {
       const isDisplayed = fieldIsDisplayed(fieldItem) && (fieldItem.isShowedFromUser || isMandatory)
 
       const { columnName } = fieldItem
+
+      // Omit log columns list only created or updated record, this is manage for backend
+      if (fieldItem.panelType === 'window' && LOG_COLUMNS_NAME_LIST.includes(columnName)) {
+        return false
+      }
+
       if (isDisplayed && isMandatory) {
         let value
         // used when evaluate data in table
@@ -62,37 +72,56 @@ const getters = {
 
     return fieldNotReadyToSend
   },
-  // Obtain empty obligatory fields
+
+  /**
+   * Obtain empty obligatory fields
+   * @param {string} containerUuid
+   * @param {array} fieldsList
+   * @param {string} formatReturn
+   */
   getFieldsListEmptyMandatory: (state, getters) => ({
     containerUuid,
-    fieldsList
+    fieldsList,
+    formatReturn = 'name'
   }) => {
     if (isEmptyValue(fieldsList)) {
       fieldsList = getters.getFieldsListFromPanel(containerUuid)
     }
-    const fieldsEmpty = []
+
     // all optionals (not mandatory) fields
-    fieldsList.forEach(fieldItem => {
+    const fieldsNameEmpty = fieldsList.filter(fieldItem => {
       const value = getters.getValueOfField({
         parentUuid: fieldItem.parentUuid,
         containerUuid,
         columnName: fieldItem.columnName
       })
+
       if (isEmptyValue(value)) {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (fieldIsDisplayed(fieldItem) && isMandatory) {
-          fieldsEmpty.push(fieldItem.name)
+          return true
         }
       }
     })
-    return fieldsEmpty
+
+    if (formatReturn) {
+      return fieldsList.map(fieldItem => {
+        return fieldItem[formatReturn]
+      })
+    }
+
+    return fieldsNameEmpty
   },
+
   /**
    * Show all available fields not mandatory to show, used in components panel/filterFields.vue
    * @param {string} containerUuid
    * @param {boolean} isEvaluateShowed
    */
-  getFieldsListNotMandatory: (state, getters) => ({ containerUuid, isEvaluateShowed = true }) => {
+  getFieldsListNotMandatory: (state, getters) => ({
+    containerUuid,
+    isEvaluateShowed = true
+  }) => {
     // all optionals (not mandatory) fields
     return getters.getFieldsListFromPanel(containerUuid).filter(fieldItem => {
       const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
@@ -104,6 +133,7 @@ const getters = {
       }
     })
   },
+
   /**
    * @param {string}  containerUuid, unique identifier of the panel to search your list of fields
    * @param {string}  propertyName, property name to return its value (value, oldValue)
@@ -193,6 +223,7 @@ const getters = {
     }
     return attributesList
   },
+
   getParsedDefaultValues: (state, getters) => ({
     parentUuid,
     containerUuid,
@@ -271,6 +302,7 @@ const getters = {
     }
     return attributesObject
   },
+
   getFieldsIsDisplayed: (state, getters) => (containerUuid) => {
     const fieldsList = getters.getFieldsListFromPanel(containerUuid)
     let fieldsIsDisplayed = []
@@ -291,6 +323,7 @@ const getters = {
       isDisplayed: Boolean(fieldsIsDisplayed.length)
     }
   },
+
   getParametersToShare: (state, getters) => ({
     containerUuid,
     withOut = [],
@@ -341,6 +374,7 @@ const getters = {
 
     return attributesListLink.slice(0, -1)
   },
+
   /**
    * Getter converter selection params with value format
    * @param {String} containerUuid

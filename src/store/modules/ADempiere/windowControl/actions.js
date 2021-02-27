@@ -12,6 +12,7 @@ import { showMessage } from '@/utils/ADempiere/notification'
 import language from '@/lang'
 import router from '@/router'
 import { convertObjectToKeyValue } from '@/utils/ADempiere/valueFormat.js'
+import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 
 /**
  * Window Control Vuex Module
@@ -126,8 +127,14 @@ export default {
           value
         })
         const emptyFields = getters.getFieldsListEmptyMandatory({
-          containerUuid: field.containerUuid
+          containerUuid: field.containerUuid,
+          formatReturn: false
+        }).filter(itemField => {
+          return !LOG_COLUMNS_NAME_LIST.includes(itemField.columnName)
+        }).map(itemField => {
+          return itemField.name
         })
+
         if (!isEmptyValue(emptyFields)) {
           showMessage({
             message: language.t('notifications.mandatoryFieldMissing') + emptyFields,

@@ -9,6 +9,7 @@ import { formatField } from '@/utils/ADempiere/valueFormat'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
 import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
+import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import evaluator from '@/utils/ADempiere/evaluator'
 import TableMixin from './mixin/tableMixin.js'
@@ -388,7 +389,8 @@ export default {
             return false
           }
         }
-        // if isReadOnly, isReadOnlyFromLogic
+
+        // if isReadOnly, isReadOnlyFromLogic, or columns log
         if (this.isReadOnlyCell(record, fieldAttributes)) {
           return false
         }
@@ -420,14 +422,25 @@ export default {
       }
       return false
     },
+    /**
+     * Idicate if cell is read only
+     * TODO: Create common method to evaluate isReadOnly
+     */
     isReadOnlyCell(row, field) {
       // TODO: Add support to its type fields
       if (['FieldImage', 'FieldBinary'].includes(field.componentPath)) {
         return true
       }
 
+      // records in columns manage by backend
+      const isLogColumns = LOG_COLUMNS_NAME_LIST.includes(field.columnName)
+
       const isUpdateableAllFields = field.isReadOnly || field.isReadOnlyFromLogic
       if (this.isPanelWindow) {
+        if (isLogColumns) {
+          return true
+        }
+
         const panelMetadata = this.panelMetadata
         if (field.columnName === panelMetadata.linkColumnName ||
           field.columnName === panelMetadata.fieldLinkColumnName) {
@@ -438,10 +451,11 @@ export default {
         return (!field.isUpdateable && editMode) || (isUpdateableAllFields || field.isReadOnlyFromForm)
       } else if (this.panelType === 'browser') {
         // browser result
-        return field.isReadOnly
+        return field.isReadOnly || isLogColumns
       }
+
       // other type of panels (process/reports/forms)
-      return isUpdateableAllFields
+      return Boolean(isUpdateableAllFields)
     },
     callOffNewRecord() {
       this.recordsData.shift()

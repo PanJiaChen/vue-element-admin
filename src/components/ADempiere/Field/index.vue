@@ -80,6 +80,7 @@ import translated from '@/components/ADempiere/Field/popover/translated'
 import calculator from '@/components/ADempiere/Field/popover/calculator'
 import { DEFAULT_SIZE } from '@/utils/ADempiere/references'
 import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
+import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 
 /**
  * This is the base component for linking the components according to the
@@ -206,6 +207,10 @@ export default {
       }
       return this.field.isMandatory || this.field.isMandatoryFromLogic
     },
+    /**
+     * Idicate if field is read only
+     * TODO: Create common method to evaluate isReadOnly
+     */
     isReadOnly() {
       if (this.isAdvancedQuery) {
         if (['NULL', 'NOT_NULL'].includes(this.field.operator)) {
@@ -218,9 +223,16 @@ export default {
         return true
       }
 
+      // records in columns manage by backend
+      const isLogColumns = LOG_COLUMNS_NAME_LIST.includes(this.field.columnName)
+
       const isUpdateableAllFields = this.field.isReadOnly || this.field.isReadOnlyFromLogic
 
       if (this.field.panelType === 'window') {
+        if (isLogColumns) {
+          return true
+        }
+
         if (this.field.isAlwaysUpdateable) {
           return false
         }
@@ -240,7 +252,7 @@ export default {
       } else if (this.field.panelType === 'browser') {
         if (this.inTable) {
           // browser result
-          return this.field.isReadOnly
+          return this.field.isReadOnly || isLogColumns
         }
         // query criteria
         return this.field.isReadOnlyFromLogic

@@ -192,3 +192,42 @@ export const FIELD_OPERATORS_LIST = [
   OPERATORS_FIELD_TIME,
   OPERATORS_FIELD_YES_NO
 ]
+
+/**
+ * Log columns list into table
+ * Manages with user session
+ */
+export const LOG_COLUMNS_NAME_LIST = [
+  'Created',
+  'CreatedBy',
+  'Updated',
+  'UpdatedBy'
+]
+
+/**
+ * Columns list into standard table
+ */
+export const STANDARD_COLUMNS_NAME_LIST = [
+  ...LOG_COLUMNS_NAME_LIST,
+  // Table Name '_ID'
+  'AD_Client_ID',
+  'AD_Org_ID',
+  'IsActive',
+  'UUID'
+]
+
+/**
+ * Columns list into document table
+ */
+export const DOCUMENT_COLUMNS_NAME_LIST = [
+  ...STANDARD_COLUMNS_NAME_LIST,
+  'C_DocType_ID',
+  'DateDoc',
+  'Description',
+  'DocAction',
+  'DocStatus',
+  'DocumentNo',
+  'IsApproved',
+  'Processed',
+  'Processing'
+]
