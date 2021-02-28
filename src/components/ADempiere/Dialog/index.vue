@@ -96,7 +96,7 @@ export default {
       return this.$store.state['process/index'].metadata
     },
     windowRecordSelected() {
-      return this.$store.state.window.recordSelected
+      return this.$store.state['windowControl/index'].recordSelected
     },
     getterDataRecordsAndSelection() {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid)

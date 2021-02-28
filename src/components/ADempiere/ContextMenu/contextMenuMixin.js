@@ -170,7 +170,7 @@ export default {
     },
     getOldRouteOfWindow() {
       if (this.panelType === 'window') {
-        const oldRoute = this.$store.state.window.windowOldRoute
+        const oldRoute = this.$store.state['windowControl/index'].windowOldRoute
         if (!this.isEmptyValue(oldRoute.query.action) && oldRoute.query.action !== 'create-new' && this.$route.query.action === 'create-new') {
           return oldRoute
         }
