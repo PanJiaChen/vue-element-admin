@@ -256,13 +256,12 @@ import ListProductPrice from '@/components/ADempiere/Form/VPOS/ProductInfo/produ
 import {
   requestPrintOrder,
   requestGenerateImmediateInvoice,
-  requestCompletePreparedOrder,
-  // requestReverseSalesTransaction,
   requestCreateWithdrawal,
   requestCreateNewCustomerReturnOrder,
   requestCashClosing,
   requestDeleteOrder,
-  requestCreateOrder
+  requestCreateOrder,
+  requestProcessOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
@@ -422,9 +421,36 @@ export default {
       })
     },
     completePreparedOrder() {
-      requestCompletePreparedOrder({
-        orderUuid: this.$route.query.action
+      const posUuid = this.currentPoint.uuid
+      this.$store.dispatch('updateOrderPos', true)
+      this.$message({
+        type: 'info',
+        message: this.$t('notifications.processing'),
+        showClose: true
       })
+      requestProcessOrder({
+        posUuid,
+        orderUuid: this.$route.query.action,
+        createPayments: !this.isEmptyValue(this.$store.getters.getListPayments),
+        payments: this.$store.getters.getListPayments
+      })
+        .then(response => {
+          this.$store.dispatch('reloadOrder', response.uuid)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+        .finally(() => {
+          this.$store.dispatch('listOrdersFromServer', {
+            posUuid: this.$store.getters.getCurrentPOS.uuid
+          })
+          this.$message({
+            type: 'success',
+            message: this.$t('notifications.completed'),
+            showClose: true
+          })
+          this.$store.dispatch('updateOrderPos', false)
+        })
     },
     reverseSalesTransaction() {
       const process = this.$store.getters.getProcess(posProcess[0].uuid)

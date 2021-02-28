@@ -20,7 +20,8 @@ export default {
     businessPartner: {
       value: '',
       uuid: ''
-    }
+    },
+    uuid: ''
   },
   findOrder: {},
   listOrder: {

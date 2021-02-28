@@ -34,6 +34,7 @@
             </el-col>
             <el-col :span="2" :style="styleTab">
               <el-tag
+                v-if="!isEmptyValue(getOrder.documentStatus.value)"
                 :type="tagStatus(getOrder.documentStatus.value)"
               >
                 <span v-if="isEmptyValue(getOrder.documentStatus.value)">
@@ -458,6 +459,9 @@ export default {
     }
   },
   mounted() {
+    if (!this.isEmptyValue(this.$route.query.action)) {
+      this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })
+    }
     setTimeout(() => {
       this.currencyDisplaye()
     }, 1500)

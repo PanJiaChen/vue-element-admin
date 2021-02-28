@@ -126,6 +126,17 @@ export function convertCountry(countryToConvert) {
 }
 
 export function convertCurrency(currencyToConvert) {
+  if (isEmptyValue(currencyToConvert)) {
+    return {
+      id: 0,
+      uuid: '',
+      iSOCode: '',
+      curSymbol: '',
+      description: '',
+      standardPrecision: 0,
+      costingPrecision: 0
+    }
+  }
   return {
     id: currencyToConvert.id,
     uuid: currencyToConvert.uuid,

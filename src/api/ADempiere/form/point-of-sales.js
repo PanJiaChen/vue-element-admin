@@ -3,6 +3,7 @@ import {
   ApiRest as requestRest,
   evaluateResponse
 } from '@/api/ADempiere/instances.js'
+import { isEmptyValue } from '@/utils/ADempiere'
 
 /**
  * method in api/price-checking.js as requestGetProductPrice
@@ -110,7 +111,7 @@ export function requestUpdateOrder({
 // Get order from uuid
 export function requestGetOrder(orderUuid) {
   return requestRest({
-    url: '/pos/update-order',
+    url: '/pos/get-order',
     data: {
       order_uuid: orderUuid
     }
@@ -543,5 +544,61 @@ export function requestListPayments({
           return paymentsMethod(payments)
         })
       }
+    })
+}
+
+/**
+ * Process Order
+ * This request allows process a draft order with payments
+ *
+ * req.query.token - user token
+ * Body:
+ * req.body.pos_uuid - POS UUID reference
+ * req.body.order_uuid - Order UUID reference
+ * req.body.create_payments - Optional create payments (if is true then hope payments array)
+ * req.body.payments
+ * [
+ * invoice_uuid - Invoice UUID reference
+ * bank_uuid - Bank UUID reference
+ * reference_no - Reference no
+ * description - Description for Payment
+ * amount - Payment Amount
+ * tender_type_code - Tender Type
+ * payment_date - Payment Date (default now)
+ * currency_uuid - Currency UUID reference
+ * ]
+ */
+export function requestProcessOrder({
+  posUuid,
+  orderUuid,
+  createPayments,
+  payments
+}) {
+  if (!isEmptyValue(payments)) {
+    payments = payments.map(parameter => {
+      return {
+        invoice_uuid: parameter.invoiceUuid,
+        bank_uuid: parameter.bankUuid,
+        reference_no: parameter.referenceNo,
+        description: parameter.description,
+        amount: parameter.amount,
+        tender_type_code: parameter.tenderTypeCode,
+        payment_ate: parameter.paymentDate,
+        currency_uid: parameter.currency_uuid
+      }
+    })
+  }
+  return requestRest({
+    url: '/pos/process-order',
+    data: {
+      pos_uuid: posUuid,
+      order_uuid: orderUuid,
+      create_payments: createPayments,
+      payments: payments
+    }
+  })
+    .then(evaluateResponse)
+    .then(processOrderResponse => {
+      return processOrderResponse
     })
 }

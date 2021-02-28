@@ -123,7 +123,6 @@ export default {
   },
   computed: {
     typesPayment() {
-      console.log(this.$store.getters.getListsPaymentTypes)
       return this.$store.getters.getListsPaymentTypes
     },
     listCurrency() {
