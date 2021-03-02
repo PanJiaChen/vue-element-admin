@@ -173,8 +173,17 @@
                         <div class="small-4 columns">
                           <div class="w">
                             <div class="open-left" />
+                            <el-button
+                              v-if="isMobile"
+                              :icon="iconShowedRecordNavigation"
+                              circle
+                              style="position: absolute;top: 40%;"
+                              type="primary"
+                              @click="handleChangeShowedRecordNavigation(true)"
+                            />
                             <!-- open record navigation and advanced query if is closed -->
                             <el-button
+                              v-if="!isMobile"
                               v-show="!isShowedRecordNavigation"
                               :icon="iconShowedRecordNavigation"
                               class="open-navegation"
