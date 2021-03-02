@@ -363,9 +363,12 @@ export default {
     },
     validPay() {
       const containerUuid = this.containerUuid
+      // filter by visible fields
+      const fieldLogic = this.fieldsList.filter(field => field.isDisplayedFromLogic === true)
       const fieldsEmpty = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid,
-        fieldsList: this.fieldsList
+        fieldsList: fieldLogic,
+        isValidate: true
       })
       return !this.isEmptyValue(fieldsEmpty)
     },
@@ -565,7 +568,7 @@ export default {
         columnName: 'C_Currency_ID'
       })
       const currencyToPay = this.isEmptyValue(currencyUuid) ? currencyId : currencyUuid
-      if (this.currencyDisplay(currencyToPay).currencyUuid !== this.currencyPoint.uuid) {
+      if (this.isEmptyValue(this.currencyDisplay(currencyToPay)) && this.currencyDisplay(currencyToPay).currencyUuid !== this.currencyPoint.uuid) {
         this.amontSend = this.convert.divideRate * this.amontSend
       }
       if (this.sendToServer) {

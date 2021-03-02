@@ -82,12 +82,13 @@ const getters = {
   getFieldsListEmptyMandatory: (state, getters) => ({
     containerUuid,
     fieldsList,
-    formatReturn = 'name'
+    formatReturn = 'name',
+    isValidate = false
   }) => {
     if (isEmptyValue(fieldsList)) {
       fieldsList = getters.getFieldsListFromPanel(containerUuid)
     }
-
+    const fieldsEmpty = []
     // all optionals (not mandatory) fields
     const fieldsNameEmpty = fieldsList.filter(fieldItem => {
       const value = getters.getValueOfField({
@@ -95,7 +96,12 @@ const getters = {
         containerUuid,
         columnName: fieldItem.columnName
       })
-
+      if (isValidate && isEmptyValue(value)) {
+        const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
+        if (fieldIsDisplayed(fieldItem) && isMandatory) {
+          fieldsEmpty.push(fieldItem.name)
+        }
+      }
       if (isEmptyValue(value)) {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (fieldIsDisplayed(fieldItem) && isMandatory) {
@@ -103,7 +109,9 @@ const getters = {
         }
       }
     })
-
+    if (isValidate) {
+      return fieldsEmpty
+    }
     if (formatReturn) {
       return fieldsList.map(fieldItem => {
         return fieldItem[formatReturn]
