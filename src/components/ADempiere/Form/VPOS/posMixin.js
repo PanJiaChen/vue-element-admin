@@ -357,10 +357,7 @@ export default {
       // this.order = orderToPush
     },
     getOrderTax(currency) {
-      if (this.isEmptyValue(this.order)) {
-        return undefined
-      }
-      return this.formatPrice(this.order.grandTotal - this.order.totalLines, currency)
+      return this.formatPrice(this.getOrder.grandTotal - this.getOrder.totalLines, currency)
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {

@@ -37,10 +37,9 @@
                 v-if="!isEmptyValue(getOrder.documentStatus.value)"
                 :type="tagStatus(getOrder.documentStatus.value)"
               >
-                <span v-if="isEmptyValue(getOrder.documentStatus.value)">
-                  Borrador
+                <span v-if="!isEmptyValue(getOrder.documentStatus.value)">
+                  {{ getOrder.documentStatus.name }}
                 </span>
-                {{ getOrder.documentStatus.name }}
               </el-tag>
             </el-col>
           </el-row>
