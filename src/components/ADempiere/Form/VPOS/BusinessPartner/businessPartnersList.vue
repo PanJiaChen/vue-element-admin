@@ -177,7 +177,7 @@ export default {
             containerUuid: mutation.payload.containerUuid,
             format: 'object'
           })
-          this.searchBPartnerList({ contactName: values.Name2 })
+          this.searchBPartnerList(values)
         }
       })
     },

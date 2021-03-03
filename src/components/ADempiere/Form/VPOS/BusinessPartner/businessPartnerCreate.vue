@@ -73,7 +73,8 @@ export default {
   computed: {
     emptyMandatoryFields() {
       const field = this.$store.getters.getFieldsListEmptyMandatory({
-        containerUuid: this.containerUuid
+        containerUuid: this.containerUuid,
+        isValidate: true
       })
       return field
     }

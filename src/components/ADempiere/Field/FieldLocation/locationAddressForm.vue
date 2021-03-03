@@ -238,7 +238,8 @@ export default {
     },
     sendValuesToServer() {
       const fieldsNotReady = this.$store.getters.getFieldsListEmptyMandatory({
-        containerUuid: this.containerUuid
+        containerUuid: this.containerUuid,
+        isValidate: true
       })
       if (!this.isEmptyValue(fieldsNotReady)) {
         showNotification({

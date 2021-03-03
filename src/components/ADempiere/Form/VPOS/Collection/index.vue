@@ -350,7 +350,8 @@ export default {
       const containerUuid = this.containerUuid
       const fieldsEmpty = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid,
-        fieldsList: this.fieldsList
+        fieldsList: this.fieldsList,
+        isValidate: true
       })
       const amount = this.$store.getters.getValueOfField({
         containerUuid,
