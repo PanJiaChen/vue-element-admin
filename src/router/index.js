@@ -12,6 +12,8 @@ import chartsRouter from './modules/charts'
 import tableRouter from './modules/table'
 import nestedRouter from './modules/nested'
 
+import enrollmentRoute from './modules/ADempiere/enrollment.js'
+
 /**
  * Note: sub-menu only appear when route children.length >= 1
  * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
@@ -39,6 +41,7 @@ import nestedRouter from './modules/nested'
  * all roles can be accessed
  */
 export const constantRoutes = [
+  ...enrollmentRoute,
   {
     path: '/redirect',
     component: Layout,
@@ -68,28 +71,6 @@ export const constantRoutes = [
   {
     path: '/401',
     component: () => import('@/views/error-page/401'),
-    hidden: true
-  },
-  {
-    path: '/userEnrollment',
-    component: () => import('@/views/login/userEnrollment'),
-    hidden: true
-  },
-  {
-    path: '/forgotPassword',
-    component: () => import('@/views/login/forgotPassword'),
-    hidden: true
-  },
-  {
-    path: '/passwordReset',
-    name: 'passwordReset',
-    component: () => import('@/views/login/setPassword'),
-    hidden: true
-  },
-  {
-    path: '/createPassword',
-    name: 'createPassword',
-    component: () => import('@/views/login/setPassword'),
     hidden: true
   },
   {

@@ -61,19 +61,6 @@ export function requestSessionInfo(token) {
 }
 
 /**
- * Logout from server
- * @param {string} token or session UUID
- */
-export function logout(token) {
-  return requestRest({
-    url: '/user/logout',
-    data: {
-      token
-    }
-  })
-}
-
-/**
  * Get User menu from server
  * @param {string} sessionUuid
  */
@@ -88,4 +75,17 @@ export function requestMenu({
     }
   })
     .then(evaluateResponse)
+}
+
+/**
+ * Logout from server
+ * @param {string} token or session UUID
+ */
+export function logout(token) {
+  return requestRest({
+    url: '/user/logout',
+    data: {
+      token
+    }
+  })
 }

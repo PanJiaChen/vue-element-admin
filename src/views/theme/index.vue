@@ -9,7 +9,9 @@
       <div class="box-item">
         <span class="field-label">{{ $t('theme.change') }} : </span>
         <el-switch v-model="theme" />
-        <aside style="margin-top:15px;">{{ $t('theme.tips') }}</aside>
+        <aside style="margin-top:15px;">
+          {{ $t('theme.tips') }}
+        </aside>
       </div>
     </el-card>
 

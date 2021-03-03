@@ -9,6 +9,7 @@ import enLocale from './en'
 import zhLocale from './zh'
 import esLocale from './es'
 import jaLocale from './ja'
+
 import esADempiere from './ADempiere/es'
 import enADempiere from './ADempiere/en'
 
@@ -44,8 +45,8 @@ const dateTimeFormats = {
 const messages = {
   en: {
     ...enLocale,
-    ...elementEnLocale,
-    ...enADempiere
+    ...enADempiere,
+    ...elementEnLocale
   },
   zh: {
     ...zhLocale,
@@ -53,8 +54,8 @@ const messages = {
   },
   es: {
     ...esLocale,
-    ...elementEsLocale,
-    ...esADempiere
+    ...esADempiere,
+    ...elementEsLocale
   },
   ja: {
     ...jaLocale,

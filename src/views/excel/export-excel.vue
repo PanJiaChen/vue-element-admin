@@ -1,6 +1,7 @@
 <template>
   <!-- $t is vue-i18n global function to translate lang -->
   <div class="app-container">
+
     <div>
       <FilenameOption v-model="filename" />
       <AutoWidthOption v-model="autoWidth" />
@@ -51,6 +52,7 @@ import { parseTime } from '@/utils'
 import FilenameOption from './components/FilenameOption'
 import AutoWidthOption from './components/AutoWidthOption'
 import BookTypeOption from './components/BookTypeOption'
+
 export default {
   name: 'ExportExcel',
   components: { FilenameOption, AutoWidthOption, BookTypeOption },

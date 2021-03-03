@@ -1,7 +1,11 @@
 <template>
   <div class="components-container">
-    <aside>{{ $t('components.backToTopTips1') }}</aside>
-    <aside>{{ $t('components.backToTopTips2') }}</aside>
+    <aside>
+      {{ $t('components.backToTopTips1') }}
+    </aside>
+    <aside>
+      {{ $t('components.backToTopTips2') }}
+    </aside>
     <div class="placeholder-container">
       <div>placeholder</div>
       <div>placeholder</div>

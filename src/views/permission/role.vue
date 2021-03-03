@@ -46,7 +46,15 @@
           />
         </el-form-item>
         <el-form-item label="Menus">
-          <el-tree ref="tree" :check-strictly="checkStrictly" :data="routesData" :props="defaultProps" show-checkbox node-key="path" class="permission-tree" />
+          <el-tree
+            ref="tree"
+            :check-strictly="checkStrictly"
+            :data="routesData"
+            :props="defaultProps"
+            show-checkbox
+            node-key="path"
+            class="permission-tree"
+          />
         </el-form-item>
       </el-form>
       <div style="text-align:right;">
