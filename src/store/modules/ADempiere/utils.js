@@ -28,7 +28,8 @@ const initStateUtils = {
   splitWidthRight: 3,
   splitWidthLeft: 3,
   parametersProcessPos: [],
-  updateOrder: false
+  updateOrder: false,
+  updatePayment: false
 }
 
 export default {
@@ -97,6 +98,9 @@ export default {
     },
     setUpdateOrder(state, order) {
       state.updateOrder = order
+    },
+    setUpdatePayment(state, payment) {
+      state.updatePayment = payment
     }
   },
   actions: {
@@ -160,6 +164,9 @@ export default {
     },
     updateOrderPos({ commit }, params) {
       commit('setUpdateOrder', params)
+    },
+    updatePaymentPos({ commit }, params) {
+      commit('setUpdatePayment', params)
     }
   },
   getters: {
@@ -229,6 +236,9 @@ export default {
     },
     getUpdateOrderPos: (state) => {
       return state.updateOrder
+    },
+    getUpdatePaymentPos: (state) => {
+      return state.updatePayment
     }
   }
 }

@@ -66,14 +66,24 @@
             <el-button type="danger" icon="el-icon-close" @click="exit" />
             <el-button type="info" icon="el-icon-minus" @click="undoPatment" />
             <el-button type="primary" :disabled="validPay || addPay" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
-            <el-button type="success" :disabled="validateCompleteCollection" icon="el-icon-shopping-cart-full" />
+            <el-button type="success" :disabled="validateCompleteCollection" icon="el-icon-shopping-cart-full" @click="completePreparedOrder(listPayments)" />
           </samp>
         </el-header>
         <el-main style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
           <type-collection
+            v-if="!updateOrderPaymentPos"
             :is-add-type-pay="listPayments"
             :currency="currencyPoint"
             :list-types-payment="fieldsList[2]"
+          />
+          <div
+            v-else
+            key="form-loading"
+            v-loading="updateOrderPaymentPos"
+            :element-loading-text="$t('notifications.loading')"
+            :element-loading-spinner="'el-icon-loading'"
+            element-loading-background="rgba(255, 255, 255, 0.8)"
+            class="view-loading"
           />
         </el-main>
 
@@ -172,6 +182,7 @@ import fieldsListCollection from './fieldsListCollection.js'
 import typeCollection from '@/components/ADempiere/Form/VPOS/Collection/typeCollection'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
 import { formatDate, formatPrice } from '@/utils/ADempiere/valueFormat.js'
+import { requestProcessOrder } from '@/api/ADempiere/form/point-of-sales.js'
 
 export default {
   name: 'Collection',
@@ -449,6 +460,9 @@ export default {
     },
     convert() {
       return this.$store.getters.getConvertionPayment
+    },
+    updateOrderPaymentPos() {
+      return this.$store.getters.getUpdatePaymentPos
     }
   },
   watch: {
@@ -743,6 +757,46 @@ export default {
         orderUuid,
         paymentUuid
       })
+    },
+    completePreparedOrder(payment) {
+      const posUuid = this.$store.getters.getCurrentPOS.uuid
+      const orderUuid = this.$route.query.action
+      this.$store.dispatch('updateOrderPos', true)
+      this.$store.dispatch('updatePaymentPos', true)
+      this.$message({
+        type: 'info',
+        message: this.$t('notifications.processing'),
+        showClose: true
+      })
+      requestProcessOrder({
+        posUuid,
+        orderUuid,
+        createPayments: !this.isEmptyValue(payment),
+        payments: payment
+      })
+        .then(response => {
+          this.$store.dispatch('reloadOrder', response.uuid)
+          this.$message({
+            type: 'success',
+            message: this.$t('notifications.completed'),
+            showClose: true
+          })
+        })
+        .catch(error => {
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+          console.log(error)
+        })
+        .finally(() => {
+          this.$store.dispatch('listOrdersFromServer', {
+            posUuid: this.$store.getters.getCurrentPOS.uuid
+          })
+          this.$store.dispatch('updateOrderPos', false)
+          this.$store.dispatch('updatePaymentPos', false)
+        })
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {

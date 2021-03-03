@@ -241,7 +241,8 @@ export default {
         })
       })
   },
-  listPayments({ commit, rootGetters }, { posUuid, orderUuid }) {
+  listPayments({ commit, dispatch }, { posUuid, orderUuid }) {
+    dispatch('updatePaymentPos', true)
     requestListPayments({
       posUuid,
       orderUuid
@@ -251,6 +252,9 @@ export default {
       })
       .catch(error => {
         console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
+      })
+      .finally(() => {
+        dispatch('updatePaymentPos', false)
       })
   },
   tenderTypeDisplaye({ commit }, tenderType) {

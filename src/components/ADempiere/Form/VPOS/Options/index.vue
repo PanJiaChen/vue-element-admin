@@ -423,6 +423,7 @@ export default {
     completePreparedOrder() {
       const posUuid = this.currentPoint.uuid
       this.$store.dispatch('updateOrderPos', true)
+      this.$store.dispatch('updatePaymentPos', true)
       this.$message({
         type: 'info',
         message: this.$t('notifications.processing'),
@@ -436,20 +437,26 @@ export default {
       })
         .then(response => {
           this.$store.dispatch('reloadOrder', response.uuid)
+          this.$message({
+            type: 'success',
+            message: this.$t('notifications.completed'),
+            showClose: true
+          })
         })
         .catch(error => {
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
           console.log(error)
         })
         .finally(() => {
           this.$store.dispatch('listOrdersFromServer', {
             posUuid: this.$store.getters.getCurrentPOS.uuid
           })
-          this.$message({
-            type: 'success',
-            message: this.$t('notifications.completed'),
-            showClose: true
-          })
           this.$store.dispatch('updateOrderPos', false)
+          this.$store.dispatch('updatePaymentPos', false)
         })
     },
     reverseSalesTransaction() {
