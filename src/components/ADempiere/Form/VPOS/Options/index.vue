@@ -33,18 +33,33 @@
                 width="800"
                 trigger="click"
                 @show="seeOrderList"
+                @hide="showFieldListOrder = !showFieldListOrder"
               >
                 <orders-list
                   :parent-metadata="metadata"
+                  :show-field="showFieldListOrder"
                 />
                 <p
+                  slot="reference"
+                  :style="blockOption"
+                >
+                  <el-button
+                    type="text"
+                    @click="showFieldListOrder = !showFieldListOrder"
+                  >
+                    <svg-icon icon-class="list" />
+                    <br>
+                    {{ $t('form.pos.optionsPoinSales.salesOrder.ordersHistory') }}
+                  </el-button>
+                </p>
+                <!-- <p
                   slot="reference"
                   :style="blockOption"
                 >
                   <svg-icon icon-class="list" />
                   <br>
                   {{ $t('form.pos.optionsPoinSales.salesOrder.ordersHistory') }}
-                </p>
+                </p> -->
               </el-popover>
             </el-card>
           </el-col>
@@ -286,7 +301,8 @@ export default {
   data() {
     return {
       activeName: '',
-      processPos: ''
+      processPos: '',
+      showFieldListOrder: false
     }
   },
   computed: {

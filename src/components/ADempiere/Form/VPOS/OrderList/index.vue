@@ -9,15 +9,15 @@
           Ver Histórico de Órdenes
         </template>
         <el-form
-          v-if="isLoaded"
+          v-if="!isEmptyValue(metadataList)"
           label-position="top"
           label-width="10px"
           @submit.native.prevent="notSubmitForm"
         >
           <template
-            v-for="(field) in fieldsList"
+            v-for="(field) in metadataList"
           >
-            <field-definition
+            <field
               :key="field.columnName"
               :metadata-field="field"
             />
@@ -26,7 +26,7 @@
         <div
           v-else
           key="form-loading"
-          v-loading="!isLoaded"
+          v-loading="isEmptyValue(metadataList)"
           :element-loading-text="$t('notifications.loading')"
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(255, 255, 255, 0.8)"
@@ -109,22 +109,23 @@
 </template>
 
 <script>
-import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import CustomPagination from '@/components/ADempiere/Pagination'
 import fieldsListOrders from './fieldsListOrders.js'
+import {
+  createFieldFromDictionary
+} from '@/utils/ADempiere/lookupFactory'
 import {
   formatDate,
   formatQuantity
 } from '@/utils/ADempiere/valueFormat.js'
+import Field from '@/components/ADempiere/Field'
 
 export default {
   name: 'OrdersList',
   components: {
-    CustomPagination
+    CustomPagination,
+    Field
   },
-  mixins: [
-    formMixin
-  ],
   props: {
     metadata: {
       type: Object,
@@ -134,12 +135,17 @@ export default {
           containerUuid: 'Orders-List'
         }
       }
+    },
+    showField: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       defaultMaxPagination: 50,
       fieldsList: fieldsListOrders,
+      metadataList: [],
       isCustomForm: true,
       activeAccordion: 'query-criteria',
       timeOut: null
@@ -177,8 +183,8 @@ export default {
       return null
     },
     isReadyFromGetData() {
-      const { isLoaded, isReload } = this.tableOrder
-      return !isLoaded || isReload
+      const { isReload } = this.tableOrder
+      return isReload
     },
     shortsKey() {
       return {
@@ -187,13 +193,13 @@ export default {
       }
     }
   },
-  // watch: {
-  //   isReadyFromGetData(isToLoad) {
-  //     if (isToLoad) {
-  //       this.loadOrdersList()
-  //     }
-  //   }
-  // },
+  watch: {
+    showField(value) {
+      if (value && this.isEmptyValue(this.metadataList)) {
+        this.setFieldsList()
+      }
+    }
+  },
   created() {
     this.unsubscribe = this.subscribeChanges()
     if (this.isReadyFromGetData) {
@@ -206,6 +212,7 @@ export default {
   methods: {
     formatDate,
     formatQuantity,
+    createFieldFromDictionary,
     keyAction(event) {
       switch (event.srcKey) {
         case 'refreshList':
@@ -319,6 +326,23 @@ export default {
         value: row.id
       }]
       this.$store.dispatch('addParametersProcessPos', parametersList)
+    },
+    setFieldsList() {
+      const list = []
+      // Product Code
+      this.fieldsList.forEach(element => {
+        this.createFieldFromDictionary(element)
+          .then(response => {
+            const data = response
+            list.push({
+              ...data,
+              containerUuid: 'Orders-List'
+            })
+          }).catch(error => {
+            console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+          })
+      })
+      this.metadataList = list
     }
   }
 }

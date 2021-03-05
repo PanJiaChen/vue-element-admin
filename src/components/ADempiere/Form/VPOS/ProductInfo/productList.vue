@@ -140,6 +140,13 @@ export default {
     if (this.isReadyFromGetData) {
       this.loadProductsPricesList()
     }
+    if (this.isEmptyValue(this.listWithPrice)) {
+      this.$store.dispatch('listProductPriceFromServer', {
+        containerUuid: 'Products-Price-List',
+        pageNumber: 1,
+        searchValue: ''
+      })
+    }
   },
   beforeDestroy() {
     this.unsubscribe()

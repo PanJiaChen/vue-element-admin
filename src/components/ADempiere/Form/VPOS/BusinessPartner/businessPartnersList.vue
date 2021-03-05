@@ -17,8 +17,8 @@
           size="small"
         >
           <el-row>
-            <field-definition
-              v-for="(field) in fieldsList"
+            <field
+              v-for="(field) in metadataList"
               :key="field.columnName"
               :metadata-field="field"
             />
@@ -72,17 +72,22 @@
 
 <script>
 import CustomPagination from '@/components/ADempiere/Pagination'
-import formMixin from '@/components/ADempiere/Form/formMixin.js'
+import {
+  // createFieldFromDefinition,
+  createFieldFromDictionary
+} from '@/utils/ADempiere/lookupFactory'
 import fieldsList from './fieldsListSearch.js'
 import BParterMixin from './mixinBusinessPartner.js'
+import Field from '@/components/ADempiere/Field'
 
 export default {
   name: 'BusinessPartnersList',
   components: {
-    CustomPagination
+    CustomPagination,
+    Field
   },
   mixins: [
-    formMixin,
+    // formMixin,
     BParterMixin
   ],
   props: {
@@ -103,6 +108,10 @@ export default {
           isShowList: false
         }
       }
+    },
+    showField: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -110,6 +119,7 @@ export default {
       isLoadedRecords: false,
       activeAccordion: 'query-criteria',
       fieldsList,
+      metadataList: [],
       unsubscribe: () => {}
     }
   },
@@ -130,6 +140,11 @@ export default {
       if (isToLoad) {
         this.searchBPartnerList({})
       }
+    },
+    showField(value) {
+      if (value && this.isEmptyValue(this.metadataList)) {
+        this.setFieldsList()
+      }
     }
   },
   created() {
@@ -143,6 +158,7 @@ export default {
     this.unsubscribe()
   },
   methods: {
+    createFieldFromDictionary,
     keyAction(event) {
       switch (event.srcKey) {
         case 'refreshList': {
@@ -192,6 +208,23 @@ export default {
         .finally(() => {
           this.isLoadedRecords = true
         })
+    },
+    setFieldsList() {
+      const list = []
+      // Product Code
+      this.fieldsList.forEach(element => {
+        this.createFieldFromDictionary(element)
+          .then(response => {
+            const data = response
+            list.push({
+              ...data,
+              containerUuid: 'Business-Partner-List'
+            })
+          }).catch(error => {
+            console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+          })
+      })
+      this.metadataList = list
     }
   }
 }

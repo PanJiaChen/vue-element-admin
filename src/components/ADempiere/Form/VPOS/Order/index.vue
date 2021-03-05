@@ -137,49 +137,18 @@
                           placement="right"
                           trigger="click"
                           :title="$t('form.pos.tableProduct.editQuantities')"
+                          width="600"
+                          @hide="showFieldLine = !showFieldLine"
                         >
-                          <el-row>
-                            <el-col :span="8">
-                              <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                                <template
-                                  v-for="(field) in fieldsList"
-                                >
-                                  <field-definition
-                                    v-if="field.columnName === 'PriceEntered'"
-                                    :key="field.columnName"
-                                    :metadata-field="field"
-                                  />
-                                </template>
-                              </el-form>
-                            </el-col>
-                            <el-col :span="8">
-                              <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                                <template
-                                  v-for="(field) in fieldsList"
-                                >
-                                  <field-definition
-                                    v-if="field.columnName === 'QtyEntered'"
-                                    :key="field.columnName"
-                                    :metadata-field="field"
-                                  />
-                                </template>
-                              </el-form>
-                            </el-col>
-                            <el-col :span="8">
-                              <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                                <template
-                                  v-for="(field) in fieldsList"
-                                >
-                                  <field-definition
-                                    v-if="field.columnName === 'Discount'"
-                                    :key="field.columnName"
-                                    :metadata-field="field"
-                                  />
-                                </template>
-                              </el-form>
-                            </el-col>
-                          </el-row>
-                          <el-button slot="reference" type="text">
+                          <field-line
+                            :data-line="scope.row"
+                            :show-field="showFieldLine"
+                          />
+                          <el-button
+                            slot="reference"
+                            type="text"
+                            @click="showFieldLine = !showFieldLine"
+                          >
                             <i class="el-icon-edit" /> {{ $t('form.pos.tableProduct.editQuantities') }}
                           </el-button>
                         </el-popover>
@@ -310,6 +279,7 @@ import orderLineMixin from './orderLineMixin.js'
 import fieldsListOrder from './fieldsListOrder.js'
 import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import BusinessPartner from '@/components/ADempiere/Form/VPOS/BusinessPartner'
+import fieldLine from '@/components/ADempiere/Form/VPOS/Order/line/index'
 import ProductInfo from '@/components/ADempiere/Form/VPOS/ProductInfo'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
 
@@ -318,7 +288,8 @@ export default {
   components: {
     BusinessPartner,
     ProductInfo,
-    convertAmount
+    convertAmount,
+    fieldLine
   },
   mixins: [
     formMixin,
@@ -328,7 +299,8 @@ export default {
   data() {
     return {
       fieldsList: fieldsListOrder,
-      seeConversion: false
+      seeConversion: false,
+      showFieldLine: false
     }
   },
   computed: {
@@ -461,9 +433,9 @@ export default {
     if (!this.isEmptyValue(this.$route.query.action)) {
       this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })
     }
-    setTimeout(() => {
-      this.currencyDisplaye()
-    }, 1500)
+    // setTimeout(() => {
+    //   this.currencyDisplaye()
+    // }, 1500)
   },
   methods: {
     changePos(posElement) {
@@ -532,34 +504,34 @@ export default {
       if (!this.seeConversion) {
         this.seeConversion = true
       }
-    },
-    tenderTypeDisplaye() {
-      if (!this.isEmptyValue(this.fieldsList)) {
-        const tenderType = this.fieldsList[5].reference
-        if (!this.isEmptyValue(tenderType)) {
-          this.$store.dispatch('getLookupListFromServer', {
-            tableName: tenderType.tableName,
-            query: tenderType.query
-          })
-            .then(response => {
-              this.$store.dispatch('tenderTypeDisplaye', response)
-            })
-        }
-      }
-    },
-    currencyDisplaye() {
-      if (!this.isEmptyValue(this.fieldsList)) {
-        const currency = this.fieldsList[4].reference
-        if (!this.isEmptyValue(currency)) {
-          this.$store.dispatch('getLookupListFromServer', {
-            tableName: currency.tableName,
-            query: currency.query
-          })
-            .then(response => {
-              this.$store.dispatch('currencyDisplaye', response)
-            })
-        }
-      }
+    // },
+    // tenderTypeDisplaye() {
+    //   if (!this.isEmptyValue(this.fieldsList)) {
+    //     const tenderType = this.fieldsList[5].reference
+    //     if (!this.isEmptyValue(tenderType)) {
+    //       this.$store.dispatch('getLookupListFromServer', {
+    //         tableName: tenderType.tableName,
+    //         query: tenderType.query
+    //       })
+    //         .then(response => {
+    //           this.$store.dispatch('tenderTypeDisplaye', response)
+    //         })
+    //     }
+    //   }
+    // },
+    // currencyDisplaye() {
+    //   if (!this.isEmptyValue(this.fieldsList)) {
+    //     const currency = this.fieldsList[4].reference
+    //     if (!this.isEmptyValue(currency)) {
+    //       this.$store.dispatch('getLookupListFromServer', {
+    //         tableName: currency.tableName,
+    //         query: currency.query
+    //       })
+    //         .then(response => {
+    //           this.$store.dispatch('currencyDisplaye', response)
+    //         })
+    //     }
+    //   }
     }
   }
 }

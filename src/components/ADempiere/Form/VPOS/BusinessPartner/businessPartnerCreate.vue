@@ -9,8 +9,8 @@
       class="create-bp"
     >
       <el-row :gutter="24">
-        <field-definition
-          v-for="(field) in fieldsList"
+        <field
+          v-for="(field) in metadataList"
           :key="field.columnName"
           :metadata-field="field"
         />
@@ -39,14 +39,21 @@
 
 <script>
 import { requestCreateBusinessPartner } from '@/api/ADempiere/system-core.js'
-import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import fieldsList from './fieldsListCreate.js'
 import BParterMixin from './mixinBusinessPartner.js'
+import {
+  // createFieldFromDefinition,
+  createFieldFromDictionary
+} from '@/utils/ADempiere/lookupFactory'
+import Field from '@/components/ADempiere/Field'
 
 export default {
   name: 'BusinessPartnerCreate',
+  components: {
+    Field
+  },
   mixins: [
-    formMixin,
+    // formMixin,
     BParterMixin
   ],
   props: {
@@ -59,6 +66,11 @@ export default {
           fieldsList
         }
       }
+    },
+    showField: {
+      type: Boolean,
+      default: true
+
     }
   },
   data() {
@@ -67,6 +79,7 @@ export default {
       isLoadingRecord: false,
       fieldsList,
       isCustomForm: true,
+      metadataList: [],
       unsubscribe: () => {}
     }
   },
@@ -79,10 +92,19 @@ export default {
       return field
     }
   },
+  watch: {
+    showField(value) {
+      if (value && this.isEmptyValue(this.metadataList)) {
+        this.setFieldsList()
+      }
+    }
+  },
   beforeDestroy() {
     this.unsubscribe()
   },
+  // created()
   methods: {
+    createFieldFromDictionary,
     // TODO: Get locations values.
     createBusinessParter() {
       let values = this.$store.getters.getValuesView({
@@ -188,6 +210,23 @@ export default {
           value: undefined
         }]
       })
+    },
+    setFieldsList() {
+      const list = []
+      // Product Code
+      this.fieldsList.forEach(element => {
+        this.createFieldFromDictionary(element)
+          .then(response => {
+            const data = response
+            list.push({
+              ...data,
+              containerUuid: 'Business-Partner-Create'
+            })
+          }).catch(error => {
+            console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
+          })
+      })
+      this.metadataList = list
     }
   }
 }

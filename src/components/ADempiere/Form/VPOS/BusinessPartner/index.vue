@@ -3,14 +3,47 @@
     <el-form-item>
       <template slot="label">
         {{ $t('form.pos.order.BusinessPartnerCreate.businessPartner') }}
-        <i
-          v-popover:businessPartnerCreate
-          class="el-icon-circle-plus"
-        />
-        <i
-          v-popover:businessPartnersList
-          class="el-icon-search"
-        />
+        <el-popover
+          placement="right"
+          width="400"
+          trigger="click"
+          @hide="showFieldCreate = !showFieldCreate"
+        >
+          <business-partner-create
+            :parent-metadata="parentMetadata"
+            :show-field="showFieldCreate"
+          />
+          <el-button
+            slot="reference"
+            type="text"
+            @click="showFieldCreate = !showFieldCreate"
+          >
+            <i
+              class="el-icon-circle-plus"
+            />
+          </el-button>
+        </el-popover>
+        <el-popover
+          placement="right"
+          width="800"
+          trigger="click"
+          @hide="showFieldList = !showFieldList"
+        >
+          <business-partners-list
+            :parent-metadata="parentMetadata"
+            :shows-popovers="showsPopovers"
+            :show-field="showFieldList"
+          />
+          <el-button
+            slot="reference"
+            type="text"
+            @click="showFieldList = !showFieldList"
+          >
+            <i
+              class="el-icon-search"
+            />
+          </el-button>
+        </el-popover>
       </template>
 
       <el-autocomplete
@@ -45,32 +78,7 @@
         </template>
       </el-autocomplete>
     </el-form-item>
-    <el-popover
-      ref="businessPartnerCreate"
-      v-model="showsPopovers.isShowCreate"
-      placement="right"
-      width="400"
-      trigger="click"
-    >
-      <business-partner-create
-        v-if="showsPopovers.isShowCreate"
-        :parent-metadata="parentMetadata"
-        :shows-popovers="showsPopovers"
-      />
-    </el-popover>
 
-    <el-popover
-      ref="businessPartnersList"
-      v-model="showsPopovers.isShowList"
-      placement="right"
-      width="800"
-      trigger="click"
-    >
-      <business-partners-list
-        :parent-metadata="parentMetadata"
-        :shows-popovers="showsPopovers"
-      />
-    </el-popover>
   </div>
 </template>
 
@@ -81,6 +89,7 @@
  */
 import { requestGetBusinessPartner } from '@/api/ADempiere/system-core.js'
 import BusinessPartnerCreate from './businessPartnerCreate'
+// import FieldListBusinessPartner from './fieldBusinessPartners/index'
 import BusinessPartnersList from './businessPartnersList'
 import BParterMixin from './mixinBusinessPartner.js'
 const { setBusinessPartner } = BParterMixin.methods
@@ -92,6 +101,7 @@ export default {
   components: {
     BusinessPartnerCreate,
     BusinessPartnersList
+    // FieldListBusinessPartner
   },
   props: {
     parentMetadata: {
@@ -111,7 +121,9 @@ export default {
   data() {
     return {
       controlDisplayed: this.displayedValue,
-      timeOut: null
+      timeOut: null,
+      showFieldCreate: false,
+      showFieldList: false
     }
   },
   computed: {
