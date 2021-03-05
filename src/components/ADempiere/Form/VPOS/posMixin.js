@@ -133,6 +133,11 @@ export default {
         this.listOrderLines(value)
       }
     },
+    currentPoint(value) {
+      if (!this.isEmptyValue(value)) {
+        this.$store.dispatch('setCurrentPOS', value)
+      }
+    },
     /**
      * Used when loading/reloading the app without the order uuid
      * @param {oject|boolean} bPartnerToSet
@@ -165,6 +170,17 @@ export default {
   mounted() {
     if (!this.isEmptyValue(this.$route.query)) {
       this.reloadOrder(true, this.$route.query.action)
+    }
+    if (!this.isEmptyValue(this.$route.query.pos) && !this.isEmptyValue(this.allOrderLines) && this.isEmptyValue(this.$route.query.action)) {
+      this.$router.push({
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          ...this.$route.query,
+          action: this.getOrder.uuid
+        }
+      }, () => {})
     }
   },
   methods: {
@@ -311,7 +327,7 @@ export default {
                 this.createOrderLine(response.uuid)
               }
               this.$store.dispatch('listOrdersFromServer', {
-                posUuid: this.$store.getters.getCurrentPOS.uuid
+                posUuid: this.currentPoint.uuid
               })
             }).catch(() => {})
           })

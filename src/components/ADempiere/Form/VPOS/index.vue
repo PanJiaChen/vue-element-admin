@@ -116,9 +116,6 @@ export default {
     if (this.isEmptyValue(this.$store.getters.getSellingPointsList)) {
       let posToSet
       // set pos id with query path
-      if (!this.isEmptyValue(this.$route.query) && !this.isEmptyValue(this.$route.query.pos)) {
-        posToSet = Number(this.$route.query.pos)
-      }
       this.$store.dispatch('listPointOfSalesFromServer', posToSet)
     }
 

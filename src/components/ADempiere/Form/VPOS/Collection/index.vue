@@ -606,7 +606,7 @@ export default {
           amount: this.amontSend,
           paymentDate,
           tenderTypeCode,
-          currencyUuid: this.currencyDisplay(currencyToPay).currencyUuid
+          currencyUuid: this.currencyDisplay(currencyToPay)
         })
       }
       this.addCollect()
@@ -738,6 +738,9 @@ export default {
       })
       if (display) {
         return display
+      }
+      if (currency === this.currencyPoint.id) {
+        return this.currencyPoint.uuid
       }
       return currency
     },
