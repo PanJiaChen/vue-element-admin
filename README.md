@@ -236,7 +236,7 @@ Thanks you for any effort to improve this great project. The follows are some co
   <tbody>
     <tr>
       <td align="center" valign="middle">
-        <a href="https://vDevSoft.com/">
+        <a href="www.vdevsoft.com">
           <img
             src="https://user-images.githubusercontent.com/2333092/110265373-c2cafb00-7f91-11eb-84de-2aba7f2c2024.jpg"
             alt="vDevSoft"
