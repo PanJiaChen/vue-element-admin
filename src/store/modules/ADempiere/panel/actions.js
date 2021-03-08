@@ -532,7 +532,8 @@ const actions = {
   notifyFieldChange({ dispatch, getters }, {
     containerUuid,
     columnName,
-    field
+    field,
+    newValue
   }) {
     return new Promise(resolve => {
       // get field
@@ -541,12 +542,16 @@ const actions = {
         fieldsList = getters.getFieldsListFromPanel(containerUuid)
         field = fieldsList.find(fieldItem => fieldItem.columnName === columnName)
       }
-
-      const value = getters.getValueOfField({
-        parentUuid: field.parentUuid,
-        containerUuid: field.containerUuid,
-        columnName: field.columnName
-      })
+      let value
+      if (isEmptyValue(newValue)) {
+        value = getters.getValueOfField({
+          parentUuid: field.parentUuid,
+          containerUuid: field.containerUuid,
+          columnName: field.columnName
+        })
+      } else {
+        value = newValue
+      }
       // if (!(panelType === 'table' || isAdvancedQuery)) {
       //   if (!['IN', 'NOT_IN'].includes(field.operator)) {
       //     value = parsedValueComponent({

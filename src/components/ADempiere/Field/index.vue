@@ -48,7 +48,7 @@
           <calculator
             v-if="field.isNumericField && !field.isReadOnlyFromLogic"
             :field-attributes="fieldAttributes"
-            :field-value="field.value"
+            :field-value="recordDataFields"
           />
         </template>
 
