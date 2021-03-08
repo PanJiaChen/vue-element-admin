@@ -229,6 +229,25 @@ If you find this project useful, you can help this make a better UI
 
 [Paypal Me](https://www.paypal.me/YamelSenih)
 
+### Some Contributors
+Thanks you for any effort to improve this great project. The follows are some companies that paying for help us to  make a best software.
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="middle">
+        <a href="https://vDevSoft.com/">
+          <img
+            src="https://user-images.githubusercontent.com/2333092/110265373-c2cafb00-7f91-11eb-84de-2aba7f2c2024.jpg"
+            alt="vDevSoft"
+            width="150"
+          >
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## Browsers support
 
 Modern browsers and Internet Explorer 10+.
