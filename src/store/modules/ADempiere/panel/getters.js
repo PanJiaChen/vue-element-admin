@@ -41,16 +41,14 @@ const getters = {
     const fieldsList = getters.getFieldsListFromPanel(containerUuid)
 
     const fieldNotReadyToSend = fieldsList.find(fieldItem => {
-      const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
-      const isDisplayed = fieldIsDisplayed(fieldItem) && (fieldItem.isShowedFromUser || isMandatory)
-
       const { columnName } = fieldItem
-
       // Omit log columns list only created or updated record, this is manage for backend
       if (fieldItem.panelType === 'window' && LOG_COLUMNS_NAME_LIST.includes(columnName)) {
         return false
       }
 
+      const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
+      const isDisplayed = fieldIsDisplayed(fieldItem) && (fieldItem.isShowedFromUser || isMandatory)
       if (isDisplayed && isMandatory) {
         let value
         // used when evaluate data in table
@@ -82,26 +80,20 @@ const getters = {
   getFieldsListEmptyMandatory: (state, getters) => ({
     containerUuid,
     fieldsList,
-    formatReturn = 'name',
-    isValidate = false
+    formatReturn = 'name'
   }) => {
     if (isEmptyValue(fieldsList)) {
       fieldsList = getters.getFieldsListFromPanel(containerUuid)
     }
-    const fieldsEmpty = []
-    // all optionals (not mandatory) fields
+
+    // all mandatory and empty fields value
     const fieldsNameEmpty = fieldsList.filter(fieldItem => {
       const value = getters.getValueOfField({
         parentUuid: fieldItem.parentUuid,
         containerUuid,
         columnName: fieldItem.columnName
       })
-      if (isValidate && isEmptyValue(value)) {
-        const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
-        if (fieldIsDisplayed(fieldItem) && isMandatory) {
-          fieldsEmpty.push(fieldItem.name)
-        }
-      }
+
       if (isEmptyValue(value)) {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
         if (fieldIsDisplayed(fieldItem) && isMandatory) {
@@ -109,11 +101,9 @@ const getters = {
         }
       }
     })
-    if (isValidate) {
-      return fieldsEmpty
-    }
-    if (formatReturn) {
-      return fieldsList.map(fieldItem => {
+
+    if (!isEmptyValue(formatReturn)) {
+      return fieldsNameEmpty.map(fieldItem => {
         return fieldItem[formatReturn]
       })
     }
