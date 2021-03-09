@@ -107,13 +107,6 @@ const actions = {
     token
   }) {
     return new Promise((resolve, reject) => {
-      console.log({
-        userName,
-        password,
-        roleUuid,
-        organizationUuid,
-        token
-      })
       login({
         userName,
         password,
@@ -137,6 +130,7 @@ const actions = {
         })
     })
   },
+
   /**
    * Get session info
    * @param {string} sessionUuid as token
@@ -209,6 +203,7 @@ const actions = {
         })
     })
   },
+
   /**
    * Get user info
    * @param {string} sessionUuid as token
@@ -251,6 +246,7 @@ const actions = {
       })
     })
   },
+
   // user logout
   logout({ commit, state, dispatch }) {
     const token = state.token
@@ -280,6 +276,7 @@ const actions = {
       })
     })
   },
+
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
@@ -289,6 +286,7 @@ const actions = {
       resolve()
     })
   },
+
   getRolesListFromServer({ commit }, sessionUuid = null) {
     if (isEmptyValue(sessionUuid)) {
       sessionUuid = getToken()
@@ -334,6 +332,7 @@ const actions = {
         })
     })
   },
+
   getOrganizationsListFromServer({ commit, dispatch }, roleUuid) {
     if (isEmptyValue(roleUuid)) {
       roleUuid = getCurrentRole()
@@ -369,6 +368,7 @@ const actions = {
         console.warn(`Error ${error.code} getting Organizations list: ${error.message}.`)
       })
   },
+
   changeOrganization({ commit, dispatch, getters }, {
     organizationUuid,
     organizationId,
@@ -436,6 +436,7 @@ const actions = {
         })
       })
   },
+
   getWarehousesList({ commit }, organizationUuid) {
     if (isEmptyValue(organizationUuid)) {
       organizationUuid = getCurrentOrganization()
@@ -469,6 +470,7 @@ const actions = {
         console.warn(`Error ${error.code} getting Warehouses list: ${error.message}.`)
       })
   },
+
   changeWarehouse({ commit, state }, {
     warehouseUuid
   }) {
@@ -484,6 +486,7 @@ const actions = {
       root: true
     })
   },
+
   // dynamically modify permissions
   changeRole({ commit, dispatch }, {
     roleUuid,
