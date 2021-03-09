@@ -119,7 +119,9 @@ export default {
     return {
       loginForm: {
         userName: '',
-        password: ''
+        password: '',
+        roleUuid: '',
+        organizationUuid: ''
       },
       loginRules: {
         userName: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -169,8 +171,8 @@ export default {
       if (!this.isEmptyValue(query)) {
         this.loginForm = {
           ...this.loginForm,
-          roleId: this.clientIdRedirect(query, expr),
-          organizationId: this.organizationIdRedirect(query, expr)
+          roleUuid: this.clientIdRedirect(query, expr),
+          organizationUuid: this.organizationIdRedirect(query, expr)
         }
       }
       this.$refs.loginForm.validate(valid => {

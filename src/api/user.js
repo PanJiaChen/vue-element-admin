@@ -12,6 +12,8 @@ import {
 export function login({
   userName,
   password,
+  roleUuid,
+  organizationUuid,
   token
 }) {
   return requestRest({
@@ -20,6 +22,8 @@ export function login({
     data: {
       username: userName,
       password,
+      role_uuid: roleUuid,
+      organization_uuid: organizationUuid,
       token
     }
   })

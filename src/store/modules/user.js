@@ -107,6 +107,13 @@ const actions = {
     token
   }) {
     return new Promise((resolve, reject) => {
+      console.log({
+        userName,
+        password,
+        roleUuid,
+        organizationUuid,
+        token
+      })
       login({
         userName,
         password,
