@@ -234,7 +234,7 @@ const actions = {
       fieldsList = getters.getFieldsListFromPanel(containerUuid)
     }
     const fieldsIncludes = []
-    fieldsList.array.forEach(fieldItem => {
+    fieldsList.forEach(fieldItem => {
       const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
       if (isMandatory) {
         fieldsIncludes.push(fieldItem.columnName)
@@ -260,9 +260,8 @@ const actions = {
       fieldsList = getters.getFieldsListFromPanel(containerUuid)
     }
     const fieldsIncludes = []
-    fieldsList.foreach(fieldItem => {
+    fieldsList.forEach(fieldItem => {
       const isDisplayed = fieldItem.isDisplayed && fieldItem.isDisplayedFromLogic && !fieldItem.isKey
-      // Verify for displayed and is active
       if (fieldItem.isActive && isDisplayed) {
         fieldsIncludes.push(fieldItem.columnName)
       }
