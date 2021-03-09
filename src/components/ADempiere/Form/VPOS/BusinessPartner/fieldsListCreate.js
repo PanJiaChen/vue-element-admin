@@ -5,6 +5,7 @@ export default [
     elementColumnName: 'Value',
     columnName: 'Value',
     isFromDictionary: true,
+    tabindex: '0',
     overwriteDefinition: {
       isCustomField: true,
       size: 24
@@ -14,6 +15,7 @@ export default [
     elementColumnName: 'Name',
     columnName: 'Name',
     tableName,
+    tabindex: '1',
     isFromDictionary: true,
     overwriteDefinition: {
       isCustomField: true,
@@ -24,6 +26,7 @@ export default [
     elementColumnName: 'Name2',
     columnName: 'Name2',
     tableName,
+    tabindex: '2',
     isFromDictionary: true,
     overwriteDefinition: {
       isCustomField: true,
@@ -34,6 +37,7 @@ export default [
     elementColumnName: 'EMail',
     columnName: 'EMail',
     tableName: 'AD_user',
+    tabindex: '3',
     isFromDictionary: true,
     overwriteDefinition: {
       isCustomField: true,
@@ -44,6 +48,7 @@ export default [
     elementColumnName: 'Phone',
     columnName: 'Phone',
     tableName: 'AD_user',
+    tabindex: '4',
     isFromDictionary: true,
     overwriteDefinition: {
       isCustomField: true,
@@ -54,6 +59,7 @@ export default [
     elementColumnName: 'C_Location_ID',
     columnName: 'C_Location_ID',
     tableName: 'C_BPartner_Location',
+    tabindex: '5',
     isFromDictionary: true,
     overwriteDefinition: {
       size: 24,
