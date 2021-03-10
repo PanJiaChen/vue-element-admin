@@ -77,6 +77,8 @@ export default {
   },
   methods: {
     redirect(item) {
+      this.openItemMenu(item)
+
       let tabParent
       if (item.meta && item.meta.type === 'window') {
         tabParent = 0
@@ -93,6 +95,34 @@ export default {
           childs: item.children
         }
       }, () => {})
+    },
+    /**
+     * Clear field values, and set default values with open
+     * @param view router item with meta attributes
+     */
+    openItemMenu(view) {
+      if (view.meta && view.meta.uuid && view.meta.type) {
+        const {
+          parentUuid,
+          uuid: containerUuid,
+          type: panelType
+        } = view.meta
+
+        if (panelType !== 'window') {
+          this.$store.dispatch('setDefaultValues', {
+            parentUuid,
+            containerUuid,
+            panelType,
+            isNewRecord: false
+          })
+
+          if (['browser'].includes(panelType)) {
+            this.$store.dispatch('deleteRecordContainer', {
+              viewUuid: containerUuid
+            })
+          }
+        }
+      }
     }
   }
 }

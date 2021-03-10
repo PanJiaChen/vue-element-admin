@@ -2,8 +2,16 @@
   <div v-if="!item.hidden">
     <template v-if="hasOneShowingChild(item.children,item) && (!onlyOneChild.children||onlyOneChild.noShowingChildren)&&!item.alwaysShow">
       <app-link v-if="onlyOneChild.meta" :to="onlyOneChild">
-        <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{'submenu-title-noDropdown':!isNest}">
-          <item :icon="onlyOneChild.meta.icon||(item.meta&&item.meta.icon)" :title="generateTitle(onlyOneChild.meta.title)" />
+        <el-menu-item
+          :index="resolvePath(onlyOneChild.path)"
+          :route="item"
+          :class="{'submenu-title-noDropdown':!isNest}"
+          @click="openItemMenu"
+        >
+          <item
+            :icon="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"
+            :title="generateTitle(onlyOneChild.meta.title)"
+          />
         </el-menu-item>
       </app-link>
     </template>
@@ -93,6 +101,36 @@ export default {
       }
 
       return false
+    },
+    /**
+     * Clear field values, and set default values with open
+     * @param view router item with meta attributes
+     */
+    openItemMenu(menuItem) {
+      const view = menuItem._props.route
+
+      if (view.meta && view.meta.uuid && view.meta.type) {
+        const {
+          parentUuid,
+          uuid: containerUuid,
+          type: panelType
+        } = view.meta
+
+        if (panelType !== 'window') {
+          this.$store.dispatch('setDefaultValues', {
+            parentUuid,
+            containerUuid,
+            panelType,
+            isNewRecord: false
+          })
+
+          if (['browser'].includes(panelType)) {
+            this.$store.dispatch('deleteRecordContainer', {
+              viewUuid: containerUuid
+            })
+          }
+        }
+      }
     },
     resolvePath(routePath) {
       if (isExternal(routePath)) {
