@@ -764,8 +764,7 @@ const actions = {
     })
       .then(privateAccessResponse => {
         // TODO: Evaluate uuid record
-        if (isEmptyValue(privateAccessResponse.recordId) ||
-          privateAccessResponse.recordId !== recordId) {
+        if (!isEmptyValue(privateAccessResponse.tableName)) {
           return {
             isLocked: false,
             tableName,
@@ -810,7 +809,7 @@ const actions = {
       .catch(error => {
         showMessage({
           title: language.t('notifications.error'),
-          message: language.t('login.unexpectedError'),
+          message: language.t('login.unexpectedError') + error.message,
           type: 'error'
         })
         console.warn(`Error lock private access: ${error.message}. Code: ${error.code}.`)
@@ -844,7 +843,7 @@ const actions = {
       .catch(error => {
         showMessage({
           title: language.t('notifications.error'),
-          message: language.t('login.unexpectedError'),
+          message: language.t('login.unexpectedError') + error.message,
           type: 'error'
         })
         console.warn(`Error unlock private access: ${error.message}. Code: ${error.code}.`)
