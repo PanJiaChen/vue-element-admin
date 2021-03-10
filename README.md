@@ -222,6 +222,9 @@ Detailed changes for each release are documented in the [release notes](https://
 ## Online Demo
 
 [Preview](https://demo-ui.erpya.com)
+How to login?
+**User**: demo
+**Password**: demo
 
 ## Donate
 
