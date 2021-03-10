@@ -221,7 +221,7 @@ Detailed changes for each release are documented in the [release notes](https://
 
 ## Online Demo
 
-[Preview](http://adempiere-ui.erpya.com)
+[Preview](https://demo-ui.erpya.com)
 
 ## Donate
 
