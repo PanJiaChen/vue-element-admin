@@ -138,7 +138,7 @@ export default {
           if (mutation.payload.columnName === 'C_Country_ID') {
             const values = []
             // Get country definition to sequence fields and displayed value
-            if (mutation.value !== this.currentCountryDefinition.countryId) {
+            if (mutation.payload.value !== this.currentCountryDefinition.countryId) {
               this.requestGetCountryDefinition({
                 id: mutation.payload.value
               })
