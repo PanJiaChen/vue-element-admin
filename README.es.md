@@ -34,6 +34,9 @@ Este es una gran UI para [ADempiere ERP, CRM & SCM](https://github.com/adempiere
 [adempiere-vue](https://github.com/adempiere/adempiere-vue) usa como RPC (Llamado a Procedimientos Remostos)[gRPC](https://grpc.io/) como [server](https://github.com/adempiere/adempiere-gRPC-Server).
 
 - [Vista Prévia de la Aplicación](https://demo-ui.erpya.com/)
+  
+  - **User**: demo
+  - **Password**: demo
 
 - [Documentación](https://adempiere.github.io/adempiere-vue-site/)
 
@@ -221,12 +224,34 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 ## Demostración en línea
 
 [Vista Prévia de la Aplicación](https://demo-ui.erpya.com/)
+  
+  - **User**: demo
+  - **Password**: demo
 
 ## Donación
 
 Si este proyecto es de mucha ayuda para ti, puedes ayudar a hacer una mejor UI
 
 [dona por Paypal](https://www.paypal.me/YamelSenih)
+
+### Some Contributors
+Gracias por todo el esfuerzo para mejorar este gran proyecto. Los siguientes son algunas de las compañías que aportaron monetariamente para ayudarnos a hacer un mejor software.
+
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="middle">
+        <a href="www.vdevsoft.com">
+          <img
+            src="https://user-images.githubusercontent.com/2333092/110265373-c2cafb00-7f91-11eb-84de-2aba7f2c2024.jpg"
+            alt="vDevSoft"
+            width="150"
+          >
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 ## Navegadores Soportados
 
