@@ -31,13 +31,11 @@ const actions = {
       if (!isEmptyValue(organization)) {
         organizationUuid = organization.uuid
       }
-
       const role = rootGetters['user/getRole']
       let roleUuid
       if (!isEmptyValue(role)) {
         roleUuid = role.uuid
       }
-
       const sessionUuid = getToken()
 
       loadMainMenu({
