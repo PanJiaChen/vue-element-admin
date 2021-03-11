@@ -1,7 +1,7 @@
 <template>
   <el-cascader
     :ref="metadata.columnName"
-    v-model="value"
+    :v-model="[value]"
     :placeholder="metadata.help"
     :options="options"
     :readonly="Boolean(metadata.readonly)"
@@ -28,6 +28,7 @@ export default {
   data() {
     return {
       options: [],
+      level: 0,
       props: {
         // checkStrictly: true,
         // emitPath: false,
@@ -70,15 +71,30 @@ export default {
         warehouseId: node.value
       })
         .then(responseData => {
-          const locatorList = responseData.recordsList.map(item => {
-            const { attributes: values } = item
-            return {
-              label: values.Value,
-              value: values.M_Locator_ID,
-              warehouse: values.M_Warehouse_ID, // node.value
+          const data = responseData.recordsList[this.level]
+          const locatorList = [
+            {
+              value: data.id,
+              label: data.attributes.Value,
+              warehouse: data.id,
+              leaf: true
+            }, {
+              value: data.id,
+              label: data.attributes.X,
+              warehouse: data.id,
+              leaf: true
+            }, {
+              value: data.id,
+              label: data.attributes.Y,
+              warehouse: data.id,
+              leaf: true
+            }, {
+              value: data.id,
+              label: data.attributes.Z,
+              warehouse: data.id,
               leaf: true
             }
-          })
+          ]
           resolve(locatorList)
         })
         .catch(error => {
