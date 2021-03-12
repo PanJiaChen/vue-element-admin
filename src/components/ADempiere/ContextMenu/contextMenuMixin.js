@@ -1,6 +1,6 @@
 import { showNotification } from '@/utils/ADempiere/notification.js'
 import ItemsRelations from './itemsRelations'
-import { convertFieldsListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { clientDateTime, convertFieldsListToShareLink, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { supportedTypes, exportFileFromJson } from '@/utils/ADempiere/exportUtil.js'
 import ROUTES from '@/utils/ADempiere/constants/zoomWindow'
 import relationsMixin from './relationsMixin.js'
@@ -342,11 +342,17 @@ export default {
         // TODO: Check usage as the selection is exported with the table menu
         list = this.getDataSelection
       }
+
+      let title = this.metadataMenu.name
+      if (this.isEmptyValue(title)) {
+        title = this.$route.meta.title
+      }
+
       const data = this.formatJson(filterVal, list)
       exportFileFromJson({
         header: tHeader,
         data,
-        filename: '',
+        fileName: `${title} ${clientDateTime()}`,
         exportType: fotmatToExport
       })
     },

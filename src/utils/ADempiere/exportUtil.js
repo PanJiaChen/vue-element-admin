@@ -1,6 +1,8 @@
 import { export_json_to_excel } from '@/vendor/Export2Excel'
 import { export_txt_to_zip } from '@/vendor/Export2Zip'
 import language from '@/lang'
+import { convertBooleanToTranslationLang } from '@/utils/ADempiere/valueFormat.js'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
 export const reportFormatsList = [
   'ps',
@@ -29,26 +31,28 @@ export const supportedTypes = {
  * @param {array} header
  * @param {array} data
  * @param {string} exportType, supportedTypes array
+ * @param {string} fileName .xlsx file name
  */
 export function exportFileFromJson({
   header,
   data,
-  exportType
+  exportType,
+  fileName = ''
 }) {
-  const Json = data.map(dataJson => {
-    Object.keys(dataJson).forEach(key => {
-      if (typeof dataJson[key] === 'boolean') {
-        dataJson[key] = dataJson[key]
-          ? language.t('components.switchActiveText')
-          : language.t('components.switchInactiveText')
+  const jsonData = data.map(row => {
+    Object.keys(row).forEach(column => {
+      if (typeof row[column] === 'boolean') {
+        row[column] = convertBooleanToTranslationLang(row[column])
       }
     })
-    return dataJson
+
+    return row
   })
+
   export_json_to_excel({
-    header: header,
-    data: Json,
-    filename: '',
+    header,
+    data: jsonData,
+    filename: fileName,
     bookType: exportType
   })
 }
@@ -58,27 +62,35 @@ export function exportFileFromJson({
  * @autor Edwin Betancourt <EdwinBetanc0urt@outlook.com>
  * @param {array} header
  * @param {array} data
- * @param {string} title
+ * @param {string} txtName .txt text file name
+ * @param {string} zipName .zip compressed file name
  */
-export function exportFileZip({
+export function exportZipFile({
   header,
   data,
-  title
+  txtName = '',
+  zipName = ''
 }) {
-  const Json = data.map(dataJson => {
-    Object.keys(dataJson).forEach(key => {
-      if (typeof dataJson[key] === 'boolean') {
-        dataJson[key] = dataJson[key]
-          ? language.t('components.switchActiveText')
-          : language.t('components.switchInactiveText')
+  const jsonData = data.map(row => {
+    Object.keys(row).forEach(column => {
+      if (typeof row[column] === 'boolean') {
+        row[column] = convertBooleanToTranslationLang(row[column])
       }
     })
-    return dataJson
+    return row
   })
+
+  if (isEmptyValue(zipName)) {
+    zipName = txtName
+  }
+  if (isEmptyValue(txtName)) {
+    txtName = zipName
+  }
 
   export_txt_to_zip(
     header,
-    Json,
-    title
+    jsonData,
+    txtName,
+    zipName
   )
 }

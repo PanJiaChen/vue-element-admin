@@ -1,6 +1,7 @@
 // A util class for handle format for time, date and others values to beused to display information
 // Note that this file use moment library for a easy conversion
 import moment from 'moment'
+import language from '@/lang'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import store from '@/store'
 import { DATE, DATE_PLUS_TIME, TIME, AMOUNT, COSTS_PLUS_PRICES, NUMBER, QUANTITY } from '@/utils/ADempiere/references.js'
@@ -25,6 +26,18 @@ export const convertBooleanToString = (booleanValue) => {
     return 'Y'
   }
   return 'N'
+}
+
+/**
+ * Convert boolean value to current translation language
+ * @param {boolean} booleanValue
+ * @returns {string} true => 'Yes' or 'Si', false => 'Not' or 'No'
+ */
+export const convertBooleanToTranslationLang = (booleanValue) => {
+  if (booleanValue || booleanValue === 'true') {
+    return language.t('components.switchActiveText')
+  }
+  return language.t('components.switchInactiveText')
 }
 
 /**

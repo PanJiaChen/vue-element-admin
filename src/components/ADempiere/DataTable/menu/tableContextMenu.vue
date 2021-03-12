@@ -19,6 +19,13 @@
       </el-menu-item>
     </el-submenu>
     <el-menu-item
+      @click="exporZipRecordTable({
+        recordContexMenu: true
+      })"
+    >
+      {{ $t('table.dataTable.exportZip') }}
+    </el-menu-item>
+    <el-menu-item
       v-if="panelType === 'window'"
       index="delete"
       @click="deleteRecord()"

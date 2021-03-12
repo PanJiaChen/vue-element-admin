@@ -1,5 +1,5 @@
-import { supportedTypes, exportFileFromJson, exportFileZip } from '@/utils/ADempiere/exportUtil.js'
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { supportedTypes, exportFileFromJson, exportZipFile } from '@/utils/ADempiere/exportUtil.js'
+import { clientDateTime, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 import { FIELDS_QUANTITY } from '@/utils/ADempiere/references'
 import TableMixin from '@/components/ADempiere/DataTable/mixin/tableMixin.js'
 
@@ -197,28 +197,48 @@ export default {
         list = this.getDataSelection
       }
 
+      let title = this.panelMetadata.name
+      if (this.isEmptyValue(title)) {
+        title = this.$route.meta.title
+      }
+
       const data = this.formatJson(filterVal, list)
       exportFileFromJson({
         header,
         data,
-        filename: '',
+        fileName: `${title} ${clientDateTime()}`,
         exportType: formatToExport
       })
+
       this.closeMenu()
     },
-    exporZipRecordTable() {
+    /**
+     * Export records as .txt into compressed .zip file
+     */
+    exporZipRecordTable({
+      recordContexMenu = false
+    }) {
       const header = this.getterFieldsListHeader
       const filterVal = this.getterFieldsListValue
       let list = this.getDataSelection
       if (this.getDataSelection.length <= 0) {
         list = this.recordsData
       }
+      if (recordContexMenu) {
+        list = [this.currentRow]
+      }
       const data = this.formatJson(filterVal, list)
-      exportFileZip({
+
+      let title = this.panelMetadata.name
+      if (this.isEmptyValue(title)) {
+        title = this.$route.meta.title
+      }
+
+      exportZipFile({
         header,
         data,
-        title: this.$route.meta.title,
-        exportType: 'zip'
+        txtName: title,
+        zipName: `${title} ${clientDateTime()}`
       })
     },
     formatJson(filterVal, jsonData) {
