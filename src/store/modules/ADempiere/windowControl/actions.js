@@ -797,6 +797,7 @@ export default {
       eventType
     })
   },
+
   /**
    * Get data to table in tab
    * @param {string}  parentUuid, window to search record data
@@ -1005,7 +1006,7 @@ export default {
   },
 
   /**
-   * Update records in tab sort
+   * Update records in tab sort (sequence)
    * @param {string} containerUuid
    * @param {string} parentUuid
    */
@@ -1020,26 +1021,43 @@ export default {
     // scrolls through the logs and checks if there is a change to be sent to server
     recordData.forEach(itemData => {
       const dataSequence = listSequenceToSet.find(item => item.UUID === itemData.UUID)
-      if (itemData[sortOrderColumnName] === dataSequence[sortOrderColumnName]) {
+      const currentSequence = itemData[sortOrderColumnName]
+      const newSequence = dataSequence[sortOrderColumnName]
+
+      // same sequence, or empty sequence and less than 0
+      if (currentSequence === newSequence ||
+        (isEmptyValue(currentSequence) && newSequence <= 0) ||
+        (isEmptyValue(newSequence) && currentSequence <= 0)) {
         return
       }
       const valuesToSend = [{
         columnName: sortOrderColumnName,
-        value: dataSequence[sortOrderColumnName]
+        value: newSequence
       }]
 
-      if (itemData[sortYesNoColumnName] !== dataSequence[sortYesNoColumnName]) {
+      const currentYesNo = itemData[sortYesNoColumnName]
+      const newYesNo = dataSequence[sortYesNoColumnName]
+
+      // not current visivility and not sequence valid to set (greater than 0)
+      if ((isEmptyValue(currentYesNo) || currentYesNo === false) &&
+        (isEmptyValue(newSequence) || newSequence <= 0)) {
+        return
+      }
+
+      if (currentYesNo !== newYesNo) {
         valuesToSend.push({
           columnName: sortYesNoColumnName,
-          value: dataSequence[sortYesNoColumnName]
+          value: newYesNo
         })
       }
 
       const countRequest = state.totalRequest + 1
       commit('setTotalRequest', countRequest)
 
+      const recordId = itemData[tableName + '_ID']
       requestUpdateEntity({
         tableName,
+        recordId,
         recordUuid: itemData.UUID,
         attributesList: valuesToSend
       })
