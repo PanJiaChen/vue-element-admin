@@ -146,7 +146,7 @@ export default {
           }
         }, () => {})
         this.closeDialog()
-      } else if (action !== undefined) {
+      } else if (!this.isEmptyValue(action)) {
         const fieldNotReady = this.$store.getters.isNotReadyForSubmit(action.uuid)
         if (this.panelType === 'From') {
           this.$store.dispatch('processPos', {
@@ -167,7 +167,7 @@ export default {
             const porcesTabla = this.$store.getters.getProcessSelect.processTablaSelection
             const selection = this.$store.getters.getProcessSelect
             if (porcesTabla) {
-              // selection.forEach(element => {
+              // manage excecute process with records selection
               this.$store.dispatch('selectionProcess', {
                 action: action, // process metadata
                 parentUuid: this.parentUuid,
@@ -178,7 +178,6 @@ export default {
                 isProcessTableSelection: true,
                 routeToDelete: this.$route
               })
-              // })
             } else {
               this.$store.dispatch('startProcess', {
                 action: action, // process metadata
