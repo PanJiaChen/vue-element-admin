@@ -5,14 +5,14 @@
   },
   "adempiere": {
     "api": {
-      "url": "http://localhost:8085",
+      "url": "https://api.erpya.com",
       "service": "/adempiere-api",
-      "fullPath": "http://localhost:8085/adempiere-api"
+      "fullPath": "https://api.erpya.com/adempiere-api"
     },
     "images": {
-      "url": "http://localhost:8085",
+      "url": "https://api.erpya.com",
       "service": "/adempiere-api/img",
-      "fullPath": "http://localhost:8085/adempiere-api/img"
+      "fullPath": "https://api.erpya.com/adempiere-api/img"
     }
   }
 }
