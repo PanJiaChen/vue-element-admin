@@ -1,6 +1,6 @@
 <template>
   <el-form>
-    {{ $t('route.role') }}
+    <label>{{ $t('route.role') }}</label>
     <el-select
       v-model="currentRoleUuid"
       :filterable="isFiltrable"
@@ -15,7 +15,7 @@
       />
     </el-select>
 
-    {{ $t('route.organization') }}
+    <label>{{ $t('route.organization') }}</label>
     <el-select
       v-model="currentOrganizationUuid"
       :filterable="isFiltrable"
@@ -31,7 +31,7 @@
       />
     </el-select>
 
-    {{ $t('route.warehouse') }}
+    <label>{{ $t('route.warehouse') }}</label>
     <el-select
       v-model="currentWarehouseUuid"
       :filterable="isFiltrable"
@@ -157,3 +157,11 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+label {
+  font-weight: 400;
+  display: block;
+  margin-top: 5%;
+}
+</style>
