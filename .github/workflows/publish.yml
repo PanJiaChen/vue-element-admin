@@ -31,8 +31,6 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm i
       - run: npm run build:prod --if-present
-      - run: ls -la
-      - run: ls dist/
       - uses: TheDoctor0/zip-release@0.4.1
         with:
           filename: 'Adempiere-Vue.zip'
