@@ -207,6 +207,15 @@ export default {
       }
       return this.field.isMandatory || this.field.isMandatoryFromLogic
     },
+    isPanelWindow() {
+      return this.field.panelType === 'window'
+    },
+    preferenceClientId() {
+      if (this.isPanelWindow) {
+        return this.$store.getters.getPreferenceClientId
+      }
+      return undefined
+    },
     /**
      * Idicate if field is read only
      * TODO: Create common method to evaluate isReadOnly
@@ -228,7 +237,15 @@ export default {
 
       const isUpdateableAllFields = this.field.isReadOnly || this.field.isReadOnlyFromLogic
 
-      if (this.field.panelType === 'window') {
+      if (this.isPanelWindow) {
+        // TODO: Evaluate record uuid without route.action
+        // edit mode is diferent to create new
+        let isWithRecord = this.field.recordUuid !== 'create-new'
+        // evaluate context
+        if ((this.preferenceClientId !== this.metadataField.clientId) && isWithRecord) {
+          return true
+        }
+
         if (isLogColumns) {
           return true
         }
@@ -240,9 +257,6 @@ export default {
           return true
         }
 
-        // TODO: Evaluate record uuid without route.action
-        // edit mode is diferent to create new
-        let isWithRecord = this.field.recordUuid !== 'create-new'
         if (this.inTable) {
           isWithRecord = !this.isEmptyValue(this.field.recordUuid)
         }
@@ -315,7 +329,7 @@ export default {
         return newSizes
       }
 
-      if (this.field.panelType === 'window') {
+      if (this.isPanelWindow) {
         // TODO: Add FieldYesNo and name.length > 12 || 14
         if (this.field.componentPath === 'FieldTextLong') {
           return sizeField
@@ -353,7 +367,7 @@ export default {
       return this.$store.getters.getOrders
     },
     isDocuemntStatus() {
-      if (this.field.panelType === 'window' && !this.isAdvancedQuery) {
+      if (this.isPanelWindow && !this.isAdvancedQuery) {
         if (this.field.columnName === 'DocStatus' && !this.isEmptyValue(this.processOrderUuid)) {
           return true
         }
@@ -361,7 +375,7 @@ export default {
       return false
     },
     isContextInfo() {
-      if (this.field.panelType !== 'window') {
+      if (!this.isPanelWindow) {
         return false
       }
       return Boolean(this.field.contextInfo && this.field.contextInfo.isActive) ||

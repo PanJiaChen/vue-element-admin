@@ -80,21 +80,37 @@ export default {
         recordUuid: this.uuidRecord,
         optionCRUD: this.optionCRUD,
         isShowedRecordNavigation: this.isShowedRecordNavigation,
+        clientId: this.getContainerClientId,
         isProcessingContext: this.getContainerProcessing,
         isProcessedContext: this.getContainerProcessed
       }
     },
     getContainerProcessing() {
-      if (this.panelType === 'window' && !this.isAdvancedQuery) {
+      if (this.isPanelWindow && !this.isAdvancedQuery) {
         return this.$store.getters.getContainerProcessing(this.parentUuid)
       }
       return false
     },
     getContainerProcessed() {
-      if (this.panelType === 'window' && !this.isAdvancedQuery) {
+      if (this.isPanelWindow && !this.isAdvancedQuery) {
         return this.$store.getters.getContainerProcessed(this.parentUuid)
       }
       return false
+    },
+    getContainerClientId() {
+      let clientId = null
+      if (this.isPanelWindow && !this.isAdvancedQuery) {
+        // client id from current record
+        clientId = this.$store.getters.getValueOfField({
+          parentUuid: this.parentUuid,
+          containerUuid: this.containerUuid,
+          columnName: 'AD_Client_ID'
+        })
+        if (!this.isEmptyValue(clientId)) {
+          return parseInt(clientId, 10)
+        }
+      }
+      return clientId
     },
     getterPanel() {
       return this.$store.getters.getPanel(this.containerUuid)
