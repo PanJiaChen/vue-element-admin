@@ -18,7 +18,7 @@
 
 <script>
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
-import { requestLocatorList } from '@/api/ADempiere/field/locator.js'
+import { getLocatorList } from '@/api/ADempiere/field/locator.js'
 
 export default {
   name: 'FieldLocation',
@@ -67,34 +67,20 @@ export default {
       this.value = value
     },
     searchLocatorByWarehouse(node, resolve) {
-      requestLocatorList({
+      getLocatorList({
         warehouseId: node.value
       })
-        .then(responseData => {
-          const data = responseData.recordsList[this.level]
-          const locatorList = [
-            {
-              value: data.id,
-              label: data.attributes.Value,
-              warehouse: data.id,
+        .then(locators => {
+          const locatorList = []
+          locators.map(locator => {
+            locatorList.push({
+              value: locator.id,
+              label: locator.value,
+              warehouse: locator.warehouseId,
               leaf: true
-            }, {
-              value: data.id,
-              label: data.attributes.X,
-              warehouse: data.id,
-              leaf: true
-            }, {
-              value: data.id,
-              label: data.attributes.Y,
-              warehouse: data.id,
-              leaf: true
-            }, {
-              value: data.id,
-              label: data.attributes.Z,
-              warehouse: data.id,
-              leaf: true
-            }
-          ]
+            })
+          })
+          //  Resolve this
           resolve(locatorList)
         })
         .catch(error => {
