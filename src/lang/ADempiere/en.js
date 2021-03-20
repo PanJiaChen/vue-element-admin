@@ -148,7 +148,16 @@ export default {
     resetAllFilters: 'Reset all filters',
     switchActiveText: 'Yes',
     switchInactiveText: 'Not',
-    contextFieldTitle: 'Context Information'
+    contextFieldTitle: 'Context Information',
+    preference: {
+      title: 'Preference Value',
+      attribute: 'Attribute',
+      code: 'Code',
+      yes: 'Yes',
+      no: 'No',
+      defaulMessage: 'Applies for this ',
+      defaulMessageUser: 'Applies for this '
+    }
   },
   views: {
     browser: 'Smart Browser',

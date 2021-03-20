@@ -132,7 +132,8 @@ export default {
       loading: false,
       showDialog: false,
       redirect: undefined,
-      otherQuery: {}
+      otherQuery: {},
+      default: 'dashboard'
     }
   },
   watch: {
@@ -212,6 +213,9 @@ export default {
     },
     clientIdRedirect(query, expr) {
       const redirect = query.split(expr)
+      if (redirect[1] === this.default) {
+        return
+      }
       return redirect[1]
     },
     organizationIdRedirect(query, expr) {

@@ -250,7 +250,7 @@ export const recursiveTreeSearch = ({
 }
 
 /**
- * Parsed value to component type
+ * Preference Value
  * @author Elsio Sanchez <elsiosanches@gmail.com>
  * @param {mixed} value, value to parsed
  * @param {string} componentPath
@@ -529,4 +529,40 @@ export function tenderTypeFind({
 }
 export function clearVariables() {
   partialValue = ''
+}
+
+/**
+ * Search the Payment List for the Current Payment
+ * @param {string} parentUuid Uuid the Parent
+ * @param {string} containerUuid Uuid the Container
+ * @param {string} panelType Panel Type
+ * @param {string} attribute ColumName Field
+ * @param {boolean| string | number} value Value
+ * @param {array} level list value the preference
+ */
+export function attributePreference({
+  parentUuid,
+  containerUuid,
+  panelType,
+  attribute,
+  value,
+  level
+}) {
+  let levelPanel
+  if (level) {
+    levelPanel = level.map(parameter => {
+      return {
+        key: parameter.columnName,
+        value: parameter.value
+      }
+    })
+  }
+  return {
+    parentUuid,
+    containerUuid,
+    panelType,
+    attribute,
+    value,
+    level: levelPanel
+  }
 }
