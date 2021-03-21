@@ -157,13 +157,21 @@ function getRouteFromMenuItem({ menu, roleUuid, organizationUuid }) {
  * @author elsiosanchez <elsiosanches@gmail.com>
  * @param {object} staticRoutes static routes
  * @param {object} permiseRole role permissions
+ * @returns {object} routes with hidden/show
  */
 function hidenStactiRoutes({ staticRoutes, permiseRole }) {
+  const { isAllowInfoProduct } = permiseRole
+  if (!isAllowInfoProduct) {
+    // does not change the hidden visibility of ProductInfo
+    return staticRoutes
+  }
+
   return staticRoutes.map(route => {
     if (route.path === '/ProductInfo') {
       return {
         ...route,
-        hidden: !permiseRole.isAllowInfoProduct
+        // is hidden by default, change to be visible
+        hidden: !isAllowInfoProduct
       }
     }
     return {
