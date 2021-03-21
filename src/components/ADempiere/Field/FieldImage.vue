@@ -4,6 +4,7 @@
     action="https://jsonplaceholder.typicode.com/posts/"
     :show-file-list="false"
     :on-success="handleAvatarSuccess"
+    :on-change="handleChange"
     :before-upload="beforeAvatarUpload"
     :disabled="isDisabled"
     :class="cssClassStyle"
@@ -15,10 +16,27 @@
 
 <script>
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
+import { getResource, updateResource } from '@/api/ADempiere/field/binary.js'
 
 export default {
   name: 'FieldImage',
   mixins: [fieldMixin],
+  props: {
+    // receives the property that is an object with all the attributes
+    binary: {
+      type: Array,
+      default: () => []
+    }
+  },
+  data() {
+    return {
+      valuesImage: [{
+        identifier: 'undefined',
+        value: '',
+        isLoaded: true
+      }]
+    }
+  },
   computed: {
     cssClassStyle() {
       let styleClass = ' custom-field-image '
@@ -29,10 +47,46 @@ export default {
     }
   },
   methods: {
+    updateResource,
+    getResource,
+    handleChange(file, fileList) {
+      let message, type
+      this.binary.push({
+        columnName: this.metadata.columnName,
+        value: file
+      })
+      switch (file.status) {
+        case 'success':
+          message = 'succesful'
+          type = file.status
+          break
+        case 'ready':
+          message = 'loading'
+          type = 'loading'
+          break
+        case 'error':
+          message = file.status
+          type = file.status
+          break
+      }
+      this.$message({
+        type: type,
+        showClose: true,
+        message: this.$t('notifications.' + message)
+      })
+      updateResource({
+        uuid: this.metadata.recordUuid,
+        tableName: this.$route.params.tableName,
+        binaryFile: this.binary
+      })
+    },
     handleAvatarSuccess(res, file) {
       this.value = URL.createObjectURL(file.raw)
-      // TODO: define one method to control change value
       this.handleFieldChange({ value: this.value })
+      getResource({
+        uuid: this.metadata.recordUuid,
+        tableName: this.$route.params.tableName
+      })
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === 'image/jpeg'
