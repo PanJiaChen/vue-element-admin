@@ -235,13 +235,11 @@
           <el-col :span="8">
             <el-card shadow="hover">
               <el-popover
-                v-model="isShowProductsPriceList"
                 placement="right"
+                trigger="click"
                 width="800"
-                trigger="manual"
               >
                 <list-product-price
-                  v-if="isShowProductsPriceList"
                   :is-selectable="false"
                   popover-name="isShowPopoverMenu"
                 />

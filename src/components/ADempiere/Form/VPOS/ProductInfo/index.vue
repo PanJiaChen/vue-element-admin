@@ -1,23 +1,21 @@
 <template>
   <div>
-    <el-collapse-transition name="el-fade-in">
-      <el-card
-        v-show="isShowProductsPriceList"
-        class="transition-box"
-      >
-        <product-info-list />
-      </el-card>
-    </el-collapse-transition>
     <el-form-item>
       <template slot="label">
         {{ $t('form.productInfo.codeProduct') }}
-        <el-button
-          v-popover:productsList
-          type="text"
-          icon="el-icon-search"
-          style="color: black"
-          @click="isShowProductsPriceList = !isShowProductsPriceList"
-        />
+        <el-popover
+          placement="right"
+          trigger="click"
+          width="800"
+        >
+          <product-info-list />
+          <el-button
+            slot="reference"
+            type="text"
+            icon="el-icon-search"
+            style="color: black"
+          />
+        </el-popover>
       </template>
 
       <el-autocomplete
