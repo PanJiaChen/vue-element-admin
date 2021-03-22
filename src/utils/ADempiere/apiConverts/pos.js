@@ -115,7 +115,7 @@ export function convertKey(keyToConvert) {
     sequence: keyToConvert.sequence,
     spanX: keyToConvert.span_x,
     spanY: keyToConvert.span_y,
-    productUuid: keyToConvert.product_uuid,
+    productValue: keyToConvert.product_value,
     quantity: keyToConvert.quantity,
     resourceReference: convertResourceReference(
       keyToConvert.resource_reference

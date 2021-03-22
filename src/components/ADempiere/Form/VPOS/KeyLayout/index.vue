@@ -227,24 +227,13 @@ export default {
       if (!this.isEmptyValue(keyValue.subKeyLayoutUuid)) {
         this.loadKeyLayout(keyValue.subKeyLayoutUuid)
       } else {
-        const products = this.listOrderLine.find(item => item.lineDescription === keyValue.name)
-        // TODO: Change this dispatch
-        if (!this.isEmptyValue(products) && keyValue.quantity > 1) {
-          this.$store.dispatch('notifyActionKeyPerformed', {
-            value: {
-              QtyEntered: keyValue.quantity,
-              value: keyValue.name
-            }
-          })
-        } else {
-          this.$store.dispatch('notifyActionKeyPerformed', {
-            columnName: 'ProductValue',
-            value: {
-              QtyEntered: keyValue.quantity,
-              value: keyValue.name
-            }
-          })
-        }
+        this.$store.dispatch('notifyActionKeyPerformed', {
+          columnName: 'ProductValue',
+          value: {
+            QtyEntered: keyValue.quantity,
+            value: keyValue.productValue
+          }
+        })
       }
     },
     handleCommand(command) {
