@@ -253,7 +253,7 @@ export default {
   methods: {
     formatPrice,
     formatQuantity,
-    srcImage(keyValue) {
+    getImageFromSource(keyValue) {
       if (this.isEmptyValue(keyValue)) {
         return this.defaultImage
       }

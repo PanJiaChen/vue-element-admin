@@ -107,7 +107,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="createWithdrawal"
+                @click="withdrawal"
               >
                 <i class="el-icon-document-remove" />
                 <br>
@@ -269,14 +269,14 @@
 import OrdersList from '@/components/ADempiere/Form/VPOS/OrderList/index'
 import ListProductPrice from '@/components/ADempiere/Form/VPOS/ProductInfo/productList'
 import {
-  requestPrintOrder,
-  requestGenerateImmediateInvoice,
-  requestCreateWithdrawal,
-  requestCreateNewCustomerReturnOrder,
-  requestCashClosing,
+  printOrder,
+  generateImmediateInvoice,
+  withdrawal,
+  createNewReturnOrder,
+  cashClosing,
   requestDeleteOrder,
   requestCreateOrder,
-  requestProcessOrder
+  processOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
@@ -424,14 +424,14 @@ export default {
       })
     },
     printOrder() {
-      requestPrintOrder({
+      printOrder({
         orderUuid: this.$route.query.action
       })
     },
     generateImmediateInvoice() {
       // TODO: Add BPartner
       const { uuid: posUuid, id: posId } = this.getCurrentPOS
-      requestGenerateImmediateInvoice({
+      generateImmediateInvoice({
         posId,
         posUuid
       })
@@ -445,7 +445,7 @@ export default {
         message: this.$t('notifications.processing'),
         showClose: true
       })
-      requestProcessOrder({
+      processOrder({
         posUuid,
         orderUuid: this.$route.query.action,
         createPayments: !this.isEmptyValue(this.$store.getters.getListPayments),
@@ -502,16 +502,16 @@ export default {
       ]
       this.$store.dispatch('addParametersProcessPos', parametersList)
     },
-    createWithdrawal() {
+    withdrawal() {
       const { uuid: posUuid, id: posId } = this.getCurrentPOS
       // TODO: Add BParner, C_BankAccount_ID (caja), CashTransferBankAccount_ID, PAY_C_BankAccount_ID
-      requestCreateWithdrawal({
+      withdrawal({
         posId,
         posUuid
       })
     },
     createNewCustomerReturnOrder() {
-      requestCreateNewCustomerReturnOrder({
+      createNewReturnOrder({
         orderUuid: this.$route.query.action
       })
     },
@@ -573,7 +573,7 @@ export default {
     },
     cashClosing() {
       const { uuid: posUuid, id: posId } = this.getCurrentPOS
-      requestCashClosing({
+      cashClosing({
         posId,
         posUuid
       })

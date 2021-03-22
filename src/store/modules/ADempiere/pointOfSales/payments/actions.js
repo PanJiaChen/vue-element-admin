@@ -1,9 +1,9 @@
 import {
   requestGetConversionRate,
-  requestCreatePayment,
-  requestDeletePayment,
-  requestUpdatePayment,
-  requestListPayments
+  createPayment,
+  deletePayment,
+  updatePayment,
+  getPaymentsList
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -63,7 +63,7 @@ export default {
     orderUuid
   }) {
     listPaymentsLocal.forEach(payment => {
-      requestCreatePayment({
+      createPayment({
         posUuid,
         orderUuid,
         bankUuid: payment.bankUuid,
@@ -174,7 +174,7 @@ export default {
       return undefined
     })
     if (isEmptyValue(listPayments)) {
-      requestCreatePayment({
+      createPayment({
         posUuid,
         orderUuid,
         invoiceUuid,
@@ -199,7 +199,7 @@ export default {
           })
         })
     } else {
-      requestUpdatePayment({
+      updatePayment({
         paymentUuid: listPayments.uuid,
         bankUuid,
         referenceNo,
@@ -226,7 +226,7 @@ export default {
     orderUuid,
     paymentUuid
   }) {
-    requestDeletePayment({
+    deletePayment({
       paymentUuid
     })
       .then(response => {
@@ -243,7 +243,7 @@ export default {
   },
   listPayments({ commit, dispatch }, { posUuid, orderUuid }) {
     dispatch('updatePaymentPos', true)
-    requestListPayments({
+    getPaymentsList({
       posUuid,
       orderUuid
     })

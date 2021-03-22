@@ -356,7 +356,7 @@ export function getKeyLayout({ keyLayoutUuid }) {
 }
 
 // ListProductPrice
-export function requestListProductPrice({
+export function getProductPriceList({
   searchValue,
   priceListUuid,
   businessPartnerUuid,
@@ -395,45 +395,45 @@ export function requestListProductPrice({
     })
 }
 
-export function requestPrintOrder({
+export function printOrder({
   orderUuid
 }) {
   console.info(`Print order ${orderUuid}`)
 }
 
-export function requestGenerateImmediateInvoice({
+export function generateImmediateInvoice({
   posId,
   posUuid
 }) {
   console.info(`Generate imediate invoice with POS id ${posId}, and uuid ${posUuid}`)
 }
 
-export function requestCompletePreparedOrder({
+export function completeOrder({
   orderUuid
 }) {
   console.info(`Complete prepared order ${orderUuid}`)
 }
 
-export function requestReverseSalesTransaction({
+export function reverseSalesTransaction({
   orderUuid
 }) {
   console.info(`Reverse sales transaction ${orderUuid}`)
 }
 
-export function requestCreateWithdrawal({
+export function withdrawal({
   posId,
   posUuid
 }) {
   console.info(`Withdrall cash with POS id ${posId}, and uuid ${posUuid}`)
 }
 
-export function requestCreateNewCustomerReturnOrder({
+export function createNewReturnOrder({
   orderUuid
 }) {
   console.info(`New Customer Return Order ${orderUuid}`)
 }
 
-export function requestCashClosing({
+export function cashClosing({
   posId,
   posUuid
 }) {
@@ -442,7 +442,7 @@ export function requestCashClosing({
 
 // Create Payment
 
-export function requestCreatePayment({
+export function createPayment({
   posUuid,
   orderUuid,
   invoiceUuid,
@@ -477,7 +477,7 @@ export function requestCreatePayment({
 
 // Update Payment
 
-export function requestUpdatePayment({
+export function updatePayment({
   paymentUuid,
   bankUuid,
   referenceNo,
@@ -506,7 +506,7 @@ export function requestUpdatePayment({
 
 // Delete Payment
 
-export function requestDeletePayment({
+export function deletePayment({
   paymentUuid
 }) {
   return requestRest({
@@ -523,7 +523,7 @@ export function requestDeletePayment({
 
 // List Payments
 
-export function requestListPayments({
+export function getPaymentsList({
   posUuid,
   orderUuid
 }) {
@@ -568,7 +568,7 @@ export function requestListPayments({
  * currency_uuid - Currency UUID reference
  * ]
  */
-export function requestProcessOrder({
+export function processOrder({
   posUuid,
   orderUuid,
   createPayments,

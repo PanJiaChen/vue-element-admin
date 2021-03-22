@@ -182,7 +182,7 @@ import fieldsListCollection from './fieldsListCollection.js'
 import typeCollection from '@/components/ADempiere/Form/VPOS/Collection/typeCollection'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
 import { formatDate, formatPrice } from '@/utils/ADempiere/valueFormat.js'
-import { requestProcessOrder } from '@/api/ADempiere/form/point-of-sales.js'
+import { processOrder } from '@/api/ADempiere/form/point-of-sales.js'
 
 export default {
   name: 'Collection',
@@ -770,7 +770,7 @@ export default {
         message: this.$t('notifications.processing'),
         showClose: true
       })
-      requestProcessOrder({
+      processOrder({
         posUuid,
         orderUuid,
         createPayments: !this.isEmptyValue(payment),

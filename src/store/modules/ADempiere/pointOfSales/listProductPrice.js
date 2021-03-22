@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import {
-  requestListProductPrice
+  getProductPriceList
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue, extractPagingToken } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -92,7 +92,7 @@ const listProductPrice = {
         })
       }
       return new Promise(resolve => {
-        requestListProductPrice({
+        getProductPriceList({
           searchValue,
           priceListUuid,
           businessPartnerUuid,
@@ -165,7 +165,7 @@ const listProductPrice = {
         })
       }
       return new Promise(resolve => {
-        requestListProductPrice({
+        getProductPriceList({
           searchValue,
           priceListUuid,
           businessPartnerUuid,
