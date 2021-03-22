@@ -4,7 +4,7 @@ const tableName = 'C_Location'
  * Create a location and return the created entity
  * @param {array} attributesList
  */
-export function requestCreateLocationAddress({
+export function createLocationAddress({
   attributesList
 }) {
   const { requestCreateEntity } = require('@/api/ADempiere/persistence.js')
@@ -20,7 +20,7 @@ export function requestCreateLocationAddress({
  * @param {number} id as C_Location_ID
  * @param {string} uuid
  */
-export function requestGetLocationAddress({
+export function getLocationAddress({
   id,
   uuid
 }) {
@@ -39,7 +39,7 @@ export function requestGetLocationAddress({
  * @param {string} uuid
  * @param {array} attributesList, all attributes (including empty values)
  */
-export function requestUpdateLocationAddress({
+export function updateLocationAddress({
   id,
   uuid,
   attributesList

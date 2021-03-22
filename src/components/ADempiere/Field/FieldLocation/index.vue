@@ -91,7 +91,7 @@ export default {
         return
       }
 
-      this.requestGetLocationAddress({
+      this.getLocationAddress({
         id: value
       })
         .then(responseLocation => {

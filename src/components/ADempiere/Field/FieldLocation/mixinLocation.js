@@ -1,5 +1,5 @@
 import { requestGetCountryDefinition } from '@/api/ADempiere/system-core.js'
-import { requestGetLocationAddress } from '@/api/ADempiere/field/location.js'
+import { getLocationAddress } from '@/api/ADempiere/field/location.js'
 
 export default {
   name: 'MixinLocationField',
@@ -17,7 +17,7 @@ export default {
     }
   },
   methods: {
-    requestGetLocationAddress,
+    getLocationAddress,
     requestGetCountryDefinition,
     toggleShowedLocationForm() {
       this.$store.commit('setShowedLocation', !this.isShowedLocationForm)

@@ -53,8 +53,8 @@ import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import mixinLocation from './mixinLocation.js'
 import fieldsList from './fieldsList.js'
 import {
-  requestCreateLocationAddress,
-  requestUpdateLocationAddress
+  createLocationAddress,
+  updateLocationAddress
 } from '@/api/ADempiere/field/location.js'
 import { showNotification } from '@/utils/ADempiere/notification.js'
 import { getSequenceAsList } from '@/utils/ADempiere/location'
@@ -289,7 +289,7 @@ export default {
       }
 
       if (this.isEmptyValue(locationId) || locationId === 0) {
-        requestCreateLocationAddress({
+        createLocationAddress({
           attributesList: attributesToServer
         })
           .then(updateLocation)
@@ -304,7 +304,7 @@ export default {
         // break to only create
         return
       }
-      requestUpdateLocationAddress({
+      updateLocationAddress({
         id: locationId,
         attributesList: attributesToServer
       })
@@ -336,7 +336,7 @@ export default {
         return
       }
 
-      this.requestGetLocationAddress({
+      this.getLocationAddress({
         id
       })
         .then(responseLocation => {
