@@ -99,7 +99,7 @@ export default {
       return this.$store.getters.getUpdateOrderPos
     },
     getOrder() {
-      return this.$store.getters.getOrder
+      return this.$store.getters.getPos.currentOrder
     }
   },
   watch: {

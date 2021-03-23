@@ -398,6 +398,7 @@ export default {
         numberLines: 'Number of Lines',
         pointSale: 'Point of Sale',
         collect: 'Collect',
+        collections: 'Cobros',
         BusinessPartnerCreate: {
           businessPartner: 'Business Partner',
           successfullyCreated: 'Socio de Negocio Creado Exitosamente',

@@ -29,7 +29,8 @@ const initStateUtils = {
   splitWidthLeft: 3,
   parametersProcessPos: [],
   updateOrder: false,
-  updatePayment: false
+  updatePayment: false,
+  createBusinessPartner: false
 }
 
 export default {
@@ -101,6 +102,9 @@ export default {
     },
     setUpdatePayment(state, payment) {
       state.updatePayment = payment
+    },
+    popoverCreateBusinessPartner(state, createBusinessPartner) {
+      state.createBusinessPartner = createBusinessPartner
     }
   },
   actions: {
@@ -167,6 +171,9 @@ export default {
     },
     updatePaymentPos({ commit }, params) {
       commit('setUpdatePayment', params)
+    },
+    changePopover({ commit }, params) {
+      commit('popoverCreateBusinessPartner', params)
     }
   },
   getters: {
@@ -239,6 +246,9 @@ export default {
     },
     getUpdatePaymentPos: (state) => {
       return state.updatePayment
+    },
+    getPopoverCreateBusinessParnet: (state) => {
+      return state.createBusinessPartner
     }
   }
 }

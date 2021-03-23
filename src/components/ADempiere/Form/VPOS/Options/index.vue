@@ -319,7 +319,7 @@ export default {
     },
     isShowOrdersList: {
       get() {
-        return this.$store.getters.getListOrder.isShowPopover
+        return this.$store.getters.getPos.listOrder.isShowPopover
       },
       set(value) {
         if (!this.isEmptyValue(this.$route.query.pos)) {
@@ -331,7 +331,7 @@ export default {
       return this.$store.getters.getSellingPointsList
     },
     currentPOS() {
-      return this.$store.getters.getOrder
+      return this.$store.getters.getPos.currentOrder
     },
     currentPoint() {
       return this.$store.getters.getCurrentPOS
@@ -446,8 +446,8 @@ export default {
       processOrder({
         posUuid,
         orderUuid: this.$route.query.action,
-        createPayments: !this.isEmptyValue(this.$store.getters.getListPayments),
-        payments: this.$store.getters.getListPayments
+        createPayments: !this.isEmptyValue(this.$store.getters.getPos.listPayments),
+        payments: this.$store.getters.getPos.listPayments
       })
         .then(response => {
           this.$store.dispatch('reloadOrder', response.uuid)
@@ -463,7 +463,6 @@ export default {
             message: error.message,
             showClose: true
           })
-          console.log(error)
         })
         .finally(() => {
           this.$store.dispatch('listOrdersFromServer', {
@@ -479,11 +478,11 @@ export default {
       const parametersList = [
         {
           columnName: 'C_Order_ID',
-          value: this.$store.getters.getOrder.id
+          value: this.$store.getters.getPos.currentOrder.id
         },
         {
           columnName: 'Bill_BPartner_ID',
-          value: this.$store.getters.getOrder.businessPartner.id
+          value: this.$store.getters.getPos.currentOrder.businessPartner.id
         },
         {
           columnName: 'IsCancelled',
@@ -527,7 +526,7 @@ export default {
       const posUuid = this.currentPoint.uuid
       const parametersList = [{
         columnName: 'C_Order_ID',
-        value: this.$store.getters.getOrder.id
+        value: this.$store.getters.getPos.currentOrder.id
       }]
       this.$store.dispatch('addParametersProcessPos', parametersList)
       requestCreateOrder({
@@ -597,7 +596,7 @@ export default {
         })
     },
     seeOrderList() {
-      if (this.$store.getters.getListOrder.recordCount <= 0) {
+      if (this.$store.getters.getPos.listOrder.recordCount <= 0) {
         this.$store.dispatch('listOrdersFromServer', {})
       }
     },

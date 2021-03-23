@@ -11,6 +11,7 @@
       <el-row :gutter="24">
         <field-definition
           v-for="(field) in fieldsList"
+          :ref="field.columnName"
           :key="field.columnName"
           :metadata-field="field"
         />
@@ -59,6 +60,10 @@ export default {
           fieldsList
         }
       }
+    },
+    showField: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -78,10 +83,22 @@ export default {
       return field
     }
   },
+  watch: {
+    showField(value) {
+      if (value) {
+        setTimeout(() => {
+          this.focusValue()
+        }, 1500)
+      }
+    }
+  },
   beforeDestroy() {
     this.unsubscribe()
   },
   methods: {
+    focusValue() {
+      this.$refs.Value[0].$children[0].$children[0].$children[1].$children[0].focus()
+    },
     // TODO: Get locations values.
     createBusinessParter() {
       let values = this.$store.getters.getValuesView({
@@ -134,6 +151,7 @@ export default {
       }
     },
     clearValues() {
+      this.$store.dispatch('changePopover', false)
       this.showsPopovers.isShowCreate = false
 
       this.$store.dispatch('setDefaultValues', {

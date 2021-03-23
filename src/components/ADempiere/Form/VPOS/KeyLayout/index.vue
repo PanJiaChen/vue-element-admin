@@ -113,7 +113,7 @@ export default {
       return this.$store.getters.getCurrentPOS
     },
     listOrderLine() {
-      return this.$store.getters.getListOrderLine
+      return this.$store.getters.getPos.lineOrder
     },
     getKeyLayout() {
       return this.$store.getters.getKeyLayout

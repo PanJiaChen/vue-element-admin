@@ -165,7 +165,7 @@ export default {
       return false
     },
     tableOrder() {
-      return this.$store.getters.getListOrder
+      return this.$store.getters.getPos.listOrder
     },
     ordersList() {
       const order = this.tableOrder

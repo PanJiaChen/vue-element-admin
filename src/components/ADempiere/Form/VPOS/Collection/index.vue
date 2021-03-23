@@ -55,7 +55,11 @@
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <field-definition
                       :key="field.columnName"
-                      :metadata-field="field"
+                      :metadata-field="{
+                        ...field,
+                        isReadOnly: isDisabled
+
+                      }"
                     />
                   </el-col>
                 </el-row>
@@ -64,9 +68,9 @@
           </el-card>
           <samp style="float: right;padding-right: 10px;">
             <el-button type="danger" icon="el-icon-close" @click="exit" />
-            <el-button type="info" icon="el-icon-minus" @click="undoPatment" />
-            <el-button type="primary" :disabled="validPay || addPay" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
-            <el-button type="success" :disabled="validateCompleteCollection" icon="el-icon-shopping-cart-full" @click="completePreparedOrder(listPayments)" />
+            <el-button type="info" icon="el-icon-minus" :disabled="isDisabled" @click="undoPatment" />
+            <el-button type="primary" :disabled="validPay || addPay || isDisabled" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
+            <el-button type="success" :disabled="validateCompleteCollection || isDisabled" icon="el-icon-shopping-cart-full" @click="completePreparedOrder(listPayments)" />
           </samp>
         </el-header>
         <el-main style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
@@ -262,7 +266,7 @@ export default {
     },
     listPayments() {
       const listLocal = this.$store.getters.getPaymentBox
-      const listServer = this.$store.getters.getListPayments
+      const listServer = this.$store.getters.getPos.listPayments
       if (!this.sendToServer) {
         return listServer.reverse()
       }
@@ -403,7 +407,7 @@ export default {
       }
     },
     currentOrder() {
-      return this.$store.getters.getOrder
+      return this.$store.getters.getPos.currentOrder
     },
     typeCurrency() {
       return this.$store.getters.getValueOfField({
@@ -462,6 +466,9 @@ export default {
     },
     updateOrderPaymentPos() {
       return this.$store.getters.getUpdatePaymentPos
+    },
+    isDisabled() {
+      return this.$store.getters.getPos.isProcessed
     }
   },
   watch: {
@@ -790,7 +797,6 @@ export default {
             message: error.message,
             showClose: true
           })
-          console.log(error)
         })
         .finally(() => {
           this.$store.dispatch('listOrdersFromServer', {
