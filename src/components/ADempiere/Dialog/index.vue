@@ -13,6 +13,7 @@
     <div
       v-if="panelType !== 'From'"
     >
+      <record-access />
       <sequence-order
         v-if="modalMetadata.isSortTab"
         key="order"
@@ -36,16 +37,15 @@
     </div>
     <span slot="footer" class="dialog-footer">
       <el-button
+        type="danger"
+        icon="el-icon-close"
         @click="closeDialog"
-      >
-        {{ $t('components.dialogCancelButton') }}
-      </el-button>
+      />
       <el-button
         type="primary"
+        icon="el-icon-check"
         @click="runAction(modalMetadata)"
-      >
-        {{ $t('components.dialogConfirmButton') }}
-      </el-button>
+      />
     </span>
   </el-dialog>
 </template>
@@ -53,13 +53,17 @@
 <script>
 import MainPanel from '@/components/ADempiere/Panel'
 import SequenceOrder from '@/components/ADempiere/SequenceOrder'
+import RecordAccess from '@/components/ADempiere/recordAccess'
 import { showNotification } from '@/utils/ADempiere/notification'
-
+import {
+  updateAccessRecord
+} from '@/api/ADempiere/private-access'
 export default {
   name: 'ModalProcess',
   components: {
     MainPanel,
-    SequenceOrder
+    SequenceOrder,
+    RecordAccess
   },
   props: {
     parentUuid: {
@@ -201,6 +205,10 @@ export default {
             })
           }
         }
+      }
+      if (action.action === undefined) {
+        const list = this.$store.getters.getListRecordAcces
+        updateAccessRecord(list)
       }
     }
   }

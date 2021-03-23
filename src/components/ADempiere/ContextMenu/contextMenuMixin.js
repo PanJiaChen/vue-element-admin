@@ -214,6 +214,20 @@ export default {
         return current.tableName
       }
       return ''
+    },
+    isLockRecord() {
+      return this.$store.getters['user/getRole'].isPersonalLock
+    },
+    recordAccess() {
+      return {
+        action: 'recordAccess',
+        disabled: false,
+        hidden: false,
+        isSortTab: true,
+        name: this.$t('data.recordAccess.actions'),
+        type: 'dataAction',
+        tableName: this.tableNameCurrentTab
+      }
     }
   },
   watch: {
@@ -377,14 +391,14 @@ export default {
       // TODO: Add store attribute to avoid making repeated requests
       let isChangePrivateAccess = true
       if (this.isReferecesContent) {
-        isChangePrivateAccess = false
-        if (!this.isEmptyValue(this.$route.params.tableName) || (!this.isEmptyValue(this.getCurrentRecord) && !this.isEmptyValue(this.tableNameCurrentTab))) {
+        if ((!this.isEmptyValue(this.getCurrentRecord) && !this.isEmptyValue(this.tableNameCurrentTab))) {
           this.$store.dispatch('getPrivateAccessFromServer', {
-            tableName: this.$route.params.tableName,
+            tableName: this.tableNameCurrentTab,
             recordId: this.getCurrentRecord[this.tableNameCurrentTab + '_ID'],
             recordUuid: this.$route.query.action
           })
             .then(privateAccessResponse => {
+              isChangePrivateAccess = false
               this.validatePrivateAccess(privateAccessResponse)
             })
         }
@@ -396,6 +410,14 @@ export default {
           }
         })
         this.$store.dispatch('setOrder', processAction)
+      }
+      if (this.panelType === 'window' && this.isEmptyValue(this.actions.find(element => element.action === 'recordAccess'))) {
+        this.$store.dispatch('addAttribute', {
+          tableName: this.tableNameCurrentTab,
+          recordId: this.getCurrentRecord[this.tableNameCurrentTab + '_ID'],
+          recordUuid: this.$route.query.action
+        })
+        this.actions.push(this.recordAccess)
       }
 
       if (this.actions && this.actions.length) {
@@ -413,11 +435,11 @@ export default {
           }
 
           if (this.$route.meta.type === 'window') {
-            if (isChangePrivateAccess) {
+            if (this.isLockRecord) {
               if (action === 'lockRecord') {
-                itemAction.hidden = false
+                itemAction.hidden = isChangePrivateAccess
               } else if (action === 'unlockRecord') {
-                itemAction.hidden = true
+                itemAction.hidden = !isChangePrivateAccess
               }
             }
 
@@ -473,7 +495,12 @@ export default {
               ...this.getOldRouteOfWindow.query
             }
           }, () => {})
-        } else {
+        } else if (action.action === 'recordAccess') {
+          this.$store.dispatch('setShowDialog', {
+            type: this.panelType,
+            action: action
+          })
+        } else if (action.action !== 'undoModifyData') {
           if (action.action === 'setDefaultValues' && this.$route.query.action === 'create-new') {
             return
           }
