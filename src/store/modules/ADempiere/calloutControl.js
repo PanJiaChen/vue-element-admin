@@ -33,7 +33,21 @@ const callOutControl = {
       oldValue,
       valueType
     }) {
-      if (isEmptyValue(value) || isEmptyValue(callout)) {
+      // Validate callout
+      if (isEmptyValue(callout)) {
+        const notifyChange = inTable ? 'notifyRowTableChange' : 'notifyPanelChange'
+        dispatch(notifyChange, {
+          parentUuid,
+          containerUuid,
+          row: value,
+          isEdit: true,
+          panelType: 'window',
+          newValues: value,
+          isSendToServer: false,
+          withOutColumnNames,
+          isSendCallout: false,
+          isChangeFromCallout: true
+        })
         return undefined
       }
       //  Else

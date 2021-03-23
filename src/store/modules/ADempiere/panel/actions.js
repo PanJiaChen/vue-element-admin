@@ -598,6 +598,10 @@ const actions = {
               fieldsList
             })
           }
+          showMessage({
+            message: language.t('notifications.updateFields') + ' ' + field.name,
+            type: 'success'
+          })
         })
         .catch(error => {
           showMessage({

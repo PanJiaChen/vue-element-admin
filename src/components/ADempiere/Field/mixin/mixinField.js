@@ -199,7 +199,8 @@ export default {
       }
       this.$store.dispatch('notifyFieldChange', {
         containerUuid: this.metadata.containerUuid,
-        field: this.metadata
+        field: this.metadata,
+        columnName: this.metadata.columnName
       })
     }
   }
