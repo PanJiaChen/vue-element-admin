@@ -35,13 +35,17 @@
       </span>
       <el-scrollbar>
         <input-chat />
-
         <el-button
-          icon="el-icon-success"
-          style="background: #008fd3; float: right"
+          icon="el-icon-check"
+          style="float: right; "
           type="primary"
-          circle
           @click="sendComment()"
+        />
+        <el-button
+          icon="el-icon-close"
+          style="float: right;margin-right: 1%;"
+          type="danger"
+          @click="clear()"
         />
       </el-scrollbar>
     </el-card>
@@ -112,6 +116,9 @@ export default {
           comment
         })
       }
+    },
+    clear() {
+      this.$store.commit('setChatText', '')
     },
     translateDate(value) {
       return this.$d(new Date(value), 'long', this.language)
