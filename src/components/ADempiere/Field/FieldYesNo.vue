@@ -16,23 +16,15 @@
 
 <script>
 import { fieldIsDisplayed } from '@/utils/ADempiere'
-import { FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
+import { COLUMNS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import fieldMixin from '@/components/ADempiere/Field/mixin/mixinField.js'
 import { convertStringToBoolean } from '@/utils/ADempiere/valueFormat.js'
 
 export default {
   name: 'FieldYesNo',
-  mixins: [fieldMixin],
-  data() {
-    return {
-      valuesReadOnly: [
-        {
-          columnName: 'IsActive',
-          isReadOnlyValue: false
-        }
-      ]
-    }
-  },
+  mixins: [
+    fieldMixin
+  ],
   computed: {
     cssClassStyle() {
       let styleClass = ' custom-field-yes-no '
@@ -40,6 +32,16 @@ export default {
         styleClass += this.metadata.cssClassName
       }
       return styleClass
+    },
+    columnReadOnlyForm() {
+      return COLUMNS_READ_ONLY_FORM.find(item => {
+        return item.columnName === this.metadata.columnName
+      })
+    }
+  },
+  mounted() {
+    if (!this.isEmptyValue(this.columnReadOnlyForm)) {
+      this.isReadOnlyForm(this.value)
     }
   },
   methods: {
@@ -53,12 +55,13 @@ export default {
       }
     },
     isReadOnlyForm(value) {
-      const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => item.columnName === this.metadata.columnName)
+      const fieldReadOnlyForm = this.columnReadOnlyForm
+
       // columnName: IsActive, Processed, Processing
-      if (fieldReadOnlyForm && fieldIsDisplayed(this.metadata)) {
+      if (!this.isEmptyValue(fieldReadOnlyForm) && fieldIsDisplayed(this.metadata)) {
         const fieldsExcludes = []
         // if isChangedAllForm it does not exclude anything, otherwise it excludes this columnName
-        if (fieldReadOnlyForm.isChangedAllForm) {
+        if (!fieldReadOnlyForm.isChangedAllForm) {
           fieldsExcludes.push(this.metadata.columnName)
         }
 

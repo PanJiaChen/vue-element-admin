@@ -274,6 +274,7 @@ const actions = {
       valueAttribute: true
     })
   },
+
   /**
    * Set default values to panel
    * @param {string}  parentUuid
@@ -356,31 +357,54 @@ const actions = {
         attributes: defaultAttributes
       })
         .then(() => {
-          if (['browser', 'form', 'process', 'report'].includes(panelType)) {
-          // const fieldsUser = []
-            panel.fieldsList.forEach(itemField => {
-              if (!itemField.isAdvancedQuery || itemField.isActiveLogics) {
+          const windowPanel = (itemField) => {
+            if (!itemField.isAdvancedQuery || itemField.isActiveLogics) {
+              // enable edit fields in panel
+              commit('changeFieldAttribure', {
+                attributeName: 'isReadOnlyFromForm',
+                field: itemField,
+                attributeValue: false
+              })
+            }
+          }
+
+          const othersPanel = (itemField) => {
+            if (!itemField.isAdvancedQuery || itemField.isActiveLogics) {
+              // enable edit fields in panel
+              commit('changeFieldAttribure', {
+                attributeName: 'isReadOnlyFromForm',
+                field: itemField,
+                attributeValue: false
+              })
+
               // Change Dependents
-                dispatch('changeDependentFieldsList', {
-                  field: itemField
-                })
-              }
+              dispatch('changeDependentFieldsList', {
+                field: itemField
+              })
+            }
             // if (itemField.isShowedFromUserDefault || !isEmptyValue(itemField.value)) {
             //   fieldsUser.push(itemField.columnName)
             // }
-            })
-
-          // dispatch('changeFieldShowedFromUser', {
-          //   containerUuid,
-          //   fieldsUser,
-          //   groupField: ''
-          // })
           }
+
+          let execute = windowPanel
+          if (['browser', 'form', 'process', 'report'].includes(panelType)) {
+            // const fieldsUser = []
+            execute = othersPanel
+
+            // dispatch('changeFieldShowedFromUser', {
+            //   containerUuid,
+            //   fieldsUser,
+            //   groupField: ''
+            // })
+          }
+          panel.fieldsList.forEach(execute)
         })
 
       resolve(defaultAttributes)
     })
   },
+
   seekRecord({ dispatch, getters }, {
     parentUuid,
     containerUuid,

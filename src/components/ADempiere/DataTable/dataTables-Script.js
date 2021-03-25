@@ -8,7 +8,7 @@ import IconElement from '@/components/ADempiere/IconElement'
 import { formatField } from '@/utils/ADempiere/valueFormat'
 import MainPanel from '@/components/ADempiere/Panel'
 import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
-import { FIELDS_DECIMALS, FIELDS_QUANTITY, FIELDS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
+import { FIELDS_DECIMALS, FIELDS_QUANTITY, COLUMNS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 import { fieldIsDisplayed } from '@/utils/ADempiere'
 import evaluator from '@/utils/ADempiere/evaluator'
@@ -407,7 +407,7 @@ export default {
       }
       if (fieldIsDisplayed(field)) {
         // columnName: IsActive
-        const fieldReadOnlyForm = FIELDS_READ_ONLY_FORM.find(item => {
+        const fieldReadOnlyForm = COLUMNS_READ_ONLY_FORM.find(item => {
           return !item.isChangedAllForm &&
             // columnName: IsActive, Processed, Processing
             Object.prototype.hasOwnProperty.call(row, item.columnName)

@@ -583,28 +583,40 @@ export const FIELDS_HIDDEN = [
   BUTTON
 ]
 
+export const COLUMN_IS_ACTIVE = {
+  columnName: 'IsActive', // column name of field
+  defaultValue: true, // default value when loading
+  valueIsReadOnlyForm: false, // value that activates read-only form
+  isChangedAllForm: false // change the entire form to read only including this field
+}
+
+export const COLUMN_PROCESSED = {
+  columnName: 'Processed',
+  defaultValue: false,
+  valueIsReadOnlyForm: true,
+  isChangedAllForm: true
+}
+
+export const COLUMN_PROCESSING = {
+  columnName: 'Processing',
+  defaultValue: true,
+  valueIsReadOnlyForm: false,
+  isChangedAllForm: true
+}
+
+export const COLUMNS_NAME_READ_ONLY = [
+  COLUMN_IS_ACTIVE.columnName,
+  COLUMN_PROCESSED.columnName,
+  COLUMN_PROCESSING.columnName
+]
+
 /**
  * Fields with this column name, changed all fields is read only
  */
-export const FIELDS_READ_ONLY_FORM = [
-  {
-    columnName: 'IsActive', // column name of field
-    defaultValue: true, // default value when loading
-    valueIsReadOnlyForm: false, // value that activates read-only form
-    isChangedAllForm: false // change the entire form to read only including this field
-  },
-  {
-    columnName: 'Processed',
-    defaultValue: false,
-    valueIsReadOnlyForm: true,
-    isChangedAllForm: true
-  },
-  {
-    columnName: 'Processing',
-    defaultValue: true,
-    valueIsReadOnlyForm: false,
-    isChangedAllForm: true
-  }
+export const COLUMNS_READ_ONLY_FORM = [
+  COLUMN_IS_ACTIVE,
+  COLUMN_PROCESSED,
+  COLUMN_PROCESSING
 ]
 
 export const FIELDS_DECIMALS = [
