@@ -40,6 +40,7 @@ const reportControl = {
     }) {
 
     },
+
     getListPrintFormats({ commit }, {
       processId,
       processUuid,
@@ -70,6 +71,7 @@ const reportControl = {
           })
       })
     },
+
     getReportViewsFromServer({ commit }, {
       processId,
       processUuid,
@@ -103,6 +105,7 @@ const reportControl = {
           })
       })
     },
+
     getDrillTablesFromServer({ commit }, {
       processId,
       processUuid,
@@ -140,7 +143,8 @@ const reportControl = {
           })
       })
     },
-    getReportOutputFromServer({ commit, getters, rootGetters }, {
+
+    getReportOutputFromServer({ state, commit, getters, rootGetters }, {
       tableName,
       printFormatUuid,
       reportViewUuid,
@@ -154,8 +158,12 @@ const reportControl = {
     }) {
       return new Promise(resolve => {
         if (isEmptyValue(printFormatUuid)) {
-          printFormatUuid = getters.getDefaultPrintFormat(processUuid).printFormatUuid
+          const printFormat = getters.getDefaultPrintFormat(processUuid)
+          if (!isEmptyValue(printFormat)) {
+            printFormatUuid = printFormat.printFormatUuid
+          }
         }
+
         const parametersList = rootGetters.getParametersToServer({
           containerUuid: processUuid
         })

@@ -37,7 +37,8 @@ const process = {
             let printFormatsAvailable = []
             if (responseProcess.isReport) {
               printFormatsAvailable = await dispatch('getListPrintFormats', {
-                processUuid: containerUuid
+                processUuid: containerUuid,
+                processId: responseProcess.id
               })
             }
 

@@ -10,16 +10,15 @@ export function convertListPrintFormats(listPrintFormatsToConvert) {
 }
 
 export function convertPrintFormat(printFormatToConvert) {
-  const { id, uuid, name, description } = printFormatToConvert
+  const { name, description } = printFormatToConvert
 
   return {
-    id,
-    uuid,
     name,
     description,
     tableName: printFormatToConvert.table_name,
     isDefault: printFormatToConvert.is_default,
-    reportViewUuid: printFormatToConvert.report_view_uuid
+    reportViewUuid: printFormatToConvert.report_view_uuid,
+    printFormatUuid: printFormatToConvert.print_format_uuid
   }
 }
 
