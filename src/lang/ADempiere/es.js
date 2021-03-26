@@ -155,8 +155,18 @@ export default {
       code: 'Codigo',
       yes: 'Si',
       no: 'No',
-      defaulMessage: 'Aplica para Esta ',
-      defaulMessageUser: 'Aplica para Este '
+      defaultMessage: 'Aplica para Esta ',
+      defaultMessageUser: 'Aplica para Este ',
+      preferenceIsOk: 'Preferencia guardada',
+      preferenceRemoved: 'Preferencia Eliminada',
+      for: 'Para ',
+      clientAndOrganization: 'esta Compañía y Organización',
+      allOrganizationOfClient: 'todas las Organizaciones de esta Compañía',
+      entireSystem: 'todo el Sistema',
+      thisUser: ', este Usuario',
+      allUsers: ', todos los Usuarios',
+      thisWindow: ' y esta Ventana',
+      allWindows: ' y todas las Ventanas'
     }
   },
   views: {

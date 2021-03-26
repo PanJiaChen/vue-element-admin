@@ -1,6 +1,6 @@
 <template>
   <el-dropdown trigger="click">
-    <el-button type="text" :disabled="fieldAttributes.readonly">
+    <el-button type="text" :disabled="sourceField.readonly">
       <i class="el-icon-notebook-2 el-icon--right" @click="isActive = !isActive" />
     </el-button>
     <el-dropdown-menu slot="dropdown" class="dropdown-calc">
@@ -12,26 +12,14 @@
           <span>
             {{ $t('components.preference.title') }}
             <b>
-              {{ fieldAttributes.name }}
+              {{ sourceField.name }}
             </b>
           </span>
         </div>
-        <div v-if="!isEmptyValue(descriptionOfPreference)" class="text item">
+        <div class="text item">
           {{
-            descriptionOfPreference
+            getDescriptionOfPreference
           }}
-          <template
-            v-for="(index) in fieldsListPreference"
-          >
-            <span
-              v-if="index.value"
-              :key="index.sequence"
-            >
-              {{
-                index.label
-              }}
-            </span>
-          </template>
         </div>
         <br>
         <div class="text item">
@@ -40,25 +28,8 @@
           >
             <el-form-item>
               <p slot="label">
-                {{ fieldAttributes.name }}
+                {{ sourceField.name }}: {{ code }}
               </p>
-              <el-switch
-                v-if="fieldAttributes.componentPath === 'FieldYesNo'"
-                v-model="code"
-                :active-text="$t('components.preference.yes')"
-                :inactive-text="$t('components.preference.no')"
-                :disabled="true"
-                style="padding-top: 30%"
-              />
-              <div
-                v-else
-              >
-                <p>
-                  {{
-                    code
-                  }}
-                </p>
-              </div>
             </el-form-item>
           </el-form>
           <el-form
@@ -83,6 +54,14 @@
         <br>
         <el-row>
           <el-col :span="24">
+            <samp style="float: left; padding-right: 10px;">
+              <el-button
+                type="danger"
+                class="custom-button-address-location"
+                icon="el-icon-delete"
+                @click="remove()"
+              />
+            </samp>
             <samp style="float: right; padding-right: 10px;">
               <el-button
                 type="danger"
@@ -94,7 +73,7 @@
                 type="primary"
                 class="custom-button-address-location"
                 icon="el-icon-check"
-                @click="close()"
+                @click="sendValue()"
               />
             </samp>
           </el-col>
@@ -112,16 +91,18 @@
 </template>
 
 <script>
-// import { ID, INTEGER } from '@/utils/ADempiere/references'
-import filelistPreference from './filelistPreference.js'
-import { getPreference } from '@/api/ADempiere/field/preference.js'
+import formMixin from '@/components/ADempiere/Form/formMixin'
+import preferenceFields from './preferenceFields.js'
 import { createFieldFromDictionary } from '@/utils/ADempiere/lookupFactory'
-import { attributePreference } from '@/utils/ADempiere/valueUtils'
+import { setPreference, deletePreference } from '@/api/ADempiere/field/preference.js'
+import { showMessage } from '@/utils/ADempiere/notification.js'
+import language from '@/lang'
 
 export default {
   name: 'Preference',
+  mixins: [formMixin],
   props: {
-    fieldAttributes: {
+    sourceField: {
       type: [Object],
       required: true,
       default: null
@@ -130,24 +111,15 @@ export default {
       type: [String, Number, Boolean, Date, Array, Object],
       required: true,
       default: ''
-    },
-    containerUuid: {
-      type: String,
-      default: 'fiel-reference'
-    },
-    panelType: {
-      type: String,
-      default: undefined
     }
   },
   data() {
     return {
-      filelistPreference,
+      preferenceFields,
       metadataList: [],
       code: '',
       description: [],
-      isActive: false,
-      unsubscribe: () => {}
+      isActive: false
     }
   },
   computed: {
@@ -161,17 +133,40 @@ export default {
         }
       })
     },
-    descriptionOfPreference() {
-      const label = this.fieldsListPreference.filter(element => {
-        return element.value
-      })
-      if (!this.isEmptyValue(label)) {
-        if (label[0].columnName === 'AD_User_ID') {
-          return this.$t('components.preference.defaulMessageUser')
-        }
-        return this.$t('components.preference.defaulMessage')
+    getDescriptionOfPreference() {
+      if (this.isEmptyValue(this.metadataList)) {
+        return ''
       }
-      return []
+      const forCurrentUser = this.metadataList.find(field => field.columnName === 'AD_User_ID')
+      const forCurrentClient = this.metadataList.find(field => field.columnName === 'AD_Client_ID')
+      const forCurrentOrganization = this.metadataList.find(field => field.columnName === 'AD_Org_ID')
+      const forCurrentContainer = this.metadataList.find(field => field.columnName === 'AD_Window_ID')
+      if (!forCurrentClient) {
+        return ''
+      }
+      //  Create Message
+      var expl = language.t('components.preference.for')//  components.preference.for
+      if (forCurrentClient.value && forCurrentOrganization.value) {
+        expl = expl.concat(language.t('components.preference.clientAndOrganization'))//  components.preference.clientAndOrganization
+      } else if (forCurrentClient.value && !forCurrentOrganization.value) {
+        expl = expl.concat(language.t('components.preference.allOrganizationOfClient'))//  components.preference.allOrganizationOfClient
+      } else if (!forCurrentClient.value && forCurrentOrganization.value) {
+        forCurrentOrganization.value = false
+        expl = expl.concat(language.t('components.preference.entireSystem'))//  components.preference.entireSystem
+      } else {
+        expl = expl.concat(language.t('components.preference.entireSystem'))//  components.preference.entireSystem
+      }
+      if (forCurrentUser.value) {
+        expl = expl.concat(language.t('components.preference.thisUser'))//  components.preference.thisUser
+      } else {
+        expl = expl.concat(language.t('components.preference.allUsers'))//  components.preference.allUsers
+      }
+      if (forCurrentContainer.value) {
+        expl = expl.concat(language.t('components.preference.thisWindow'))//  components.preference.thisWindow
+      } else {
+        expl = expl.concat(language.t('components.preference.allWindows'))//  components.preference.allWindows
+      }
+      return expl
     }
   },
   watch: {
@@ -181,7 +176,7 @@ export default {
         this.setFieldsList()
       }
       if (!this.isEmptyValue(preferenceValue)) {
-        if ((typeof preferenceValue !== 'string') && (this.fieldAttributes.componentPath !== 'FieldYesNo')) {
+        if ((typeof preferenceValue !== 'string') && (this.sourceField.componentPath !== 'FieldYesNo')) {
           this.code = preferenceValue
         } else {
           this.code = preferenceValue
@@ -189,17 +184,37 @@ export default {
       }
     }
   },
-  created() {
-    this.unsubscribe = this.subscribeChanges()
-  },
-  beforeDestroy() {
-    this.unsubscribe()
-  },
   methods: {
     createFieldFromDictionary,
-    attributePreference,
     close() {
       this.$children[0].visible = false
+    },
+    remove() {
+      const isForCurrentUser = this.metadataList.find(field => field.columnName === 'AD_User_ID').value
+      const isForCurrentClient = this.metadataList.find(field => field.columnName === 'AD_Client_ID').value
+      const isForCurrentOrganization = this.metadataList.find(field => field.columnName === 'AD_Org_ID').value
+      const isForCurrentContainer = this.metadataList.find(field => field.columnName === 'AD_Window_ID').value
+      deletePreference({
+        parentUuid: this.sourceField.parentUuid,
+        attribute: this.sourceField.columnName,
+        isForCurrentUser,
+        isForCurrentClient,
+        isForCurrentOrganization,
+        isForCurrentContainer
+      })
+        .then(preference => {
+          showMessage({
+            message: language.t('components.preference.preferenceRemoved')
+          })
+          this.close()
+        })
+        .catch(error => {
+          showMessage({
+            message: error.message,
+            type: 'error'
+          })
+          console.warn(`setPreference error: ${error.message}.`)
+        })
     },
     notSubmitForm(event) {
       event.preventDefault()
@@ -208,13 +223,13 @@ export default {
     setFieldsList() {
       const fieldsList = []
       // Product Code
-      this.filelistPreference.forEach(element => {
+      this.preferenceFields.forEach(element => {
         this.createFieldFromDictionary(element)
           .then(metadata => {
             const data = metadata
             fieldsList.push({
               ...data,
-              containerUuid: 'fiel-reference'
+              containerUuid: 'field-reference'
             })
             if (data.value) {
               this.description.push(data.name)
@@ -226,58 +241,33 @@ export default {
       this.metadataList = fieldsList
     },
     sendValue(list) {
-      const preference = this.attributePreference({
-        containerUuid: this.containerUuid,
-        panelType: this.panelType,
-        attribute: this.fieldAttributes.columnName,
+      const isForCurrentUser = this.metadataList.find(field => field.columnName === 'AD_User_ID').value
+      const isForCurrentClient = this.metadataList.find(field => field.columnName === 'AD_Client_ID').value
+      const isForCurrentOrganization = this.metadataList.find(field => field.columnName === 'AD_Org_ID').value
+      const isForCurrentContainer = this.metadataList.find(field => field.columnName === 'AD_Window_ID').value
+      //
+      setPreference({
+        parentUuid: this.sourceField.parentUuid,
+        attribute: this.sourceField.columnName,
         value: this.code,
-        level: list
+        isForCurrentUser,
+        isForCurrentClient,
+        isForCurrentOrganization,
+        isForCurrentContainer
       })
-      getPreference(preference)
-    },
-    changeValue(value) {
-      switch (value.columName) {
-        // case 'options':
-        case 'AD_Client_ID':
-          this.$store.commit('updateValueOfField', {
-            containerUuid: 'fiel-reference',
-            columnName: value.columName,
-            value: value.value
+        .then(preference => {
+          showMessage({
+            message: language.t('components.preference.preferenceIsOk')
           })
-          break
-        case 'AD_Org_ID':
-          this.$store.commit('updateValueOfField', {
-            containerUuid: 'fiel-reference',
-            columnName: value.columName,
-            value: value.value
+          this.close()
+        })
+        .catch(error => {
+          showMessage({
+            message: error.message,
+            type: 'error'
           })
-          break
-        case 'AD_User_ID':
-          this.$store.commit('updateValueOfField', {
-            containerUuid: 'fiel-reference',
-            columnName: value.columName,
-            value: value.value
-          })
-          break
-        case 'AD_Window_ID':
-          this.$store.commit('updateValueOfField', {
-            containerUuid: 'fiel-reference',
-            columnName: value.columName,
-            value: value.value
-          })
-          break
-      }
-    },
-    subscribeChanges() {
-      return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'updateValueOfField') {
-          // const values = this.$store.getters.getValuesView({
-          //   containerUuid: mutation.payload.containerUuid,
-          //   format: 'object'
-          // })
-          // this.changeValue(values)
-        }
-      })
+          console.warn(`setPreference error: ${error.message}.`)
+        })
     }
   }
 }

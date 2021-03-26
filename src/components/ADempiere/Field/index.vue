@@ -51,7 +51,7 @@
             :field-value="recordDataFields"
           />
           <preference
-            :field-attributes="fieldAttributes"
+            :source-field="fieldAttributes"
             :field-value="recordDataFields"
             :panel-type="field.panelType"
           />

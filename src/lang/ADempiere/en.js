@@ -155,8 +155,18 @@ export default {
       code: 'Code',
       yes: 'Yes',
       no: 'No',
-      defaulMessage: 'Applies for this ',
-      defaulMessageUser: 'Applies for this '
+      defaultMessage: 'Applies for this ',
+      defaultMessageUser: 'Applies for this ',
+      preferenceIsOk: 'The preference is saved',
+      preferenceRemoved: 'Preference Removed',
+      for: 'For ',
+      clientAndOrganization: 'this Client and Organization',
+      allOrganizationOfClient: 'all Organizations of this Client',
+      entireSystem: 'entire System',
+      thisUser: ', this User',
+      allUsers: ', all Users',
+      thisWindow: ' and this Window',
+      allWindows: ' and all Windows'
     }
   },
   views: {
