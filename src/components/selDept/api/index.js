@@ -1,11 +1,24 @@
 import request from '@/utils/request'
 
 export default {
-  getDept(pageSize, pageNo) {
+  getDept(pageSize, pageNo, isWhereSql, whereValue) {
+    let whereSql = ''
+    let whereType = ''
+    if (isWhereSql) {
+      whereSql = `sys_dept.dept_id like ?`
+      whereType = 'string'
+    }
     return request({
       url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=editgrid&query_funid=sys_dept&user_id=administrator`,
       method: 'post',
-      data: `start=${pageNo}&limit=${pageSize}&where_sql=&where_value=&where_type=&is_query=1&query_type=0`
+      data: `start=${pageNo}&limit=${pageSize}&where_sql=${whereSql}&where_value=${whereValue}&where_type=${whereType}&is_query=1&query_type=0`
+    }).then(response => response.data)
+  },
+  getDeptTree() {
+    return request({
+      url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=editgrid&query_funid=sys_dept&user_id=administrator`,
+      method: 'post',
+      data: `start=0&limit=10000&where_sql=&where_value=&where_type=&is_query=1&query_type=0`
     }).then(response => response.data)
   },
   Crerte(data) {

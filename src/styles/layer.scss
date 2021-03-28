@@ -1,0 +1,34 @@
+@import "./element-variables";
+
+.compact-layout{
+  .v-form-item__label, .v-form-item__content{
+    @include inputHeight($input-list);
+  }
+  // v-form
+  .v-form-line{
+    margin-top: -1px!important;
+  }
+  .v-form-item__content{
+    font-size: 12px!important;
+  }
+  .v-form-item__label{
+    font-size: 12px!important;
+    height: 22px !important;
+    color: #111 !important;
+    line-height: 22px!important;
+    padding-right: 6px !important;
+    font-weight: normal;
+  }
+  .v-form-item__content{
+    line-height: 27px!important;
+  }
+  
+}
+
+.el-table .v-form-line{
+  margin-top: 0!important;
+}
+  .v-layer {
+    // height: 22px;
+    line-height: 20px;
+  }

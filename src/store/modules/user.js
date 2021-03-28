@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import { login, getInfo } from '@/api/user'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import router, { resetRouter } from '@/router'
@@ -34,13 +35,16 @@ const actions = {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
       login(`funid=login&eventcode=login&pagetype=login&user_code=${username.trim()}&user_pass=${password}`).then(res => {
-        console.log(res.data.data, 'res')
-        commit('SET_ROLES', res.data.data.role_id)
-        // const { data } = res.data
-        commit('SET_TOKEN', '123')
-        setToken('123')
-        sessionStorage.setItem('ROLES', res.data.data.role_id)
-        resolve()
+        if (res.data.success) {
+          commit('SET_ROLES', res.data.data.role_id)
+          // const { data } = res.data
+          commit('SET_TOKEN', '123')
+          setToken('123')
+          sessionStorage.setItem('ROLES', res.data.data.role_id)
+          resolve()
+        } else {
+          Vue.prototype.$message.error(res.data.message)
+        }
       }).catch(err => {
         reject(err)
       })

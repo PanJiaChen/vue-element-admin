@@ -1,48 +1,59 @@
 <template>
   <div class="app-container">
     <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
-    <el-card>
-      <el-table
-        ref="deptTable"
-        v-loading="loading"
-        :data="data"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-        @cell-dblclick="cellDblclick"
-      >
-        <template v-for="(d,i) in tableHeader">
-          <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
-          <el-table-column
-            v-else
-            :key="i"
-            :prop="d.prop"
-            :label="d.label"
+    <el-row>
+      <el-col :span="5">
+        <el-card>
+          <el-tree :data="treeData" default-expand-all :props="defaultProps" @node-click="handleNodeClick" />
+        </el-card>
+      </el-col>
+      <el-col :span="19">
+        <el-card>
+          <el-table
+            ref="deptTable"
+            v-loading="loading"
+            :data="data"
+            style="width: 100%"
+            stripe
+            @selection-change="handleSelectionChange"
+            @cell-dblclick="cellDblclick"
           >
-            <template slot-scope="scope">
-              <div v-if="d.label==='是否注销'">
-                {{
-                  scope.row.sys_dept__is_novalid == 0 ? '否' : '是'
-                }}
-              </div>
-              <div v-else-if="d.label === '操作'">
-                <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
-                <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
-              </div>
-              <div v-else>{{ scope.row[d.prop] }}</div>
+            <template v-for="(d,i) in tableHeader">
+              <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
+              <el-table-column
+                v-else
+                :key="i"
+                :prop="d.prop"
+                :label="d.label"
+              >
+                <template slot-scope="scope">
+                  <div v-if="d.label==='是否注销'">
+                    {{
+                      scope.row.sys_dept__is_novalid == 0 ? '否' : '是'
+                    }}
+                  </div>
+                  <div v-else-if="d.label === '操作'">
+                    <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
+                    <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                  </div>
+                  <div v-else>{{ scope.row[d.prop] }}</div>
+                </template>
+              </el-table-column>
             </template>
-          </el-table-column>
-        </template>
-      </el-table>
-      <el-pagination
-        :current-page="pager.pageNo"
-        :page-sizes="[10, 30, 50, 100, 500]"
-        :page-size="pager.pageSize"
-        :total="pager.total"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="sizeChange"
-        @current-change="pageChange"
-      />
-    </el-card>
+          </el-table>
+          <el-pagination
+            :current-page="pager.pageNo"
+            :page-sizes="[10, 30, 50, 100, 500]"
+            :page-size="pager.pageSize"
+            :total="pager.total"
+            layout="total, sizes, prev, pager, next, jumper"
+            @size-change="sizeChange"
+            @current-change="pageChange"
+          />
+        </el-card>
+      </el-col>
+    </el-row>
+
     <el-dialog v-if="dialogFormVisible" title="新增部门" :visible.sync="dialogFormVisible" @close="closeDialog">
       <el-form ref="form" :model="form" :rules="rules">
         <el-form-item label="所属部门" :label-width="formLabelWidth">
@@ -71,7 +82,7 @@
       </div>
     </el-dialog>
     <el-dialog v-if="dialogEditVisible" title="部门" :visible.sync="dialogEditVisible" @close="closeDialog">
-      <AdutiDept :id="parent_id" ref="auditForm" :audit-form="auditForm" :data="data" @change="auditFormChange" />
+      <AdutiDept :id="parent_id" ref="auditForm" :audit-form="auditForm" :data="deptTree" @change="auditFormChange" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditVisible = false">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
@@ -94,7 +105,9 @@ export default {
     return {
       loading: false,
       data: [],
+      deptTree: [],
       ids: [],
+      levels: [],
       pager: {
         pageNo: 0,
         pageSize: 10,
@@ -128,6 +141,7 @@ export default {
         }],
       value: '',
       dept_id: '',
+      level: '',
       id: '',
       parent_id: '',
       form: {
@@ -148,11 +162,20 @@ export default {
       dialogEditVisible: false,
       formLabelWidth: '120px',
       auditForm: {},
-      saveFrom: {}
+      saveFrom: {},
+      treeData: [],
+      defaultProps: {
+        children: 'children',
+        label: 'sys_dept__dept_name'
+      },
+      treeList: [],
+      whereSql: false,
+      whereValue: ''
     }
   },
   created() {
     this.getList()
+    this.transitionTree()
   },
   mounted() {
   },
@@ -165,7 +188,9 @@ export default {
       }
       api.getDept(
         this.pager.pageSize,
-        pageNo
+        pageNo,
+        this.whereSql,
+        this.whereValue
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -178,6 +203,73 @@ export default {
         }
       })
     },
+    async transitionTree() {
+      await api.getDeptTree().then(data => {
+        if (data.success) {
+          this.deptTree = data.data.root
+        } else {
+          this.$message.error(data.message)
+        }
+      })
+      this.treeData = []
+      let data = []
+      data = this.deptTree.sort((a, b) => {
+        return a.sys_dept__dept_id - b.sys_dept__dept_id
+      })
+      const oneTreeList = data.filter(d => {
+        return d.sys_dept__dept_level === '1'
+      })
+      for (let i = 0; i < oneTreeList.length; i++) {
+        const treeList = data.filter(d => {
+          return d.sys_dept__dept_id.substring(0, 4).indexOf(oneTreeList[i].sys_dept__dept_id) > -1
+        })
+        treeList.forEach(d => {
+          d.children = []
+          if (d.sys_dept__dept_level === '1') {
+            this.treeData.push(d)
+          } else if (d.sys_dept__dept_level === '2') {
+            this.treeData[i].children.push(d)
+          } else if (d.sys_dept__dept_level === '3') {
+            this.treeData[i].children.forEach((threeVal, three) => {
+              if (d.sys_dept__dept_id.substring(0, 8).indexOf(threeVal.sys_dept__dept_id) > -1) {
+                this.treeData[i].children[three].children.push(d)
+              }
+            })
+          } else if (d.sys_dept__dept_level === '4') {
+            this.treeData[i].children.forEach((threeVal, three) => {
+              threeVal.children.forEach((fourVal, four) => {
+                if (d.sys_dept__dept_id.substring(0, 12).indexOf(fourVal.sys_dept__dept_id) > -1) {
+                  this.treeData[i].children[three].children[four].children.push(d)
+                }
+              })
+            })
+          } else if (d.sys_dept__dept_level === '5') {
+            this.treeData[i].children.forEach((threeVal, three) => {
+              threeVal.children.forEach((fourVal, four) => {
+                fourVal.children.forEach((fiveVal, five) => {
+                  if (d.sys_dept__dept_id.substring(0, 16).indexOf(fiveVal.sys_dept__dept_id) > -1) {
+                    this.treeData[i].children[three].children[four].children[five].children.push(d)
+                  }
+                })
+              })
+            })
+          } else if (d.sys_dept__dept_level === '6') {
+            this.treeData[i].children.forEach((threeVal, three) => {
+              threeVal.children.forEach((fourVal, four) => {
+                fourVal.children.forEach((fiveVal, five) => {
+                  fiveVal.children.forEach((sixVal, six) => {
+                    if (d.sys_dept__dept_id.substring(0, 20).indexOf(sixVal.sys_dept__dept_id) > -1) {
+                      this.treeData[i].children[three].children[four].children[five].children[six].children.push(d)
+                    }
+                  })
+                })
+              })
+            })
+          }
+        })
+        console.log(this.treeData, 'this.treeData')
+      }
+    },
     editCreate() {
       if (this.ids === null) {
         this.$message.warning('请选择一个组织再添加下属组织')
@@ -186,15 +278,17 @@ export default {
       } else {
         this.dialogFormVisible = true
         this.dept_id = this.ids[0]
+        this.level = this.levels[0]
       }
     },
     create() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          const data = `funid= sys_dept&parentId= ${this.dept_id}&levelCol= sys_dept.dept_level&keyid= &pagetype= editgrid&eventcode= save_eg&sys_dept__dept_code= ${this.form.dept_code}&sys_dept__dept_name= ${this.form.dept_name}&sys_dept__memo= ${this.form.memo}&sys_dept__is_novalid= 0&sys_dept__dept_id= &sys_dept__dept_level= &user_id= administrator&dataType= json`
+          const data = `funid=sys_dept&parentId=${this.dept_id}&levelCol=sys_dept.dept_level&keyid=&pagetype=editgrid&eventcode=save_eg&sys_dept__dept_code=${this.form.dept_code}&sys_dept__dept_name=${this.form.dept_name}&sys_dept__memo=${this.form.memo}&sys_dept__is_novalid=0&sys_dept__dept_id=&sys_dept__dept_level=${Number(this.level) + 1}&user_id=administrator&dataType= json`
           api.Crerte(data).then(data => {
             if (data.success) {
               this.getList()
+              this.transitionTree()
               this.dialogFormVisible = false
               this.$refs['form'].resetFields()
               this.form.dept_name = ''
@@ -252,9 +346,11 @@ export default {
       }
       this.$refs.auditForm.$refs.auditForm.validate(valid => {
         if (valid) {
-          const _form = `funid=sys_dept&parentId=&levelCol=sys_dept.dept_level&keyid=${this.id}&pagetype=editgrid&eventcode=save_eg&sys_dept__dept_code=${this.saveFrom.sys_dept__dept_code}&sys_dept__dept_name=${this.saveFrom.sys_dept__dept_name}&sys_dept__memo=${this.saveFrom.sys_dept__memo}&sys_dept__is_novalid=${this.saveFrom.sys_dept__is_novalid}&sys_dept__dept_id=${this.id}&sys_dept__dept_level=3&user_id=administrator&dataType=json`
+          const _form = `funid=sys_dept&parentId=&levelCol=sys_dept.dept_level&keyid=${this.id}&pagetype=editgrid&eventcode=save_eg&sys_dept__dept_code=${this.saveFrom.sys_dept__dept_code}&sys_dept__dept_name=${this.saveFrom.sys_dept__dept_name}&sys_dept__memo=${this.saveFrom.sys_dept__memo}&sys_dept__is_novalid=${this.saveFrom.sys_dept__is_novalid}&sys_dept__dept_id=${this.id}&sys_dept__dept_level=${this.saveFrom.sys_dept__dept_level}&user_id=administrator&dataType=json`
           api.auditSave(_form).then(data => {
             if (data.success) {
+              this.whereSql = false
+              this.whereValue = ''
               this.getList()
               this.$message.success('保存成功！')
               this.dialogEditVisible = false
@@ -268,6 +364,7 @@ export default {
     cellDblclick(row) {
       console.log(row, 'row')
       this.id = row.sys_dept__dept_id
+      this.parent_id = this.id.substring(0, this.id.length - 4)
       this.auditForm = row
       this.saveFrom = []
       this.dialogEditVisible = true
@@ -282,12 +379,21 @@ export default {
     },
     handleSelectionChange(val) {
       this.ids = val.map(d => d.sys_dept__dept_id)
+      this.levels = val.map(d => d.sys_dept__dept_level)
     },
     closeDialog() {
       this.dialogFormVisible = false
       this.$refs['form'].resetFields()
       this.form.dept_name = ''
       this.form.dept_code = ''
+    },
+    handleNodeClick(data) {
+      this.pager.pageNo = 0
+      this.pager.pageSize = 10
+      this.pager.total = 0
+      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
+      this.whereSql = true
+      this.getList()
     }
   }
 }

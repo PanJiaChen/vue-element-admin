@@ -12,7 +12,7 @@ export default {
   props: {
     funid: {
       type: String,
-      default: '' || 'sys_dept'
+      default: ''
     }
   },
   data() {
@@ -26,7 +26,7 @@ export default {
   },
   methods: {
     getButtons() {
-      api.getButtons(this.funid).then(data => {
+      api.getFormBtn(this.funid).then(data => {
         if (data.success) {
           this.data = data.data.buttons
         } else {
@@ -37,26 +37,14 @@ export default {
     Fn(method) {
       this[method]()
     },
-    editCreate() {
-      this.$emit('editCreate')
+    create() {
+      this.$emit('create')
     },
-    editDelete() {
-      this.$emit('editDelete')
-    },
-    editSave() {
-      this.$emit('editSave')
-    },
-    upload() {
-      this.$emit('upload')
+    del() {
+      this.$emit('del')
     },
     save() {
       this.$emit('save')
-    },
-    create() {
-      this.$emit('Create')
-    },
-    del() {
-      this.$emit('Del')
     }
   }
 }

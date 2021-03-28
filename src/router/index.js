@@ -78,35 +78,94 @@ export const constantRoutes = [
       {
         path: 'dashboard',
         component: () => import('@/views/dashboard/index'),
-        name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '安全生产看板', icon: 'dashboard', affix: true }
       }
     ]
   },
   {
-    path: '/guide',
+    path: '/insp',
     component: Layout,
-    redirect: '/guide/index',
+    redirect: '/insp/safe_insp',
+    name: '安全点巡检',
+    meta: {
+      title: '安全点巡检',
+      icon: 'clipboard'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        path: 'safe_insp',
+        component: () => import('@/views/safe_insp/index'),
+        name: '安全点巡检',
+        meta: { title: '安全点巡检', icon: 'list', noCache: true }
+      },
+      {
+        path: 'edit_form/:id',
+        component: () => import('@/views/safe_insp/components/edit_form/index'),
+        name: 'EditForm',
+        hidden: true,
+        meta: { title: '安全点巡检编辑', icon: 'list', noCache: true }
+      },
+      {
+        path: 'insp_name',
+        component: () => import('@/views/insp_name/index'),
+        name: '点巡检标准项',
+        meta: { title: '点巡检标准项', icon: 'edit', noCache: true }
       }
     ]
   },
   {
-    path: '/profile',
+    path: '/hidden_danger',
     component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
+    redirect: '/hidden_danger/hidden_check',
+    name: '隐患排查治理',
+    meta: {
+      title: '隐患排查治理',
+      icon: 'el-icon-s-order'
+    },
+    children: [
+      {
+        path: 'hidden_check',
+        component: () => import('@/views/hidden_check/index'),
+        name: '隐患排查',
+        meta: { title: '隐患排查', icon: 'form', noCache: true }
+      },
+      {
+        path: 'hidden_reform',
+        component: () => import('@/views/hidden_reform/index'),
+        name: '隐患整改',
+        meta: { title: '隐患整改', icon: 'el-icon-s-management', noCache: true }
+      },
+      {
+        path: 'hidden_review',
+        component: () => import('@/views/hidden_review/index'),
+        name: '隐患验收',
+        meta: { title: '隐患验收', icon: 'el-icon-s-opportunity', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/sys_dept',
+    component: Layout,
+    redirect: '/sys_dept/index',
     children: [
       {
         path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: 'Profile', icon: 'user', noCache: true }
+        component: () => import('@/views/sys_dept/index'),
+        name: '组织管理',
+        meta: { title: '组织管理', icon: 'guide', noCache: true }
+      }
+    ]
+  },
+  {
+    path: '/sys_user',
+    component: Layout,
+    redirect: '/sys_user/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/sys_user/index'),
+        name: '用户管理',
+        meta: { title: '用户管理', icon: 'guide', noCache: true }
       }
     ]
   }
@@ -205,7 +264,7 @@ export const asyncRoutes = [
         path: 'list',
         component: () => import('@/views/example/list'),
         name: 'ArticleList',
-        meta: { title: 'Article List', icon: 'list' }
+        meta: { title: 'Article List', icon: 'v' }
       }
     ]
   },

@@ -1,0 +1,66 @@
+/* layout style */
+
+/* margin
+----------------*/
+$start: 1;
+$end: 6;
+@for $i from $start to $end {
+  .m-t-#{$i*5} {
+    margin-top: #{$i*5px}
+  }
+  .m-b-#{$i*5} {
+    margin-bottom: #{$i*5px}
+  }
+  .m-r-#{$i*5} {
+    margin-right: #{$i*5px}
+  }
+  .m-l-#{$i*5} {
+    margin-left: #{$i*5px}
+  }
+}
+
+/* text
+----------------*/
+.t-a-l{
+  text-align: left;
+}
+.t-a-c{
+  text-align: center;
+}
+.t-a-r{
+  text-align: right;
+}
+
+/* float
+----------------*/
+.f-l{
+  float: left;
+}
+.f-r{
+  float: right;
+}
+
+/* table
+--------*/
+.table{
+  display: table;
+}
+.table-cell{
+  display: table-cell;
+}
+
+/* flex
+--------*/
+.f-j{
+  display: flex;
+  justify-content: space-between;
+}
+
+.flex-y-c{
+  display: flex;
+  align-items: center;
+}
+
+.d-f{
+  display: flex;
+}
