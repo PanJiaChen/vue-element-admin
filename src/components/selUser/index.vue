@@ -170,7 +170,8 @@ export default {
       },
       treeList: [],
       whereSql: false,
-      whereValue: ''
+      whereValue: '',
+      Users: ''
     }
   },
   created() {
@@ -364,7 +365,7 @@ export default {
       this.getList()
     },
     handleSelectionChange(val) {
-      this.$emit('updateUsers', val)
+      this.Users = val
     },
     closeDialog() {
       this.dialogFormVisible = false

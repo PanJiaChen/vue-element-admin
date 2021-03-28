@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-card>
-      <buttons funid="safe_insp" style="margin-bottom:10px" @Create="editCreate" @Del="editDelete" />
+      <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
       <el-table
         ref="deptTable"
         v-loading="loading"
@@ -19,17 +19,7 @@
             :label="d.label"
           >
             <template slot-scope="scope">
-              <div v-if="d.label==='巡检结果'">
-                {{
-                  scope.row.insp_det__det_result === '1' ? '符合' : scope.row.insp_det__det_result === '0' ? '不符合' : null
-                }}
-              </div>
-              <div v-else-if="d.label==='是否已整改'">
-                {{
-                  scope.row.insp_det__reform_flag === '1' ? '已整改' : scope.row.insp_det__reform_flag === '0' ? '未整改' : null
-                }}
-              </div>
-              <div v-else-if="d.label === '操作'">
+              <div v-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
                 <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
               </div>
@@ -51,18 +41,14 @@
 
     <el-dialog v-if="dialogFormVisible" :title="title" :visible.sync="dialogFormVisible" @close="closeDialog">
       <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item label="巡检结果" :label-width="formLabelWidth" prop="insp_det__det_result">
-          <el-select v-model="form.insp_det__det_result" placeholder="请选择">
-            <el-option
-              v-for="item in inspresult"
-              :key="item.funall_control__value_data"
-              :label="item.funall_control__display_data"
-              :value="item.funall_control__value_data"
-            />
-          </el-select>
+        <el-form-item label="巡检项目" :label-width="formLabelWidth" prop="insp_item__item_name">
+          <el-input v-model="form.insp_item__item_name" type="textarea" />
         </el-form-item>
-        <el-form-item label="不符合描述" :label-width="formLabelWidth" prop="det_desc">
-          <el-input v-model="form.insp_det__det_desc" type="textarea" />
+        <el-form-item label="巡检标准" :label-width="formLabelWidth" prop="insp_item__item_std">
+          <el-input v-model="form.insp_item__item_std" type="textarea" />
+        </el-form-item>
+        <el-form-item label="巡检方法" :label-width="formLabelWidth" prop="insp_item__item_way">
+          <el-input v-model="form.insp_item__item_way" type="textarea" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -82,19 +68,14 @@ export default {
   components: {
     buttons
   },
-  props: {
-    id: {
-      type: String,
-      default: null
-    }
-  },
+
   data() {
     return {
+      id: '',
       loading: false,
       data: [],
       deptTree: [],
       ids: [],
-      levels: [],
       pager: {
         pageNo: 0,
         pageSize: 10,
@@ -106,28 +87,16 @@ export default {
           type: 'selection',
           fixed: 'left'
         }, {
-          prop: 'insp_det__det_name',
+          prop: 'insp_item__item_name',
           label: '巡检项目'
         }, {
-          prop: 'insp_det__det_std',
+          prop: 'insp_item__item_std',
           label: '巡检标准'
         },
         {
-          prop: 'insp_det__det_way',
+          prop: 'insp_item__item_way',
           label: '巡检方法'
         }, {
-          prop: 'insp_det__det_result',
-          label: '巡检结果'
-        },
-        {
-          prop: 'insp_det__det_desc',
-          label: '不符合描述'
-        },
-        {
-          prop: 'insp_det__reform_flag',
-          label: '是否已整改'
-        },
-        {
           prop: 'opration',
           label: '操作',
           width: '70px',
@@ -135,26 +104,25 @@ export default {
           minWidth: '70px',
           show: true
         }],
-      value: '',
       dept_id: '',
       level: '',
       parent_id: '',
       initFrom: {
-        det_desc: '',
-        insp_det__det_desc: '',
-        insp_det__det_name: '',
-        insp_det__det_name_id: '',
-        insp_det__det_result: '',
-        insp_det__det_std: '',
-        insp_det__det_way: '',
-        insp_det__insp_det_id: '',
-        insp_det__reform_flag: '',
-        insp_det__safe_insp_id: ''
+        insp_item__insp_item_id: '',
+        insp_item__item_name: '',
+        insp_item__item_std: '',
+        insp_item__item_way: ''
       },
       form: {},
       rules: {
-        insp_det__det_result: [
-          { required: true, message: '请选择巡检结果', trigger: 'blur' }
+        insp_item__item_name: [
+          { required: true, message: '请输入巡检项目', trigger: 'blur' }
+        ],
+        insp_item__item_std: [
+          { required: true, message: '请输入巡检标准', trigger: 'blur' }
+        ],
+        insp_item__item_way: [
+          { required: true, message: '请输入巡检方法', trigger: 'blur' }
         ]
       },
       dialogFormVisible: false,
@@ -169,17 +137,21 @@ export default {
       },
       treeList: [],
       whereSql: false,
-      whereValue: ''
+      whereValue: '',
+      title: ''
     }
   },
   created() {
-    this.getList()
-    this.getTypeSel()
+    if (this.value) {
+      this.id = this.value
+      this.getList(this.id)
+    }
   },
   mounted() {
   },
   methods: {
-    getList() {
+    getList(id) {
+      this.id = id
       this.loading = true
       let pageNo = this.pager.pageNo * this.pager.pageSize - this.pager.pageSize
       if (pageNo < 0) {
@@ -208,19 +180,13 @@ export default {
       this.form = JSON.parse(JSON.stringify(this.initFrom))
       this.dialogFormVisible = true
     },
-    edit(row) {
-      console.log(row, 'row')
-      this.title = '编辑'
-      this.form = row
-      this.dialogFormVisible = true
-    },
     create() {
       this.$refs['form'].validate((valid) => {
         if (valid) {
-          const data = `funid=insp_det&fkValue=${this.id}&pfunid=safe_insp&keyid=${this.form.insp_det__insp_det_id}&pagetype=editgrid&eventcode=save_eg&insp_det__det_name=${this.form.insp_det__det_name}&insp_det__det_std=${this.form.insp_det__det_std}&insp_det__det_way=${this.form.insp_det__det_way}&insp_det__det_result=${this.form.insp_det__det_result}&insp_det__det_desc=${this.form.insp_det__det_desc}&insp_det__reform_flag=${this.form.insp_det__reform_flag}&insp_det__safe_insp_id=${this.id}&insp_det__insp_det_id=${this.form.insp_det__insp_det_id}&insp_det__det_name_id=${this.form.insp_det__insp_det_id}&user_id=administrator&dataType=json`
+          const data = `funid=insp_item&fkValue=${this.id}&pfunid=insp_name&keyid=${this.form.insp_item__insp_item_id}&pagetype=editgrid&eventcode=save_eg&insp_item__item_name=${this.form.insp_item__item_name}&insp_item__item_std=${this.form.insp_item__item_std}&insp_item__item_way=${this.form.insp_item__item_way}&insp_item__insp_item_id=${this.form.insp_item__insp_item_id}&insp_item__insp_name_id=${this.id}&user_id=administrator&dataType=json`
           api.Crerte(data).then(data => {
             if (data.success) {
-              this.getList()
+              this.getList(this.id)
               this.dialogFormVisible = false
               this.$refs['form'].resetFields()
               this.$message.success('保存成功！')
@@ -231,9 +197,14 @@ export default {
         }
       })
     },
+    edit(row) {
+      this.title = '编辑'
+      this.dialogFormVisible = true
+      this.form = JSON.parse(JSON.stringify(row))
+    },
     Delete(row) {
       this.ids = []
-      this.ids.push(row.insp_det__insp_det_id)
+      this.ids.push(row.insp_item__insp_item_id)
       this.editDelete()
     },
     editDelete() {
@@ -241,7 +212,7 @@ export default {
         this.$confirm('确认删除？').then(() => {
           api.Delete(this.ids).then(data => {
             if (data.success) {
-              this.getList()
+              this.getList(this.id)
               this.$message.success('删除成功！')
             } else {
               this.$message.error(data.message)
@@ -262,15 +233,14 @@ export default {
     },
     sizeChange(size) {
       this.pager.pageSize = size
-      this.getList()
+      this.getList(this.id)
     },
     pageChange(page) {
       this.pager.pageNo = page
-      this.getList()
+      this.getList(this.id)
     },
     handleSelectionChange(val) {
-      this.ids = val.map(d => d.insp_det__insp_det_id)
-      console.log(this.ids, 'this.ids')
+      this.ids = val.map(d => d.insp_item__insp_item_id)
     },
     closeDialog() {
       this.dialogFormVisible = false
@@ -282,7 +252,7 @@ export default {
       console.log(data)
       this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
       this.whereSql = true
-      this.getList()
+      this.getList(this.id)
     },
     async getTypeSel() {
       await publicApi.getTypeSel('inspresult').then(data => {

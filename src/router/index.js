@@ -99,7 +99,14 @@ export const constantRoutes = [
         meta: { title: '安全点巡检', icon: 'list', noCache: true }
       },
       {
-        path: 'edit_form/:id',
+        path: 'edit_form/create',
+        component: () => import('@/views/safe_insp/components/create/index'),
+        name: 'EditForm',
+        hidden: true,
+        meta: { title: '安全点巡检新增', icon: 'list', noCache: true }
+      },
+      {
+        path: 'edit_form/audit/:id',
         component: () => import('@/views/safe_insp/components/edit_form/index'),
         name: 'EditForm',
         hidden: true,

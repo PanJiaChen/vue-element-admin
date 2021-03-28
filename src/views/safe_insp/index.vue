@@ -277,15 +277,8 @@ export default {
       }
     },
     editCreate() {
-      if (this.ids === null) {
-        this.$message.warning('请选择一个组织再添加下属组织')
-      } else if (this.ids.length !== 1) {
-        this.$message.warning('请选择一个组织再添加下属组织')
-      } else {
-        this.dialogFormVisible = true
-        this.dept_id = this.ids[0]
-        this.level = this.levels[0]
-      }
+      const param = `/insp/edit_form/create`
+      this.$router.push(param)
     },
     create() {
       this.$refs['form'].validate((valid) => {
@@ -368,7 +361,7 @@ export default {
       })
     },
     cellDblclick(row) {
-      const param = `/insp/edit_form/${row.safe_insp__safe_insp_id}`
+      const param = `/insp/edit_form/audit/${row.safe_insp__safe_insp_id}`
       this.$router.push(param)
     },
     sizeChange(size) {
