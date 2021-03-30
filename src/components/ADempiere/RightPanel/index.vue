@@ -1,12 +1,21 @@
 <template>
-  <div ref="rightMenu" :class="{show:show}" class="rightMenu-container">
+  <div
+    ref="rightMenu"
+    :class="{ show: isShowRightPanel }"
+    class="rightMenu-container"
+  >
     <div class="setting">
       <div class="showme">
         <!-- <div class="rightMenu-background" /> -->
         <div class="rightMenu">
-          <div class="handle-button" :style="{'top':buttonTop+'%'}" @click="show=!show">
-            <i :class="show?'el-icon-close':'el-icon-more'" style="color: gray;" />
+          <div
+            class="handle-button"
+            :style="{ 'top': buttonTop+'%' }"
+            @click="isShowRightPanel=!isShowRightPanel"
+          >
+            <i :class="icon" style="color: gray;" />
           </div>
+
           <div class="rightMenu-items">
             <slot />
           </div>
@@ -20,7 +29,7 @@
 import { addClass, removeClass } from '@/utils'
 
 export default {
-  name: 'Menu',
+  name: 'RightPanel',
   props: {
     clickNotClose: {
       default: false,
@@ -37,6 +46,20 @@ export default {
     }
   },
   computed: {
+    isShowRightPanel: {
+      get() {
+        return this.$store.state.contextMenu.isShowRightPanel
+      },
+      set() {
+        this.$store.commit('changeShowRigthPanel')
+      }
+    },
+    icon() {
+      if (this.isShowRightPanel) {
+        return 'el-icon-close'
+      }
+      return 'el-icon-more'
+    },
     theme() {
       return this.$store.state.settings.theme
     }

@@ -56,7 +56,7 @@
                         :style="isWorkflowBarStatus ? 'height: 45px; background: #F5F7FA' : 'height: 40px'"
                       >
                         <el-container>
-                          <el-aside width="100%" style="width: 78vw; overflow: hidden;">
+                          <el-aside width="100%" style="overflow: hidden;">
                             <el-scrollbar>
                               <workflow-status-bar
                                 v-if="isWorkflowBarStatus"
@@ -76,6 +76,7 @@
                               :table-name="windowMetadata.currentTab.tableName"
                               :panel-type="panelType"
                               :is-insert-record="windowMetadata.currentTab.isInsertRecord"
+                              :is-list-record="isShowedRecordNavigation"
                             />
                           </el-main>
                         </el-container>

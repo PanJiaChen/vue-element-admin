@@ -13,6 +13,7 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 //   }
 // ]
 const initStateContextMenu = {
+  isShowRightPanel: false,
   contextMenu: [],
   listDocumentStatus: {
     defaultDocumentAction: undefined,
@@ -42,6 +43,9 @@ const contextMenu = {
     },
     addlistDocumentStatus(state, payload) {
       state.listDocumentStatus = payload
+    },
+    changeShowRigthPanel(state) {
+      state.isShowRightPanel = !state.isShowRightPanel
     },
     resetContextMenu(state) {
       state = initStateContextMenu

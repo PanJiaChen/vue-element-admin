@@ -294,6 +294,7 @@ export default {
     deleteRecordError: 'Error al eliminar el regitro',
     exportRecord: 'Exportar Registro',
     lockRecord: 'Bloquear Registro',
+    noDescription: 'Sin Descripción',
     recordAccess: {
       actions: 'Acceso a registros',
       hideRecord: 'Ocultar Registro',

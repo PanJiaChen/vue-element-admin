@@ -60,6 +60,10 @@ export default {
     isDisplayed: {
       type: Boolean,
       default: false
+    },
+    isListRecord: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -75,19 +79,17 @@ export default {
     }
   },
   computed: {
-    activeMenu() {
-      const { meta, path } = this.$route
-      // if set path, the sidebar will highlight the path you set
-      if (meta.activeMenu) {
-        return meta.activeMenu
-      }
-      return path
-    },
     getterContextMenu() {
       return this.$store.getters.getContextMenu(this.containerUuid)
     },
+    isWindow() {
+      return this.panelType === 'window'
+    },
+    isWithRecord() {
+      return !this.isEmptyValue(this.recordUuid) && this.recordUuid !== 'create-new'
+    },
     isReferecesContent() {
-      if (this.panelType === 'window' && !this.isEmptyValue(this.recordUuid) && this.recordUuid !== 'create-new') {
+      if (this.isWindow && this.isWithRecord) {
         return true
       }
       return false
@@ -160,7 +162,7 @@ export default {
       })
     },
     getDataLog() {
-      if (this.panelType === 'window') {
+      if (this.isWindow) {
         return this.$store.getters.getDataLog(this.containerUuid, this.recordUuid)
       }
       return undefined
@@ -169,7 +171,7 @@ export default {
       return this.$store.getters.getCachedReport(this.$route.params.instanceUuid).parameters
     },
     getOldRouteOfWindow() {
-      if (this.panelType === 'window') {
+      if (this.isWindow) {
         const oldRoute = this.$store.state['windowControl/index'].windowOldRoute
         if (!this.isEmptyValue(oldRoute.query.action) && oldRoute.query.action !== 'create-new' && this.$route.query.action === 'create-new') {
           return oldRoute
@@ -234,18 +236,18 @@ export default {
     '$route.query.action'(actionValue) {
       this.recordUuid = actionValue
       // only requires updating the context menu if it is Window
-      if (this.panelType === 'window') {
+      if (this.isWindow) {
         this.generateContextMenu()
         this.getReferences()
       }
     },
     isInsertRecord(newValue, oldValue) {
-      if (this.panelType === 'window' && newValue !== oldValue) {
+      if (this.isWindow && newValue !== oldValue) {
         this.generateContextMenu()
       }
     },
     getDataLog(newValue, oldValue) {
-      if (this.panelType === 'window' && newValue !== oldValue) {
+      if (this.isWindow && newValue !== oldValue) {
         this.generateContextMenu()
       }
     },
@@ -291,7 +293,7 @@ export default {
       }
     },
     refreshData() {
-      if (this.panelType === 'window') {
+      if (this.isWindow) {
         this.$store.dispatch('getDataListTab', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
@@ -350,7 +352,7 @@ export default {
       const tHeader = this.getterFieldsListHeader
       const filterVal = this.getterFieldsListValue
       let list = []
-      if (this.panelType === 'window') {
+      if (this.isWindow) {
         list = this.getDataRecord
       } else if (this.panelType === 'browser') {
         // TODO: Check usage as the selection is exported with the table menu
@@ -411,7 +413,7 @@ export default {
         })
         this.$store.dispatch('setOrder', processAction)
       }
-      if (this.panelType === 'window' && this.isEmptyValue(this.actions.find(element => element.action === 'recordAccess'))) {
+      if (this.isWindow && this.isEmptyValue(this.actions.find(element => element.action === 'recordAccess'))) {
         this.$store.dispatch('addAttribute', {
           tableName: this.tableNameCurrentTab,
           recordId: this.getCurrentRecord[this.tableNameCurrentTab + '_ID'],
@@ -446,7 +448,7 @@ export default {
             // rollback
             if (itemAction.action === 'undoModifyData') {
               itemAction.disabled = Boolean(!this.getDataLog && !this.getOldRouteOfWindow)
-            } else if (this.recordUuid === 'create-new' || !this.isInsertRecord) {
+            } else if (!this.isWithRecord || !this.isInsertRecord) {
               itemAction.disabled = true
             }
           }
@@ -670,7 +672,7 @@ export default {
       }
     },
     setShareLink() {
-      let shareLink = this.panelType === 'window' || window.location.href.includes('?') ? `${window.location.href}&` : `${window.location.href}?`
+      let shareLink = this.isWindow || window.location.href.includes('?') ? `${window.location.href}&` : `${window.location.href}?`
       if (this.$route.name === 'Report Viewer') {
         const processParameters = convertFieldsListToShareLink(this.processParametersExecuted)
         const reportFormat = this.$store.getters.getReportType

@@ -319,6 +319,7 @@ export default {
     deleteRecordError: 'Error deleting record',
     exportRecord: 'Export Record',
     lockRecord: 'Lock Record',
+    noDescription: 'No Description',
     recordAccess: {
       actions: 'Record Access',
       hideRecord: 'Hide Record',
