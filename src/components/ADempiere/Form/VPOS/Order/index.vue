@@ -33,7 +33,7 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="2" :style="styleTab">
+            <el-col :span="1" :style="styleTab">
               <el-tag
                 v-if="!isEmptyValue(getOrder.documentStatus.value)"
                 :type="tagStatus(getOrder.documentStatus.value)"
@@ -42,6 +42,11 @@
                   {{ getOrder.documentStatus.name }}
                 </span>
               </el-tag>
+            </el-col>
+            <el-col :span="1" :style="styleTab">
+              <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
+                {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
+              </el-button>
             </el-col>
           </el-row>
         </el-form>
@@ -322,9 +327,9 @@ export default {
     styleTab() {
       const isShowedPOSOptions = this.$store.getters.getIsShowPOSOptions
       if (this.isShowedPOSKeyLayout || isShowedPOSOptions) {
-        return 'adding-left: 0px; padding-right: 0px; padding-top: 3.5%;'
+        return 'adding-left: 0px; padding-right: 0px; padding-top: 3.5%;margin-right: 1%;'
       }
-      return 'padding-left: 30px; padding-right: 0px; padding-top: 2.2%;'
+      return 'padding-left: 0px; padding-right: 0px; padding-top: 2.2%;margin-right: 1%;'
     },
     namePointOfSales() {
       const currentPOS = this.$store.getters.getCurrentPOS
@@ -664,6 +669,9 @@ export default {
   .el-tag--medium {
     height: 34px;
     line-height: 32px;
+    width: 110%;
+    text-align: center;
+
   }
   .el-col {
     border-radius: 4px;

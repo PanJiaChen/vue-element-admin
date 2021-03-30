@@ -51,6 +51,7 @@
             :field-value="recordDataFields"
           />
           <preference
+            v-if="field.panelType !== 'form'"
             :source-field="fieldAttributes"
             :field-value="recordDataFields"
             :panel-type="field.panelType"
