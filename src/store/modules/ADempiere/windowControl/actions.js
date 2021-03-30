@@ -842,20 +842,22 @@ export default {
       }).value
     }
 
-    if (isReference) {
-      if (!isEmptyValue(parsedWhereClause)) {
-        parsedWhereClause += ` AND ${referenceWhereClause}`
-      } else {
-        parsedWhereClause += referenceWhereClause
+    const addWhereClause = (currentWhereClause, newWhereClause) => {
+      if (isEmptyValue(currentWhereClause)) {
+        return newWhereClause
       }
+      if (isEmptyValue(newWhereClause)) {
+        return currentWhereClause
+      }
+      return `${currentWhereClause} AND ${newWhereClause}`
+    }
+
+    if (isReference) {
+      parsedWhereClause = addWhereClause(parsedWhereClause, referenceWhereClause)
     }
 
     if (!isEmptyValue(criteria)) {
-      if (!isEmptyValue(parsedWhereClause)) {
-        parsedWhereClause += ` AND ${criteria.whereClause}`
-      } else {
-        parsedWhereClause += criteria.whereClause
-      }
+      parsedWhereClause = addWhereClause(parsedWhereClause, criteria.whereClause)
     }
 
     const conditionsList = []

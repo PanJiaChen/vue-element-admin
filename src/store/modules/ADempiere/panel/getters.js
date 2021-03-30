@@ -102,8 +102,9 @@ const getters = {
       }
     })
 
-    if (!isEmptyValue(formatReturn)) {
+    if (formatReturn) {
       return fieldsNameEmpty.map(fieldItem => {
+        // fieldItem.name by default
         return fieldItem[formatReturn]
       })
     }
