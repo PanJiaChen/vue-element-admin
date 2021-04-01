@@ -327,7 +327,7 @@ export default {
     styleTab() {
       const isShowedPOSOptions = this.$store.getters.getIsShowPOSOptions
       if (this.isShowedPOSKeyLayout || isShowedPOSOptions) {
-        return 'adding-left: 0px; padding-right: 0px; padding-top: 3.5%;margin-right: 1%;'
+        return 'adding-left: 0px; padding-right: 0px; padding-top: 2.5%;margin-right: 1%;'
       }
       return 'padding-left: 0px; padding-right: 0px; padding-top: 2.2%;margin-right: 1%;'
     },
@@ -669,9 +669,7 @@ export default {
   .el-tag--medium {
     height: 34px;
     line-height: 32px;
-    width: 110%;
     text-align: center;
-
   }
   .el-col {
     border-radius: 4px;
