@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Create entity
@@ -20,14 +18,15 @@ export function requestCreateEntity({
     }
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/create',
+    method: 'post',
     data: {
       table_name: tableName,
       attributes: attributesList
     }
   })
-    .then(evaluateResponse)
     .then(entityCreateResponse => {
       const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -55,8 +54,10 @@ export function requestUpdateEntity({
     }
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/update',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -64,7 +65,6 @@ export function requestUpdateEntity({
       attributes: attributesList
     }
   })
-    .then(evaluateResponse)
     .then(entityUpdateResponse => {
       const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -83,14 +83,18 @@ export function requestDeleteEntity({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/delete',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
       uuid: recordUuid
     }
-  }).then(evaluateResponse)
+  }).then(response => {
+    return response
+  })
 }
 
 /**
@@ -105,8 +109,10 @@ export function rollbackEntity({
   recordUuid,
   eventType
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/rollback-entity',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -114,7 +120,6 @@ export function rollbackEntity({
       event_type: eventType
     }
   })
-    .then(evaluateResponse)
     .then(entityResponse => {
       const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -128,7 +133,8 @@ export function requestGetEntity({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/entity',
     method: 'get',
     params: {
@@ -137,7 +143,6 @@ export function requestGetEntity({
       id: recordId
     }
   })
-    .then(evaluateResponse)
     .then(entityResponse => {
       const { convertEntity } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -177,8 +182,10 @@ export function requestListEntities({
     }
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/list',
+    method: 'post',
     data: {
       table_name: tableName,
       // DSL Query
@@ -196,7 +203,6 @@ export function requestListEntities({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(entitiesListResponse => {
       const { convertEntityList } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -219,8 +225,10 @@ export function requestTranslations({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-translations',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -233,7 +241,6 @@ export function requestTranslations({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(languageListResponse => {
       const { convertTranslation } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
@@ -253,7 +260,8 @@ export function requestResource({ resourceUuid }, callBack = {
   onStatus: () => {},
   onEnd: () => {}
 }) {
-  const stream = requestRest({
+  const stream = request({
+    baseURL: config.adempiere.api.url,
     url: '/resource',
     method: 'get',
     params: {
@@ -293,7 +301,8 @@ export function requestImage({
     operation
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: urn,
     method: 'get',
     responseType: 'arraybuffer'

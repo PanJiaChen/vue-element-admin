@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Run callout request
@@ -28,8 +26,10 @@ export function runCallOutRequest({
   callout,
   attributesList = []
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/run-callout',
+    method: 'post',
     data: {
       table_name: tableName,
       window_uuid: windowUuid,
@@ -42,5 +42,7 @@ export function runCallOutRequest({
       attributes: attributesList
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }

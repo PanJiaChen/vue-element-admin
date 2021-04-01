@@ -1,8 +1,7 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
+
 import { isEmptyValue } from '@/utils/ADempiere'
 
 /**
@@ -16,13 +15,14 @@ export { requestGetConversionRate } from '@/api/ADempiere/system-core.js'
 export function requestGetPointOfSales({
   posUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/get-point-of-sales',
+    method: 'post',
     data: {
       point_of_sales_uuid: posUuid
     }
   })
-    .then(evaluateResponse)
     .then(posResponse => {
       const { convertPointOfSales } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -36,8 +36,10 @@ export function requestListPointOfSales({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/list-point-of-sales',
+    method: 'post',
     data: {
       user_uuid: userUuid
     },
@@ -46,7 +48,6 @@ export function requestListPointOfSales({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(posListResponse => {
       const { convertPointOfSales } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -67,8 +68,10 @@ export function requestCreateOrder({
   documentTypeUuid,
   salesRepresentativeUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/create-order',
+    method: 'post',
     data: {
       pos_uuid: posUuid,
       customer_uuid: customerUuid,
@@ -76,7 +79,6 @@ export function requestCreateOrder({
       sales_representative_uuid: salesRepresentativeUuid
     }
   })
-    .then(evaluateResponse)
     .then(createOrderResponse => {
       const { convertOrder } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -91,8 +93,10 @@ export function requestUpdateOrder({
   customerUuid,
   description
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/update-order',
+    method: 'post',
     data: {
       order_uuid: orderUuid,
       pos_uuid: posUuid,
@@ -100,7 +104,6 @@ export function requestUpdateOrder({
       description
     }
   })
-    .then(evaluateResponse)
     .then(updateOrderResponse => {
       const { convertOrder } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -110,13 +113,14 @@ export function requestUpdateOrder({
 
 // Get order from uuid
 export function requestGetOrder(orderUuid) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/get-order',
+    method: 'post',
     data: {
       order_uuid: orderUuid
     }
   })
-    .then(evaluateResponse)
     .then(getOrderResponse => {
       const { convertOrder } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -132,8 +136,10 @@ export function requestDeleteOrder({
   // documentTypeUuid,
   // salesRepresentativeUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/delete-order',
+    method: 'post',
     data: {
       order_uuid: orderUuid
       // pos_uuid: posUuid,
@@ -142,7 +148,9 @@ export function requestDeleteOrder({
       // sales_representative_uuid: salesRepresentativeUuid
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }
 
 // List orders from pos uuid
@@ -204,8 +212,10 @@ export function requestListOrders({
   })
   */
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/list-orders',
+    method: 'post',
     data: {
       pos_uuid: posUuid,
       document_no: documentNo,
@@ -225,7 +235,6 @@ export function requestListOrders({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(ordersListResponse => {
       const { convertOrder } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -250,8 +259,10 @@ export function requestCreateOrderLine({
   price,
   discountRate
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/create-order-line',
+    method: 'post',
     data: {
       order_uuid: orderUuid,
       product_uuid: productUuid,
@@ -263,7 +274,6 @@ export function requestCreateOrderLine({
       warehouse_uuid: warehouseUuid
     }
   })
-    .then(evaluateResponse)
     .then(createOrderLineResponse => {
       const { convertOrderLine } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -279,8 +289,10 @@ export function requestUpdateOrderLine({
   price,
   discountRate
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/update-order-line',
+    method: 'post',
     data: {
       // is_add_quantity: true,
       order_line_uuid: orderLineUuid,
@@ -290,7 +302,6 @@ export function requestUpdateOrderLine({
       discount_rate: discountRate
     }
   })
-    .then(evaluateResponse)
     .then(createOrderLineResponse => {
       const { convertOrderLine } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -302,13 +313,17 @@ export function requestUpdateOrderLine({
 export function requestDeleteOrderLine({
   orderLineUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/delete-order-line',
+    method: 'post',
     data: {
       order_line_uuid: orderLineUuid
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }
 
 export function requestListOrderLines({
@@ -316,8 +331,10 @@ export function requestListOrderLines({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/list-order-lines',
+    method: 'post',
     data: {
       order_uuid: orderUuid
     },
@@ -326,7 +343,6 @@ export function requestListOrderLines({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(ordersLineListResponse => {
       const { convertOrderLine } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -341,13 +357,14 @@ export function requestListOrderLines({
 }
 
 export function getKeyLayout({ keyLayoutUuid }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/get-key-layout',
+    method: 'post',
     data: {
       key_layout_uuid: keyLayoutUuid
     }
   })
-    .then(evaluateResponse)
     .then(keyLayoutResponse => {
       const { convertKeyLayout } = require('@/utils/ADempiere/apiConverts/pos.js')
 
@@ -367,8 +384,10 @@ export function getProductPriceList({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/list-product-prices',
+    method: 'post',
     data: {
       price_list_uuid: priceListUuid,
       search_value: searchValue,
@@ -381,7 +400,6 @@ export function getProductPriceList({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(productPriceListResponse => {
       const { convertProductPrice } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -454,8 +472,10 @@ export function createPayment({
   tenderTypeCode,
   currencyUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/create-payment',
+    method: 'post',
     data: {
       pos_uuid: posUuid,
       order_uuid: orderUuid,
@@ -469,7 +489,6 @@ export function createPayment({
       currency_uuid: currencyUuid
     }
   })
-    .then(evaluateResponse)
     .then(createPaymentResponse => {
       return createPaymentResponse
     })
@@ -486,8 +505,10 @@ export function updatePayment({
   paymentDate,
   tenderTypeCode
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/update-payment',
+    method: 'post',
     data: {
       payment_uuid: paymentUuid,
       bank_uuid: bankUuid,
@@ -498,7 +519,6 @@ export function updatePayment({
       tender_type_code: tenderTypeCode
     }
   })
-    .then(evaluateResponse)
     .then(updatePaymentResponse => {
       return updatePaymentResponse
     })
@@ -509,13 +529,14 @@ export function updatePayment({
 export function deletePayment({
   paymentUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/delete-payment',
+    method: 'post',
     data: {
       payment_uuid: paymentUuid
     }
   })
-    .then(evaluateResponse)
     .then(deletePaymentResponse => {
       return deletePaymentResponse
     })
@@ -527,14 +548,15 @@ export function getPaymentsList({
   posUuid,
   orderUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/list-payments',
+    method: 'post',
     data: {
       pos_uuid: posUuid,
       order_uuid: orderUuid
     }
   })
-    .then(evaluateResponse)
     .then(listPaymentsResponse => {
       const { paymentsMethod } = require('@/utils/ADempiere/apiConverts/pos.js')
       return {
@@ -588,8 +610,10 @@ export function processOrder({
       }
     })
   }
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/process-order',
+    method: 'post',
     data: {
       pos_uuid: posUuid,
       order_uuid: orderUuid,
@@ -597,7 +621,6 @@ export function processOrder({
       payments: payments
     }
   })
-    .then(evaluateResponse)
     .then(processOrderResponse => {
       return processOrderResponse
     })

@@ -1,8 +1,6 @@
 // Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Make login by UserName and password, this function can return user data for show
@@ -16,7 +14,8 @@ export function login({
   organizationUuid,
   token
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/user/login',
     method: 'post',
     data: {
@@ -34,14 +33,17 @@ export function login({
  * @param {string} token or session UUID
  */
 export function requestUserInfoFromSession(token) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/user/info',
     method: 'get',
     params: {
       token
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }
 
 /**
@@ -49,14 +51,14 @@ export function requestUserInfoFromSession(token) {
  * @param {string} token or session UUID
  */
 export function requestSessionInfo(token) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/user/session',
     method: 'get',
     params: {
       token
     }
   })
-    .then(evaluateResponse)
     .then(responseSession => {
       const { convertSession } = require('@/utils/ADempiere/apiConverts/user.js')
 
@@ -71,14 +73,17 @@ export function requestSessionInfo(token) {
 export function requestMenu({
   sessionUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/user/menu',
     method: 'get',
     params: {
       token: sessionUuid
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }
 
 /**
@@ -86,7 +91,9 @@ export function requestMenu({
  * @param {string} token or session UUID
  */
 export function logout(token) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
+    method: 'post',
     url: '/user/logout',
     data: {
       token

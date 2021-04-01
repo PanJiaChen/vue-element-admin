@@ -1,11 +1,9 @@
 import request from '@/utils/request'
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import { config } from '@/utils/ADempiere/config'
 
 export function getRoutes() {
   return request({
+    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/routes',
     method: 'get'
   })
@@ -13,20 +11,21 @@ export function getRoutes() {
 
 export function getRoles() {
   return request({
+    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/roles',
     method: 'get'
   })
 }
 
 export function requestRolesList(token) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: 'user/roles',
     method: 'get',
     params: {
       token
     }
   })
-    .then(evaluateResponse)
     .then(responseRoles => {
       const { convertRole } = require('@/utils/ADempiere/apiConverts/user.js')
       const rolesList = responseRoles.map(itemRol => {
@@ -39,6 +38,7 @@ export function requestRolesList(token) {
 
 export function addRole(data) {
   return request({
+    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/role',
     method: 'post',
     data
@@ -47,6 +47,7 @@ export function addRole(data) {
 
 export function updateRole(id, data) {
   return request({
+    baseURL: config.adempiere.api.url,
     url: `/vue-element-admin/role/${id}`,
     method: 'put',
     data
@@ -55,6 +56,7 @@ export function updateRole(id, data) {
 
 export function deleteRole(id) {
   return request({
+    baseURL: config.adempiere.api.url,
     url: `/vue-element-admin/role/${id}`,
     method: 'delete'
   })
@@ -71,7 +73,8 @@ export function requestChangeRole({
   organizationUuid,
   warehouseUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: 'user/change-role',
     method: 'post',
     data: {
@@ -80,7 +83,6 @@ export function requestChangeRole({
       warehouse: warehouseUuid
     }
   })
-    .then(evaluateResponse)
     .then(responseChangeRole => {
       const { convertSession } = require('@/utils/ADempiere/apiConverts/user.js')
 

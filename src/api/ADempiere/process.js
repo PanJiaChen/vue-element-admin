@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Request a process
@@ -43,8 +41,10 @@ export function requestRunProcess({
     }
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/data/process',
+    method: 'post',
     data: {
       process_uuid: uuid,
       table_name: tableName,
@@ -59,7 +59,6 @@ export function requestRunProcess({
       print_format_uuid: printFormatUuid
     }
   })
-    .then(evaluateResponse)
     .then(processRunResponse => {
       const { convertProcessLog } = require('@/utils/ADempiere/apiConverts/process.js')
 
@@ -78,8 +77,10 @@ export function requestListProcessesLogs({
   pageSize
 }) {
   //  Get Process Activity
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-process-logs',
+    method: 'post',
     data: {
       instance_uuid: instanceUuid,
       user_uuid: userUuid,
@@ -92,7 +93,6 @@ export function requestListProcessesLogs({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(processLogResponse => {
       const { convertProcessLog } = require('@/utils/ADempiere/apiConverts/process.js')
 

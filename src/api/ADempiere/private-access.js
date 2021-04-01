@@ -1,8 +1,7 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
+
 import { convertPrivateAccess } from '@/utils/ADempiere/apiConverts/privateAccess.js'
 
 // Get private access for a record
@@ -11,15 +10,16 @@ export function requestGetPrivateAccess({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/get-private-access',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
       uuid: recordUuid
     }
   })
-    .then(evaluateResponse)
     .then(responsePrivateAccess => {
       return convertPrivateAccess(responsePrivateAccess)
     })
@@ -31,15 +31,16 @@ export function requestLockPrivateAccess({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/lock-private-access',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
       uuid: recordUuid
     }
   })
-    .then(evaluateResponse)
     .then(responsePrivateAccess => {
       return convertPrivateAccess(responsePrivateAccess)
     })
@@ -51,15 +52,16 @@ export function requestUnlockPrivateAccess({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/unlock-private-access',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
       uuid: recordUuid
     }
   })
-    .then(evaluateResponse)
     .then(responsePrivateAccess => {
       return convertPrivateAccess(responsePrivateAccess)
     })
@@ -78,8 +80,10 @@ export function getAccessList({
   recordUuid,
   sessionUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/update-access-record',
+    method: 'post',
     params: {
       table_name: tableName,
       id: recordId,
@@ -87,7 +91,9 @@ export function getAccessList({
       token: sessionUuid
     }
   })
-    .then(evaluateResponse)
+    .then(respose => {
+      return respose
+    })
 }
 
 /**
@@ -103,8 +109,10 @@ export function updateAccessRecord({
   recordUuid,
   listRecord
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/update-access-record',
+    method: 'post',
     params: {
       table_name: tableName,
       id: recordId,
@@ -112,5 +120,7 @@ export function updateAccessRecord({
       list_rol: listRecord
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }

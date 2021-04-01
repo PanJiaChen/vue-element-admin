@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 const clientVersion = '1.0.0'
 const applicationType = 'ADempiere-Vue'
@@ -19,7 +17,8 @@ export function requestEnrollUser({
   password,
   eMail
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/enrollment/enroll',
     data: {
       user_name: userName,
@@ -30,7 +29,6 @@ export function requestEnrollUser({
       application_type: applicationType
     }
   })
-    .then(evaluateResponse)
     .then(enrollResponse => {
       return {
         userName: enrollResponse.user_name,
@@ -52,7 +50,8 @@ export function requestForgotPassword(eMailOrUserName) {
     userName = eMailOrUserName
   }
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/enrollment/reset-password',
     data: {
       user_name: userName,
@@ -61,7 +60,6 @@ export function requestForgotPassword(eMailOrUserName) {
       application_type: applicationType
     }
   })
-    .then(evaluateResponse)
     .then(forgotResponse => {
       return {
         responseType: forgotResponse.response_type,
@@ -79,7 +77,8 @@ export function requestChangePassword({
   token,
   password
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/enrollment/change-password',
     data: {
       token,
@@ -88,7 +87,6 @@ export function requestChangePassword({
       application_type: applicationType
     }
   })
-    .then(evaluateResponse)
     .then(changePasswordResponse => {
       return {
         responseType: changePasswordResponse.response_type,
@@ -105,7 +103,8 @@ export function requestChangePassword({
 export function requestActivateUser({
   token
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/enrollment/activate-user',
     data: {
       token,
@@ -113,7 +112,6 @@ export function requestActivateUser({
       application_type: applicationType
     }
   })
-    .then(evaluateResponse)
     .then(activateUserResponse => {
       return {
         responseType: activateUserResponse.response_type,

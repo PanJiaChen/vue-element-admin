@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Request dictionary Window metadata
@@ -13,7 +11,8 @@ export function requestWindowMetadata({
   uuid,
   id
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/window',
     method: 'get',
     params: {
@@ -21,7 +20,6 @@ export function requestWindowMetadata({
       id
     }
   })
-    .then(evaluateResponse)
     .then(windowResponse => {
       const { convertWindow } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 
@@ -38,7 +36,8 @@ export function requestProcessMetadata({
   uuid,
   id
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/process',
     method: 'get',
     params: {
@@ -46,7 +45,6 @@ export function requestProcessMetadata({
       id
     }
   })
-    .then(evaluateResponse)
     .then(processResponse => {
       const { convertProcess } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 
@@ -63,7 +61,8 @@ export function requestBrowserMetadata({
   uuid,
   id
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/browser',
     method: 'get',
     params: {
@@ -71,7 +70,6 @@ export function requestBrowserMetadata({
       id
     }
   })
-    .then(evaluateResponse)
     .then(browserResponse => {
       const { convertBrowser } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 
@@ -88,7 +86,8 @@ export function requestForm({
   uuid,
   id
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/form',
     method: 'get',
     params: {
@@ -96,7 +95,6 @@ export function requestForm({
       id
     }
   })
-    .then(evaluateResponse)
     .then(formResponse => {
       const { convertForm } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 
@@ -114,7 +112,8 @@ export function requestFieldMetadata({
   columnName,
   elementColumnName
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/field',
     method: 'get',
     params: {
@@ -128,7 +127,6 @@ export function requestFieldMetadata({
       element_column_name: elementColumnName
     }
   })
-    .then(evaluateResponse)
     .then(fieldResponse => {
       const { convertField } = require('@/utils/ADempiere/apiConverts/field.js')
 
@@ -140,7 +138,7 @@ export function requestReference({
   uuid,
   columnName
 }) {
-  return requestRest({
+  return request({
     url: '/dictionary/reference',
     method: 'get',
     params: {
@@ -148,7 +146,6 @@ export function requestReference({
       column_name: columnName
     }
   })
-    .then(evaluateResponse)
     .then(validationResponse => {
       const { convertReference } = require('@/utils/ADempiere/apiConverts/field.js')
 
@@ -160,7 +157,8 @@ export function requestValidationRule({
   uuid,
   id
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dictionary/validation',
     method: 'get',
     params: {
@@ -168,7 +166,6 @@ export function requestValidationRule({
       id
     }
   })
-    .then(evaluateResponse)
     .then(validationResponse => {
       const { convertValidationRule } = require('@/utils/ADempiere/apiConverts/dictionary.js')
 

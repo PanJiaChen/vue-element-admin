@@ -5,14 +5,10 @@
   },
   "adempiere": {
     "api": {
-      "url": "https://api.erpya.com",
-      "service": "/adempiere-api",
-      "fullPath": "https://api.erpya.com/adempiere-api"
+      "url": "https://api.erpya.com/adempiere-api"
     },
     "images": {
-      "url": "https://api.erpya.com",
-      "service": "/adempiere-api/img",
-      "fullPath": "https://api.erpya.com/adempiere-api/img"
+      "url": "https://api.erpya.com/adempiere-api/img"
     }
   }
 }

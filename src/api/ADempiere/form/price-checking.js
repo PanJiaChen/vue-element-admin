@@ -1,8 +1,6 @@
 // Get Instance for connectionimport {
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 // List Point of sales
 export function requestGetProductPrice({
@@ -15,8 +13,10 @@ export function requestGetProductPrice({
   warehouseUuid,
   validFrom
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/pos/get-product-price',
+    method: 'post',
     data: {
       search_value: searchValue,
       upc,
@@ -28,7 +28,6 @@ export function requestGetProductPrice({
       valid_from: validFrom
     }
   })
-    .then(evaluateResponse)
     .then(productPriceResponse => {
       const { convertProductPrice } = require('@/utils/ADempiere/apiConverts/core.js')
 

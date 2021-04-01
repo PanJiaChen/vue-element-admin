@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Request a browser search
@@ -40,7 +38,8 @@ export function requestBrowserSearch({
     }
   })
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-browser-items',
     data: {
       // Running Parameters
@@ -60,7 +59,6 @@ export function requestBrowserSearch({
       page_size: pageSize
     }
   })
-    .then(evaluateResponse)
     .then(responseBrowserSearch => {
       const { convertEntityList } = require('@/utils/ADempiere/apiConverts/persistence.js')
 

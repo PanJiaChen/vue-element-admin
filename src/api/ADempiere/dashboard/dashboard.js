@@ -2,10 +2,8 @@
 // please if you want to implement a custom dashboard create a new fielwith api definition
 
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 // Get Recent Items based on selection option
 export function requestListRecentItems({
@@ -14,8 +12,10 @@ export function requestListRecentItems({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-recent-items',
+    method: 'post',
     data: {
       user_uuid: userUuid,
       role_uuid: roleUuid,
@@ -27,7 +27,6 @@ export function requestListRecentItems({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(recentItmesReponse => {
       const { convertRecentItemsList } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 
@@ -45,8 +44,10 @@ export function getFavoritesFromServer({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-favorites',
+    method: 'post',
     data: {
       user_id: userId,
       user_uuid: userUuid
@@ -57,7 +58,6 @@ export function getFavoritesFromServer({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(favoritesListReponse => {
       const { convertFavorite } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 
@@ -80,8 +80,10 @@ export function getPendingDocumentsFromServer({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-pending-documents',
+    method: 'post',
     data: {
       user_id: userId,
       user_uuid: userUuid,
@@ -94,7 +96,6 @@ export function getPendingDocumentsFromServer({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(pendingDocumentsListResponse => {
       const { convertPendingDocument } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 
@@ -115,8 +116,10 @@ export function requestLisDashboards({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-dashboards',
+    method: 'post',
     data: {
       role_id: roleId,
       role_uuid: roleUuid
@@ -127,7 +130,6 @@ export function requestLisDashboards({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(dashboardsListResponse => {
       const { convertDashboard } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 

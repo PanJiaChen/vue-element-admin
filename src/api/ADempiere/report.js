@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Request Pending Documents List
@@ -15,8 +13,10 @@ export function requestListReportsViews({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-report-views',
+    method: 'post',
     data: {
       table_name: tableName,
       process_uuid: processUuid
@@ -26,7 +26,6 @@ export function requestListReportsViews({
       page_size: pageSize
     }
   })
-    .then(evaluateResponse)
     .then(reportViewResponse => {
       const { convertReportView } = require('@/utils/ADempiere/apiConverts/report.js')
 
@@ -48,8 +47,10 @@ export function requestListPrintFormats({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-print-formats',
+    method: 'post',
     data: {
       table_name: tableName,
       report_view_uuid: reportViewUuid,
@@ -60,7 +61,6 @@ export function requestListPrintFormats({
       page_size: pageSize
     }
   })
-    .then(evaluateResponse)
     .then(responseListPrintFormats => {
       const { convertListPrintFormats } = require('@/utils/ADempiere/apiConverts/report.js')
 
@@ -74,8 +74,10 @@ export function requestListDrillTables({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-drill-tables',
+    method: 'post',
     data: {
       table_name: tableName
     },
@@ -84,7 +86,6 @@ export function requestListDrillTables({
       page_size: pageSize
     }
   })
-    .then(evaluateResponse)
     .then(drillTablesResponse => {
       const { convertDrillTables } = require('@/utils/ADempiere/apiConverts/report.js')
 
@@ -112,8 +113,10 @@ export function requestGetReportOutput({
   whereClause,
   orderByClause
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/get-report-output',
+    method: 'post',
     data: {
       table_name: tableName,
       // reference
@@ -130,7 +133,6 @@ export function requestGetReportOutput({
       order_by_clause: orderByClause
     }
   })
-    .then(evaluateResponse)
     .then(reportOutpuResponse => {
       const { convertReportOutput } = require('@/utils/ADempiere/apiConverts/report.js')
 

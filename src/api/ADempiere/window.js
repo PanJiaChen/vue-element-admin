@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 // Get list of log for a records
 export function requestListEntityLogs({
@@ -12,8 +10,10 @@ export function requestListEntityLogs({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-entity-logs',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -25,7 +25,6 @@ export function requestListEntityLogs({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(entityLogsListResponse => {
       const { convertEntityLog } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -47,8 +46,10 @@ export function requestListWorkflowsLogs({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-workflow-logs',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -60,7 +61,6 @@ export function requestListWorkflowsLogs({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(workflowLogsListResponse => {
       const { convertWorkflowProcess } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -80,8 +80,10 @@ export function requestListWorkflows({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/workflow/list-workflow',
+    method: 'post',
     data: {
       table_name: tableName
     },
@@ -91,7 +93,6 @@ export function requestListWorkflows({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(workflowListResponse => {
       const { convertWorkflowDefinition } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -118,8 +119,10 @@ export function requestListEntityChats({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-entity-chats',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -131,7 +134,6 @@ export function requestListEntityChats({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(entityChatListResponse => {
       const { convertEntityChat } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -156,8 +158,10 @@ export function requestListChatsEntries({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/logs/list-chat-entries',
+    method: 'post',
     data: {
       id,
       uuid
@@ -168,7 +172,6 @@ export function requestListChatsEntries({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(chatEntriesListResponse => {
       const { convertChatEntry } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -194,8 +197,10 @@ export function requestCreateChatEntry({
   recordUuid,
   comment
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/create-chat-entry',
+    method: 'post',
     data: {
       table_name: tableName,
       id: recordId,
@@ -203,7 +208,6 @@ export function requestCreateChatEntry({
       comment: comment
     }
   })
-    .then(evaluateResponse)
     .then(chatEntryResponse => {
       const { convertChatEntry } = require('@/utils/ADempiere/apiConverts/window.js')
 
@@ -229,8 +233,10 @@ export function requestListDocumentStatuses({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/workflow/list-document-statuses',
+    method: 'post',
     data: {
       id: recordId,
       uuid: recordUuid,
@@ -243,7 +249,6 @@ export function requestListDocumentStatuses({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(listDocumentsActionsResponse => {
       return {
         nextPageToken: listDocumentsActionsResponse.next_page_token,
@@ -263,8 +268,10 @@ export function requestListDocumentActions({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/workflow/list-document-actions',
+    method: 'post',
     data: {
       id: recordId,
       uuid: recordUuid,
@@ -278,7 +285,6 @@ export function requestListDocumentActions({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(listDocumentsActionsResponse => {
       return {
         nextPageToken: listDocumentsActionsResponse.next_page_token,

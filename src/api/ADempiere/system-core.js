@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 // Get Organization list from role
 export function requestOrganizationsList({
@@ -11,8 +9,10 @@ export function requestOrganizationsList({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/list-organizations',
+    method: 'post',
     data: {
       role_id: roleId,
       role_uuid: roleUuid
@@ -23,7 +23,6 @@ export function requestOrganizationsList({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(organizationsListResponse => {
       const { convertOrganization } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -44,8 +43,10 @@ export function requestWarehousesList({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/list-warehouses',
+    method: 'post',
     data: {
       organization_id: organizationId,
       organization_uuid: organizationUuid
@@ -56,7 +57,6 @@ export function requestWarehousesList({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(warehousesListResponse => {
       return {
         nextPageToken: warehousesListResponse.next_page_token,
@@ -75,7 +75,8 @@ export function requestGetCountryDefinition({
   id,
   uuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/country',
     method: 'get',
     params: {
@@ -83,7 +84,6 @@ export function requestGetCountryDefinition({
       uuid
     }
   })
-    .then(evaluateResponse)
     .then(countryResponse => {
       const { convertCountry } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -96,15 +96,16 @@ export function requestLanguagesList({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/list-languages',
+    method: 'post',
     params: {
       // Page Data
       pageToken,
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(languagesListResponse => {
       const { convertLanguage } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -143,8 +144,10 @@ export function requestCreateBusinessPartner({
   countryUuid,
   posUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/create-business-partner',
+    method: 'post',
     data: {
       value,
       tax_id: taxId,
@@ -171,7 +174,6 @@ export function requestCreateBusinessPartner({
       pos_uuid: posUuid
     }
   })
-    .then(evaluateResponse)
     .then(businessPartnerResponse => {
       const { convertBusinessPartner } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -182,14 +184,14 @@ export function requestCreateBusinessPartner({
 export function requestGetBusinessPartner({
   searchValue
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/get-business-partner',
     method: 'get',
     params: {
       search_value: searchValue
     }
   })
-    .then(evaluateResponse)
     .then(businessPartnerResponse => {
       const { convertBusinessPartner } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -210,8 +212,10 @@ export function requestListBusinessPartner({
   pageSize,
   pageToken
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/list-business-partner',
+    method: 'post',
     data: {
       search_value: searchValue,
       value,
@@ -227,7 +231,6 @@ export function requestListBusinessPartner({
       page_token: pageToken
     }
   })
-    .then(evaluateResponse)
     .then(businessPartnerResponse => {
       const { convertBusinessPartner } = require('@/utils/ADempiere/apiConverts/core.js')
 
@@ -255,8 +258,10 @@ export function requestGetConversionRate({
   currencyToUuid,
   conversionDate
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/core/get-conversion-rate',
+    method: 'post',
     data: {
       conversion_type_uuid: conversionTypeUuid,
       currency_from_uuid: currencyFromUuid,
@@ -264,7 +269,6 @@ export function requestGetConversionRate({
       conversion_date: conversionDate
     }
   })
-    .then(evaluateResponse)
     .then(conversionRateResponse => {
       const { convertConversionRate } = require('@/utils/ADempiere/apiConverts/core.js')
 

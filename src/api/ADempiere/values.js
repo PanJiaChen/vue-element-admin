@@ -1,8 +1,7 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
+
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
 /**
@@ -23,15 +22,19 @@ export function requestLookup({
       value
     }]
   }
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/get-lookup-item',
+    method: 'post',
     data: {
       table_name: tableName,
       query: directQuery,
       filters
     }
   })
-    .then(evaluateResponse)
+    .then(respose => {
+      return respose
+    })
 }
 
 /**
@@ -61,8 +64,10 @@ export function requestLookupList({
     }]
   }
 
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-lookup-items',
+    method: 'post',
     data: {
       table_name: tableName,
       query,
@@ -75,7 +80,6 @@ export function requestLookupList({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(lookupListResponse => {
       return {
         nextPageToken: lookupListResponse.next_page_token,
@@ -100,8 +104,10 @@ export function requestReferencesList({
   pageToken,
   pageSize
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/list-references',
+    method: 'post',
     data: {
       id: recordId,
       uuid: recordUuid,
@@ -114,7 +120,6 @@ export function requestReferencesList({
       pageSize
     }
   })
-    .then(evaluateResponse)
     .then(referencesListResposnse => {
       const { convertReferencesList } = require('@/utils/ADempiere/apiConverts/values.js')
 
@@ -124,13 +129,17 @@ export function requestReferencesList({
 
 // Get default value for a field
 export function requestDefaultValue(query) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/get-default-value',
+    method: 'post',
     data: {
       query
     }
   })
-    .then(evaluateResponse)
+    .then(respose => {
+      return respose
+    })
 }
 
 /**
@@ -144,15 +153,16 @@ export function requestGetContextInfoValue({
   id,
   query
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/get-context-info-value',
+    method: 'post',
     data: {
       query,
       uuid,
       id
     }
   })
-    .then(evaluateResponse)
     .then(contextInfoValueResponse => {
       return {
         messageText: contextInfoValueResponse.message_text,

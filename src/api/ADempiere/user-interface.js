@@ -1,8 +1,6 @@
 // Get Instance for connection
-import {
-  ApiRest as requestRest,
-  evaluateResponse
-} from '@/api/ADempiere/instances.js'
+import request from '@/utils/request'
+import { config } from '@/utils/ADempiere/config'
 
 /**
  * Get Attachment
@@ -13,7 +11,8 @@ export function requestResourceReference({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/resource-reference',
     method: 'get',
     params: {
@@ -21,7 +20,9 @@ export function requestResourceReference({
       image_uuid: recordUuid
     }
   })
-    .then(evaluateResponse)
+    .then(response => {
+      return response
+    })
 }
 
 /**
@@ -35,7 +36,8 @@ export function requestAttachment({
   recordId,
   recordUuid
 }) {
-  return requestRest({
+  return request({
+    baseURL: config.adempiere.api.url,
     url: '/ui/attachment',
     method: 'get',
     params: {
@@ -44,5 +46,7 @@ export function requestAttachment({
       uuid: recordUuid
     }
   })
-    .then(evaluateResponse)
+    .then(respose => {
+      return respose
+    })
 }

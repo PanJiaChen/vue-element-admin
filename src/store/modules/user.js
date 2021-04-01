@@ -118,15 +118,9 @@ const actions = {
         organizationUuid,
         token
       })
-        .then(logInResponse => {
-          if ([13, 500].includes(logInResponse.code)) {
-            reject(logInResponse)
-            return
-          }
-          const { result: token } = logInResponse
+        .then(token => {
           commit('SET_TOKEN', token)
           setToken(token)
-
           resolve()
         })
         .catch(error => {
