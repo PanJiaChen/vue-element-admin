@@ -98,7 +98,7 @@ export default {
   deactivated() {
     this.destroyTinymce()
   },
-  destroyed() {
+  beforeDestroy() {
     this.destroyTinymce()
   },
   methods: {
