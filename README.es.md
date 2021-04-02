@@ -217,6 +217,13 @@ npm run lint -- --fix
 
 Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información.
 
+## Contenedor Docker
+
+```bash
+# requiere permisos de super usuario del sistema operativo ('su' o 'sudo')
+docker-componer up
+```
+
 ## Registro de Cambios
 
 Los cambios detallados por cada liberación se encuentran en [notas de liberación](https://github.com/adempiere/adempiere-vue/releases).

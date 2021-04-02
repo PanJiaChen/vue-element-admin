@@ -219,6 +219,13 @@ npm run lint -- --fix
 
 Refer to [Documentation](https://adempiere.github.io/adempiere-vue-site/guide/essentials/deploy.html#build) for more information
 
+## Docker Container
+
+```bash
+# requires superuser permissions of the operating system ('su' or 'sudo')
+docker-compose up
+```
+
 ## Changelog
 
 Detailed changes for each release are documented in the [release notes](https://github.com/adempiere/adempiere-vue/releases).
