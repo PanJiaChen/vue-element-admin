@@ -1,3 +1,5 @@
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
+
 /**
  * Vuex Module, Window Control
  * Getters
@@ -18,6 +20,9 @@ export default {
 
   getReferencesInfo: (state, getters) => ({ windowUuid, recordUuid, referenceUuid }) => {
     const references = getters.getReferencesList(windowUuid, recordUuid)
+    if (isEmptyValue(references)) {
+      return undefined
+    }
     return references.referencesList.find(item => item.uuid === referenceUuid)
   },
 

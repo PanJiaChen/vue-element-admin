@@ -266,11 +266,14 @@ export default {
             recordUuid: route.query.recordUuid,
             referenceUuid: route.query.referenceUuid
           })
+          if (!this.isEmptyValue(referenceInfo)) {
+            parameters.referenceUuid = referenceInfo.uuid
+            parameters.referenceWhereClause = referenceInfo.whereClause
+          }
+
           route.params.isReadParameters = true
           parameters.isLoadAllRecords = false
           parameters.isReference = true
-          parameters.referenceUuid = referenceInfo.uuid
-          parameters.referenceWhereClause = referenceInfo.whereClause
         } else if (route.query.action && route.query.action === 'create-new') {
           parameters.isNewRecord = true
         } else if (route.query.action && route.query.action === 'criteria') {
