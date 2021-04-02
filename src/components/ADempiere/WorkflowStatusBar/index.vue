@@ -23,6 +23,7 @@
               :key="key"
               :label="item.name"
               :value="item.value"
+              :disabled="item.isDisabled"
             />
           </el-select>
 
@@ -95,6 +96,9 @@ export default {
     }
   },
   computed: {
+    tableName() {
+      return this.$store.getters.getTableNameFromTab(this.parentUuid, this.containerUuid)
+    },
     value: {
       get() {
         return this.$store.getters.getValueOfField({
@@ -141,8 +145,22 @@ export default {
       return this.$store.getters.getListDocumentActions
     },
     listDocumentActions() {
-      // TODO: Add current value in disabled
-      return this.documentActions.documentActionsList
+      const documentActionsList = this.documentActions.documentActionsList
+
+      // verify if current status exists into list
+      const isExistsCurrentLabel = documentActionsList.some(actionItem => {
+        return actionItem.name === this.displayedValue
+      })
+      if (!isExistsCurrentLabel) {
+        // add current status into list
+        documentActionsList.push({
+          value: this.value,
+          name: this.displayedValue,
+          isDisabled: true
+        })
+      }
+
+      return documentActionsList
     },
     infoDocumentAction() {
       const value = this.value
@@ -165,7 +183,7 @@ export default {
         if (!this.withoutRecord && this.$route.query.action !== this.documentActions.recordUuid) {
           this.$store.dispatch('listDocumentActionStatus', {
             recordUuid: this.$route.query.action,
-            tableName: this.$route.params.tableName,
+            tableName: this.tableName,
             recordId: this.$route.params.recordId
           })
         }
@@ -187,7 +205,7 @@ export default {
       //         id: actionProcess.id,
       //         name: actionProcess.name
       //       }, // process metadata
-      //       tableName: this.$route.params.tableName,
+      //       tableName: this.tableName,
       //       recordId: this.$route.params.recordId,
       //       recordUuid: this.$route.query.action,
       //       parametersList: [{
