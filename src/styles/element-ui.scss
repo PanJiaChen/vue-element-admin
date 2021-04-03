@@ -69,7 +69,7 @@
 // dropdown
 .el-dropdown-menu {
   a {
-    display: block
+    display: block;
   }
 }
 
@@ -81,4 +81,57 @@
 // to fix el-date-picker css style
 .el-range-separator {
   box-sizing: content-box;
+}
+// table 样式
+.el-table__row {
+  font-size: 12px;
+}
+
+.el-table__header {
+  font-size: 12px;
+  color: #000;
+}
+
+.el-table th,
+.el-table td {
+  color: #000;
+  padding: 0px;
+}
+
+// 解决表头和表体对不齐
+.el-table th.gutter {
+  display: table-cell !important;
+}
+
+// .el-checkbox__input.is-checked .el-checkbox__inner {
+//   background-color: #42b983;
+//   border-color: #42b983;
+// }
+// .el-checkbox__input.is-checked .el-checkbox__inner {
+//   background-color: #42b983;
+//   border-color: #42b983;
+// }
+// .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+//   background-color: #42b983;
+//   border-color: #42b983;
+// }
+
+// .el-checkbox__input.is-focus .el-checkbox__inner {
+//   border-color: #42b983;
+// }
+
+// button样式
+.el-button--primary {
+  text-align: center;
+  line-height: 25px;
+  padding: 0px 10px;
+}
+//设置图标按钮宽度
+.el-button--text {
+  width: 20px;
+}
+// 自定义button
+.button {
+  color: #000;
+  background-color: #fff;
 }

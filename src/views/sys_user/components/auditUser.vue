@@ -98,10 +98,9 @@
       width="60%"
       :modal="false"
     >
-      <SelDept ref="seLDept" @updateDept="updateDept" @updateDepts="updateDepts" />
+      <SelDept ref="seLDept" selective="single" @updateDept="updateDept" @updateDepts="updateDepts" />
       <span>
         <el-button @click="selDeptVisible = false">取 消</el-button>
-        <el-button type="primary" @click="selDeptVisible = false">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -199,6 +198,7 @@ export default {
       this.form.sys_dept__dept_name = data.map(d => { return d.sys_dept__dept_name }).join(';')
       this.form.sys_user__dept_id = data.map(d => { return d.sys_dept__dept_id }).join(';')
       this.change()
+      this.selDeptVisible = false
     }
   }
 }

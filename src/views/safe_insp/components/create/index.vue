@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <buttons funid="safe_insp" style="margin-bottom:20px" @save="save" />
-      <el-form ref="form" :model="form" label-width="80px">
+      <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-row>
           <el-col :span="7">
             <el-form-item label="巡检单编号">
@@ -22,7 +22,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="巡检名称">
+            <el-form-item ref="safe_insp__insp_name" label="巡检名称" prop="safe_insp__insp_name">
               <el-input v-model="form.safe_insp__insp_name" placeholder="请选择巡检名称" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="inspNameVisible = !inspNameVisible" />
               </el-input>
@@ -31,7 +31,7 @@
         </el-row>
         <el-row>
           <el-col :span="7">
-            <el-form-item label="巡检日期">
+            <el-form-item label="巡检日期" prop="safe_insp__insp_date">
               <el-date-picker
                 v-model="form.safe_insp__insp_date"
                 type="date"
@@ -43,7 +43,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="巡检人员">
+            <el-form-item ref="safe_insp__insp_man" label="巡检人员" prop="safe_insp__insp_man">
               <el-input v-model="form.safe_insp__insp_man" placeholder="请选择巡检人员" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="selUserVisible = !selUserVisible" />
               </el-input>
@@ -57,8 +57,15 @@
         </el-row>
         <el-row>
           <el-col :span="7">
-            <el-form-item label="巡检频率">
-              <el-input v-model="form.safe_insp__insp_times" />
+            <el-form-item ref="safe_insp__insp_times" label="巡检频率" prop="safe_insp__insp_times">
+              <el-select v-model="form.safe_insp__insp_times" placeholder="请选择">
+                <el-option
+                  v-for="item in insptimes"
+                  :key="item.funall_control__value_data"
+                  :label="item.funall_control__display_data"
+                  :value="item.funall_control__value_data"
+                />
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -147,16 +154,52 @@ export default {
         safe_insp__dept_id: '',
         safe_insp__insp_man_id: ''
       },
+      rules: {
+        safe_insp__insp_name: [
+          { required: true, message: '请选择巡检名称', trigger: 'blur' }
+        ],
+        safe_insp__insp_man: [
+          { required: true, message: '请选择巡检人员', trigger: 'blur' }
+        ],
+        safe_insp__insp_date: [
+          { required: true, message: '请选择巡检日期', trigger: 'blur' }
+        ],
+        safe_insp__insp_times: [
+          { required: true, message: '请选择巡检频率', trigger: 'blur' }
+        ]
+      },
       inspName: [],
       disabled: false,
       options: [],
+      insptimes: [],
       selUserVisible: false,
       inspNameVisible: false,
       id: ''
     }
   },
+  watch: {
+    'form.safe_insp__insp_name': {
+      handler(val, oldVal) {
+        this.$refs['safe_insp__insp_name'].clearValidate()
+      },
+      deep: true
+    },
+    'form.safe_insp__insp_man': {
+      handler(val, oldVal) {
+        this.$refs['safe_insp__insp_man'].clearValidate()
+      },
+      deep: true
+    },
+    'form.safe_insp__insp_times': {
+      handler(val, oldVal) {
+        this.$refs['safe_insp__insp_times'].clearValidate()
+      },
+      deep: true
+    }
+  },
   created() {
     this.getTypeSel()
+    this.getInsptimes()
   },
   methods: {
     getList() {
@@ -173,9 +216,18 @@ export default {
       })
     },
     async getTypeSel() {
-      await publicApi.getTypeSel('insptimes').then(data => {
+      await publicApi.getTypeSel('inspstate').then(data => {
         if (data.success) {
           this.options = data.data.root
+        } else {
+          this.$message.error(data.message)
+        }
+      })
+    },
+    async getInsptimes() {
+      await publicApi.getTypeSel('insptimes').then(data => {
+        if (data.success) {
+          this.insptimes = data.data.root
         } else {
           this.$message.error(data.message)
         }
@@ -202,13 +254,17 @@ export default {
       this.inspNameVisible = false
     },
     save() {
-      api.Crerte(this.form).then(data => {
-        if (data.success) {
-          this.$message.success('保存成功！')
-          const param = `/insp/edit_form/audit/${data.data.keyid}`
-          this.$router.push(param)
-        } else {
-          this.$message.error(data.message)
+      this.$refs.form.validate(valid => {
+        if (valid) {
+          api.Crerte(this.form).then(data => {
+            if (data.success) {
+              this.$message.success('保存成功！')
+              const param = `/insp/edit_form/audit/${data.data.keyid}`
+              this.$router.push(param)
+            } else {
+              this.$message.error(data.message)
+            }
+          })
         }
       })
     },

@@ -3,20 +3,26 @@
     <buttons funid="insp_det" style="margin:10px 10px" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
     <el-card>
       <el-table
-        ref="deptTable"
+        ref="table"
         v-loading="loading"
         :data="data"
         style="width: 100%"
+        border
+        stripe
         @selection-change="handleSelectionChange"
         @cell-dblclick="cellDblclick"
       >
         <template v-for="(d,i) in tableHeader">
           <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
           <el-table-column
-            v-else
+            v-else-if="d.show !== false"
             :key="i"
             :prop="d.prop"
             :label="d.label"
+            :width="d.width"
+            :min-width="d.minWidth"
+            :class-name="d.className"
+            :fixed="d.fixed"
           >
             <template slot-scope="scope">
               <div v-if="d.label==='巡检状态'">
@@ -24,8 +30,13 @@
                   scope.row.ssafe_insp__insp_state == 1 ? '巡检中' : '已巡检'
                 }}
               </div>
+              <div v-else-if="d.label==='巡检日期'">
+                {{
+                  parseDay(scope.row.safe_insp__insp_date)
+                }}
+              </div>
               <div v-else-if="d.label === '操作'">
-                <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
+                <el-button icon="el-icon-view" type="text" size="mini" title="编辑" @click="edit(scope.row)" />
                 <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
@@ -44,38 +55,12 @@
       />
     </el-card>
 
-    <el-dialog v-if="dialogFormVisible" title="新增部门" :visible.sync="dialogFormVisible" @close="closeDialog">
-      <el-form ref="form" :model="form" :rules="rules">
-        <el-form-item label="所属部门" :label-width="formLabelWidth">
-          <el-select v-model="dept_id" placeholder="请选择">
-            <el-option
-              v-for="item in data"
-              :key="item.sys_dept__dept_id"
-              :label="item.sys_dept__dept_name"
-              :value="item.sys_dept__dept_id"
-            />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="部门编码" :label-width="formLabelWidth" prop="dept_code">
-          <el-input v-model="form.dept_code" />
-        </el-form-item>
-        <el-form-item label="部门名称" :label-width="formLabelWidth" prop="dept_name">
-          <el-input v-model="form.dept_name" />
-        </el-form-item>
-        <el-form-item label="备注" :label-width="formLabelWidth" prop="memo">
-          <el-input v-model="form.memo" />
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="create">确 定</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
 import api from './api'
+import { parseDay } from '@/utils'
 import buttons from '@/components/Buttons'
 export default {
   name: 'SafeIdsp',
@@ -89,6 +74,7 @@ export default {
       deptTree: [],
       ids: [],
       levels: [],
+      parseDay,
       pager: {
         pageNo: 0,
         pageSize: 10,
@@ -98,51 +84,73 @@ export default {
         {
           prop: 'selection',
           type: 'selection',
-          fixed: 'left'
+          fixed: 'left',
+          width: '100px',
+          show: true
         }, {
           prop: 'safe_insp__insp_code',
-          label: '巡检编号'
+          label: '巡检编号',
+          width: '200px',
+          show: true
         }, {
           prop: 'safe_insp__insp_name',
-          label: '巡检名称'
+          label: '巡检名称',
+          width: '250px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_state',
-          label: '巡检状态'
+          label: '巡检状态',
+          width: '100px',
+          show: true
         }, {
           prop: 'safe_insp__insp_date',
-          label: '巡检日期'
+          label: '巡检日期',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_man',
-          label: '巡检人员'
+          label: '巡检人员',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_times',
-          label: '巡检频率'
+          label: '巡检频率',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_memo',
-          label: '备注'
+          label: '备注',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_ed',
-          label: '已巡检数量'
+          label: '已巡检数量',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_ing',
-          label: '待巡检数量'
+          label: '待巡检数量',
+          width: '100px',
+          show: true
         },
         {
           prop: 'safe_insp__insp_non',
-          label: '不符合数量'
+          label: '不符合数量',
+          width: '100px',
+          show: true
         },
         {
           prop: 'opration',
           label: '操作',
-          width: '70px',
+          width: '120px',
           fixed: 'right',
-          minWidth: '70px',
+          minWidth: '120px',
           show: true
         }],
       value: '',

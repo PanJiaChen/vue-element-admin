@@ -17,8 +17,8 @@ export default {
   },
   data() {
     return {
-      data: []
-
+      data: [],
+      loading: false
     }
   },
   created() {
@@ -26,9 +26,11 @@ export default {
   },
   methods: {
     getButtons() {
+      this.loading = true
       api.getButtons(this.funid).then(data => {
         if (data.success) {
           this.data = data.data.buttons
+          this.loading = false
         } else {
           this.$message.error(data.message)
         }

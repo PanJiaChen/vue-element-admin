@@ -58,6 +58,12 @@
 import api from './api'
 export default {
   name: 'SelDept',
+  props: {
+    selective: {
+      type: String,
+      default: null
+    }
+  },
   data() {
     return {
       loading: false,
@@ -116,7 +122,8 @@ export default {
       },
       treeList: [],
       whereSql: false,
-      whereValue: ''
+      whereValue: '',
+      Dpets: ''
     }
   },
   created() {
@@ -318,8 +325,12 @@ export default {
       this.pager.pageNo = page
       this.getList()
     },
-    handleSelectionChange(val) {
-      this.$emit('updateDepts', val)
+    handleSelectionChange(row) {
+      if (this.selective) {
+        this.$emit('updateDepts', row)
+      } else {
+        this.Dpets = row
+      }
     },
     closeDialog() {
       this.dialogFormVisible = false

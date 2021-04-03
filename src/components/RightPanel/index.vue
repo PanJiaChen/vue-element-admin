@@ -125,10 +125,10 @@ export default {
 }
 
 .handle-button {
-  width: 48px;
-  height: 48px;
+  width: 38px;
+  height: 38px;
   position: absolute;
-  left: -48px;
+  left: -38px;
   text-align: center;
   font-size: 24px;
   border-radius: 6px 0 0 6px !important;
@@ -136,10 +136,10 @@ export default {
   pointer-events: auto;
   cursor: pointer;
   color: #fff;
-  line-height: 48px;
+  line-height: 38px;
   i {
     font-size: 24px;
-    line-height: 48px;
+    line-height: 38px;
   }
 }
 </style>

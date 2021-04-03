@@ -18,7 +18,8 @@ export function getInfo(token) {
 
 export function logout() {
   return request({
-    url: '/vue-element-admin/user/logout',
-    method: 'post'
-  })
+    url: '/commonAction.do',
+    method: 'post',
+    data: 'funid=login&pagetype=login&eventcode=logout&user_id=administrator&dataType=json'
+  }).then(response => response.data)
 }
