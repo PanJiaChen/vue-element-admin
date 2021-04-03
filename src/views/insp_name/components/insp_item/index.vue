@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div>
     <el-card>
       <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
       <el-table

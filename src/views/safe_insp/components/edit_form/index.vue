@@ -123,7 +123,6 @@ import buttons from '@/components/formBtn'
 import InspDet from '../insp_det'
 import SelUser from '@/components/selUser'
 import InspName from '../inspName'
-import { parseDay } from '@/utils'
 export default {
   name: 'EditForm',
   components: {
@@ -138,7 +137,6 @@ export default {
   data() {
     return {
       loading: false,
-      parseDay,
       form: {
         safe_insp__insp_code: '',
         safe_insp__insp_name: '',
@@ -205,7 +203,6 @@ export default {
       api.getFormDate(this.id).then(data => {
         if (data.success) {
           this.form = data.data.root[0]
-          this.form.safe_insp__insp_date = parseDay(data.data.root[0].safe_insp__insp_date)
           setTimeout(() => {
             this.loading = false
           }, 200)

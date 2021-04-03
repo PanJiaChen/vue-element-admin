@@ -348,6 +348,7 @@ $light_gray:#eee;
   .el-button--primary {
     font-size: 18px;
     font-weight: bold;
+    padding: 5px 10px;
   }
   .el-form-item {
     margin-bottom: 28px !important;

@@ -135,3 +135,14 @@
   color: #000;
   background-color: #fff;
 }
+
+//设置el-dialog样式
+.el-dialog__body {
+  padding: 0px 20px;
+}
+.el-dialog__header {
+  padding: 10px 20px;
+}
+.el-dialog__footer {
+  padding: 10px 20px;
+}

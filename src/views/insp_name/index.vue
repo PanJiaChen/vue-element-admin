@@ -16,10 +16,14 @@
             <template v-for="(d,i) in tableHeader">
               <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
               <el-table-column
-                v-else
+                v-else-if="d.show !== false"
                 :key="i"
                 :prop="d.prop"
                 :label="d.label"
+                :width="d.width"
+                :min-width="d.minWidth"
+                :class-name="d.className"
+                :fixed="d.fixed"
               >
                 <template slot-scope="scope">
                   <div v-if="d.label === '操作'">
@@ -31,15 +35,17 @@
               </el-table-column>
             </template>
           </el-table>
-          <el-pagination
-            :current-page="pager.pageNo"
-            :page-sizes="[10, 30, 50, 100, 500]"
-            :page-size="pager.pageSize"
-            :total="pager.total"
-            layout="total, sizes, prev, pager, next, jumper"
-            @size-change="sizeChange"
-            @current-change="pageChange"
-          />
+          <div class="pagination">
+            <el-pagination
+              :current-page="pager.pageNo"
+              :page-sizes="[10, 30, 50, 100, 500]"
+              :page-size="pager.pageSize"
+              :total="pager.total"
+              layout="total, sizes, prev, pager, next, jumper"
+              @size-change="sizeChange"
+              @current-change="pageChange"
+            />
+          </div>
         </el-card>
       </el-col>
       <el-col :span="16">
@@ -105,9 +111,9 @@ export default {
         }, {
           prop: 'opration',
           label: '操作',
-          width: '70px',
+          width: '100px',
           fixed: 'right',
-          minWidth: '70px',
+          minWidth: '100px',
           show: true
         }],
       value: '',
@@ -257,5 +263,8 @@ export default {
 <style lang="scss" scoped>
   .el-card {
     margin-top: 10px;
+  }
+  .pagination{
+    overflow: auto;
   }
 </style>

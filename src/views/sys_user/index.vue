@@ -92,10 +92,17 @@
         <el-button type="primary" @click="create">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog v-if="dialogEditVisible" title="部门" :visible.sync="dialogEditVisible" width="70%" @close="closeDialog">
+    <el-dialog v-if="dialogEditVisible" title="部门" :visible.sync="dialogEditVisible" width="70%" @close="closeEditDialog">
       <AdutiUser :id="user_id" ref="auditForm" :audit-form="auditForm" :data="deptTree" @change="auditFormChange" />
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogEditVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+      <Attach :id="user_id" ref="attach" :data-id="ids" table-name="sys_user" fun-id="sys_user" @change="auditFormChange" />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogUploadVisible = false">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
     </el-dialog>
@@ -106,11 +113,13 @@
 import api from './api'
 import buttons from '@/components/Buttons'
 import AdutiUser from './components/auditUser'
+import Attach from '@/components/sys_attach'
 export default {
   name: 'User',
   components: {
     buttons,
-    AdutiUser
+    AdutiUser,
+    Attach
   },
   data() {
     return {
@@ -199,6 +208,7 @@ export default {
       },
       dialogFormVisible: false,
       dialogEditVisible: false,
+      dialogUploadVisible: false,
       formLabelWidth: '120px',
       auditForm: {},
       saveFrom: {},
@@ -359,7 +369,13 @@ export default {
       console.log('editSave')
     },
     upload() {
-      console.log('upload')
+      if (this.ids.length > 1) {
+        this.$message.warning('只能选择一条数据！')
+      } else if (this.ids.length === 0) {
+        this.$message.warning('请选择一条数据！')
+      } else {
+        this.dialogUploadVisible = true
+      }
     },
     edit(row) {
       this.id = row.sys_user__user_id
@@ -413,6 +429,12 @@ export default {
       this.dialogFormVisible = false
       this.$refs.auditForm.$refs.form.resetFields()
       this.form = ''
+    },
+    closeEditDialog() {
+      this.dialogEditVisible = false
+    },
+    closeUploadDialog() {
+      this.dialogUploadVisible = false
     },
     handleNodeClick(data) {
       this.pager.pageNo = 0

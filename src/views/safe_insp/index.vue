@@ -60,8 +60,8 @@
 
 <script>
 import api from './api'
-import { parseDay } from '@/utils'
 import buttons from '@/components/Buttons'
+import { parseDay } from '@/utils/index'
 export default {
   name: 'SafeIdsp',
   components: {
@@ -69,12 +69,12 @@ export default {
   },
   data() {
     return {
+      parseDay,
       loading: false,
       data: [],
       deptTree: [],
       ids: [],
       levels: [],
-      parseDay,
       pager: {
         pageNo: 0,
         pageSize: 10,

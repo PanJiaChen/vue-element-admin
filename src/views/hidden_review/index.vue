@@ -7,6 +7,7 @@
         v-loading="loading"
         :data="data"
         style="width: 100%"
+        stripe
         @selection-change="handleSelectionChange"
         @cell-dblclick="cellDblclick"
       >
@@ -20,12 +21,22 @@
           >
             <template slot-scope="scope">
               <div v-if="d.label==='隐患状态'">
-                {{
+                <el-tag v-if="scope.row.hidden_danger__hidden_state == 4" size="warning">{{
                   scope.row.hidden_danger__hidden_state == 1 ? '排查中' : scope.row.hidden_danger__hidden_state == 2 ? '待整改' :scope.row.hidden_danger__hidden_state == 3 ? '整改中' :scope.row.hidden_danger__hidden_state == 4 ? '待验收' : '已验收'
-                }}
+                }}</el-tag>
+                <el-tag v-if="scope.row.hidden_danger__hidden_state == 5" size="success">{{
+                  scope.row.hidden_danger__hidden_state == 1 ? '排查中' : scope.row.hidden_danger__hidden_state == 2 ? '待整改' :scope.row.hidden_danger__hidden_state == 3 ? '整改中' :scope.row.hidden_danger__hidden_state == 4 ? '待验收' : '已验收'
+                }}</el-tag>
+              </div>
+              <div v-else-if="d.label==='检查时间'">
+                {{ parseDay(scope.row.hidden_danger__check_date) }}
+              </div>
+              <div v-else-if="d.label==='整改期限'">
+                {{ parseDay(scope.row.hidden_danger__reform_limit) }}
               </div>
               <div v-else-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
+                <el-button icon="el-icon-folder" type="text" title="查看附件" @click="checkAttach(scope.row)" />
                 <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
@@ -43,20 +54,30 @@
         @current-change="pageChange"
       />
     </el-card>
-
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+      <Attach ref="attach" :data-id="ids" table-name="hidden_danger" fun-id="hidden_check" @change="auditFormChange" />
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogUploadVisible = false">取 消</el-button>
+        <el-button type="primary" @click="save">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import api from './api'
 import buttons from '@/components/Buttons'
+import Attach from '@/components/sys_attach'
+import { parseDay } from '@/utils/index'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons
+    buttons,
+    Attach
   },
   data() {
     return {
+      parseDay,
       loading: false,
       data: [],
       deptTree: [],
@@ -140,7 +161,8 @@ export default {
       },
       treeList: [],
       whereSql: false,
-      whereValue: ''
+      whereValue: '',
+      dialogUploadVisible: false
     }
   },
   created() {
@@ -230,6 +252,9 @@ export default {
         }
       })
     },
+    closeUploadDialog() {
+      this.dialogUploadVisible = false
+    },
     cellDblclick(row) {
       const param = `/hidden_danger/hidden_review/audit/${row.hidden_danger__hidden_danger_id}`
       this.$router.push(param)
@@ -255,6 +280,12 @@ export default {
       this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
       this.whereSql = true
       this.getList()
+    },
+    checkAttach(row) {
+      // this.drawer = true
+      this.ids = []
+      this.ids.push(row.hidden_danger__hidden_danger_id)
+      this.dialogUploadVisible = true
     }
   }
 }
