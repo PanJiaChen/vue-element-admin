@@ -37,10 +37,13 @@ router.beforeEach(async(to, from, next) => {
         next()
       } else if (sessionRoles) {
         // generate accessible routes map based on roles
-        const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.roles)
+        const accessRoutes = await store.dispatch('permission/generateRoutes', sessionRoles)
 
         // dynamically add accessible routes
         router.addRoutes(accessRoutes)
+
+        // 刷新页面获取当前账号权限
+        store.dispatch('user/getRoles', sessionRoles)
         next()
       } else {
         try {

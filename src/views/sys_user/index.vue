@@ -316,7 +316,6 @@ export default {
             })
           }
         })
-        console.log(this.treeData, 'this.treeData')
       }
     },
     editCreate() {
@@ -366,7 +365,6 @@ export default {
       }
     },
     editSave() {
-      console.log('editSave')
     },
     upload() {
       if (this.ids.length > 1) {
@@ -386,7 +384,6 @@ export default {
       this.saveFrom = form
     },
     save() {
-      console.log(this.$refs.auditForm, 'this.$refs.auditForm.')
       if (Object.keys(this.saveFrom).length === 0) {
         this.saveFrom = this.auditForm
       }
@@ -408,7 +405,6 @@ export default {
       })
     },
     cellDblclick(row) {
-      console.log(row, 'row')
       this.id = row.sys_user__user_id
       this.auditForm = row
       this.saveFrom = []

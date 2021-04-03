@@ -38,8 +38,8 @@ const actions = {
         if (res.data.success) {
           commit('SET_ROLES', res.data.data.role_id)
           // const { data } = res.data
-          commit('SET_TOKEN', '123')
-          setToken('123')
+          commit('SET_TOKEN', 'bwhse')
+          setToken('bwhse')
           sessionStorage.setItem('ROLES', res.data.data.role_id)
           resolve()
         } else {
@@ -97,6 +97,14 @@ const actions = {
       // }).catch(error => {
       //   reject(error)
       // })
+    })
+  },
+
+  // remove token
+  getRoles({ commit }, roles) {
+    return new Promise(resolve => {
+      commit('SET_ROLES', roles)
+      resolve()
     })
   },
 
