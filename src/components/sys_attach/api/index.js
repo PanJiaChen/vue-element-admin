@@ -30,10 +30,11 @@ export default {
     }).then(response => response.data)
   },
   downLoad(keys) {
+    const timestamp = new Date().getTime()
     return request({
-      url: `fileAction.do?funid=sys_attach&keyid=${keys}&pagetype=editgrid&eventcode=down&user_id=${roles}&dataType=byte&_dc=`,
+      url: `fileAction.do?funid=sys_attach&keyid=${keys}&pagetype=editgrid&eventcode=down&user_id=${roles}&dataType=byte&_dc=${timestamp}`,
       method: 'post',
-      data: `funid=sys_attach&keyid=${keys}&pagetype=editgrid&eventcode=down&user_id=${roles}&dataType=byte&_dc=`
+      data: `funid=sys_attach&keyid=${keys}&pagetype=editgrid&eventcode=down&user_id=${roles}&dataType=byte&_dc=${timestamp}`
     }).then(response => response.data)
   }
 }

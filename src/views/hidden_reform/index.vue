@@ -74,7 +74,7 @@ import buttons from '@/components/Buttons'
 import Attach from '@/components/sys_attach'
 import { parseDay } from '@/utils/index'
 export default {
-  name: 'SafeIdsp',
+  name: 'HiddenReform',
   components: {
     buttons,
     Attach

@@ -67,6 +67,10 @@ service.interceptors.response.use(
       }
       return Promise.reject(new Error(res.message || 'Error'))
     } else {
+      if (res.data.message === '当前用户没有登录！') {
+        // store.dispatch('user/logout')
+        this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      }
       return res
     }
   },

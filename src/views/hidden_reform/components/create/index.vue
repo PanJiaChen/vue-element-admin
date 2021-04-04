@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-card>
-      <buttons funid="hidden_check" style="margin-bottom:20px" @save="save" />
+      <div class="buttons">
+        <buttons funid="hidden_check" style="margin-bottom:20px" @save="save" />
+        <el-button type="primary" @click="back">返回列表</el-button>
+      </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-row>
           <el-col :span="7">
@@ -159,7 +162,7 @@ import buttons from '@/components/formBtn'
 import SelUser from '@/components/selUser'
 import SelDept from '@/components/selDept'
 export default {
-  name: 'AuditForm',
+  name: 'HiddenReformCreateForm',
   components: {
     buttons,
     SelUser,
@@ -317,7 +320,8 @@ export default {
       })
     },
     back() {
-      // this.$router__back(-1)
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push('/hidden_danger/hidden_reform')
     }
   }
 }
@@ -340,5 +344,12 @@ export default {
 }
 .el-col{
   margin-left: 2%;
+}
+.buttons {
+  display: flex;
+  .el-button--primary {
+    margin-left: 10px;
+    height: 26.8px;
+  }
 }
 </style>

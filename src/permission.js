@@ -28,14 +28,7 @@ router.beforeEach(async(to, from, next) => {
       // determine whether the user has obtained his permission roles through getInfo
       const hasRoles = store.getters.roles && store.getters.roles.length > 0
       const sessionRoles = sessionStorage.getItem('ROLES')
-      if (hasRoles) {
-        // generate accessible routes map based on roles
-        const accessRoutes = await store.dispatch('permission/generateRoutes', store.getters.roles)
-
-        // dynamically add accessible routes
-        router.addRoutes(accessRoutes)
-        next()
-      } else if (sessionRoles) {
+      if (!hasRoles && sessionRoles) {
         // generate accessible routes map based on roles
         const accessRoutes = await store.dispatch('permission/generateRoutes', sessionRoles)
 
@@ -44,6 +37,8 @@ router.beforeEach(async(to, from, next) => {
 
         // 刷新页面获取当前账号权限
         store.dispatch('user/getRoles', sessionRoles)
+        next()
+      } else if (hasRoles) {
         next()
       } else {
         try {
