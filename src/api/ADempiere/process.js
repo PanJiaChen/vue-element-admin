@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Request a process
@@ -42,7 +41,6 @@ export function requestRunProcess({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/process',
     method: 'post',
     data: {
@@ -78,7 +76,6 @@ export function requestListProcessesLogs({
 }) {
   //  Get Process Activity
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-process-logs',
     method: 'post',
     data: {

@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 // Get list of log for a records
 export function requestListEntityLogs({
@@ -11,7 +10,6 @@ export function requestListEntityLogs({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-entity-logs',
     method: 'post',
     data: {
@@ -47,7 +45,6 @@ export function requestListWorkflowsLogs({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-workflow-logs',
     method: 'post',
     data: {
@@ -81,7 +78,6 @@ export function requestListWorkflows({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/workflow/list-workflow',
     method: 'post',
     data: {
@@ -120,7 +116,6 @@ export function requestListEntityChats({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-entity-chats',
     method: 'post',
     data: {
@@ -159,7 +154,6 @@ export function requestListChatsEntries({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-chat-entries',
     method: 'post',
     data: {
@@ -198,7 +192,6 @@ export function requestCreateChatEntry({
   comment
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/create-chat-entry',
     method: 'post',
     data: {
@@ -234,7 +227,6 @@ export function requestListDocumentStatuses({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/workflow/list-document-statuses',
     method: 'post',
     data: {
@@ -269,7 +261,6 @@ export function requestListDocumentActions({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/workflow/list-document-actions',
     method: 'post',
     data: {

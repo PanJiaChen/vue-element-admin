@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
@@ -23,7 +22,6 @@ export function requestLookup({
     }]
   }
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/get-lookup-item',
     method: 'post',
     data: {
@@ -65,7 +63,6 @@ export function requestLookupList({
   }
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-lookup-items',
     method: 'post',
     data: {
@@ -105,7 +102,6 @@ export function requestReferencesList({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-references',
     method: 'post',
     data: {
@@ -130,7 +126,6 @@ export function requestReferencesList({
 // Get default value for a field
 export function requestDefaultValue(query) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/get-default-value',
     method: 'post',
     data: {
@@ -154,7 +149,6 @@ export function requestGetContextInfoValue({
   query
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/get-context-info-value',
     method: 'post',
     data: {

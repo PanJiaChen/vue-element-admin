@@ -1,6 +1,5 @@
 // Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Make login by UserName and password, this function can return user data for show
@@ -15,7 +14,6 @@ export function login({
   token
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/user/login',
     method: 'post',
     data: {
@@ -34,7 +32,6 @@ export function login({
  */
 export function requestUserInfoFromSession(token) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/user/info',
     method: 'get',
     params: {
@@ -52,7 +49,6 @@ export function requestUserInfoFromSession(token) {
  */
 export function requestSessionInfo(token) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/user/session',
     method: 'get',
     params: {
@@ -74,7 +70,6 @@ export function requestMenu({
   sessionUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/user/menu',
     method: 'get',
     params: {
@@ -92,7 +87,6 @@ export function requestMenu({
  */
 export function logout(token) {
   return request({
-    baseURL: config.adempiere.api.url,
     method: 'post',
     url: '/user/logout',
     data: {

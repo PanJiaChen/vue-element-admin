@@ -1,6 +1,5 @@
 // Get Instance for connectionimport {
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 // List Point of sales
 export function requestGetProductPrice({
@@ -14,7 +13,6 @@ export function requestGetProductPrice({
   validFrom
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/get-product-price',
     method: 'post',
     data: {

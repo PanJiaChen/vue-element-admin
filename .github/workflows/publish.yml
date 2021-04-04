@@ -30,6 +30,7 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: npm i
+      - run: sed -i "s|releaseNoForDocumentation|${{ github.event.release.tag_name }}|g" config/default.json
       - run: npm run build:prod --if-present
       - uses: TheDoctor0/zip-release@0.4.1
         with:

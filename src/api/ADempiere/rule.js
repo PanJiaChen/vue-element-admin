@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Run callout request
@@ -27,7 +26,6 @@ export function runCallOutRequest({
   attributesList = []
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/run-callout',
     method: 'post',
     data: {

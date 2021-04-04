@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Request Pending Documents List
@@ -14,7 +13,6 @@ export function requestListReportsViews({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-report-views',
     method: 'post',
     data: {
@@ -48,7 +46,6 @@ export function requestListPrintFormats({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-print-formats',
     method: 'post',
     data: {
@@ -75,7 +72,6 @@ export function requestListDrillTables({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-drill-tables',
     method: 'post',
     data: {
@@ -114,7 +110,6 @@ export function requestGetReportOutput({
   orderByClause
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/get-report-output',
     method: 'post',
     data: {

@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Get Attachment
@@ -12,7 +11,6 @@ export function requestResourceReference({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/resource-reference',
     method: 'get',
     params: {
@@ -37,7 +35,6 @@ export function requestAttachment({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/attachment',
     method: 'get',
     params: {

@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Request a browser search
@@ -39,7 +38,6 @@ export function requestBrowserSearch({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-browser-items',
     data: {
       // Running Parameters

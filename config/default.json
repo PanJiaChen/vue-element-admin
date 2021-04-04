@@ -10,5 +10,9 @@
     "images": {
       "url": "https://api.erpya.com/adempiere-api/img"
     }
+  },
+  "repository": {
+    "url": "https://api.github.com",
+    "releaseNo": "releaseNoForDocumentation"
   }
 }

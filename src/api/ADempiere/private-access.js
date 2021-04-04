@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 import { convertPrivateAccess } from '@/utils/ADempiere/apiConverts/privateAccess.js'
 
@@ -11,7 +10,6 @@ export function requestGetPrivateAccess({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/get-private-access',
     method: 'post',
     data: {
@@ -32,7 +30,6 @@ export function requestLockPrivateAccess({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/lock-private-access',
     method: 'post',
     data: {
@@ -53,7 +50,6 @@ export function requestUnlockPrivateAccess({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/unlock-private-access',
     method: 'post',
     data: {
@@ -81,7 +77,6 @@ export function getAccessList({
   sessionUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/update-access-record',
     method: 'post',
     params: {
@@ -110,7 +105,6 @@ export function updateAccessRecord({
   listRecord
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/update-access-record',
     method: 'post',
     params: {

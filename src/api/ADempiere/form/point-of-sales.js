@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 import { isEmptyValue } from '@/utils/ADempiere'
 
@@ -16,7 +15,6 @@ export function requestGetPointOfSales({
   posUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/get-point-of-sales',
     method: 'post',
     data: {
@@ -37,7 +35,6 @@ export function requestListPointOfSales({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/list-point-of-sales',
     method: 'post',
     data: {
@@ -69,7 +66,6 @@ export function requestCreateOrder({
   salesRepresentativeUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/create-order',
     method: 'post',
     data: {
@@ -94,7 +90,6 @@ export function requestUpdateOrder({
   description
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/update-order',
     method: 'post',
     data: {
@@ -114,7 +109,6 @@ export function requestUpdateOrder({
 // Get order from uuid
 export function requestGetOrder(orderUuid) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/get-order',
     method: 'post',
     data: {
@@ -137,7 +131,6 @@ export function requestDeleteOrder({
   // salesRepresentativeUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/delete-order',
     method: 'post',
     data: {
@@ -213,7 +206,6 @@ export function requestListOrders({
   */
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/list-orders',
     method: 'post',
     data: {
@@ -260,7 +252,6 @@ export function requestCreateOrderLine({
   discountRate
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/create-order-line',
     method: 'post',
     data: {
@@ -290,7 +281,6 @@ export function requestUpdateOrderLine({
   discountRate
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/update-order-line',
     method: 'post',
     data: {
@@ -314,7 +304,6 @@ export function requestDeleteOrderLine({
   orderLineUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/delete-order-line',
     method: 'post',
     data: {
@@ -332,7 +321,6 @@ export function requestListOrderLines({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/list-order-lines',
     method: 'post',
     data: {
@@ -358,7 +346,6 @@ export function requestListOrderLines({
 
 export function getKeyLayout({ keyLayoutUuid }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/get-key-layout',
     method: 'post',
     data: {
@@ -385,7 +372,6 @@ export function getProductPriceList({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/list-product-prices',
     method: 'post',
     data: {
@@ -473,7 +459,6 @@ export function createPayment({
   currencyUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/create-payment',
     method: 'post',
     data: {
@@ -506,7 +491,6 @@ export function updatePayment({
   tenderTypeCode
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/update-payment',
     method: 'post',
     data: {
@@ -530,7 +514,6 @@ export function deletePayment({
   paymentUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/delete-payment',
     method: 'post',
     data: {
@@ -549,7 +532,6 @@ export function getPaymentsList({
   orderUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/list-payments',
     method: 'post',
     data: {
@@ -611,7 +593,6 @@ export function processOrder({
     })
   }
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/pos/process-order',
     method: 'post',
     data: {

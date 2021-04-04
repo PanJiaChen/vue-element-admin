@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Request dictionary Window metadata
@@ -12,7 +11,6 @@ export function requestWindowMetadata({
   id
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/window',
     method: 'get',
     params: {
@@ -37,7 +35,6 @@ export function requestProcessMetadata({
   id
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/process',
     method: 'get',
     params: {
@@ -62,7 +59,6 @@ export function requestBrowserMetadata({
   id
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/browser',
     method: 'get',
     params: {
@@ -87,7 +83,6 @@ export function requestForm({
   id
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/form',
     method: 'get',
     params: {
@@ -113,7 +108,6 @@ export function requestFieldMetadata({
   elementColumnName
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/field',
     method: 'get',
     params: {
@@ -158,7 +152,6 @@ export function requestValidationRule({
   id
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dictionary/validation',
     method: 'get',
     params: {

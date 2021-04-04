@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 /**
  * Create entity
@@ -19,7 +18,6 @@ export function requestCreateEntity({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/create',
     method: 'post',
     data: {
@@ -55,7 +53,6 @@ export function requestUpdateEntity({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/update',
     method: 'post',
     data: {
@@ -84,7 +81,6 @@ export function requestDeleteEntity({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/delete',
     method: 'post',
     data: {
@@ -110,7 +106,6 @@ export function rollbackEntity({
   eventType
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/rollback-entity',
     method: 'post',
     data: {
@@ -134,7 +129,6 @@ export function requestGetEntity({
   recordUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/entity',
     method: 'get',
     params: {
@@ -183,7 +177,6 @@ export function requestListEntities({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/data/list',
     method: 'post',
     data: {
@@ -226,7 +219,6 @@ export function requestTranslations({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/list-translations',
     method: 'post',
     data: {
@@ -261,7 +253,6 @@ export function requestResource({ resourceUuid }, callBack = {
   onEnd: () => {}
 }) {
   const stream = request({
-    baseURL: config.adempiere.api.url,
     url: '/resource',
     method: 'get',
     params: {
@@ -302,7 +293,6 @@ export function requestImage({
   })
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: urn,
     method: 'get',
     responseType: 'arraybuffer'

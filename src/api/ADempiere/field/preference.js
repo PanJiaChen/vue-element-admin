@@ -1,7 +1,6 @@
 // Service for backend based on API
 // use this service for consume all related to preference of field
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 // Update preference from API using criteria
 export function setPreference({
@@ -15,7 +14,6 @@ export function setPreference({
   isForCurrentContainer
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/set-preference',
     method: 'post',
     data: {
@@ -41,7 +39,6 @@ export function deletePreference({
   isForCurrentContainer
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/ui/delete-preference',
     method: 'post',
     data: {

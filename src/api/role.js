@@ -1,9 +1,7 @@
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 export function getRoutes() {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/routes',
     method: 'get'
   })
@@ -11,7 +9,6 @@ export function getRoutes() {
 
 export function getRoles() {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/roles',
     method: 'get'
   })
@@ -19,7 +16,6 @@ export function getRoles() {
 
 export function requestRolesList(token) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: 'user/roles',
     method: 'get',
     params: {
@@ -38,7 +34,6 @@ export function requestRolesList(token) {
 
 export function addRole(data) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/vue-element-admin/role',
     method: 'post',
     data
@@ -47,7 +42,6 @@ export function addRole(data) {
 
 export function updateRole(id, data) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: `/vue-element-admin/role/${id}`,
     method: 'put',
     data
@@ -56,7 +50,6 @@ export function updateRole(id, data) {
 
 export function deleteRole(id) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: `/vue-element-admin/role/${id}`,
     method: 'delete'
   })
@@ -74,7 +67,6 @@ export function requestChangeRole({
   warehouseUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: 'user/change-role',
     method: 'post',
     data: {

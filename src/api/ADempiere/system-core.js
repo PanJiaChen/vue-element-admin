@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 // Get Organization list from role
 export function requestOrganizationsList({
@@ -10,7 +9,6 @@ export function requestOrganizationsList({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/list-organizations',
     method: 'post',
     data: {
@@ -44,7 +42,6 @@ export function requestWarehousesList({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/list-warehouses',
     method: 'post',
     data: {
@@ -76,7 +73,6 @@ export function requestGetCountryDefinition({
   uuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/country',
     method: 'get',
     params: {
@@ -97,7 +93,6 @@ export function requestLanguagesList({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/list-languages',
     method: 'post',
     params: {
@@ -145,7 +140,6 @@ export function requestCreateBusinessPartner({
   posUuid
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/create-business-partner',
     method: 'post',
     data: {
@@ -185,7 +179,6 @@ export function requestGetBusinessPartner({
   searchValue
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/get-business-partner',
     method: 'get',
     params: {
@@ -213,7 +206,6 @@ export function requestListBusinessPartner({
   pageToken
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/list-business-partner',
     method: 'post',
     data: {
@@ -259,7 +251,6 @@ export function requestGetConversionRate({
   conversionDate
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/core/get-conversion-rate',
     method: 'post',
     data: {

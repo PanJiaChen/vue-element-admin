@@ -2,8 +2,7 @@
 // please if you want to implement a custom dashboard create a new fielwith api definition
 
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 // Get Recent Items based on selection option
 export function requestListRecentItems({
@@ -13,7 +12,6 @@ export function requestListRecentItems({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/logs/list-recent-items',
     method: 'post',
     data: {
@@ -45,7 +43,6 @@ export function getFavoritesFromServer({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-favorites',
     method: 'post',
     data: {
@@ -81,7 +78,6 @@ export function getPendingDocumentsFromServer({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-pending-documents',
     method: 'post',
     data: {
@@ -117,7 +113,6 @@ export function requestLisDashboards({
   pageSize
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/dashboard/list-dashboards',
     method: 'post',
     data: {

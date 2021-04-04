@@ -1,6 +1,5 @@
 // Get Instance for connection
-import request from '@/utils/request'
-import { config } from '@/utils/ADempiere/config'
+import { request } from '@/utils/ADempiere/request'
 
 const clientVersion = '1.0.0'
 const applicationType = 'ADempiere-Vue'
@@ -18,7 +17,6 @@ export function requestEnrollUser({
   eMail
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/enrollment/enroll',
     data: {
       user_name: userName,
@@ -51,7 +49,6 @@ export function requestForgotPassword(eMailOrUserName) {
   }
 
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/enrollment/reset-password',
     data: {
       user_name: userName,
@@ -78,7 +75,6 @@ export function requestChangePassword({
   password
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/enrollment/change-password',
     data: {
       token,
@@ -104,7 +100,6 @@ export function requestActivateUser({
   token
 }) {
   return request({
-    baseURL: config.adempiere.api.url,
     url: '/enrollment/activate-user',
     data: {
       token,
