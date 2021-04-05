@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+    <div class="head">
+      <div>
+        <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+      </div>
+      <Search funid="sys_user" @search="search" />
+    </div>
     <el-row>
       <el-col :span="3">
         <el-card>
@@ -19,6 +24,7 @@
             @selection-change="handleSelectionChange"
             @cell-dblclick="cellDblclick"
           >
+            <el-table-column type="index" fixed="left" width="35px" />
             <template v-for="(d,i) in tableHeader">
               <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
               <el-table-column
@@ -112,12 +118,14 @@
 <script>
 import api from './api'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
 import AdutiUser from './components/auditUser'
 import Attach from '@/components/sys_attach'
 export default {
   name: 'User',
   components: {
     buttons,
+    Search,
     AdutiUser,
     Attach
   },
@@ -125,6 +133,8 @@ export default {
     return {
       loading: false,
       data: [],
+      fun: [],
+      searchVal: '',
       deptTree: [],
       ids: [],
       levels: [],
@@ -238,8 +248,7 @@ export default {
       api.getUser(
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -251,6 +260,10 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
     },
     async transitionTree() {
       await api.getDeptTree().then(data => {
@@ -392,7 +405,6 @@ export default {
           const _form = `funid=sys_user&parentId=&levelCol=sys_dept.dept_level&keyid=${this.id}&pagetype=editgrid&eventcode=save_eg&sys_user__user_name=${this.saveFrom.sys_user__user_name}&sys_user__user_code=${this.saveFrom.sys_user__user_code}&sys_dept__dept_name=${this.saveFrom.sys_dept__dept_name}&sys_user__is_leader=${this.saveFrom.sys_user__is_leader}&sys_user__duty=${this.saveFrom.sys_user__duty}&sys_user__phone_code=${this.saveFrom.sys_user__phone_code}&sys_user__mob_code=${this.saveFrom.sys_user__mob_code}&sys_user__sex=${this.saveFrom.sys_user__sex}&sys_user__email=${this.saveFrom.sys_user__email}&sys_user__is_novalid=${this.saveFrom.sys_user__is_novalid}&sys_user__memo=${this.saveFrom.sys_user__memo}&sys_user__user_id=${this.id}&sys_user__dept_id=${this.saveFrom.sys_user__dept_id}&user_id=administrator&dataType=json`
           api.auditSave(_form).then(data => {
             if (data.success) {
-              this.whereSql = false
               this.whereValue = ''
               this.getList()
               this.$message.success('保存成功！')
@@ -436,14 +448,18 @@ export default {
       this.pager.pageNo = 0
       this.pager.pageSize = 10
       this.pager.total = 0
-      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
+      this.whereValue = encodeURI(`\%${data.sys_dept__dept_id}\%`)
+      this.whereSql = `where_sql=sys_dept.dept_id like ?&where_value=${this.whereValue}&where_type=String`
       this.getList()
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
   .el-card {
     margin-top: 10px;
   }

@@ -1,6 +1,11 @@
 <template>
   <div class="app-container">
-    <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+    <div class="head">
+      <div>
+        <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+      </div>
+      <Search funid="sys_dept" @search="search" />
+    </div>
     <el-row>
       <el-col :span="5">
         <el-card>
@@ -18,6 +23,7 @@
             @selection-change="handleSelectionChange"
             @cell-dblclick="cellDblclick"
           >
+            <el-table-column type="index" fixed="left" width="35px" />
             <template v-for="(d,i) in tableHeader">
               <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
               <el-table-column
@@ -94,11 +100,13 @@
 <script>
 import api from './api'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
 import AdutiDept from './components/auditDept'
 export default {
   name: 'Guide',
   components: {
     buttons,
+    Search,
     AdutiDept
   },
   data() {
@@ -169,7 +177,7 @@ export default {
         label: 'sys_dept__dept_name'
       },
       treeList: [],
-      whereSql: false,
+      whereSql: '',
       whereValue: ''
     }
   },
@@ -189,8 +197,7 @@ export default {
       api.getDept(
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -202,6 +209,10 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
     },
     async transitionTree() {
       await api.getDeptTree().then(data => {
@@ -349,8 +360,7 @@ export default {
           const _form = `funid=sys_dept&parentId=&levelCol=sys_dept.dept_level&keyid=${this.id}&pagetype=editgrid&eventcode=save_eg&sys_dept__dept_code=${this.saveFrom.sys_dept__dept_code}&sys_dept__dept_name=${this.saveFrom.sys_dept__dept_name}&sys_dept__memo=${this.saveFrom.sys_dept__memo}&sys_dept__is_novalid=${this.saveFrom.sys_dept__is_novalid}&sys_dept__dept_id=${this.id}&sys_dept__dept_level=${this.saveFrom.sys_dept__dept_level}&user_id=administrator&dataType=json`
           api.auditSave(_form).then(data => {
             if (data.success) {
-              this.whereSql = false
-              this.whereValue = ''
+              this.whereSql = ''
               this.getList()
               this.$message.success('保存成功！')
               this.dialogEditVisible = false
@@ -391,14 +401,18 @@ export default {
       this.pager.pageNo = 0
       this.pager.pageSize = 10
       this.pager.total = 0
-      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
+      this.whereValue = encodeURI(`\%${data.sys_dept__dept_id}\%`)
+      this.whereSql = `where_sql=sys_dept.dept_id like ?&where_value=${this.whereValue}&where_type=String`
       this.getList()
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+.head {
+    display: flex;
+    justify-content: space-between;
+  }
   .el-card {
     margin-top: 10px;
   }

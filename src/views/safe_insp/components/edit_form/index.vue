@@ -1,7 +1,10 @@
 <template>
   <div>
     <el-card>
-      <buttons funid="safe_insp" style="margin-bottom:20px" @save="save" />
+      <div class="buttons">
+        <buttons funid="safe_insp" style="margin-bottom:20px" @save="save" />
+        <el-button type="primary" @click="back">返回列表</el-button>
+      </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-row>
           <el-col :span="7">
@@ -254,7 +257,8 @@ export default {
       this.inspNameVisible = false
     },
     back() {
-      // this.$router.back(-1)
+      this.$store.dispatch('tagsView/delView', this.$route)
+      this.$router.push('/insp/safe_insp')
     }
   }
 }
@@ -277,5 +281,12 @@ export default {
 }
 .el-col{
   margin-left: 2%;
+}
+.buttons {
+  display: flex;
+  .el-button--primary {
+    margin-left: 10px;
+    height: 26.8px;
+  }
 }
 </style>

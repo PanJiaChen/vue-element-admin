@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <buttons funid="insp_name" style="margin:10px 10px" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+  <div class="app-container">
+    <div class="head">
+      <div>
+        <buttons funid="insp_name" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+      </div>
+      <!-- <Search funid="insp_name" @search="search" /> -->
+    </div>
     <el-row>
       <el-col :span="8">
         <el-card>
+          <Search class="search" funid="insp_name" @search="search" />
           <el-table
             ref="deptTable"
             v-loading="loading"
@@ -81,11 +87,13 @@
 <script>
 import api from './api'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
 import InspItem from './components/insp_item'
 export default {
   name: 'SafeIdsp',
   components: {
     buttons,
+    Search,
     InspItem
   },
   data() {
@@ -154,8 +162,7 @@ export default {
       api.getDate(
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -167,6 +174,10 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
     },
     editCreate() {
       this.title = '新增'
@@ -252,15 +263,20 @@ export default {
       this.form.dept_code = ''
     },
     handleNodeClick(data) {
-      console.log(data)
-      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
       this.getList()
     }
   }
 }
 </script>
 <style lang="scss" scoped>
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
+  .search {
+      margin-left: -50px;
+      margin-bottom: 10px;
+    }
   .el-card {
     margin-top: 10px;
   }

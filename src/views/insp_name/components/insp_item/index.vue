@@ -1,7 +1,12 @@
 <template>
   <div>
     <el-card>
-      <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
+      <div class="head">
+        <div>
+          <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
+        </div>
+        <Search funid="insp_item" @search="search" />
+      </div>
       <el-table
         ref="deptTable"
         v-loading="loading"
@@ -63,10 +68,12 @@
 import api from './api'
 import publicApi from '@/api/public'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons
+    buttons,
+    Search
   },
 
   data() {
@@ -136,7 +143,7 @@ export default {
         label: 'sys_dept__dept_name'
       },
       treeList: [],
-      whereSql: false,
+      whereSql: '',
       whereValue: '',
       title: ''
     }
@@ -161,8 +168,7 @@ export default {
         this.id,
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -174,6 +180,10 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
     },
     editCreate() {
       this.title = '新增'
@@ -251,7 +261,7 @@ export default {
     handleNodeClick(data) {
       console.log(data)
       this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
+      this.whereSql = ''
       this.getList(this.id)
     },
     async getTypeSel() {
@@ -267,6 +277,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+  .head {
+    display: flex;
+    justify-content: space-between;
+  }
   .el-card {
     margin-top: 10px;
   }

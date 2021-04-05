@@ -25,7 +25,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="检查人">
+            <el-form-item ref="hidden_danger__check_man" label="检查人" prop="hidden_danger__check_man">
               <el-input v-model="form.hidden_danger__check_man" placeholder="请选择检查人" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="checkManVisible = !checkManVisible" />
               </el-input>
@@ -41,7 +41,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="检查时间">
+            <el-form-item label="检查时间" prop="hidden_danger__check_date">
               <el-date-picker
                 v-model="form.hidden_danger__check_date"
                 type="date"
@@ -199,6 +199,12 @@ export default {
         hidden_danger__check_dept_id: ''
       },
       rules: {
+        hidden_danger__check_man: [
+          { required: true, message: '请选择检查人', trigger: 'blur' }
+        ],
+        hidden_danger__check_date: [
+          { required: true, message: '请选择检查时间', trigger: 'blur' }
+        ],
         hidden_danger__check_problem: [
           { required: true, message: '请输入隐患描述', trigger: 'blur' }
         ]
@@ -213,6 +219,14 @@ export default {
       inspNameVisible: false,
       id: '',
       hiddenState: []
+    }
+  },
+  watch: {
+    'form.hidden_danger__check_man': {
+      handler(val, oldVal) {
+        this.$refs['hidden_danger__check_man'].clearValidate()
+      },
+      deep: true
     }
   },
   created() {

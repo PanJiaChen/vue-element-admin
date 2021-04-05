@@ -4,17 +4,11 @@ import store from '@/store/modules/user'
 var roles = store.state.roles.replace(/;/g, '')
 
 export default {
-  getDate(pageSize, pageNo, isWhereSql, whereValue) {
-    let whereSql = ''
-    let whereType = ''
-    if (isWhereSql) {
-      whereSql = `dept_id like ?`
-      whereType = 'string'
-    }
+  getDate(pageSize, pageNo, whereSql) {
     return request({
       url: `commonAction.do?eventcode=query_data&funid=queryevent&pagetype=grid&query_funid=insp_name&user_id=${roles}`,
       method: 'post',
-      data: `start=${pageNo}&limit=${pageSize}&where_sql=${whereSql}&where_value=${whereValue}&where_type=${whereType}&is_query=1&query_type=0`
+      data: `start=${pageNo}&limit=${pageSize}&${whereSql}&is_query=1&query_type=0`
     }).then(response => response.data)
   },
   Crerte(data) {

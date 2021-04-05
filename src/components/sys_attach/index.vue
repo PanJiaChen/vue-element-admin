@@ -47,7 +47,7 @@
           >
             <template slot-scope="scope">
               <div v-if="d.label==='附件名称'">
-                <a @click="downLoadAttach(scope.row)">
+                <a :href="href" @click="downLoadAttach(scope.row)">
                   {{
                     scope.row.sys_attach__attach_name
                   }}
@@ -79,7 +79,9 @@
 
 <script>
 import api from './api'
-// import buttons from '@/components/Buttons'
+import store from '@/store/modules/user'
+
+var roles = store.state.roles.replace(/;/g, '')
 export default {
   name: 'SafeIdsp',
   components: {
@@ -167,7 +169,8 @@ export default {
       whereValue: '',
       formData: {},
       attach_path: null,
-      baseUrl: window.location.origin + '/bwhse/fileAction.do'
+      baseUrl: window.location.origin + '/bwhse/fileAction.do',
+      href: ''
     }
   },
   created() {
@@ -280,8 +283,10 @@ export default {
       console.log(val)
       this.ids = val.map(d => d.sys_attach__attach_id)
     },
-    downLoadAttach(row) {
-      api.downLoad(row.sys_attach__attach_id).then()
+    async downLoadAttach(row) {
+      const timestamp = new Date().getTime()
+      this.href = `${this.baseUrl}?funid=sys_attach&keyid=${row.sys_attach__attach_id}&pagetype=editgrid&eventcode=down&user_id=${roles}&dataType=byte&_dc=${timestamp}`
+      // await api.downLoad(row.sys_attach__attach_id)
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)

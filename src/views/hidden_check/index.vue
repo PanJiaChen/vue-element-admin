@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <buttons funid="hidden_check" style="margin:10px 10px" @Create="editCreate" @Del="editDelete" @editSave="editSave" @upload="upload" />
+  <div class="app-container">
+    <div class="head">
+      <div>
+        <buttons funid="hidden_check" @Create="editCreate" @Del="editDelete" @editSave="editSave" @upload="upload" />
+      </div>
+      <Search funid="hidden_check" @search="search" />
+    </div>
     <el-card>
       <el-table
         ref="deptTable"
@@ -8,9 +13,11 @@
         :data="list"
         style="width: 100%"
         stripe
+        type="index"
         @selection-change="handleSelectionChange"
         @cell-dblclick="cellDblclick"
       >
+        <el-table-column type="index" fixed="left" width="35px" />
         <template v-for="(d,i) in tableHeader">
           <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
           <el-table-column
@@ -35,7 +42,7 @@
               <div v-else-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
                 <el-button icon="el-icon-folder" type="text" title="查看附件" @click="checkAttach(scope.row)" />
-                <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                <!-- <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" /> -->
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
             </template>
@@ -55,8 +62,8 @@
     <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
       <Attach ref="attach" :data-id="ids" table-name="hidden_danger" fun-id="hidden_check" @change="auditFormChange" />
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogUploadVisible = false">取 消</el-button>
-        <el-button type="primary" @click="save">确 定</el-button>
+        <!-- <el-button @click="dialogUploadVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="dialogUploadVisible = false">返回</el-button>
       </div>
     </el-dialog>
     <el-drawer
@@ -74,12 +81,14 @@
 <script>
 import api from './api'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
 import Attach from '@/components/sys_attach'
 import { parseDay } from '@/utils/index'
 export default {
   name: 'HiddenCheck',
   components: {
     buttons,
+    Search,
     Attach
   },
   data() {
@@ -182,7 +191,7 @@ export default {
         label: 'sys_dept__dept_name'
       },
       treeList: [],
-      whereSql: false,
+      whereSql: '',
       whereValue: '',
       dialogUploadVisible: false,
       options: [],
@@ -204,8 +213,7 @@ export default {
       api.getDate(
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -221,6 +229,10 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
     },
     queryAttach() {
       api.queryAttach(this.keyids).then(data => {
@@ -283,26 +295,6 @@ export default {
     auditFormChange(form) {
       this.saveFrom = form
     },
-    save() {
-      if (Object.keys(this.saveFrom).length === 0) {
-        this.saveFrom = this.auditForm
-      }
-      this.$refs.auditForm.$refs.auditForm.validate(valid => {
-        if (valid) {
-          const _form = `funid=sys_dept&parentId=&levelCol=sys_dept.dept_level&keyid=${this.id}&pagetype=editgrid&eventcode=save_eg&sys_dept__dept_code=${this.saveFrom.sys_dept__dept_code}&sys_dept__dept_name=${this.saveFrom.sys_dept__dept_name}&sys_dept__memo=${this.saveFrom.sys_dept__memo}&sys_dept__is_novalid=${this.saveFrom.sys_dept__is_novalid}&sys_dept__dept_id=${this.id}&sys_dept__dept_level=${this.saveFrom.sys_dept__dept_level}&user_id=administrator&dataType=json`
-          api.auditSave(_form).then(data => {
-            if (data.success) {
-              this.whereSql = false
-              this.whereValue = ''
-              this.getList()
-              this.$message.success('保存成功！')
-            } else {
-              this.$message.error(data.message)
-            }
-          })
-        }
-      })
-    },
     closeUploadDialog() {
       this.dialogUploadVisible = false
     },
@@ -326,12 +318,6 @@ export default {
       this.form.dept_name = ''
       this.form.dept_code = ''
     },
-    handleNodeClick(data) {
-      console.log(data)
-      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
-      this.getList()
-    },
     checkAttach(row) {
       // this.drawer = true
       this.ids = []
@@ -342,6 +328,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .head {
+    display: flex;
+    justify-content: space-between;
+  }
   .el-card {
     margin-top: 10px;
   }

@@ -1,7 +1,12 @@
 <template>
   <div class="app-container">
     <el-card>
-      <buttons funid="safe_insp" style="margin-bottom:10px" @Create="editCreate" @Del="editDelete" />
+      <div class="head">
+        <div>
+          <buttons funid="insp_det" style="margin-bottom:10px" @Create="editCreate" @Del="editDelete" @upload="upload" />
+        </div>
+        <Search funid="insp_det" @search="search" />
+      </div>
       <el-table
         ref="deptTable"
         v-loading="loading"
@@ -31,7 +36,7 @@
               </div>
               <div v-else-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
-                <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                <!-- <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" /> -->
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
             </template>
@@ -70,6 +75,13 @@
         <el-button type="primary" @click="create">确 定</el-button>
       </div>
     </el-dialog>
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+      <Attach ref="attach" :data-id="ids" table-name="insp_det" fun-id="insp_det" @change="auditFormChange" />
+      <div slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogUploadVisible = false">取 消</el-button> -->
+        <el-button type="primary" @click="dialogUploadVisible = false">返回</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -77,10 +89,14 @@
 import api from './api'
 import publicApi from '@/api/public'
 import buttons from '@/components/Buttons'
+import Search from '@/components/Search'
+import Attach from '@/components/sys_attach'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons
+    buttons,
+    Search,
+    Attach
   },
   props: {
     id: {
@@ -169,7 +185,8 @@ export default {
       },
       treeList: [],
       whereSql: false,
-      whereValue: ''
+      whereValue: '',
+      dialogUploadVisible: false
     }
   },
   created() {
@@ -189,8 +206,7 @@ export default {
         this.id,
         this.pager.pageSize,
         pageNo,
-        this.whereSql,
-        this.whereValue
+        this.whereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -202,6 +218,22 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    search(sql) {
+      this.whereSql = sql
+      this.getList()
+    },
+    upload() {
+      if (this.ids.length > 1) {
+        this.$message.warning('只能选择一条数据！')
+      } else if (this.ids.length === 0) {
+        this.$message.warning('请选择一条数据！')
+      } else {
+        this.dialogUploadVisible = true
+      }
+    },
+    closeUploadDialog() {
+      this.dialogUploadVisible = false
     },
     editCreate() {
       this.title = '新增'
@@ -278,12 +310,6 @@ export default {
       this.form.dept_name = ''
       this.form.dept_code = ''
     },
-    handleNodeClick(data) {
-      console.log(data)
-      this.whereValue = encodeURI(`${data.sys_dept__dept_id}\%`)
-      this.whereSql = true
-      this.getList()
-    },
     async getTypeSel() {
       await publicApi.getTypeSel('inspresult').then(data => {
         if (data.success) {
@@ -297,6 +323,10 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+ .head {
+    display: flex;
+    justify-content: space-between;
+  }
   .el-card {
     margin-top: 10px;
   }

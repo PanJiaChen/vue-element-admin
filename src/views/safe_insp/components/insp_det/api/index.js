@@ -1,17 +1,11 @@
 import request from '@/utils/request'
 
 export default {
-  getDate(id, pageSize, pageNo, isWhereSql, whereValue) {
-    let whereSql = ''
-    let whereType = ''
-    if (isWhereSql) {
-      whereSql = `dept_id like ?`
-      whereType = 'string'
-    }
+  getDate(id, pageSize, pageNo, whereSql) {
     return request({
       url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=subeditgrid&query_funid=insp_det&user_id=administrator`,
       method: 'post',
-      data: `start=${pageNo}&limit=${pageSize}&where_sql=(insp_det.safe_insp_id = ?)${whereSql}&where_value=${id}${whereValue}&where_type=string${whereType}&is_query=1&query_type=0`
+      data: `start=${pageNo}&limit=${pageSize}&${whereSql}&is_query=1&query_type=0`
     }).then(response => response.data)
   },
   getDeptTree() {
