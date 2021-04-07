@@ -14,5 +14,13 @@
   "repository": {
     "url": "https://api.github.com",
     "releaseNo": "releaseNoForDocumentation"
+  },
+  "documentation": {
+    "api": {
+      "url": "https://api.github.com/repos/adempiere/"
+    },
+    "images": {
+      "url": "https://api.erpya.com/adempiere-api/img"
+    }
   }
 }
