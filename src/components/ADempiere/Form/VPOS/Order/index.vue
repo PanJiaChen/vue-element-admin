@@ -33,7 +33,7 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="1" :style="styleTab">
+            <el-col :span="1" :style="styleTab + 'float: left;'">
               <el-tag
                 v-if="!isEmptyValue(getOrder.documentStatus.value)"
                 :type="tagStatus(getOrder.documentStatus.value)"
@@ -43,7 +43,7 @@
                 </span>
               </el-tag>
             </el-col>
-            <el-col :span="1" :style="styleTab">
+            <el-col :span="2" :style="styleTab + 'float: right;'">
               <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
                 {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
               </el-button>
@@ -144,11 +144,12 @@
                           trigger="click"
                           :title="$t('form.pos.tableProduct.editQuantities')"
                           width="600"
-                          @hide="showFieldLine = !showFieldLine"
+                          @hide="showFieldLine = false"
                         >
                           <field-line
                             :data-line="scope.row"
                             :show-field="showFieldLine"
+                            :current-line="currentOrderLine"
                           />
                           <el-button
                             slot="reference"
@@ -327,9 +328,9 @@ export default {
     styleTab() {
       const isShowedPOSOptions = this.$store.getters.getIsShowPOSOptions
       if (this.isShowedPOSKeyLayout || isShowedPOSOptions) {
-        return 'adding-left: 0px; padding-right: 0px; padding-top: 2.5%;margin-right: 1%;'
+        return 'adding-left: 0px; padding-right: 0px; padding-top: 2.5%;margin-right: 1%;float: right;'
       }
-      return 'padding-left: 0px; padding-right: 0px; padding-top: 2.2%;margin-right: 1%;'
+      return 'padding-left: 0px; padding-right: 0px; padding-top: 2.2%;margin-right: 1%;float: right;'
     },
     namePointOfSales() {
       const currentPOS = this.$store.getters.getCurrentPOS

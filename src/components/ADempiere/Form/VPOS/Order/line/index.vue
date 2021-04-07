@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
     <el-row
-      v-if="!isEmptyValue(metadataList)"
+      v-if="!isEmptyValue(metadataList) && isLoadedField"
     >
       <template
         v-for="(field, index) in metadataList"
@@ -49,7 +49,11 @@ export default {
     },
     showField: {
       type: Boolean,
-      default: true
+      default: false
+    },
+    currentLine: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {
@@ -57,21 +61,28 @@ export default {
       metadataList: [],
       panelMetadata: {},
       isLoaded: false,
+      isLoadedField: false,
       panelType: 'custom',
-      fieldsListLine
+      fieldsListLine,
+      fieldsList: []
     }
   },
   watch: {
     showField(value) {
-      if (value && this.isEmptyValue(this.metadataList)) {
+      if (value && this.isEmptyValue(this.metadataList) && (this.dataLine.uuid === this.currentLine.uuid)) {
         this.setFieldsList()
+        this.metadataList = this.setFieldsList()
+        this.metadataList.sort(this.sortFields)
+        this.isLoadedField = true
       }
       if (value) {
         this.fillOrderLineQuantities({
-          currentPrice: this.dataLine.price,
-          quantityOrdered: this.dataLine.quantity,
-          discount: this.dataLine.discountRate
+          currentPrice: this.currentLine.price,
+          quantityOrdered: this.currentLine.quantity,
+          discount: this.currentLine.discountRate
         })
+        this.metadataList.sort(this.sortFields)
+        this.isLoadedField = true
       }
     }
   },
@@ -96,7 +107,7 @@ export default {
             console.warn(`LookupFactory: Get Field From Server (State) - Error ${error.code}: ${error.message}.`)
           })
       })
-      this.metadataList = fieldsList
+      return fieldsList
     },
     fillOrderLineQuantities({
       currentPrice,
@@ -126,6 +137,15 @@ export default {
           value: discount
         })
       }
+    },
+    sortFields(field, nextField) {
+      if (field.sequence < nextField.sequence) {
+        return 1
+      }
+      if (field.sequence > nextField.sequence) {
+        return -1
+      }
+      return 0
     }
   }
 }
