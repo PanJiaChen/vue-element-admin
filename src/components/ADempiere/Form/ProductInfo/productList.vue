@@ -241,14 +241,21 @@ export default {
     },
     indexTable(value) {
       this.setCurrent(this.listWithPrice[value])
+    },
+    currentPoint(value) {
+      if (!this.isEmptyValue(value)) {
+        this.loadProductsPricesList()
+      }
     }
   },
   created() {
     this.unsubscribe = this.subscribeChanges()
-
-    if (this.isReadyFromGetData) {
-      this.loadProductsPricesList()
-    }
+    this.$store.commit('setListProductPrice', {
+      isLoaded: false
+    })
+    this.timeOut = setTimeout(() => {
+      this.validatePos(this.currentPoint)
+    }, 3000)
   },
   beforeDestroy() {
     this.unsubscribe()
@@ -374,6 +381,25 @@ export default {
           }, 1000)
         }
       })
+    },
+    /**
+     * @param {object} PointOfSales
+     */
+    validatePos(PointOfSales) {
+      console.log(this.isEmptyValue(PointOfSales), this.isReadyFromGetData)
+      if (this.isEmptyValue(PointOfSales)) {
+        const message = this.$t('notifications.errorPointOfSale')
+        this.$store.commit('setListProductPrice', {
+          isLoaded: true,
+          productPricesList: []
+        })
+        this.$message({
+          type: 'info',
+          message,
+          duration: 1500,
+          showClose: true
+        })
+      }
     }
   }
 }

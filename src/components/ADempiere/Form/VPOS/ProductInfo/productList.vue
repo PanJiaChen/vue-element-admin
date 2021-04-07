@@ -132,21 +132,21 @@ export default {
       if (isToLoad) {
         this.loadProductsPricesList()
       }
+    },
+    currentPoint(value) {
+      if (!this.isEmptyValue(value)) {
+        this.loadProductsPricesList()
+      }
     }
   },
   created() {
     this.unsubscribe = this.subscribeChanges()
-
-    if (this.isReadyFromGetData) {
-      this.loadProductsPricesList()
-    }
-    if (this.isEmptyValue(this.listWithPrice)) {
-      this.$store.dispatch('listProductPriceFromServer', {
-        containerUuid: 'Products-Price-List',
-        pageNumber: 1,
-        searchValue: ''
-      })
-    }
+    this.$store.commit('setListProductPrice', {
+      isLoaded: false
+    })
+    this.timeOut = setTimeout(() => {
+      this.validatePos(this.currentPoint)
+    }, 3000)
   },
   beforeDestroy() {
     this.unsubscribe()
@@ -209,6 +209,24 @@ export default {
           }, 1000)
         }
       })
+    },
+    /**
+     * @param {object} PointOfSales
+     */
+    validatePos(PointOfSales) {
+      if (this.isEmptyValue(PointOfSales)) {
+        const message = this.$t('notifications.errorPointOfSale')
+        this.$store.commit('setListProductPrice', {
+          isLoaded: true,
+          productPricesList: []
+        })
+        this.$message({
+          type: 'info',
+          message,
+          duration: 1500,
+          showClose: true
+        })
+      }
     }
   }
 }
