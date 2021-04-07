@@ -1,63 +1,58 @@
 <template>
-  <span>
-    <el-popover
-      ref="translatedField"
-      placement="top"
-      width="300"
-      trigger="click"
-      @show="getTranslation"
-    >
-      <div>
-        <span class="custom-tittle-popover">
-          {{ fieldAttributes.name }}
-        </span>
-        <template v-if="!isEmptyValue(fieldAttributes.help)">
-          : {{ fieldAttributes.help }}
-        </template>
-      </div>
-      <el-form-item
-        :required="true"
-      >
-        <template slot="label">
-          {{ $t('language') + ':' }}
-        </template>
-        <el-select
-          v-model="langValue"
-          size="medium"
-          style="width: 100%;"
-          filterable
-          @change="getTranslation"
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>
+        {{ $t('field.field') }}
+        <b> {{ fieldAttributes.name }} </b>
+      </span>
+    </div>
+    <div>
+      <el-form ref="form" label-position="top">
+        <el-form-item :label="$t('field.container.description')">
+          {{ fieldAttributes.description }}
+        </el-form-item>
+        <el-form-item :label="$t('field.container.help')">
+          {{ fieldAttributes.help }}
+        </el-form-item>
+        <el-form-item
+          :required="true"
         >
-          <!-- <el-option
-            key="blank-option"
-            :value="undefined"
-            label=" "
-          /> -->
-          <el-option
-            v-for="(optionLang, key) in languageList"
-            :key="key"
-            :value="optionLang.language"
-            :label="optionLang.languageName"
+          <template slot="label">
+            {{ $t('language') + ':' }}
+          </template>
+          <el-select
+            v-model="langValue"
+            size="medium"
+            style="width: 100%;"
+            filterable
+            @change="getTranslation"
+          >
+            <!-- <el-option
+              key="blank-option"
+              :value="undefined"
+              label=" "
+            /> -->
+            <el-option
+              v-for="(optionLang, key) in languageList"
+              :key="key"
+              :value="optionLang.language"
+              :label="optionLang.languageName"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item
+          :label="$t('field.container.codeTranslation')"
+          :required="true"
+        >
+          <el-input
+            v-model="translatedValue"
+            :disabled="isEmptyValue(langValue)"
+            @change="changeTranslationValue"
           />
-        </el-select>
-      </el-form-item>
-      <el-form-item
-        label="Translated Value:"
-        :required="true"
-      >
-        <el-input
-          v-model="translatedValue"
-          :disabled="isEmptyValue(langValue)"
-          @change="changeTranslationValue"
-        />
-      </el-form-item>
-    </el-popover>
-    <svg-icon
-      v-popover:translatedField
-      class-name="international-icon"
-      icon-class="language"
-    />
-  </span>
+        </el-form-item>
+      </el-form>
+    </div>
+  </el-card>
 </template>
 
 <script>

@@ -1,36 +1,32 @@
 <template>
-  <span>
-    <el-popover
-      ref="contextInfoField"
-      placement="top"
-      width="300"
-      trigger="click"
-    >
-      <p
-        class="pre-formatted"
-        v-html="fieldAttributes.contextInfo.messageText.msgText"
-      />
-      <div>
-        <span class="custom-tittle-popover">
-          {{ fieldAttributes.name }}
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>
+          {{ $t('field.field') }}
+          <b> {{ fieldAttributes.name }} </b>
         </span>
-        {{ fieldAttributes.help }}
       </div>
-      <template v-for="(zoomItem, index) in fieldAttributes.reference.zoomWindows">
-        <el-button
-          :key="index"
-          type="text"
-          @click="redirect({ window: zoomItem })"
-        >
-          {{ $t('table.ProcessActivity.zoomIn') }}
-          {{ zoomItem.name }}
-        </el-button>
-      </template>
-    </el-popover>
-    <span v-popover:contextInfoField>
-      {{ fieldAttributes.name }}
-    </span>
-  </span>
+      <el-form ref="form" label-position="top" label-width="120px" style="max-height: 70vh; overflow: auto;" @submit.native.prevent="notSubmitForm">
+        <el-form-item :label="$t('field.container.description')">
+          {{ fieldAttributes.description }}
+        </el-form-item>
+        <el-form-item :label="$t('field.container.help')">
+          {{ fieldAttributes.help }}
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <template v-for="(zoomItem, index) in fieldAttributes.reference.zoomWindows">
+      <el-button
+        :key="index"
+        type="text"
+        @click="redirect({ window: zoomItem })"
+      >
+        {{ $t('table.ProcessActivity.zoomIn') }}
+        {{ zoomItem.name }}
+      </el-button>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -64,6 +60,10 @@ export default {
     }
   },
   methods: {
+    notSubmitForm(event) {
+      event.preventDefault()
+      return false
+    },
     redirect({ window }) {
       const viewSearch = recursiveTreeSearch({
         treeData: this.permissionRoutes,
@@ -89,6 +89,7 @@ export default {
           message: this.$t('notifications.noRoleAccess')
         })
       }
+      this.$store.commit('changeShowRigthPanel', false)
     }
   }
 }

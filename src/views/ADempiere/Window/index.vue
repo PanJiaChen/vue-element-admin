@@ -295,6 +295,17 @@
           </el-main>
         </SplitArea>
       </Split>
+      <right-panel
+        v-if="panelContextMenu && isMobile"
+      >
+        <component
+          :is="componentRender"
+          :field-attributes="contextMenuField.fieldAttributes"
+          :source-field="contextMenuField.fieldAttributes"
+          :record-uuid="contextMenuField.fieldAttributes.recordUuid"
+          :field-value="contextMenuField.valueField"
+        />
+      </right-panel>
     </el-container>
   </div>
   <div

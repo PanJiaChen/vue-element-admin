@@ -14,6 +14,8 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 // ]
 const initStateContextMenu = {
   isShowRightPanel: false,
+  isShowPopoverField: false,
+  optionField: {},
   contextMenu: [],
   listDocumentStatus: {
     defaultDocumentAction: undefined,
@@ -47,8 +49,14 @@ const contextMenu = {
     changeShowRigthPanel(state) {
       state.isShowRightPanel = !state.isShowRightPanel
     },
+    changeShowPopoverField(state) {
+      state.isShowPopoverField = !state.isShowPopoverField
+    },
     resetContextMenu(state) {
       state = initStateContextMenu
+    },
+    fieldContextMenu(state, payload) {
+      state.optionField = payload
     }
   },
   actions: {
@@ -143,6 +151,9 @@ const contextMenu = {
             console.warn(`Error getting document statuses list. Code ${error.code}: ${error.message}.`)
           })
       })
+    },
+    setOptionField({ commit }, params) {
+      commit('fieldContextMenu', params)
     }
   },
   getters: {
@@ -175,6 +186,9 @@ const contextMenu = {
     },
     getListDocumentActionByUuid: (state) => (recordUuid) => {
       return state.listDocumentAction.find(itemDocumentAction => itemDocumentAction.recordUuid === recordUuid)
+    },
+    getFieldContextMenu: (state) => {
+      return state.optionField
     }
   }
 }

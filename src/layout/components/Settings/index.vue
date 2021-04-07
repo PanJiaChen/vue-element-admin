@@ -1,60 +1,48 @@
 <template>
   <div class="drawer-container">
     <div>
-      <h3 class="drawer-title">{{ $t('settings.title') }}</h3>
-
-      <div class="drawer-item">
-        <span>{{ $t('settings.theme') }}</span>
-        <theme-picker style="float: right;height: 26px;margin: -3px 8px 0 0;" @change="themeChange" />
-      </div>
-
-      <div class="drawer-item">
-        <span>{{ $t('settings.tagsView') }}</span>
-        <el-switch v-model="tagsView" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>{{ $t('settings.showContextMenu') }}</span>
-        <el-switch v-model="showContextMenu" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>show Title</span>
-        <el-switch v-model="isShowTitleForm" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>{{ $t('settings.fixedHeader') }}</span>
-        <el-switch v-model="fixedHeader" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>Show Header</span>
-        <el-switch v-model="showNavar" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>Show Menu</span>
-        <el-switch v-model="showMenu" class="drawer-switch" />
-      </div>
-
-      <div class="drawer-item">
-        <span>{{ $t('settings.sidebarLogo') }}</span>
-        <el-switch v-model="sidebarLogo" class="drawer-switch" />
-      </div>
-      <a v-if="isShowJob" href="https://panjiachen.github.io/vue-element-admin-site/zh/job/" target="_blank" class="job-link">
-        <el-alert
-          title="部门目前非常缺人！有兴趣的可以点击了解详情。坐标: 字节跳动"
-          type="success"
-          :closable="false"
-        />
-      </a>
-
-      <div v-if="lang === 'zh'" class="drawer-item">
-        <span>菜单支持拼音搜索</span>
-        <el-switch v-model="supportPinyinSearch" class="drawer-switch" />
-      </div>
-
+      <el-form label-position="top" :inline="true">
+        <el-form-item
+          :label="$t('settings.theme')"
+        >
+          <theme-picker @change="themeChange" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.fixedHeader')"
+        >
+          <el-switch v-model="fixedHeader" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.tagsView')"
+        >
+          <el-switch v-model="tagsView" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.fixedHeader')"
+        >
+          <el-switch v-model="showNavar" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.showContextMenu')"
+        >
+          <el-switch v-model="showContextMenu" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.isShowTitle')"
+        >
+          <el-switch v-model="isShowTitleForm" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.isShowMenu')"
+        >
+          <el-switch v-model="showMenu" />
+        </el-form-item>
+        <el-form-item
+          :label="$t('settings.sidebarLogo')"
+        >
+          <el-switch v-model="sidebarLogo" />
+        </el-form-item>
+      </el-form>
     </div>
   </div>
 </template>
@@ -65,7 +53,9 @@ import ThemePicker from '@/components/ThemePicker'
 export default {
   components: { ThemePicker },
   data() {
-    return {}
+    return {
+      activeName: '1'
+    }
   },
   computed: {
     isShowTitleForm: {

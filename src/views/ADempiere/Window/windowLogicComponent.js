@@ -13,6 +13,8 @@ import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
 // Workflow
 import WorkflowStatusBar from '@/components/ADempiere/WorkflowStatusBar'
+// Panel right the Context Menu Field
+import RightPanel from '@/components/ADempiere/RightPanel'
 
 /**
  * Window Logic Component View
@@ -30,6 +32,7 @@ export default {
     DataTable,
     splitPane,
     ModalDialog,
+    RightPanel,
     ChatEntries,
     RecordLogs,
     WorkflowLogs,
@@ -68,6 +71,30 @@ export default {
     }
   },
   computed: {
+    contextMenuField() {
+      return this.$store.getters.getFieldContextMenu
+    },
+    panelContextMenu() {
+      return this.$store.state.contextMenu.isShowRightPanel
+    },
+    componentRender() {
+      let component
+      switch (this.contextMenuField.name) {
+        case this.$t('field.info'):
+          component = () => import('@/components/ADempiere/Field/contextMenuField/contextInfo')
+          break
+        case this.$t('language'):
+          component = () => import('@/components/ADempiere/Field/contextMenuField/translated/index')
+          break
+        case this.$t('field.calculator'):
+          component = () => import('@/components/ADempiere/Field/contextMenuField/calculator')
+          break
+        case this.$t('field.preference'):
+          component = () => import('@/components/ADempiere/Field/contextMenuField/preference/index')
+          break
+      }
+      return component
+    },
     isNewRecord() {
       return this.isEmptyValue(this.$route.query) ||
         this.isEmptyValue(this.$route.query.action) ||

@@ -18,44 +18,49 @@
         :required="isMandatory"
       >
         <template slot="label">
-          <operator-comparison
-            v-if="field.isComparisonField"
-            key="is-field-operator-comparison"
-            :field-attributes="fieldAttributes"
-            :field-value="field.value"
-          />
-          <context-info
-            v-else-if="isContextInfo"
-            key="is-field-context-info"
-            :field-attributes="fieldAttributes"
-            :field-value="field.value"
-          />
-          <span v-else key="is-field-name">
-            {{ isFieldOnly }}
-          </span>
-
-          <document-status
-            v-if="isDocuemntStatus"
-            :field="fieldAttributes"
-          />
-
-          <translated
-            v-if="field.isTranslatedField"
-            :field-attributes="fieldAttributes"
-            :record-uuid="field.recordUuid"
-          />
-
-          <calculator
-            v-if="field.isNumericField && !field.isReadOnlyFromLogic"
-            :field-attributes="fieldAttributes"
-            :field-value="recordDataFields"
-          />
-          <preference
-            v-if="field.panelType !== 'form'"
-            :source-field="fieldAttributes"
-            :field-value="recordDataFields"
-            :panel-type="field.panelType"
-          />
+          <el-dropdown
+            size="mini"
+            :hide-on-click="true"
+            trigger="click"
+            @command="handleCommand"
+          >
+            <span class="el-dropdown-link">
+              <span key="is-field-name">
+                {{ field.name }}
+              </span>
+              <i
+                class="el-icon-more el-icon--right"
+              />
+            </span>
+            <el-dropdown-menu slot="dropdown">
+              <template
+                v-for="(option, key) in optionField"
+              >
+                <el-dropdown-item
+                  v-if="option.enabled"
+                  :key="key"
+                  :command="option"
+                  :divided="true"
+                >
+                  <div class="contents">
+                    <div v-if="option.name !== $t('language')" style="margin-right: 5%;padding-top: 3%;">
+                      <i :class="option.icon" style="font-weight: bolder;" />
+                    </div>
+                    <div v-else style="margin-right: 5%">
+                      <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
+                    </div>
+                    <div>
+                      <span class="contents">
+                        <b class="label">
+                          {{ option.name }}
+                        </b>
+                      </span>
+                    </div>
+                  </div>
+                </el-dropdown-item>
+              </template>
+            </el-dropdown-menu>
+          </el-dropdown>
         </template>
         <component
           :is="componentRender"
@@ -78,14 +83,11 @@
 </template>
 
 <script>
-import contextInfo from '@/components/ADempiere/Field/popover/contextInfo'
 import documentStatus from '@/components/ADempiere/Field/popover/documentStatus'
-import preference from '@/components/ADempiere/Field/popover/preference/index'
 import operatorComparison from '@/components/ADempiere/Field/popover/operatorComparison'
-import translated from '@/components/ADempiere/Field/popover/translated'
-import calculator from '@/components/ADempiere/Field/popover/calculator'
 import { DEFAULT_SIZE } from '@/utils/ADempiere/references'
 import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
+import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 
 /**
  * This is the base component for linking the components according to the
@@ -94,12 +96,8 @@ import { evalutateTypeField, fieldIsDisplayed } from '@/utils/ADempiere/dictiona
 export default {
   name: 'FieldDefinition',
   components: {
-    contextInfo,
     documentStatus,
-    operatorComparison,
-    translated,
-    calculator,
-    preference
+    operatorComparison
   },
   props: {
     // receives the property that is an object with all the attributes
@@ -126,11 +124,15 @@ export default {
   },
   data() {
     return {
-      field: {}
+      field: {},
+      visible: this.$store.state.contextMenu.isShowPopoverField
     }
   },
   computed: {
     // load the component that is indicated in the attributes of received property
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
     componentRender() {
       if (this.isEmptyValue(this.field.componentPath || !this.field.isSupported)) {
         return () => import('@/components/ADempiere/Field/FieldText')
@@ -379,6 +381,53 @@ export default {
       }
       return Boolean(this.field.contextInfo && this.field.contextInfo.isActive) ||
         Boolean(this.field.reference && this.field.reference.zoomWindows.length)
+    },
+    optionField() {
+      return [
+        {
+          name: this.$t('field.info'),
+          enabled: true,
+          fieldAttributes: this.fieldAttributes,
+          icon: 'el-icon-info'
+        },
+        {
+          name: this.$t('table.ProcessActivity.zoomIn'),
+          enabled: this.isContextInfo,
+          fieldAttributes: this.fieldAttributes,
+          icon: 'el-icon-files'
+        },
+        {
+          name: this.$t('language'),
+          enabled: this.field.isTranslatedField,
+          fieldAttributes: this.fieldAttributes,
+          icon: 'language'
+        },
+        {
+          name: this.$t('field.calculator'),
+          enabled: this.field.isNumericField,
+          fieldAttributes: this.fieldAttributes,
+          recordDataFields: this.recordDataFields,
+          valueField: this.valueField,
+          icon: 'el-icon-s-operation'
+        },
+        {
+          name: this.$t('field.preference'),
+          enabled: true,
+          fieldAttributes: this.fieldAttributes,
+          valueField: this.valueField,
+          icon: 'el-icon-notebook-2'
+        }
+      ]
+    },
+    permissionRoutes() {
+      return this.$store.getters.permission_routes
+    },
+    valueField() {
+      return this.$store.getters.getValueOfField({
+        parentUuid: this.fieldAttributes.parentUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
+        columnName: this.fieldAttributes.columnName
+      })
     }
   },
   watch: {
@@ -408,14 +457,108 @@ export default {
     }
   },
   methods: {
+    recursiveTreeSearch,
     focusField() {
       if (this.field.handleRequestFocus || (this.field.displayed && !this.field.readonly)) {
         this.$refs[this.field.columnName].requestFocus()
+      }
+    },
+    handleCommand(command) {
+      if (command.name === this.$t('table.ProcessActivity.zoomIn')) {
+        this.redirect({ window: command.fieldAttributes.reference.zoomWindows[0] })
+        return
+      }
+      if (this.isMobile) {
+        this.$store.commit('changeShowRigthPanel', true)
+      }
+      this.$store.commit('changeShowPopoverField', true)
+      this.$store.dispatch('setOptionField', command)
+    },
+    redirect({ window }) {
+      const viewSearch = recursiveTreeSearch({
+        treeData: this.permissionRoutes,
+        attributeValue: window.uuid,
+        attributeName: 'meta',
+        secondAttribute: 'uuid',
+        attributeChilds: 'children'
+      })
+
+      if (viewSearch) {
+        this.$router.push({
+          name: viewSearch.name,
+          query: {
+            action: 'advancedQuery',
+            tabParent: 0,
+            [this.fieldAttributes.columnName]: this.value
+          }
+        }, () => {})
+      } else {
+        this.$message({
+          type: 'error',
+          showClose: true,
+          message: this.$t('notifications.noRoleAccess')
+        })
       }
     }
   }
 }
 </script>
+<style scoped>
+  .svg-icon {
+    width: 1em;
+    height: 1.5em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+  }
+  .el-dropdown .el-button-group {
+    display: flex;
+  }
+  .el-dropdown-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    padding: 10px 0;
+    margin: 5px 0;
+    background-color: #FFFFFF;
+    border: 1px solid #e6ebf5;
+    border-radius: 4px;
+    -webkit-box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    max-height: 250px;
+    max-width: 220px;
+    overflow: auto;
+  }
+  .el-dropdown-menu--mini .el-dropdown-menu__item {
+    line-height: 14px;
+    padding: 0px 15px;
+    padding-top: 1%;
+    padding-right: 15px;
+    padding-bottom: 1%;
+    padding-left: 15px;
+    font-size: 10px;
+  }
+  .el-dropdown-menu__item--divided {
+    position: relative;
+    /* margin-top: 6px; */
+    border-top: 1px solid #e6ebf5;
+  }
+  .label {
+    font-size: 14px;
+    margin-top: 0% !important;
+    margin-left: 0px;
+    text-align: initial;
+  }
+  .description {
+    margin: 0px;
+    font-size: 12px;
+    text-align: initial;
+  }
+  .contents {
+    display: inline-flex;
+  }
+</style>
 
 <style lang="scss">
   .custom-tittle-popover {

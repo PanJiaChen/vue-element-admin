@@ -1,100 +1,97 @@
 <template>
-  <el-dropdown trigger="click">
-    <el-button type="text" :disabled="fieldAttributes.readonly" @click="focusCalc">
-      <i class="el-icon-s-operation el-icon--right" />
-    </el-button>
-
-    <el-dropdown-menu slot="dropdown" class="dropdown-calc">
-      <el-input
-        ref="calculatorInput"
-        v-model="calcValue"
-        class="calculator-input"
-        size="mini"
-        readonly
-        @keydown.native="calculateValue"
-        @keyup.enter.native="changeValue"
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>
+        {{ $t('field.field') }}
+        <b> {{ fieldAttributes.name }} </b>
+      </span>
+    </div>
+    <el-form ref="form" label-position="top" label-width="120px" @submit.native.prevent="notSubmitForm">
+      <el-form-item label="Valor">
+        <el-input
+          ref="calculatorInput"
+          v-model="calcValue"
+          class="calculator-input"
+          size="mini"
+          readonly
+          @keydown.native="calculateValue"
+          @keyup.enter.native="changeValue"
+        />
+      </el-form-item>
+    </el-form>
+    <el-table
+      ref="calculator"
+      :data="tableData"
+      style="width: 100%"
+      border
+      size="mini"
+      :show-header="false"
+      :span-method="spanMethod"
+      class="calculator-table"
+      @cell-click="sendValue"
+    >
+      <el-table-column
+        align="center"
+        prop="row1"
+        height="15"
+        width="45"
       >
-        <!--
-        <template slot="append">
-          {{ valueToDisplay }}
+        <template slot-scope="{ row, column }">
+          <el-button type="text" :disabled="isDisabled(row, column)">
+            {{ row.row1.value }}
+          </el-button>
         </template>
-        -->
-      </el-input>
-
-      <el-table
-        ref="calculator"
-        :data="tableData"
-        style="width: 100%"
-        border
-        size="mini"
-        :show-header="false"
-        :span-method="spanMethod"
-        class="calculator-table"
-        @cell-click="sendValue"
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="row2"
+        height="15"
+        width="45"
       >
-        <el-table-column
-          align="center"
-          prop="row1"
-          height="15"
-          width="35"
-        >
-          <template slot-scope="{ row, column }">
-            <el-button type="text" :disabled="isDisabled(row, column)">
-              {{ row.row1.value }}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="row2"
-          height="15"
-          width="35"
-        >
-          <template slot-scope="{ row, column }">
-            <el-button type="text" :disabled="isDisabled(row, column)">
-              {{ row.row2.value }}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="row3"
-          height="15"
-          width="35"
-        >
-          <template slot-scope="{ row, column }">
-            <el-button type="text" :disabled="isDisabled(row, column)">
-              {{ row.row3.value }}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="row4"
-          height="15"
-          width="35"
-        >
-          <template slot-scope="{ row, column }">
-            <el-button type="text" :disabled="isDisabled(row, column)">
-              {{ row.row4.value }}
-            </el-button>
-          </template>
-        </el-table-column>
-        <el-table-column
-          align="center"
-          prop="row5"
-          height="15"
-          width="35"
-        >
-          <template slot-scope="{ row, column }">
-            <el-button type="text" :disabled="isDisabled(row, column)">
-              {{ row.row5.value }}
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </el-dropdown-menu>
-  </el-dropdown>
+        <template slot-scope="{ row, column }">
+          <el-button type="text" :disabled="isDisabled(row, column)">
+            {{ row.row2.value }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="row3"
+        height="15"
+        width="45"
+      >
+        <template slot-scope="{ row, column }">
+          <el-button type="text" :disabled="isDisabled(row, column)">
+            {{ row.row3.value }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="row4"
+        height="15"
+        width="45"
+      >
+        <template slot-scope="{ row, column }">
+          <el-button type="text" :disabled="isDisabled(row, column)">
+            {{ row.row4.value }}
+          </el-button>
+        </template>
+      </el-table-column>
+      <el-table-column
+        align="center"
+        prop="row5"
+        height="15"
+        width="45"
+      >
+        <template slot-scope="{ row, column }">
+          <el-button type="text" :disabled="isDisabled(row, column)">
+            {{ row.row5.value }}
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </el-card>
 </template>
 
 <script>
@@ -115,19 +112,32 @@ export default {
   },
   data() {
     return {
-      calcValue: this.fieldValue,
+      calcValue: this.valueField,
       valueToDisplay: ''
     }
   },
   computed: {
     tableData() {
       return buttons
+    },
+    valueField() {
+      return this.$store.getters.getValueOfField({
+        parentUuid: this.fieldAttributes.parentUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
+        columnName: this.fieldAttributes.columnName
+      })
     }
   },
   watch: {
+    valueField(value) {
+      console.log(value)
+    },
     fieldValue(value) {
       this.calcValue = value
     }
+  },
+  created() {
+    this.calcValue = this.valueField
   },
   methods: {
     sendValue(row, column) {
@@ -182,6 +192,7 @@ export default {
         .finally(() => {
           this.clearVariables()
           this.$children[0].visible = false
+          this.$store.commit('changeShowRigthPanel', false)
         })
     },
     spanMethod({ row, column }) {
@@ -221,7 +232,7 @@ export default {
       return false
     },
     calculateValue(event) {
-      const result = this.calculationValue(this.fieldValue, event)
+      const result = this.calculationValue(this.valueField, event)
       if (!this.isEmptyValue(result)) {
         this.valueToDisplay = result
       } else {

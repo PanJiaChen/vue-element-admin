@@ -10,10 +10,10 @@
         <div class="rightMenu">
           <div
             class="handle-button"
-            :style="{ 'top': buttonTop+'%' }"
+            :style="{'top':buttonTop+'px','background-color':theme}"
             @click="isShowRightPanel=!isShowRightPanel"
           >
-            <i :class="icon" style="color: gray;" />
+            <i :class="icon" style="color: white;" />
           </div>
 
           <div class="rightMenu-items">
@@ -36,7 +36,7 @@ export default {
       type: Boolean
     },
     buttonTop: {
-      default: 16,
+      default: 250,
       type: Number
     }
   },
@@ -145,7 +145,7 @@ export default {
   position: fixed;
   height: 100vh;
   width: 100%;
-  max-width: 260px;
+  max-width: 80%;
   top: 0px;
   left: 0px;
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, .05);
@@ -172,25 +172,21 @@ export default {
 }
 
 .handle-button {
+  width: 48px;
+  height: 48px;
   position: absolute;
-  border: 1px solid #d9d9d9;
-  background: white;
-  left: -34px;
-  border-radius: 6px 0 0 6px !important;
-  width: 35px;
-  height: 35px;
-  pointer-events: auto;
-  z-index: 0;
-  cursor: pointer;
-  pointer-events: auto;
-  font-size: 0px;
+  left: -48px;
   text-align: center;
+  font-size: 24px;
+  border-radius: 6px 0 0 6px !important;
+  z-index: 0;
+  pointer-events: auto;
+  cursor: pointer;
   color: #fff;
   line-height: 48px;
-
   i {
-    font-size: 17px;
-    line-height: 17px;
+    font-size: 24px;
+    line-height: 48px;
   }
 }
 </style>

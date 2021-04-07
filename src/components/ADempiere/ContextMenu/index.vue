@@ -77,6 +77,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .selector {
+    /* definir una altura pequeña para forzar el scroll */
+    height: 100px;
+    overflow-y: scroll;
+    width: 300px;
+
+    /* cambiar el estilo por defecto de la barra de scroll */
+    scrollbar-color: yellow #800080;
+    scrollbar-width: 10px;
+  }
   .el-submenu .el-menu-item {
     height: 50px;
     line-height: 50px;

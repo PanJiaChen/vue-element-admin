@@ -269,12 +269,14 @@ export default {
     advancedQuery: 'Advanced Query'
   },
   settings: {
-    title: 'Page style setting',
+    title: 'setting',
     theme: 'Theme Color',
     tagsView: 'Open Tags-View',
     fixedHeader: 'Fixed Header',
     sidebarLogo: 'Sidebar Logo',
-    showContextMenu: 'Show Context Information'
+    showContextMenu: 'Show Context Information',
+    isShowTitle: 'Show Títle',
+    isShowMenu: 'Show Menu'
   },
   profile: {
     aboutMe: 'About Me',
@@ -310,6 +312,17 @@ export default {
     },
     callout: {
       error: 'Error In Callout'
+    }
+  },
+  field: {
+    field: 'Field',
+    info: 'Information',
+    calculator: 'Calculator',
+    preference: 'Preference',
+    codeTranslation: 'Traduccion de Codigo',
+    container: {
+      help: 'Help',
+      description: 'Description'
     }
   },
   data: {

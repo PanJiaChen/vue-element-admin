@@ -1,5 +1,5 @@
 <template>
-  <div ref="rightPanel" :class="{show:show}" class="rightPanel-container">
+  <div v-if="false" ref="rightPanel" :class="{show:show}" class="rightPanel-container">
     <div class="setting">
       <div class="showme">
         <div class="rightPanel-background" />
