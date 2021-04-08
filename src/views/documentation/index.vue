@@ -103,7 +103,6 @@ export default {
       releaseNotes: {
         body: ''
       },
-      releases: 'https://github.com/adempiere/adempiere-vue/releases',
       releasesLabel: this.$t('documentation.releases'),
       readmeRepositoryGithub: {},
       readmeDocument: {}

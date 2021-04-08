@@ -56,7 +56,6 @@
           <el-main style="padding-top: 0px; padding-right: 10px; padding-bottom: 0px; padding-left: 10px;">
             <el-table
               ref="linesTable"
-              v-loading="updateOrderProcessPos"
               v-shortkey="shortsKey"
               :data="allOrderLines"
               border

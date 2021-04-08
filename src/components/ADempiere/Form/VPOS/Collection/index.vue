@@ -50,16 +50,13 @@
                 label-position="top"
                 label-width="10px"
                 style="float: right; display: flex; line-height: 10px;"
+                :disabled="isDisabled"
               >
                 <el-row>
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <field-definition
                       :key="field.columnName"
-                      :metadata-field="{
-                        ...field,
-                        isReadOnly: isDisabled
-
-                      }"
+                      :metadata-field="field"
                     />
                   </el-col>
                 </el-row>

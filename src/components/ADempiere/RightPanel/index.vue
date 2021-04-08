@@ -76,9 +76,6 @@ export default {
       }
     }
   },
-  mounted() {
-    this.insertToBody()
-  },
   beforeDestroy() {
     const elx = this.$refs.rightMenu
     elx.remove()
