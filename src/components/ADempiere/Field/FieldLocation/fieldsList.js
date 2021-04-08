@@ -29,7 +29,8 @@ export default [
       defaultValue: '@#C_Country_ID@',
       size: 24,
       sequenceFields: 'CO',
-      index: 2
+      index: 2,
+      isMandatory: true
     }
   },
   {
@@ -40,7 +41,8 @@ export default [
       isCustomField: true,
       size: 24,
       sequenceFields: 'R',
-      index: 3
+      index: 3,
+      isMandatory: true
     }
   },
   {
@@ -51,7 +53,8 @@ export default [
       isCustomField: true,
       size: 24,
       sequenceFields: 'C',
-      index: 4
+      index: 4,
+      isMandatory: true
     }
   },
   {

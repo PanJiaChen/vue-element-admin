@@ -237,15 +237,15 @@ export default {
       // })
     },
     sendValuesToServer() {
-      const fieldsNotReady = this.$store.getters.getFieldsListEmptyMandatory({
+      const emptyMandatoryFields = this.$store.getters.getFieldsListEmptyMandatory({
         containerUuid: this.containerUuid,
-        isValidate: true
+        formatReturn: 'name'
       })
-      if (!this.isEmptyValue(fieldsNotReady)) {
+      if (!this.isEmptyValue(emptyMandatoryFields)) {
         showNotification({
           type: 'warning',
           title: this.$t('notifications.emptyValues'),
-          name: '<b>' + fieldsNotReady + '.</b> ',
+          name: '<b>' + emptyMandatoryFields + '.</b> ',
           message: this.$t('notifications.fieldMandatory'),
           isRedirect: false
         })

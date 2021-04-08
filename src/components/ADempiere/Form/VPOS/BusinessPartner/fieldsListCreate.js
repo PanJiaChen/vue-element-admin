@@ -8,7 +8,8 @@ export default [
     tabindex: '0',
     overwriteDefinition: {
       isCustomField: true,
-      size: 24
+      size: 24,
+      isMandatory: true
     }
   },
   {
@@ -19,7 +20,8 @@ export default [
     isFromDictionary: true,
     overwriteDefinition: {
       isCustomField: true,
-      size: 24
+      size: 24,
+      isMandatory: true
     }
   },
   {
@@ -66,7 +68,8 @@ export default [
       componentPath: 'FieldLocation',
       handleActionPerformed: false,
       isSendParentValues: true,
-      popoverPlacement: 'top'
+      popoverPlacement: 'top',
+      isMandatory: true
     }
   }
 ]
