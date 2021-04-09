@@ -50,7 +50,7 @@
             <span>
               <b> {{ releasesLabel }} </b>
             </span>
-            <a target="_blank" :href="releases">
+            <a target="_blank" :href="linkReleases">
               <svg-icon icon-class="link" />
             </a>
           </div>
@@ -127,6 +127,9 @@ export default {
     activeListReleases() {
       const active = this.releasesList.findIndex(releases => this.releaseNotes.title === releases.title)
       return active
+    },
+    linkReleases() {
+      return this.readmeRepositoryGithub.href + '/releases'
     }
   },
   created() {
