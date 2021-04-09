@@ -473,6 +473,7 @@ export default {
         }
       }).catch(() => {
       }).finally(() => {
+        this.$store.commit('setListPayments', [])
         const { templateBusinessPartner } = this.currentPoint
         this.$store.commit('updateValuesOfContainer', {
           containerUuid: this.metadata.containerUuid,
