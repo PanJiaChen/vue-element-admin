@@ -10,14 +10,14 @@
       >
         <el-row>
           <el-col :span="8">
-            <el-link>
+            <el-link @click="jumpReform">
               <i class="el-icon-help" />
               待整改
               <span>({{ 11 }})</span>
             </el-link>
           </el-col>
           <el-col :span="8">
-            <el-link>
+            <el-link @click="jumpReview">
               <i class="el-icon-s-help" />
               待验收
               <span>({{ 22 }})</span>
@@ -83,6 +83,12 @@ export default {
   mounted() {
   },
   methods: {
+    jumpReform() {
+      this.$router.push({ path: '/hidden_danger/hidden_reform', query: { isBacklog: true }})
+    },
+    jumpReview() {
+      this.$router.push({ path: '/hidden_danger/hidden_review', query: { isBacklog: true }})
+    }
   }
 }
 </script>

@@ -14,7 +14,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="部门名称" prop="sys_dept__dept_name">
+            <el-form-item ref="sys_dept__dept_name" label="部门名称" prop="sys_dept__dept_name">
               <el-input v-model="form.sys_dept__dept_name" placeholder="请选择部门" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="selDeptVisible = !selDeptVisible" />
               </el-input>
@@ -84,7 +84,7 @@
           </el-col>
           <el-col :span="16">
             <el-form-item label="备注">
-              <el-input v-model="form.sys_user__memo" @change="change" />
+              <el-input v-model="form.sys_user__memo" maxlength="100" @change="change" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -100,7 +100,7 @@
     >
       <SelDept ref="seLDept" selective="single" @updateDept="updateDept" @updateDepts="updateDepts" />
       <span>
-        <el-button @click="selDeptVisible = false">取 消</el-button>
+        <el-button @click="reformDeptVisible = false">取 消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -155,6 +155,14 @@ export default {
       yesno: [],
       usersex: [],
       selDeptVisible: false
+    }
+  },
+  watch: {
+    'form.sys_dept__dept_name': {
+      handler(val, oldVal) {
+        this.$refs['sys_dept__dept_name'].clearValidate()
+      },
+      deep: true
     }
   },
   async created() {

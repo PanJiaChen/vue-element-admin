@@ -6,6 +6,9 @@
         <el-button type="primary" @click="back">返回列表</el-button>
       </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
+        <div class="classify">
+          <div class="classify-title">|  <span>隐患排查</span></div>
+        </div>
         <el-row>
           <el-col :span="7">
             <el-form-item label="隐患编号">
@@ -100,6 +103,11 @@
             </el-form-item>
           </el-col>
         </el-row>
+        <div class="classify">
+          <div class="classify-title">
+            | <span>隐患整改</span>
+          </div>
+        </div>
         <el-row>
           <el-col :span="7">
             <el-form-item label="整改时间" prop="hidden_danger__reform_date">
@@ -120,7 +128,7 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="整改情况">
-              <el-input v-model="form.hidden_danger__reform_desc" placeholder="请输入整改情况" class="input-with-select" type="textarea" clearable />
+              <el-input v-model="form.hidden_danger__reform_desc" placeholder="请输入整改情况" class="input-with-select" type="textarea" clearable maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -380,6 +388,16 @@ export default {
   .el-button--primary {
     margin-left: 10px;
     height: 26.8px;
+  }
+}
+.classify{
+  width: 100%;
+  // display: inline-block;
+  padding: 10px 0;
+  font-weight: bold;
+  color: #1890ff;
+  span{
+    color: #000;
   }
 }
 </style>

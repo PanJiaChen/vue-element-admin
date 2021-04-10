@@ -8,7 +8,11 @@ const state = {
   name: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  userName: '',
+  userId: '',
+  deptName: '',
+  deptId: ''
 }
 
 const mutations = {
@@ -26,6 +30,18 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  USER_NAME: (state, userName) => {
+    state.userName = userName
+  },
+  USER_ID: (state, userId) => {
+    state.userId = userId
+  },
+  DEPT_NAME: (state, deptName) => {
+    state.deptName = deptName
+  },
+  DEPT_ID: (state, deptId) => {
+    state.deptId = deptId
   }
 }
 
@@ -39,8 +55,16 @@ const actions = {
           commit('SET_ROLES', res.data.data.role_id)
           // const { data } = res.data
           commit('SET_TOKEN', 'bwhse')
+          commit('USER_NAME', res.data.data.user_name)
+          commit('USER_ID', res.data.data.user_id)
+          commit('DEPT_NAME', res.data.data.dept_name)
+          commit('DEPT_ID', res.data.data.dept_id)
           setToken('bwhse')
           sessionStorage.setItem('ROLES', res.data.data.role_id)
+          sessionStorage.setItem('USER_NAME', res.data.data.user_name)
+          sessionStorage.setItem('USER_ID', res.data.data.user_id)
+          sessionStorage.setItem('DEPT_NAME', res.data.data.dept_name)
+          sessionStorage.setItem('DEPT_ID', res.data.data.dept_id)
           resolve()
         } else {
           Vue.prototype.$message.error(res.data.message)
@@ -85,6 +109,10 @@ const actions = {
       // logout(state.token).then(() => {
       commit('SET_TOKEN', '')
       commit('SET_ROLES', [])
+      commit('USER_NAME', '')
+      commit('USER_ID', '')
+      commit('DEPT_NAME', '')
+      commit('DEPT_ID', '')
       sessionStorage.clear
       removeToken()
       resetRouter()
@@ -104,6 +132,10 @@ const actions = {
   getRoles({ commit }, roles) {
     return new Promise(resolve => {
       commit('SET_ROLES', roles)
+      commit('USER_NAME', sessionStorage.getItem('USER_NAME'))
+      commit('USER_ID', sessionStorage.getItem('USER_ID'))
+      commit('DEPT_NAME', sessionStorage.getItem('DEPT_NAME'))
+      commit('DEPT_ID', sessionStorage.getItem('DEPT_ID'))
       resolve()
     })
   },

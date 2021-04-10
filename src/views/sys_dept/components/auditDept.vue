@@ -13,13 +13,13 @@
           </el-select>
         </el-form-item>
         <el-form-item label="部门编码" :label-width="formLabelWidth" prop="sys_dept__dept_code">
-          <el-input v-model="form.sys_dept__dept_code" @change="change" />
+          <el-input v-model="form.sys_dept__dept_code" maxlength="40" @change="change" />
         </el-form-item>
         <el-form-item label="部门名称" :label-width="formLabelWidth" prop="sys_dept__dept_name">
           <el-input v-model="form.sys_dept__dept_name" @change="change" />
         </el-form-item>
         <el-form-item label="备注" :label-width="formLabelWidth" prop="sys_dept__memo">
-          <el-input v-model="form.sys_dept__memo" @change="change" />
+          <el-input v-model="form.sys_dept__memo" maxlength="100" @change="change" />
         </el-form-item>
         <el-form-item label="是否注销" :label-width="formLabelWidth">
           <el-select v-model="form.sys_dept__is_novalid" placeholder="请选择" @change="change">

@@ -78,7 +78,7 @@ export function parseDay(time, cFormat) {
   }
   const formatObj = {
     y: date.getFullYear(),
-    m: date.getMonth() + 2,
+    m: date.getMonth() + 1,
     d: date.getDate(),
     h: date.getHours(),
     i: date.getMinutes(),

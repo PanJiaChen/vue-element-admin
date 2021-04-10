@@ -352,6 +352,9 @@ export default {
 <style lang="scss" scoped>
   .el-card {
     margin-top: 0px;
+    ::v-deep.el-table__row{
+      font-size: 14px;
+    }
   }
   .app-container{
     padding: 0px;

@@ -54,7 +54,7 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="备注">
-              <el-input v-model="form.safe_insp__insp_memo" />
+              <el-input v-model="form.safe_insp__insp_memo" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -199,6 +199,7 @@ export default {
     console.log(this.id)
     this.getList()
     this.getTypeSel()
+    this.getInsptimes()
   },
   methods: {
     getList() {
@@ -215,7 +216,7 @@ export default {
       })
     },
     async getTypeSel() {
-      await publicApi.getTypeSel('insptimes').then(data => {
+      await publicApi.getTypeSel('inspstate').then(data => {
         if (data.success) {
           this.options = data.data.root
         } else {
@@ -227,6 +228,7 @@ export default {
       await publicApi.getTypeSel('insptimes').then(data => {
         if (data.success) {
           this.insptimes = data.data.root
+          console.log(this.insptimes, 'this.insptimes')
         } else {
           this.$message.error(data.message)
         }

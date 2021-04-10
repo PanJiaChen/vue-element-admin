@@ -54,19 +54,19 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="检查地点">
-              <el-input v-model="form.hidden_danger__check_location" />
+              <el-input v-model="form.hidden_danger__check_location" maxlength="250" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="7">
             <el-form-item label="检查内容">
-              <el-input v-model="form.hidden_danger__check_content" type="textarea" />
+              <el-input v-model="form.hidden_danger__check_content" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
           <el-col :span="7">
             <el-form-item label="隐患描述" prop="hidden_danger__check_problem">
-              <el-input v-model="form.hidden_danger__check_problem" type="textarea" />
+              <el-input v-model="form.hidden_danger__check_problem" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -100,6 +100,16 @@
         </el-row>
       </el-form>
     </el-card>
+    <el-row>
+      <el-col class="img" :span="12">
+        <span class="img-title">隐患排查图片</span>
+        <ShowImages :data-id="id" table-name="hidden_danger" fun-id="hidden_check" />
+      </el-col>
+      <el-col class="img" :span="12">
+        <span class="img-title">隐患整改图片</span>
+        <ShowImages :data-id="id" table-name="hidden_danger" fun-id="hidden_check" />
+      </el-col>
+    </el-row>
     <el-dialog
       v-if="checkManVisible"
       title="选择人员"
@@ -161,12 +171,14 @@ import publicApi from '@/api/public'
 import buttons from '@/components/formBtn'
 import SelUser from '@/components/selUser'
 import SelDept from '@/components/selDept'
+import ShowImages from '@/components/show_images'
 export default {
   name: 'HiddenCheckAuditForm',
   components: {
     buttons,
     SelUser,
-    SelDept
+    SelDept,
+    ShowImages
   },
   // props: {
   //   id: { type: String, default: () => '' }
@@ -356,14 +368,18 @@ export default {
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
-.el-col{
-  margin-left: 2%;
-}
 .buttons {
   display: flex;
   .el-button--primary {
     margin-left: 10px;
     height: 26.8px;
+  }
+}
+.img{
+    margin-top: 10px;
+    text-align: center;
+  span{
+    width: 100%;
   }
 }
 </style>

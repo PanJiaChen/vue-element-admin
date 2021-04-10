@@ -94,6 +94,7 @@ export default {
       data: [],
       deptTree: [],
       ids: [],
+      isBacklog: this.$route.query.isBacklog || false,
       levels: [],
       pager: {
         pageNo: 0,
@@ -198,6 +199,9 @@ export default {
     }
   },
   created() {
+    if (this.isBacklog) {
+      this.whereSql = ''
+    }
     this.getList()
   },
   mounted() {

@@ -158,3 +158,38 @@
 // .el-input--medium .el-input__icon {
 //   line-height: 26.8px;
 // }
+
+.el-tree .el-tree-node__expand-icon.expanded {
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+//有子节点 且未展开
+.el-tree .el-icon-caret-right:before {
+  background: url("../assets/images/1.png") no-repeat;
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  background-size: 16px;
+}
+//有子节点 且已展开
+.el-tree .el-tree-node__expand-icon.expanded.el-icon-caret-right:before {
+  background: url("../assets/images/2.png") no-repeat 0 3px;
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  background-size: 16px;
+}
+//没有子节点
+.el-tree .el-tree-node__expand-icon.is-leaf::before {
+  background: url("../assets/images/3.png") no-repeat;
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  font-size: 16px;
+  background-size: 16px;
+}

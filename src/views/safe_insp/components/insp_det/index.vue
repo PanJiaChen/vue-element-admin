@@ -56,6 +56,15 @@
 
     <el-dialog v-if="dialogFormVisible" :title="title" :visible.sync="dialogFormVisible" @close="closeDialog">
       <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item label="巡检项目" :label-width="formLabelWidth" prop="det_desc">
+          <el-input v-model="form.insp_det__det_name" type="text" disabled="false" />
+        </el-form-item>
+        <el-form-item label="巡检标准" :label-width="formLabelWidth" prop="det_desc">
+          <el-input v-model="form.insp_det__det_std" type="text" disabled="false" />
+        </el-form-item>
+        <el-form-item label="巡检方法" :label-width="formLabelWidth" prop="det_desc">
+          <el-input v-model="form.insp_det__det_way" type="text" disabled="false" />
+        </el-form-item>
         <el-form-item label="巡检结果" :label-width="formLabelWidth" prop="insp_det__det_result">
           <el-select v-model="form.insp_det__det_result" placeholder="请选择">
             <el-option
@@ -67,7 +76,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="不符合描述" :label-width="formLabelWidth" prop="det_desc">
-          <el-input v-model="form.insp_det__det_desc" type="textarea" />
+          <el-input v-model="form.insp_det__det_desc" type="textarea" maxlength="500" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

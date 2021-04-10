@@ -9,7 +9,7 @@
         <el-row>
           <el-col :span="7">
             <el-form-item label="巡检单编号">
-              <el-input v-model="form.safe_insp__insp_code" />
+              <el-input v-model="form.safe_insp__insp_code" maxlength="250" />
             </el-form-item>
           </el-col>
           <el-col :span="7">
@@ -27,7 +27,7 @@
           <el-col :span="7">
             <el-form-item ref="safe_insp__insp_name" label="巡检名称" prop="safe_insp__insp_name">
               <el-input v-model="form.safe_insp__insp_name" placeholder="请选择巡检名称" class="input-with-select" clearable>
-                <el-button slot="append" icon="el-icon-search" @click="inspNameVisible = !inspNameVisible" />
+                <el-button slot="append" icon="el-icon-search" maxlength="250" @click="inspNameVisible = !inspNameVisible" />
               </el-input>
             </el-form-item>
           </el-col>
@@ -54,7 +54,7 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="备注">
-              <el-input v-model="form.safe_insp__insp_memo" />
+              <el-input v-model="form.safe_insp__insp_memo" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>

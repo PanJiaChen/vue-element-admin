@@ -26,7 +26,7 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="巡检名称">
-              <el-input v-model="form.safe_insp__insp_name" />
+              <el-input v-model="form.safe_insp__insp_name" maxlength="250" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -52,7 +52,7 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="备注">
-              <el-input v-model="form.safe_insp__insp_memo" />
+              <el-input v-model="form.safe_insp__insp_memo" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>

@@ -54,19 +54,19 @@
           </el-col>
           <el-col :span="7">
             <el-form-item label="检查地点">
-              <el-input v-model="form.hidden_danger__check_location" />
+              <el-input v-model="form.hidden_danger__check_location" maxlength="250" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="7">
             <el-form-item label="检查内容">
-              <el-input v-model="form.hidden_danger__check_content" type="textarea" />
+              <el-input v-model="form.hidden_danger__check_content" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
           <el-col :span="7">
             <el-form-item label="隐患描述" prop="hidden_danger__check_problem">
-              <el-input v-model="form.hidden_danger__check_problem" type="textarea" />
+              <el-input v-model="form.hidden_danger__check_problem" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -148,7 +148,7 @@
     >
       <SelDept ref="ReformDept" @updateDept="getReformDept" />
       <span>
-        <el-button @click="reformDeptVisible = false">取 消</el-button>
+        <!-- <el-button @click="reformDeptVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="selReformDept">确 定</el-button>
       </span>
     </el-dialog>
@@ -161,6 +161,7 @@ import publicApi from '@/api/public'
 import buttons from '@/components/formBtn'
 import SelUser from '@/components/selUser'
 import SelDept from '@/components/selDept'
+import { parseDay } from '@/utils/index'
 export default {
   name: 'HiddenCheckCreateForm',
   components: {
@@ -177,9 +178,9 @@ export default {
       form: {
         hidden_danger__hidden_code: '',
         hidden_danger__hidden_state: '1',
-        hidden_danger__check_man: '',
-        hidden_danger__check_dept: '',
-        hidden_danger__check_date: '',
+        hidden_danger__check_man: this.$store.state.user.userName,
+        hidden_danger__check_dept: this.$store.state.user.deptName,
+        hidden_danger__check_date: parseDay(new Date()),
         hidden_danger__check_location: '',
         hidden_danger__check_content: '',
         hidden_danger__check_problem: '',
@@ -195,8 +196,8 @@ export default {
         hidden_danger__insp_det_id: '',
         hidden_danger__hidden_danger_id: '',
         hidden_danger__dept_id: '',
-        hidden_danger__check_man_id: '',
-        hidden_danger__check_dept_id: ''
+        hidden_danger__check_man_id: this.$store.state.user.userId,
+        hidden_danger__check_dept_id: this.$store.state.user.deptId
       },
       rules: {
         hidden_danger__check_man: [
@@ -230,6 +231,8 @@ export default {
     }
   },
   created() {
+    console.log(this.$store)
+    console.log(this.form)
     this.getHiddenState()
   },
   methods: {
