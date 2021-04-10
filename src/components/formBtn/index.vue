@@ -45,6 +45,9 @@ export default {
     },
     save() {
       this.$emit('save')
+    },
+    upload() {
+      this.$emit('upload')
     }
   }
 }

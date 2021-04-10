@@ -2,7 +2,7 @@
   <div>
     <el-card>
       <div class="buttons">
-        <buttons funid="hidden_check" style="margin-bottom:20px" @save="save" />
+        <buttons funid="hidden_check" style="margin-bottom:20px" @save="save" @upload="upload" />
         <el-button type="primary" @click="back">返回列表</el-button>
       </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
@@ -10,12 +10,12 @@
           <div class="classify-title">|  <span>隐患排查</span></div>
         </div>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="隐患编号">
               <el-input v-model="form.hidden_danger__hidden_code" :disabled="!disabled" />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="巡检状态">
               <el-select v-model="form.hidden_danger__hidden_state" placeholder="请选择" :disabled="!disabled">
                 <el-option
@@ -27,7 +27,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查人">
               <el-input v-model="form.hidden_danger__check_man" placeholder="请选择检查人" class="input-with-select" clearable :disabled="!disabled">
                 <el-button slot="append" icon="el-icon-search" @click="checkManVisible = !checkManVisible" />
@@ -36,14 +36,14 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查部门">
               <el-input v-model="form.hidden_danger__check_dept" placeholder="请选择检查部门" class="input-with-select" clearable :disabled="!disabled">
                 <el-button slot="append" icon="el-icon-search" @click="checkDeptVisible = !checkDeptVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查时间">
               <el-date-picker
                 v-model="form.hidden_danger__check_date"
@@ -56,40 +56,40 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查地点">
               <el-input v-model="form.hidden_danger__check_location" :disabled="!disabled" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查内容">
               <el-input v-model="form.hidden_danger__check_content" type="textarea" :disabled="!disabled" />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="隐患描述" prop="hidden_danger__check_problem">
               <el-input v-model="form.hidden_danger__check_problem" type="textarea" :disabled="!disabled" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改人">
               <el-input v-model="form.hidden_danger__reform_man" placeholder="请选择整改人" class="input-with-select" clearable :disabled="!disabled">
                 <el-button slot="append" icon="el-icon-search" @click="reformManVisible = !reformManVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改部门">
               <el-input v-model="form.hidden_danger__reform_dept" placeholder="请选择检查部门" class="input-with-select" clearable :disabled="!disabled">
                 <el-button slot="append" icon="el-icon-search" @click="reformDeptVisible = !reformDeptVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改期限">
               <el-date-picker
                 v-model="form.hidden_danger__reform_limit"
@@ -109,7 +109,7 @@
           </div>
         </div>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改时间" prop="hidden_danger__reform_date">
               <el-date-picker
                 v-model="form.hidden_danger__reform_date"
@@ -121,12 +121,12 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="投入费用">
               <el-input v-model="form.hidden_danger__reform_money" placeholder="请输入安全投入费用" class="input-with-select" clearable />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改情况">
               <el-input v-model="form.hidden_danger__reform_desc" placeholder="请输入整改情况" class="input-with-select" type="textarea" clearable maxlength="500" />
             </el-form-item>
@@ -134,6 +134,14 @@
         </el-row>
       </el-form>
     </el-card>
+    <el-row>
+      <el-col class="img" :span="12">
+        <ShowImages :data-id="id" table-name="hidden_danger" fun-id="hidden_check" title="隐患排查图片" />
+      </el-col>
+      <el-col class="img" :span="12">
+        <ShowImages :data-id="id" table-name="hidden_danger" fun-id="hidden_reform" title="隐患整改图片" />
+      </el-col>
+    </el-row>
     <el-dialog
       v-if="checkManVisible"
       title="选择人员"
@@ -186,6 +194,12 @@
         <el-button type="primary" @click="selReformDept">确 定</el-button>
       </span>
     </el-dialog>
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+      <Attach ref="attach" :data-id="[id]" table-name="hidden_danger" fun-id="hidden_check" />
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogUploadVisible = false">返回</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -195,12 +209,16 @@ import publicApi from '@/api/public'
 import buttons from '@/components/formBtn'
 import SelUser from '@/components/selUser'
 import SelDept from '@/components/selDept'
+import ShowImages from '@/components/show_images'
+import Attach from '@/components/sys_attach'
 export default {
   name: 'HiddenReformAuditForm',
   components: {
     buttons,
     SelUser,
-    SelDept
+    SelDept,
+    ShowImages,
+    Attach
   },
   // props: {
   //   id: { type: String, default: () => '' }
@@ -249,6 +267,7 @@ export default {
       reformManVisible: false,
       checkDeptVisible: false,
       reformDeptVisible: false,
+      dialogUploadVisible: false,
       hiddenState: []
     }
   },
@@ -278,6 +297,12 @@ export default {
           this.$message.error(data.message)
         }
       })
+    },
+    upload() {
+      this.dialogUploadVisible = true
+    },
+    closeUploadDialog() {
+      this.dialogUploadVisible = false
     },
     onSubmit() {},
     getCheckMan(data) {
@@ -379,9 +404,6 @@ export default {
     padding: 0 6px 0 0;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-.el-col{
-  margin-left: 2%;
 }
 .buttons {
   display: flex;

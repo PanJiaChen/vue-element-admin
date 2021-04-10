@@ -7,12 +7,12 @@
       </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="隐患编号">
               <el-input v-model="form.hidden_danger__hidden_code" />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="巡检状态">
               <el-select v-model="form.hidden_danger__hidden_state" placeholder="请选择" :disabled="!disabled">
                 <el-option
@@ -24,7 +24,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item ref="hidden_danger__check_man" label="检查人" prop="hidden_danger__check_man">
               <el-input v-model="form.hidden_danger__check_man" placeholder="请选择检查人" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="checkManVisible = !checkManVisible" />
@@ -33,14 +33,14 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查部门">
               <el-input v-model="form.hidden_danger__check_dept" placeholder="请选择检查部门" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="checkDeptVisible = !checkDeptVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查时间" prop="hidden_danger__check_date">
               <el-date-picker
                 v-model="form.hidden_danger__check_date"
@@ -52,40 +52,40 @@
               />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查地点">
               <el-input v-model="form.hidden_danger__check_location" maxlength="250" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="检查内容">
               <el-input v-model="form.hidden_danger__check_content" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="隐患描述" prop="hidden_danger__check_problem">
               <el-input v-model="form.hidden_danger__check_problem" type="textarea" maxlength="500" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改人">
               <el-input v-model="form.hidden_danger__reform_man" placeholder="请选择整改人" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="reformManVisible = !reformManVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改部门">
               <el-input v-model="form.hidden_danger__reform_dept" placeholder="请选择检查部门" class="input-with-select" clearable>
                 <el-button slot="append" icon="el-icon-search" @click="reformDeptVisible = !reformDeptVisible" />
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="8">
             <el-form-item label="整改期限">
               <el-date-picker
                 v-model="form.hidden_danger__reform_limit"
@@ -358,9 +358,6 @@ export default {
     padding: 0 6px 0 0;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-}
-.el-col{
-  margin-left: 2%;
 }
 .buttons {
   display: flex;

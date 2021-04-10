@@ -53,8 +53,11 @@
                   }}
                 </a>
               </div>
+              <div v-else-if="d.label==='上传日期'">
+                {{ parseTime(scope.row.sys_attach__upload_date) }}
+              </div>
               <div v-else-if="d.label === '操作'">
-                <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                <el-button icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
             </template>
@@ -80,6 +83,7 @@
 <script>
 import api from './api'
 import store from '@/store/modules/user'
+import { parseTime } from '@/utils/index'
 
 var roles = store.state.roles.replace(/;/g, '')
 export default {
@@ -103,6 +107,7 @@ export default {
   },
   data() {
     return {
+      parseTime,
       loading: false,
       data: [],
       deptTree: [],

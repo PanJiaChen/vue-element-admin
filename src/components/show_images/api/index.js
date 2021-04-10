@@ -8,7 +8,7 @@ export default {
     return request({
       url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=editgrid&query_funid=sys_attach&user_id=${roles}`,
       method: 'post',
-      data: `start=${pageNo}&limit=${pageSize}&where_sql=sys_attach.data_id = ? and sys_attach.table_name = ?&where_type=string;string&where_value=${data_id};${table_name}`
+      data: `start=${pageNo}&limit=${pageSize}&where_sql=sys_attach.data_id = ? and sys_attach.fun_id = ?&where_type=string;string&where_value=${data_id};${table_name}`
     }).then(response => response.data)
   },
   Delete(ids) {
