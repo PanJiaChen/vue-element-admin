@@ -19,6 +19,7 @@
             @selection-change="handleSelectionChange"
             @cell-dblclick="cellDblclick"
           >
+            <el-table-column type="index" fixed="left" width="35px" />
             <template v-for="(d,i) in tableHeader">
               <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
               <el-table-column
@@ -34,7 +35,7 @@
                 <template slot-scope="scope">
                   <div v-if="d.label === '操作'">
                     <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
-                    <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                    <!-- <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" /> -->
                   </div>
                   <div v-else>{{ scope.row[d.prop] }}</div>
                 </template>

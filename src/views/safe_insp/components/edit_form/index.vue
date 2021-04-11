@@ -108,13 +108,13 @@
       v-if="inspNameVisible"
       title="选择巡检名称"
       :visible.sync="inspNameVisible"
-      width="60%"
+      width="40%"
     >
       <InspName @updateInspName="updateInspName" />
-      <span>
+      <!-- <div>
         <el-button @click="inspNameVisible = false">取 消</el-button>
-        <el-button type="primary" @click="inspNameVisible = false">确 定</el-button>
-      </span>
+        <el-button type="primary" @click="inspNameVisible = false">取 消</el-button>
+      </div> -->
     </el-dialog>
   </div>
 </template>

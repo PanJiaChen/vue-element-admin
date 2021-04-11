@@ -8,6 +8,7 @@
         style="width: 100%"
         @cell-dblclick="cellDblclick"
       >
+        <el-table-column type="index" width="35px" />
         <template v-for="(d,i) in tableHeader">
           <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
           <el-table-column
@@ -127,5 +128,8 @@ export default {
 <style lang="scss" scoped>
   .el-card {
     margin-top: 10px;
+  }
+  ::v-deep .el-table .cell {
+    line-height: 33px;
   }
 </style>

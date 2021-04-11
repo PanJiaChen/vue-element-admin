@@ -43,7 +43,7 @@
               </div>
               <div v-else-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" size="mini" title="编辑" @click="edit(scope.row)" />
-                <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" />
+                <!-- <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" /> -->
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
             </template>

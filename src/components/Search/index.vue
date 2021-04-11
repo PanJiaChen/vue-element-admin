@@ -9,7 +9,7 @@
           :value="item.fun_col__col_code"
         />
       </el-select>
-      <div v-if="control === 'text' || control === 'selectwin'">
+      <div v-if="control === 'text' || control === 'selectwin' || control === 'combowin'">
         <el-input v-model="searchVal" clearable placeholder="请输入内容" @keyup.enter.native="search" />
       </div>
       <div v-else-if="control === 'date'" class="combo-select">
@@ -58,6 +58,18 @@ export default {
     funid: {
       type: String,
       default: ''
+    },
+    wsql: {
+      type: String,
+      default: ''
+    },
+    wvalue: {
+      type: String,
+      default: ''
+    },
+    wtype: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -85,7 +97,10 @@ export default {
     getFunCol() {
       api.getFunCol(this.funid).then(data => {
         if (data.success) {
-          this.fun = data.data.root
+          this.fun = data.data.root.filter(d => {
+            return d.fun_col__col_index !== '10000'
+          })
+          console.log(this.fun, 'this.fun')
           this.funCode = this.fun[0].fun_col__col_code
           this.where_sql = `${this.fun[0].fun_col__col_code}`
           this.where_type = this.fun[0].fun_col__data_type
@@ -122,7 +137,6 @@ export default {
       api.getSelect(this.control_name).then(data => {
         if (data.success) {
           this.combo = data.data.root
-          console.log(this.combo, 'this.combo')
         } else {
           this.$message.error(data.message)
         }
@@ -133,13 +147,28 @@ export default {
       let whereSql
       if (this.searchVal) {
         if (this.control === 'date') {
-          const where_sql = `${this.where_sql} >= ?`
-          const whereValue = `${this.searchVal}`
-          const where_type = `date`
-          whereSql = `where_sql=${where_sql}&where_value=${whereValue}&where_type=${where_type}`
+          if (this.wsql) {
+            const where_sql = `(${this.wsql}=?) and ${this.where_sql} >= ?`
+            const whereValue = `${this.wvalue};${this.searchVal}`
+            const where_type = `${this.wtype};date`
+            whereSql = `where_sql=${where_sql}&where_value=${whereValue}&where_type=${where_type}`
+          } else {
+            const where_sql = `${this.where_sql} >= ?`
+            const whereValue = `${this.searchVal}`
+            const where_type = `date`
+            whereSql = `where_sql=${where_sql}&where_value=${whereValue}&where_type=${where_type}`
+          }
         } else {
-          whereValue = encodeURI(`\%${this.searchVal}\%`)
-          whereSql = `where_sql=${this.where_sql} like ?&where_value=${whereValue}&where_type=${this.where_type}`
+          if (this.wsql) {
+            const Value = encodeURI(`\%${this.searchVal}\%`)
+            const where_sql = `(${this.wsql}=?) and ${Value} >= ?`
+            const whereValue = `${this.wvalue};${Value}`
+            const where_type = `${this.wtype};${this.where_type}`
+            whereSql = `where_sql=${where_sql}&where_value=${whereValue}&where_type=${where_type}`
+          } else {
+            whereValue = encodeURI(`\%${this.searchVal}\%`)
+            whereSql = `where_sql=${this.where_sql} like ?&where_value=${whereValue}&where_type=${this.where_type}`
+          }
         }
       } else {
         whereSql = `where_sql=&where_value=&where_type=`

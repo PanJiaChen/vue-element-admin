@@ -5,7 +5,7 @@
         <div>
           <buttons funid="insp_det" style="margin-bottom:10px" @Create="editCreate" @Del="editDelete" @upload="upload" />
         </div>
-        <Search funid="insp_det" @search="search" />
+        <Search funid="insp_det" :wsql="where_sql" :wvalue="where_value" :wtype="where_type" @search="search" />
       </div>
       <el-table
         ref="deptTable"
@@ -15,6 +15,7 @@
         @selection-change="handleSelectionChange"
         @cell-dblclick="cellDblclick"
       >
+        <el-table-column type="index" fixed="left" width="35px" />
         <template v-for="(d,i) in tableHeader">
           <el-table-column v-if="d.type && d.type === 'selection'" :key="i" :type="d.type" :fixed="d.fixed" />
           <el-table-column
@@ -193,8 +194,11 @@ export default {
         label: 'sys_dept__dept_name'
       },
       treeList: [],
-      whereSql: false,
+      whereSql: '',
       whereValue: '',
+      where_sql: 'insp_item.insp_name_id = ?',
+      where_value: this.$props.id,
+      where_type: 'string',
       dialogUploadVisible: false
     }
   },

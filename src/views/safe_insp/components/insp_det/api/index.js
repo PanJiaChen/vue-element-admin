@@ -1,11 +1,11 @@
 import request from '@/utils/request'
 
 export default {
-  getDate(id, pageSize, pageNo, whereSql) {
+  getDate(id, pageSize, pageNo, isWhereSql, whereValue) {
     return request({
       url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=subeditgrid&query_funid=insp_det&user_id=administrator`,
       method: 'post',
-      data: `start=${pageNo}&limit=${pageSize}&${whereSql}&is_query=1&query_type=0`
+      data: `start=${pageNo}&limit=${pageSize}&where_sql=insp_det.safe_insp_id = ?&where_value=${id}&where_type=string&is_query=1&query_type=0`
     }).then(response => response.data)
   },
   getDeptTree() {
