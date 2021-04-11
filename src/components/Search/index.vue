@@ -145,6 +145,7 @@ export default {
     search() {
       let whereValue
       let whereSql
+      console.log(this.wvalue, 'wvalue')
       if (this.searchVal) {
         if (this.control === 'date') {
           if (this.wsql) {
@@ -161,7 +162,7 @@ export default {
         } else {
           if (this.wsql) {
             const Value = encodeURI(`\%${this.searchVal}\%`)
-            const where_sql = `(${this.wsql}=?) and ${Value} >= ?`
+            const where_sql = `(${this.wsql}) and (${this.where_sql} like ?)`
             const whereValue = `${this.wvalue};${Value}`
             const where_type = `${this.wtype};${this.where_type}`
             whereSql = `where_sql=${where_sql}&where_value=${whereValue}&where_type=${where_type}`
@@ -171,9 +172,13 @@ export default {
           }
         }
       } else {
-        whereSql = `where_sql=&where_value=&where_type=`
+        if (this.wsql) {
+          whereSql = `where_sql=${this.wsql}&where_value=${this.wvalue}&where_type=${this.wtype}`
+        } else {
+          whereSql = `where_sql=&where_value=&where_type=`
+        }
       }
-      console.log(whereSql)
+      console.log(whereSql, '1231')
       this.$emit('search', `${whereSql}`)
     }
   }

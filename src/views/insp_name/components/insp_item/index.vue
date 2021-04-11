@@ -5,7 +5,7 @@
         <div>
           <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
         </div>
-        <Search funid="insp_item" @search="search" />
+        <Search funid="insp_item" :wsql="where_sql" :wvalue="id" :wtype="where_type" @search="search" />
       </div>
       <el-table
         ref="deptTable"
@@ -145,6 +145,9 @@ export default {
       treeList: [],
       whereSql: '',
       whereValue: '',
+      where_sql: 'insp_item.insp_name_id = ?',
+      where_value: this.id,
+      where_type: 'string',
       title: ''
     }
   },
@@ -157,7 +160,7 @@ export default {
   mounted() {
   },
   methods: {
-    getList(id) {
+    getList(id, isWhereSql) {
       this.id = id
       this.loading = true
       let pageNo = this.pager.pageNo * this.pager.pageSize - this.pager.pageSize
@@ -168,7 +171,8 @@ export default {
         this.id,
         this.pager.pageSize,
         pageNo,
-        this.whereSql
+        this.whereSql,
+        isWhereSql
       ).then(data => {
         if (data.success) {
           this.data = data.data.root
@@ -183,7 +187,7 @@ export default {
     },
     search(sql) {
       this.whereSql = sql
-      this.getList()
+      this.getList(this.id, true)
     },
     editCreate() {
       this.title = '新增'

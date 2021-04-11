@@ -1,7 +1,11 @@
 import request from '@/utils/request'
 
 export default {
-  getDate(id, pageSize, pageNo, whereSql) {
+  getDate(id, pageSize, pageNo, whereSql, isWhereSql) {
+    console.log(isWhereSql, 'isWhereSql')
+    if (!isWhereSql) {
+      whereSql = `where_sql=insp_item.insp_name_id = ?&where_value=${id}&where_type=string`
+    }
     return request({
       url: `/commonAction.do?eventcode=query_data&funid=queryevent&pagetype=subeditgrid&query_funid=insp_item&user_id=administrator`,
       method: 'post',

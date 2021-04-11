@@ -255,7 +255,7 @@ export default {
     },
     rowClick(row) {
       this.id = row.insp_name__insp_name_id
-      this.$refs.inspItem.getList(this.id)
+      this.$refs.inspItem.getList(this.id, false)
     },
     closeDialog() {
       this.dialogFormVisible = false

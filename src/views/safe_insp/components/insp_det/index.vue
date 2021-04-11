@@ -196,7 +196,7 @@ export default {
       treeList: [],
       whereSql: '',
       whereValue: '',
-      where_sql: 'insp_item.insp_name_id = ?',
+      where_sql: 'insp_det.safe_insp_id = ?',
       where_value: this.$props.id,
       where_type: 'string',
       dialogUploadVisible: false
@@ -233,6 +233,7 @@ export default {
       })
     },
     search(sql) {
+      console.log(sql, 'sqlsql  ')
       this.whereSql = sql
       this.getList()
     },
