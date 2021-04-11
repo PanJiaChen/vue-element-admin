@@ -56,5 +56,12 @@ export default {
       method: 'post',
       data: `start=0&limit=10&where_sql=hidden_danger.hidden_danger_id = ?&where_value=${id}&where_type=string&is_query=1&query_type=0`
     }).then(response => response.data)
+  },
+  queryAttach(keyids) {
+    return request({
+      url: `/commonAction.do`,
+      method: 'post',
+      data: `funid=queryevent&pagetype=grid&eventcode=query_attach&tablename=hidden_danger&keyids=${keyids}&is_queryrelat=0&user_id=${roles}&dataType=json&query_type=0&has_page=0`
+    }).then(response => response.data)
   }
 }

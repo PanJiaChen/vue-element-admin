@@ -10,7 +10,7 @@
       <el-table
         ref="deptTable"
         v-loading="loading"
-        :data="data"
+        :data="list"
         style="width: 100%"
         stripe
         @selection-change="handleSelectionChange"
@@ -46,7 +46,8 @@
               </div>
               <div v-else-if="d.label === '操作'">
                 <el-button icon="el-icon-view" type="text" title="编辑" @click="edit(scope.row)" />
-                <el-button icon="el-icon-folder" type="text" title="查看附件" @click="checkAttach(scope.row)" />
+                <el-button v-if="scope.row.attach.length <= 0" icon="el-icon-folder" type="text" title="查看附件" @click="checkAttach(scope.row)" />
+                <el-button v-else icon="el-icon-folder-opened" type="text" title="查看附件" @click="checkAttach(scope.row)" />
                 <!-- <el-button v-if="scope.row.status !== 'NULLIFY'" icon="el-icon-delete" style="color:#F56C6C" type="text" title="删除" @click="Delete(scope.row)" /> -->
               </div>
               <div v-else>{{ scope.row[d.prop] }}</div>
@@ -92,8 +93,10 @@ export default {
       parseDay,
       loading: false,
       data: [],
+      list: [],
       deptTree: [],
       ids: [],
+      keyids: [],
       isBacklog: this.$route.query.isBacklog || false,
       levels: [],
       pager: {
@@ -221,6 +224,10 @@ export default {
         if (data.success) {
           this.data = data.data.root
           this.pager.total = data.data.total
+          this.keyids = this.data.map(d => {
+            return d.hidden_danger__hidden_danger_id
+          }).join()
+          this.queryAttach()
           setTimeout(() => {
             this.loading = false
           }, 200)
@@ -232,6 +239,23 @@ export default {
     search(sql) {
       this.whereSql = sql
       this.getList()
+    },
+    queryAttach() {
+      api.queryAttach(this.keyids).then(data => {
+        if (data.success) {
+          if (data.data.length > 0) {
+            this.attachData = data.data
+            this.data.forEach((d, i) => {
+              this.data[i].attach = this.attachData.filter(v => {
+                return v.data_id === d.hidden_danger__hidden_danger_id
+              })
+            })
+          }
+          this.list = JSON.parse(JSON.stringify(this.data))
+        } else {
+          this.$message.error(data.message)
+        }
+      })
     },
     editCreate() {
       const param = `/hidden_danger/hidden_reform/create`
