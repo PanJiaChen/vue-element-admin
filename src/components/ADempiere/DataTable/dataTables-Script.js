@@ -139,14 +139,24 @@ export default {
             height: '55%',
             overflow: 'auto'
           }
+        } else if (this.isMobile) {
+          return {
+            height: '10%',
+            overflow: 'hidden'
+          }
         }
         return {
           height: '11%',
           overflow: 'hidden'
         }
       }
+      if (this.isMobile) {
+        return {
+          height: '10%'
+        }
+      }
       return {
-        height: '35px'
+        height: '20%'
       }
     },
     getHeigthTable() {

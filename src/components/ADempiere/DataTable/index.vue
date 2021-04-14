@@ -27,7 +27,6 @@
               />
             </el-collapse-item>
           </el-collapse>
-
           <div v-if="!isMobile">
             <table-main-menu
               :container-uuid="containerUuid"
@@ -71,19 +70,8 @@
               />
             </div>
           </div>
-          <div v-else>
+          <!-- <div v-else>
             <div v-if="!isParent">
-              <fixed-columns
-                :container-uuid="containerUuid"
-                :panel-type="panelType"
-                class="header-search-input"
-              />
-              <filter-columns
-                v-if="isShowOptionalColumns"
-                :container-uuid="containerUuid"
-                :panel-type="panelType"
-                class="field-optional"
-              />
               <div :class="{ show: showTableSearch }" class="local-search-container">
                 <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
                 <el-input
@@ -97,18 +85,6 @@
               </div>
             </div>
             <div v-else class="panel-expand">
-              <div :class="{ show: showTableSearch, mobile: isMobile }" class="local-search-container">
-                <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
-                <el-input
-                  ref="headerSearchInput"
-                  v-model="searchTable"
-                  size="mini"
-                  :placeholder="$t('table.dataTable.search')"
-                  class="header-search-input"
-                  clearable
-                />
-              </div>
-              <!-- is parent and is mobile -->
               <el-button
                 v-show="isPanelWindow && getDataSelection.length"
                 type="text"
@@ -116,18 +92,22 @@
                 style="color: black; font-size: 17px; font-weight: 605 !important;"
                 @click="deleteSelection()"
               />
-              <icon-element icon="el-icon-news" style="padding-top: 0px;" @click="searchRecordNavegation()">
-                <fixed-columns
-                  :container-uuid="containerUuid"
-                  :panel-type="panelType"
-                  class="header-search-input"
-                />
-              </icon-element>
             </div>
-          </div>
+          </div>  -->
         </el-header>
 
         <el-main style="padding: 0px !important; overflow: hidden;">
+          <div v-if="isEmptyValue(activeName) && isParent" :class="{ show: showTableSearch }" class="local-search-container">
+            <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
+            <el-input
+              ref="headerSearchInput"
+              v-model="searchTable"
+              size="mini"
+              :placeholder="$t('table.dataTable.search')"
+              class="header-search-input"
+              clearable
+            />
+          </div>
           <table-context-menu
             v-show="isShowedContextMenu"
             :style="{ left: leftContextualMenu + 'px', top: topContextualMenu + 'px' }"
