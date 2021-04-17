@@ -14,24 +14,24 @@
       :xl="sizeFieldResponsive.xl"
       :class="classField"
     >
-      <el-form-item
-        :required="isMandatory"
-      >
+      <el-form-item>
         <template slot="label">
           <el-dropdown
             size="mini"
             :hide-on-click="true"
-            trigger="hover"
+            trigger="click"
+            :split-button="true"
+            :style="isMobile ? 'text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width:'+labelStyle+'%' : ''"
             @command="handleCommand"
+            @click="false"
           >
-            <span style="border: aqua;">
-              <span key="is-field-name">
-                {{ field.name }}
+            <div :style="isMobile ? 'display: flex;width: auto;' : 'display: block;'">
+              <span :style="isMandatory && isEmptyValue(valueField) ? 'border: aqua; color: #f34b4b' : 'border: aqua;'">
+                <span key="is-field-name">
+                  {{ field.name }}
+                </span>
               </span>
-              <i
-                class="el-icon-more el-icon--right"
-              />
-            </span>
+            </div>
             <el-dropdown-menu slot="dropdown">
               <template
                 v-for="(option, key) in optionField"
@@ -48,6 +48,7 @@
                     width="400"
                     trigger="click"
                     style="padding: 0px;"
+                    :hide="visibleForDesktop"
                   >
                     <component
                       :is="optionFieldFComponentRender"
@@ -162,6 +163,14 @@ export default {
   },
   computed: {
     // load the component that is indicated in the attributes of received property
+    labelStyle() {
+      if (this.field.name.length >= 25) {
+        return '35'
+      } else if (this.field.name.length >= 20) {
+        return '50'
+      }
+      return '90'
+    },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
     },
@@ -487,6 +496,9 @@ export default {
     }
   },
   watch: {
+    panelContextMenu(value) {
+      this.visibleForDesktop = false
+    },
     metadataField(value) {
       this.field = value
     }
@@ -561,7 +573,27 @@ export default {
   }
 }
 </script>
+<style scoped>
+.el-form--label-top .el-form-item__label {
+  padding-bottom: 0px !important;
+  display: block;
+}
+</style>
 <style>
+.el-button--mini {
+  font-size: 14px;
+  color: #606266 !important;
+  font-weight: 605!important;
+  border: 0;
+  padding-top: 7px;
+  padding-right: 0px;
+  padding-bottom: 7px;
+  padding-left: 15px;
+}
+.el-button:hover, .el-button:focus {
+  color: #606266;
+  cursor: auto;
+}
 .el-dropdown-menu__item:not(.is-disabled):hover, .el-dropdown-menu__item:focus {
   background: white;
 }
@@ -580,6 +612,13 @@ export default {
 }
 .el-popper {
   padding: 0px;
+}
+.el-textarea {
+    position: relative;
+    width: 100%;
+    vertical-align: bottom;
+    font-size: 14px;
+    display: flex;
 }
 </style>
 <style scoped>
