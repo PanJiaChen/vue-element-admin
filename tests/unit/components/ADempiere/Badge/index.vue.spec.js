@@ -1,3 +1,16 @@
+// ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
+// Copyright (C) 2017-Present Systemhaus Westfalia
+// Contributor(s): Sofia Calderon 54033498+sofia-ester-calderon@users.noreply.github.com www.wetfalia-it.com
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
 import { createLocalVue, mount } from '@vue/test-utils'
 import Vuex from 'vuex'
 import ElementUI from 'element-ui'
