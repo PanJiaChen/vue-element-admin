@@ -27,7 +27,7 @@
         :style="isShowedPOSKeyLayout ? 'padding-right: 20px; padding-left: 0px;' : 'padding-right: 0px; padding-left: 0px;'"
       >
         <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-          <el-row :gutter="24">
+          <el-row :gutter="24" style="display: flex;">
             <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
               <template
                 v-for="(field) in fieldsList"
@@ -39,7 +39,7 @@
                 />
               </template>
             </el-col>
-            <el-col :span="6" style="padding-left: 2px; padding-right: 2px;">
+            <el-col :span="6" style="padding-left: 0px; padding-right: 0px;">
               <business-partner
                 :parent-metadata="{
                   name: panelMetadata.name,
@@ -50,7 +50,7 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="1" :style="styleTab + 'float: left;'">
+            <el-col :span="2" :style="isShowedPOSKeyLayout ? 'margin-top: 3.4%;padding: 0px;' : 'padding: 0px;margin-top: 2.4%;'">
               <el-tag
                 v-if="!isEmptyValue(getOrder.documentStatus.value)"
                 :type="tagStatus(getOrder.documentStatus.value)"
@@ -60,7 +60,7 @@
                 </span>
               </el-tag>
             </el-col>
-            <el-col :span="2" :style="styleTab + 'float: right;'">
+            <el-col :span="2" :style="isShowedPOSKeyLayout ? 'margin-top: 3.4%;' : 'padding: 0px;margin-top: 2.4%;'">
               <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
                 {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
               </el-button>
