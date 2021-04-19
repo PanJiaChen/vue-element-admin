@@ -29,6 +29,10 @@ export function request(requestValues) {
     requestValues.params = {}
   }
   requestValues.baseURL = config.adempiere.api.url
+  //  Timeout
+  if (config.adempiere.api.timeout && config.adempiere.api.timeout > 0) {
+    requestValues.timeout = config.adempiere.api.timeout
+  }
   requestValues.params.token = getToken()
   requestValues.params.language = getLanguage() || 'en_US'
   return new Promise(resolve => {

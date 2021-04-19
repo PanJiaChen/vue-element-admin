@@ -5,7 +5,8 @@
   },
   "adempiere": {
     "api": {
-      "url": "https://api.erpya.com/adempiere-api"
+      "url": "https://api.erpya.com/adempiere-api",
+      "timeout": 100000
     },
     "images": {
       "url": "https://api.erpya.com/adempiere-api/img"
