@@ -27,6 +27,7 @@ export default [
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,
+      isNumericField: true,
       isActiveLogics: true,
       isMandatory: true
     }

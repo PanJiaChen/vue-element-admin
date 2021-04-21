@@ -203,6 +203,13 @@ export default {
         isSendCallout,
         isChangedOldValue
       }
+      if (this.fieldAttributes.panelType === 'form') {
+        this.$store.commit('updateValueOfField', {
+          containerUuid: this.fieldAttributes.containerUuid,
+          columnName: this.fieldAttributes.columnName,
+          value: newValue
+        })
+      }
       this.$store.dispatch('notifyFieldChange', {
         ...sendParameters
       })
