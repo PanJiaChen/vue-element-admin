@@ -60,7 +60,52 @@
               <div style="margin-right: 5%;margin-top: 10%;">
                 <i :class="iconAction(action)" style="font-weight: bolder;" />
               </div>
-              <div>
+              <el-dropdown
+                v-if="!isEmptyValue(action.childs)"
+              >
+                <span class="contents">
+                  <b class="label">
+                    {{ action.name }}
+                  </b>
+                </span>
+                <p
+                  class="description"
+                >
+                  {{ $t('data.noDescription') }}
+                </p>
+                <el-dropdown-menu
+                  slot="dropdown"
+                  @command="handleCommand"
+                >
+                  <el-dropdown-item
+                    v-for="(childs, key) in action.childs"
+                    :key="key"
+                    :command="childs"
+                    :divided="true"
+                  >
+                    <span class="contents">
+                      <b class="label" @click="handleCommand(childs)">
+                        {{ childs.name }}
+                      </b>
+                    </span>
+                    <p
+                      v-if="!isEmptyValue(childs.description)"
+                      class="description"
+                    >
+                      {{ childs.description }}
+                    </p>
+                    <p
+                      v-else
+                      class="description"
+                    >
+                      {{ $t('data.noDescription') }}
+                    </p>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+              <div
+                v-else
+              >
                 <span class="contents">
                   <b class="label">
                     {{ action.name }}
@@ -223,6 +268,9 @@ export default {
       } else {
         this.runAction(action)
       }
+    },
+    handleCommand(childs) {
+      this.runAction(childs)
     },
     clickReferences(reference) {
       this.openReference(reference)
