@@ -214,6 +214,9 @@ export default {
     clickRunAction(action) {
       if (action === 'refreshData') {
         this.refreshData()
+      } else if (action.action === 'recordAccess') {
+        this.$store.commit('changeShowRigthPanel', true)
+        this.$store.commit('setRecordAccess', true)
       } else {
         this.runAction(action)
       }

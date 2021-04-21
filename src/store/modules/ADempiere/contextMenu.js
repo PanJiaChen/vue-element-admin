@@ -28,7 +28,8 @@ const initStateContextMenu = {
     documentActionsList: [],
     recordId: undefined,
     recordUuid: undefined
-  }
+  },
+  recordAccess: false
 }
 
 const contextMenu = {
@@ -57,6 +58,9 @@ const contextMenu = {
     },
     fieldContextMenu(state, payload) {
       state.optionField = payload
+    },
+    setRecordAccess(state, params) {
+      state.recordAccess = params
     }
   },
   actions: {
@@ -189,6 +193,9 @@ const contextMenu = {
     },
     getFieldContextMenu: (state) => {
       return state.optionField
+    },
+    getShowRecordAccess: (state) => {
+      return state.recordAccess
     }
   }
 }

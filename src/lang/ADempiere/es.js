@@ -310,7 +310,7 @@ export default {
     lockRecord: 'Bloquear Registro',
     noDescription: 'Sin Descripción',
     recordAccess: {
-      actions: 'Acceso a registros',
+      actions: 'Acceso a Registros',
       hideRecord: 'Ocultar Registro',
       recordDisplay: 'Permitir Visualización del Registro',
       isReadonly: 'Solo  Lectura',

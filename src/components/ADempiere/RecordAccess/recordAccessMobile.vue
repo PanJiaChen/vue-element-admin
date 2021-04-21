@@ -1,89 +1,86 @@
-<!--
- ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
- Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
- Contributor(s): Elsio Sanchez esanchez@erpya.com www.erpya.com
- This program is free software: you can redistribute it and/or modify
- it under the terms of the GNU General Public License as published by
- the Free Software Foundation, either version 3 of the License, or
- (at your option) any later version.
-
- This program is distributed in the hope that it will be useful,
- but WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- GNU General Public License for more details.
-
- You should have received a copy of the GNU General Public License
- along with this program.  If not, see <https:www.gnu.org/licenses/>.
--->
 <template>
-  <div class="board">
-    <div
-      :key="1"
-      class="kanban todo"
-      header-text="Todo"
-    >
-      <div class="board-column">
-        <div class="board-column-header">
-          {{ $t('data.recordAccess.hideRecord') }} ({{ getterListExclude.length }})
-        </div>
-        <draggable
-          v-model="getterListExclude"
-          :group="group"
-          v-bind="$attrs"
-          class="board-column-content"
-        >
-          <div
-            v-for="element in getterListExclude"
-            :key="element.UUID"
-            class="board-item"
-          >
-            {{ element.clientName }}
-          </div>
-
-        </draggable>
-      </div>
+  <el-card class="box-card">
+    <div slot="header" class="clearfix">
+      <span>
+        {{ $t('data.recordAccess.actions') }}
+      </span>
+    </div>
+    <div style="margin-bottom: 10%;">
+      <span style="margin-bottom: 10%;">
+        {{ $t('data.recordAccess.hideRecord') }}
+      </span>
+      <br>
+      <el-select
+        v-model="getterListExclude"
+        multiple
+        style="margin-top: 5%;"
+        placeholder="Select"
+        clearable
+        @change="addListExclude"
+      >
+        <el-option
+          v-for="item in getterDataRecords"
+          :key="item.clientId"
+          :label="item.name"
+          :value="item.uuid"
+        />
+      </el-select>
     </div>
     <div
-      :key="2"
-      class="kanban working"
-      header-text="Working"
+      style="margin-bottom: 10%;"
     >
-      <div class="board-column">
-        <div class="board-column-header">
-          {{ $t('data.recordAccess.recordDisplay') }} {{ getterListInclude.length }}
-        </div>
-        <draggable
-          v-model="getterListInclude"
-          :group="group"
-          v-bind="$attrs"
-          class="board-column-content"
-          @change="handleChange"
-        >
-          <div
-            v-for="element in getterListInclude"
-            :key="element.UUID"
-            class="board-item"
-          >
-            {{ element.name }}
-            <el-divider direction="vertical" />
-            {{ $t('data.recordAccess.isReadonly') }} <el-checkbox v-model="isReadonly" />
-            <el-divider direction="vertical" />
-            {{ $t('data.recordAccess.isDependentEntities') }} <el-checkbox v-model="isDependentEntities" />
-          </div>
-        </draggable>
-      </div>
+      <span
+        style="margin-bottom: 10%;"
+      >
+        {{ $t('data.recordAccess.recordDisplay') }}
+      </span>
+      <br>
+      <el-select
+        v-model="getterListInclude"
+        multiple
+        style="margin-top: 5%;"
+        placeholder="Select"
+        @change="addListInclude"
+      >
+        <el-option
+          v-for="item in getterDataRecords"
+          :key="item.clientId"
+          :label="item.name"
+          :value="item.uuid"
+        />
+      </el-select>
     </div>
-  </div>
+    <el-form
+      label-position="top"
+      size="small"
+      class="create-bp"
+    >
+      <el-row :gutter="24">
+        <template
+          v-for="(record, index) in getterListInclude"
+        >
+          <div :key="index" style="margin-left: 5%;">
+            <el-tag>
+              {{ record }}
+            </el-tag>
+            <p>
+              {{ $t('data.recordAccess.isReadonly') }}
+              <el-checkbox v-model="isReadonly" />
+            </p>
+            <p>
+              {{ $t('data.recordAccess.isDependentEntities') }} <el-checkbox v-model="isDependentEntities" />
+            </p>
+          </div>
+        </template>
+      </el-row>
+    </el-form>
+  </el-card>
 </template>
 
 <script>
-import draggable from 'vuedraggable'
 
 export default {
-  name: 'RecordAccess',
-  components: {
-    draggable
-  },
+  name: 'RecordAccessMobile',
   props: {
     parentUuid: {
       type: String,
@@ -119,19 +116,17 @@ export default {
     }
   },
   computed: {
-    getterListExclude: {
-      get() {
-        return this.getterDataRecords.filter(item => item.isPersonalLock === false)
-      },
-      set(value) {
-      }
+    getterListExclude() {
+      const list = this.getterDataRecords.filter(item => item.isPersonalLock === false)
+      return list.map(element => {
+        return element.name
+      })
     },
-    getterListInclude: {
-      get() {
-        return this.getterDataRecords.filter(item => item.isPersonalLock === true)
-      },
-      set(value) {
-      }
+    getterListInclude() {
+      const list = this.getterDataRecords.filter(item => item.isPersonalLock === true)
+      return list.map(element => {
+        return element.name
+      })
     },
     getIdentifiersList() {
       return this.identifiersList
@@ -169,6 +164,14 @@ export default {
           })
           break
       }
+    },
+    addListInclude(element) {
+      const index = this.getterDataRecords.findIndex(item => element[element.length - 1] === item.uuid)
+      this.getterDataRecords[index].isPersonalLock = true
+    },
+    addListExclude(element) {
+      const index = this.getterDataRecords.findIndex(item => element[element.length - 1] === item.uuid)
+      this.getterDataRecords[index].isPersonalLock = false
     },
     /**
      * @param {number} index: the index of the added element
