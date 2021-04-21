@@ -8,13 +8,11 @@ export default {
   divideRate: 1,
   multiplyRateCollection: 1,
   divideRateCollection: 1,
-  listPayments: [],
-  tenderTypeDisplaye: [
-    {
-      tenderTypeCode: 0,
-      tenderTypeDisplay: ''
-    }
-  ],
+  listPayments: {
+    payments: [],
+    isLoaded: false
+  },
   currency: [],
-  convertion: {}
+  convertion: {},
+  fieldCurrency: {}
 }

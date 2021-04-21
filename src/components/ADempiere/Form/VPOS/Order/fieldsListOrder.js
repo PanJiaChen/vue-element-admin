@@ -82,7 +82,7 @@ export default [
   //     isActiveLogics: false,
   //     isMandatory: true
   //   }
-  // },
+  // }
   // // TenderType
   // {
   //   tableName: 'C_Payment',

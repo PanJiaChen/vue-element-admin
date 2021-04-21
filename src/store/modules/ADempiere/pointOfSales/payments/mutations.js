@@ -22,13 +22,13 @@ export default {
   setListPayments(state, list) {
     state.listPayments = list
   },
-  setTenderTypeDisplaye(state, tenderTypeDisplaye) {
-    state.tenderTypeDisplaye = tenderTypeDisplaye
-  },
   setCurrencyDisplaye(state, currency) {
     state.currency = currency
   },
   setConvertionPayment(state, convertion) {
     state.convertion = convertion
+  },
+  setFieldCurrency(state, currency) {
+    state.fieldCurrency = currency
   }
 }

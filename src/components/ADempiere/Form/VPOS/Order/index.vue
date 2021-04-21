@@ -428,27 +428,6 @@ export default {
     }
   },
   watch: {
-    currencyUuid(value) {
-      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPoint)) {
-        this.$store.dispatch('conversionDivideRate', {
-          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-          currencyFromUuid: this.currencyPoint.uuid,
-          currencyToUuid: value
-        })
-      }
-    },
-    converCurrency(value) {
-      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPoint)) {
-        this.$store.dispatch('conversionMultiplyRate', {
-          containerUuid: 'Order',
-          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-          currencyFromUuid: this.currencyPoint.uuid,
-          currencyToUuid: value
-        })
-      } else {
-        this.$store.commit('currencyMultiplyRate', 1)
-      }
-    },
     namePo1intOfSales(value) {
       if (!this.isEmptyValue(value)) {
         this.$router.push({
@@ -463,9 +442,6 @@ export default {
     if (!this.isEmptyValue(this.$route.query.action)) {
       this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })
     }
-    // setTimeout(() => {
-    //   this.currencyDisplaye()
-    // }, 1500)
   },
   methods: {
     changePos(posElement) {
@@ -490,7 +466,9 @@ export default {
         }
       }).catch(() => {
       }).finally(() => {
-        this.$store.commit('setListPayments', [])
+        this.$store.commit('setListPayments', {
+          payments: []
+        })
         const { templateBusinessPartner } = this.currentPoint
         this.$store.commit('updateValuesOfContainer', {
           containerUuid: this.metadata.containerUuid,
@@ -535,34 +513,6 @@ export default {
       if (!this.seeConversion) {
         this.seeConversion = true
       }
-    // },
-    // tenderTypeDisplaye() {
-    //   if (!this.isEmptyValue(this.fieldsList)) {
-    //     const tenderType = this.fieldsList[5].reference
-    //     if (!this.isEmptyValue(tenderType)) {
-    //       this.$store.dispatch('getLookupListFromServer', {
-    //         tableName: tenderType.tableName,
-    //         query: tenderType.query
-    //       })
-    //         .then(response => {
-    //           this.$store.dispatch('tenderTypeDisplaye', response)
-    //         })
-    //     }
-    //   }
-    // },
-    // currencyDisplaye() {
-    //   if (!this.isEmptyValue(this.fieldsList)) {
-    //     const currency = this.fieldsList[4].reference
-    //     if (!this.isEmptyValue(currency)) {
-    //       this.$store.dispatch('getLookupListFromServer', {
-    //         tableName: currency.tableName,
-    //         query: currency.query
-    //       })
-    //         .then(response => {
-    //           this.$store.dispatch('currencyDisplaye', response)
-    //         })
-    //     }
-    //   }
     }
   }
 }

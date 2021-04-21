@@ -73,7 +73,10 @@
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <field-definition
                       :key="field.columnName"
-                      :metadata-field="field"
+                      :metadata-field="field.columnName === 'PayAmt' ? {
+                        ...field,
+                        labelCurrency: isEmptyValue($store.getters.getFieldCuerrency) ? currencyPoint : $store.getters.getFieldCuerrency
+                      } : field"
                     />
                   </el-col>
                 </el-row>
@@ -93,6 +96,7 @@
             :is-add-type-pay="listPayments"
             :currency="currencyPoint"
             :list-types-payment="fieldsList[2]"
+            :is-loaded="isLoadedPayments"
           />
           <div
             v-else
@@ -282,9 +286,12 @@ export default {
       const listLocal = this.$store.getters.getPaymentBox
       const listServer = this.$store.getters.getPos.listPayments
       if (!this.sendToServer) {
-        return listServer.reverse()
+        return listServer.payments
       }
       return listLocal
+    },
+    isLoadedPayments() {
+      return this.$store.getters.getPos.listPayments.isLoaded
     },
     paymentBox() {
       const payment = this.listPayments.filter(pay => {
@@ -373,7 +380,10 @@ export default {
         return missing
       }
       const pending = this.currentOrder.grandTotal <= this.pay ? 0 : this.currentOrder.grandTotal
-      return pending
+      return pending / this.convertion
+    },
+    convertion() {
+      return this.$store.getters.getDivideRateCollection
     },
     isMandatory() {
       const containerUuid = this.containerUuid
@@ -508,15 +518,14 @@ export default {
           currencyToUuid: value
         })
       }
-      if (!this.isEmptyValue(value)) {
-        this.$store.dispatch('conversionMultiplyRate', {
+      if (this.isEmptyValue(value)) {
+        this.$store.commit('setFieldCurrency', this.currencyPoint)
+        this.$store.dispatch('conversionDivideRate', {
           containerUuid: 'Collection',
           conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
           currencyFromUuid: this.currencyPoint.uuid,
           currencyToUuid: value
         })
-      } else {
-        this.$store.commit('currencyMultiplyRateCollection', 1)
       }
     },
     convertAllPayment(value) {
@@ -524,18 +533,6 @@ export default {
         this.allPayCurrency = this.pay / value
       }
       this.allPayCurrency = this.pay
-    },
-    converCurrency(value) {
-      if (!this.isEmptyValue(value)) {
-        this.$store.dispatch('conversionMultiplyRate', {
-          containerUuid: 'Collection',
-          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-          currencyFromUuid: this.currencyPoint.uuid,
-          currencyToUuid: value
-        })
-      } else {
-        this.$store.commit('currencyMultiplyRate', 1)
-      }
     },
     isLoaded(value) {
       if (value) {
@@ -551,19 +548,16 @@ export default {
     this.unsubscribe = this.subscribeChanges()
     this.defaultValueCurrency()
   },
-  mounted() {
-    setTimeout(() => {
-      this.convertCurrency()
-    }, 2000)
-  },
   methods: {
     formatDate,
     formatPrice,
     sumCash(cash) {
       let sum = 0
-      cash.forEach((pay) => {
-        sum += pay.amount
-      })
+      if (cash) {
+        cash.forEach((pay) => {
+          sum += pay.amount
+        })
+      }
       return sum
     },
     notSubmitForm(event) {
@@ -612,7 +606,7 @@ export default {
           orderUuid,
           bankUuid,
           referenceNo,
-          amount: this.amontSend,
+          amount: this.amontSend * this.convertion,
           paymentDate,
           tenderTypeCode,
           currencyUuid
@@ -623,7 +617,7 @@ export default {
           orderUuid,
           bankUuid,
           referenceNo,
-          amount: this.amontSend,
+          amount: this.amontSend * this.convertion,
           paymentDate,
           tenderTypeCode,
           currencyUuid: this.currencyDisplay(currencyToPay)
@@ -669,7 +663,7 @@ export default {
         })
       })
       this.defaultValueCurrency()
-      this.$store.dispatch('conversionDivideRate', 1)
+      this.$store.commit('currencyDivideRateCollection', 1)
       this.$store.commit('currencyMultiplyRate', 1)
       this.cancel()
     },
@@ -697,7 +691,7 @@ export default {
         value: this.pending
       })
       this.defaultValueCurrency()
-      this.$store.dispatch('conversionDivideRate', 1)
+      this.$store.commit('currencyDivideRateCollection', 1)
       this.$store.commit('currencyMultiplyRate', 1)
     },
     exit() {
@@ -763,14 +757,6 @@ export default {
         return this.currencyPoint.uuid
       }
       return currency
-    },
-    convertCurrency() {
-      const convertCurrency = this.currencyDisplay(100)
-      this.$store.dispatch('convertionPayment', {
-        conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
-        currencyFromUuid: this.currencyPoint.uuid,
-        currencyToUuid: convertCurrency.currencyUuid
-      })
     },
     undoPatment() {
       const list = this.listPayments[this.listPayments.length - 1]

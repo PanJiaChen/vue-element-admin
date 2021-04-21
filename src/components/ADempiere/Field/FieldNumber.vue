@@ -160,6 +160,12 @@ export default {
       return this.$store.getters.getCountryLanguage
     },
     currencyCode() {
+      if (!this.isEmptyValue(this.metadata.labelCurrency)) {
+        if (this.metadata.labelCurrency.iSOCode === this.currencyDefinition.iSOCode) {
+          return this.currencyDefinition.iSOCode
+        }
+        return this.metadata.labelCurrency.iSOCode
+      }
       return this.currencyDefinition.iSOCode
     },
     currencyDefinition() {
