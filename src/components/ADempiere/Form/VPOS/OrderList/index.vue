@@ -26,13 +26,13 @@
           Ver Histórico de Órdenes
         </template>
         <el-form
-          v-if="!isEmptyValue(metadataList)"
+          v-if="!isEmptyValue(sortFieldsListOrder)"
           label-position="top"
           label-width="10px"
           @submit.native.prevent="notSubmitForm"
         >
           <template
-            v-for="(field) in metadataList"
+            v-for="(field) in sortFieldsListOrder"
           >
             <field
               :key="field.columnName"
@@ -43,7 +43,7 @@
         <div
           v-else
           key="form-loading"
-          v-loading="isEmptyValue(metadataList)"
+          v-loading="isEmptyValue(sortFieldsListOrder)"
           :element-loading-text="$t('notifications.loading')"
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(255, 255, 255, 0.8)"
@@ -56,7 +56,7 @@
       ref="orderTable"
       v-shortkey="shortsKey"
       v-loading="!ordersList.isLoaded"
-      :data="ordersList.ordersList"
+      :data="sortTableOrderList"
       border
       fit
       :highlight-current-row="highlightRow"
@@ -152,6 +152,7 @@ export default {
       type: Object,
       default: () => {
         return {
+          panelType: 'from',
           uuid: 'Orders-List',
           containerUuid: 'Orders-List'
         }
@@ -204,6 +205,15 @@ export default {
         closeOrdersList: ['esc'],
         refreshList: ['f5']
       }
+    },
+    sortFieldsListOrder() {
+      return this.sortfield(this.metadataList)
+    },
+    sortTableOrderList() {
+      if (this.isEmptyValue(this.ordersList.ordersList)) {
+        return []
+      }
+      return this.sortDate(this.ordersList.ordersList)
     }
   },
   watch: {
@@ -342,6 +352,14 @@ export default {
     },
     setFieldsList() {
       const list = []
+      // Create Panel
+      this.$store.dispatch('addPanel', {
+        containerUuid: this.metadata.containerUuid,
+        isCustomForm: false,
+        uuid: this.metadata.uuid,
+        panelType: this.metadata.panelType,
+        fieldsList: this.fieldsList
+      })
       // Product Code
       this.fieldsList.forEach(element => {
         this.createFieldFromDictionary(element)
@@ -356,7 +374,18 @@ export default {
           })
       })
       this.metadataList = list
+    },
+    sortDate(listDate) {
+      return listDate.sort((elementA, elementB) => {
+        return new Date().setTime(new Date(elementB.dateOrdered).getTime()) - new Date().setTime(new Date(elementA.dateOrdered).getTime())
+      })
+    },
+    sortfield(field) {
+      return field.sort((elementA, elementB) => {
+        return elementA.sequence - elementB.sequence
+      })
     }
+
   }
 }
 </script>
