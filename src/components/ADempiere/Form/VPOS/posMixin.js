@@ -82,12 +82,16 @@ export default {
     pointOfSalesCurrency() {
       // const currency = this.currentPointOfSales
       if (!this.isEmptyValue(this.currentPointOfSales.priceList)) {
-        return this.currentPointOfSales.priceList.currency
+        return {
+          ...this.currentPointOfSales.priceList.currency,
+          amountConvertion: 1
+        }
       }
       return {
         uuid: '',
         iSOCode: '',
-        curSymbol: ''
+        curSymbol: '',
+        amountConvertion: 1
       }
     },
     listPointOfSales() {

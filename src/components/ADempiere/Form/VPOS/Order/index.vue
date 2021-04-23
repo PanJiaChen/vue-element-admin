@@ -253,7 +253,7 @@
                 </b>
               </p>
             </span>
-            <span style="float: right;padding-right: 40px;">
+            <span style="float: right;padding-right: 3%;">
               <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
@@ -395,29 +395,29 @@ export default {
       return this.isDisabled ? this.$t('form.pos.order.collections') : this.$t('form.pos.order.collect')
     }
   },
-  watch: {
-    currencyUuid(value) {
-      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
-        this.$store.dispatch('conversionDivideRate', {
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          currencyToUuid: value
-        })
-      }
-    },
-    converCurrency(value) {
-      if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
-        this.$store.dispatch('conversionMultiplyRate', {
-          containerUuid: 'Order',
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          currencyToUuid: value
-        })
-      } else {
-        this.$store.commit('currencyMultiplyRate', 1)
-      }
-    }
-  },
+  // watch: {
+  //   currencyUuid(value) {
+  //     if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
+  //       this.$store.dispatch('conversionDivideRate', {
+  //         conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+  //         currencyFromUuid: this.pointOfSalesCurrency.uuid,
+  //         currencyToUuid: value
+  //       })
+  //     }
+  //   },
+  //   converCurrency(value) {
+  //     if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
+  //       this.$store.dispatch('conversionMultiplyRate', {
+  //         containerUuid: 'Order',
+  //         conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+  //         currencyFromUuid: this.pointOfSalesCurrency.uuid,
+  //         currencyToUuid: value
+  //       })
+  //     } else {
+  //       this.$store.commit('currencyMultiplyRate', 1)
+  //     }
+  //   }
+  // },
   mounted() {
     if (!this.isEmptyValue(this.$route.query.action)) {
       this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })

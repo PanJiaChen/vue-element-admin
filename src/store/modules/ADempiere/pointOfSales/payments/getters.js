@@ -45,5 +45,8 @@ export default {
   },
   getFieldCuerrency: (state) => {
     return state.fieldCurrency
+  },
+  getConvertionRate: (state) => {
+    return state.convertionRate
   }
 }

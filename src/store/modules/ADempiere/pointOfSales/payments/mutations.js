@@ -42,6 +42,19 @@ export default {
   setConvertionPayment(state, convertion) {
     state.convertion = convertion
   },
+  conversionRate(state, currency) {
+    const listCurrent = state.convertionRate.find(element => {
+      if (element.id === currency.id) {
+        return element
+      }
+    })
+    if (listCurrent === undefined) {
+      state.convertionRate.push(currency)
+    }
+  },
+  resetConversionRate(state, currency) {
+    state.convertionRate = currency
+  },
   setFieldCurrency(state, currency) {
     state.fieldCurrency = currency
   }

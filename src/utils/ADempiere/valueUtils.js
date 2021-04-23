@@ -546,3 +546,15 @@ export function tenderTypeFind({
 export function clearVariables() {
   partialValue = ''
 }
+export function formatConversionCurrenty(params) {
+  let exponential, expre
+  const number = params.toString()
+  if (params > 0) {
+    if (number.includes('e')) {
+      expre = number.split('-')
+      exponential = params.toFixed(expre[1])
+      return exponential
+    }
+  }
+  return params
+}

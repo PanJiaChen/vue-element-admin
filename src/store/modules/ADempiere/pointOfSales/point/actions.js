@@ -73,6 +73,7 @@ export default {
       }
     }, () => {})
 
+    commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')
     commit('setIsReloadProductPrice')
     commit('setIsReloadListOrders')

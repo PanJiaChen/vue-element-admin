@@ -111,18 +111,30 @@ export default {
     const payment = state.paymentBox
     payment.splice(0)
   },
-  conversionDivideRate({ commit }, params) {
+  conversionDivideRate({ commit, dispatch }, params) {
+    console.log('conversionDivideRate')
     requestGetConversionRate({
       conversionTypeUuid: params.conversionTypeUuid,
       currencyFromUuid: params.currencyFromUuid,
-      currencyToUuid: params.currencyToUuid
+      currencyToUuid: params.currencyToUuid,
+      conversionDate: params.conversionDate
     })
       .then(response => {
         commit('setFieldCurrency', response.currencyTo)
+        if (!isEmptyValue(response.currencyTo)) {
+          const currency = {
+            ...response.currencyTo,
+            amountConvertion: response.divideRate
+          }
+          dispatch('addRateConvertion', currency)
+        }
         const divideRate = isEmptyValue(response.divideRate) ? 1 : response.divideRate
+        const multiplyRate = isEmptyValue(response.multiplyRate) ? 1 : response.multiplyRate
         if (params.containerUuid === 'Collection') {
+          commit('currencyMultiplyRateCollection', multiplyRate)
           commit('currencyDivideRateCollection', divideRate)
         } else {
+          commit('currencyMultiplyRate', multiplyRate)
           commit('currencyDivideRateCollection', divideRate)
         }
       })
@@ -134,6 +146,9 @@ export default {
           showClose: true
         })
       })
+  },
+  addRateConvertion({ commit, state, getters }, currency) {
+    commit('conversionRate', currency)
   },
   conversionMultiplyRate({ commit }, {
     containerUuid,
@@ -149,7 +164,7 @@ export default {
       // conversionDate
     })
       .then(response => {
-        const multiplyRate = isEmptyValue(response.multiplyRate) ? 0 : response.multiplyRate
+        const multiplyRate = isEmptyValue(response.multiplyRate) ? 1 : response.multiplyRate
         if (containerUuid === 'Collection') {
           commit('currencyMultiplyRateCollection', multiplyRate)
         } else {

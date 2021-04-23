@@ -58,6 +58,17 @@
                   </el-popover>
                 </b>
               </p>
+              <p class="total">
+                <b>Tasa del Día: </b>
+                <b v-if="!isEmptyValue(dateRate)" style="float: right;">
+                  {{
+                    dateRate.iSOCode
+                  }}
+                  {{
+                    formatConversionCurrenty(dateRate.amountConvertion)
+                  }}
+                </b>
+              </p>
             </div>
             <div
               v-if="isLoaded"
@@ -200,12 +211,13 @@
 
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin'
+import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import fieldsListCollection from './fieldsListCollection.js'
 import typeCollection from '@/components/ADempiere/Form/VPOS/Collection/typeCollection'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
 import { formatDate, formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import { processOrder } from '@/api/ADempiere/form/point-of-sales.js'
-import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
+import { FIELDS_DECIMALS } from '@/utils/ADempiere/references'
 
 export default {
   name: 'Collection',
@@ -381,7 +393,7 @@ export default {
         return missing
       }
       const pending = this.currentOrder.grandTotal <= this.pay ? 0 : this.currentOrder.grandTotal
-      return pending / this.convertion
+      return pending
     },
     convertion() {
       return this.$store.getters.getDivideRateCollection
@@ -437,12 +449,6 @@ export default {
     multiplyRateCollection() {
       return this.$store.getters.getMultiplyRateCollection
     },
-    converCurrency() {
-      return this.$store.getters.getValueOfField({
-        containerUuid: 'Collection',
-        columnName: 'C_Currency_ID_UUID'
-      })
-    },
     divideRate() {
       return this.$store.getters.getDivideRate
     },
@@ -468,8 +474,12 @@ export default {
     updateOrderPaymentPos() {
       return this.$store.getters.getUpdatePaymentPos
     },
-    currentPointOfSales() {
-      return this.$store.getters.posAttributes.currentPointOfSales
+    dateRate() {
+      return this.$store.getters.getConvertionRate.find(currency => {
+        if (currency.id === this.typeCurrency) {
+          return currency
+        }
+      })
     }
   },
   watch: {
@@ -481,17 +491,13 @@ export default {
       })
     },
     currencyUuid(value) {
-      if (!this.isEmptyValue(value)) {
+      const alo = this.$store.getters.getConvertionRate.find(currency => {
+        if (currency.uuid === value) {
+          return currency
+        }
+      })
+      if (alo === undefined) {
         this.$store.dispatch('conversionDivideRate', {
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          currencyToUuid: value
-        })
-      }
-      if (this.isEmptyValue(value)) {
-        this.$store.commit('setFieldCurrency', this.pointOfSalesCurrency)
-        this.$store.dispatch('conversionDivideRate', {
-          containerUuid: 'Collection',
           conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
           currencyFromUuid: this.pointOfSalesCurrency.uuid,
           currencyToUuid: value
@@ -504,20 +510,23 @@ export default {
       }
       this.allPayCurrency = this.pay
     },
-    converCurrency(value) {
-      if (!this.isEmptyValue(value)) {
-        this.$store.dispatch('conversionMultiplyRate', {
-          containerUuid: 'Collection',
-          conversionTypeUuid: this.currentPointOfSales,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          currencyToUuid: value
-        })
-      } else {
-        this.$store.commit('currencyMultiplyRate', 1)
-      }
-    },
     isLoaded(value) {
       if (value) {
+        this.$store.commit('updateValueOfField', {
+          containerUuid: this.containerUuid,
+          columnName: 'PayAmt',
+          value: this.pending
+        })
+      }
+    },
+    dateRate(value) {
+      if (value && !this.isEmptyValue(value.amountConvertion)) {
+        this.$store.commit('updateValueOfField', {
+          containerUuid: this.containerUuid,
+          columnName: 'PayAmt',
+          value: this.pending / value.amountConvertion
+        })
+      } else {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
@@ -527,11 +536,21 @@ export default {
     }
   },
   created() {
+    console.log(this.$store.getters.getConvertionRate)
+    this.$store.dispatch('addRateConvertion', this.pointOfSalesCurrency)
     this.unsubscribe = this.subscribeChanges()
     this.defaultValueCurrency()
   },
   methods: {
     formatDate,
+    formatNumber({ displayType, number }) {
+      let fixed = 0
+      // Amount, Costs+Prices, Number
+      if (FIELDS_DECIMALS.includes(displayType)) {
+        fixed = 2
+      }
+      return new Intl.NumberFormat().format(number.toFixed(fixed))
+    },
     formatPrice,
     sumCash(cash) {
       let sum = 0

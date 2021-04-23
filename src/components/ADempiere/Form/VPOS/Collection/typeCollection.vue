@@ -161,7 +161,7 @@ export default {
         })
           .then(response => {
             this.isAddTypePay.forEach(element => {
-              if (element.currencyUuid !== this.$store.getters.getCurrentPOS.priceList.currency.uuid) {
+              if (element.currencyUuid !== this.pointOfSalesCurrency.uuid) {
                 element.amountConvertion = element.amount / response.divideRate
                 element.currencyConvertion = response.currencyTo
               } else {
