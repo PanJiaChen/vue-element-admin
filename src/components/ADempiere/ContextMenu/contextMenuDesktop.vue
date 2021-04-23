@@ -19,9 +19,9 @@
   <div v-if="!isListRecord" class="container-submenu-mobile container-context-menu">
     <!-- actions or process on container -->
     <el-dropdown
-      size="mini"
       :hide-on-click="true"
       split-button
+      type="primary"
       trigger="click"
       @command="clickRunAction"
       @click="runAction(defaultActionToRun)"
@@ -122,10 +122,9 @@
         </el-scrollbar>
       </el-dropdown-menu>
     </el-dropdown>
-    <!-- menu relations -->
     <el-dropdown size="mini" @command="clickRelation">
-      <el-button size="mini">
-        {{ $t('components.contextMenuRelations') }} <i class="el-icon-arrow-down el-icon--right" />
+      <el-button type="success" plain>
+        {{ $t('components.contextMenuRelations') }}<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -155,8 +154,8 @@
       </el-dropdown-menu>
     </el-dropdown>
     <el-dropdown size="mini" @command="clickReferences">
-      <el-button size="mini" :disabled="!(isReferecesContent && isLoadedReferences)">
-        {{ $t('components.contextMenuReferences') }} <i class="el-icon-arrow-down el-icon--right" />
+      <el-button type="warning" plain :disabled="!(isReferecesContent && isLoadedReferences)">
+        {{ $t('components.contextMenuReferences') }}<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
         <el-dropdown-item
@@ -315,6 +314,36 @@ export default {
   }
 }
 </script>
+<style>
+  .el-dropdown-menu--medium .el-dropdown-menu__item {
+    line-height: 17px;
+    padding: 0 17px;
+    display: grid;
+    font-size: 14px;
+  }
+  .el-dropdown-menu--medium .el-dropdown-menu__item {
+    line-height: 17px;
+    padding: 0 17px;
+    display: grid;
+    font-size: 14px;
+  }
+  .el-button-group > .el-button:not(:last-child) {
+    margin-right: -1px;
+    color: #409eff;
+    background: #ecf5ff;
+    border-color: #b3d8ff;
+  }
+  .el-button-group .el-button--primary:last-child {
+    margin-right: 1px;
+    color: #409eff;
+    background: #e6f1fd;
+    border-color: #b3d8ff;
+    border-top-color: #b3d8ff;
+    border-right-color: #b3d8ff;
+    border-bottom-color: #b3d8ff;
+    border-left-color: #000000 !important;
+  }
+</style>
 
 <style scoped>
   .el-tree-node__children {

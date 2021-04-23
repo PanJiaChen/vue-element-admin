@@ -34,10 +34,10 @@
       <el-form-item>
         <template slot="label">
           <el-dropdown
+            v-if="isMobile"
             size="mini"
             :hide-on-click="true"
             trigger="click"
-            :split-button="true"
             :style="isMobile ? 'text-overflow: ellipsis; white-space: nowrap; overflow: hidden; width:'+labelStyle+'%' : ''"
             @command="handleCommand"
             @click="false"
@@ -110,6 +110,73 @@
               </template>
             </el-dropdown-menu>
           </el-dropdown>
+          <el-menu v-else class="el-menu-demo" mode="horizontal" :unique-opened="true" style="z-index: 0" :menu-trigger="triggerMenu" @open="handleOpen" @close="handleClose" @select="handleSelect">
+            <el-submenu index="menu">
+              <template slot="title">
+                <div :style="isMobile ? 'display: flex;width: auto;' : 'display: block;'">
+                  <span :style="isMandatory && isEmptyValue(valueField) ? 'border: aqua; color: #f34b4b' : 'border: aqua;'">
+                    <span key="is-field-name">
+                      {{ field.name }}
+                    </span>
+                  </span>
+                </div>
+              </template>
+              <el-menu-item
+                v-for="(option, key) in listOption"
+                :key="key"
+                :index="option.name"
+              >
+                <el-popover
+                  v-if="!isMobile"
+                  placement="top"
+                  width="400"
+                  trigger="click"
+                  style="padding: 0px;"
+                  :hide="visibleForDesktop"
+                >
+                  <component
+                    :is="optionFieldFComponentRender"
+                    v-if="visibleForDesktop"
+                    :field-attributes="contextMenuField.fieldAttributes"
+                    :source-field="contextMenuField.fieldAttributes"
+                    :field-value="contextMenuField.valueField"
+                  />
+                  <el-button slot="reference" type="text" style="color: #606266;">
+                    <div class="contents">
+                      <div v-if="option.name !== $t('language')" style="margin-right: 5%;padding-top: 3%;">
+                        <i :class="option.icon" style="font-weight: bolder;" />
+                      </div>
+                      <div v-else style="margin-right: 5%">
+                        <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
+                      </div>
+                      <div>
+                        <span class="contents">
+                          <b class="label">
+                            {{ option.name }}
+                          </b>
+                        </span>
+                      </div>
+                    </div>
+                  </el-button>
+                </el-popover>
+                <div v-if="false" class="contents">
+                  <div v-if="option.name !== $t('language')" style="margin-right: 5%;padding-top: 3%;">
+                    <i :class="option.icon" style="font-weight: bolder;" />
+                  </div>
+                  <div v-else style="margin-right: 5%">
+                    <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
+                  </div>
+                  <div>
+                    <span class="contents">
+                      <b class="label">
+                        {{ option.name }}
+                      </b>
+                    </span>
+                  </div>
+                </div>
+              </el-menu-item>
+            </el-submenu>
+          </el-menu>
         </template>
         <component
           :is="componentRender"
@@ -174,7 +241,8 @@ export default {
   data() {
     return {
       field: {},
-      visibleForDesktop: false
+      visibleForDesktop: false,
+      triggerMenu: 'click'
     }
   },
   computed: {
@@ -185,7 +253,7 @@ export default {
       } else if (this.field.name.length >= 20) {
         return '50'
       }
-      return '90'
+      return '110'
     },
     isMobile() {
       return this.$store.state.app.device === 'mobile'
@@ -499,6 +567,9 @@ export default {
         }
       ]
     },
+    listOption() {
+      return this.optionField.filter(option => option.enabled)
+    },
     permissionRoutes() {
       return this.$store.getters.permission_routes
     },
@@ -541,6 +612,27 @@ export default {
   },
   methods: {
     recursiveTreeSearch,
+    handleOpen(key, keyPath) {
+      this.triggerMenu = 'hover'
+    },
+    handleClose(key, keyPath) {
+      this.triggerMenu = 'click'
+    },
+    handleSelect(key, keyPath) {
+      const option = this.listOption.find(option => option.name === key)
+      if (option.name === this.$t('table.ProcessActivity.zoomIn')) {
+        this.redirect({ window: option.fieldAttributes.reference.zoomWindows[0] })
+        return
+      }
+      if (this.isMobile) {
+        this.$store.commit('changeShowRigthPanel', true)
+      } else {
+        this.visibleForDesktop = true
+      }
+      this.$store.commit('changeShowPopoverField', true)
+      this.$store.dispatch('setOptionField', option)
+      this.triggerMenu = 'hover'
+    },
     focusField() {
       if (this.field.handleRequestFocus || (this.field.displayed && !this.field.readonly)) {
         this.$refs[this.field.columnName].requestFocus()
@@ -596,48 +688,27 @@ export default {
 }
 </style>
 <style>
-.el-button--mini {
-  font-size: 14px;
-  color: #606266 !important;
-  font-weight: 605!important;
-  border: 0;
-  padding-top: 7px;
-  padding-right: 0px;
-  padding-bottom: 7px;
-  padding-left: 15px;
-}
-.el-button:hover, .el-button:focus {
-  color: #606266;
-  cursor: auto;
-}
-.el-dropdown-menu__item:not(.is-disabled):hover, .el-dropdown-menu__item:focus {
-  background: white;
-}
-.el-dropdown-menu--mini .el-dropdown-menu__item {
-  line-height: 14px;
-  padding: 0px 15px;
-  padding-top: 0%;
-  padding-right: 15px;
-  padding-bottom: 0%;
-  padding-left: 15px;
-  font-size: 10px;
-  background: white;
-}
-.el-dropdown-menu--mini .el-dropdown-menu__item.el-dropdown-menu__item--divided {
-  margin-top: 0%;
-}
-.el-popper {
-  padding: 0px;
-}
-.el-textarea {
+  .el-popper {
+    padding: 0px;
+  }
+  .el-textarea {
     position: relative;
     width: 100%;
     vertical-align: bottom;
     font-size: 14px;
     display: flex;
-}
+  }
+  .el-menu--horizontal > .el-submenu .el-submenu__title {
+    height: 60px;
+    line-height: 60px;
+    border-bottom: 2px solid transparent;
+    color: #535457e3;
+  }
 </style>
 <style scoped>
+  .el-menu.el-menu--horizontal {
+    border-bottom: solid 0px #E6E6E6;
+  }
   .svg-icon {
     width: 1em;
     height: 1.5em;
