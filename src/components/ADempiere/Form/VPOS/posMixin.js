@@ -23,9 +23,13 @@ import {
   formatPrice,
   formatQuantity
 } from '@/utils/ADempiere/valueFormat.js'
+import orderLineMixin from './Order/orderLineMixin.js'
 
 export default {
   name: 'POSMixin',
+  mixins: [
+    orderLineMixin
+  ],
   props: {
     metadata: {
       type: Object,
@@ -56,49 +60,6 @@ export default {
     }
   },
   computed: {
-    allOrderLines() {
-      return this.listOrderLine
-    },
-    listOrderLine() {
-      return this.$store.getters.getListOrderLine
-    },
-    ordersList() {
-      const order = this.$store.getters.getListOrder
-      if (order && !this.isEmptyValue(order.ordersList)) {
-        return order.ordersList
-      }
-      return []
-    },
-    currentOrder() {
-      const action = this.$route.query.action
-      if (!this.isEmptyValue(action)) {
-        return this.$store.getters.getOrder
-      }
-
-      return {
-        documentType: {},
-        documentStatus: {
-          value: ''
-        },
-        totalLines: 0,
-        grandTotal: 0,
-        salesRepresentative: {},
-        businessPartner: {
-          value: '',
-          uuid: ''
-        }
-      }
-    },
-    currentPoint() {
-      return this.$store.getters.getCurrentPOS
-    },
-    priceListUuid() {
-      const currentPOS = this.currentPoint
-      if (this.isEmptyValue(currentPOS)) {
-        return undefined
-      }
-      return this.currentPoint.priceList.uuid
-    },
     getWarehouse() {
       return this.$store.getters['user/getWarehouse']
     },
@@ -114,14 +75,65 @@ export default {
     updateOrderProcessPos() {
       return this.$store.getters.getUpdateOrderPos
     },
-    getOrder() {
-      return this.$store.getters.getPos.currentOrder
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
+    // Currency Point Of Sales
+    pointOfSalesCurrency() {
+      // const currency = this.currentPointOfSales
+      if (!this.isEmptyValue(this.currentPointOfSales.priceList)) {
+        return this.currentPointOfSales.priceList.currency
+      }
+      return {
+        uuid: '',
+        iSOCode: '',
+        curSymbol: ''
+      }
+    },
+    listPointOfSales() {
+      return this.$store.getters.posAttributes.listPointOfSales
+    },
+    ordersList() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return []
+      }
+      return this.currentPointOfSales.listOrder
+    },
+    currentOrder() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        }
+      }
+      return this.currentPointOfSales.currentOrder
+    },
+    isDisabled() {
+      return this.currentPointOfSales.currentOrder.isProcessed
+    },
+    listOrderLine() {
+      if (this.isEmptyValue(this.currentOrder)) {
+        return []
+      }
+      return this.currentOrder.lineOrder
     }
   },
   watch: {
-    getOrder(value) {
-      if (!this.isEmptyValue(value)) {
-        // this.order = value
+    currentOrder(value) {
+      if (this.isEmptyValue(value)) {
+        this.orderLines = []
+        this.$store.dispatch('listOrderLine', [])
+        this.listOrderLines()
+      } else {
         this.$store.commit('updateValuesOfContainer', {
           parentUuid: this.parentUuid,
           containerUuid: this.containerUuid,
@@ -140,71 +152,24 @@ export default {
         })
       }
     },
-    currentOrder(value) {
-      if (this.isEmptyValue(value)) {
-        this.orderLines = []
-        this.$store.dispatch('listOrderLine', [])
-        this.listOrderLines({})
-      } else {
-        this.listOrderLines(value)
-      }
-    },
-    currentPoint(value) {
-      if (!this.isEmptyValue(value)) {
-        this.$store.dispatch('setCurrentPOS', value)
-      }
-    },
-    /**
-     * Used when loading/reloading the app without the order uuid
-     * @param {oject|boolean} bPartnerToSet
-     */
-    isSetTemplateBP(bPartnerToSet) {
-      if (bPartnerToSet) {
-        this.setBusinessPartner(bPartnerToSet)
-      }
-    },
     updateOrderProcessPos(value) {
       if (!value && !this.isEmptyValue(this.$route.query)) {
         this.reloadOrder(true)
       }
     }
   },
-  created() {
-    this.getPanel()
-  },
   beforeMount() {
-    if (!this.isEmptyValue(this.currentPoint)) {
-      if (!this.isEmptyValue(this.currentOrder)) {
-        this.listOrderLines(this.currentOrder)
-      }
-    }
     this.unsubscribe = this.subscribeChanges()
   },
   beforeDestroy() {
     this.unsubscribe()
-  },
-  mounted() {
-    if (!this.isEmptyValue(this.$route.query)) {
-      this.reloadOrder(true, this.$route.query.action)
-    }
-    if (!this.isEmptyValue(this.$route.query.pos) && !this.isEmptyValue(this.allOrderLines) && this.isEmptyValue(this.$route.query.action)) {
-      this.$router.push({
-        params: {
-          ...this.$route.params
-        },
-        query: {
-          ...this.$route.query,
-          action: this.getOrder.uuid
-        }
-      }, () => {})
-    }
   },
   methods: {
     formatDate,
     formatPrice,
     formatQuantity,
     withoutPOSTerminal() {
-      if (this.isEmptyValue(this.currentPoint)) {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
         this.$message({
           type: 'warn',
           message: 'Without POS Terminal',
@@ -231,7 +196,7 @@ export default {
     },
     updateOrder(update) {
       // user session
-      if (update.value !== this.getOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPoint)) {
+      if (update.value !== this.currentOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPoint)) {
         this.$store.dispatch('updateOrder', {
           orderUuid: this.$route.query.action,
           posUuid: this.currentPoint.uuid,
@@ -267,7 +232,7 @@ export default {
 
       findProduct({
         searchValue: searchProduct,
-        priceListUuid: this.priceListUuid
+        priceListUuid: this.currentPointOfSales.priceList.uuid
       })
         .then(productPrice => {
           this.product = productPrice.product
@@ -308,7 +273,7 @@ export default {
       }
       const orderUuid = this.$route.query.action
       if (this.isEmptyValue(orderUuid)) {
-        const posUuid = this.currentPoint.uuid
+        const posUuid = this.currentPointOfSales.uuid
         let customerUuid = this.$store.getters.getValueOfField({
           containerUuid: this.containerUuid,
           columnName: 'C_BPartner_ID_UUID'
@@ -318,14 +283,14 @@ export default {
           columnName: 'C_BPartner_ID'
         })
         if (this.isEmptyValue(customerUuid) || id === 1000006) {
-          customerUuid = this.currentPoint.templateBusinessPartner.uuid
+          customerUuid = this.currentPointOfSales.templateBusinessPartner.uuid
         }
         // user session
         // alert(name)
         this.$store.dispatch('createOrder', {
           posUuid,
           customerUuid,
-          salesRepresentativeUuid: this.currentPoint.templateBusinessPartner.uuid
+          salesRepresentativeUuid: this.currentPointOfSales.templateBusinessPartner.uuid
         })
           .then(response => {
             // this.order = response
@@ -356,7 +321,7 @@ export default {
         if (this.isEmptyValue(orderUuid)) {
           orderUuid = this.$route.query.action
           // if (this.isEmptyValue(orderUuid)) {
-          //   orderUuid = this.$store.getters.getOrder.uuid // this.currentOrder.uuid
+          //   orderUuid = this.$store.getters.currentOrder.uuid // this.currentOrder.uuid
           // }
         }
         if (!this.isEmptyValue(orderUuid)) {
@@ -389,7 +354,7 @@ export default {
       // this.order = orderToPush
     },
     getOrderTax(currency) {
-      return this.formatPrice(this.getOrder.grandTotal - this.getOrder.totalLines, currency)
+      return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
@@ -432,12 +397,6 @@ export default {
           }
         }
       })
-    },
-    mas() {
-      this.$refs.linesTable.setCurrentRow(this.listOrderLine[1])
-    },
-    menos() {
-      this.$refs.linesTable.setCurrentRow(this.listOrderLine[0])
     },
     shortcutKeyMethod(event) {
       switch (event.srcKey) {
@@ -489,6 +448,62 @@ export default {
             })
           break
       }
+    },
+    newOrder() {
+      this.$router.push({
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          pos: this.currentPointOfSales.id
+        }
+      }).catch(() => {
+      }).finally(() => {
+        this.$store.commit('setListPayments', [])
+        const { templateBusinessPartner } = this.currentPointOfSales
+        this.$store.commit('updateValuesOfContainer', {
+          containerUuid: this.metadata.containerUuid,
+          attributes: [{
+            columnName: 'UUID',
+            value: undefined
+          },
+          {
+            columnName: 'ProductValue',
+            value: undefined
+          },
+          {
+            columnName: 'C_BPartner_ID',
+            value: templateBusinessPartner.id
+          },
+          {
+            columnName: 'DisplayColumn_C_BPartner_ID',
+            value: templateBusinessPartner.name
+          },
+          {
+            columnName: ' C_BPartner_ID_UUID',
+            value: templateBusinessPartner.uuid
+          }]
+        })
+        this.$store.dispatch('setOrder', {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        })
+        this.$store.commit('setShowPOSCollection', false)
+        this.$store.dispatch('listOrderLine', [])
+      })
+    },
+    changePos(posElement) {
+      this.$store.dispatch('setCurrentPOS', posElement)
+      this.newOrder()
     }
   }
 }

@@ -126,11 +126,8 @@ export default {
     defaultImage() {
       return require('@/image/ADempiere/pos/no-image.jpg')
     },
-    currentPoint() {
-      return this.$store.getters.getCurrentPOS
-    },
-    listOrderLine() {
-      return this.$store.getters.getPos.lineOrder
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
     },
     getKeyLayout() {
       return this.$store.getters.getKeyLayout
@@ -176,7 +173,7 @@ export default {
   methods: {
     formatQuantity,
     loadKeyLayout(uuid = null) {
-      const currentPOS = this.currentPoint
+      const currentPOS = this.currentPointOfSales
       if (this.isEmptyValue(currentPOS) || this.isEmptyValue(currentPOS.uuid)) {
         this.$message({
           type: 'warn',
@@ -254,10 +251,10 @@ export default {
       }
     },
     handleCommand(command) {
-      const point = this.$store.getters.getPointOfSalesUuid.keyLayoutUuid
+      const point = this.$store.getters.posAttributes.currentPointOfSales.uuid
       const toReturn = this.getKeyList.find(keyLayoutItem => keyLayoutItem.subKeyLayoutUuid === point)
 
-      let keyLayoutUuid = this.currentPoint.keyLayoutUuid
+      let keyLayoutUuid = this.currentPointOfSales.keyLayoutUuid
       if (!this.isEmptyValue(toReturn)) {
         keyLayoutUuid = toReturn.subKeyLayoutUuid
       }

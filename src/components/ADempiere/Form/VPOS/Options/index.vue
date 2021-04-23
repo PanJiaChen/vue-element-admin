@@ -238,7 +238,7 @@
                 </p>
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
-                    v-for="item in sellingPointsList"
+                    v-for="item in listPointOfSales"
                     :key="item.uuid"
                     :command="item"
                   >
@@ -260,7 +260,6 @@
                   :is-selectable="false"
                   popover-name="isShowPopoverMenu"
                 />
-
                 <div
                   slot="reference"
                   :style="blockOption"
@@ -295,6 +294,7 @@ import {
 } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
+import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import orderLineMixin from '@/components/ADempiere/Form/VPOS/Order/orderLineMixin.js'
 
 export default {
@@ -305,7 +305,8 @@ export default {
     ModalDialog
   },
   mixins: [
-    orderLineMixin
+    orderLineMixin,
+    posMixin
   ],
   props: {
     metadata: {
@@ -323,7 +324,7 @@ export default {
   computed: {
     isShowProductsPriceList: {
       get() {
-        return this.$store.state['pointOfSales/listProductPrice'].productPrice.isShowPopoverMenu
+        return this.$store.state['pointOfSales/point/index'].productPrice.isShowPopoverMenu
       },
       set(isShowed) {
         if (!this.isEmptyValue(this.$route.query.pos)) {
@@ -336,29 +337,13 @@ export default {
     },
     isShowOrdersList: {
       get() {
-        return this.$store.getters.getPos.listOrder.isShowPopover
+        return this.ordersList.isShowPopover
       },
       set(value) {
         if (!this.isEmptyValue(this.$route.query.pos)) {
           this.$store.commit('showListOrders', value)
         }
       }
-    },
-    sellingPointsList() {
-      return this.$store.getters.getSellingPointsList
-    },
-    currentPOS() {
-      return this.$store.getters.getPos.currentOrder
-    },
-    currentPoint() {
-      return this.$store.getters.getCurrentPOS
-    },
-    pointOfSalesId() {
-      const currentPOS = this.currentPOS
-      if (!this.isEmptyValue(currentPOS)) {
-        return currentPOS.id
-      }
-      return undefined
     },
     blockOption() {
       if (!this.isEmptyValue(this.$route.query.pos)) {
@@ -379,67 +364,6 @@ export default {
       event.preventDefault()
       return false
     },
-    changePos(posElement) {
-      this.$store.dispatch('setCurrentPOS', posElement)
-      this.newOrder()
-    },
-    newOrder() {
-      const pos = this.pointOfSalesId || this.$route.query.pos
-      this.$router.push({
-        params: {
-          ...this.$route.params
-        },
-        query: {
-          pos
-        }
-      }).catch(error => {
-        console.info(`VPOS/Options component (New Order): ${error.message}`)
-      }).finally(() => {
-        const { templateBusinessPartner } = this.$store.getters.getCurrentPOS
-        // TODO: Set order with POS Terminal default values
-        this.$store.commit('setListPayments', {
-          payments: []
-        })
-        this.$store.dispatch('setOrder', {
-          documentType: {},
-          documentStatus: {
-            value: ''
-          },
-          totalLines: 0,
-          grandTotal: 0,
-          salesRepresentative: {},
-          businessPartner: {
-            value: '',
-            uuid: ''
-          }
-        })
-        this.$store.dispatch('listOrderLine', [])
-        this.$store.commit('setShowPOSCollection', false)
-        this.$store.commit('updateValuesOfContainer', {
-          containerUuid: this.metadata.containerUuid,
-          attributes: [{
-            columnName: 'UUID',
-            value: undefined
-          },
-          {
-            columnName: 'ProductValue',
-            value: undefined
-          },
-          {
-            columnName: 'C_BPartner_ID',
-            value: templateBusinessPartner.id
-          },
-          {
-            columnName: 'DisplayColumn_C_BPartner_ID',
-            value: templateBusinessPartner.name
-          },
-          {
-            columnName: ' C_BPartner_ID_UUID',
-            value: this.$store.getters['user/getUserUuid']
-          }]
-        })
-      })
-    },
     printOrder() {
       printOrder({
         orderUuid: this.$route.query.action
@@ -454,7 +378,7 @@ export default {
       })
     },
     completePreparedOrder() {
-      const posUuid = this.currentPoint.uuid
+      const posUuid = this.currentPointOfSales.uuid
       this.$store.dispatch('updateOrderPos', true)
       this.$store.dispatch('updatePaymentPos', true)
       this.$message({
@@ -465,8 +389,8 @@ export default {
       processOrder({
         posUuid,
         orderUuid: this.$route.query.action,
-        createPayments: !this.isEmptyValue(this.$store.getters.getPos.listPayments),
-        payments: this.$store.getters.getPos.listPayments
+        createPayments: !this.isEmptyValue(this.currentOrder.listPayments),
+        payments: this.currentOrder.listPayments
       })
         .then(response => {
           this.$store.dispatch('reloadOrder', response.uuid)
@@ -485,7 +409,7 @@ export default {
         })
         .finally(() => {
           this.$store.dispatch('listOrdersFromServer', {
-            posUuid: this.$store.getters.getCurrentPOS.uuid
+            posUuid: this.currentPointOfSales.uuid
           })
           this.$store.dispatch('updateOrderPos', false)
           this.$store.dispatch('updatePaymentPos', false)
@@ -497,11 +421,11 @@ export default {
       const parametersList = [
         {
           columnName: 'C_Order_ID',
-          value: this.$store.getters.getPos.currentOrder.id
+          value: this.currentOrder.id
         },
         {
           columnName: 'Bill_BPartner_ID',
-          value: this.$store.getters.getPos.currentOrder.businessPartner.id
+          value: this.currentOrder.businessPartner.id
         },
         {
           columnName: 'IsCancelled',
@@ -542,16 +466,16 @@ export default {
     },
     copyOrder() {
       this.processPos = posProcess[1].uuid
-      const posUuid = this.currentPoint.uuid
+      const posUuid = this.currentPointOfSales.uuid
       const parametersList = [{
         columnName: 'C_Order_ID',
-        value: this.$store.getters.getPos.currentOrder.id
+        value: this.currentOrder.id
       }]
       this.$store.dispatch('addParametersProcessPos', parametersList)
       requestCreateOrder({
         posUuid,
-        customerUuid: this.currentPOS.businessPartner.uuid,
-        salesRepresentativeUuid: this.currentPOS.salesRepresentative.uuid
+        customerUuid: this.currentPointOfSales.businessPartner.uuid,
+        salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid
       })
         .then(order => {
           this.$store.dispatch('currentOrder', order)
@@ -600,11 +524,11 @@ export default {
         orderUuid: this.$route.query.action
       })
         .then(response => {
-          this.changePos(this.$store.getters.getCurrentPOS)
+          this.changePos(this.currentPointOfSales)
         })
         .finally(() => {
           this.$store.dispatch('listOrdersFromServer', {
-            posUuid: this.$store.getters.getCurrentPOS.uuid
+            posUuid: this.currentPointOfSales.uuid
           })
           this.$message({
             type: 'success',
@@ -615,7 +539,7 @@ export default {
         })
     },
     seeOrderList() {
-      if (this.$store.getters.getPos.listOrder.recordCount <= 0) {
+      if (this.ordersList.recordCount <= 0) {
         this.$store.dispatch('listOrdersFromServer', {})
       }
     },

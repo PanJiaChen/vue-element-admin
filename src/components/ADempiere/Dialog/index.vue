@@ -180,7 +180,7 @@ export default {
           this.$store.dispatch('processPos', {
             action: action, // process metadata
             parentUuid: this.parentUuid,
-            idProcess: this.$store.getters.getFindOrder.id,
+            idProcess: this.$store.getters.posAttributes.currentOrder.id,
             containerUuid: this.containerUuid,
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
             parametersList: this.$store.getters.getPosParameters

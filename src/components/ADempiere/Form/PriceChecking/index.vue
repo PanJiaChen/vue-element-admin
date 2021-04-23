@@ -143,7 +143,7 @@ export default {
       return this.currentImageOfProduct
     },
     currentPoint() {
-      return this.$store.getters.getCurrentPOS
+      return this.$store.getters.posAttributes.currentPointOfSales
     }
   },
   created() {

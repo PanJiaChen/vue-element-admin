@@ -119,7 +119,7 @@ export default {
         }
       })
 
-      valuesToSend['posUuid'] = this.$store.getters.getPointOfSalesUuid
+      valuesToSend['posUuid'] = this.$store.getters.posAttributes.currentPointOfSales.uuid
       return valuesToSend
     },
     setBusinessPartner({ id, name, uuid }, isCloseForm = true) {

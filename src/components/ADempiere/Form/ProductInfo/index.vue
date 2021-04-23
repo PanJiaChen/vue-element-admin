@@ -71,7 +71,7 @@ export default {
       return []
     },
     currentPos() {
-      return this.$store.getters.getCurrentPOS
+      return this.$store.getters.posAttributes.currentPointOfSales
     },
     keyShortcuts() {
       return {

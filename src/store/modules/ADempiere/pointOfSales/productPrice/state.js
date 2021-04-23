@@ -15,34 +15,19 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Payments Mutations
+ * Product Price State
  */
+const withoutResponse = {
+  isLoaded: false,
+  isReload: true,
+  recordCount: 0,
+  nextPageToken: undefined
+}
 export default {
-  addPaymentBox(state, paymentBox) {
-    state.paymentBox.push(paymentBox)
+  productPrice: {
+    ...withoutResponse,
+    isShowPopoverField: false, // with field
+    isShowPopoverMenu: false // with menu
   },
-  currencyMultiplyRate(state, multiplyRate) {
-    state.multiplyRate = multiplyRate
-  },
-  currencyDivideRate(state, divideRate) {
-    state.divideRate = divideRate
-  },
-  currencyMultiplyRateCollection(state, multiplyRateCollection) {
-    state.multiplyRateCollection = multiplyRateCollection
-  },
-  currencyDivideRateCollection(state, divideRateCollection) {
-    state.divideRateCollection = divideRateCollection
-  },
-  setListPayments(state, list) {
-    state.listPayments = list
-  },
-  setCurrencyDisplaye(state, currency) {
-    state.currency = currency
-  },
-  setConvertionPayment(state, convertion) {
-    state.convertion = convertion
-  },
-  setFieldCurrency(state, currency) {
-    state.fieldCurrency = currency
-  }
+  searchProduct: ''
 }

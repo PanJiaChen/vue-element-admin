@@ -55,8 +55,8 @@
     <el-table
       ref="orderTable"
       v-shortkey="shortsKey"
-      v-loading="!tableOrder.isLoaded"
-      :data="ordersList"
+      v-loading="!ordersList.isLoaded"
+      :data="ordersList.ordersList"
       border
       fit
       :highlight-current-row="highlightRow"
@@ -118,8 +118,8 @@
     </el-table>
 
     <custom-pagination
-      :total="tableOrder.recordCount"
-      :current-page="tableOrder.pageNumber"
+      :total="ordersList.recordCount"
+      :current-page="ordersList.pageNumber"
       :handle-change-page="handleChangePage"
     />
   </el-main>
@@ -136,6 +136,7 @@ import {
   formatQuantity
 } from '@/utils/ADempiere/valueFormat.js'
 import Field from '@/components/ADempiere/Field'
+import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 
 export default {
   name: 'OrdersList',
@@ -143,6 +144,9 @@ export default {
     CustomPagination,
     Field
   },
+  mixins: [
+    posMixin
+  ],
   props: {
     metadata: {
       type: Object,
@@ -181,26 +185,18 @@ export default {
       }
       return false
     },
-    tableOrder() {
-      return this.$store.getters.getPos.listOrder
-    },
-    ordersList() {
-      const order = this.tableOrder
-      if (order && !this.isEmptyValue(order.ordersList)) {
-        return order.ordersList
-      }
-      return []
-    },
     selectOrder() {
       const action = this.$route.query.action
-      const order = this.ordersList.find(item => item.uuid === action)
-      if (!this.isEmptyValue(order)) {
-        return order
+      if (!this.isEmptyValue(this.ordersList.ordersList)) {
+        const order = this.ordersList.ordersList.find(item => item.uuid === action)
+        if (!this.isEmptyValue(order)) {
+          return order
+        }
       }
       return null
     },
     isReadyFromGetData() {
-      const { isReload } = this.tableOrder
+      const { isReload } = this.ordersList
       return isReload
     },
     shortsKey() {
@@ -246,7 +242,7 @@ export default {
         containerUuid: this.metadata.containerUuid
       })
       values = this.convertValuesToSend(values)
-      const point = this.$store.getters.getPointOfSalesUuid
+      const point = this.$store.getters.posAttributes.currentPointOfSales.uuid
       if (!this.isEmptyValue(point)) {
         this.$store.dispatch('listOrdersFromServer', {
           ...values

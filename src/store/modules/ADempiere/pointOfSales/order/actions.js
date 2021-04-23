@@ -1,3 +1,19 @@
+// ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
+// Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
+// Contributor(s): Elsio Sanchez esanchez@erpya.com www.erpya.com
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
 import {
   requestCreateOrder,
   requestGetOrder,
@@ -10,7 +26,6 @@ import { showMessage } from '@/utils/ADempiere/notification.js'
 
 /**
  * Order Actions
- * @author Elsio Sanchez <elsiosanches@gmail.com>
  */
 export default {
   /**
@@ -117,7 +132,7 @@ export default {
    */
   reloadOrder({ commit, dispatch, rootGetters }, { orderUuid }) {
     if (isEmptyValue(orderUuid)) {
-      orderUuid = rootGetters.getOrder.uuid // this.currentOrder.uuid
+      orderUuid = rootGetters.posAttributes.currentPointOfSales.currentOrder.uuid // this.currentOrder.uuid
     }
     if (!isEmptyValue(orderUuid)) {
       requestGetOrder(orderUuid)
@@ -188,7 +203,7 @@ export default {
     salesRepresentativeUuid
   }) {
     if (isEmptyValue(posUuid)) {
-      posUuid = getters.getPointOfSalesUuid
+      posUuid = getters.posAttributes.currentPointOfSales.uuid
     }
 
     let { pageNumber, token } = state.listOrder
@@ -237,7 +252,8 @@ export default {
         // })
       })
   },
-  setOrder({ commit }, order) {
+  setOrder({ commit, dispatch }, order) {
+    dispatch('listOrderLinesFromServer', order.uuid)
     commit('setOrder', order)
   },
   currentOrder({ commit }, findOrder) {

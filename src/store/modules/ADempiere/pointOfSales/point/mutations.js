@@ -14,35 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import Vue from 'vue'
+
 /**
- * Payments Mutations
+ * Pos Mutations
+ * @author Elsio Sanchez <elsiosanches@gmail.com>
  */
 export default {
-  addPaymentBox(state, paymentBox) {
-    state.paymentBox.push(paymentBox)
+  setPontOfSales(state, pos) {
+    state.pointOfSales = pos
   },
-  currencyMultiplyRate(state, multiplyRate) {
-    state.multiplyRate = multiplyRate
+  setCurrentPOS(state, pos) {
+    Vue.set(state.pointOfSales, 'currentPOS', pos)
   },
-  currencyDivideRate(state, divideRate) {
-    state.divideRate = divideRate
+  listPointOfSales(state, listPointOfSales) {
+    state.listPointOfSales = listPointOfSales
   },
-  currencyMultiplyRateCollection(state, multiplyRateCollection) {
-    state.multiplyRateCollection = multiplyRateCollection
+  currentPointOfSales(state, currentPointOfSales) {
+    state.currentPointOfSales = currentPointOfSales
   },
-  currencyDivideRateCollection(state, divideRateCollection) {
-    state.divideRateCollection = divideRateCollection
+  setShowPOSOptions(state, isShowedOptions) {
+    state.showPOSOptions = isShowedOptions
   },
-  setListPayments(state, list) {
-    state.listPayments = list
+  setShowPOSKeyLayout(state, isShowedKeyLayout) {
+    state.showPOSKeyLayout = isShowedKeyLayout
   },
-  setCurrencyDisplaye(state, currency) {
-    state.currency = currency
-  },
-  setConvertionPayment(state, convertion) {
-    state.convertion = convertion
-  },
-  setFieldCurrency(state, currency) {
-    state.fieldCurrency = currency
+  setShowPOSCollection(state, isShowedCollection) {
+    state.showPOSCollection = isShowedCollection
   }
 }

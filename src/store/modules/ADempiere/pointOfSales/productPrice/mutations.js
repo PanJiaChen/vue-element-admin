@@ -15,34 +15,28 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 /**
- * Payments Mutations
+ * Product Price Mutations
  */
+import Vue from 'vue'
+
 export default {
-  addPaymentBox(state, paymentBox) {
-    state.paymentBox.push(paymentBox)
+  setListProductPrice(state, productsPrices) {
+    state.productPrice = {
+      ...state.productPrice,
+      ...productsPrices
+    }
   },
-  currencyMultiplyRate(state, multiplyRate) {
-    state.multiplyRate = multiplyRate
+  setProductPicePageNumber(state, pageNumber) {
+    state.productPrice.pageNumber = pageNumber
   },
-  currencyDivideRate(state, divideRate) {
-    state.divideRate = divideRate
+  showListProductPrice(state, payload) {
+    Vue.set(state.productPrice, payload.attribute, payload.isShowed)
   },
-  currencyMultiplyRateCollection(state, multiplyRateCollection) {
-    state.multiplyRateCollection = multiplyRateCollection
+  setIsReloadProductPrice(state) {
+    Vue.set(state.productPrice, 'isReload', true)
+    Vue.set(state.productPrice, 'isLoaded', false)
   },
-  currencyDivideRateCollection(state, divideRateCollection) {
-    state.divideRateCollection = divideRateCollection
-  },
-  setListPayments(state, list) {
-    state.listPayments = list
-  },
-  setCurrencyDisplaye(state, currency) {
-    state.currency = currency
-  },
-  setConvertionPayment(state, convertion) {
-    state.convertion = convertion
-  },
-  setFieldCurrency(state, currency) {
-    state.fieldCurrency = currency
+  updtaeSearchProduct(state, searchProduct) {
+    state.searchProduct = searchProduct
   }
 }

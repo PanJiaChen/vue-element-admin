@@ -99,9 +99,13 @@ import {
 import {
   requestGetConversionRate
 } from '@/api/ADempiere/form/point-of-sales.js'
+import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 
 export default {
   name: 'TypeCollection',
+  mixins: [
+    posMixin
+  ],
   props: {
     isAddTypePay: {
       type: Array,
@@ -151,7 +155,7 @@ export default {
       const currencyUuid = this.isAddTypePay.find(pay => pay.currencyUuid !== this.currency.uuid)
       if (!this.isEmptyValue(currencyUuid)) {
         requestGetConversionRate({
-          conversionTypeUuid: this.$store.getters.getCurrentPOS.conversionTypeUuid,
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
           currencyFromUuid: this.currency.uuid,
           currencyToUuid: currencyUuid.currencyUuid
         })

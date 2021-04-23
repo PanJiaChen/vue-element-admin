@@ -99,7 +99,6 @@ export default {
     },
     listOrderLines({ uuid: orderUuid }) {
       if (!this.isEmptyValue(orderUuid)) {
-        this.$store.dispatch('listOrderLinesFromServer', orderUuid)
         this.orderLines = this.listOrderLine
         this.handleCurrentLineChange(this.currentOrderLine)
       }
@@ -168,8 +167,7 @@ export default {
       if (columnName === 'LineDescription') {
         return row.lineDescription
       }
-
-      const currency = this.currencyPoint.iSOCode
+      const currency = this.pointOfSalesCurrency.iSOCode
       if (columnName === 'CurrentPrice') {
         return this.formatPrice(row.priceActual, currency)
       } else if (columnName === 'QtyOrdered') {
