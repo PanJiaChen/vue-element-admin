@@ -139,7 +139,6 @@ export default {
 
 <style scoped>
   .el-table {
-    background-color: #FFFFFF;
     cursor: pointer;
   }
   .search_recent {
@@ -170,5 +169,19 @@ export default {
   }
   .action-tag {
     float: right;
+  }
+</style>
+<style>
+  .el-table .cell {
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    word-break: break-all;
+    line-height: 23px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
   }
 </style>
