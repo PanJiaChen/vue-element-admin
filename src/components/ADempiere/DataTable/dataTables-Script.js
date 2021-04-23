@@ -344,10 +344,12 @@ export default {
       })
     },
     headerLabel(field) {
-      if (field.isMandatory || field.isMandatoryFromLogic) {
+      if (field.isMandatory || field.isMandatoryFromLogic && field.isDisplayedGrid) {
         return '* ' + field.name
       }
-      return field.name
+      if (field.isDisplayedGrid) {
+        return field.name
+      }
     },
     /**
      * @param {object} row, row data

@@ -202,6 +202,10 @@ export default {
       return 'skill'
     }
   },
+  created() {
+    this.generateContextMenu()
+    this.getReferences()
+  },
   methods: {
     clickRelation(item) {
       this.$router.push({

@@ -276,12 +276,6 @@ export default {
       }
     }
   },
-  created() {
-    this.generateContextMenu()
-  },
-  mounted() {
-    this.getReferences()
-  },
   methods: {
     showNotification,
     actionContextMenu(event) {
@@ -427,7 +421,9 @@ export default {
             return item
           }
         })
-        this.$store.dispatch('setOrder', processAction)
+        if (processAction) {
+          this.$store.dispatch('setOrder', processAction)
+        }
       }
       if (this.isWindow && this.isEmptyValue(this.actions.find(element => element.action === 'recordAccess'))) {
         this.$store.dispatch('addAttribute', {
