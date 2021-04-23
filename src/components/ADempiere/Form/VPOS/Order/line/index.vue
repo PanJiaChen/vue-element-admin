@@ -26,9 +26,53 @@
         <el-col :key="index" :span="8">
           <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
             <field
+              v-if="field.columnName === 'PriceEntered'"
               :key="field.columnName"
               :metadata-field="field"
             />
+            <field
+              v-if="field.columnName === 'QtyEntered'"
+              :key="field.columnName"
+              :metadata-field="field"
+            />
+            <el-popover
+              ref="ping"
+              placement="right"
+              trigger="click"
+            >
+              <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
+                <el-form-item label="Ingrese Ping">
+                  <el-input
+                    v-model="input"
+                    placeholder="Ingrese Ping"
+                    clearable
+                  />
+                </el-form-item>
+              </el-form>
+              <span style="float: right;">
+                <el-button
+                  type="danger"
+                  icon="el-icon-close"
+                  @click="closePing"
+                />
+                <el-button
+                  type="primary"
+                  icon="el-icon-check"
+                />
+                {{
+                  isPosRequiredPin
+                }}
+              </span>
+              <field
+                v-if="field.columnName === 'Discount'"
+                slot="reference"
+                :key="field.columnName"
+                :metadata-field="{
+                  ...field,
+                  isReadOnly: !isModifyPrice || isPosRequiredPin
+                }"
+              />
+            </el-popover>
           </el-form>
         </el-col>
       </template>
@@ -81,7 +125,25 @@ export default {
       isLoadedField: false,
       panelType: 'custom',
       fieldsListLine,
-      fieldsList: []
+      fieldsList: [],
+      input: '',
+      visible: false
+    }
+  },
+  computed: {
+    isModifyPrice() {
+      const pos = this.$store.getters.getCurrentPOS
+      if (!this.isEmptyValue(pos.isModifyPrice)) {
+        return this.$store.getters.getCurrentPOS.isModifyPrice
+      }
+      return false
+    },
+    isPosRequiredPin() {
+      const pos = this.$store.getters.getCurrentPOS
+      if (!this.isEmptyValue(pos.isPosRequiredPin)) {
+        return this.$store.getters.getCurrentPOS.isPosRequiredPin
+      }
+      return false
     }
   },
   watch: {
@@ -89,7 +151,6 @@ export default {
       if (value && this.isEmptyValue(this.metadataList) && (this.dataLine.uuid === this.currentLine.uuid)) {
         this.setFieldsList()
         this.metadataList = this.setFieldsList()
-        this.metadataList.sort(this.sortFields)
         this.isLoadedField = true
       }
       if (value) {
@@ -98,7 +159,6 @@ export default {
           quantityOrdered: this.currentLine.quantity,
           discount: this.currentLine.discountRate
         })
-        this.metadataList.sort(this.sortFields)
         this.isLoadedField = true
       }
     }
@@ -155,14 +215,8 @@ export default {
         })
       }
     },
-    sortFields(field, nextField) {
-      if (field.sequence < nextField.sequence) {
-        return 1
-      }
-      if (field.sequence > nextField.sequence) {
-        return -1
-      }
-      return 0
+    closePing() {
+      this.$refs.ping[this.$refs.ping.length - 1].showPopper = false
     }
   }
 }
