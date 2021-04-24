@@ -85,7 +85,7 @@ export default {
           })
         }
         if (route.children) {
-          const tempTags = this.filterAffixTags(route.children, route.path)
+          const tempTags = this.filterAffixTags(route.children, path.resolve(basePath, route.path))
           if (tempTags.length >= 1) {
             tags = [...tags, ...tempTags]
           }
