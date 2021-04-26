@@ -491,12 +491,12 @@ export default {
       })
     },
     currencyUuid(value) {
-      const alo = this.$store.getters.getConvertionRate.find(currency => {
+      const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
         if (currency.uuid === value) {
           return currency
         }
       })
-      if (alo === undefined) {
+      if (listCurrency === undefined) {
         this.$store.dispatch('conversionDivideRate', {
           conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
           currencyFromUuid: this.pointOfSalesCurrency.uuid,
@@ -536,7 +536,6 @@ export default {
     }
   },
   created() {
-    console.log(this.$store.getters.getConvertionRate)
     this.$store.dispatch('addRateConvertion', this.pointOfSalesCurrency)
     this.unsubscribe = this.subscribeChanges()
     this.defaultValueCurrency()

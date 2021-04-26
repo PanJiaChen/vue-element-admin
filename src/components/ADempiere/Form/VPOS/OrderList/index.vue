@@ -248,14 +248,10 @@ export default {
       }
     },
     loadOrdersList() {
-      let values = this.$store.getters.getValuesView({
-        containerUuid: this.metadata.containerUuid
-      })
-      values = this.convertValuesToSend(values)
       const point = this.$store.getters.posAttributes.currentPointOfSales.uuid
       if (!this.isEmptyValue(point)) {
         this.$store.dispatch('listOrdersFromServer', {
-          ...values
+          posUuid: point
         })
       }
     },
@@ -293,55 +289,6 @@ export default {
           }, 2000)
         }
       })
-    },
-    convertValuesToSend(values) {
-      const valuesToSend = {}
-
-      values.forEach(element => {
-        const { value, columnName } = element
-
-        if (this.isEmptyValue(value)) {
-          return
-        }
-
-        switch (columnName) {
-          case 'DocumentNo':
-            valuesToSend['documentNo'] = value
-            break
-          case 'C_BPartner_ID_UUID':
-            valuesToSend['businessPartnerUuid'] = value
-            break
-          case 'GrandTotal':
-            valuesToSend['grandTotal'] = value
-            break
-          case 'OpenAmt':
-            valuesToSend['openAmount'] = value
-            break
-          case 'IsPaid':
-            valuesToSend['isPaid'] = value
-            break
-          case 'Processed':
-            valuesToSend['isProcessed'] = value
-            break
-          case 'IsAisleSeller':
-            valuesToSend['isAisleSeller'] = value
-            break
-          case 'IsInvoiced':
-            valuesToSend['isInvoiced'] = value
-            break
-          case 'DateOrderedFrom':
-            valuesToSend['dateOrderedFrom'] = value
-            break
-          case 'DateOrderedTo':
-            valuesToSend['dateOrderedTo'] = value
-            break
-          case 'SalesRep_ID_UUID':
-            valuesToSend['salesRepresentativeUuid'] = value
-            break
-        }
-      })
-
-      return valuesToSend
     },
     orderPrpcess(row) {
       const parametersList = [{

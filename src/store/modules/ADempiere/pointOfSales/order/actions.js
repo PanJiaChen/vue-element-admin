@@ -21,7 +21,7 @@ import {
   requestCreateOrderLine,
   requestListOrders
 } from '@/api/ADempiere/form/point-of-sales.js'
-import { isEmptyValue, extractPagingToken } from '@/utils/ADempiere/valueUtils.js'
+import { isEmptyValue, extractPagingToken, convertValuesToSend } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
 
 /**
@@ -189,18 +189,7 @@ export default {
     dispatch('listOrdersFromServer', {})
   },
   listOrdersFromServer({ state, commit, getters }, {
-    posUuid,
-    documentNo,
-    businessPartnerUuid,
-    grandTotal,
-    openAmount,
-    isPaid,
-    isProcessed,
-    isAisleSeller,
-    isInvoiced,
-    dateOrderedFrom,
-    dateOrderedTo,
-    salesRepresentativeUuid
+    posUuid
   }) {
     if (isEmptyValue(posUuid)) {
       posUuid = getters.posAttributes.currentPointOfSales.uuid
@@ -214,6 +203,11 @@ export default {
     if (!isEmptyValue(token)) {
       pageToken = token + '-' + pageNumber
     }
+    let values = getters.getValuesView({
+      containerUuid: 'Orders-List'
+    })
+    values = convertValuesToSend(values)
+    const { documentNo, businessPartnerUuid, grandTotal, openAmount, isPaid, isProcessed, isAisleSeller, isInvoiced, dateOrderedFrom, dateOrderedTo, salesRepresentativeUuid } = values
     requestListOrders({
       posUuid,
       documentNo,

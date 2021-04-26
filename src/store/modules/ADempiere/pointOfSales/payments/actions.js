@@ -112,7 +112,6 @@ export default {
     payment.splice(0)
   },
   conversionDivideRate({ commit, dispatch }, params) {
-    console.log('conversionDivideRate')
     requestGetConversionRate({
       conversionTypeUuid: params.conversionTypeUuid,
       currencyFromUuid: params.currencyFromUuid,
