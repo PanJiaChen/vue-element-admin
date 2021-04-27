@@ -127,30 +127,32 @@
         {{ $t('components.contextMenuRelations') }}<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-          v-for="(relation, index) in relationsList"
-          :key="index"
-          :command="relation"
-          :divided="true"
-        >
-          <div class="contents">
-            <div style="margin-right: 5%;margin-top: 10%;">
-              <svg-icon :icon-class="relation.meta.icon" />
+        <el-scrollbar wrap-class="scroll-child">
+          <el-dropdown-item
+            v-for="(relation, index) in relationsList"
+            :key="index"
+            :command="relation"
+            :divided="true"
+          >
+            <div class="contents">
+              <div style="margin-right: 5%;margin-top: 10%;">
+                <svg-icon :icon-class="relation.meta.icon" />
+              </div>
+              <div>
+                <span class="contents">
+                  <b class="label">
+                    {{ relation.meta.title }}
+                  </b>
+                </span>
+                <p
+                  class="description"
+                >
+                  {{ relation.meta.description }}
+                </p>
+              </div>
             </div>
-            <div>
-              <span class="contents">
-                <b class="label">
-                  {{ relation.meta.title }}
-                </b>
-              </span>
-              <p
-                class="description"
-              >
-                {{ relation.meta.description }}
-              </p>
-            </div>
-          </div>
-        </el-dropdown-item>
+          </el-dropdown-item>
+        </el-scrollbar>
       </el-dropdown-menu>
     </el-dropdown>
     <el-dropdown size="mini" @command="clickReferences">
@@ -158,27 +160,29 @@
         {{ $t('components.contextMenuReferences') }}<i class="el-icon-arrow-down el-icon--right" />
       </el-button>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item
-          v-for="(reference, index) in references.referencesList"
-          :key="index"
-          :command="reference"
-          :divided="true"
-        >
-          <div class="contents">
-            <div>
-              <span class="contents">
-                <b class="label">
-                  {{ reference.displayName }}
-                </b>
-              </span>
-              <p
-                class="description"
-              >
-                {{ $t('data.noDescription') }}
-              </p>
+        <el-scrollbar wrap-class="scroll-child">
+          <el-dropdown-item
+            v-for="(reference, index) in references.referencesList"
+            :key="index"
+            :command="reference"
+            :divided="true"
+          >
+            <div class="contents">
+              <div>
+                <span class="contents">
+                  <b class="label">
+                    {{ reference.displayName }}
+                  </b>
+                </span>
+                <p
+                  class="description"
+                >
+                  {{ $t('data.noDescription') }}
+                </p>
+              </div>
             </div>
-          </div>
-        </el-dropdown-item>
+          </el-dropdown-item>
+        </el-scrollbar>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
@@ -365,7 +369,7 @@ export default {
     left: 0;
     z-index: 10;
     padding: 10px 0;
-    margin: 5px 0;
+    margin: 0px 0;
     background-color: #FFFFFF;
     border: 1px solid #e6ebf5;
     border-radius: 4px;
@@ -373,7 +377,7 @@ export default {
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     max-height: 300px;
     max-width: 220px;
-    overflow: auto;
+    overflow: hidden;
   }
   .el-dropdown-menu--mini .el-dropdown-menu__item {
     line-height: 14px;
