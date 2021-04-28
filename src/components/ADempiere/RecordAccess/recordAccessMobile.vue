@@ -1,86 +1,99 @@
 <template>
-  <el-card class="box-card">
-    <div slot="header" class="clearfix">
-      <span>
-        {{ $t('data.recordAccess.actions') }}
-      </span>
-    </div>
-    <div style="margin-bottom: 10%;">
-      <span style="margin-bottom: 10%;">
-        {{ $t('data.recordAccess.hideRecord') }}
-      </span>
-      <br>
-      <el-select
-        v-model="getterListExclude"
-        multiple
-        style="margin-top: 5%;"
-        placeholder="Select"
-        clearable
-        @change="addListExclude"
-      >
-        <el-option
-          v-for="item in getterDataRecords"
-          :key="item.clientId"
-          :label="item.name"
-          :value="item.uuid"
-        />
-      </el-select>
-    </div>
-    <div
-      style="margin-bottom: 10%;"
-    >
-      <span
+  <div>
+    <el-card class="box-card">
+      <div slot="header" class="clearfix">
+        <span>
+          {{ $t('data.recordAccess.actions') }}
+        </span>
+      </div>
+      <div style="margin-bottom: 10%;">
+        <span style="margin-bottom: 10%;">
+          {{ $t('data.recordAccess.hideRecord') }} ({{ labelListExcludo.length }})
+        </span>
+        <br>
+        <el-select
+          v-model="labelListExcludo"
+          multiple
+          style="margin-top: 5%;"
+          filterable
+          placeholder="Select"
+          collapse-tags
+          @change="addListExclude"
+        >
+          <el-option
+            v-for="item in includedList"
+            :key="item.roleUuid"
+            :label="item.roleName"
+            :value="item.roleName"
+          />
+        </el-select>
+      </div>
+      <div
         style="margin-bottom: 10%;"
       >
-        {{ $t('data.recordAccess.recordDisplay') }}
-      </span>
-      <br>
-      <el-select
-        v-model="getterListInclude"
-        multiple
-        style="margin-top: 5%;"
-        placeholder="Select"
-        @change="addListInclude"
-      >
-        <el-option
-          v-for="item in getterDataRecords"
-          :key="item.clientId"
-          :label="item.name"
-          :value="item.uuid"
-        />
-      </el-select>
-    </div>
-    <el-form
-      label-position="top"
-      size="small"
-      class="create-bp"
-    >
-      <el-row :gutter="24">
-        <template
-          v-for="(record, index) in getterListInclude"
+        <span
+          style="margin-bottom: 10%;"
         >
-          <div :key="index" style="margin-left: 5%;">
-            <el-tag>
-              {{ record }}
-            </el-tag>
-            <p>
-              {{ $t('data.recordAccess.isReadonly') }}
-              <el-checkbox v-model="isReadonly" />
-            </p>
-            <p>
-              {{ $t('data.recordAccess.isDependentEntities') }} <el-checkbox v-model="isDependentEntities" />
-            </p>
-          </div>
-        </template>
-      </el-row>
-    </el-form>
-  </el-card>
+          {{ $t('data.recordAccess.recordDisplay') }} ({{ labelListInclude.length }})
+        </span>
+        <br>
+        <el-select
+          v-model="labelListInclude"
+          multiple
+          style="margin-top: 5%;"
+          placeholder="Select"
+          filterable
+          collapse-tags
+          @change="addListInclude"
+        >
+          <el-option
+            v-for="item in excludedList"
+            :key="item.roleUuid"
+            :label="item.roleName"
+            :value="item.roleName"
+          />
+        </el-select>
+      </div>
+      <el-form
+        label-position="top"
+        size="small"
+        class="create-bp"
+      >
+        <el-scrollbar wrap-class="scroll-panel-right-mode-mobile" style="max-height: 200px;">
+          <el-row :gutter="24">
+            <div style="margin-left: 5%;">
+              <p>
+                {{ $t('data.recordAccess.isReadonly') }} <el-switch v-model="isReadonly" />
+              </p>
+              <p>
+                {{ $t('data.recordAccess.isDependentEntities') }} <el-switch v-model="isDependentEntities" />
+              </p>
+            </div>
+          </el-row>
+        </el-scrollbar>
+      </el-form>
+    </el-card>
+    <span style="float: right;padding-top: 1%;">
+      <el-button
+        type="danger"
+        icon="el-icon-close"
+        @click="close"
+      />
+      <el-button
+        type="primary"
+        icon="el-icon-check"
+        @click="SendRecorAccess(includedList)"
+      />
+    </span>
+  </div>
 </template>
 
 <script>
+import recordAccessMixin from './recordAccess.js'
 
 export default {
   name: 'RecordAccessMobile',
+  mixins: [recordAccessMixin],
   props: {
     parentUuid: {
       type: String,
@@ -111,102 +124,64 @@ export default {
     return {
       group: 'sequence',
       isReadonly: false,
-      isDependentEntities: true,
-      getterDataRecords: this.$store.getters['user/getRoles']
+      isDependentEntities: false,
+      labelListInclude: [],
+      labelListExcludo: []
     }
   },
   computed: {
-    getterListExclude() {
-      const list = this.getterDataRecords.filter(item => item.isPersonalLock === false)
-      return list.map(element => {
-        return element.name
+    listExclude() {
+      return this.excludedList.map(element => {
+        return element.roleName
       })
     },
-    getterListInclude() {
-      const list = this.getterDataRecords.filter(item => item.isPersonalLock === true)
-      return list.map(element => {
-        return element.name
+    listInclude() {
+      return this.includedList.map(element => {
+        return element.roleName
       })
-    },
-    getIdentifiersList() {
-      return this.identifiersList
-        .filter(item => item.componentPath !== 'FieldSelect')
     }
   },
-  created() {
-    const record = this.getterDataRecords.map(record => {
-      return {
-        id: record.id,
-        uuid: record.uuid,
-        IsExclude: record.isPersonalLock,
-        isDependentEntities: this.isDependentEntities,
-        isReadonly: this.isReadonly
-      }
-    })
-    this.$store.dispatch('changeList', record)
+  watch: {
+    listInclude(value) {
+      this.labelListInclude = value
+    },
+    listExclude(value) {
+      this.labelListExcludo = value
+    }
   },
   methods: {
-    handleChange(value) {
-      const action = Object.keys(value)[0] // get property
-      const element = value.[action].element
-      const index = this.getterDataRecords.findIndex(role => role.id === element.id)
-      switch (action) {
-        case 'added':
-          this.addItem({
-            index,
-            element
-          })
-          break
-        case 'removed':
-          this.deleteItem({
-            index,
-            element
-          })
-          break
-      }
-    },
     addListInclude(element) {
-      const index = this.getterDataRecords.findIndex(item => element[element.length - 1] === item.uuid)
-      this.getterDataRecords[index].isPersonalLock = true
-    },
-    addListExclude(element) {
-      const index = this.getterDataRecords.findIndex(item => element[element.length - 1] === item.uuid)
-      this.getterDataRecords[index].isPersonalLock = false
-    },
-    /**
-     * @param {number} index: the index of the added element
-     * @param {object} element: the added element
-     */
-    addItem({
-      index,
-      element
-    }) {
-      this.getterDataRecords[index].isPersonalLock = !element.isPersonalLock
-    },
-    /**
-     * @param {number} index: the index of the element before remove
-     * @param {object} element: the removed element
-     */
-    deleteItem({
-      index,
-      element
-    }) {
-      this.getterDataRecords[index].isPersonalLock = !element.isPersonalLock
-      const record = this.getterDataRecords.map(record => {
-        return {
-          id: record.id,
-          uuid: record.uuid,
-          IsExclude: record.isPersonalLock,
-          isDependentEntities: this.isDependentEntities,
-          isReadonly: this.isReadonly
+      const index = this.recordAccess.roles.findIndex(item => {
+        if (element[element.length - 1] === item.roleName) {
+          return item
         }
       })
-      this.$store.dispatch('changeList', record)
+      if (index >= 0) {
+        this.addItem({
+          index,
+          element: this.recordAccess.roles[index]
+        })
+      }
     },
-    getOrder(arrayToSort, orderBy = this.order) {
-      return arrayToSort.sort((itemA, itemB) => {
-        return itemA[orderBy] - itemB[orderBy]
+    addListExclude(element) {
+      const index = this.recordAccess.roles.findIndex(item => {
+        if (element[element.length - 1] === item.roleName) {
+          return item
+        }
       })
+      if (index >= 0) {
+        this.deleteItem({
+          index,
+          element: this.recordAccess.roles[index]
+        })
+      }
+    },
+    SendRecorAccess(list) {
+      list.forEach(element => {
+        element.isReadOnly = this.isReadonly
+        element.isDependentEntities = this.isDependentEntities
+      })
+      this.saveRecordAccess(list)
     }
   }
 }
@@ -258,6 +233,15 @@ export default {
   }
 </style>
 <style lang="scss">
+  .scroll-panel-right-mode-mobile {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+  .el-scrollbar__bar.is-vertical > div {
+    width: 100%;
+    transform: translateY(998%);
+  }
   .board {
     width: 100%;
     margin-left: 20px;

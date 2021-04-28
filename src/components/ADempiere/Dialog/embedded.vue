@@ -17,8 +17,7 @@
 -->
 <template>
   <el-dialog
-    v-if="!showRecordAccess"
-    :title="modalMetadata.name"
+    :title="attributeEmbedded.name"
     :visible="isVisibleDialog"
     show-close
     :before-close="closeDialog"
@@ -27,58 +26,14 @@
     close-on-press-escape
     close-on-click-modal
   >
-    {{ modalMetadata.description }}<br><br>
-    <div
-      v-if="panelType !== 'From'"
-    >
-      <sequence-order
-        v-if="modalMetadata.isSortTab"
-        key="order"
-        :parent-uuid="parentUuid"
-        :container-uuid="modalMetadata.uuid"
-        :order="modalMetadata.sortOrderColumnName"
-        :included="modalMetadata.sortYesNoColumnName"
-        :identifiers-list="modalMetadata.identifierColumns"
-        :key-column="modalMetadata.keyColumn"
-      />
-      <template v-else>
-        <main-panel
-          v-if="!isEmptyValue(modalMetadata.uuid)"
-          key="main-panel"
-          :parent-uuid="parentUuid"
-          :container-uuid="modalMetadata.uuid"
-          :metadata="modalMetadata"
-          :panel-type="modalMetadata.panelType"
-        />
-      </template>
-    </div>
-    <span v-if="!showRecordAccess" slot="footer" class="dialog-footer">
-      <el-button
-        type="danger"
-        icon="el-icon-close"
-        @click="closeDialog"
-      />
-      alooooooooo
-      <el-button
-        type="primary"
-        icon="el-icon-check"
-        @click="runAction(modalMetadata)"
-      />
-    </span>
+    <slot />
   </el-dialog>
 </template>
 
 <script>
-import MainPanel from '@/components/ADempiere/Panel'
-import SequenceOrder from '@/components/ADempiere/SequenceOrder'
 import { showNotification } from '@/utils/ADempiere/notification'
-
 export default {
-  name: 'ModalProcess',
-  components: {
-    MainPanel,
-    SequenceOrder
-  },
+  name: 'Embedded',
   props: {
     parentUuid: {
       type: String,
@@ -95,6 +50,14 @@ export default {
     reportExportType: {
       type: String,
       default: ''
+    },
+    tableName: {
+      type: String,
+      default: undefined
+    },
+    recordId: {
+      type: Object,
+      default: undefined
     }
   },
   computed: {
@@ -105,7 +68,10 @@ export default {
       if (this.isMobile) {
         return 80
       }
-      return 80
+      return 70
+    },
+    attributeEmbedded() {
+      return this.$store.getters.getAttributeEmbedded
     },
     isVisibleDialog() {
       return this.$store.state['process/index'].isVisibleDialog
@@ -147,7 +113,9 @@ export default {
     closeDialog() {
       this.$store.dispatch('setShowDialog', {
         type: this.modalMetadata.panelType,
-        action: undefined
+        action: {
+          name: ''
+        }
       })
       this.$store.commit('setRecordAccess', false)
     },
@@ -175,7 +143,7 @@ export default {
           this.$store.dispatch('processPos', {
             action: action, // process metadata
             parentUuid: this.parentUuid,
-            idProcess: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.id,
+            idProcess: this.$store.getters.posAttributes.currentOrder.id,
             containerUuid: this.containerUuid,
             panelType: this.panelType, // determinate if get table name and record id (window) or selection (browser)
             parametersList: this.$store.getters.getPosParameters
@@ -224,11 +192,6 @@ export default {
             })
           }
         }
-      }
-      if (action.action === undefined) {
-        const list = this.$store.getters.getListRecordAcces
-        // updateAccessRecord(list)
-        console.log(list)
       }
     }
   }

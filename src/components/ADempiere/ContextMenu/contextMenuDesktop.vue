@@ -271,6 +271,7 @@ export default {
       } else if (action.action === 'recordAccess') {
         this.$store.commit('changeShowRigthPanel', true)
         this.$store.commit('setRecordAccess', true)
+        this.$store.commit('attributeEmbedded', action)
         this.runAction(action)
       } else {
         this.runAction(action)

@@ -20,6 +20,7 @@ import TabChildren from '@/components/ADempiere/Tab/tabChildren'
 // the submenu and sticky must be placed in the layout
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import ModalDialog from '@/components/ADempiere/Dialog'
+import Embedded from '@/components/ADempiere/Dialog/embedded'
 import DataTable from '@/components/ADempiere/DataTable'
 import splitPane from 'vue-splitpane'
 // Container Info
@@ -52,7 +53,8 @@ export default {
     RecordLogs,
     WorkflowLogs,
     WorkflowStatusBar,
-    RecordAccess
+    RecordAccess,
+    Embedded
   },
   beforeRouteUpdate(to, from, next) {
     this.$store.dispatch('setWindowOldRoute', {

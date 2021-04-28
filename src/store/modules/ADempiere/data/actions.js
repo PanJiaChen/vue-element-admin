@@ -8,10 +8,10 @@ import {
   requestGetContextInfoValue
 } from '@/api/ADempiere/values'
 import {
-  requestGetPrivateAccess,
-  requestLockPrivateAccess,
-  requestUnlockPrivateAccess
-} from '@/api/ADempiere/private-access'
+  getPrivateAccess,
+  lockPrivateAccess,
+  unlockPrivateAccess
+} from '@/api/ADempiere/actions/private-access'
 import {
   extractPagingToken,
   isEmptyValue
@@ -757,7 +757,7 @@ const actions = {
     recordId,
     recordUuid
   }) {
-    return requestGetPrivateAccess({
+    return getPrivateAccess({
       tableName,
       recordId,
       recordUuid
@@ -786,7 +786,7 @@ const actions = {
     recordId,
     recordUuid
   }) {
-    return requestLockPrivateAccess({
+    return lockPrivateAccess({
       tableName,
       recordId,
       recordUuid
@@ -820,7 +820,7 @@ const actions = {
     recordId,
     recordUuid
   }) {
-    return requestUnlockPrivateAccess({
+    return unlockPrivateAccess({
       tableName,
       recordId,
       recordUuid

@@ -17,10 +17,8 @@
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
 
-import { convertPrivateAccess } from '@/utils/ADempiere/apiConverts/privateAccess.js'
-
 // Get private access for a record
-export function requestGetPrivateAccess({
+export function getPrivateAccess({
   tableName,
   recordId,
   recordUuid
@@ -35,12 +33,16 @@ export function requestGetPrivateAccess({
     }
   })
     .then(responsePrivateAccess => {
-      return convertPrivateAccess(responsePrivateAccess)
+      return {
+        tableName: responsePrivateAccess.table_name,
+        recordId: responsePrivateAccess.record_id,
+        recordUuid: responsePrivateAccess.record_uuid
+      }
     })
 }
 
 // Lock a record for a user
-export function requestLockPrivateAccess({
+export function lockPrivateAccess({
   tableName,
   recordId,
   recordUuid
@@ -55,12 +57,16 @@ export function requestLockPrivateAccess({
     }
   })
     .then(responsePrivateAccess => {
-      return convertPrivateAccess(responsePrivateAccess)
+      return {
+        tableName: responsePrivateAccess.table_name,
+        recordId: responsePrivateAccess.record_id,
+        recordUuid: responsePrivateAccess.record_uuid
+      }
     })
 }
 
 // Unlock a record from a user
-export function requestUnlockPrivateAccess({
+export function unlockPrivateAccess({
   tableName,
   recordId,
   recordUuid
@@ -75,62 +81,10 @@ export function requestUnlockPrivateAccess({
     }
   })
     .then(responsePrivateAccess => {
-      return convertPrivateAccess(responsePrivateAccess)
-    })
-}
-
-/**
- * List Rol Access Record
- * @param {string}  tableName
- * @param {number}  recordId
- * @param {string}  recordUuid
- * @param {string}  sessionUuid
- */
-export function getAccessList({
-  tableName,
-  recordId,
-  recordUuid,
-  sessionUuid
-}) {
-  return request({
-    url: '/ui/update-access-record',
-    method: 'post',
-    params: {
-      table_name: tableName,
-      id: recordId,
-      uuid: recordUuid,
-      token: sessionUuid
-    }
-  })
-    .then(respose => {
-      return respose
-    })
-}
-
-/**
- * Update Access Record
- * @param {string}  tableName
- * @param {number}  recordId
- * @param {string}  recordUuid
- * @param {array}  listRol
- */
-export function updateAccessRecord({
-  tableName,
-  recordId,
-  recordUuid,
-  listRecord
-}) {
-  return request({
-    url: '/ui/update-access-record',
-    method: 'post',
-    params: {
-      table_name: tableName,
-      id: recordId,
-      uuid: recordUuid,
-      list_rol: listRecord
-    }
-  })
-    .then(response => {
-      return response
+      return {
+        tableName: responsePrivateAccess.table_name,
+        recordId: responsePrivateAccess.record_id,
+        recordUuid: responsePrivateAccess.record_uuid
+      }
     })
 }

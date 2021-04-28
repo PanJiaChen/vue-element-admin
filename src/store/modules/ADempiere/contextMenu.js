@@ -29,7 +29,8 @@ const initStateContextMenu = {
     recordId: undefined,
     recordUuid: undefined
   },
-  recordAccess: false
+  recordAccess: false,
+  embedded: {}
 }
 
 const contextMenu = {
@@ -61,6 +62,9 @@ const contextMenu = {
     },
     setRecordAccess(state, params) {
       state.recordAccess = params
+    },
+    attributeEmbedded(state, params) {
+      state.embedded = params
     }
   },
   actions: {
@@ -196,6 +200,9 @@ const contextMenu = {
     },
     getShowRecordAccess: (state) => {
       return state.recordAccess
+    },
+    getAttributeEmbedded: (state) => {
+      return state.embedded
     }
   }
 }
