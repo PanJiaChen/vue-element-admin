@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: adempierevue
+  namespace: demo
+spec:
+  selector:
+    app: adempierevue
+  ports:
+    - port: 80
+      targetPort: 80
+      protocol: TCP
+      name: http

@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adempierevue
+  namespace: demo
+  labels:
+    app: adempierevue
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adempierevue
+  template:
+    metadata:
+      labels:
+        app: adempierevue
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: ProductType
+                operator: In
+                values:
+                - AdempiereBase
+      containers:
+        - name: adempierevue
+          image: erpya/adempiere-vue:latest
+          env:
+            - name: API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: adempierevue-parameters
+                  key: host
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "200m"
+            limits:
+              memory: "400Mi"
+              cpu: "200m"
+          ports:
+            - containerPort: 80
+          imagePullPolicy: Always
+      tolerations:
+        - key: "key"
+          operator: "Equal"
+          value: "value"
+          effect: "NoSchedule"
