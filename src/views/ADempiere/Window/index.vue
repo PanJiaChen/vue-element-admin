@@ -24,7 +24,7 @@
       <Split>
         <SplitArea :size="sizePanel" :min-size="100">
           <el-aside width="100%">
-            <split-pane :min-percent="10" :default-percent="defaultPorcentSplitPane" split="vertical">
+            <split-pane :min-percent="30" :default-percent="defaultPorcentSplitPane" split="vertical">
               <template slot="paneL">
                 <!-- this slot is 'paneL' (with 'L' in uppercase) do not change -->
                 <div class="left-container">
@@ -86,7 +86,6 @@
                           </el-aside>
                           <el-main>
                             <context-menu
-                              v-show="!isShowedRecordPanel"
                               :menu-parent-uuid="$route.meta.parentUuid"
                               :parent-uuid="windowUuid"
                               :container-uuid="windowMetadata.currentTabUuid"

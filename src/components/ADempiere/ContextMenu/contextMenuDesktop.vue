@@ -16,7 +16,7 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <div v-if="!isListRecord" class="container-submenu-mobile container-context-menu">
+  <div class="container-submenu-mobile container-context-menu">
     <!-- actions or process on container -->
     <el-dropdown
       :hide-on-click="true"
