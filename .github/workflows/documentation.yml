@@ -1,0 +1,53 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
+# This file was contributed by Carlos Parada and Yamel Senih from ERP Consultores y Asociados, C.A
+
+name: Build Project
+
+# Controls when the action will run. 
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master, develop ]
+  pull_request:
+    branches: [ master, develop ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [14.x]
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: set -e
+      - run: |
+             cd docs
+             npm i
+             npm run build
+      - run: |
+            cd docs
+            git clone https://github.com/adempiere/adempiere-vue.git --branch gh-pages --single-branch gh-pages
+            cp -r .vuepress/dist/* gh-pages/
+            cd gh-pages
+            touch .nojekyll 
+            git init 
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add .
+            git commit -m "Update documentation" -a || true
+      - uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: docs/gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
