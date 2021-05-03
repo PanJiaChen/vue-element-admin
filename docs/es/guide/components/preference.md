@@ -1,16 +1,4 @@
-# Nombre del Componente 
-
-Preferencia
-
-## Versión ADempiere-ZK
-
-![Preferencia en Versión de Escritorio ZK](../resources/zk-desktop-version-preference.png "Preferencia en Versión de Escritorio ZK")
-
-## Versión ADempiere-Vue
-
-![Preferencia en Versión Móvil y de Escritorio](../resources/preference-desktop-mobile.png "Preferencia en Versión Móvil y de Escritorio")
-
-## Descripción de lo que hace
+# Preferencia
 
 Permite establecer el valor de un registro de manera predeterminada, el mismo se puede realizar a partir de lo siguiente:
 
@@ -18,6 +6,14 @@ Permite establecer el valor de un registro de manera predeterminada, el mismo se
   - **Check Organización**: Establece el valor para todas las organizaciones
   - **Check Usuario**: Establece el valor para todos los usuarios
   - **Check Ventana**: Establece el valor para todas las ventanas
+
+## Versión ADempiere-ZK
+
+![Preferencia en Versión de Escritorio ZK](resources/zk-desktop-version-preference.png "Preferencia en Versión de Escritorio ZK")
+
+## Versión ADempiere-Vue
+
+![Preferencia en Versión Móvil y de Escritorio](resources/preference-desktop-mobile.png "Preferencia en Versión Móvil y de Escritorio")
 
 Al destildar alguno de los check indicados anteriormente, el comportamiento del componente consta en establecer dicho valor cuando se crea un registro nuevo. Ejemplo:
 

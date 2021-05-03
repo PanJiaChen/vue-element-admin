@@ -50,10 +50,6 @@ module.exports = {
             link: '/donate/'
           },
           {
-            text: 'Components',
-            link: '/components/'
-          },
-          {
             text: '中文站点(gitee)',
             link: 'https://adempiere-vue.gitee.io/adempiere-vue/zh/'
           }
@@ -69,6 +65,11 @@ module.exports = {
               title: 'Advanced',
               collapsable: false,
               children: genAdvancedSidebar()
+            },
+            {
+              title: 'Components',
+              collapsable: false,
+              children: genComponentSidebar()
             },
             {
               title: 'Other',
@@ -109,10 +110,6 @@ module.exports = {
           {
             text: 'Donar',
             link: '/es/donate/'
-          },
-          {
-            text: 'Componentes',
-            link: '/es/components/'
           }
         ],
         sidebar: {
@@ -126,6 +123,11 @@ module.exports = {
               title: 'Avanzado',
               collapsable: false,
               children: genAdvancedSidebar('/es')
+            },
+            {
+              title: 'Componentes',
+              collapsable: false,
+              children: genComponentSidebar()
             },
             {
               title: 'Otro',
@@ -168,10 +170,6 @@ module.exports = {
             link: '/zh/donate/'
           },
           {
-            text: '組件',
-            link: '/zh/components/'
-          },
-          {
             text: '中文站点(gitee)',
             link: 'https://adempiere-vue.gitee.io/adempiere-vue/zh/'
           },
@@ -183,7 +181,7 @@ module.exports = {
         sidebar: {
           '/zh/guide/': [
             {
-              title: '基础',
+              title: '組件',
               collapsable: false,
               children: genEssentialsSidebar('/zh')
             },
@@ -191,6 +189,11 @@ module.exports = {
               title: '进阶',
               collapsable: false,
               children: genAdvancedSidebar('/zh')
+            },
+            {
+              title: '成分',
+              collapsable: false,
+              children: genComponentSidebar()
             },
             {
               title: '其它',
@@ -273,6 +276,15 @@ function genAdvancedSidebar(type = '') {
     '/guide/advanced/error.md',
     '/guide/advanced/webpack.md',
     '/guide/advanced/sass.md'
+  ]
+  return mapArr.map(i => {
+    return type + i
+  })
+}
+
+function genComponentSidebar(type = '') {
+  const mapArr = [
+    '/guide/components/preference.md'
   ]
   return mapArr.map(i => {
     return type + i

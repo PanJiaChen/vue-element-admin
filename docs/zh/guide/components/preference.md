@@ -1,16 +1,4 @@
-# 組件名稱
-
-偏愛
-
-## ADempiere-ZK版本
-
-![ZK桌面版本首選項](../resources/zk-desktop-version-preference.png "ZK桌面版本首選項")
-
-## ADempiere-Vue版本
-
-![移動和桌面版本首選項](../resources/preference-desktop-mobile.png "移動和桌面版本首選項")
-
-## 功能說明
+# 偏愛
 
 允許您默認設置寄存器的值，可以通過以下操作完成：
 
@@ -18,6 +6,14 @@
   -**檢查組織**：設置所有組織的值
   -**檢查用戶**：設置所有用戶的值
   -**檢查窗口**：設置所有窗口的值
+
+## ADempiere-ZK版本
+
+![ZK桌面版本首選項](resources/zk-desktop-version-preference.png "ZK桌面版本首選項")
+
+## ADempiere-Vue版本
+
+![移動和桌面版本首選項](resources/preference-desktop-mobile.png "移動和桌面版本首選項")
 
 通過取消選中上面指示的任何檢查，組件的行為在於在創建新記錄時設置所述值。例子：
 
