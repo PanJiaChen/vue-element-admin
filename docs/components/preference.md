@@ -4,11 +4,11 @@ Preferencia
 
 ## Versión ADempiere-ZK
 
-![Preferencia en Versión de Escritorio ZK](../resources/zk-desktop-version-preference.png "Preferencia en Versión de Escritorio ZK")
+![Preferencia en Versión de Escritorio ZK](resources/zk-desktop-version-preference.png "Preferencia en Versión de Escritorio ZK")
 
 ## Versión ADempiere-Vue
 
-![Preferencia en Versión Móvil y de Escritorio](../resources/preference-desktop-mobile.png "Preferencia en Versión Móvil y de Escritorio")
+![Preferencia en Versión Móvil y de Escritorio](resources/preference-desktop-mobile.png "Preferencia en Versión Móvil y de Escritorio")
 
 ## Descripción de lo que hace
 
