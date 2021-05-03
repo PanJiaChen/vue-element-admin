@@ -6,14 +6,13 @@ Permite establecer el valor de un registro de manera predeterminada, el mismo se
   - **Check Organización**: Establece el valor para todas las organizaciones
   - **Check Usuario**: Establece el valor para todos los usuarios
   - **Check Ventana**: Establece el valor para todas las ventanas
-
 ## Versión ADempiere-ZK
 
-<img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preferencia en Versión de Escritorio ZK" width="250px">
+<img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preferencia en Versión de Escritorio ZK" width="800px">
 
 ## Versión ADempiere-Vue
 
-<img :src="$withBase('/images/components/preference/preference-desktop-mobile.png')" alt="Preferencia en Versión Móvil y de Escritorio" width="250px">
+<img :src="$withBase('/images/components/preference/preference-desktop-mobile.png')" alt="Preferencia en Versión Móvil y de Escritorio" width="800px">
 
 Al destildar alguno de los check indicados anteriormente, el comportamiento del componente consta en establecer dicho valor cuando se crea un registro nuevo. Ejemplo:
 
@@ -44,3 +43,15 @@ En la versión de escritorio se hace clic sobre el campo para visualizar el men�
 En la versión móvil se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
 
 ## Datos Técnicos
+
+El diálogo de **Preferencia** se encuentra en la siguiente ruta:
+
+```bash
+└── src                             # código fuente principal
+    └── components                  # componentes globales
+        └── ADempiere               # componentes específicos de ADempiere
+            └── field               # Campos
+                └── contextMenu     # Menú de Contexto para todos los campos
+                    └── preference  # directorio principal de preferencias
+
+```

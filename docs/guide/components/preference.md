@@ -1,45 +1,58 @@
-# Preferencia
+# Preference
 
-Permite establecer el valor de un registro de manera predeterminada, el mismo se puede realizar a partir de lo siguiente:
+Allows set a default value for a record, the value can be set for the follows entities:
 
-  - **Check Compañía**: Establece el valor para todas las compañías
-  - **Check Organización**: Establece el valor para todas las organizaciones
-  - **Check Usuario**: Establece el valor para todos los usuarios
-  - **Check Ventana**: Establece el valor para todas las ventanas
-## Versión ADempiere-ZK
+  - **Check Client**: Set default value for all clients
+  - **Check Organization**: Set default value for all organizations
+  - **Check User**: Set default value for all users
+  - **Check Window**: Set default value for all windows
 
-<img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preferencia en Versión de Escritorio ZK" width="250px">
+## ADempiere-ZK Version
 
-## Versión ADempiere-Vue
+<img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preference dialog for ZK verion" width="800px">
 
-<img :src="$withBase('/images/components/preference/preference-desktop-mobile.png')" alt="Preferencia en Versión Móvil y de Escritorio" width="250px">
+## ADempiere-Vue Version
 
-Al destildar alguno de los check indicados anteriormente, el comportamiento del componente consta en establecer dicho valor cuando se crea un registro nuevo. Ejemplo:
+<img :src="$withBase('/images/components/preference/preference-desktop-mobile.png')" alt="Preference dialog for Vue Version" width="800px">
 
-  Al destildar el check **Ventana** y guardar el cambio se establece el valor del campo como predeterminado para todas las ventanas que contengan dicho campo. El comportamiento se puede visualizar al crear un registro nuevo en esa o cualquier ventana de ADempiere, por defecto se crea el registro nuevo con la información del campo previamente cargada, donde fue ejecutado el cambio del componente "**Preferencia**".
+When a flag is unchecked, the user make as default value for all entities related to check:
 
-De igual manera, se comportan los check **Compañía**, **Organización** y **Usuario**. El registro del componente puede ser cancelado, guardado o eliminado.
+  When the flag **Window** is unchecked the default value setted is applied for all windows intead. The behavior can be see when a new record is created on any window with with the same field name.
 
-## ¿Dónde se ubica?
+The same behavior is for the flags **Client**, **Organization** and **User**.
 
-Se ubica en los diferentes campos que contienen las ventanas de ADempiere.
+## Where is it?
 
-## ¿Para qué sirve?
+This dialog can be open over any field of window.
 
-Sirve para establecer valores de manera predeterminada en base a la compañía, organización, usuario y ventana.
+## What is the scope?
 
-## Funciones u Observaciones
+Just set the default value for a field on a client, window, organization or window.
 
-Por defecto, el campo contiene de la configuración de preferencia 
+## Functions and comments
 
-  - **Para todas las Organizaciones de esta Compañía, este Usuario y esta Ventana**
+The default value for all entities checks is the follow: 
 
-## ¿Cómo se utiliza en la versión de Escritorio?
+  - **For all organizations of this Client, this User and this Window**
 
-En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
+## How work in desktop version?
 
-## ¿Cómo se utiliza en la versión móvil?
+In desktop version just make click over a field and select the option "**Preference**", the preference dialog will be showed at center.
 
-En la versión móvil se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
+## How work in mobile version?
 
-## Datos Técnicos
+In mobile version just make click over a field and select the option "**Preference**", the preference dialog will be opened at right as a drawer.
+
+## Tech Tips
+
+The **Preference** dialog was written on the follow path:
+
+```bash
+└── src                             # main source code
+    └── components                  # global components
+        └── ADempiere               # ADempiere specific components
+            └── field               # Fields
+                └── contextMenu     # Context Menu for all fields
+                    └── preference  # Preference folder
+
+```
