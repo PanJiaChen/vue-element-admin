@@ -50,6 +50,10 @@ module.exports = {
             link: '/donate/'
           },
           {
+            text: 'Components',
+            link: '/components/'
+          },
+          {
             text: '中文站点(gitee)',
             link: 'https://adempiere-vue.gitee.io/adempiere-vue/zh/'
           }
@@ -105,6 +109,10 @@ module.exports = {
           {
             text: 'Donar',
             link: '/es/donate/'
+          },
+          {
+            text: 'Componentes',
+            link: '/es/components/'
           }
         ],
         sidebar: {
@@ -158,6 +166,10 @@ module.exports = {
           {
             text: '捐赠',
             link: '/zh/donate/'
+          },
+          {
+            text: '組件',
+            link: '/zh/components/'
           },
           {
             text: '中文站点(gitee)',
