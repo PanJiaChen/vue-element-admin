@@ -6,11 +6,10 @@ name: Build Project
 
 # Controls when the action will run. 
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
   push:
     branches: [ master, develop ]
-  pull_request:
-    branches: [ master, develop ]
+  release:
+    types: [created]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,3 +34,19 @@ jobs:
              cd docs
              npm i
              npm run build
+      - run: |
+            cd docs
+            git clone https://github.com/adempiere/adempiere-vue.git --branch gh-pages --single-branch gh-pages
+            cp -r .vuepress/dist/* gh-pages/
+            cd gh-pages
+            touch .nojekyll 
+            git init 
+            git config --local user.email "action@github.com"
+            git config --local user.name "GitHub Action"
+            git add .
+            git commit -m "Update documentation" -a || true
+      - uses: ad-m/github-push-action@master
+        with:
+          branch: gh-pages
+          directory: docs/gh-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
