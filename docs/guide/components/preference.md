@@ -8,11 +8,11 @@ Permite establecer el valor de un registro de manera predeterminada, el mismo se
   - **Check Ventana**: Establece el valor para todas las ventanas
 ## Versión ADempiere-ZK
 
-![Preferencia en Versión de Escritorio ZK](resources/zk-desktop-version-preference.png "Preferencia en Versión de Escritorio ZK")
+<img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preferencia en Versión de Escritorio ZK" width="250px">
 
 ## Versión ADempiere-Vue
 
-![Preferencia en Versión Móvil y de Escritorio](resources/preference-desktop-mobile.png "Preferencia en Versión Móvil y de Escritorio")
+<img :src="$withBase('/images/components/preference/preference-desktop-mobile.png')" alt="Preferencia en Versión Móvil y de Escritorio" width="250px">
 
 Al destildar alguno de los check indicados anteriormente, el comportamiento del componente consta en establecer dicho valor cuando se crea un registro nuevo. Ejemplo:
 
