@@ -105,7 +105,7 @@ export default {
       if (this.isMobile) {
         return 80
       }
-      return 80
+      return 95
     },
     isVisibleDialog() {
       return this.$store.state['process/index'].isVisibleDialog
