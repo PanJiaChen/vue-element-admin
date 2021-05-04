@@ -11,6 +11,7 @@ export default {
     page404: '404',
     profile: 'Profile',
     ProcessActivity: 'Process Logs',
+    withoutLog: 'No Error Log Found',
     ProductInfo: 'Product Information',
     role: 'Role',
     organization: 'Organization',

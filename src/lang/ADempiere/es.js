@@ -11,6 +11,7 @@ export default {
     page404: '404',
     profile: 'Perfil',
     ProcessActivity: 'Histórico Procesos',
+    withoutLog: 'No se Encontró Registro de Error ',
     ProductInfo: 'Informacion de Producto',
     role: 'Rol',
     organization: 'Organización',
