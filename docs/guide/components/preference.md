@@ -43,7 +43,7 @@ In desktop version just make click over a field and select the option "**Prefere
 
 In mobile version just make click over a field and select the option "**Preference**", the preference dialog will be opened at right as a drawer.
 
-## Tech Tips
+## Develop Options
 
 The **Preference** dialog was written on the follow path:
 
@@ -56,3 +56,4 @@ The **Preference** dialog was written on the follow path:
                     └── preference  # Preference folder
 
 ```
+A demo is here: https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002
