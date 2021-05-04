@@ -20,10 +20,12 @@ import request from '@/utils/request'
 import { config } from '@/utils/ADempiere/config'
 const baseURL = config.documentation.api.url
 // Fetch releases from repository
-export function fetchReleasesList() {
+export function fetchReleasesList({
+  repository
+}) {
   return request({
     baseURL,
-    url: '/adempiere-vue/releases',
+    url: repository + '/releases',
     method: 'get',
     headers: {
       'Accept': 'application/vnd.github.v3+json'
