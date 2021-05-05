@@ -58,7 +58,6 @@
         icon="el-icon-close"
         @click="closeDialog"
       />
-      alooooooooo
       <el-button
         type="primary"
         icon="el-icon-check"
@@ -224,11 +223,6 @@ export default {
             })
           }
         }
-      }
-      if (action.action === undefined) {
-        const list = this.$store.getters.getListRecordAcces
-        // updateAccessRecord(list)
-        console.log(list)
       }
     }
   }

@@ -22,11 +22,11 @@
         :key="1"
         class="kanban todo"
         header-text="Todo"
-        style="padding: 0px;margin: 0px;width: 35%;padding-right: 3%;"
+        style="padding: 0px;margin: 0px;width: 35%;padding-right: 2%;"
       >
         <div class="board-column">
           <div class="board-column-header">
-            {{ $t('data.recordAccess.hideRecord') }} ({{ excludedList.length }})
+            {{ $t('data.recordAccess.availableRoles') }} ({{ excludedList.length }})
           </div>
           <draggable
             v-model="excludedList"
@@ -38,17 +38,24 @@
               v-for="(element, index) in excludedList"
               :key="element.roleUuid"
               class="board-item"
-              style="height: 50%;padding-left: 0px;padding-right: 0px;"
+              style="height: 50%;padding-left: 0px;padding-right: 0px;min-width: 250px;max-width: 100%;"
             >
               <el-table
                 v-if="!isEmptyValue(excludedList)"
                 :data="[excludedList[index]]"
                 border
                 :show-header="false"
+                style="min-width: 100%;padding-left: 0%;padding-right: 0%;"
               >
-                <el-table-column
-                  prop="roleName"
-                />
+                <el-table-column>
+                  <template slot-scope="scope">
+                    <b style="white-space: normal;">
+                      {{
+                        scope.row.roleName
+                      }}
+                    </b>
+                  </template>
+                </el-table-column>
               </el-table>
             </div>
 
@@ -59,11 +66,11 @@
         :key="2"
         class="kanban working"
         header-text="Working"
-        style="padding: 0px;margin: 0px;width: 65%;padding-right: 3%;"
+        style="padding: 0px;margin: 0px;width: 65%;padding-right: 1.5%;"
       >
         <div class="board-column">
           <div class="board-column-header">
-            {{ $t('data.recordAccess.recordDisplay') }} ({{ includedList.length }})
+            {{ $t('data.recordAccess.configRoles') }} ({{ includedList.length }})
           </div>
           <draggable
             v-model="includedList"
@@ -76,26 +83,50 @@
               v-for="(element, index) in includedList"
               :key="element.roleUuid"
               class="board-item"
-              style="height: 50%;padding-left: 0px;padding-right: 0px;min-width: 550px;max-width: 100%;"
+              style="height: 50%;padding-left: 0px;padding-right: 0px;min-width: 400px;max-width: 100%;"
             >
               <el-table
                 v-if="!isEmptyValue(includedList)"
                 :data="[includedList[index]]"
                 border
                 :show-header="false"
-                style="min-width: 120%;padding-left: 0%;padding-right: 0%;"
+                style="padding-left: 0%;padding-right: 0%;"
               >
-                <el-table-column
-                  prop="roleName"
-                />
                 <el-table-column>
                   <template slot-scope="scope">
-                    {{ $t('data.recordAccess.isReadonly') }} <el-switch v-model="scope.row.isReadOnly" />
+                    <b style="white-space: normal;">
+                      {{
+                        scope.row.roleName
+                      }}
+                    </b>
+                  </template>
+                </el-table-column>
+                <el-table-column min-width="100">
+                  <template slot-scope="scope">
+                    <el-switch
+                      v-model="scope.row.isExclude"
+                      active-color="#13ce66"
+                      inactive-color="#ff4949"
+                      :inactive-text="$t('data.recordAccess.isLock')"
+                      :active-text="$t('data.recordAccess.isUnlock')"
+                    />
                   </template>
                 </el-table-column>
                 <el-table-column>
-                  <template slot-scope="scope" min-width="150">
-                    {{ $t('data.recordAccess.isDependentEntities') }} <el-switch v-model="scope.row.isDependentEntities" />
+                  <template slot-scope="scope">
+                    <div v-if="scope.row.isExclude">
+                      <el-switch
+                        v-model="scope.row.isReadOnly"
+                        :inactive-text="$t('data.recordAccess.isReadonly')"
+                        active-text="Editable"
+                      />
+                    </div>
+                    <div v-else>
+                      <b>
+                        {{ $t('data.recordAccess.isDependentEntities') }}
+                      </b>
+                      <el-switch v-model="scope.row.isDependentEntities" />
+                    </div>
                   </template>
                 </el-table-column>
               </el-table>
@@ -174,8 +205,19 @@ export default {
   }
 </style>
 <style lang="scss">
+  .el-table .warning-row {
+    border: solid;
+    border-color: red;
+    background: white;
+  }
+
+  .el-table .success-row {
+    background: white;
+    border: solid;
+    border-color: #11b95c42;
+  }
   .board-column .board-column-content[data-v-67e5b2d0] {
-    max-height: 350px;
+    max-height: 55vh;
     height: auto;
     overflow: auto;
     border: 10px solid transparent;
@@ -195,7 +237,7 @@ export default {
     align-items: center;
   }
   .board {
-    height: 400px;
+    height: 90%;
     width: 100%;
     margin-left: 20px;
     display: flex;

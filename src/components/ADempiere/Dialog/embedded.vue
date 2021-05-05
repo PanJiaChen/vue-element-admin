@@ -21,6 +21,7 @@
     show-close
     :before-close="closeDialog"
     :width="width + '%'"
+    custom-class="embedded-style"
     top="5vh"
     close-on-press-escape
     close-on-click-modal
@@ -80,7 +81,7 @@ export default {
       if (this.isMobile) {
         return 80
       }
-      return 70
+      return 90
     },
     attributeEmbedded() {
       return this.$store.getters.getAttributeEmbedded
@@ -213,7 +214,7 @@ export default {
 <style>
   .el-dialog__body {
     padding: 10px 20px;
-    max-height: 75vh;
+    max-height: 90%;
     overflow: auto;
   }
   .el-dialog__header {
@@ -221,4 +222,7 @@ export default {
     padding-bottom: 10px;
     background: #dae6f38c;
 }
+  .embedded-style {
+    height: 77%;
+  }
 </style>

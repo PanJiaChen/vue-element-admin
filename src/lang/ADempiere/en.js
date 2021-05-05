@@ -346,11 +346,19 @@ export default {
     lockRecord: 'Lock Record',
     noDescription: 'No Description',
     recordAccess: {
+      modeMobile: {
+        accessRoles: 'Access Roles',
+        accessRolesIsReadonly: 'Roles with Access and Read Only',
+        lockedRoles: 'Locked Roles',
+        lockedRolesIsDependentEntities: 'Locked Roles with Dependent Entities'
+      },
       actions: 'Record Access',
-      hideRecord: 'Hide Record',
-      recordDisplay: 'Allow Record Display',
+      configRoles: 'Roles Configurados',
+      availableRoles: 'Roles Configured',
       isReadonly: 'Reading Only',
-      isDependentEntities: 'Dependent Entities'
+      isDependentEntities: 'Dependent Entities',
+      isLock: 'Block',
+      isUnlock: 'Unblock'
     },
     selectionRequired: 'You must select a record',
     undo: 'Undo',
