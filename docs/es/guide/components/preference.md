@@ -6,6 +6,7 @@ Permite establecer el valor de un registro de manera predeterminada, el mismo se
   - **Check Organización**: Establece el valor para todas las organizaciones
   - **Check Usuario**: Establece el valor para todos los usuarios
   - **Check Ventana**: Establece el valor para todas las ventanas
+
 ## Versión ADempiere-ZK
 
 <img :src="$withBase('/images/components/preference/zk-desktop-version-preference.png')" alt="Preferencia en Versión de Escritorio ZK" width="800px">
@@ -30,17 +31,35 @@ Sirve para establecer valores de manera predeterminada en base a la compañía, 
 
 ## Funciones u Observaciones
 
+::: tip
 Por defecto, el campo contiene de la configuración de preferencia 
 
   - **Para todas las Organizaciones de esta Compañía, este Usuario y esta Ventana**
+:::
 
 ## ¿Cómo se utiliza en la versión de Escritorio?
 
 En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
 
+### Crear Preferencia
+
+![Cómo crear preferencia en la versión de Escritorio]('/images/components/preference/zk-desktop-version-preference.gif' "Cómo crear preferencia en la versión de Escritorio")
+
+### Borrar Preferencia
+
+![Cómo borrar preferencia en la versión de Escritorio]('/images/components/preference/zk-desktop-version-preference.gif' "Cómo borrar preferencia en la versión de Escritorio")
+
 ## ¿Cómo se utiliza en la versión móvil?
 
 En la versión móvil se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
+
+### Crear Preferencia
+
+![Cómo crear preferencia en la versión móvil]('/images/components/preference/preference-desktop-mobile.gif' "Cómo crear preferencia en la versión móvil")
+
+### Borrar Preferencia
+
+![Cómo borrar preferencia en la versión móvil]('/images/components/preference/preference-desktop-mobile.gif' "Cómo borrar preferencia en la versión móvil")
 
 ## Opciones para el Desarrollador
 
@@ -57,3 +76,9 @@ El diálogo de **Preferencia** se encuentra en la siguiente ruta:
 ```
 
 Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+### Por hacer
+
+En la versión ADempiere-UI, las preferencias de campo no están configuradas. Por tanto, se requiere que se corrija el problema para que se puedan establecer estas preferencias.
+
+Este problema se informó en los problemas: https://github.com/adempiere/adempiere-vue/issues/814 

@@ -1,3 +1,4 @@
+ 
 # Preference
 
 Allows set a default value for a record, the value can be set for the follows entities:
@@ -31,17 +32,35 @@ Just set the default value for a field on a client, window, organization or wind
 
 ## Functions and comments
 
+::: tip
 The default value for all entities checks is the follow: 
 
   - **For all organizations of this Client, this User and this Window**
+:::
 
 ## How work in desktop version?
 
 In desktop version just make click over a field and select the option "**Preference**", the preference dialog will be showed at center.
 
+### Create Preference
+
+![How to create preference in Desktop version]('/images/components/preference/zk-desktop-version-preference.gif' "How to create preference in Desktop version")
+
+### Delete Preference
+
+![How to delete preference in the Desktop version]('/images/components/preference/zk-desktop-version-preference.gif' "How to delete preference in the Desktop version")
+
 ## How work in mobile version?
 
 In mobile version just make click over a field and select the option "**Preference**", the preference dialog will be opened at right as a drawer.
+
+### Create Preference
+
+![How to create preference in mobile version]('/images/components/preference/preference-desktop-mobile.gif' "How to create preference in mobile version")
+
+### Delete Preference
+
+![How to delete preference in mobile version]('/images/components/preference/preference-desktop-mobile.gif' "How to delete preference in mobile version")
 
 ## Develop Options
 
@@ -57,3 +76,9 @@ The **Preference** dialog was written on the follow path:
 
 ```
 A [demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002) is here
+
+### To do
+
+In the ADempiere-UI version, field preferences are not set. Therefore, it is required that the problem be corrected so that these preferences can be established.
+
+This problem was reported in the issues: https://github.com/adempiere/adempiere-vue/issues/814
