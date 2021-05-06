@@ -353,9 +353,17 @@ export default {
             }
           })
       }
+    },
+    getRecord(value) {
+      if (!this.isEmptyValue(this.windowMetadata.currentTab.tableName) && !this.isEmptyValue(value) && (!this.isEmptyValue(this.$route.query) && this.$route.query.typeAction === 'recordAccess')) {
+        this.$store.commit('setRecordAccess', true)
+      }
     }
   },
   created() {
+    if (!this.isEmptyValue(this.currentRecord) && (!this.isEmptyValue(this.$route.query) && this.$route.query.typeAction === 'recordAccess')) {
+      this.$store.commit('setRecordAccess', true)
+    }
     this.getWindow()
     if (this.isShowedRecordNavigation) {
       this.handleResize()

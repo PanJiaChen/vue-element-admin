@@ -296,6 +296,13 @@ export default {
         this.$store.commit('changeShowRigthPanel', true)
         this.$store.commit('setRecordAccess', true)
         this.$store.commit('attributeEmbedded', action)
+        this.$router.push({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            typeAction: this.$store.getters.getAttributeEmbedded.action
+          }
+        }, () => {})
         this.runAction(action)
       } else {
         this.runAction(action)

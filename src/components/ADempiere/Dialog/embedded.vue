@@ -17,7 +17,7 @@
 -->
 <template>
   <el-dialog
-    :visible="isVisibleDialog"
+    :visible="isVisibleDialog || showRecordAccess"
     show-close
     :before-close="closeDialog"
     :width="width + '%'"
@@ -27,7 +27,7 @@
     close-on-click-modal
   >
     <span slot="title">
-      {{ attributeEmbedded.name }}
+      {{ $t('data.recordAccess.actions') }}
       <el-tooltip :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
         <el-button type="text" @click="lock = !lock">
           <i :class="lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 25px;color: black;" />
@@ -65,6 +65,10 @@ export default {
     },
     recordId: {
       type: Object,
+      default: undefined
+    },
+    visible: {
+      type: String,
       default: undefined
     }
   },
@@ -130,6 +134,13 @@ export default {
           name: ''
         }
       })
+      this.$router.push({
+        name: this.$route.name,
+        query: {
+          ...this.$route.query,
+          typeAction: ''
+        }
+      }, () => {})
       this.$store.commit('setRecordAccess', false)
     },
     runAction(action) {

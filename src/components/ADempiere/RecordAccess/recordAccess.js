@@ -199,6 +199,13 @@ export default {
         type: 'window',
         action: undefined
       })
+      this.$router.push({
+        name: this.$route.name,
+        query: {
+          ...this.$route.query,
+          typeAction: ''
+        }
+      }, () => {})
       this.$store.commit('setRecordAccess', false)
       this.$store.commit('changeShowRigthPanel', false)
     }

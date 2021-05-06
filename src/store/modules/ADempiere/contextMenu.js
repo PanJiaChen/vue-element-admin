@@ -30,7 +30,9 @@ const initStateContextMenu = {
     recordUuid: undefined
   },
   recordAccess: false,
-  embedded: {}
+  embedded: {
+    name: ''
+  }
 }
 
 const contextMenu = {
