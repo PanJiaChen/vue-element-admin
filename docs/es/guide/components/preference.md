@@ -41,25 +41,9 @@ Por defecto, el campo contiene de la configuración de preferencia
 
 En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
 
-### Crear Preferencia
-
-![Cómo crear preferencia en la versión de Escritorio]('/images/components/preference/zk-desktop-version-preference.gif' "Cómo crear preferencia en la versión de Escritorio")
-
-### Borrar Preferencia
-
-![Cómo borrar preferencia en la versión de Escritorio]('/images/components/preference/zk-desktop-version-preference.gif' "Cómo borrar preferencia en la versión de Escritorio")
-
 ## ¿Cómo se utiliza en la versión móvil?
 
 En la versión móvil se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Preferencia**", para establecer el valor de preferencia requerido.
-
-### Crear Preferencia
-
-![Cómo crear preferencia en la versión móvil]('/images/components/preference/preference-desktop-mobile.gif' "Cómo crear preferencia en la versión móvil")
-
-### Borrar Preferencia
-
-![Cómo borrar preferencia en la versión móvil]('/images/components/preference/preference-desktop-mobile.gif' "Cómo borrar preferencia en la versión móvil")
 
 ## Opciones para el Desarrollador
 
@@ -81,4 +65,4 @@ Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-82
 
 En la versión ADempiere-UI, las preferencias de campo no están configuradas. Por tanto, se requiere que se corrija el problema para que se puedan establecer estas preferencias.
 
-Este problema se informó en los problemas: https://github.com/adempiere/adempiere-vue/issues/814 
+Este problema se informó en el issues [814](https://github.com/adempiere/adempiere-vue/issues/814)

@@ -41,25 +41,9 @@
 
 在桌面版本中，單擊該字段以查看其顯示的菜單，然後選擇選項“ **潛在性**”以設置所需的首選項值。
 
-### 創建首選項
-
-![如何在桌面版本中創建首選項]('/images/components/preference/zk-desktop-version-preference.gif' "如何在桌面版本中創建首選項")
-
-### 刪除首選項
-
-![如何在桌面版本中刪除首選項]('/images/components/preference/zk-desktop-version-preference.gif' "如何在桌面版本中刪除首選項")
-
 ## 在移動版本中如何使用？
 
 在移動版本中，單擊該字段以查看其顯示的菜單，然後選擇選項“ **潛在性**”以設置所需的首選項值。
-
-### 創建首選項
-
-![如何在移動版本中創建首選項]('/images/components/preference/preference-desktop-mobile.gif' "如何在移動版本中創建首選項")
-
-### 刪除首選項
-
-![如何在移動版本中刪除首選項]('/images/components/preference/preference-desktop-mobile.gif' "如何在移動版本中刪除首選項")
 
 ## 技術數據
 
@@ -81,4 +65,4 @@
 
 在ADempiere-UI版本中，未設置字段首選項。因此，要求糾正問題，以便可以建立這些首選項。
 
-在問題中報告了此問題：https://github.com/adempiere/adempiere-vue/issues/814
+在問題中報告了此問題 [814](https://github.com/adempiere/adempiere-vue/issues/814)
