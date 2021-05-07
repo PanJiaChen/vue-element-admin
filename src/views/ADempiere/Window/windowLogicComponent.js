@@ -368,6 +368,13 @@ export default {
       if (!this.isEmptyValue(this.windowMetadata.currentTab.tableName) && !this.isEmptyValue(value) && (!this.isEmptyValue(this.$route.query) && this.$route.query.typeAction === 'recordAccess')) {
         this.$store.commit('setRecordAccess', true)
       }
+      if (!this.isEmptyValue(this.windowMetadata.currentTab.tableName) && !this.isEmptyValue(value) && this.isMobile) {
+        this.$store.dispatch(this.activeInfo, {
+          tableName: this.getTableName,
+          recordId: this.recordId,
+          recordUuid: value.UUID
+        })
+      }
     }
   },
   created() {
