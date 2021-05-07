@@ -28,6 +28,17 @@
         :disabled="Boolean(key > 0 && isCreateNew)"
         :style="tabParentStyle"
       >
+        <span v-if="key === 0" slot="label">
+          <el-tooltip v-if="key === 0" :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
+            <el-button type="text" @click="lock = !lock">
+              <i :class="lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
+            </el-button>
+          </el-tooltip>
+          {{ tabAttributes.name }}
+        </span>
+        <span v-else slot="label">
+          {{ tabAttributes.name }}
+        </span>
         <main-panel
           :parent-uuid="windowUuid"
           :container-uuid="tabAttributes.uuid"
@@ -54,7 +65,8 @@ export default {
   mixins: [tabMixin],
   data() {
     return {
-      currentTab: this.$route.query.tabParent
+      currentTab: this.$route.query.tabParent,
+      lock: false
     }
   },
   computed: {
