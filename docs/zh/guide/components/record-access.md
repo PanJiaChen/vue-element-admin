@@ -13,11 +13,11 @@
       
 ## ADempiere-ZK版本
    
-<img :src="$withBase('/images/components/record-access/ZK_access-to-records.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-zk-window-record-access.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
      
 ## ADempiere-Vue版本
 
-<img :src="$withBase('/images/components/record-access/AD-Vue-AccesoRegistros-Ventana.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-window-record-access.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
 
 通過按記錄使用此配置，您可以自定義每個角色在ADempiere中的顯示和訪問，在角色位於“可用角色”部分時，可以在其中激活記錄的顯示，阻止或簡單地排除它。表示該記錄上沒有任何配置，如果要激活任何配置
 (激活還是阻止），則必須將角色傳遞給“配置的角色”部分，並對該角色應用所需的選項在該特定記錄上。
@@ -35,7 +35,7 @@
 
 該操作位於“操作”菜單中的那些窗口中
 
-<img :src="$withBase('/images/components/record-access/AD-Vue_MA-Acceso_Registro.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-location-access-to-registration.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
 
 ##是做什麼用的？
 

@@ -13,11 +13,11 @@ Allows you to configure the access that each role will have to a specific record
 
 ## ADempiere-ZK version
 
-<img :src="$withBase('/images/components/record-access/ZK_access-to-records.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-zk-window-record-access.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
 
 ## ADempiere-Vue version
 
-<img :src="$withBase('/images/components/record-access/AD-Vue-AccesoRegistros-Ventana.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-window-record-access.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
 
 By using this configuration by records, you are customizing the display and access that each role will have in ADempiere, where you can activate the display of 
 a record, block or simply exclude, when the role is in the "Available Roles" section, it would indicate that It does not have any configuration on that record, 
@@ -38,7 +38,7 @@ It is required to give access to two types of documents, one read and write, ano
 
 This action is located those windows that have in the actions menu
 
-<img :src="$withBase('/images/components/record-access/AD-Vue_MA-Acceso_Registro.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-location-record-access.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
 
 
 ## What is it for?

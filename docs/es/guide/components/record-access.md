@@ -13,11 +13,11 @@ Permite configurar el acceso que tendra cada rol a un registro o una vista en es
 
 ## Versión ADempiere-ZK
 
-<img :src="$withBase('/images/components/record-access/ZK_access-to-records.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-zk-window-record-access.png')" alt="Acceso a Registro Versión de Escritorio ZK" width="800px">
 
 ## Versión ADempiere-Vue
 
-<img :src="$withBase('/images/components/record-access/AD-Vue-AccesoRegistros-Ventana.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-window-record-access.png')" alt="Acceso a Registro ADempiere-Vue de Escritorio" width="800px">
 
 Al usuar esta configuración por registros se esta personalizando la visualización y el acceso que tendra cada rol en ADempiere,donde se puede activar la visualización de un registros, bloquear o simplemente excluir, cuando el rol se encuentre en el apartado "Roles Disponibles" indicaría que no tiene alguna configurción sobre ese registro, si se desea activar alguna configuración ya sea de activar o bloquear, se tendría que pasar el rol al apartado "Roles Configurado" y aplicar la opción que se desea con ese rol sobre ese registro en específico.
 
@@ -34,7 +34,7 @@ Cabe destacar, que este acción en ADempiere aplica solo registros por registro 
 
 Esta acción se ubica aquellas ventanas que tengan en el menú de acciones
 
-<img :src="$withBase('/images/components/record-access/AD-Vue_MA-Acceso_Registro.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
+<img :src="$withBase('/images/components/record-access/ad-vue-location-record-access.png')" alt="Acceso a Registro ADempiere-Vue Escritorio" width="800px">
 
 
 ## ¿Para qué sirve?
