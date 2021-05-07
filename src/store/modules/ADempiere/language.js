@@ -93,8 +93,7 @@ const languageControl = {
             console.warn(translationResponse)
             return
           }
-
-          const { values, uuid } = translationResponse.translationsList[0]
+          const { values, uuid, language } = translationResponse.translationsList[0]
           dispatch('setTranslation', {
             containerUuid,
             tableName,
@@ -116,6 +115,7 @@ const languageControl = {
       containerUuid,
       language,
       columnName,
+      recordUuid,
       value
     }) {
       return new Promise(resolve => {
@@ -125,7 +125,6 @@ const languageControl = {
         const translationSelected = translationData.translations.find(itemTranslation => {
           return itemTranslation.language === language
         })
-
         const values = translationSelected.values
         // not change value
         if (values[columnName] === value) {
@@ -133,9 +132,9 @@ const languageControl = {
           return value
         }
 
-        requestUpdateEntity({
+        return requestUpdateEntity({
           tableName: `${translationData.tableName}_Trl`, // '_Trl' is suffix for translation tables
-          recordUuid: translationSelected.uuid,
+          recordUuid,
           attributesList: [{
             columnName,
             value
@@ -151,6 +150,7 @@ const languageControl = {
               newValues
             })
             resolve(newValues)
+            return newValues
           })
           .catch(error => {
             console.warn(`Error Update Translation ${error.message}. Code: ${error.code}.`)

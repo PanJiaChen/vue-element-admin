@@ -330,7 +330,7 @@ export default {
     info: 'Information',
     calculator: 'Calculator',
     preference: 'Preference',
-    codeTranslation: 'Traduccion de Codigo',
+    codeTranslation: 'Translation Of ',
     container: {
       help: 'Help',
       description: 'Description'

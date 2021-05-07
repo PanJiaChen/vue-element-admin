@@ -145,7 +145,7 @@
                       <div v-if="option.name !== $t('language')" style="margin-right: 5%;padding-top: 3%;">
                         <i :class="option.icon" style="font-weight: bolder;" />
                       </div>
-                      <div v-else style="margin-right: 5%">
+                      <div v-else style="margin-right: 5%; padding-left: 8%;">
                         <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
                       </div>
                       <div>
