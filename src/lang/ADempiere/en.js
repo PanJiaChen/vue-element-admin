@@ -330,6 +330,7 @@ export default {
     info: 'Information',
     calculator: 'Calculator',
     preference: 'Preference',
+    logsField: 'Field Change Log',
     codeTranslation: 'Translation Of ',
     container: {
       help: 'Help',

@@ -3,6 +3,7 @@ import {
   requestListWorkflowsLogs,
   requestListWorkflows
 } from '@/api/ADempiere/window'
+import { isEmptyValue } from '@/utils/ADempiere'
 
 const initStateContainerInfo = {
   listworkflowLog: [],
@@ -34,6 +35,9 @@ const containerInfo = {
     }) {
       const pageSize = 0
       const pageToken = 0
+      if (isEmptyValue(tableName) && (isEmptyValue(recordId) || isEmptyValue(recordUuid))) {
+        return
+      }
       return requestListEntityLogs({
         tableName,
         recordId,

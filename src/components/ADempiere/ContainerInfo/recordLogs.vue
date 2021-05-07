@@ -24,11 +24,11 @@
       <el-scrollbar :wrap-class="classIsMobilePanel">
         <el-timeline>
           <el-timeline-item
-            v-for="(listLogs, key) in gettersListRecordLogs"
-            :key="key"
+            v-for="(listLogs, key) in gettersListRecordLogs.sort(sortSequence)"
+            :key="listLogs.logId"
+            :type="listLogs.type"
             :timestamp="translateDate(listLogs.logDate)"
             placement="top"
-            color="#008fd3"
           >
             <el-card shadow="hover" class="clearfix">
               <div>
@@ -108,7 +108,25 @@ export default {
       return 'panel'
     },
     gettersListRecordLogs() {
-      return this.$store.getters.getRecordLogs.entityLogs
+      const log = this.$store.getters.getRecordLogs.entityLogs
+      if (log) {
+        return log.map(element => {
+          let type
+          if (!this.isEmptyValue(element.changeLogsList[0].newDisplayValue) && this.isEmptyValue(element.changeLogsList[0].oldDisplayValue)) {
+            type = 'success'
+          } else if (this.isEmptyValue(element.changeLogsList[0].newDisplayValue) && !this.isEmptyValue(element.changeLogsList[0].oldDisplayValue)) {
+            type = 'danger'
+          } else {
+            type = 'primary'
+          }
+          return {
+            ...element,
+            columnName: element.changeLogsList[0].columnName,
+            type
+          }
+        })
+      }
+      return []
     },
     getIsChangeLog() {
       if (this.isEmptyValue(this.gettersListRecordLogs)) {
@@ -118,6 +136,9 @@ export default {
     }
   },
   methods: {
+    sortSequence(itemA, itemB) {
+      return new Date().setTime(new Date(itemB.logDate).getTime()) - new Date().setTime(new Date(itemA.logDate).getTime())
+    },
     showkey(key, index) {
       if (key === this.currentKey && index === this.typeAction) {
         this.currentKey = 1000
@@ -141,6 +162,6 @@ export default {
     height: 57vh;
   }
   .panel {
-    height: 100vh;
+    height: 75vh;
   }
 </style>
