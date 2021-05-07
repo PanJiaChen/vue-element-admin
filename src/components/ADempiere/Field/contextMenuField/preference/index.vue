@@ -211,6 +211,16 @@ export default {
     close() {
       this.$children[0].visible = false
       this.$store.commit('changeShowRigthPanel', false)
+      if (!this.isEmptyValue(this.$route.query.fieldColumnName)) {
+        this.$router.push({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            typeAction: '',
+            fieldColumnName: ''
+          }
+        }, () => {})
+      }
     },
     remove() {
       const isForCurrentUser = this.metadataList.find(field => field.columnName === 'AD_User_ID').value

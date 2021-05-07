@@ -109,6 +109,16 @@ export default {
         })
       }
       this.$store.commit('changeShowRigthPanel', false)
+      if (!this.isEmptyValue(this.$route.query.fieldColumnName)) {
+        this.$router.push({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            typeAction: '',
+            fieldColumnName: ''
+          }
+        }, () => {})
+      }
     }
   }
 }
