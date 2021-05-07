@@ -58,8 +58,22 @@ El diálogo de **Preferencia** se encuentra en la siguiente ruta:
                     └── preference  # directorio principal de preferencias
 
 ```
-
 Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+El llamado al consumo de servicio de  **Preferencia** se encuentra en la siguiente ruta:
+```bash
+└─ src                            # Código fuente principal
+    └─ api                        # Servicios globales
+      └─ ADempiere                # Servicios específicos de ADempiere
+            └─ field              # Campos
+                └─ preference     # Directorio principal de los servicio preferencia
+
+```
+
+
+Los servicios llamados del componente son <br>
+[GET adempiere-api/ui/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
+[POST adempiere-api/ui/delete-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
 
 ### Por hacer
 

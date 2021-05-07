@@ -61,6 +61,19 @@ The **Preference** dialog was written on the follow path:
 ```
 A [demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002) is here
 
+The **Preference** service consumption call is in the following path:
+```bash
+└─ src                         # Main source code.
+    └─ api                     # Global services
+      └─ ADempiere             # ADempiere specific services
+            └─ field           # fields
+                └─ preference  # Main service directory preference
+
+```
+The component's services are <br>
+[GET adempiere-api/ui/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
+[POST adempiere-api/ui/delete-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
+
 ### To do
 
 In the ADempiere-UI version, field preferences are not set. Therefore, it is required that the problem be corrected so that these preferences can be established.

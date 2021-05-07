@@ -51,16 +51,28 @@
 “偏好設置”對話框寫在以下路徑上：
 
 ```bash
-└── src                             # main source code
-    └── components                  # global components
-        └── ADempiere               # ADempiere specific components
-            └── field               # Fields
-                └── contextMenu     # Context Menu for all fields
-                    └── preference  # Preference folder
+└── src                             # 主要源代码
+    └── components                  # 全球组件
+        └── ADempiere               # ADempiere的特定组件
+            └── field               # 领域
+                └── contextMenu     # 所有字段的上下文菜单
+                    └── preference  # 偏好文件夹
 
 ```
-[演示](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1- 11e9-91a1-0242ac140002) 在這裡
+[演示](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service) 在這裡
 
+首选的服务消费电话位于以下路线上。
+```bash
+└─ src                            # 主要源代码
+    └─ api                        # 全球服务
+      └─ ADempiere                # ADempiere的具体服务
+            └─ field              # 领域
+                └─ preference     # 首选服务的主要目录
+
+```
+该组件被调用的服务有<br>
+[GET adempiere-api/ui/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
+[POST adempiere-api/ui/delete-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
 ### 去做
 
 在ADempiere-UI版本中，未設置字段首選項。因此，要求糾正問題，以便可以建立這些首選項。
