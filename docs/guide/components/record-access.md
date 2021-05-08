@@ -1,9 +1,9 @@
-# Access to Records
+# Record Access
 
 Allows you to configure the access that each role will have to a specific record or view based on the following parameters:
 
-  - ** Available Roles **: There are all the roles created in ADempiere, which do not have any configuration of the registry which is positioned
-  - ** Configured Roles **: There are the roles which will have a configuration of access or blocking to a specific record, these accesses or
+  - **Available Roles**: There are all the roles created in ADempiere, which do not have any configuration of the registry which is positioned
+  - **Configured Roles**: There are the roles which will have a configuration of access or blocking to a specific record, these accesses or
   locks depends on the following options:
     - Block: When this option is checked, the role is blocked from accessing and viewing the registry, having this option enabled enables the following option:
       - Dependent Entities: Checking this option leaves only one records active and the other records dependent on it blocks them
