@@ -520,7 +520,7 @@ export default {
             recordUuid: this.recordUuid,
             panelType: this.panelType,
             isNewRecord: action.action === 'setDefaultValues',
-            tableName: this.$route.params.tableName,
+            tableName: this.tableName,
             recordId: this.getCurrentRecord[this.tableNameCurrentTab + '_ID']
           })
             .then(response => {
