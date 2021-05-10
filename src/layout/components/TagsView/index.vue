@@ -149,7 +149,7 @@ export default {
     },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
-        if (this.affixTags.some(tag => tag.path === view.path)) {
+        if (this.affixTags.some(tag => tag.fullPath === this.$route.path)) {
           return
         }
         this.toLastView(visitedViews, view)
