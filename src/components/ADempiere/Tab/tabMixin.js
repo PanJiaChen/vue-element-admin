@@ -28,6 +28,10 @@ export default {
     tabsList: {
       type: Array,
       default: () => []
+    },
+    record: {
+      type: Object,
+      default: () => {}
     }
   },
   data() {

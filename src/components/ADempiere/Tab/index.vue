@@ -29,8 +29,8 @@
         :style="tabParentStyle"
       >
         <span v-if="key === 0" slot="label">
-          <el-tooltip v-if="key === 0" :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
-            <el-button type="text" @click="lock = !lock">
+          <el-tooltip v-if="key === 0" :content="!lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
+            <el-button type="text" @click="lockRecord()">
               <i :class="lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
             </el-button>
           </el-tooltip>
@@ -109,9 +109,47 @@ export default {
     },
     tabUuid(value) {
       this.setCurrentTab()
+    },
+    record(value) {
+      const tableName = this.windowMetadata.firstTab.tableName
+      if (value) {
+        this.$store.dispatch('getPrivateAccessFromServer', {
+          tableName,
+          recordId: this.record[tableName + '_ID'],
+          recordUuid: this.record.UUID
+        })
+          .then(privateAccessResponse => {
+            this.lock = privateAccessResponse.isLocked
+          })
+      }
     }
   },
   methods: {
+    lockRecord() {
+      this.lock = !this.lock
+      const tableName = this.windowMetadata.firstTab.tableName
+      const action = this.lock ? 'lockRecord' : 'unlockRecord'
+      const message = !this.lock ? 'lockRecord' : 'unlockRecord'
+      this.$store.dispatch(action, {
+        tableName,
+        recordId: this.record[tableName + '_ID'],
+        recordUuid: this.record.UUID
+      })
+        .then(() => {
+          this.$message({
+            type: 'success',
+            message: this.$t('data.' + message),
+            showClose: true
+          })
+        })
+        .catch(() => {
+          this.$message({
+            type: 'error',
+            message: this.$t('data.isError') + this.$t('data.' + message),
+            showClose: true
+          })
+        })
+    },
     setCurrentTab() {
       this.$store.dispatch('setCurrentTab', {
         parentUuid: this.windowUuid,

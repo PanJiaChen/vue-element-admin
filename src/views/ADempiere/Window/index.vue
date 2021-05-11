@@ -102,6 +102,7 @@
                           :window-uuid="windowUuid"
                           :window-metadata="windowMetadata"
                           :tabs-list="windowMetadata.tabsListParent"
+                          :record="currentRecord"
                           class="tab-window"
                         />
                         <div v-if="isMobile">
