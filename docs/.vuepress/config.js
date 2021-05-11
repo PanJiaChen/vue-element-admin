@@ -287,7 +287,9 @@ function genComponentSidebar(type = '') {
     '/guide/components/preference.md',
     '/guide/components/record-access.md',
     '/guide/components/notes.md',
-    '/guide/components/information.md'
+    '/guide/components/information.md',
+    '/guide/components/update.md',
+    '/guide/components/translation.md'
   ]
   return mapArr.map(i => {
     return type + i
