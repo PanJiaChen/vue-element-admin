@@ -26,6 +26,9 @@
       </div>
       <el-scrollbar wrap-class="scroll-child">
         <el-form ref="form" label-position="top" label-width="120px" style="overflow: auto;" @submit.native.prevent="notSubmitForm">
+          <el-form-item v-if="!isEmptyValue(messageText)" :label="$t('field.contextInfo')">
+            {{ messageText }}
+          </el-form-item>
           <el-form-item :label="$t('field.container.description')">
             {{ fieldAttributes.description }}
           </el-form-item>
@@ -50,6 +53,7 @@
 
 <script>
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
+import { parseContext } from '@/utils/ADempiere/contextUtils'
 
 export default {
   name: 'FieldContextInfo',
@@ -71,11 +75,36 @@ export default {
   computed: {
     permissionRoutes() {
       return this.$store.getters.permission_routes
+    },
+    messageText() {
+      if (!this.isEmptyValue(this.fieldAttributes.contextInfo.sqlStatement)) {
+        const contextInfo = this.$store.getters.getContextInfoField(this.fieldAttributes.contextInfo.uuid, this.fieldAttributes.contextInfo.sqlStatement)
+        if (this.isEmptyValue(contextInfo)) {
+          return ''
+        }
+        return contextInfo.messageText
+      }
+      return ''
     }
   },
   watch: {
     fieldValue(value) {
       this.value = value
+    }
+  },
+  created() {
+    if (this.isEmptyValue(this.messageText)) {
+      const sqlParse = parseContext({
+        parentUuid: this.fieldAttributes.parentUuid,
+        containerUuid: this.fieldAttributes.containerUuid,
+        value: this.fieldAttributes.contextInfo.sqlStatement,
+        isBooleanToString: true
+      })
+      this.$store.dispatch('getContextInfoValueFromServer', {
+        contextInfoId: this.fieldAttributes.contextInfo.id,
+        contextInfoUuid: this.fieldAttributes.contextInfo.uuid,
+        sqlStatement: sqlParse.value
+      })
     }
   },
   methods: {

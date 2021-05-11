@@ -71,7 +71,7 @@ export default {
           this.edit = true
           break
         //
-        case 'informacion':
+        case 'Información':
           break
       }
     },

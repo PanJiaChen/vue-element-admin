@@ -99,10 +99,11 @@ const getters = {
     return selectionToServer
   },
   getContextInfoField: (state) => (contextInfoUuid, sqlStatement) => {
-    return state.contextInfoField.find(info =>
-      info.contextInfoUuid === contextInfoUuid &&
-      info.sqlStatement === sqlStatement
-    )
+    return state.contextInfoField.find(info => {
+      if ((info.contextInfoUuid === contextInfoUuid) && (info.sqlStatement === sqlStatement)) {
+        return info
+      }
+    })
   },
   getRecordPrivateAccess: (state) => (tableName, recordId) => {
     if (!isEmptyValue(tableName) && !isEmptyValue(recordId)) {

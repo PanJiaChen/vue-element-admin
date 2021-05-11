@@ -332,6 +332,7 @@ export default {
     preference: 'Preference',
     logsField: 'Field Change Log',
     logsFieldEmpty: 'The field is still unchanged',
+    contextInfo: 'Context Info',
     codeTranslation: 'Translation Of ',
     container: {
       help: 'Help',
