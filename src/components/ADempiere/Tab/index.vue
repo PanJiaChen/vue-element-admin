@@ -29,12 +29,14 @@
         :style="tabParentStyle"
       >
         <span v-if="key === 0" slot="label">
-          <el-tooltip v-if="key === 0" :content="!lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
+          <el-tooltip v-if="key === 0" :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
             <el-button type="text" @click="lockRecord()">
               <i :class="lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
             </el-button>
           </el-tooltip>
-          {{ tabAttributes.name }}
+          <span :style="lock ? 'color: #1890ff;': 'color: red;'">
+            {{ tabAttributes.name }}
+          </span>
         </span>
         <span v-else slot="label">
           {{ tabAttributes.name }}
@@ -126,26 +128,26 @@ export default {
   },
   methods: {
     lockRecord() {
-      this.lock = !this.lock
       const tableName = this.windowMetadata.firstTab.tableName
       const action = this.lock ? 'lockRecord' : 'unlockRecord'
-      const message = !this.lock ? 'lockRecord' : 'unlockRecord'
       this.$store.dispatch(action, {
         tableName,
         recordId: this.record[tableName + '_ID'],
         recordUuid: this.record.UUID
       })
         .then(() => {
+          this.lock = !this.lock
           this.$message({
             type: 'success',
-            message: this.$t('data.' + message),
+            message: this.$t('data.notification.' + action),
             showClose: true
           })
         })
         .catch(() => {
+          this.lock = !this.lock
           this.$message({
             type: 'error',
-            message: this.$t('data.isError') + this.$t('data.' + message),
+            message: this.$t('data.isError') + this.$t('data.' + action),
             showClose: true
           })
         })

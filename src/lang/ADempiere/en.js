@@ -366,7 +366,11 @@ export default {
     },
     selectionRequired: 'You must select a record',
     undo: 'Undo',
-    unlockRecord: 'Unlock Record'
+    unlockRecord: 'Unlock Record',
+    notification: {
+      lockRecord: 'The Registry was Locked',
+      unlockRecord: 'Registry was Unlocked'
+    }
   },
   sequence: {
     available: 'Available',
