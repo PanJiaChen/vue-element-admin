@@ -69,6 +69,9 @@
           </el-timeline-item>
         </el-timeline>
       </el-scrollbar>
+      <p v-else>
+        {{ $t('field.logsFieldEmpty') }}
+      </p>
     </div>
   </el-card>
 </template>

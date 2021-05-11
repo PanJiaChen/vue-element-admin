@@ -246,10 +246,7 @@ export default {
       return this.$store.getters.getWindow(this.windowUuid)
     },
     isShowedTabsChildren() {
-      if (this.windowMetadata && this.windowMetadata.isShowedTabsChildren && this.isEmptyValue(this.$route.query.typeAction)) {
-        return this.windowMetadata.isShowedTabsChildren
-      }
-      return false
+      return this.windowMetadata.isShowedTabsChildren
     },
     isShowedRecordNavigation() {
       if (this.windowMetadata && this.windowMetadata.isShowedRecordNavigation) {

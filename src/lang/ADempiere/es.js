@@ -308,6 +308,7 @@ export default {
     preference: 'Preferencia',
     codeTranslation: 'Traduccion de ',
     logsField: 'Bitácora de Cambios',
+    logsFieldEmpty: 'El campo no tiene cambios aún',
     container: {
       help: 'Ayuda',
       description: 'Descripción'

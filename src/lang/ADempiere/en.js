@@ -331,6 +331,7 @@ export default {
     calculator: 'Calculator',
     preference: 'Preference',
     logsField: 'Field Change Log',
+    logsFieldEmpty: 'The field is still unchanged',
     codeTranslation: 'Translation Of ',
     container: {
       help: 'Help',
