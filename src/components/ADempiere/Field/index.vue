@@ -655,7 +655,16 @@ export default {
   },
   created() {
     this.timeOut = setTimeout(() => {
-      this.showPopoverPath = true
+      if (this.isMobile && this.optionColumnName === this.field.columnName) {
+        this.$store.commit('changeShowRigthPanel', true)
+        this.$store.dispatch('setOptionField', {
+          fieldAttributes: this.fieldAttributes,
+          name: this.$route.query.typeAction,
+          valueField: this.valueField
+        })
+      } else {
+        this.showPopoverPath = true
+      }
     }, 2000)
     // assined field with prop
     this.field = this.metadataField

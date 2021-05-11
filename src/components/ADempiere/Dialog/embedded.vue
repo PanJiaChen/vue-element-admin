@@ -91,6 +91,9 @@ export default {
       return this.$store.getters.getAttributeEmbedded
     },
     isVisibleDialog() {
+      if (this.isMobile) {
+        return false
+      }
       return this.$store.state['process/index'].isVisibleDialog
     },
     modalMetadata() {
@@ -103,6 +106,9 @@ export default {
       return this.$store.getters.getDataRecordAndSelection(this.containerUuid)
     },
     showRecordAccess() {
+      if (this.isMobile) {
+        return false
+      }
       return this.$store.getters.getShowRecordAccess
     }
   },
