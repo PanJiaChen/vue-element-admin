@@ -117,6 +117,10 @@ export default {
       return component
     },
     showRecordAccess() {
+      if (this.$route.query.typeAction === 'recordAccess') {
+        this.$store.commit('changeShowRigthPanel', true)
+        return true
+      }
       return this.$store.getters.getShowRecordAccess
     },
     isNewRecord() {

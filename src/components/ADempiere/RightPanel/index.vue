@@ -28,7 +28,7 @@
           <div
             class="handle-button"
             :style="{'top':buttonTop+'px','background-color':theme}"
-            @click="isShowRightPanel=!isShowRightPanel"
+            @click="closePanel"
           >
             <i :class="icon" style="color: white;" />
           </div>
@@ -107,6 +107,17 @@ export default {
         this.show = false
         window.removeEventListener('click', this.closeSidebar)
       }
+    },
+    closePanel() {
+      this.$router.push({
+        name: this.$route.name,
+        query: {
+          ...this.$route.query,
+          typeAction: ''
+        }
+      }, () => {})
+      this.$store.commit('changeShowRigthPanel', false)
+      this.isShowRightPanel = !this.isShowRightPanel
     },
     insertToBody() {
       const elx = this.$refs.rightMenu

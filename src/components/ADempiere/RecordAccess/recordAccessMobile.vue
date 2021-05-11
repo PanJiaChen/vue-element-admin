@@ -349,10 +349,6 @@ export default {
       }
     },
     SendRecorAccess(list) {
-      // list.forEach(element => {
-      //   element.isReadOnly = this.isReadonly
-      //   element.isDependentEntities = this.isDependentEntities
-      // })
       this.saveRecordAccess(list)
     }
   }

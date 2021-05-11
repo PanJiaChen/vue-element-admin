@@ -243,8 +243,15 @@ export default {
       } else if (action === 'shareLink') {
         this.setShareLink()
       } else if (action.action === 'recordAccess') {
-        this.$store.commit('changeShowRigthPanel', true)
+        this.$store.commit('changeShowRigthPanel', false)
         this.$store.commit('setRecordAccess', true)
+        this.$router.push({
+          name: this.$route.name,
+          query: {
+            ...this.$route.query,
+            typeAction: action.action
+          }
+        }, () => {})
       } else {
         this.runAction(action)
       }
