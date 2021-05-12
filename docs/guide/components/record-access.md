@@ -48,3 +48,30 @@ It is used to configure the accesses and locks of a role in a specific registry
 ## Functions or Observations
 - Function: Configuration of roles to give access or block a record
 - Observation: It only applies by registers and by roles, that is, if you want to configure one or more registers, they must do one by one
+## Developer Options
+
+The **Records Access** dialog is located in the following path:
+
+```bash
+└── src                             # Main source code
+    └── components                  # Global components
+        └── ADempiere               # ADempiere specific components
+            └── RecordAccess        # Records Access main directory
+
+```
+Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/147?tabParent=0&tabChild=0&action=43adbe9d-04a7-4cf6-9582-895c1e40da0b&typeAction=recordAccess)
+
+The **Records Access** service consumption call can be found in the following path:
+```bash
+└─ src                            # Main source code.
+    └─ api                        # Global services
+      └─ ADempiere                # ADempiere specific services
+            └─ actions            # Actions
+                └─ record-access  # Records Access main service directory
+
+```
+
+
+The services called from the component are <br>
+[GET adempiere-api/ui/getRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
+[POST adempiere-api/ui/setRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)

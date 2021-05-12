@@ -45,3 +45,30 @@
 -功能：配置角色以提供訪問權限或阻止記錄
 -觀察：它僅適用於寄存器和角色，即，如果您要配置一個或多個寄存器，則它們必須一個接一個地執行
   
+## 开发者选项
+
+**记录访问**对话框位于以下路径中。
+
+```bash
+└── src                             # 主要的源代码
+    └── components                  # 全局组件
+        └── ADempiere               # ADempiere特定组件
+            └── RecordAccess        # 记录访问主目录
+
+```
+在这里你可以看到一个[演示](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/147?tabParent=0&tabChild=0&action=43adbe9d-04a7-4cf6-9582-895c1e40da0b&typeAction=recordAccess)
+
+在以下路径中可以找到**记录访问**服务的消费调用。
+```bash
+└─ src                            # 主要的源代码。
+    └─ api                        # 全球服务
+      └─ ADempiere                # ADempiere的具体服务
+            └─ actions            # 行动
+                └─ record-access  # 记录 访问主服务目录
+
+```
+
+
+从该组件中调用的服务有 <br>
+[GET adempiere-api/ui/getRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
+[POST adempiere-api/ui/setRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
