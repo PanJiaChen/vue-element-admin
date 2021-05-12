@@ -43,3 +43,31 @@ In the mobile version, it must be positioned at the bottom of the window to view
 ### Create Notes
 
 ![How to create notes in the mobile version]('/images/components/notes/create-notes-in-the-mobile-version.gif' "How to create notes in the mobile version")
+
+## Developer Options
+
+The **Notes** panel is located in the following path:
+
+```bash
+└── src                      # Main source code.
+    └── components           # Global components.
+        └── ADempiere        # ADempiere specific components.
+            └── ChatEntries  # Main component directory Notes.
+
+```
+Here you can see a [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+The **Notes** service consumption call can be found in the following path:
+```bash
+└─ src                            # Main source code.
+    └─ api                        # Global Services
+      └─ ADempiere                # ADempiere's specific services
+            └─ window             # Main service directory Notes
+
+```
+
+
+The services called from the component are  <br>
+[POST /adempiere-api/logs/list-entity-chat](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-chats)<br>
+[POST /adempiere-api/logs/list-chat-entries](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-chat-entries)<br>
+[POST /adempiere-api/ui/create-chat-entry](https://adempiere.github.io/proxy-adempiere-api/guide/es)
