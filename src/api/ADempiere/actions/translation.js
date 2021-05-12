@@ -13,38 +13,47 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
-// This file is for get all information for dashboard of ADempiere client,
-// please if you want to implement a custom dashboard create a new fielwith api definition
+
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
 
-// List all dashboard for role
-export function requestLisDashboards({
-  roleId,
-  roleUuid,
+/**
+ * Request translations
+ * @param {string} tableName
+ * @param {string} language
+ * @param {string} recordUuid
+ * @param {number} recordId
+ */
+export function requestTranslations({
+  tableName,
+  language,
+  recordUuid,
+  recordId,
   pageToken,
   pageSize
 }) {
   return request({
-    url: '/dashboard/dashboards',
+    url: '/user-interface/component/translation/translations',
     method: 'get',
     params: {
-      role_id: roleId,
-      role_uuid: roleUuid,
+      table_name: tableName,
+      id: recordId,
+      uuid: recordUuid,
+      language,
       // Page Data
       pageToken,
       pageSize
     }
   })
-    .then(dashboardsListResponse => {
-      const { convertDashboard } = require('@/utils/ADempiere/apiConverts/dashboard.js')
+    .then(languageListResponse => {
+      const { convertTranslation } = require('@/utils/ADempiere/apiConverts/persistence.js')
 
       return {
-        recordCount: dashboardsListResponse.record_count,
-        dashboardsList: dashboardsListResponse.records.map(favorite => {
-          return convertDashboard(favorite)
-        }),
-        nextPageToken: dashboardsListResponse.next_page_token
+        nextPageToken: languageListResponse.next_page_token,
+        recordCount: languageListResponse.record_count,
+        translationsList: languageListResponse.records.map(record => {
+          return convertTranslation(record)
+        })
       }
     })
 }

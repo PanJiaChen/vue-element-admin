@@ -30,7 +30,7 @@ export function setPreference({
   isForCurrentContainer
 }) {
   return request({
-    url: '/ui/set-preference',
+    url: '/user-interface/component/preference/set-preference',
     method: 'post',
     data: {
       container_uuid: parentUuid,
@@ -55,7 +55,7 @@ export function deletePreference({
   isForCurrentContainer
 }) {
   return request({
-    url: '/ui/delete-preference',
+    url: '/user-interface/component/preference/delete-preference',
     method: 'post',
     data: {
       container_uuid: parentUuid,

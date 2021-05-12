@@ -22,7 +22,7 @@ const tableName = 'M_Locator'
 export function getLocatorList({
   warehouseId
 }) {
-  const { requestListEntities } = require('@/api/ADempiere/persistence.js')
+  const { requestListEntities } = require('@/api/ADempiere/common/persistence.js')
   return new Promise(resolve => {
     requestListEntities({
       tableName,

@@ -17,6 +17,210 @@
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
 
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
+
+/**
+ * Request a Lookup data from Reference
+ * The main attributes that function hope are:
+ * @param {string} tableName
+ * @param {string} directQuery
+ * @param {string|number} value
+ */
+export function requestLookup({
+  tableName,
+  directQuery,
+  value
+}) {
+  let filters = []
+  if (!isEmptyValue(value)) {
+    filters = [{
+      value
+    }]
+  }
+  return request({
+    url: '/user-interface/window/lookup-item',
+    method: 'get',
+    params: {
+      table_name: tableName,
+      query: directQuery,
+      filters
+    }
+  })
+    .then(respose => {
+      return respose
+    })
+}
+
+/**
+ * Request a Lookup list data from Reference
+ * The main attributes that function hope are:
+ * @param {string} tableName
+ * @param {string} query
+ * @param {string} whereClause
+ * @param {array}  valuesList // TODO: Add support
+ * @param {string} pageToken
+ * @param {number} pageSize
+ */
+export function requestLookupList({
+  tableName,
+  query,
+  whereClause,
+  columnName,
+  valuesList = [],
+  pageToken,
+  pageSize
+}) {
+  let filters = []
+  if (!isEmptyValue(valuesList)) {
+    filters = [{
+      column_name: columnName,
+      values: valuesList
+    }]
+  }
+
+  return request({
+    url: '/user-interface/window/lookup-items',
+    method: 'get',
+    params: {
+      table_name: tableName,
+      query,
+      where_clause: whereClause,
+      filters,
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(lookupListResponse => {
+      return {
+        nextPageToken: lookupListResponse.next_page_token,
+        recordCount: lookupListResponse.record_count,
+        recordsList: lookupListResponse.records
+      }
+    })
+}
+
+/**
+ * Reference List from Window
+ * @param {string}  tableName
+ * @param {string}  windowUuid
+ * @param {string}  recordUuid
+ * @param {number}  recordId
+ */
+export function requestReferencesList({
+  windowUuid,
+  tableName,
+  recordId,
+  recordUuid,
+  pageToken,
+  pageSize
+}) {
+  return request({
+    url: '/user-interface/window/references',
+    method: 'get',
+    params: {
+      id: recordId,
+      uuid: recordUuid,
+      window_uuid: windowUuid,
+      table_name: tableName,
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(referencesListResposnse => {
+      const { convertReferencesList } = require('@/utils/ADempiere/apiConverts/values.js')
+
+      return convertReferencesList(referencesListResposnse)
+    })
+}
+
+// Get default value for a field
+export function requestDefaultValue(query) {
+  return request({
+    url: '/user-interface/window/default-value',
+    method: 'get',
+    params: {
+      query
+    }
+  })
+    .then(respose => {
+      return respose
+    })
+}
+
+/**
+ * Get context information for a window, tab or field
+ * @param {string} query
+ * @param {string} uuid
+ * @param {number} id
+ */
+export function requestGetContextInfoValue({
+  uuid,
+  id,
+  query
+}) {
+  return request({
+    url: '/user-interface/window/context-info-value',
+    method: 'get',
+    params: {
+      query,
+      uuid,
+      id
+    }
+  })
+    .then(contextInfoValueResponse => {
+      return {
+        messageText: contextInfoValueResponse.message_text,
+        messageTip: contextInfoValueResponse.message_tip
+      }
+    })
+}
+
+/**
+ * Run callout request
+ * @param {string}  windowUuid
+ * @param {number}  windowNo
+ * @param {string}  tabUuid
+ * @param {string}  tableName
+ * @param {string}  columnName
+ * @param {mixed}   value
+ * @param {mixed}   oldValue
+ * @param {string}  callout
+ * @param {array}   attributesList
+ * @returns {Map} Entity
+ */
+export function runCallOutRequest({
+  windowUuid,
+  windowNo,
+  tabUuid,
+  tableName,
+  columnName,
+  value,
+  oldValue,
+  callout,
+  attributesList = []
+}) {
+  return request({
+    url: '/user-interface/window/run-callout',
+    method: 'post',
+    data: {
+      table_name: tableName,
+      window_uuid: windowUuid,
+      tab_uuid: tabUuid,
+      callout,
+      column_name: columnName,
+      old_value: oldValue,
+      value,
+      window_no: windowNo,
+      attributes: attributesList
+    }
+  })
+    .then(response => {
+      return response
+    })
+}
+
 // Get list of log for a records
 export function requestListEntityLogs({
   tableName,
@@ -26,14 +230,12 @@ export function requestListEntityLogs({
   pageSize
 }) {
   return request({
-    url: '/logs/list-entity-logs',
-    method: 'post',
-    data: {
+    url: '/user/log/entity-logs',
+    method: 'get',
+    params: {
       table_name: tableName,
       id: recordId,
-      uuid: recordUuid
-    },
-    params: {
+      uuid: recordUuid,
       // Page Data
       pageToken,
       pageSize
@@ -61,14 +263,12 @@ export function requestListWorkflowsLogs({
   pageSize
 }) {
   return request({
-    url: '/logs/list-workflow-logs',
-    method: 'post',
-    data: {
+    url: '/user/log/workflow-logs',
+    method: 'get',
+    params: {
       table_name: tableName,
       id: recordId,
-      uuid: recordUuid
-    },
-    params: {
+      uuid: recordUuid,
       // Page Data
       pageToken,
       pageSize
@@ -94,12 +294,10 @@ export function requestListWorkflows({
   pageSize
 }) {
   return request({
-    url: '/workflow/list-workflow',
-    method: 'post',
-    data: {
-      table_name: tableName
-    },
+    url: '/user/log/workflow-logs',
+    method: 'get',
     params: {
+      table_name: tableName,
       // Page Data
       pageToken,
       pageSize
@@ -132,14 +330,12 @@ export function requestListEntityChats({
   pageSize
 }) {
   return request({
-    url: '/logs/list-entity-chats',
-    method: 'post',
-    data: {
+    url: '/user/log/entity-chats',
+    method: 'get',
+    params: {
       table_name: tableName,
       id: recordId,
-      uuid: recordUuid
-    },
-    params: {
+      uuid: recordUuid,
       // Page Data
       pageToken,
       pageSize
@@ -170,13 +366,11 @@ export function requestListChatsEntries({
   pageSize
 }) {
   return request({
-    url: '/logs/list-chat-entries',
-    method: 'post',
-    data: {
-      id,
-      uuid
-    },
+    url: '/user/log/chat-entries',
+    method: 'get',
     params: {
+      id,
+      uuid,
       // Page Data
       pageToken,
       pageSize
@@ -208,7 +402,7 @@ export function requestCreateChatEntry({
   comment
 }) {
   return request({
-    url: '/ui/create-chat-entry',
+    url: '/user-interface/component/notes/create-chat-entry',
     method: 'post',
     data: {
       table_name: tableName,
@@ -221,85 +415,5 @@ export function requestCreateChatEntry({
       const { convertChatEntry } = require('@/utils/ADempiere/apiConverts/window.js')
 
       return convertChatEntry(chatEntryResponse)
-    })
-}
-
-/**
- * Request Document Status List
- * @param {string} tableName
- * @param {number} recordId
- * @param {string} recordUuid
- * @param {string} documentStatus
- * @param {string} documentAction
- * @param {number} pageSize
- * @param {string} pageToken
- */
-export function requestListDocumentStatuses({
-  tableName,
-  recordId,
-  recordUuid,
-  documentStatus,
-  pageSize,
-  pageToken
-}) {
-  return request({
-    url: '/workflow/list-document-statuses',
-    method: 'post',
-    data: {
-      id: recordId,
-      uuid: recordUuid,
-      table_name: tableName,
-      document_status: documentStatus
-    },
-    params: {
-      // Page Data
-      pageToken,
-      pageSize
-    }
-  })
-    .then(listDocumentsActionsResponse => {
-      return {
-        nextPageToken: listDocumentsActionsResponse.next_page_token,
-        recordCount: listDocumentsActionsResponse.record_count,
-        documentStatusesList: listDocumentsActionsResponse.records
-      }
-    })
-}
-
-// Request a document action list from current status of document
-export function requestListDocumentActions({
-  tableName,
-  recordId,
-  recordUuid,
-  documentStatus,
-  documentAction,
-  pageSize,
-  pageToken
-}) {
-  return request({
-    url: '/workflow/list-document-actions',
-    method: 'post',
-    data: {
-      id: recordId,
-      uuid: recordUuid,
-      table_name: tableName,
-      document_action: documentAction,
-      document_status: documentStatus
-    },
-    params: {
-      // Page Data
-      pageToken,
-      pageSize
-    }
-  })
-    .then(listDocumentsActionsResponse => {
-      return {
-        nextPageToken: listDocumentsActionsResponse.next_page_token,
-        recordCount: listDocumentsActionsResponse.record_count,
-        defaultDocumentAction: {
-          ...listDocumentsActionsResponse.default_document_action
-        },
-        documentActionsList: listDocumentsActionsResponse.records
-      }
     })
 }

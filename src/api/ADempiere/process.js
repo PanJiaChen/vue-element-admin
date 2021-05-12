@@ -57,7 +57,7 @@ export function requestRunProcess({
   })
 
   return request({
-    url: '/data/process',
+    url: '/common/api/process',
     method: 'post',
     data: {
       process_uuid: uuid,
@@ -92,16 +92,14 @@ export function requestListProcessesLogs({
 }) {
   //  Get Process Activity
   return request({
-    url: '/logs/list-process-logs',
-    method: 'post',
-    data: {
+    url: '/user/log/process-logs',
+    method: 'get',
+    params: {
       instance_uuid: instanceUuid,
       user_uuid: userUuid,
       table_name: tableName,
       id: recordId,
-      uuid: recordUuid
-    },
-    params: {
+      uuid: recordUuid,
       page_size: pageSize,
       page_token: pageToken
     }

@@ -3,8 +3,8 @@ import {
   requestUpdateEntity,
   requestDeleteEntity,
   rollbackEntity
-} from '@/api/ADempiere/persistence'
-import { requestReferencesList } from '@/api/ADempiere/values'
+} from '@/api/ADempiere/common/persistence'
+import { requestReferencesList } from '@/api/ADempiere/window'
 import { isEmptyValue, typeValue } from '@/utils/ADempiere/valueUtils.js'
 import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'

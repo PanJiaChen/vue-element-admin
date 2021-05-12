@@ -1,7 +1,7 @@
 import {
   requestCreateEntity,
   requestUpdateEntity
-} from '@/api/ADempiere/persistence.js'
+} from '@/api/ADempiere/common/persistence.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
 import language from '@/lang'

@@ -1,4 +1,4 @@
-import { requestBrowserMetadata } from '@/api/ADempiere/dictionary.js'
+import { requestBrowserMetadata } from '@/api/ADempiere/dictionary/smart-browser.js'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { generateField } from '@/utils/ADempiere/dictionaryUtils'

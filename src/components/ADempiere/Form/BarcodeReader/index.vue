@@ -95,7 +95,7 @@ import fieldsList from './fieldsListBarCode.js'
 // import { requestGetProductPrice } from '@/api/ADempiere/form/price-checking.js'
 import { formatPercent, formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
-import { requestImage } from '@/api/ADempiere/persistence.js'
+import { requestImage } from '@/api/ADempiere/common/resource.js'
 
 export default {
   name: 'BarcodeReader',

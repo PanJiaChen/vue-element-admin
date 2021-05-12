@@ -25,13 +25,11 @@ export function requestOrganizationsList({
   pageSize
 }) {
   return request({
-    url: '/core/list-organizations',
-    method: 'post',
-    data: {
-      role_id: roleId,
-      role_uuid: roleUuid
-    },
+    url: '/common/organizations',
+    method: 'get',
     params: {
+      role_id: roleId,
+      role_uuid: roleUuid,
       // Page Data
       pageToken,
       pageSize
@@ -58,13 +56,11 @@ export function requestWarehousesList({
   pageSize
 }) {
   return request({
-    url: '/core/list-warehouses',
-    method: 'post',
-    data: {
-      organization_id: organizationId,
-      organization_uuid: organizationUuid
-    },
+    url: '/common/warehouses',
+    method: 'get',
     params: {
+      organization_id: organizationId,
+      organization_uuid: organizationUuid,
       // Page Data
       pageToken,
       pageSize
@@ -89,7 +85,7 @@ export function requestGetCountryDefinition({
   uuid
 }) {
   return request({
-    url: '/core/country',
+    url: '/common/country',
     method: 'get',
     params: {
       id,
@@ -109,8 +105,8 @@ export function requestLanguagesList({
   pageSize
 }) {
   return request({
-    url: '/core/list-languages',
-    method: 'post',
+    url: '/common/languages',
+    method: 'get',
     params: {
       // Page Data
       pageToken,
@@ -156,7 +152,7 @@ export function requestCreateBusinessPartner({
   posUuid
 }) {
   return request({
-    url: '/core/create-business-partner',
+    url: '/common/create-business-partner',
     method: 'post',
     data: {
       value,
@@ -195,7 +191,7 @@ export function requestGetBusinessPartner({
   searchValue
 }) {
   return request({
-    url: '/core/get-business-partner',
+    url: '/common/business-partner',
     method: 'get',
     params: {
       search_value: searchValue
@@ -222,9 +218,9 @@ export function requestListBusinessPartner({
   pageToken
 }) {
   return request({
-    url: '/core/list-business-partner',
-    method: 'post',
-    data: {
+    url: '/common/business-partners',
+    method: 'get',
+    params: {
       search_value: searchValue,
       value,
       name,
@@ -232,9 +228,7 @@ export function requestListBusinessPartner({
       e_mail: eMail,
       phone,
       // Location
-      postal_code: postalCode
-    },
-    params: {
+      postal_code: postalCode,
       page_size: pageSize,
       page_token: pageToken
     }
@@ -267,9 +261,9 @@ export function requestGetConversionRate({
   conversionDate
 }) {
   return request({
-    url: '/core/get-conversion-rate',
-    method: 'post',
-    data: {
+    url: '/common/conversion-rate',
+    method: 'get',
+    params: {
       conversion_type_uuid: conversionTypeUuid,
       currency_from_uuid: currencyFromUuid,
       currency_to_uuid: currencyToUuid,

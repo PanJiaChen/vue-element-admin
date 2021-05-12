@@ -44,7 +44,7 @@
 </template>
 
 <script>
-import { getPendingDocumentsFromServer } from '@/api/ADempiere/dashboard/dashboard'
+import { getPendingDocumentsFromServer } from '@/api/ADempiere/dashboard/tasks'
 import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 
 export default {

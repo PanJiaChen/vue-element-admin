@@ -2,11 +2,11 @@
 import {
   requestGetEntity,
   requestListEntities
-} from '@/api/ADempiere/persistence.js'
+} from '@/api/ADempiere/common/persistence.js'
 import {
   requestDefaultValue,
   requestGetContextInfoValue
-} from '@/api/ADempiere/values'
+} from '@/api/ADempiere/window'
 import {
   getPrivateAccess,
   lockPrivateAccess,

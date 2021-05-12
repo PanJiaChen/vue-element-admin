@@ -28,7 +28,9 @@ export function request(requestValues) {
   if (!requestValues.params) {
     requestValues.params = {}
   }
-  requestValues.baseURL = config.adempiere.api.url
+  if (!requestValues.baseURL) {
+    requestValues.baseURL = config.adempiere.api.url
+  }
   //  Timeout
   if (config.adempiere.api.timeout && config.adempiere.api.timeout > 0) {
     requestValues.timeout = config.adempiere.api.timeout

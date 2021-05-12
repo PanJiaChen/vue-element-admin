@@ -1,4 +1,4 @@
-import { requestFieldMetadata } from '@/api/ADempiere/dictionary'
+import { requestFieldMetadata } from '@/api/ADempiere/dictionary/window'
 
 const initStateLookup = {
   referenceList: [],

@@ -1,4 +1,4 @@
-import { requestForm } from '@/api/ADempiere/dictionary'
+import { requestForm } from '@/api/ADempiere/dictionary/form'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import router from '@/router'

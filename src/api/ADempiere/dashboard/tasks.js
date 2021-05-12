@@ -18,17 +18,21 @@
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
 
-// List all dashboard for role
-export function requestLisDashboards({
+// Get pending documents
+export function getPendingDocumentsFromServer({
+  userId,
+  userUuid,
   roleId,
   roleUuid,
   pageToken,
   pageSize
 }) {
   return request({
-    url: '/dashboard/dashboards',
+    url: '/dashboard/addons/tasks/pending-documents',
     method: 'get',
     params: {
+      user_id: userId,
+      user_uuid: userUuid,
       role_id: roleId,
       role_uuid: roleUuid,
       // Page Data
@@ -36,15 +40,15 @@ export function requestLisDashboards({
       pageSize
     }
   })
-    .then(dashboardsListResponse => {
-      const { convertDashboard } = require('@/utils/ADempiere/apiConverts/dashboard.js')
+    .then(pendingDocumentsListResponse => {
+      const { convertPendingDocument } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 
       return {
-        recordCount: dashboardsListResponse.record_count,
-        dashboardsList: dashboardsListResponse.records.map(favorite => {
-          return convertDashboard(favorite)
+        recordCount: pendingDocumentsListResponse.record_count,
+        pendingDocumentsList: pendingDocumentsListResponse.records.map(pendingDocument => {
+          return convertPendingDocument(pendingDocument)
         }),
-        nextPageToken: dashboardsListResponse.next_page_token
+        nextPageToken: pendingDocumentsListResponse.next_page_token
       }
     })
 }

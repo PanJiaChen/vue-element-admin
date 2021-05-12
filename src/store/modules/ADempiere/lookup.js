@@ -1,4 +1,4 @@
-import { requestLookup, requestLookupList } from '@/api/ADempiere/values.js'
+import { requestLookup, requestLookupList } from '@/api/ADempiere/window.js'
 import { getToken as getSession } from '@/utils/auth'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import { parseContext } from '@/utils/ADempiere/contextUtils'

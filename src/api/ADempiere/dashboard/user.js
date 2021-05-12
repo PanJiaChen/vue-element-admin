@@ -18,33 +18,62 @@
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
 
-// List all dashboard for role
-export function requestLisDashboards({
-  roleId,
+// Get Recent Items based on selection option
+export function requestListRecentItems({
+  userUuid,
   roleUuid,
   pageToken,
   pageSize
 }) {
   return request({
-    url: '/dashboard/dashboards',
+    url: '/dashboard/addons/user/recent-items',
     method: 'get',
     params: {
-      role_id: roleId,
+      user_uuid: userUuid,
       role_uuid: roleUuid,
+      current_session: true,
       // Page Data
       pageToken,
       pageSize
     }
   })
-    .then(dashboardsListResponse => {
-      const { convertDashboard } = require('@/utils/ADempiere/apiConverts/dashboard.js')
+    .then(recentItmesReponse => {
+      const { convertRecentItemsList } = require('@/utils/ADempiere/apiConverts/dashboard.js')
+
+      return convertRecentItemsList(recentItmesReponse)
+    })
+}
+
+/**
+ * Request Favorites List
+ * @param {string} userUuid
+ */
+export function getFavoritesFromServer({
+  userId,
+  userUuid,
+  pageToken,
+  pageSize
+}) {
+  return request({
+    url: '/dashboard/addons/user/favorites',
+    method: 'get',
+    params: {
+      user_id: userId,
+      user_uuid: userUuid,
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(favoritesListReponse => {
+      const { convertFavorite } = require('@/utils/ADempiere/apiConverts/dashboard.js')
 
       return {
-        recordCount: dashboardsListResponse.record_count,
-        dashboardsList: dashboardsListResponse.records.map(favorite => {
-          return convertDashboard(favorite)
+        recordCount: favoritesListReponse.record_count,
+        favoritesList: favoritesListReponse.records.map(favorite => {
+          return convertFavorite(favorite)
         }),
-        nextPageToken: dashboardsListResponse.next_page_token
+        nextPageToken: favoritesListReponse.next_page_token
       }
     })
 }

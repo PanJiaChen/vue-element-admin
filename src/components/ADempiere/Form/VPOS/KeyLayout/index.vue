@@ -102,7 +102,7 @@
 
 <script>
 import VueContentLoading from '@/components/ADempiere/ContentLoader'
-import { requestImage } from '@/api/ADempiere/persistence.js'
+import { requestImage } from '@/api/ADempiere/common/resource.js'
 import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
 import { formatQuantity } from '@/utils/ADempiere/valueFormat.js'
 

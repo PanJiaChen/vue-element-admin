@@ -54,7 +54,7 @@ export function requestBrowserSearch({
   })
 
   return request({
-    url: '/ui/list-browser-items',
+    url: '/user-interface/smart-browser/browser-items',
     data: {
       // Running Parameters
       uuid,

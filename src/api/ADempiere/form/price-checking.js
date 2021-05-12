@@ -29,9 +29,9 @@ export function requestGetProductPrice({
   validFrom
 }) {
   return request({
-    url: '/pos/get-product-price',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/get-product-price',
+    method: 'get',
+    params: {
       search_value: searchValue,
       upc,
       value,

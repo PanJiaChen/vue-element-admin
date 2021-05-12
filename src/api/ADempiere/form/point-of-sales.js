@@ -31,9 +31,9 @@ export function requestGetPointOfSales({
   posUuid
 }) {
   return request({
-    url: '/pos/get-point-of-sales',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/point-of-sales',
+    method: 'get',
+    params: {
       point_of_sales_uuid: posUuid
     }
   })
@@ -51,12 +51,10 @@ export function requestListPointOfSales({
   pageToken
 }) {
   return request({
-    url: '/pos/list-point-of-sales',
-    method: 'post',
-    data: {
-      user_uuid: userUuid
-    },
+    url: '/form/addons/point-of-sales/selling-points',
+    method: 'get',
     params: {
+      user_uuid: userUuid,
       page_size: pageSize,
       page_token: pageToken
     }
@@ -82,7 +80,7 @@ export function requestCreateOrder({
   salesRepresentativeUuid
 }) {
   return request({
-    url: '/pos/create-order',
+    url: '/form/addons/point-of-sales/create-order',
     method: 'post',
     data: {
       pos_uuid: posUuid,
@@ -106,7 +104,7 @@ export function requestUpdateOrder({
   description
 }) {
   return request({
-    url: '/pos/update-order',
+    url: '/form/addons/point-of-sales/update-order',
     method: 'post',
     data: {
       order_uuid: orderUuid,
@@ -125,9 +123,9 @@ export function requestUpdateOrder({
 // Get order from uuid
 export function requestGetOrder(orderUuid) {
   return request({
-    url: '/pos/get-order',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/order',
+    method: 'get',
+    params: {
       order_uuid: orderUuid
     }
   })
@@ -147,7 +145,7 @@ export function requestDeleteOrder({
   // salesRepresentativeUuid
 }) {
   return request({
-    url: '/pos/delete-order',
+    url: '/form/addons/point-of-sales/delete-order',
     method: 'post',
     data: {
       order_uuid: orderUuid
@@ -222,9 +220,9 @@ export function requestListOrders({
   */
 
   return request({
-    url: '/pos/list-orders',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/orders',
+    method: 'get',
+    params: {
       pos_uuid: posUuid,
       document_no: documentNo,
       business_partner_uuid: businessPartnerUuid,
@@ -234,11 +232,7 @@ export function requestListOrders({
       is_paid: isPaid,
       is_processed: isProcessed,
       is_aisle_seller: isAisleSeller,
-      is_invoiced: isInvoiced
-      // date_ordered_from: dateOrderedFrom,
-      // date_ordered_to: dateOrderedTo
-    },
-    params: {
+      is_invoiced: isInvoiced,
       page_size: pageSize,
       page_token: pageToken
     }
@@ -268,9 +262,9 @@ export function requestCreateOrderLine({
   discountRate
 }) {
   return request({
-    url: '/pos/create-order-line',
+    url: '/form/addons/point-of-sales/create-order-line',
     method: 'post',
-    data: {
+    params: {
       order_uuid: orderUuid,
       product_uuid: productUuid,
       description,
@@ -297,7 +291,7 @@ export function requestUpdateOrderLine({
   discountRate
 }) {
   return request({
-    url: '/pos/update-order-line',
+    url: '/form/addons/point-of-sales/update-order-line',
     method: 'post',
     data: {
       // is_add_quantity: true,
@@ -320,7 +314,7 @@ export function requestDeleteOrderLine({
   orderLineUuid
 }) {
   return request({
-    url: '/pos/delete-order-line',
+    url: '/form/addons/point-of-sales/delete-order-line',
     method: 'post',
     data: {
       order_line_uuid: orderLineUuid
@@ -337,12 +331,10 @@ export function requestListOrderLines({
   pageToken
 }) {
   return request({
-    url: '/pos/list-order-lines',
-    method: 'post',
-    data: {
-      order_uuid: orderUuid
-    },
+    url: '/form/addons/point-of-sales/order-lines',
+    method: 'get',
     params: {
+      order_uuid: orderUuid,
       page_size: pageSize,
       page_token: pageToken
     }
@@ -362,9 +354,9 @@ export function requestListOrderLines({
 
 export function getKeyLayout({ keyLayoutUuid }) {
   return request({
-    url: '/pos/get-key-layout',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/key-layout',
+    method: 'get',
+    params: {
       key_layout_uuid: keyLayoutUuid
     }
   })
@@ -388,16 +380,14 @@ export function getProductPriceList({
   pageToken
 }) {
   return request({
-    url: '/pos/list-product-prices',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/product-prices',
+    method: 'get',
+    params: {
       price_list_uuid: priceListUuid,
       search_value: searchValue,
       valid_from: validFrom,
       business_partner_uuid: businessPartnerUuid,
-      warehouse_uuid: warehouseUuid
-    },
-    params: {
+      warehouse_uuid: warehouseUuid,
       page_size: pageSize,
       page_token: pageToken
     }
@@ -475,7 +465,7 @@ export function createPayment({
   currencyUuid
 }) {
   return request({
-    url: '/pos/create-payment',
+    url: '/form/addons/point-of-sales/create-payment',
     method: 'post',
     data: {
       pos_uuid: posUuid,
@@ -507,7 +497,7 @@ export function updatePayment({
   tenderTypeCode
 }) {
   return request({
-    url: '/pos/update-payment',
+    url: '/form/addons/point-of-sales/update-payment',
     method: 'post',
     data: {
       payment_uuid: paymentUuid,
@@ -530,7 +520,7 @@ export function deletePayment({
   paymentUuid
 }) {
   return request({
-    url: '/pos/delete-payment',
+    url: '/form/addons/point-of-sales/delete-payment',
     method: 'post',
     data: {
       payment_uuid: paymentUuid
@@ -548,9 +538,9 @@ export function getPaymentsList({
   orderUuid
 }) {
   return request({
-    url: '/pos/list-payments',
-    method: 'post',
-    data: {
+    url: '/form/addons/point-of-sales/payments',
+    method: 'get',
+    params: {
       pos_uuid: posUuid,
       order_uuid: orderUuid
     }
@@ -609,7 +599,7 @@ export function processOrder({
     })
   }
   return request({
-    url: '/pos/process-order',
+    url: '/form/addons/point-of-sales/process-order',
     method: 'post',
     data: {
       pos_uuid: posUuid,

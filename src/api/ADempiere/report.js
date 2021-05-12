@@ -29,13 +29,11 @@ export function requestListReportsViews({
   pageSize
 }) {
   return request({
-    url: '/ui/list-report-views',
-    method: 'post',
-    data: {
-      table_name: tableName,
-      process_uuid: processUuid
-    },
+    url: '/user-interface/process/report-views',
+    method: 'get',
     params: {
+      table_name: tableName,
+      process_uuid: processUuid,
       page_token: pageToken,
       page_size: pageSize
     }
@@ -62,14 +60,12 @@ export function requestListPrintFormats({
   pageSize
 }) {
   return request({
-    url: '/ui/list-print-formats',
-    method: 'post',
-    data: {
+    url: '/user-interface/process/print-formats',
+    method: 'get',
+    params: {
       table_name: tableName,
       report_view_uuid: reportViewUuid,
-      process_uuid: processUuid
-    },
-    params: {
+      process_uuid: processUuid,
       page_token: pageToken,
       page_size: pageSize
     }
@@ -88,12 +84,10 @@ export function requestListDrillTables({
   pageSize
 }) {
   return request({
-    url: '/ui/list-drill-tables',
-    method: 'post',
-    data: {
-      table_name: tableName
-    },
+    url: '/user-interface/process/drill-tables',
+    method: 'get',
     params: {
+      table_name: tableName,
       page_token: pageToken,
       page_size: pageSize
     }
@@ -126,9 +120,9 @@ export function requestGetReportOutput({
   orderByClause
 }) {
   return request({
-    url: '/ui/get-report-output',
-    method: 'post',
-    data: {
+    url: '/user-interface/process/report-output',
+    method: 'get',
+    params: {
       table_name: tableName,
       // reference
       print_format_uuid: printFormatUuid,

@@ -1,6 +1,6 @@
 // ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
 // Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
-// Contributor(s): Elsio Sanchez esanchez@erpya.com www.erpya.com
+// Contributor(s): Yamel Senih ysenih@erpya.com www.erpya.com
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,39 +14,29 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/**
- * Get entity with binary by identifier
- * @param {string} tableName
- * @param {string} recordUuid
- */
-export function getResource({
-  uuid,
-  tableName
-}) {
-  const { requestGetEntity } = require('@/api/ADempiere/common/persistence.js')
-
-  return requestGetEntity({
-    recordUuid: uuid,
-    tableName
-  })
-}
+// Get Instance for connection
+import { request } from '@/utils/ADempiere/request'
 
 /**
- * Update an existing binary by id or uuid
- * @param {string} tableName
- * @param {string} recordUuid
- * @param {object} binaryFile
+ * Request dictionary Smart Browser metadata
+ * @param {string} uuid universally unique identifier
+ * @param {number} id, identifier
  */
-export function updateResource({
+export function requestBrowserMetadata({
   uuid,
-  tableName,
-  binaryFile
+  id
 }) {
-  const { requestUpdateEntity } = require('@/api/ADempiere/common/persistence.js')
-
-  return requestUpdateEntity({
-    recordUuid: uuid,
-    tableName,
-    attributesList: binaryFile
+  return request({
+    url: '/dictionary/browser',
+    method: 'get',
+    params: {
+      uuid,
+      id
+    }
   })
+    .then(browserResponse => {
+      const { convertBrowser } = require('@/utils/ADempiere/apiConverts/dictionary.js')
+
+      return convertBrowser(browserResponse)
+    })
 }

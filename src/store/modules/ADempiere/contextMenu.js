@@ -1,5 +1,5 @@
 import { isEmptyValue, recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
-import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/ADempiere/window'
+import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/ADempiere/workflow'
 
 // Store used for set all related to context menu
 // for Window, Process, Smart Browser andother customized component

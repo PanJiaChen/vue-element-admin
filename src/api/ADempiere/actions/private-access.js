@@ -24,9 +24,9 @@ export function getPrivateAccess({
   recordUuid
 }) {
   return request({
-    url: '/ui/get-private-access',
-    method: 'post',
-    data: {
+    url: '/user-interface/component/private-access/private-access',
+    method: 'get',
+    params: {
       table_name: tableName,
       id: recordId,
       uuid: recordUuid
@@ -48,7 +48,7 @@ export function lockPrivateAccess({
   recordUuid
 }) {
   return request({
-    url: '/ui/lock-private-access',
+    url: '/user-interface/component/private-access/lock-private-access',
     method: 'post',
     data: {
       table_name: tableName,
@@ -72,7 +72,7 @@ export function unlockPrivateAccess({
   recordUuid
 }) {
   return request({
-    url: '/ui/unlock-private-access',
+    url: '/user-interface/component/private-access/unlock-private-access',
     method: 'post',
     data: {
       table_name: tableName,

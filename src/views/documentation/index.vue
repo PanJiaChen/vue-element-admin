@@ -432,7 +432,6 @@ export default {
             }
           }
         })
-      console.log(this.releasesListADVue)
     },
     // Proxy Adempiere Api
     fetchRepositoryProxy() {

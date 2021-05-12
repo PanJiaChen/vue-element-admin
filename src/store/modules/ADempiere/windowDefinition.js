@@ -1,4 +1,4 @@
-import { requestWindowMetadata } from '@/api/ADempiere/dictionary'
+import { requestWindowMetadata } from '@/api/ADempiere/dictionary/window'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'

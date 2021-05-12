@@ -1,4 +1,4 @@
-import { requestProcessMetadata } from '@/api/ADempiere/dictionary.js'
+import { requestProcessMetadata } from '@/api/ADempiere/dictionary/process.js'
 import { showMessage } from '@/utils/ADempiere'
 import { generateProcess } from '@/utils/ADempiere/dictionaryUtils'
 import language from '@/lang'

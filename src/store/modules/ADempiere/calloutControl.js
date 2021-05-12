@@ -1,4 +1,4 @@
-import { runCallOutRequest } from '@/api/ADempiere/rule'
+import { runCallOutRequest } from '@/api/ADempiere/window'
 import { showMessage } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
 import language from '@/lang'

@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getFavoritesFromServer } from '@/api/ADempiere/dashboard/dashboard.js'
+import { getFavoritesFromServer } from '@/api/ADempiere/dashboard/user.js'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils.js'
 import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 

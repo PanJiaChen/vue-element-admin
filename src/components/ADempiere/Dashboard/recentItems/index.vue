@@ -52,7 +52,7 @@
 </template>
 
 <script>
-import { requestListRecentItems } from '@/api/ADempiere/dashboard/dashboard'
+import { requestListRecentItems } from '@/api/ADempiere/dashboard/user'
 import { convertAction } from '@/utils/ADempiere/dictionaryUtils'
 import mixinDashboard from '@/components/ADempiere/Dashboard/mixinDashboard.js'
 

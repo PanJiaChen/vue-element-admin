@@ -33,7 +33,7 @@ export function requestEnrollUser({
   eMail
 }) {
   return request({
-    url: '/enrollment/enroll',
+    url: '/user/enrollment/enroll',
     data: {
       user_name: userName,
       name,
@@ -65,7 +65,7 @@ export function requestForgotPassword(eMailOrUserName) {
   }
 
   return request({
-    url: '/enrollment/reset-password',
+    url: '/user/enrollment/reset-password',
     data: {
       user_name: userName,
       email: eMail,
@@ -91,7 +91,7 @@ export function requestChangePassword({
   password
 }) {
   return request({
-    url: '/enrollment/change-password',
+    url: '/user/enrollment/change-password',
     data: {
       token,
       password,
@@ -116,7 +116,7 @@ export function requestActivateUser({
   token
 }) {
   return request({
-    url: '/enrollment/activate-user',
+    url: '/user/enrollment/activate-user',
     data: {
       token,
       client_version: clientVersion,
