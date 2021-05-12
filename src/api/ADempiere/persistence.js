@@ -226,7 +226,7 @@ export function requestListEntities({
  * @param {string} recordUuid
  * @param {number} recordId
  */
-export function requestTranslations({
+export function getTranslations({
   tableName,
   language,
   recordUuid,

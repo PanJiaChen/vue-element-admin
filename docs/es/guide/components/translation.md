@@ -36,3 +36,30 @@ En la versión de escritorio se hace clic sobre el campo para visualizar el men�
 
 ![Cómo se utiliza en la versión móvil]('/images/components/translation/how-to-use-it-in-the-mobile-version.gif' "Cómo se utiliza en la versión móvil")
 
+## Opciones para el Desarrollador
+
+El diálogo de **Traducción** se encuentra en la siguiente ruta:
+
+```bash
+└── src                             # código fuente principal
+    └── components                  # componentes globales
+        └── ADempiere               # componentes específicos de ADempiere
+            └── field               # Campos
+                └── contextMenu     # Menú de Contexto para todos los campos
+                    └── translated  # directorio principal de Traducción
+
+```
+Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+El llamado al consumo de servicio de  **Traducción** se encuentra en la siguiente ruta:
+```bash
+└─ src                            # Código fuente principal
+    └─ api                        # Servicios globales
+      └─ ADempiere                # Servicios específicos de ADempiere
+            └─ persistence        # Directorio principal de los servicio Traducción
+
+```
+
+
+Los servicios llamados del componente son <br>
+[GET adempiere-api/ui/getTranslations]()<br>

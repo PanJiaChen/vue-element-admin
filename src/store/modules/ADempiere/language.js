@@ -1,5 +1,5 @@
 import {
-  requestTranslations,
+  getTranslations,
   requestUpdateEntity
 } from '@/api/ADempiere/persistence.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
@@ -82,7 +82,7 @@ const languageControl = {
       recordUuid,
       recordId
     }) {
-      return requestTranslations({
+      return getTranslations({
         recordUuid,
         recordId,
         tableName,
