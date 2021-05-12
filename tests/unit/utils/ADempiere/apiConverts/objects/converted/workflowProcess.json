@@ -1,0 +1,40 @@
+{
+  "processUuid": "process_uuid",
+  "workflowUuid": "workflow_uuid",
+  "workflowName": "workflow_name",
+  "recordId": "record_id",
+  "tableName": "table_name",
+  "userUuid": "user_uuid",
+  "userName": "user_name",
+  "responsibleUuid": "responsible_uuid",
+  "responsibleName": "responsible_name",
+  "textMessage": "text_message",
+  "processed": "processed",
+  "workflowStateName": "workflow_state_name",
+  "workflowState": "workflow_state",
+  "priority": "priority",
+  "priorityName": "priority_name",
+  "workflowEventsList": [
+    {
+      "nodeUuid": "node_uuid",
+      "nodeName": "node_name",
+      "recordId": "record_id",
+      "tableName": "table_name",
+      "userUuid": "user_uuid",
+      "userName": "user_name",
+      "responsibleUuid": "responsible_uuid",
+      "responsibleName": "responsible_name",
+      "textMessage": "text_message",
+      "timeElapsed": "time_elapsed",
+      "attributeName": "attribute_name",
+      "oldValue": "old_value",
+      "newValue": "new_value",
+      "workflowState": "workflow_state",
+      "workflowStateName": "workflow_state_name",
+      "eventType": "event_type",
+      "eventTypeName": "event_type_name",
+      "logDate": "log_date"
+    }
+  ],
+  "logDate": "log_date"
+}

@@ -1,0 +1,15 @@
+{
+  "next_page_token": "entity list next_page_token",
+  "record_count": "entity list record_count",
+  "records": [
+    {
+      "id": "entity list id",
+      "uuid": "entity list uuid",
+      "table_name": "entity list table_name",
+      "attributes": [
+        { "key": "key1", "value": "value1" },
+        { "key": "key2", "value": "value2" }
+      ]
+    }
+  ]
+}

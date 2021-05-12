@@ -1,0 +1,19 @@
+{
+  "windowUuid": "95326b18-a67b-11eb-bcbc-0242ac130002",
+  "formUuid": "95326bcc-a67b-11eb-bcbc-0242ac130002",
+  "documentName": "pending document name",
+  "documentDescription": "pending document description",
+  "sequence": 2,
+  "recordCount": 0,
+  "criteria": {
+    "tableName": "pending document criteria table name",
+    "query": "pending document criteria query",
+    "whereClause": "pending document criteria where clause",
+    "orderByClause": "pending document criteria order by clause",
+    "referenceUuid": "95326c76-a67b-11eb-bcbc-0242ac130002",
+    "filters": [],
+    "valuesList": ["value1", "value2"],
+    "orderByColumnList": ["column1", "column2"],
+    "limit": 5
+  }
+}

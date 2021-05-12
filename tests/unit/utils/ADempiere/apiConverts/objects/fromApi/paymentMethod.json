@@ -1,0 +1,15 @@
+{
+  "amount": "payment method amount",
+  "bank_uuid": "payment method bank_uuid",
+  "business_partner": "payment method business_partner",
+  "currency_uuid": "payment method currency_uuid",
+  "description": "payment method description",
+  "document_no": "payment method document_no",
+  "document_status": "payment method document_status",
+  "id": "payment method id",
+  "order_uuid": "payment method order_uuid",
+  "payment_date": "payment method payment_date",
+  "reference_no": "payment method reference_no",
+  "tender_type_code": "payment method tender_type_code",
+  "uuid": "payment method uuid"
+}

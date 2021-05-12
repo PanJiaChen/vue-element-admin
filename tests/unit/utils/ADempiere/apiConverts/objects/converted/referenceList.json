@@ -1,0 +1,14 @@
+{
+  "recordCount": "record_count",
+  "referencesList": [
+    {
+      "uuid": "uuid",
+      "tableName": "table_name",
+      "windowUuid": "window_uuid",
+      "displayName": "display_name",
+      "whereClause": "where_clause",
+      "recordCount": "record_count"
+    }
+  ],
+  "nextPageToken": "next_page_token"
+}

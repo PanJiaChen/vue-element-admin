@@ -1,0 +1,21 @@
+{
+    "recordCount": 0,
+    "nextPageToken": "12345",
+    "recentItemsList": [
+      {
+        "menuUuid": "9532638e-a67b-11eb-bcbc-0242ac130002",
+        "menuName": "Menu Name",
+        "menuDescription": "Menu Description",
+        "windowUuid": "95326442-a67b-11eb-bcbc-0242ac130002",
+        "tabUuid": "953264ec-a67b-11eb-bcbc-0242ac130002",
+        "tableId": 3,
+        "tableName": "table name",
+        "id": 23,
+        "uuid": "953265a0-a67b-11eb-bcbc-0242ac130002",
+        "displayName": "display name",
+        "updated": "2021-04-27",
+        "referenceUuid": "95326654-a67b-11eb-bcbc-0242ac130002",
+        "action": "item list action"
+      }
+    ]
+}

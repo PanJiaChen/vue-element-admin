@@ -1,0 +1,26 @@
+{
+    "uuid": "converstion rateuuid",
+    "id": "converstion rateid",
+    "conversion_type_uuid": "converstion rateconversion_type_uuid",
+    "valid_from": "converstion rate valid_from",
+    "currency_from": {
+        "id": "345345345",
+        "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+        "iso_code": "34534",
+        "currency_symbol": "$",
+        "description": "currency description",
+        "standard_precision": "currency standard precision",
+        "costing_precision": "currency coasting precision"
+    },
+    "currency_to": {
+        "id": "345345345",
+        "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+        "iso_code": "34534",
+        "currency_symbol": "$",
+        "description": "currency description",
+        "standard_precision": "currency standard precision",
+        "costing_precision": "currency coasting precision"
+    },
+    "multiply_rate": "converstion rate multiply_rate",
+    "divide_rate": "converstion rate converstion ratedivide_rate"
+}

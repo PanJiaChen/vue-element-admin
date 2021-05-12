@@ -1,0 +1,29 @@
+{
+  "uuid": "uuid",
+  "instanceUuid": "instance_uuid",
+  "isError": true,
+  "summary": "summary",
+  "resultTableName": "result_table_name",
+  "isProcessing": false,
+  "lastRun": "last_run",
+  "paramenters": [],
+  "output": {
+    "uuid": "uuid",
+    "name": "name",
+    "description": "description",
+    "fileName": "file_name",
+    "output": "output",
+    "mimeType": "mime_type",
+    "dataCols": "data_cols",
+    "dataRows": "data_rows",
+    "headerName": "header_name",
+    "footerName": "footer_name",
+    "printFormatUuid": "print_format_uuid",
+    "reportViewUuid": "report_view_uuid",
+    "tableName": "table_name",
+    "outputStream": "output_stream",
+    "outputStream_asB64": "output_stream_asB64",
+    "outputStream_asU8": "output_stream_asU8",
+    "reportType": "report_type"
+  }
+}

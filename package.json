@@ -20,7 +20,7 @@
   "scripts": {
     "start": "vue-cli-service serve",
     "dev": "vue-cli-service serve",
-    "lint": "eslint --ext .js,.vue src",
+    "lint": "eslint --ext .js,.vue src tests",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
@@ -32,6 +32,7 @@
   "dependencies": {
     "@toast-ui/vue-editor": "2.5.1",
     "axios": "0.21.1",
+    "babel-plugin-require-context-hook": "^1.0.0",
     "clipboard": "2.0.6",
     "codemirror": "5.59.2",
     "core-js": "3.8.3",

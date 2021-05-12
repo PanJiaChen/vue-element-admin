@@ -1,0 +1,7 @@
+{
+  "uuid": "uuid",
+  "name": "name",
+  "description": "description",
+  "table_name": "table_name",
+  "report_view_uuid": "report_view_uuid"
+}

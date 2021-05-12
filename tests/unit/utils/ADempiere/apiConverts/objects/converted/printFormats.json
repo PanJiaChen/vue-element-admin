@@ -1,0 +1,14 @@
+{
+  "recordCount": "record_count",
+  "records": [
+    {
+      "name": "name",
+      "description": "description",
+      "tableName": "table_name",
+      "isDefault": true,
+      "reportViewUuid": "report_view_uuid",
+      "printFormatUuid": "print_format_uuid"
+    }
+  ],
+  "nextPageToken": "next_page_token"
+}

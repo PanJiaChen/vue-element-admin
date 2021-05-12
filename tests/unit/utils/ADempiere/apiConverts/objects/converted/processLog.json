@@ -1,0 +1,11 @@
+{
+  "uuid": "uuid",
+  "instanceUuid": "instance_uuid",
+  "isError": true,
+  "summary": "summary",
+  "resultTableName": "result_table_name",
+  "isProcessing": false,
+  "lastRun": "last_run",
+  "paramenters": [],
+  "output": {}
+}

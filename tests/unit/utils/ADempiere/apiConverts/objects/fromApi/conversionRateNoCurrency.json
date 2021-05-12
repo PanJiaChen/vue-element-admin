@@ -1,0 +1,8 @@
+{
+    "uuid": "converstion rateuuid",
+    "id": "converstion rateid",
+    "conversion_type_uuid": "converstion rateconversion_type_uuid",
+    "valid_from": "converstion rate valid_from",
+    "multiply_rate": "converstion rate multiply_rate",
+    "divide_rate": "converstion rate converstion ratedivide_rate"
+}

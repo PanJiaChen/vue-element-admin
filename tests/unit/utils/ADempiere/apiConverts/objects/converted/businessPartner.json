@@ -1,0 +1,11 @@
+{
+  "uuid": "uuid",
+  "id": "id",
+  "value": "value",
+  "taxId": "tax_id",
+  "duns": "duns",
+  "naics": "naics",
+  "name": "name",
+  "lastName": "last_name",
+  "description": "description"
+}

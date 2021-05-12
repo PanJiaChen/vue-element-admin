@@ -1,0 +1,13 @@
+{
+  "windowUuid": "953269ba-a67b-11eb-bcbc-0242ac130002",
+  "browserUuid": "95326a6e-a67b-11eb-bcbc-0242ac130002",
+  "dashboardName": "dashboard name",
+  "dashboardDescription": "dashboard description",
+  "dashboardHtml": "dashboard html",
+  "columnNo": 0,
+  "lineNo": 1,
+  "isCollapsible": true,
+  "isOpenByDefault": true,
+  "isEventRequired": false,
+  "fileName": "dashboard file name"
+}

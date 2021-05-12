@@ -1,0 +1,13 @@
+{
+    "id": "12345",
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "name": "organization name",
+    "description": "organization description",
+    "is_read_only": "organization is read only",
+    "duns": "organization duns",
+    "tax_id": "organization tax id",
+    "phone": "organization phone",
+    "phone2": "organization phone2",
+    "fax": "organization fax",
+    "corporate_branding_image": "organization corporate branding image"
+}

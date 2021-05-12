@@ -13,26 +13,15 @@
 
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
+import { camelizeObjectKeys } from '../transformObject'
 
-export function convertReferencesList(listReferencesToConvert) {
-  return {
-    recordCount: listReferencesToConvert.record_count,
-    referencesList: listReferencesToConvert.records.map(record => {
-      return convertReference(record)
-    }),
-    nextPageToken: listReferencesToConvert.next_page_token
-  }
+export function convertReferencesList(references) {
+  const convertedReferences = camelizeObjectKeys(references)
+  convertedReferences.referencesList = references.records.map(record => convertReference(record))
+  delete convertedReferences['records']
+  return convertedReferences
 }
 
-export function convertReference(referenceToConvert) {
-  const { uuid } = referenceToConvert
-
-  return {
-    uuid,
-    tableName: referenceToConvert.table_name,
-    windowUuid: referenceToConvert.window_uuid,
-    displayName: referenceToConvert.display_name,
-    whereClause: referenceToConvert.where_clause,
-    recordCount: referenceToConvert.record_count
-  }
+export function convertReference(reference) {
+  return camelizeObjectKeys(reference)
 }

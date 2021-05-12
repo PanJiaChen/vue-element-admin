@@ -1,0 +1,32 @@
+{
+    "id": "34534534",
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "country_code": "AUS",
+    "name": "Australia",
+    "description": "country description",
+    "has_region": true,
+    "region_name": "NSW",
+    "display_sequence": "country display sequence",
+    "is_address_lines_reverse": false,
+    "capture_sequence": "country capture sequence",
+    "display_sequence_local": "country display seq local",
+    "is_address_lines_local_reverse": false,
+    "expression_postal": "country expression postal",
+    "has_postal_add": "country has postal add",
+    "expression_phone": "country expression phone",
+    "media_size": "country media size",
+    "expression_bank_routing_no": "country expression baking routing no",
+    "expression_bank_account_no": "country expression banking account no",
+    "language": "EN",
+    "allow_cities_out_of_list": true,
+    "is_post_code_lookup": false,
+    "currency": {
+        "id": "345345345",
+        "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+        "iso_code": "34534",
+        "currency_symbol": "$",
+        "description": "currency description",
+        "standard_precision": "currency standard precision",
+        "costing_precision": "currency coasting precision"
+    }
+}

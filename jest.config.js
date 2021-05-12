@@ -20,5 +20,8 @@ module.exports = {
     'lcov',
     'text-summary'
   ],
+  "setupFiles": [
+    "<rootDir>/.jest/register-context.js"
+  ],
   testURL: 'http://localhost/'
 }

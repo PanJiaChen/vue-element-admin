@@ -1,0 +1,83 @@
+{
+  "uuid": "uuid",
+  "value": "value",
+  "name": "name",
+  "description": "description",
+  "help": "help",
+  "tableName": "table_name",
+  "responsibleUuid": "responsible_uuid",
+  "priority": "priority",
+  "validFrom": "valid_from",
+  "isDefault": true,
+  "isValid": false,
+  "publishStatus": "publish_status",
+  "publishStatusName": "publish_status_name",
+  "durationUnit": "duration_unit",
+  "durationUnitName": "duration_unit_name",
+  "startNode": {
+    "uuid": "start node uuid",
+    "value": "start node value",
+    "name": "start node name",
+    "description": "start node description",
+    "help": "start node help",
+    "responsibleUuid": "start node responsible_uuid",
+    "documentAction": { "action": "value1" },
+    "priority": "start node priority",
+    "action": "start node action",
+    "actionName": "start node action_name",
+    "transitionsList": [
+      {
+        "nodeNextUuid": "start node node_next_uuid",
+        "description": "start node description",
+        "isStdUserWorkflow": true,
+        "isStandardUserWorkflow": true,
+        "sequence": "start node sequence",
+        "workflowConditionsList": [
+          {
+            "sequence": "start node sequence",
+            "columnName": "start node column_name",
+            "value": "start node value",
+            "conditionType": "start node confidential_type",
+            "conditionTypeName": "start node confidential_type_name",
+            "operation": "start node operation",
+            "operationName": "start node operation_name"
+          }
+        ]
+      }
+    ]
+  },
+  "workflowNodesList": [
+    {
+      "uuid": "node 1 uuid",
+      "value": "node 1 value",
+      "name": "node 1 name",
+      "description": "node 1 description",
+      "help": "node 1 help",
+      "responsibleUuid": "node 1 responsible_uuid",
+      "documentAction": { "action": "value2" },
+      "priority": "node 1 priority",
+      "action": "node 1 action",
+      "actionName": "node 1 action_name",
+      "transitionsList": [
+        {
+          "nodeNextUuid": "node 1 node_next_uuid",
+          "description": "node 1 description",
+          "isStdUserWorkflow": true,
+          "isStandardUserWorkflow": true,
+          "sequence": "node 1 sequence",
+          "workflowConditionsList": [
+            {
+              "sequence": "node 1 sequence",
+              "columnName": "node 1 column_name",
+              "value": "node 1 value",
+              "conditionType": "node 1 confidential_type",
+              "conditionTypeName": "node 1 confidential_type_name",
+              "operation": "node 1 operation",
+              "operationName": "node 1 operation_name"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

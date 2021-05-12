@@ -1,0 +1,34 @@
+{
+  "uuid": "bank account uuid",
+  "id": "bank account id",
+  "name": "bank account name",
+  "description": "bank account description",
+  "accountNo": "bank account  account_no",
+  "currency": {
+    "id": "345345345",
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "iSOCode": "34534",
+    "curSymbol": "$",
+    "description": "currency description",
+    "standardPrecision": "currency standard precision",
+    "costingPrecision": "currency coasting precision"
+  },
+  "bban": "bank account  bban",
+  "iban": "bank account  iban",
+  "creditLimit": "bank account  credit_limit",
+  "currentBalance": "bank account  current_balance",
+  "isDefault": "bank account  is_default",
+  "businessPartner": {
+    "uuid": "uuid",
+    "id": "id",
+    "value": "value",
+    "taxId": "tax_id",
+    "duns": "duns",
+    "naics": "naics",
+    "name": "name",
+    "lastName": "last_name",
+    "description": "description"
+  },
+  "bankAccountType": "bank account  bank_account_type",
+  "bankAccountTypeName": "bank account  bank_account_type_name"
+}

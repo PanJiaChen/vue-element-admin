@@ -26,3 +26,5 @@ config/local.json
 config/certs/*.pem
 .classpath
 .project
+
+.talismanrc

@@ -14,22 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import { camelizeObjectKeys } from '../transformObject.js'
 import { isEmptyValue } from '../valueUtils.js'
 import { convertReportOutput } from './report.js'
 
-export function convertProcessLog(processLogToConvert) {
-  return {
-    uuid: processLogToConvert.uuid,
-    instanceUuid: processLogToConvert.instance_uuid,
-    isError: processLogToConvert.is_error,
-    summary: processLogToConvert.summary,
-    resultTableName: processLogToConvert.result_table_name,
-    isProcessing: processLogToConvert.is_processing,
-    lastRun: processLogToConvert.last_run,
-    // parametersList: processLogToConvert.parameter.map(parameter => {
-    //   return convertEntity(parameter)
-    // }),
-    paramenters: [],
-    output: isEmptyValue(processLogToConvert.output) ? {} : convertReportOutput(processLogToConvert.output)
-  }
+export function convertProcessLog(processLog) {
+  const convertedProcessLog = camelizeObjectKeys(processLog)
+  convertedProcessLog.paramenters = []
+  convertedProcessLog.output = isEmptyValue(processLog.output) ? {} : convertReportOutput(processLog.output)
+  return convertedProcessLog
 }

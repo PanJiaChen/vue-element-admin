@@ -1,0 +1,119 @@
+{
+  "id": "34534534",
+  "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+  "name": "name",
+  "description": "description",
+  "help": "help",
+  "isModifyPrice": true,
+  "isPosRequiredPin": false,
+  "isAisleSeller": false,
+  "isSharedPos": true,
+  "documentType": {
+    "uuid": "document type uuid",
+    "id": "document type id",
+    "name": "document type name",
+    "description": "document type description",
+    "printName": "doc type print_name"
+  },
+  "cashBankAccount": {
+    "uuid": "cashbank account uuid",
+    "id": "cashbank account id",
+    "name": "cash bank account name",
+    "description": "cash bank account description",
+    "accountNo": "cash bank account  account_no",
+    "currency": {
+      "id": "345345345",
+      "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+      "iSOCode": "34534",
+      "curSymbol": "$",
+      "description": "currency description",
+      "standardPrecision": "currency standard precision",
+      "costingPrecision": "currency coasting precision"
+    },
+    "bban": "cash bank account  bban",
+    "iban": "cash bank account  iban",
+    "creditLimit": "cash bank account  credit_limit",
+    "currentBalance": "cash bank account  current_balance",
+    "isDefault": "cash bank account  is_default",
+    "businessPartner": {
+      "uuid": "uuid",
+      "id": "id",
+      "value": "value",
+      "taxId": "tax_id",
+      "duns": "duns",
+      "naics": "naics",
+      "name": "name",
+      "lastName": "last_name",
+      "description": "description"
+    },
+    "bankAccountType": "bank account  bank_account_type",
+    "bankAccountTypeName": "bank account  bank_account_type_name"
+  },
+  "cashTransferBankAccount": {
+    "uuid": "bank account uuid",
+    "id": "bank account id",
+    "name": "bank account name",
+    "description": "bank account description",
+    "accountNo": "bank account  account_no",
+    "currency": {
+      "id": "345345345",
+      "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+      "iSOCode": "34534",
+      "curSymbol": "$",
+      "description": "currency description",
+      "standardPrecision": "currency standard precision",
+      "costingPrecision": "currency coasting precision"
+    },
+    "bban": "bank account  bban",
+    "iban": "bank account  iban",
+    "creditLimit": "bank account  credit_limit",
+    "currentBalance": "bank account  current_balance",
+    "isDefault": "bank account  is_default",
+    "businessPartner": {
+      "uuid": "uuid",
+      "id": "id",
+      "value": "value",
+      "taxId": "tax_id",
+      "duns": "duns",
+      "naics": "naics",
+      "name": "name",
+      "lastName": "last_name",
+      "description": "description"
+    },
+    "bankAccountType": "bank account  bank_account_type",
+    "bankAccountTypeName": "bank account  bank_account_type_name"
+  },
+  "salesRepresentative": "sales_representative",
+  "templateBusinessPartner": {
+    "uuid": "uuid",
+    "id": "id",
+    "value": "value",
+    "taxId": "tax_id",
+    "duns": "duns",
+    "naics": "naics",
+    "name": "name",
+    "lastName": "last_name",
+    "description": "description"
+  },
+  "priceList": {
+    "uuid": "price list uuid",
+    "id": "price list id",
+    "name": "price list name",
+    "currency": {
+      "id": "345345345",
+      "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+      "iSOCode": "34534",
+      "curSymbol": "$",
+      "description": "currency description",
+      "standardPrecision": "currency standard precision",
+      "costingPrecision": "currency coasting precision"
+    },
+    "isDefault": "is_default",
+    "isTaxIncluded": "is_tax_included",
+    "isEnforcePriceLimit": "is_enforce_price_limit",
+    "isNetPrice": "is_net_price",
+    "pricePrecision": "price_precision"
+  },
+  "conversionTypeUuid": "conversion_type_uuid",
+  "keyLayoutUuid": "key_layout_uuid"
+}

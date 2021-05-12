@@ -1,0 +1,19 @@
+{
+  "uuid": "uuid",
+  "name": "name",
+  "description": "description",
+  "file_name": "file_name",
+  "output": "output",
+  "mime_type": "mime_type",
+  "data_cols": "data_cols",
+  "data_rows": "data_rows",
+  "header_name": "header_name",
+  "footer_name": "footer_name",
+  "print_format_uuid": "print_format_uuid",
+  "report_view_uuid": "report_view_uuid",
+  "table_name": "table_name",
+  "output_stream": "output_stream",
+  "output_stream_asB64": "output_stream_asB64",
+  "output_stream_asU8": "output_stream_asU8",
+  "report_type": "report_type"
+}

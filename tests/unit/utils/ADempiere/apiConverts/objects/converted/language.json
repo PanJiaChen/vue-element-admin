@@ -1,0 +1,11 @@
+{
+    "language": "language",
+    "languageName": "language name",
+    "languageISO": "language iso",
+    "countryCode": "language country code",
+    "isBaseLanguage": true,
+    "isSystemLanguage": false,
+    "isDecimalPoint": true,
+    "datePattern": "language date pattern",
+    "timePattern": "language time pattern"
+}

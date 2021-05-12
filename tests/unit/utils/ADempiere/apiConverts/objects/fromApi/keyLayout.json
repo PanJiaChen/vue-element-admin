@@ -1,0 +1,33 @@
+{
+  "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+  "id": "34534534",
+  "name": "name",
+  "description": "description",
+  "help": "help",
+  "layout_type": "layout_type",
+  "columns": "columns",
+  "color": "color",
+  "keys": [
+    {
+      "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+      "id": "34534534",
+      "name": "name",
+      "description": "description",
+      "sub_key_layout_uuid": "sub_key_layout_uuid",
+      "color": "color",
+      "sequence": "sequence",
+      "span_x": "span_x",
+      "span_y": "span_y",
+      "product_value": "product_value",
+      "quantity": "quantity",
+      "resource_reference": {
+        "resource_uuid": "resource_uuid",
+        "file_name": "file_name",
+        "file_size": "file_size",
+        "description": "description",
+        "text_msg": "text_msg",
+        "content_type": "content_type∏"
+      }
+    }
+  ]
+}

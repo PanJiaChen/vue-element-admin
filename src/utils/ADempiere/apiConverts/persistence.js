@@ -15,33 +15,24 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import { convertArrayKeyValueToObject } from '@/utils/ADempiere/valueFormat.js'
+import { camelizeObjectKeys } from '../transformObject'
 
-export function convertEntityList(entityListToConvert) {
-  return {
-    nextPageToken: entityListToConvert.next_page_token,
-    recordCount: entityListToConvert.record_count,
-    recordsList: entityListToConvert.records.map(record => {
-      return convertEntity(record)
-    })
-  }
+export function convertEntityList(entityList) {
+  const convertedEntityList = camelizeObjectKeys(entityList)
+  convertedEntityList.recordsList = entityList.records.map(record => convertEntity(record))
+  delete convertedEntityList['records']
+  return convertedEntityList
 }
 
-export function convertEntity(entityToConvert) {
-  return {
-    id: entityToConvert.id,
-    uuid: entityToConvert.uuid,
-    tableName: entityToConvert.table_name,
-    attributes: convertArrayKeyValueToObject({
-      array: entityToConvert.attributes,
-      keyName: 'key'
-    })
-  }
+export function convertEntity(entity) {
+  const convertedEntity = camelizeObjectKeys(entity)
+  convertedEntity.attributes = convertArrayKeyValueToObject({
+    array: entity.attributes,
+    keyName: 'key'
+  })
+  return convertedEntity
 }
 
-export function convertTranslation(translationToConvert) {
-  return {
-    language: translationToConvert.language,
-    uuid: translationToConvert.uuid,
-    values: translationToConvert.values
-  }
+export function convertTranslation(translation) {
+  return camelizeObjectKeys(translation)
 }

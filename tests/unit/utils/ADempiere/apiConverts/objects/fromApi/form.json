@@ -1,0 +1,10 @@
+{
+  "id": "34534534",
+  "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+  "name": "form name",
+  "description": "form description",
+  "help": "form help",
+  "access_level": "form accessLevel",
+  "file_name": "form file_name",
+  "is_active": true
+}

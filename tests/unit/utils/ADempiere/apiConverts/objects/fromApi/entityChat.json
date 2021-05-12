@@ -1,0 +1,13 @@
+{
+  "chat_uuid": "chat_uuid",
+  "id": "id",
+  "uuid": "123234",
+  "table_name": "table_name",
+  "chat_type_uuid": "chat_type_uuid",
+  "description": "description",
+  "confidential_type": "confidential_type",
+  "confidential_type_name": "confidential_type_name",
+  "moderation_type": "moderation_type",
+  "moderation_type_name": "moderation_type_name",
+  "log_date": "log_date"
+}

@@ -1,0 +1,14 @@
+{
+  "record_count": "record_count",
+  "records": [
+    {
+      "uuid": "uuid",
+      "table_name": "table_name",
+      "window_uuid": "window_uuid",
+      "display_name": "display_name",
+      "where_clause": "where_clause",
+      "record_count": "record_count"
+    }
+  ],
+  "next_page_token": "next_page_token"
+}

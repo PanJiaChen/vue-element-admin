@@ -1,0 +1,81 @@
+{
+  "uuid": "uuid",
+  "value": "value",
+  "name": "name",
+  "description": "description",
+  "help": "help",
+  "table_name": "table_name",
+  "responsible_uuid": "responsible_uuid",
+  "priority": "priority",
+  "valid_from": "valid_from",
+  "is_default": true,
+  "is_valid": false,
+  "publish_status": "publish_status",
+  "publish_status_name": "publish_status_name",
+  "duration_unit": "duration_unit",
+  "duration_unit_name": "duration_unit_name",
+  "start_node": {
+    "uuid": "start node uuid",
+    "value": "start node value",
+    "name": "start node name",
+    "description": "start node description",
+    "help": "start node help",
+    "responsible_uuid": "start node responsible_uuid",
+    "document_action": { "action": "value1" },
+    "priority": "start node priority",
+    "action": "start node action",
+    "action_name": "start node action_name",
+    "transitions": [
+      {
+        "node_next_uuid": "start node node_next_uuid",
+        "description": "start node description",
+        "is_standard_user_workflow": true,
+        "sequence": "start node sequence",
+        "workflow_conditions": [
+          {
+            "sequence": "start node sequence",
+            "column_name": "start node column_name",
+            "value": "start node value",
+            "confidential_type": "start node confidential_type",
+            "confidential_type_name": "start node confidential_type_name",
+            "operation": "start node operation",
+            "operation_name": "start node operation_name"
+          }
+        ]
+      }
+    ]
+  },
+  "workflow_nodes": [
+    {
+      "uuid": "node 1 uuid",
+      "value": "node 1 value",
+      "name": "node 1 name",
+      "description": "node 1 description",
+      "help": "node 1 help",
+      "responsible_uuid": "node 1 responsible_uuid",
+      "document_action": { "action": "value2" },
+      "priority": "node 1 priority",
+      "action": "node 1 action",
+      "action_name": "node 1 action_name",
+      "transitions": [
+        {
+          "node_next_uuid": "node 1 node_next_uuid",
+          "description": "node 1 description",
+          "is_standard_user_workflow": true,
+          "sequence": "node 1 sequence",
+          "workflow_conditions": [
+            {
+              "sequence": "node 1 sequence",
+              "column_name": "node 1 column_name",
+              "value": "node 1 value",
+              "confidential_type": "node 1 confidential_type",
+              "confidential_type_name": "node 1 confidential_type_name",
+              "operation": "node 1 operation",
+              "operation_name": "node 1 operation_name"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

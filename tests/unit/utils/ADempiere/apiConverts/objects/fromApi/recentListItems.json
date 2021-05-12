@@ -1,0 +1,21 @@
+{
+    "record_count": 0,
+    "next_page_token": "12345",
+    "records": [
+      {
+        "menu_uuid": "9532638e-a67b-11eb-bcbc-0242ac130002",
+        "menu_name": "Menu Name",
+        "menu_description": "Menu Description",
+        "window_uuid": "95326442-a67b-11eb-bcbc-0242ac130002",
+        "tab_uuid": "953264ec-a67b-11eb-bcbc-0242ac130002",
+        "table_id": 3,
+        "table_name": "table name",
+        "id": 23,
+        "uuid": "953265a0-a67b-11eb-bcbc-0242ac130002",
+        "display_name": "display name",
+        "updated": "2021-04-27",
+        "reference_uuid": "95326654-a67b-11eb-bcbc-0242ac130002",
+        "action": "item list action"
+      }
+    ]
+}

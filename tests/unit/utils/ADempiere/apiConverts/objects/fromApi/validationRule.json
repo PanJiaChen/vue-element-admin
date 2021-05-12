@@ -1,0 +1,8 @@
+{
+  "id": "34534534",
+  "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+  "name": "validation rule name",
+  "description": "validation rule description",
+  "validation_code": "validation rule validation_code",
+  "type": "validation rule type"
+}

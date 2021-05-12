@@ -1,0 +1,15 @@
+{
+  "chatUuid": "chat_uuid",
+  "chatEntryUuid": "chat_entry_uuid",
+  "subject": "subject",
+  "characterData": "character_data",
+  "userUuid": "user_uuid",
+  "userName": "user_name",
+  "chatEntryType": "chat_entry_type",
+  "chatEntryTypeName": "chat_entry_type_name",
+  "confidentialType": "confidential_type",
+  "confidentialTypeName": "confidential_type_name",
+  "moderatorStatus": "moderator_status",
+  "moderatorStatusName": "moderator_status_name",
+  "logDate": "log_date"
+}

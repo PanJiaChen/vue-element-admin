@@ -1,0 +1,37 @@
+{
+  "id": "34534534",
+  "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+  "document_no": "document_no",
+  "document_type": {
+    "uuid": "document type uuid",
+    "id": "document type id",
+    "name": "document type name",
+    "description": "document type description",
+    "print_name": "doc type print_name"
+  },
+  "sales_representative": {
+    "uuid": "sales rep uuid",
+    "id": "sales rep id",
+    "name": "sales rep name",
+    "description": "sales rep description"
+  },
+  "document_status": {
+    "name": "document status name",
+    "description": "document status description",
+    "value": "document status value"
+  },
+  "total_lines": "total_lines",
+  "grand_total": "grand_total",
+  "date_ordered": "date_ordered",
+  "business_partner": {
+    "uuid": "uuid",
+    "id": "id",
+    "value": "value",
+    "tax_id": "tax_id",
+    "duns": "duns",
+    "naics": "naics",
+    "name": "name",
+    "last_name": "last_name",
+    "description": "description"
+  }
+}

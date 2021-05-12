@@ -1,0 +1,9 @@
+{
+  "id": "entity id",
+  "uuid": "entity uuid",
+  "tableName": "entity table_name",
+  "attributes": {
+    "key1": "value1",
+    "key2": "value2"
+  }
+}

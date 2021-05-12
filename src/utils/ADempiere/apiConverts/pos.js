@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
+import { camelizeObjectKeys } from '../transformObject.js'
 import {
   convertBankAccount,
   convertBusinessPartner,
@@ -25,150 +26,55 @@ import {
   convertTaxRate
 } from './core.js'
 
-export function convertPointOfSales(posToConvert) {
-  const { uuid, id, name, description, help } = posToConvert
-
-  return {
-    id,
-    uuid,
-    name,
-    description,
-    help,
-    isModifyPrice: posToConvert.is_modify_price,
-    isPosRequiredPin: posToConvert.is_pos_required_pin,
-    isAisleSeller: posToConvert.is_aisle_seller,
-    isSharedPos: posToConvert.is_shared_pos,
-    documentType: convertDocumentType(
-      posToConvert.document_type
-    ),
-    cashBankAccount: convertBankAccount(
-      posToConvert.cash_bank_account
-    ),
-    cashTransferBankAccount: convertBankAccount(
-      posToConvert.cash_transfer_bank_account
-    ),
-    salesRepresentative: posToConvert.sales_representative,
-    templateBusinessPartner: convertBusinessPartner(
-      posToConvert.template_business_partner
-    ),
-    priceList: convertPriceList(
-      posToConvert.price_list
-    ),
-    conversionTypeUuid: posToConvert.conversion_type_uuid,
-    keyLayoutUuid: posToConvert.key_layout_uuid
-  }
+export function convertPointOfSales(pos) {
+  const convertedPos = camelizeObjectKeys(pos)
+  convertedPos.documentType = convertDocumentType(pos.document_type)
+  convertedPos.cashBankAccount = convertBankAccount(pos.cash_bank_account)
+  convertedPos.cashTransferBankAccount = convertBankAccount(pos.cash_transfer_bank_account)
+  convertedPos.templateBusinessPartner = convertBusinessPartner(pos.template_business_partner)
+  convertedPos.priceList = convertPriceList(pos.price_list)
+  return convertedPos
 }
 
-export function convertOrder(orderToConvert) {
-  return {
-    uuid: orderToConvert.uuid,
-    id: orderToConvert.id,
-    documentNo: orderToConvert.document_no,
-    documentType: convertDocumentType(
-      orderToConvert.document_type
-    ),
-    salesRepresentative: convertSalesRepresentative(
-      orderToConvert.sales_representative
-    ),
-    documentStatus: convertDocumentStatus(
-      orderToConvert.document_status
-    ),
-    totalLines: orderToConvert.total_lines,
-    grandTotal: orderToConvert.grand_total,
-    dateOrdered: orderToConvert.date_ordered,
-    businessPartner: convertBusinessPartner(
-      orderToConvert.business_partner
-    )
-  }
+export function convertOrder(order) {
+  const convertedOrder = camelizeObjectKeys(order)
+  convertedOrder.documentType = convertDocumentType(order.document_type)
+  convertedOrder.salesRepresentative = convertSalesRepresentative(order.sales_representative)
+  convertedOrder.documentStatus = convertDocumentStatus(order.document_status)
+  convertedOrder.businessPartner = convertBusinessPartner(order.business_partner)
+  return convertedOrder
 }
 
-export function convertOrderLine(orderLineToConvert) {
-  return {
-    uuid: orderLineToConvert.uuid,
-    orderUuid: orderLineToConvert.order_uuid,
-    line: orderLineToConvert.line,
-    product: convertProduct(
-      orderLineToConvert.product
-    ),
-    charge: orderLineToConvert.charge,
-    description: orderLineToConvert.description,
-    lineDescription: orderLineToConvert.line_description,
-    quantity: orderLineToConvert.quantity,
-    price: orderLineToConvert.price,
-    discountRate: orderLineToConvert.discount_rate,
-    lineNetAmount: orderLineToConvert.line_net_amount,
-    taxRate: convertTaxRate(
-      orderLineToConvert.tax_rate
-    ),
-    warehouse: orderLineToConvert.warehouse
-  }
+export function convertOrderLine(orderLine) {
+  const convertedOrderLine = camelizeObjectKeys(orderLine)
+  convertedOrderLine.product = convertProduct(orderLine.product)
+  convertedOrderLine.taxRate = convertTaxRate(orderLine.tax_rate)
+  return convertedOrderLine
 }
 
-export function convertKeyLayout(keyLayoutToConvert) {
-  return {
-    uuid: keyLayoutToConvert.uuid,
-    id: keyLayoutToConvert.id,
-    name: keyLayoutToConvert.name,
-    description: keyLayoutToConvert.description,
-    help: keyLayoutToConvert.help,
-    layoutType: keyLayoutToConvert.layout_type,
-    columns: keyLayoutToConvert.columns,
-    color: keyLayoutToConvert.color,
-    keysList: keyLayoutToConvert.keys.map(itemKey => {
-      return convertKey(itemKey)
-    })
-  }
+export function convertKeyLayout(keyLayout) {
+  const convertedKeyLayout = camelizeObjectKeys(keyLayout)
+  convertedKeyLayout.keysList = keyLayout.keys.map(key => convertKey(key))
+  delete convertedKeyLayout['keys']
+  return convertedKeyLayout
 }
 
-export function convertKey(keyToConvert) {
-  return {
-    uuid: keyToConvert.uuid,
-    id: keyToConvert.id,
-    name: keyToConvert.name,
-    description: keyToConvert.description,
-    subKeyLayoutUuid: keyToConvert.sub_key_layout_uuid,
-    color: keyToConvert.color,
-    sequence: keyToConvert.sequence,
-    spanX: keyToConvert.span_x,
-    spanY: keyToConvert.span_y,
-    productValue: keyToConvert.product_value,
-    quantity: keyToConvert.quantity,
-    resourceReference: convertResourceReference(
-      keyToConvert.resource_reference
-    )
-  }
+function convertKey(key) {
+  const convertedKey = camelizeObjectKeys(key)
+  convertedKey.resourceReference = convertResourceReference(key.resource_reference)
+  return convertedKey
 }
 
-export function convertResourceReference(resourceReferenceToConvert) {
-  if (resourceReferenceToConvert) {
-    return {
-      resourceUuid: resourceReferenceToConvert.resource_uuid,
-      fileName: resourceReferenceToConvert.file_name,
-      fileSize: resourceReferenceToConvert.file_size,
-      description: resourceReferenceToConvert.description,
-      textMsg: resourceReferenceToConvert.text_msg,
-      contentType: resourceReferenceToConvert.content_type
-    }
+function convertResourceReference(resourceReference) {
+  if (!resourceReference) {
+    return undefined
   }
-  return undefined
+  return camelizeObjectKeys(resourceReference)
 }
+
 export function paymentsMethod(payments) {
-  if (payments) {
-    return {
-      amount: payments.amount,
-      bankUuid: payments.bank_uuid,
-      businessPartner: payments.business_partner,
-      currencyUuid: payments.currency_uuid,
-      description: payments.description,
-      documentNo: payments.document_no,
-      documentStatus: payments.document_status,
-      id: payments.id,
-      orderUuid: payments.order_uuid,
-      paymentDate: payments.payment_date,
-      referenceNo: payments.reference_no,
-      tenderTypeCode: payments.tender_type_code,
-      uuid: payments.uuid
-    }
+  if (!payments) {
+    return undefined
   }
-  return undefined
+  return camelizeObjectKeys(payments)
 }

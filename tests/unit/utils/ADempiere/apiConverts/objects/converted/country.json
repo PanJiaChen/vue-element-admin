@@ -1,0 +1,32 @@
+{
+    "id": "34534534",
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "countryCode": "AUS",
+    "name": "Australia",
+    "description": "country description",
+    "hasRegion": true,
+    "regionName": "NSW",
+    "displaySequence": "country display sequence",
+    "isAddressLinesReverse": false,
+    "captureSequence": "country capture sequence",
+    "displaySequenceLocal": "country display seq local",
+    "isAddressLinesLocalReverse": false,
+    "expressionPostal": "country expression postal",
+    "hasPostalAdd": "country has postal add",
+    "expressionPhone": "country expression phone",
+    "mediaSize": "country media size",
+    "expressionBankRoutingNo": "country expression baking routing no",
+    "expressionBankAccountNo": "country expression banking account no",
+    "language": "EN",
+    "allowCitiesOutOfList": true,
+    "isPostcodeLookup": false,
+    "currency": {
+        "id": "345345345",
+        "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+        "iSOCode": "34534",
+        "curSymbol": "$",
+        "description": "currency description",
+        "standardPrecision": "currency standard precision",
+        "costingPrecision": "currency coasting precision"
+    }
+}

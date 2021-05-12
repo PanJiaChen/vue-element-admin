@@ -1,0 +1,6 @@
+{
+  "name": "tax rate name",
+  "description": "tax rate description",
+  "tax_indicator": "tax rate tax_indicator",
+  "rate": "tax rate rate"
+}

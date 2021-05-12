@@ -1,0 +1,24 @@
+{
+  "logId": "log_id",
+  "id": "id",
+  "uuid": "uuid",
+  "tableName": "table_name",
+  "sessionUuid": "session_uuid",
+  "userUuid": "user_uuid",
+  "userName": "user_name",
+  "transactionName": "transaction_name",
+  "eventType": "event_type",
+  "eventTypeName": "event_type_name",
+  "logDate": "log_date",
+  "changeLogsList": [
+    {
+      "columnName": "column_name",
+      "displayColumnName": "display_column_name",
+      "oldValue": "old_value",
+      "newValue": "new_value",
+      "oldDisplayValue": "old_display_value",
+      "newDisplayValue": "new_display_value",
+      "description": "description"
+    }
+  ]
+}

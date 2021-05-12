@@ -1,0 +1,19 @@
+{
+  "uuid": "price list uuid",
+  "id": "price list id",
+  "name": "price list name",
+  "currency": {
+    "id": "345345345",
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "iSOCode": "34534",
+    "curSymbol": "$",
+    "description": "currency description",
+    "standardPrecision": "currency standard precision",
+    "costingPrecision": "currency coasting precision"
+  },
+  "isDefault": "is_default",
+  "isTaxIncluded": "is_tax_included",
+  "isEnforcePriceLimit": "is_enforce_price_limit",
+  "isNetPrice": "is_net_price",
+  "pricePrecision": "price_precision"
+}

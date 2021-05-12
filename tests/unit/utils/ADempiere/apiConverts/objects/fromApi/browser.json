@@ -1,0 +1,565 @@
+{
+  "id": "id",
+  "uuid": "uuid",
+  "view_uuid": "viewUuid",
+  "value": "value",
+  "name": "name",
+  "description": "description",
+  "help": "help",
+  "access_level": "access_level",
+  "is_active": false,
+  "is_updateable": true,
+  "is_deleteable": false,
+  "is_selected_by_default": true,
+  "is_collapsible_by_default": true,
+  "is_executed_query_by_default": false,
+  "is_show_total": true,
+  "query": "query",
+  "where_clause": "where_clause",
+  "order_by_clause": "order_by_clause",
+  "window": {
+    "id": "id",
+    "uuid": "uuid",
+    "name": "name",
+    "description": "description",
+    "help": "help",
+    "is_active": true,
+    "is_sales_transaction": false,
+    "window_type": "windowType",
+    "context_info": {
+      "id": "8546456",
+      "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+      "name": "Process Parameter Context Info Name",
+      "description": "Process Parameter Context Info Description",
+      "sql_statement": "Process Parameter Context Info SQL Statement",
+      "is_active": false,
+      "message_text": {
+        "id": "4383456",
+        "value": "Process Parameter Context Info Message Text Value",
+        "message_type": "Process Parameter Context Info Message Text Type",
+        "message_text": "Process Parameter Context Info Message Text Text",
+        "message_tip": "Process Parameter Context Info Message Text Tip",
+        "is_active": false
+      }
+    },
+    "tabs": [
+      {
+        "id": "id",
+        "uuid": "uuid",
+        "name": "name",
+        "description": "description",
+        "help": "help",
+        "table_name": "table_name",
+        "sequence": "sequence",
+        "tab_level": "tab_level",
+        "is_active": false,
+        "is_single_row": true,
+        "is_advanced_tab": true,
+        "is_has_tree": true,
+        "is_info_tab": false,
+        "is_sort_tab": true,
+        "is_translation_tab": true,
+        "is_read_only": true,
+        "is_insert_record": false,
+        "is_view": true,
+        "is_deleteable": true,
+        "is_document": false,
+        "is_change_log": false,
+        "access_level": "access_level",
+        "link_column_name": "link_column_name",
+        "sort_order_column_name": "sort_order_column_name",
+        "sort_yes_no_column_name": "sort_yes_no_column_name",
+        "parent_column_name": "parent_column_name",
+        "display_logic": "display_logic",
+        "commit_warning": "commit_warning",
+        "query": "query",
+        "where_clause": "where_clause",
+        "order_by_clause": "order_by_clause",
+        "parent_tab_uuid": "parent_tab_uuid",
+        "context_info": {
+          "id": "8546456",
+          "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+          "name": "Process Parameter Context Info Name",
+          "description": "Process Parameter Context Info Description",
+          "sql_statement": "Process Parameter Context Info SQL Statement",
+          "is_active": false,
+          "message_text": {
+            "id": "4383456",
+            "value": "Process Parameter Context Info Message Text Value",
+            "message_type": "Process Parameter Context Info Message Text Type",
+            "message_text": "Process Parameter Context Info Message Text Text",
+            "message_tip": "Process Parameter Context Info Message Text Tip",
+            "is_active": false
+          }
+        },
+        "field_group": {
+          "id": "3455",
+          "uuid": "95325e16-a67b-11eb-bcbc-0242ac130002",
+          "name": "Process Parameter Fieldgroup Name",
+          "field_group_type": "Process Parameter Fieldgroup Type",
+          "is_active": true
+        },
+        "processes": [
+          {
+            "access_level": "Access Level",
+            "description": "Process Description",
+            "help": "Process Help",
+            "id": "12345",
+            "is_active": false,
+            "is_direct_print": true,
+            "is_report": false,
+            "name": "Process Name",
+            "report_export_types": ["Export Type 1", "Export Type 2"],
+            "show_help": true,
+            "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+            "parameters": [
+              {
+                "id": "5678",
+                "uuid": "95325d26-a67b-11eb-bcbc-0242ac130002",
+                "name": "Process Parameter Name",
+                "description": "Process Parameter Description",
+                "help": "Process Parameter Help",
+                "column_name": "Process Parameter Column Name",
+                "element_name": "Process Parameter Element Name",
+                "is_active": true,
+                "display_type": "Process Parameter Display Type",
+                "is_field_only": false,
+                "is_range": true,
+                "is_same_line": false,
+                "is_encrypted": true,
+                "is_quick_entry": false,
+                "sequence": "Process Parameter Sequence",
+                "seq_no_grid": 6,
+                "sort_no": 1,
+                "identifier_sequence": "Process Parameter Identifier Sequence",
+                "format_pattern": "Process Parameter Format Pattern",
+                "v_format": "Process Parameter V Format",
+                "default_value": "Process Parameter Default Value",
+                "default_value_to": "Process Parameter Default Value To",
+                "field_length": 2,
+                "value_max": 3,
+                "is_identifier": true,
+                "is_parent": false,
+                "is_key": true,
+                "is_selection_column": false,
+                "is_updateable": true,
+                "is_always_updateable": false,
+                "is_allow_copy": true,
+                "is_heading": false,
+                "is_allow_logging": true,
+                "is_translated": false,
+                "column_sql": "Process Parameter Column SQL",
+                "is_displayed": true,
+                "is_displayed_grid": false,
+                "is_mandatory": true,
+                "is_read_only": false,
+                "is_query_criteria": true,
+                "is_order_by": false,
+                "is_info_only": true,
+                "callout": "Process Parameter Callout",
+                "display_logic": "Process Parameter Display Logic",
+                "mandatory_logic": "Process Parameter Mandatory Logic",
+                "read_only_logic": "Process Parameter Read Only Logic",
+                "Fieldgroup": {
+                  "id": "3455",
+                  "uuid": "95325e16-a67b-11eb-bcbc-0242ac130002",
+                  "name": "Process Parameter Fieldgroup Name",
+                  "field_group_type": "Process Parameter Fieldgroup Type",
+                  "is_active": true
+                },
+                "reference": {
+                  "table_name": "Process Parameter Reference Table Name",
+                  "key_column_name": "Process Parameter Reference Key Column Name",
+                  "display_column_name": "Process Parameter Reference Display Column Name",
+                  "query": "Process Parameter Reference Query",
+                  "direct_query": "Process Parameter Reference Direcy Query",
+                  "validation_code": "Process Parameter Reference Validation Code",
+                  "zoom_windows": [
+                    {
+                      "id": "974634",
+                      "uuid": "95325ede-a67b-11eb-bcbc-0242ac130002",
+                      "name": "Process Parameter Reference Zoom Windows Name",
+                      "description": "Process Parameter Reference Zoom Windows Description",
+                      "is_sales_transaction": false,
+                      "is_active": true
+                    }
+                  ]
+                },
+                "context_info": {
+                  "id": "8546456",
+                  "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+                  "name": "Process Parameter Context Info Name",
+                  "description": "Process Parameter Context Info Description",
+                  "sql_statement": "Process Parameter Context Info SQL Statement",
+                  "is_active": false,
+                  "message_text": {
+                    "id": "4383456",
+                    "value": "Process Parameter Context Info Message Text Value",
+                    "message_type": "Process Parameter Context Info Message Text Type",
+                    "message_text": "Process Parameter Context Info Message Text Text",
+                    "message_tip": "Process Parameter Context Info Message Text Tip",
+                    "is_active": false
+                  }
+                },
+                "Fielddefinition": {
+                  "id": "4364567",
+                  "uuid": "95326050-a67b-11eb-bcbc-0242ac130002",
+                  "Value": "Process Parameter Field Definition Value",
+                  "name": "Process Parameter Field Definition Name",
+                  "is_active": false,
+                  "field_group_type": "Process Parameter Field Definition Type",
+                  "conditions": [
+                    {
+                      "id": "4567568",
+                      "uuid": "953262d0-a67b-11eb-bcbc-0242ac130002",
+                      "condition": "Process Parameter Field Definition Condition",
+                      "style_sheet": "Process Parameter Field Definition Condition Style Sheet",
+                      "is_active": false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "fields": [
+          {
+            "id": "5678",
+            "uuid": "95325d26-a67b-11eb-bcbc-0242ac130002",
+            "name": "Process Parameter Name",
+            "description": "Process Parameter Description",
+            "help": "Process Parameter Help",
+            "column_name": "Process Parameter Column Name",
+            "element_name": "Process Parameter Element Name",
+            "is_active": true,
+            "display_type": "Process Parameter Display Type",
+            "is_field_only": false,
+            "is_range": true,
+            "is_same_line": false,
+            "is_encrypted": true,
+            "is_quick_entry": false,
+            "sequence": "Process Parameter Sequence",
+            "seq_no_grid": 6,
+            "sort_no": 1,
+            "identifier_sequence": "Process Parameter Identifier Sequence",
+            "format_pattern": "Process Parameter Format Pattern",
+            "v_format": "Process Parameter V Format",
+            "default_value": "Process Parameter Default Value",
+            "default_value_to": "Process Parameter Default Value To",
+            "field_length": 2,
+            "value_max": 3,
+            "is_identifier": true,
+            "is_parent": false,
+            "is_key": true,
+            "is_selection_column": false,
+            "is_updateable": true,
+            "is_always_updateable": false,
+            "is_allow_copy": true,
+            "is_heading": false,
+            "is_allow_logging": true,
+            "is_translated": false,
+            "column_sql": "Process Parameter Column SQL",
+            "is_displayed": true,
+            "is_displayed_grid": false,
+            "is_mandatory": true,
+            "is_read_only": false,
+            "is_query_criteria": true,
+            "is_order_by": false,
+            "is_info_only": true,
+            "callout": "Process Parameter Callout",
+            "display_logic": "Process Parameter Display Logic",
+            "mandatory_logic": "Process Parameter Mandatory Logic",
+            "read_only_logic": "Process Parameter Read Only Logic",
+            "Fieldgroup": {
+              "id": "3455",
+              "uuid": "95325e16-a67b-11eb-bcbc-0242ac130002",
+              "name": "Process Parameter Fieldgroup Name",
+              "field_group_type": "Process Parameter Fieldgroup Type",
+              "is_active": true
+            },
+            "reference": {
+              "table_name": "Process Parameter Reference Table Name",
+              "key_column_name": "Process Parameter Reference Key Column Name",
+              "display_column_name": "Process Parameter Reference Display Column Name",
+              "query": "Process Parameter Reference Query",
+              "direct_query": "Process Parameter Reference Direcy Query",
+              "validation_code": "Process Parameter Reference Validation Code",
+              "zoom_windows": [
+                {
+                  "id": "974634",
+                  "uuid": "95325ede-a67b-11eb-bcbc-0242ac130002",
+                  "name": "Process Parameter Reference Zoom Windows Name",
+                  "description": "Process Parameter Reference Zoom Windows Description",
+                  "is_sales_transaction": false,
+                  "is_active": true
+                }
+              ]
+            },
+            "context_info": {
+              "id": "8546456",
+              "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+              "name": "Process Parameter Context Info Name",
+              "description": "Process Parameter Context Info Description",
+              "sql_statement": "Process Parameter Context Info SQL Statement",
+              "is_active": false,
+              "message_text": {
+                "id": "4383456",
+                "value": "Process Parameter Context Info Message Text Value",
+                "message_type": "Process Parameter Context Info Message Text Type",
+                "message_text": "Process Parameter Context Info Message Text Text",
+                "message_tip": "Process Parameter Context Info Message Text Tip",
+                "is_active": false
+              }
+            },
+            "Fielddefinition": {
+              "id": "4364567",
+              "uuid": "95326050-a67b-11eb-bcbc-0242ac130002",
+              "Value": "Process Parameter Field Definition Value",
+              "name": "Process Parameter Field Definition Name",
+              "is_active": false,
+              "field_group_type": "Process Parameter Field Definition Type",
+              "conditions": [
+                {
+                  "id": "4567568",
+                  "uuid": "953262d0-a67b-11eb-bcbc-0242ac130002",
+                  "condition": "Process Parameter Field Definition Condition",
+                  "style_sheet": "Process Parameter Field Definition Condition Style Sheet",
+                  "is_active": false
+                }
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  },
+  "process": {
+    "access_level": "Access Level",
+    "description": "Process Description",
+    "help": "Process Help",
+    "id": "12345",
+    "is_active": false,
+    "is_direct_print": true,
+    "is_report": false,
+    "name": "Process Name",
+    "report_export_types": ["Export Type 1", "Export Type 2"],
+    "show_help": true,
+    "uuid": "95325b0a-a67b-11eb-bcbc-0242ac130002",
+    "parameters": [
+      {
+        "id": "5678",
+        "uuid": "95325d26-a67b-11eb-bcbc-0242ac130002",
+        "name": "Process Parameter Name",
+        "description": "Process Parameter Description",
+        "help": "Process Parameter Help",
+        "column_name": "Process Parameter Column Name",
+        "element_name": "Process Parameter Element Name",
+        "is_active": true,
+        "display_type": "Process Parameter Display Type",
+        "is_field_only": false,
+        "is_range": true,
+        "is_same_line": false,
+        "is_encrypted": true,
+        "is_quick_entry": false,
+        "sequence": "Process Parameter Sequence",
+        "seq_no_grid": 6,
+        "sort_no": 1,
+        "identifier_sequence": "Process Parameter Identifier Sequence",
+        "format_pattern": "Process Parameter Format Pattern",
+        "v_format": "Process Parameter V Format",
+        "default_value": "Process Parameter Default Value",
+        "default_value_to": "Process Parameter Default Value To",
+        "field_length": 2,
+        "value_max": 3,
+        "is_identifier": true,
+        "is_parent": false,
+        "is_key": true,
+        "is_selection_column": false,
+        "is_updateable": true,
+        "is_always_updateable": false,
+        "is_allow_copy": true,
+        "is_heading": false,
+        "is_allow_logging": true,
+        "is_translated": false,
+        "column_sql": "Process Parameter Column SQL",
+        "is_displayed": true,
+        "is_displayed_grid": false,
+        "is_mandatory": true,
+        "is_read_only": false,
+        "is_query_criteria": true,
+        "is_order_by": false,
+        "is_info_only": true,
+        "callout": "Process Parameter Callout",
+        "display_logic": "Process Parameter Display Logic",
+        "mandatory_logic": "Process Parameter Mandatory Logic",
+        "read_only_logic": "Process Parameter Read Only Logic",
+        "Fieldgroup": {
+          "id": "3455",
+          "uuid": "95325e16-a67b-11eb-bcbc-0242ac130002",
+          "name": "Process Parameter Fieldgroup Name",
+          "field_group_type": "Process Parameter Fieldgroup Type",
+          "is_active": true
+        },
+        "reference": {
+          "table_name": "Process Parameter Reference Table Name",
+          "key_column_name": "Process Parameter Reference Key Column Name",
+          "display_column_name": "Process Parameter Reference Display Column Name",
+          "query": "Process Parameter Reference Query",
+          "direct_query": "Process Parameter Reference Direcy Query",
+          "validation_code": "Process Parameter Reference Validation Code",
+          "zoom_windows": [
+            {
+              "id": "974634",
+              "uuid": "95325ede-a67b-11eb-bcbc-0242ac130002",
+              "name": "Process Parameter Reference Zoom Windows Name",
+              "description": "Process Parameter Reference Zoom Windows Description",
+              "is_sales_transaction": false,
+              "is_active": true
+            }
+          ]
+        },
+        "context_info": {
+          "id": "8546456",
+          "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+          "name": "Process Parameter Context Info Name",
+          "description": "Process Parameter Context Info Description",
+          "sql_statement": "Process Parameter Context Info SQL Statement",
+          "is_active": false,
+          "message_text": {
+            "id": "4383456",
+            "value": "Process Parameter Context Info Message Text Value",
+            "message_type": "Process Parameter Context Info Message Text Type",
+            "message_text": "Process Parameter Context Info Message Text Text",
+            "message_tip": "Process Parameter Context Info Message Text Tip",
+            "is_active": false
+          }
+        },
+        "Fielddefinition": {
+          "id": "4364567",
+          "uuid": "95326050-a67b-11eb-bcbc-0242ac130002",
+          "Value": "Process Parameter Field Definition Value",
+          "name": "Process Parameter Field Definition Name",
+          "is_active": false,
+          "field_group_type": "Process Parameter Field Definition Type",
+          "conditions": [
+            {
+              "id": "4567568",
+              "uuid": "953262d0-a67b-11eb-bcbc-0242ac130002",
+              "condition": "Process Parameter Field Definition Condition",
+              "style_sheet": "Process Parameter Field Definition Condition Style Sheet",
+              "is_active": false
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "fields": [
+    {
+      "id": "5678",
+      "uuid": "95325d26-a67b-11eb-bcbc-0242ac130002",
+      "name": "Process Parameter Name",
+      "description": "Process Parameter Description",
+      "help": "Process Parameter Help",
+      "column_name": "Process Parameter Column Name",
+      "element_name": "Process Parameter Element Name",
+      "is_active": true,
+      "display_type": "Process Parameter Display Type",
+      "is_field_only": false,
+      "is_range": true,
+      "is_same_line": false,
+      "is_encrypted": true,
+      "is_quick_entry": false,
+      "sequence": "Process Parameter Sequence",
+      "seq_no_grid": 6,
+      "sort_no": 1,
+      "identifier_sequence": "Process Parameter Identifier Sequence",
+      "format_pattern": "Process Parameter Format Pattern",
+      "v_format": "Process Parameter V Format",
+      "default_value": "Process Parameter Default Value",
+      "default_value_to": "Process Parameter Default Value To",
+      "field_length": 2,
+      "value_max": 3,
+      "is_identifier": true,
+      "is_parent": false,
+      "is_key": true,
+      "is_selection_column": false,
+      "is_updateable": true,
+      "is_always_updateable": false,
+      "is_allow_copy": true,
+      "is_heading": false,
+      "is_allow_logging": true,
+      "is_translated": false,
+      "column_sql": "Process Parameter Column SQL",
+      "is_displayed": true,
+      "is_displayed_grid": false,
+      "is_mandatory": true,
+      "is_read_only": false,
+      "is_query_criteria": true,
+      "is_order_by": false,
+      "is_info_only": true,
+      "callout": "Process Parameter Callout",
+      "display_logic": "Process Parameter Display Logic",
+      "mandatory_logic": "Process Parameter Mandatory Logic",
+      "read_only_logic": "Process Parameter Read Only Logic",
+      "Fieldgroup": {
+        "id": "3455",
+        "uuid": "95325e16-a67b-11eb-bcbc-0242ac130002",
+        "name": "Process Parameter Fieldgroup Name",
+        "field_group_type": "Process Parameter Fieldgroup Type",
+        "is_active": true
+      },
+      "reference": {
+        "table_name": "Process Parameter Reference Table Name",
+        "key_column_name": "Process Parameter Reference Key Column Name",
+        "display_column_name": "Process Parameter Reference Display Column Name",
+        "query": "Process Parameter Reference Query",
+        "direct_query": "Process Parameter Reference Direcy Query",
+        "validation_code": "Process Parameter Reference Validation Code",
+        "zoom_windows": [
+          {
+            "id": "974634",
+            "uuid": "95325ede-a67b-11eb-bcbc-0242ac130002",
+            "name": "Process Parameter Reference Zoom Windows Name",
+            "description": "Process Parameter Reference Zoom Windows Description",
+            "is_sales_transaction": false,
+            "is_active": true
+          }
+        ]
+      },
+      "context_info": {
+        "id": "8546456",
+        "uuid": "95325f9c-a67b-11eb-bcbc-0242ac130002",
+        "name": "Process Parameter Context Info Name",
+        "description": "Process Parameter Context Info Description",
+        "sql_statement": "Process Parameter Context Info SQL Statement",
+        "is_active": false,
+        "message_text": {
+          "id": "4383456",
+          "value": "Process Parameter Context Info Message Text Value",
+          "message_type": "Process Parameter Context Info Message Text Type",
+          "message_text": "Process Parameter Context Info Message Text Text",
+          "message_tip": "Process Parameter Context Info Message Text Tip",
+          "is_active": false
+        }
+      },
+      "Fielddefinition": {
+        "id": "4364567",
+        "uuid": "95326050-a67b-11eb-bcbc-0242ac130002",
+        "Value": "Process Parameter Field Definition Value",
+        "name": "Process Parameter Field Definition Name",
+        "is_active": false,
+        "field_group_type": "Process Parameter Field Definition Type",
+        "conditions": [
+          {
+            "id": "4567568",
+            "uuid": "953262d0-a67b-11eb-bcbc-0242ac130002",
+            "condition": "Process Parameter Field Definition Condition",
+            "style_sheet": "Process Parameter Field Definition Condition Style Sheet",
+            "is_active": false
+          }
+        ]
+      }
+    }
+  ]
+}
