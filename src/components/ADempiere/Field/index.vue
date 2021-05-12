@@ -723,6 +723,7 @@ export default {
       }
     },
     handleCommand(command) {
+      console.log({ command })
       this.$store.commit('setRecordAccess', false)
       if (command.name === this.$t('table.ProcessActivity.zoomIn')) {
         this.redirect({ window: command.fieldAttributes.reference.zoomWindows[0] })

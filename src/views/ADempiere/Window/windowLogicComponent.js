@@ -25,6 +25,7 @@ import DataTable from '@/components/ADempiere/DataTable'
 import splitPane from 'vue-splitpane'
 // Container Info
 import ChatEntries from '@/components/ADempiere/ChatEntries'
+import ListChatEntry from '@/components/ADempiere/ChatEntries/listChatEntry'
 import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
 // Workflow
@@ -50,6 +51,7 @@ export default {
     ModalDialog,
     RightPanel,
     ChatEntries,
+    ListChatEntry,
     RecordLogs,
     WorkflowLogs,
     WorkflowStatusBar,
@@ -250,7 +252,10 @@ export default {
       return this.$store.getters.getWindow(this.windowUuid)
     },
     isShowedTabsChildren() {
-      return this.windowMetadata.isShowedTabsChildren
+      if (this.windowMetadata && this.windowMetadata.isShowedTabsChildren && this.isEmptyValue(this.$route.query.typeAction)) {
+        return this.windowMetadata.isShowedTabsChildren
+      }
+      return false
     },
     isShowedRecordNavigation() {
       if (this.windowMetadata && this.windowMetadata.isShowedRecordNavigation) {

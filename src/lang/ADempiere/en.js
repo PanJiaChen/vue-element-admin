@@ -309,7 +309,7 @@ export default {
     deleteRecord: 'Delete Record',
     undoNew: 'Undo New Record',
     containerInfo: {
-      notes: 'Notes',
+      notes: 'Notes List',
       changeLog: 'ACtivity',
       workflowLog: 'Workflow Log',
       changeDetail: 'Change detail',
@@ -366,11 +366,14 @@ export default {
     },
     selectionRequired: 'You must select a record',
     undo: 'Undo',
-    unlockRecord: 'Unlock Record',
     notification: {
       lockRecord: 'The Registry was Locked',
       unlockRecord: 'Registry was Unlocked'
-    }
+    },
+    addNote: 'Add Note',
+    emptyNote: 'Este registro no posee ninguna nota',
+    descriptionNote: 'Add Note or Comment to Record',
+    unlockRecord: 'Unlock Record'
   },
   sequence: {
     available: 'Available',

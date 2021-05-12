@@ -16,57 +16,12 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <div>
-    <el-card
-      v-if="isNote"
-      class="box-card chat-entries-list-card"
-      :style="{ 'height': getHeightPanelBottom + 'vh' }"
-    >
-      <span
-        slot="header"
-        class="clearfix chat-entries-card-title"
-      >
-        {{ $t('window.containerInfo.notes') }}
-      </span>
-      <el-scrollbar wrap-class="scroll-child" style="height: 100%;">
-        <el-timeline>
-          <el-timeline-item
-            v-for="(chats, key) in chatList"
-            :key="key"
-            :timestamp="translateDate(chats.logDate)"
-            placement="top"
-          >
-            <el-card shadow="hover">
-              <div v-markdown="chats.characterData" />
-            </el-card>
-          </el-timeline-item>
-        </el-timeline>
-      </el-scrollbar>
-    </el-card>
-
-    <el-card
-      class="box-card chat-entry-create-card"
-    >
-      <span slot="header" class="clearfix chat-entries-card-title">
-        {{ $t('window.containerInfo.logWorkflow.addNote') }}
-      </span>
-      <el-scrollbar>
-        <input-chat />
-        <el-button
-          icon="el-icon-check"
-          style="float: right; "
-          type="primary"
-          @click="sendComment()"
-        />
-        <el-button
-          icon="el-icon-close"
-          style="float: right;margin-right: 1%;"
-          type="danger"
-          @click="clear()"
-        />
-      </el-scrollbar>
-    </el-card>
-  </div>
+  <component
+    :is="templateDevice"
+    :right-panel="rightPanel"
+    :table-name="tableName"
+    :record-id="recordId"
+  />
 </template>
 
 <script>
@@ -85,101 +40,22 @@ export default {
     recordId: {
       type: Number,
       default: undefined
+    },
+    rightPanel: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
-    chatList() {
-      const commentLogs = this.$store.getters.getChatEntries
-      if (this.isEmptyValue(commentLogs)) {
-        return commentLogs
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
+    templateDevice() {
+      if (this.isMobile) {
+        return () => import('@/components/ADempiere/ChatEntries/modeMobile.vue')
       }
-      commentLogs.sort((a, b) => {
-        const c = new Date(a.logDate)
-        const d = new Date(b.logDate)
-        return c - d
-      })
-      return commentLogs
-    },
-    language() {
-      return this.$store.getters.language
-    },
-    tableNameToSend() {
-      if (this.isEmptyValue(this.tableName)) {
-        return this.$route.params.tableName
-      }
-      return this.tableName
-    },
-    recordIdToSend() {
-      if (this.isEmptyValue(this.recordId)) {
-        return this.$route.params.recordId
-      }
-      return this.recordId
-    },
-    isNote() {
-      return this.$store.getters.getIsNote
-    },
-    getHeightPanelBottom() {
-      return this.$store.getters.getSplitHeight - 14
-    }
-  },
-  methods: {
-    sendComment() {
-      const comment = this.$store.getters.getChatTextLong
-
-      if (!this.isEmptyValue(comment)) {
-        this.$store.dispatch('createChatEntry', {
-          tableName: this.tableNameToSend,
-          recordId: this.recordIdToSend,
-          comment
-        })
-      }
-    },
-    clear() {
-      this.$store.commit('setChatText', '')
-    },
-    translateDate(value) {
-      return this.$d(new Date(value), 'long', this.language)
+      return () => import('@/components/ADempiere/ChatEntries/modeDesktop.vue')
     }
   }
 }
 </script>
-
-<style lang="scss">
-.chat-entries-list-card {
-  // small title of the card
-  .el-card__header {
-    max-height: 35px !important;
-    padding: 10px 20px !important;
-  }
-
-  // brings the card space closer to the timerline
-  .el-card__body {
-    padding-left: 0px !important;
-  }
-
-  .el-timeline-item__content {
-    .el-card {
-      // remove the right spacing so that it does not overlap with the scroll
-      margin-right: 20px !important;
-      // removes excessive card content space from chat logs
-      .el-card__body {
-        padding-left: 20px !important;
-        padding-top: 0px !important;
-        padding-bottom: 0px !important;
-      }
-    }
-  }
-}
-
-.chat-entry-create-card {
-  // small title of the card
-  .el-card__header {
-    max-height: 35px !important;
-    padding: 10px 20px !important;
-  }
-}
-.el-card__body {
-    padding: 20px;
-    height: 100%;
-}
-</style>

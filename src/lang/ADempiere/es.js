@@ -285,7 +285,7 @@ export default {
     deleteRecord: 'Eliminar Registro',
     undoNew: 'Descartar Nuevo Registro',
     containerInfo: {
-      notes: 'Notas',
+      notes: 'Listado de Notas',
       changeLog: 'Actividad',
       workflowLog: 'Histórico de Flujo de Trabajo',
       changeDetail: 'Detalle del cambio',
@@ -342,12 +342,14 @@ export default {
     },
     selectionRequired: 'Debe seleccionar un registro',
     undo: 'Deshacer',
-    unlockRecord: 'Desbloquear Registro',
     notification: {
       lockRecord: 'El Registro fue Bloqueado',
       unlockRecord: 'El Registro fue Desbloqueado'
-    }
-
+    },
+    addNote: 'Agregar Nota',
+    emptyNote: 'Este registro no posee ninguna nota',
+    descriptionNote: 'Agregar Nota o Comentario al Registro',
+    unlockRecord: 'Desbloquear Registro'
   },
   sequence: {
     available: 'Disponibles',
