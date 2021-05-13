@@ -16,7 +16,7 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" style="padding: 1%;">
     <div slot="header" class="clearfix">
       <span>
         {{ $t('field.field') }}
@@ -190,6 +190,7 @@ export default {
     close() {
       this.$children[0].visible = false
       this.$store.commit('changeShowRigthPanel', false)
+      this.$store.commit('changeShowOptionField', false)
     }
   }
 }

@@ -131,11 +131,11 @@
                   width="400"
                   trigger="click"
                   style="padding: 0px;"
-                  :hide="visibleForDesktop"
+                  @hide="closePopover"
                 >
                   <component
                     :is="optionFieldFComponentRender"
-                    v-if="visibleForDesktop"
+                    v-if="visibleForDesktop && showPanelFieldOption"
                     :field-attributes="contextMenuField.fieldAttributes"
                     :source-field="contextMenuField.fieldAttributes"
                     :field-value="contextMenuField.valueField"
@@ -266,6 +266,9 @@ export default {
   },
   computed: {
     // load the component that is indicated in the attributes of received property
+    showPanelFieldOption() {
+      return this.$store.state.contextMenu.isShowOptionField
+    },
     labelStyle() {
       if (this.field.name.length >= 25) {
         return '35'
@@ -688,6 +691,16 @@ export default {
   },
   methods: {
     recursiveTreeSearch,
+    closePopover() {
+      this.$router.push({
+        name: this.$route.name,
+        query: {
+          ...this.$route.query,
+          typeAction: '',
+          fieldColumnName: ''
+        }
+      }, () => {})
+    },
     handleOpen(key, keyPath) {
       this.triggerMenu = 'hover'
     },
@@ -703,6 +716,7 @@ export default {
       if (this.isMobile) {
         this.$store.commit('changeShowRigthPanel', true)
       } else {
+        this.$store.commit('changeShowOptionField', true)
         this.visibleForDesktop = true
         this.$router.push({
           name: this.$route.name,

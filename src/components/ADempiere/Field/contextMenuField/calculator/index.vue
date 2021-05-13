@@ -16,7 +16,7 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <el-card class="box-card">
+  <el-card class="box-card" style="padding: 1%;">
     <div slot="header" class="clearfix">
       <span>
         {{ $t('field.field') }}
@@ -217,6 +217,7 @@ export default {
           this.clearVariables()
           this.$children[0].visible = false
           this.$store.commit('changeShowRigthPanel', false)
+          this.$store.commit('changeShowOptionField', false)
           if (!this.isEmptyValue(this.$route.query.fieldColumnName)) {
             this.$router.push({
               name: this.$route.name,

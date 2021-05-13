@@ -17,7 +17,7 @@
 -->
 <template>
   <div>
-    <el-card class="box-card">
+    <el-card class="box-card" style="padding: 1%;">
       <div slot="header" class="clearfix">
         <span>
           {{ $t('field.field') }}
@@ -93,7 +93,7 @@ export default {
     }
   },
   created() {
-    if (this.isEmptyValue(this.messageText)) {
+    if (!this.isEmptyValue(this.fieldAttributes.contextInfo.sqlStatement)) {
       const sqlParse = parseContext({
         parentUuid: this.fieldAttributes.parentUuid,
         containerUuid: this.fieldAttributes.containerUuid,

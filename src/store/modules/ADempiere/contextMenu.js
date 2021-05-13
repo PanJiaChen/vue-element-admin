@@ -14,6 +14,7 @@ import { requestListDocumentActions, requestListDocumentStatuses } from '@/api/A
 // ]
 const initStateContextMenu = {
   isShowRightPanel: false,
+  isShowOptionField: true,
   isShowPopoverField: false,
   optionField: {},
   contextMenu: [],
@@ -55,6 +56,9 @@ const contextMenu = {
         state.isShowRightPanel = !state.isShowRightPanel
       }
       state.isShowRightPanel = params
+    },
+    changeShowOptionField(state, params) {
+      state.isShowOptionField = params
     },
     changeShowPopoverField(state) {
       state.isShowPopoverField = !state.isShowPopoverField

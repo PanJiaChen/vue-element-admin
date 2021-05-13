@@ -19,6 +19,7 @@
   <el-card
     v-if="!isEmptyValue(metadataList)"
     class="box-card"
+    style="padding: 1%;"
   >
     <div slot="header" class="clearfix">
       <span>
@@ -209,8 +210,6 @@ export default {
   methods: {
     createFieldFromDictionary,
     close() {
-      this.$children[0].visible = false
-      this.$store.commit('changeShowRigthPanel', false)
       if (!this.isEmptyValue(this.$route.query.fieldColumnName)) {
         this.$router.push({
           name: this.$route.name,
@@ -220,6 +219,9 @@ export default {
             fieldColumnName: ''
           }
         }, () => {})
+        this.$children[0].visible = false
+        this.$store.commit('changeShowRigthPanel', false)
+        this.$store.commit('changeShowOptionField', false)
       }
     },
     remove() {
