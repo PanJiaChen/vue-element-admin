@@ -29,7 +29,7 @@ export function requestGetProductPrice({
   validFrom
 }) {
   return request({
-    url: '/form/addons/point-of-sales/get-product-price',
+    url: '/form/addons/point-of-sales/product-price',
     method: 'get',
     params: {
       search_value: searchValue,
