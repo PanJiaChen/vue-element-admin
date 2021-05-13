@@ -45,6 +45,25 @@ Sirve para conigurar los accesos y bloqueos de un rol en un registro en específ
 - Función: Configuración de roles para dar acceso o bloquear un regitro
 - Obseración: Solo se aplica por regitros y por roles, es decir que si se desea configurar por uno o ma registros estos deben hacer uno por uno.
 
+
+## ¿Cómo se utiliza en la versión de Escritorio?
+
+En la versión escritorió este componente se utiliza de la siguiente forma:
+
+- Primero que nada se debe ubiccar el botón menú de acciones, luego tildar la opción "Acceso a Registro"
+
+- Al tildar esta opción se desplegará una ventana donde muestra que el listado de roles los cuales se le configurará los accesos o bloqueos del registro en el que se cuentra posicionado.
+
+
+## ¿Cómo se utiliza en la versión móvil?
+
+En la versión movil este componente se utiliza de la siguiente forma:
+
+- Primero que nada se debe ubiccar el botón menú de acciones, luego tildar la opción "Acceso a Registro"
+
+- Al tildar esta opción se desplegará  una ventana del lado derecho  donde muestra listado de roles los cuales se le configurará los accesos o bloqueos del registro en el que se cuentra posicionado.
+
+
 ## Opciones para el Desarrollador
 
 El diálogo de **Acceso a Registros** se encuentra en la siguiente ruta:
