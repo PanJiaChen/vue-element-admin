@@ -42,8 +42,7 @@ En la versión móvil se debe posicionar en la parte inferior de la ventana para
 
 ### Crear Notas
 
-<img :src="$withBase('/images/components/notes/create-notes-in-the-mobile-version.gif" />
-
+<img :src="$withBase('/images/components/notes/create-notes-in-the-mobile-version.gif')" />
 
 ## Opciones para el Desarrollador
 
@@ -54,19 +53,18 @@ El panel de **Notas** se encuentra en la siguiente ruta:
     └── components                  # Componentes globales
         └── ADempiere               # Componentes específicos de ADempiere
             └── ChatEntries         # Directorio principal del componente Notas
-
 ```
+
 Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
 
-El llamado al consumo de servicio de  **Notas** se encuentra en la siguiente ruta:
+El llamado al consumo de servicio de **Notas** se encuentra en la siguiente ruta:
+
 ```bash
 └─ src                            # Código fuente principal
     └─ api                        # Servicios globales
       └─ ADempiere                # Servicios específicos de ADempiere
             └─ window             # Directorio principal de los servicio Notas
-
 ```
-
 
 Los servicios llamados del componente son <br>
 [POST /adempiere-api/logs/list-entity-chat](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-chats)<br>
