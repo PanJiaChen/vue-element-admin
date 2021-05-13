@@ -264,7 +264,7 @@ export function requestCreateOrderLine({
   return request({
     url: '/form/addons/point-of-sales/create-order-line',
     method: 'post',
-    params: {
+    data: {
       order_uuid: orderUuid,
       product_uuid: productUuid,
       description,
