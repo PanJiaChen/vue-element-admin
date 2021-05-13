@@ -21,19 +21,21 @@ It is used to establish the translation of the value entered in a specific field
 ## Functions or Observations
 
 ::: tip
-This component replaces the "** Translation **" tab that some ADempiere-ZK windows contain.
+This component replaces the "**Translation**" tab that some ADempiere-ZK windows contain.
 :::
 
 ## How is it used in the Desktop version?
 
 In the desktop version, click on the field to view the menu displayed by it, then select the option "**Language**", to view the information of the field with its respective translation.
 
-![How to use it in the Desktop version]('/images/components/translation/how-to-use-it-in-the-desktop-version.gif' "How to use it in the Desktop version")
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## How is it used in the mobile version?
 
 In the desktop version, click on the field to view the menu displayed by it, then select the option "**Language**", to view the information of the field with its respective translation.
 
+
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-mobile-version.gif')" />
 ![How to use it in the mobile version]('/images/components/translation/how-to-use-it-in-the-mobile-version.gif' "How to use it in the mobile version")
 
 ## Developer Options
@@ -64,3 +66,4 @@ The **Translation** service consumption call can be found in the following path:
 
 The called services of the component are <br>
 [GET adempiere-api/ui/getTranslations]()<br>
+

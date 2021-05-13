@@ -34,15 +34,14 @@
 
 ### 創建筆記
 
-![如何在桌面版本中創建筆記]('/images/components/notes/create-notes-in-desktop-version.gif' "如何在桌面版本中創建筆記")
+<img :src="$withBase('/images/components/notes/create-notes-in-desktop-version.gif')" />
 
 ## 在移動版本中如何使用？
 
 在移動版本中，它必須位於窗口底部才能查看選項 “**筆記**” 和 “**活動**”, 然後在左側的框中輸入信息。左側框中輸入的信息會自動應用在右側框中，並採用格式。
 
 ### 創建筆記
-
-![如何在移動版本中創建註釋]('/images/components/notes/create-notes-in-the-mobile-version.gif' "如何在移動版本中創建註釋")
+<img :src="$withBase('/images/components/notes/create-notes-in-the-mobile-version.gif')" />
 
 ## 开发者选项
 

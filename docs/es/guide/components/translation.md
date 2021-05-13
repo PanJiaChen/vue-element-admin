@@ -28,13 +28,13 @@ Este componente reemplaza la pestaña "**Traducción**" que contienen algunas ve
 
 En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Idioma**", para visualizar la información del campo con su respectiva traducción.
 
-![Cómo se utiliza en la versión de Escritorio]('/images/components/translation/how-to-use-it-in-the-desktop-version.gif' "Cómo se utiliza en la versión de Escritorio")
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## ¿Cómo se utiliza en la versión móvil?
 
 En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Idioma**", para visualizar la información del campo con su respectiva traducción.
 
-![Cómo se utiliza en la versión móvil]('/images/components/translation/how-to-use-it-in-the-mobile-version.gif' "Cómo se utiliza en la versión móvil")
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-mobile-version.gif')" />
 
 ## Opciones para el Desarrollador
 

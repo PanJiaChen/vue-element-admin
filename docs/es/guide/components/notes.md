@@ -34,7 +34,7 @@ En la versión de escritorio se hace clic sobre el icono "**i**" para visualizar
 
 ### Crear Notas
 
-![Cómo crear notas en la versión de Escritorio]('/images/components/notes/create-notes-in-desktop-version.gif' "Cómo crear notas en la versión de Escritorio")
+<img :src="$withBase('/images/components/notes/create-notes-in-desktop-version.gif')" />
 
 ## ¿Cómo se utiliza en la versión móvil?
 
@@ -42,7 +42,7 @@ En la versión móvil se debe posicionar en la parte inferior de la ventana para
 
 ### Crear Notas
 
-![Cómo crear notas en la versión móvil]('/images/components/notes/create-notes-in-the-mobile-version.gif' "Cómo crear notas en la versión móvil")
+<img :src="$withBase('/images/components/notes/create-notes-in-the-mobile-version.gif" />
 
 
 ## Opciones para el Desarrollador

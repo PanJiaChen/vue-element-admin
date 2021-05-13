@@ -28,12 +28,14 @@
 
 在桌面版本中，單擊該字段以查看其顯示的菜單，然後選擇選項 “**語言**”，以查看該字段的信息及其相應的翻譯。
 
-![如何在桌面版中使用它]('/images/components/translation/how-to-use-it-in-the-desktop-version.gif' "如何在桌面版中使用它")
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## 在移動版本中如何使用？
 
 在桌面版本中，單擊該字段以查看其顯示的菜單，然後選擇選項 “**語言**”，以查看該字段的信息及其相應的翻譯。
 
+
+<img :src="$withBase('/images/components/translation/how-to-use-it-in-the-mobile-version.gif')" />
 ![如何在移動版本中使用它]('/images/components/translation/how-to-use-it-in-the-mobile-version.gif' "如何在移動版本中使用它")
 
 ## 开发者选项
@@ -64,3 +66,4 @@
 
 该组件的调用服务是<br>
 [GET adempier-api/ui/getTranslations]()<br>
+

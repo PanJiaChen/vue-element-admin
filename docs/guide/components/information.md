@@ -35,10 +35,10 @@ By default, the component contains the information in the following order
 
 In the desktop version, click on the field to view the menu displayed by it, then select the option "**Information**" to view the field information.
 
-![How to use it in the Desktop version]('/images/components/information/how-to-use-it-in-the-desktop-version.gif' "How to use it in the Desktop version")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## How is it used in the mobile version?
 
 In the mobile version, click on the field to view the menu displayed by it, then select the option "**Information**" to view the information of the field.
 
-![How to use it in the mobile version]('/images/components/information/how-to-use-it-in-the-mobile-version.gif' "How to use it in the mobile version")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-mobile-version.gif')" />

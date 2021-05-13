@@ -34,7 +34,7 @@ In the desktop version, click on the "**i**" icon to view the menu displayed by 
 
 ### Create Notes
 
-![How to create notes in Desktop version]('/images/components/notes/create-notes-in-desktop-version.gif' "How to create notes in Desktop version")
+<img :src="$withBase('/images/components/notes/create-notes-in-desktop-version.gif')" />
 
 ## How is it used in the mobile version?
 
@@ -42,7 +42,7 @@ In the mobile version, it must be positioned at the bottom of the window to view
 
 ### Create Notes
 
-![How to create notes in the mobile version]('/images/components/notes/create-notes-in-the-mobile-version.gif' "How to create notes in the mobile version")
+<img :src="$withBase('/images/components/notes/create-notes-in-the-mobile-version.gif')" />
 
 ## Developer Options
 

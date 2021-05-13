@@ -30,4 +30,4 @@ Cuando se realiza una búsqueda de los registros que contiene una determinada ve
 
 Hacer clic contrario sobre el nombre de la ventana y seleccionar la opción "**Actualizar**" en el menú desplegado.
 
-![Cómo se utiliza en la versión de Escritorio]('/images/components/update/how-to-use-it-in-the-desktop-version.gif' "Cómo se utiliza en la versión de Escritorio")
+<img :src="$withBase('/images/components/update/how-to-use-it-in-the-desktop-version.gif')" />

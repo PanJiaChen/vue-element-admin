@@ -35,11 +35,11 @@ Por defecto, el componente contiene la información en el siguiente orden
 
 En la versión de escritorio se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Información**", para visualizar la información del campo.
 
-![Cómo se utiliza en la versión de Escritorio]('/images/components/information/how-to-use-it-in-the-desktop-version.gif' "Cómo se utiliza en la versión de Escritorio")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## ¿Cómo se utiliza en la versión móvil?
 
 En la versión móvil se hace clic sobre el campo para visualizar el menú desplegado por el mismo, luego se selecciona la opción "**Información**", para visualizar la información del campo.
 
-![Cómo se utiliza en la versión móvil]('/images/components/information/how-to-use-it-in-the-mobile-version.gif' "Cómo se utiliza en la versión móvil")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-mobile-version.gif')" />
 

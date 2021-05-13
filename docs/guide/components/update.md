@@ -30,4 +30,4 @@ When a search is made for the records contained in a certain window, filtering b
 
 Click on the name of the window and select the option "**Update**" in the displayed menu.
 
-![How to use it in the Desktop version]('/images/components/update/how-to-use-it-in-the-desktop-version.gif' "How to use it in the Desktop version")
+<img :src="$withBase('/images/components/update/how-to-use-it-in-the-desktop-version.gif')" />

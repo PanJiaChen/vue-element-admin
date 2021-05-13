@@ -28,6 +28,6 @@
 
 ## 在桌面版中如何使用？
 
-單擊窗口名稱，然後在顯示的菜單中選擇選項“ **更新**”。
+單擊窗口名稱，然後在顯示的菜單中選擇選項 “**更新**”。
 
-![如何在桌面版本中使用它]('/images/components/update/how-to-use-it-in-the-desktop-version.gif' "如何在桌面版本中使用它")
+<img :src="$withBase('/images/components/update/how-to-use-it-in-the-desktop-version.gif')" />

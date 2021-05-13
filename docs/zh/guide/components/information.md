@@ -25,20 +25,20 @@
 ::: tip
 默認情況下，組件按以下順序包含信息
 
-  -欄位名稱
+  - 欄位名稱
   - 描述
   - 幫助
-  -放大選項（取決於字段類型）
+  - 放大選項（取決於字段類型）
 :::
 
 ## 在桌面版中如何使用？
 
 在桌面版本中，單擊字段以查看其顯示的菜單，然後選擇選項 "**信息**" 以查看字段信息。
 
-![如何在桌面版本中使用它]('/images/components/information/how-to-use-it-in-the-desktop-version.gif' "如何在桌面版本中使用它")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-desktop-version.gif')" />
 
 ## 在移動版本中如何使用？
 
 在移動版本中，單擊該字段以查看其顯示的菜單，然後選擇選項 "**信息**" 以查看該字段的信息。
 
-![如何在移動版本中使用它]('/images/components/information/how-to-use-it-in-the-mobile-version.gif' "如何在移動版本中使用它")
+<img :src="$withBase('/images/components/information/how-to-use-it-in-the-mobile-version.gif')" />
