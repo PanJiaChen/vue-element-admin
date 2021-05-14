@@ -51,7 +51,7 @@ var EcosystemNav = [
       {
         text: 'Gitter',
         textZH: 'Gitter讨论组',
-        link: 'https://gitter.im/adempiere-vue/discuss'
+        link: 'https://gitter.im/adempiere/adempiere-vue'
       },
       {
         textZH: '作者Blog',

@@ -35,13 +35,13 @@ export function loadCarbon() {
 }
 
 export function loadGitter() {
-  const id = 'adempiere-vue/discuss'
+  const id = 'adempiere/adempiere-vue'
   const existingScript = document.getElementById(id)
   if (existingScript) return
   const script = document.createElement('script')
   script.id = id
   script.text =
-    "((window.gitter = {}).chat = {}).options = {room: 'adempiere-vue/discuss'};"
+    "((window.gitter = {}).chat = {}).options = {room: 'adempiere/adempiere-vue'};"
   document.body.appendChild(script)
   dynamicLoadScript('https://sidecar.gitter.im/dist/sidecar.v1.js')
 }

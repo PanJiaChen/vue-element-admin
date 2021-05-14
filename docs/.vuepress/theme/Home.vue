@@ -20,8 +20,10 @@
     </div>
 
     <Content custom/>
-
-    <div class="footer" v-if="data.footer">{{ data.footer }}</div>
+    <div class="footer" v-if="data.footer">
+      <p>ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution</p>
+      <p>Copyright (C) 2017-Present ADempiere</p>
+    </div>
   </div>
 </template>
 
@@ -130,7 +132,7 @@ export default {
   }
 
   .footer {
-    padding: 2.5rem;
+    padding: 1.5rem;
     border-top: 1px solid $borderColor;
     text-align: center;
     color: lighten($textColor, 25%);
