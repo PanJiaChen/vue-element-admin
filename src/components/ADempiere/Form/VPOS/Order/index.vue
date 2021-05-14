@@ -302,11 +302,16 @@
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import orderLineMixin from './orderLineMixin.js'
 import fieldsListOrder from './fieldsListOrder.js'
-import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import BusinessPartner from '@/components/ADempiere/Form/VPOS/BusinessPartner'
 import fieldLine from '@/components/ADempiere/Form/VPOS/Order/line/index'
 import ProductInfo from '@/components/ADempiere/Form/VPOS/ProductInfo'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
+// Format of values ( Date, Price, Quantity )
+import {
+  formatDate,
+  formatPrice,
+  formatQuantity
+} from '@/utils/ADempiere/valueFormat.js'
 
 export default {
   name: 'Order',
@@ -318,8 +323,7 @@ export default {
   },
   mixins: [
     formMixin,
-    orderLineMixin,
-    posMixin
+    orderLineMixin
   ],
   data() {
     return {
@@ -393,37 +397,72 @@ export default {
     },
     labelButtonCollections() {
       return this.isDisabled ? this.$t('form.pos.order.collections') : this.$t('form.pos.order.collect')
+    },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
+    // Currency Point Of Sales
+    pointOfSalesCurrency() {
+      // const currency = this.currentPointOfSales
+      if (!this.isEmptyValue(this.currentPointOfSales.priceList)) {
+        return {
+          ...this.currentPointOfSales.priceList.currency,
+          amountConvertion: 1
+        }
+      }
+      return {
+        uuid: '',
+        iSOCode: '',
+        curSymbol: '',
+        amountConvertion: 1
+      }
+    },
+    listPointOfSales() {
+      return this.$store.getters.posAttributes.listPointOfSales
+    },
+    ordersList() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return []
+      }
+      return this.currentPointOfSales.listOrder
+    },
+    currentOrder() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        }
+      }
+      return this.currentPointOfSales.currentOrder
+    },
+    isDisabled() {
+      return this.currentPointOfSales.currentOrder.isProcessed
+    },
+    listOrderLine() {
+      if (this.isEmptyValue(this.currentOrder)) {
+        return []
+      }
+      return this.currentOrder.lineOrder
     }
   },
-  // watch: {
-  //   currencyUuid(value) {
-  //     if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
-  //       this.$store.dispatch('conversionDivideRate', {
-  //         conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-  //         currencyFromUuid: this.pointOfSalesCurrency.uuid,
-  //         currencyToUuid: value
-  //       })
-  //     }
-  //   },
-  //   converCurrency(value) {
-  //     if (!this.isEmptyValue(value) && !this.isEmptyValue(this.currentPointOfSales)) {
-  //       this.$store.dispatch('conversionMultiplyRate', {
-  //         containerUuid: 'Order',
-  //         conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-  //         currencyFromUuid: this.pointOfSalesCurrency.uuid,
-  //         currencyToUuid: value
-  //       })
-  //     } else {
-  //       this.$store.commit('currencyMultiplyRate', 1)
-  //     }
-  //   }
-  // },
   mounted() {
     if (!this.isEmptyValue(this.$route.query.action)) {
       this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })
     }
   },
   methods: {
+    formatDate,
+    formatPrice,
+    formatQuantity,
     openCollectionPanel() {
       this.isShowedPOSKeyLayout = !this.isShowedPOSKeyLayout
       this.$store.commit('setShowPOSCollection', true)
@@ -435,6 +474,80 @@ export default {
     open() {
       if (!this.seeConversion) {
         this.seeConversion = true
+      }
+    },
+    getOrderTax(currency) {
+      return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
+    },
+    newOrder() {
+      this.$router.push({
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          pos: this.currentPointOfSales.id
+        }
+      }).catch(() => {
+      }).finally(() => {
+        this.$store.commit('setListPayments', [])
+        const { templateBusinessPartner } = this.currentPointOfSales
+        this.$store.commit('updateValuesOfContainer', {
+          containerUuid: this.metadata.containerUuid,
+          attributes: [{
+            columnName: 'UUID',
+            value: undefined
+          },
+          {
+            columnName: 'ProductValue',
+            value: undefined
+          },
+          {
+            columnName: 'C_BPartner_ID',
+            value: templateBusinessPartner.id
+          },
+          {
+            columnName: 'DisplayColumn_C_BPartner_ID',
+            value: templateBusinessPartner.name
+          },
+          {
+            columnName: ' C_BPartner_ID_UUID',
+            value: templateBusinessPartner.uuid
+          }]
+        })
+        this.$store.dispatch('setOrder', {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        })
+        this.$store.commit('setShowPOSCollection', false)
+        this.$store.dispatch('listOrderLine', [])
+      })
+    },
+    changePos(posElement) {
+      this.$store.dispatch('setCurrentPOS', posElement)
+      this.newOrder()
+    },
+    arrowTop() {
+      if (this.currentTable > 0) {
+        this.currentTable--
+        this.$refs.linesTable.setCurrentRow(this.listOrderLine[this.currentTable])
+        this.currentOrderLine = this.listOrderLine[this.currentTable]
+      }
+    },
+    arrowBottom() {
+      const top = this.listOrderLine.length - 1
+      if (this.currentTable < top) {
+        this.currentTable++
+        this.$refs.linesTable.setCurrentRow(this.listOrderLine[this.currentTable])
+        this.currentOrderLine = this.listOrderLine[this.currentTable]
       }
     }
   }

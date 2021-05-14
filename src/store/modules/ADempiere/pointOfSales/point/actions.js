@@ -60,7 +60,6 @@ export default {
   },
   setCurrentPOS({ commit, dispatch }, posToSet) {
     commit('currentPointOfSales', posToSet)
-    const currentPOS = posToSet
     const oldRoute = router.app._route
     router.push({
       name: oldRoute.name,
@@ -78,13 +77,5 @@ export default {
     commit('setIsReloadProductPrice')
     commit('setIsReloadListOrders')
     commit('setShowPOSKeyLayout', false)
-
-    // Maintain Order and Product List
-    dispatch('listOrdersFromServer', {
-      posUuid: currentPOS.uuid
-    })
-    dispatch('listProductPriceFromServer', {
-      currentPOS
-    })
   }
 }
