@@ -1,4 +1,4 @@
-# To update
+# Refresh
 
 It allows updating the records of the fields contained in the window where the option is selected.
 
