@@ -290,7 +290,10 @@ function genComponentSidebar(type = '') {
     '/guide/components/information.md',
     '/guide/components/update.md',
     '/guide/components/translation.md',
-    '/guide/components/zoom-in.md'
+    '/guide/components/zoom-in.md',
+    '/guide/components/activity.md',
+    '/guide/components/close-tab.md',
+    '/guide/components/close-other-tabs.md'
   ]
   return mapArr.map(i => {
     return type + i
