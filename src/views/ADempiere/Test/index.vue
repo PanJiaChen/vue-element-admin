@@ -2,6 +2,7 @@
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
  Contributor(s): Yamel Senih ysenih@erpya.com www.erpya.com
+ Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -18,7 +19,7 @@
 <template>
   <el-container
     class="view-base"
-    style="height: max-content!important;"
+    style="height: max-content !important;"
   >
     <el-header style="height: 39px;">
       <context-menu
@@ -50,7 +51,7 @@
               <el-button
                 v-popover:helpTitle
                 type="text"
-                class="title text-center"
+                class="custom-title text-center"
               >
                 {{ formTitle }}
               </el-button>
@@ -149,45 +150,9 @@ export default {
   }
 </style>
 <style scoped >
-  .view-base {
-    height: 100%;
-    min-height: calc(100vh - 84px);
-  }
-
-  .view-loading {
-    padding: 100px 100px;
-    height: 100%;
-  }
-
-  .title, .custom-title {
-    color: #000;
-    text-size-adjust: 20px;
-    font-size: 100%;
-    font-weight: 605 !important;
-    /* left: 50%; */
-  }
-
-  .w-33 {
-    width: 100%;
-    background-color: transparent;
-  }
-
-  .warn-content {
-    margin: 0px 0px !important;
-    padding-top: 0px !important;
-  }
-  .content-help {
-    width: 100%;
-    height: 100%;
-    padding-left: 39px !important;
-  }
   .el-card {
     width: 100% !important;
     height: 100% !important;
-  }
-  .content-collapse {
-    padding-left: 20 px !important;
-    padding-top: 50 px !important;
   }
 
   .center{

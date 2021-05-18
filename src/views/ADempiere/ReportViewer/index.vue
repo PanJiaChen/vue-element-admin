@@ -2,6 +2,7 @@
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
  Contributor(s): Leonel Matos lmatos@erpya.com www.erpya.com
+ Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -43,7 +44,7 @@
             <el-button
               v-popover:helpTitle
               type="text"
-              class="title"
+              class="custom-title"
             >
               {{ reportTitle }}
             </el-button>
@@ -94,7 +95,7 @@
     :element-loading-text="$t('notifications.loading')"
     element-loading-spinner="el-icon-loading"
     element-loading-background="rgba(255, 255, 255, 0.8)"
-    class="loading-report-viewer"
+    class="view-loading"
   />
 </template>
 
@@ -196,17 +197,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  .loading-report-viewer {
-    padding: 100px 100px;
-    height: 100%;
-  }
-
-  .title {
-    color: #000000;
-    text-size-adjust: 20px;
-    font-size: 100%;
-    font-weight: 605!important;
-  }
 	.content {
     width: 100%;
     height: 100%;

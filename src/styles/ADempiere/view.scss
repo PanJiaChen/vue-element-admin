@@ -1,17 +1,68 @@
+// ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
+// Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
+// Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this program.  If not, see <https://www.gnu.org/licenses/>.
+
+// content of the main views
 .view-base {
+  // TODO: Add display stop for views without fields (like cache reset process)
   height: 100%;
   min-height: calc(100vh - 84px);
 }
-
+// content of main views when loading
 .view-loading {
   padding: 100px 100px;
   height: 100%;
 }
 
+// title of the main views
 .custom-title {
   color: #000000;
   text-size-adjust: 20px;
   font-size: 100%;
+  font-weight: 605 !important;
+}
+// title of the main views in mobile
+.custom-title-mobile {
+  text-align: center;
+  color: #000000;
+  text-size-adjust: 20px;
+  font-size: 100%;
   font-weight: 605!important;
+  /* left: 50%; */
+}
+
+// smart browser help in title popover
+.content-help {
+  width: 100%;
+  height: 200%;
+  padding-left: 39px !important;
+}
+// mobile smart browser help in title popover
+.content-help-mobile {
+  width: 50%;
+  height: 50%;
+  padding-left: 15px !important;
+}
+
+.content-collapse {
+  padding-left: 20 px !important;
+  padding-top: 50 px !important;
+}
+
+// title content
+.warn-content {
+  margin: 0px 0px !important;
+  padding-top: 0px !important;
 }
