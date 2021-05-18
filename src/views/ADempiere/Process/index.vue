@@ -37,25 +37,11 @@
       <el-row :gutter="20">
         <el-col :span="24">
           <el-card class="content-collapse">
-            <h3 v-show="!isEmptyValue(processTitle)" class="warn-content text-center">
-              <el-popover
-                v-if="!isEmptyValue(processMetadata.help)"
-                ref="helpTitle"
-                placement="top-start"
-                :title="processTitle"
-                width="400"
-                trigger="hover"
-              >
-                <div v-html="processMetadata.help" />
-              </el-popover>
-              <el-button
-                v-popover:helpTitle
-                type="text"
-                class="custom-title text-center"
-              >
-                {{ processMetadata.name }}
-              </el-button>
-            </h3>
+            <title-and-help
+              :name="processMetadata.name"
+              :help="processMetadata.help"
+            />
+
             <main-panel
               :position-tab="processMetadata.accesLevel"
               :container-uuid="processUuid"
@@ -84,12 +70,14 @@
 // the ContextMenu and sticky must be placed in the layout
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import MainPanel from '@/components/ADempiere/Panel'
+import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 
 export default {
   name: 'ProcessView',
   components: {
     MainPanel,
-    ContextMenu
+    ContextMenu,
+    TitleAndHelp
   },
   props: {
     isEdit: {
@@ -111,9 +99,6 @@ export default {
     },
     getterProcess() {
       return this.$store.getters.getPanel(this.processUuid)
-    },
-    processTitle() {
-      return this.processMetadata.name || this.$route.meta.title
     }
   },
   created() {
@@ -157,10 +142,5 @@ export default {
   .el-card {
     width: 100% !important;
     height: 100% !important;
-  }
-  .sticky-submenu {
-    position: absolute !important;
-    right: 0;
-    top: 0;
   }
 </style>

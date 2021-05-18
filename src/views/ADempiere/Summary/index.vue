@@ -1,7 +1,7 @@
 <!--
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
- Contributor(s): Edwin Betancourt edwinBetanc0urt@hotmail.com www.erpya.com
+ Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -17,15 +17,11 @@
 -->
 <template>
   <div v-if="isIndex" key="sumary" class="app-container">
-    <el-popover
-      v-if="!isEmptyValue($route.meta.description)"
-      ref="routeDescription"
-      placement="top"
-      width="400"
-      trigger="hover"
-      :content="$route.meta.description"
+    <title-and-help
+      :name="$route.meta.title"
+      :help="$route.meta.description"
     />
-    <h3 v-popover:routeDescription class="description">{{ $route.meta.title }}</h3>
+
     <el-row :gutter="10">
       <template v-if="!isEmptyValue(optionList.children)">
         <template v-for="(item, key) in optionList.children">
@@ -56,11 +52,13 @@
 
 <script>
 import DropdownMenu from '@/components/ADempiere/DropdownMenu'
+import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 
 export default {
   name: 'SummaryView',
   components: {
-    DropdownMenu
+    DropdownMenu,
+    TitleAndHelp
   },
   data() {
     return {

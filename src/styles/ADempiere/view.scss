@@ -26,43 +26,7 @@
   height: 100%;
 }
 
-// title of the main views
-.custom-title {
-  color: #000000;
-  text-size-adjust: 20px;
-  font-size: 100%;
-  font-weight: 605 !important;
-}
-// title of the main views in mobile
-.custom-title-mobile {
-  text-align: center;
-  color: #000000;
-  text-size-adjust: 20px;
-  font-size: 100%;
-  font-weight: 605!important;
-  /* left: 50%; */
-}
-
-// smart browser help in title popover
-.content-help {
-  width: 100%;
-  height: 200%;
-  padding-left: 39px !important;
-}
-// mobile smart browser help in title popover
-.content-help-mobile {
-  width: 50%;
-  height: 50%;
-  padding-left: 15px !important;
-}
-
 .content-collapse {
   padding-left: 20 px !important;
   padding-top: 50 px !important;
-}
-
-// title content
-.warn-content {
-  margin: 0px 0px !important;
-  padding-top: 0px !important;
 }

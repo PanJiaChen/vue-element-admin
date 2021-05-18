@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import VueCompositionApi from '@vue/composition-api'
 
 import Cookies from 'js-cookie'
 
@@ -47,6 +48,7 @@ if (process.env.NODE_ENV === 'production') {
   const { mockXHR } = require('../mock')
   mockXHR()
 }
+Vue.use(VueCompositionApi)
 Vue.use(VMarkdown)
 Vue.use(VueShortkey)
 Vue.use(VueSplit)

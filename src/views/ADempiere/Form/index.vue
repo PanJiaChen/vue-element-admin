@@ -44,33 +44,19 @@
             class="content-collapse"
             :style="isEmptyValue(formMetadata.fieldsList) ? 'height: 100% !important;' : ''"
           >
-            <h3 v-if="isShowTitleForm" class="warn-content text-center">
-              <el-popover
-                v-if="!isEmptyValue(formMetadata.help)"
-                ref="helpTitle"
-                placement="top-start"
-                :title="formTitle"
-                width="400"
-                trigger="hover"
-              >
-                <div v-html="formMetadata.help" />
-              </el-popover>
+            <title-and-help
+              v-if="isShowTitleForm"
+              :name="formName"
+              :help="formMetadata.help"
+            >
               <el-button
-                v-popover:helpTitle
-                type="text"
-                class="custom-title text-center"
-              >
-                {{ formTitle }}
-              </el-button>
-              <el-button
-                v-if="isShowTitleForm"
                 type="text"
                 style="float: right"
                 :circle="true"
                 icon="el-icon-arrow-up"
                 @click="changeDisplatedTitle"
               />
-            </h3>
+            </title-and-help>
             <el-button
               v-if="!isShowTitleForm"
               type="text"
@@ -79,11 +65,12 @@
               icon="el-icon-arrow-down"
               @click="changeDisplatedTitle"
             />
+
             <form-panel
               :metadata="{
                 ...formMetadata,
-                fileName: fromFileName,
-                title: formTitle
+                fileName: formFileName,
+                title: formName
               }"
             />
           </el-card>
@@ -106,13 +93,15 @@
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import FormPanel from '@/components/ADempiere/Form'
 import ModalDialog from '@/components/ADempiere/Dialog'
+import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 
 export default {
   name: 'FormView',
   components: {
     ContextMenu,
     FormPanel,
-    ModalDialog
+    ModalDialog,
+    TitleAndHelp
   },
   data() {
     return {
@@ -123,15 +112,15 @@ export default {
     }
   },
   computed: {
-    formTitle() {
+    formName() {
       if (this.$route.meta.title === 'PriceChecking') {
         return this.$t('route.PriceChecking')
       } else if (this.$route.meta.title === 'ProductInfo') {
         return this.$t('route.ProductInfo')
       }
-      return this.formMetadata.name || this.$route.meta.title
+      return this.formMetadata.name
     },
-    fromFileName() {
+    formFileName() {
       return this.formMetadata.fileName || this.$route.meta.title
     },
     getterForm() {

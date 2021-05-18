@@ -37,27 +37,14 @@
       />
       <div class="w-33">
         <div class="center">
-          <el-button
-            v-popover:helpTitle
-            type="text"
-            :class="cssClassTitle + ' warn-content text-center'"
-          >
-            {{ browserTitle }}
-          </el-button>
+          <title-and-help
+            :name="browserMetadata.name"
+            :help="browserMetadata.help"
+          />
         </div>
       </div>
-      <el-popover
-        v-if="!isEmptyValue(browserMetadata.help)"
-        ref="helpTitle"
-        placement="top-start"
-        :title="browserTitle"
-        :class="cssClassHelp"
-        width="400"
-        trigger="hover"
-      >
-        <div v-html="browserMetadata.help" />
-      </el-popover>
     </el-header>
+
     <el-main>
 
       <el-collapse
@@ -81,6 +68,7 @@
       />
     </el-main>
   </el-container>
+
   <div
     v-else
     key="browser-loading"
@@ -99,6 +87,7 @@ import ContextMenu from '@/components/ADempiere/ContextMenu'
 import MainPanel from '@/components/ADempiere/Panel'
 import DataTable from '@/components/ADempiere/DataTable'
 import ModalDialog from '@/components/ADempiere/Dialog'
+import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 
 export default {
   name: 'BrowserView',
@@ -106,7 +95,8 @@ export default {
     MainPanel,
     DataTable,
     ContextMenu,
-    ModalDialog
+    ModalDialog,
+    TitleAndHelp
   },
   props: {
     isEdit: {
@@ -130,9 +120,6 @@ export default {
     getterBrowser() {
       return this.$store.getters.getBrowser(this.browserUuid)
     },
-    browserTitle() {
-      return this.browserMetadata.name || this.$route.meta.title
-    },
     isLoadedRecords() {
       return this.$store.getters.getDataRecordAndSelection(this.browserUuid).isLoaded
     },
@@ -141,21 +128,6 @@ export default {
         return false
       }
       return !this.$store.getters.isNotReadyForSubmit(this.browserUuid)
-    },
-    isMobile() {
-      return this.$store.state.app.device === 'mobile'
-    },
-    cssClassTitle() {
-      if (this.isMobile) {
-        return 'custom-title-mobile'
-      }
-      return 'custom-title'
-    },
-    cssClassHelp() {
-      if (this.isMobile) {
-        return 'content-help-mobile'
-      }
-      return 'content-help'
     },
     isShowedCriteria() {
       if (this.browserMetadata) {
@@ -278,13 +250,7 @@ export default {
   .menu {
     height: 40px;
   }
-  .content-help {
-    padding-left: 15px !important;
-  }
-  .content-help-mobile {
-    padding-left: 15px !important;
-  }
-  .center{
+  .center {
     text-align: center;
   }
   .w-33 {

@@ -30,25 +30,12 @@
     <el-row type="flex" style="min-height: inherit;">
       <el-col :span="24">
         <div class="content">
-          <h3 class="text-center" style="margin: 0 !important;">
-            <el-popover
-              v-if="!isEmptyValue(processMetadata.help)"
-              ref="helpTitle"
-              placement="top-start"
-              :title="reportTitle"
-              width="400"
-              trigger="hover"
-            >
-              <div v-html="processMetadata.help" />
-            </el-popover>
-            <el-button
-              v-popover:helpTitle
-              type="text"
-              class="custom-title"
-            >
-              {{ reportTitle }}
-            </el-button>
-          </h3>
+          <title-and-help
+            style="margin: 0 !important;"
+            :name="processMetadata.name"
+            :help="processMetadata.help"
+          />
+
           <iframe
             v-if="reportFormat === 'pdf'"
             key="report-content-pdf"
@@ -88,6 +75,7 @@
       :panel-type="panelType"
     />
   </div>
+
   <div
     v-else
     key="report-viewer-loading"
@@ -102,6 +90,7 @@
 <script>
 import ContextMenu from '@/components/ADempiere/ContextMenu'
 import ModalDialog from '@/components/ADempiere/Dialog'
+import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { reportFormatsList } from '@/utils/ADempiere/exportUtil.js'
 
@@ -109,7 +98,8 @@ export default {
   name: 'ReportViewer',
   components: {
     ContextMenu,
-    ModalDialog
+    ModalDialog,
+    TitleAndHelp
   },
   data() {
     return {
@@ -129,9 +119,6 @@ export default {
     },
     getterProcess() {
       return this.$store.getters.getProcessById(this.$route.params.processId)
-    },
-    reportTitle() {
-      return this.processMetadata.name || this.$route.meta.title
     },
     url() {
       return this.$store.getters.getProcessResult.url

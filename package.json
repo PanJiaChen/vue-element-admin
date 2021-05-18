@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@toast-ui/vue-editor": "2.5.1",
+    "@vue/composition-api": "^1.0.0-rc.8",
     "axios": "0.21.1",
     "babel-plugin-require-context-hook": "^1.0.0",
     "clipboard": "2.0.6",
