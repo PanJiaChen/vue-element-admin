@@ -4,15 +4,15 @@ Permite cerrar todas las pestañas abiertas, con excepción de la pestaña donde
 
 ## Versión ADempiere-ZK
 
-<img :src="$withBase('/images/components/close-other-tabs/zk-desktop-version-close-other-tabs.png')" alt="Cerrar en Versión de Escritorio ZK" width="800px">
+<img :src="$withBase('/images/components/close-other-tabs/zk-desktop-version-close-other-tabs.png')" alt="Cerrar Otros en Versión de Escritorio ZK" width="800px">
 
 ## Versión ADempiere-UI
 
-<img :src="$withBase('/images/components/close-other-tabs/ui-desktop-version-close-other-tabs.png')" alt="Cerrar en Versión Móvil y de Escritorio" width="800px">
+<img :src="$withBase('/images/components/close-other-tabs/ui-desktop-version-close-other-tabs.png')" alt="Cerrar Otros en Versión Móvil y de Escritorio" width="800px">
 
 ## ¿Dónde se ubica?
 
-Se ubica en el menú que se desplega al hacer clic contrario sobre alguna pestaña de las ventanas, reportes o procesos de ADempiere.
+Se ubica en el menú que se despliega al hacer clic contrario sobre alguna pestaña de las ventanas, reportes o procesos de ADempiere.
 
 ## ¿Para qué sirve?
 

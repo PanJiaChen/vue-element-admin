@@ -12,7 +12,7 @@ Permite cerrar una pestaña determinada, para ello se debe hacer clic contrario 
 
 ## ¿Dónde se ubica?
 
-Se ubica en el menú que se desplega al hacer clic contrario sobre alguna pestaña de las ventanas, reportes o procesos de ADempiere.
+Se ubica en el menú que se despliega al hacer clic contrario sobre alguna pestaña de las ventanas, reportes o procesos de ADempiere.
 
 ## ¿Para qué sirve?
 
