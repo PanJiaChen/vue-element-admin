@@ -152,9 +152,6 @@ export default {
   },
   mounted() {
     this.getImage()
-    setTimeout(() => {
-      this.focusProductValue()
-    }, 1000)
   },
   beforeDestroy() {
     this.unsubscribe()
@@ -197,7 +194,10 @@ export default {
     formatPrice,
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        if ((mutation.type === 'addActionKeyPerformed') && mutation.payload.columnName === 'ProductValue') {
+        if ((mutation.type === 'currentPointOfSales') || (mutation.type === 'setListProductPrice') || (mutation.type === 'addFocusLost')) {
+          this.focusProductValue()
+        }
+        if ((mutation.type === 'addActionKeyPerformed') && mutation.payload.columnName === 'ProductValue' && (this.productPrice.upc !== mutation.payload.value)) {
           // cleans all values except column name 'ProductValue'
           this.search = mutation.payload.value
           if (!this.isEmptyValue(this.search) && this.search.length >= 4) {
@@ -229,7 +229,8 @@ export default {
                   taxRate: rate,
                   taxName: taxRate.name,
                   taxIndicator: taxRate.taxIndicator,
-                  taxAmt: this.getTaxAmount(priceBase, rate)
+                  taxAmt: this.getTaxAmount(priceBase, rate),
+                  upc: product.upc
                 }
               })
               .catch(() => {
@@ -250,9 +251,13 @@ export default {
                 }
               })
           }
-        } else if ((mutation.type === 'updateValueOfField') && (mutation.payload.columnName === 'ProductValue') && !this.isEmptyValue(mutation.payload.value)) {
+        } else if ((mutation.type === 'updateValueOfField') && (mutation.payload.columnName === 'ProductValue') && !this.isEmptyValue(mutation.payload.value) && (this.productPrice.upc !== mutation.payload.value)) {
           clearTimeout(this.timeOut)
           this.timeOut = setTimeout(() => {
+            let value = mutation.payload.value
+            if (typeof value[value.length - 1] === 'string') {
+              value = mutation.payload.value.slice(0, -1)
+            }
             requestGetProductPrice({
               searchValue: mutation.payload.value,
               priceListUuid: this.currentPoint.priceList.uuid
@@ -262,7 +267,6 @@ export default {
                 const { product, taxRate, priceStandard: priceBase } = productPrice
                 const { rate } = taxRate
                 const { imageURL: image } = product
-
                 this.productPrice = {
                   currency: productPrice.currency,
                   image,

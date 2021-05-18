@@ -15,6 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 // Get Instance for connectionimport {
+import { isEmptyValue } from '@/utils/ADempiere'
 import { request } from '@/utils/ADempiere/request'
 
 // List Point of sales
@@ -44,7 +45,9 @@ export function requestGetProductPrice({
   })
     .then(productPriceResponse => {
       const { convertProductPrice } = require('@/utils/ADempiere/apiConverts/core.js')
-
+      if (isEmptyValue(productPriceResponse)) {
+        return productPriceResponse
+      }
       return convertProductPrice(productPriceResponse)
     })
 }

@@ -37,9 +37,13 @@ export function request(requestValues) {
   }
   requestValues.params.token = getToken()
   requestValues.params.language = getLanguage() || 'en_US'
-  return new Promise(resolve => {
-    requestAPI(requestValues).then(response => {
-      resolve(response.result)
-    })
+  return new Promise((resolve, reject) => {
+    requestAPI(requestValues)
+      .then(response => {
+        resolve(response.result)
+      })
+      .catch(response => {
+        reject(response)
+      })
   })
 }
