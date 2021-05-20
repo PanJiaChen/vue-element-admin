@@ -1,0 +1,37 @@
+# 變更角色
+
+允許角色更改而無需註銷。為此，必須選擇位於窗口右上方的 ADempiere 圖標，然後在 “**角色**” 字段中選擇需要更改的角色。
+
+## ADempiere-ZK 版本
+
+<img :src="$withBase('/images/components/change-role/zk-desktop-version-change-role.png')" alt="更改ZK桌面版本中的角色" width="800px">
+
+## ADempiere-Vue 版本
+
+<img :src="$withBase('/images/components/change-role/ui-version-change-role.png')" alt="更改移動和桌面版本中的角色" width="800px">
+
+## 它在哪裡？
+
+它位於選擇窗口右上角的 ADempiere 圖標時顯示的菜單的 “**角色**” 字段中。
+
+## 是做什麼用的？
+
+它用於快速，輕鬆地更改角色，而無需註銷即可通過選擇所需角色來重新開始。
+
+## 功能或觀察
+
+::: tip
+ADempiere 自動執行角色更改，並更新視圖，以便僅顯示先前選擇的角色有權訪問的窗口，進程和報告。用戶可以從一個角色更改為任何其他角色，只要已為其分配了不同的所需角色即可。
+:::
+
+## 在桌面版中如何使用？
+
+在桌面版本中，單擊窗口右上角的 ADempiere 圖標 “**AD**”，以查看顯示的菜單並在 “**角色**” 字段中選擇角色。
+
+<img :src="$withBase('/images/components/change-role/how-to-use-it-in-the-desktop-version.gif')" />
+
+## 在移動版本中如何使用？
+
+在移動版本中，單擊窗口右上方的 ADempiere 圖標 “**AD**”，以查看顯示的菜單並在 “**角色**” 字段中選擇角色。
+
+<img :src="$withBase('/images/components/change-role/how-to-use-it-in-the-mobile-version.gif')" />
