@@ -84,5 +84,8 @@ export default {
       }
     })
     commit('setListOrderLine', found)
+  },
+  currentLine({ commit }, currentLine) {
+    commit('setLine', currentLine)
   }
 }

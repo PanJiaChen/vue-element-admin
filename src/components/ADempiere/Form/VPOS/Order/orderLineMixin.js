@@ -51,13 +51,27 @@ export default {
           label: 'Total',
           isNumeric: true
         }
+      },
+      currentOrderLine: {
+        product: {
+          value: 0,
+          name: '',
+          description: '',
+          priceStandard: 0
+        },
+        taxIndicator: 0,
+        quantityOrdered: 0,
+        uuid: ''
       }
     }
+  },
+  computed: {
+
   },
   methods: {
     formatPercent,
     changeLine(command) {
-      switch (command) {
+      switch (command.option) {
         case 'Eliminar':
           // this.deleteOrderLine()
           break
@@ -68,6 +82,7 @@ export default {
             quantityOrdered: this.currentOrderLine.quantityOrdered,
             discount: this.currentOrderLine.discount
           })
+          this.currentOrderLine.uuid = command.uuid
           this.edit = true
           break
         //
@@ -113,22 +128,32 @@ export default {
       switch (line.columnName) {
         case 'QtyEntered':
           quantity = line.value
+          price = line.line.price
+          discountRate = line.line.discountRate
           break
         case 'PriceEntered':
           price = line.value
+          quantity = line.line.quantity
+          discountRate = line.line.discountRate
           break
         case 'Discount':
           discountRate = line.value
+          price = line.line.price
+          quantity = line.line.quantity
           break
       }
-
       requestUpdateOrderLine({
-        orderLineUuid: this.currentOrderLine.uuid,
+        orderLineUuid: line.line.uuid,
         quantity,
         price,
         discountRate
       })
         .then(response => {
+          this.fillOrderLineQuantities({
+            currentPrice: response.price,
+            quantityOrdered: response.quantity,
+            discount: response.discountRate
+          })
           this.fillOrderLine(response)
           this.reloadOrder(true)
         })
@@ -173,12 +198,13 @@ export default {
       } else if (columnName === 'QtyOrdered') {
         return this.formatQuantity(row.quantityOrdered)
       } else if (columnName === 'Discount') {
-        return this.formatPercent(row.discount)
+        return this.formatPercent(row.discount / 100)
       } else if (columnName === 'GrandTotal') {
         return this.formatPrice(row.grandTotal, currency)
       }
     },
     handleCurrentLineChange(rowLine) {
+      this.$store.dispatch('currentLine', rowLine)
       if (!this.isEmptyValue(rowLine)) {
         this.currentOrderLine = rowLine
         this.currentTable = this.listOrderLine.findIndex(item => item.uuid === rowLine.uuid)
@@ -192,25 +218,25 @@ export default {
       quantityOrdered,
       discount
     }) {
-      const containerUuid = this.formUuid
+      // const containerUuid = this.formUuid
       //  Editable fields
       if (!this.isEmptyValue(quantityOrdered)) {
         this.$store.commit('updateValueOfField', {
-          containerUuid,
+          containerUuid: 'line',
           columnName: 'QtyEntered',
           value: quantityOrdered
         })
       }
       if (!this.isEmptyValue(currentPrice)) {
         this.$store.commit('updateValueOfField', {
-          containerUuid,
+          containerUuid: 'line',
           columnName: 'PriceEntered',
           value: currentPrice
         })
       }
       if (!this.isEmptyValue(discount)) {
         this.$store.commit('updateValueOfField', {
-          containerUuid,
+          containerUuid: 'line',
           columnName: 'Discount',
           value: discount
         })

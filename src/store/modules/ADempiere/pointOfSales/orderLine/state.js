@@ -19,5 +19,6 @@
  */
 
 export default {
-  listOrderLine: []
+  listOrderLine: [],
+  line: {}
 }

@@ -25,6 +25,7 @@ export default [
       isReadOnly: true,
       handleActionPerformed: true,
       handleContentSelection: true,
+      handleFocusGained: true,
       handleActionKeyPerformed: true
     }
   },
@@ -49,6 +50,7 @@ export default [
       sequence: 10,
       handleActionPerformed: true,
       handleContentSelection: true,
+      handleFocusGained: true,
       handleActionKeyPerformed: true
     }
   }

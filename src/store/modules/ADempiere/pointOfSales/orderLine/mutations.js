@@ -21,5 +21,8 @@
 export default {
   setListOrderLine(state, listOrderLine) {
     state.listOrderLine = listOrderLine
+  },
+  setLine(state, line) {
+    state.line = line
   }
 }

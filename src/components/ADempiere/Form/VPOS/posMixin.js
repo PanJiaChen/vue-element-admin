@@ -40,16 +40,6 @@ export default {
     return {
       product: {},
       currentTable: 0,
-      currentOrderLine: {
-        product: {
-          value: 0,
-          name: '',
-          description: '',
-          priceStandard: 0
-        },
-        taxIndicator: 0,
-        quantityOrdered: 0
-      },
       orderLines: [],
       products: {
         uuid: '',
@@ -64,7 +54,7 @@ export default {
       return this.$store.getters['user/getWarehouse']
     },
     isSetTemplateBP() {
-      const currentPOS = this.currentPoint
+      const currentPOS = this.currentPointOfSales
       if (!this.isEmptyValue(currentPOS) &&
         !this.isEmptyValue(currentPOS.templateBusinessPartner) &&
         this.isEmptyValue(this.$route.query.action)) {
@@ -200,10 +190,10 @@ export default {
     },
     updateOrder(update) {
       // user session
-      if (update.value !== this.currentOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPoint)) {
+      if (!this.isEmptyValue(update.value) && update.value !== this.currentOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPointOfSales)) {
         this.$store.dispatch('updateOrder', {
           orderUuid: this.$route.query.action,
-          posUuid: this.currentPoint.uuid,
+          posUuid: this.currentPointOfSales.uuid,
           customerUuid: update.value
         })
       }
@@ -312,7 +302,7 @@ export default {
                 this.createOrderLine(response.uuid)
               }
               this.$store.dispatch('listOrdersFromServer', {
-                posUuid: this.currentPoint.uuid
+                posUuid: this.currentPointOfSales.uuid
               })
             }).catch(() => {})
           })
@@ -375,7 +365,10 @@ export default {
             case 'PriceEntered':
             case 'Discount':
               if (!this.isEmptyValue(this.currentOrderLine)) {
-                this.updateOrderLine(mutation.payload)
+                this.updateOrderLine({
+                  ...mutation.payload,
+                  line: this.$store.state['pointOfSales/orderLine/index'].line
+                })
               }
               break
           }
@@ -387,8 +380,8 @@ export default {
 
             case 'C_BPartner_ID_UUID': {
               const bPartnerValue = mutation.payload.value
-              if (!this.isEmptyValue(this.currentPoint)) {
-                const bPartnerPOS = this.currentPoint.templateBusinessPartner.uuid
+              if (!this.isEmptyValue(this.currentPointOfSales)) {
+                const bPartnerPOS = this.currentPointOfSales.templateBusinessPartner.uuid
                 // Does not send values to server, when empty values are set or
                 // if BPartner set equal to BPartner POS template
                 if (this.isEmptyValue(bPartnerValue) || bPartnerValue === bPartnerPOS) {

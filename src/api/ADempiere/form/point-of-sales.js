@@ -171,8 +171,8 @@ export function requestListOrders({
   isProcessed,
   isAisleSeller,
   isInvoiced,
-  // dateOrderedFrom,
-  // dateOrderedTo,
+  dateOrderedFrom,
+  dateOrderedTo,
   salesRepresentativeUuid,
   pageSize,
   pageToken
@@ -233,6 +233,8 @@ export function requestListOrders({
       is_processed: isProcessed,
       is_aisle_seller: isAisleSeller,
       is_invoiced: isInvoiced,
+      date_ordered_from: dateOrderedFrom,
+      date_ordered_to: dateOrderedTo,
       page_size: pageSize,
       page_token: pageToken
     }

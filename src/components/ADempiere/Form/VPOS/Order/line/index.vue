@@ -28,7 +28,10 @@
             <field
               v-if="field.columnName === 'PriceEntered'"
               :key="field.columnName"
-              :metadata-field="field"
+              :metadata-field="{
+                ...field,
+                isReadOnly: !isModifyPrice
+              }"
             />
             <field
               v-if="field.columnName === 'QtyEntered'"
@@ -36,7 +39,9 @@
               :metadata-field="field"
             />
             <el-popover
+              v-if="columnNameVisible === field.columnName"
               ref="ping"
+              v-model="visible"
               placement="right"
               trigger="click"
             >
@@ -58,21 +63,19 @@
                 <el-button
                   type="primary"
                   icon="el-icon-check"
+                  @click="checkclosePing"
                 />
-                {{
-                  isPosRequiredPin
-                }}
               </span>
-              <field
-                v-if="field.columnName === 'Discount'"
-                slot="reference"
-                :key="field.columnName"
-                :metadata-field="{
-                  ...field,
-                  isReadOnly: !isModifyPrice || isPosRequiredPin
-                }"
-              />
+              <el-button slot="reference" type="text" disabled @click="visible = !visible" />
             </el-popover>
+            <field
+              v-if="field.columnName === 'Discount'"
+              :key="field.columnName"
+              :metadata-field="{
+                ...field,
+                isReadOnly: !isModifyPrice
+              }"
+            />
           </el-form>
         </el-col>
       </template>
@@ -127,21 +130,23 @@ export default {
       fieldsListLine,
       fieldsList: [],
       input: '',
-      visible: false
+      visible: false,
+      columnNameVisible: '',
+      validatePing: false
     }
   },
   computed: {
     isModifyPrice() {
-      const pos = this.$store.getters.getCurrentPOS
+      const pos = this.$store.getters.posAttributes.currentPointOfSales
       if (!this.isEmptyValue(pos.isModifyPrice)) {
-        return this.$store.getters.getCurrentPOS.isModifyPrice
+        return pos.isModifyPrice
       }
       return false
     },
     isPosRequiredPin() {
-      const pos = this.$store.getters.getCurrentPOS
-      if (!this.isEmptyValue(pos.isPosRequiredPin)) {
-        return this.$store.getters.getCurrentPOS.isPosRequiredPin
+      const pos = this.$store.getters.posAttributes.currentPointOfSales
+      if (!this.isEmptyValue(pos.isPosRequiredPin) && !this.validatePing) {
+        return pos.isPosRequiredPin
       }
       return false
     }
@@ -162,6 +167,12 @@ export default {
         this.isLoadedField = true
       }
     }
+  },
+  beforeMount() {
+    this.unsubscribe = this.subscribeChanges()
+  },
+  beforeDestroy() {
+    this.unsubscribe()
   },
   methods: {
     createFieldFromDictionary,
@@ -217,6 +228,18 @@ export default {
     },
     closePing() {
       this.$refs.ping[this.$refs.ping.length - 1].showPopper = false
+    },
+    checkclosePing() {
+      this.validatePing = true
+      this.closePing()
+    },
+    subscribeChanges() {
+      return this.$store.subscribe((mutation, state) => {
+        if (mutation.type === 'addFocusGained' && this.isPosRequiredPin) {
+          this.columnNameVisible = mutation.payload.columnName
+          this.visible = true
+        }
+      })
     }
   }
 }
