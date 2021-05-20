@@ -765,18 +765,8 @@ const actions = {
       recordUuid
     })
       .then(privateAccessResponse => {
-        // TODO: Evaluate uuid record
-        if (!isEmptyValue(privateAccessResponse.tableName)) {
-          return {
-            isLocked: false,
-            tableName,
-            recordId,
-            recordUuid
-          }
-        }
         return {
-          ...privateAccessResponse,
-          isLocked: true
+          ...privateAccessResponse
         }
       })
       .catch(error => {

@@ -31,10 +31,10 @@
         <span v-if="key === 0" slot="label">
           <el-tooltip v-if="key === 0" :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
             <el-button type="text" @click="lockRecord()">
-              <i :class="lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
+              <i :class="!lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
             </el-button>
           </el-tooltip>
-          <span :style="lock ? 'color: #1890ff;': 'color: red;'">
+          <span :style="!lock ? 'color: #1890ff;': 'color: red;'">
             {{ tabAttributes.name }}
           </span>
         </span>
@@ -129,14 +129,13 @@ export default {
   methods: {
     lockRecord() {
       const tableName = this.windowMetadata.firstTab.tableName
-      const action = this.lock ? 'lockRecord' : 'unlockRecord'
+      const action = this.lock ? 'unlockRecord' : 'lockRecord'
       this.$store.dispatch(action, {
         tableName,
         recordId: this.record[tableName + '_ID'],
         recordUuid: this.record.UUID
       })
         .then(() => {
-          this.lock = !this.lock
           this.$message({
             type: 'success',
             message: this.$t('data.notification.' + action),
@@ -144,12 +143,21 @@ export default {
           })
         })
         .catch(() => {
-          this.lock = !this.lock
           this.$message({
             type: 'error',
             message: this.$t('data.isError') + this.$t('data.' + action),
             showClose: true
           })
+        })
+        .finally(() => {
+          this.$store.dispatch('getPrivateAccessFromServer', {
+            tableName,
+            recordId: this.record[tableName + '_ID'],
+            recordUuid: this.record.UUID
+          })
+            .then(privateAccessResponse => {
+              this.lock = privateAccessResponse.isLocked
+            })
         })
     },
     setCurrentTab() {
