@@ -28,6 +28,7 @@
             <field
               v-if="field.columnName === 'PriceEntered'"
               :key="field.columnName"
+              :ref="field.columnName"
               :metadata-field="{
                 ...field,
                 isReadOnly: !isModifyPrice
@@ -39,17 +40,17 @@
               :metadata-field="field"
             />
             <el-popover
-              v-if="columnNameVisible === field.columnName"
+              v-if="columnNameVisible === field.columnName && visible"
               ref="ping"
               v-model="visible"
               placement="right"
               trigger="click"
             >
               <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                <el-form-item label="Ingrese Ping">
+                <el-form-item :label="$t('form.pos.tableProduct.pin')">
                   <el-input
-                    v-model="input"
-                    placeholder="Ingrese Ping"
+                    v-model="pin"
+                    :placeholder="$t('form.pos.tableProduct.pin')"
                     clearable
                   />
                 </el-form-item>
@@ -63,13 +64,14 @@
                 <el-button
                   type="primary"
                   icon="el-icon-check"
-                  @click="checkclosePing"
+                  @click="checkclosePin(pin, field.columnName)"
                 />
               </span>
-              <el-button slot="reference" type="text" disabled @click="visible = !visible" />
+              <el-button slojt="reference" type="text" disabled />
             </el-popover>
             <field
               v-if="field.columnName === 'Discount'"
+              :ref="field.columnName"
               :key="field.columnName"
               :metadata-field="{
                 ...field,
@@ -95,9 +97,9 @@
 <script>
 
 import {
-  // createFieldFromDefinition,
   createFieldFromDictionary
 } from '@/utils/ADempiere/lookupFactory'
+import { validatePin } from '@/api/ADempiere/form/point-of-sales.js'
 import fieldsListLine from './fieldsListLine.js'
 import Field from '@/components/ADempiere/Field'
 
@@ -129,10 +131,9 @@ export default {
       panelType: 'custom',
       fieldsListLine,
       fieldsList: [],
-      input: '',
+      pin: '',
       visible: false,
-      columnNameVisible: '',
-      validatePing: false
+      columnNameVisible: ''
     }
   },
   computed: {
@@ -145,14 +146,21 @@ export default {
     },
     isPosRequiredPin() {
       const pos = this.$store.getters.posAttributes.currentPointOfSales
-      if (!this.isEmptyValue(pos.isPosRequiredPin) && !this.validatePing) {
+      if (!this.isEmptyValue(pos.isPosRequiredPin) && !this.validatePin) {
         return pos.isPosRequiredPin
       }
       return false
+    },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
+    validatePin() {
+      return this.$store.state['pointOfSales/orderLine/index'].validatePin
     }
   },
   watch: {
     showField(value) {
+      this.visible = false
       if (value && this.isEmptyValue(this.metadataList) && (this.dataLine.uuid === this.$store.state['pointOfSales/orderLine/index'].line.uuid)) {
         this.metadataList = this.setFieldsList()
         this.isLoadedField = true
@@ -227,14 +235,31 @@ export default {
     },
     closePing() {
       this.$refs.ping[this.$refs.ping.length - 1].showPopper = false
+      this.visible = false
     },
-    checkclosePing() {
-      this.validatePing = true
+    checkclosePin(pin) {
+      validatePin({
+        posUuid: this.currentPointOfSales.uuid,
+        pin
+      })
+        .then(response => {
+          this.$store.commit('pin', true)
+          this.pin = ''
+        })
+        .catch(error => {
+          console.error(error.message)
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+          this.pin = ''
+        })
       this.closePing()
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'addFocusGained' && this.isPosRequiredPin) {
+        if (mutation.type === 'addFocusGained' && this.isPosRequiredPin && (mutation.payload.columnName === 'PriceEntered' || mutation.payload.columnName === 'Discount')) {
           this.columnNameVisible = mutation.payload.columnName
           this.visible = true
         }

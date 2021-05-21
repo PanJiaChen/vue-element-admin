@@ -614,3 +614,26 @@ export function processOrder({
       return processOrderResponse
     })
 }
+
+/**
+ * Validate Ping
+ * @param {string} posUuidd - POS UUID reference
+ * @param {string} pin - User PIN
+ * @returns {string}
+ */
+export function validatePin({
+  posUuid,
+  pin
+}) {
+  return request({
+    url: '/form/addons/point-of-sales/validate-pin',
+    method: 'post',
+    data: {
+      pos_uuid: posUuid,
+      pin: pin
+    }
+  })
+    .then(pinResponse => {
+      return pinResponse
+    })
+}

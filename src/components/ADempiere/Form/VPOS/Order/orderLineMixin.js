@@ -125,25 +125,26 @@ export default {
     },
     updateOrderLine(line) {
       let quantity, price, discountRate
+      const currentLine = this.$store.state['pointOfSales/orderLine/index'].line
       switch (line.columnName) {
         case 'QtyEntered':
           quantity = line.value
-          price = line.line.price
-          discountRate = line.line.discountRate
+          price = currentLine.price
+          discountRate = currentLine.discountRate
           break
         case 'PriceEntered':
           price = line.value
-          quantity = line.line.quantity
-          discountRate = line.line.discountRate
+          quantity = currentLine.quantity
+          discountRate = currentLine.discountRate
           break
         case 'Discount':
           discountRate = line.value
-          price = line.line.price
-          quantity = line.line.quantity
+          price = currentLine.price
+          quantity = currentLine.quantity
           break
       }
       requestUpdateOrderLine({
-        orderLineUuid: line.line.uuid,
+        orderLineUuid: currentLine.uuid,
         quantity,
         price,
         discountRate
@@ -154,6 +155,7 @@ export default {
             quantityOrdered: response.quantity,
             discount: response.discountRate
           })
+          this.$store.commit('pin', false)
           this.fillOrderLine(response)
           this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
           this.$store.dispatch('currentLine', response)
@@ -209,8 +211,8 @@ export default {
       return price / discount * 100
     },
     handleCurrentLineChange(rowLine) {
-      this.$store.dispatch('currentLine', rowLine)
       if (!this.isEmptyValue(rowLine)) {
+        this.$store.dispatch('currentLine', rowLine)
         this.currentOrderLine = rowLine
         this.currentTable = this.listOrderLine.findIndex(item => item.uuid === rowLine.uuid)
         if (this.isEmptyValue(this.currentOrderLine) && !this.isEmptyValue(this.listOrderLine)) {

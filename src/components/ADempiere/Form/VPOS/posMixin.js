@@ -364,11 +364,8 @@ export default {
             case 'QtyEntered':
             case 'PriceEntered':
             case 'Discount':
-              if (!this.isEmptyValue(this.currentOrderLine)) {
-                this.updateOrderLine({
-                  ...mutation.payload,
-                  line: this.$store.state['pointOfSales/orderLine/index'].line
-                })
+              if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+                this.updateOrderLine(mutation.payload)
               }
               break
           }

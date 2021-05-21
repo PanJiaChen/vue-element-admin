@@ -24,5 +24,8 @@ export default {
   },
   setLine(state, line) {
     state.line = line
+  },
+  pin(state, pin) {
+    state.validatePin = pin
   }
 }

@@ -20,5 +20,6 @@
 
 export default {
   listOrderLine: [],
-  line: {}
+  line: {},
+  validatePin: false
 }
