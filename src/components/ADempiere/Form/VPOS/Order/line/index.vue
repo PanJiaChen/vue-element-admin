@@ -153,8 +153,7 @@ export default {
   },
   watch: {
     showField(value) {
-      if (value && this.isEmptyValue(this.metadataList) && (this.dataLine.uuid === this.currentLine.uuid)) {
-        this.setFieldsList()
+      if (value && this.isEmptyValue(this.metadataList) && (this.dataLine.uuid === this.$store.state['pointOfSales/orderLine/index'].line.uuid)) {
         this.metadataList = this.setFieldsList()
         this.isLoadedField = true
       }

@@ -29,27 +29,32 @@ export default {
         lineDescription: {
           columnName: 'LineDescription',
           label: this.$t('form.pos.tableProduct.product'),
-          isNumeric: false
+          isNumeric: false,
+          size: '380'
         },
         currentPrice: {
           columnName: 'CurrentPrice',
           label: this.$t('form.productInfo.price'),
-          isNumeric: true
+          isNumeric: true,
+          size: 'auto'
         },
         quantityOrdered: {
           columnName: 'QtyOrdered',
           label: this.$t('form.pos.tableProduct.quantity'),
-          isNumeric: true
+          isNumeric: true,
+          size: '100px'
         },
         discount: {
           columnName: 'Discount',
           label: '% ' + this.$t('form.pos.order.discount'),
-          isNumeric: true
+          isNumeric: true,
+          size: '110px'
         },
         grandTotal: {
           columnName: 'GrandTotal',
           label: 'Total',
-          isNumeric: true
+          isNumeric: true,
+          size: 'auto'
         }
       },
       currentOrderLine: {
@@ -119,12 +124,7 @@ export default {
       }
     },
     updateOrderLine(line) {
-      let {
-        currentPrice: price,
-        discount: discountRate,
-        quantityOrdered: quantity
-      } = this.currentOrderLine
-
+      let quantity, price, discountRate
       switch (line.columnName) {
         case 'QtyEntered':
           quantity = line.value
@@ -155,7 +155,8 @@ export default {
             discount: response.discountRate
           })
           this.fillOrderLine(response)
-          this.reloadOrder(true)
+          this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
+          this.$store.dispatch('currentLine', response)
         })
         .catch(error => {
           console.error(error.message)
@@ -167,11 +168,12 @@ export default {
         })
     },
     deleteOrderLine(lineSelection) {
+      console
       requestDeleteOrderLine({
         orderLineUuid: lineSelection.uuid
       })
         .then(() => {
-          this.reloadOrder(true)
+          this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
         })
         .catch(error => {
           console.error(error.message)
@@ -202,6 +204,9 @@ export default {
       } else if (columnName === 'GrandTotal') {
         return this.formatPrice(row.grandTotal, currency)
       }
+    },
+    productPrice(price, discount) {
+      return price / discount * 100
     },
     handleCurrentLineChange(rowLine) {
       this.$store.dispatch('currentLine', rowLine)
