@@ -173,15 +173,13 @@ export default {
       }
 
       let results = this.listWithPrice
-      if (stringToMatch) {
+      if (!this.isEmptyValue(stringToMatch)) {
         const parsedValue = stringToMatch.toLowerCase().trim()
 
         results = results.filter(rowProduct => {
           const productAttributes = rowProduct.product
-
           for (const columnProductPrice in productAttributes) {
             const valueToCompare = String(productAttributes[columnProductPrice]).toLowerCase()
-
             if (valueToCompare.includes(parsedValue)) {
               return true
             }

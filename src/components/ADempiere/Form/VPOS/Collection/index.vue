@@ -215,7 +215,7 @@ import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import fieldsListCollection from './fieldsListCollection.js'
 import typeCollection from '@/components/ADempiere/Form/VPOS/Collection/typeCollection'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
-import { formatDate, formatPrice } from '@/utils/ADempiere/valueFormat.js'
+import { formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import { processOrder } from '@/api/ADempiere/form/point-of-sales.js'
 import { FIELDS_DECIMALS } from '@/utils/ADempiere/references'
 
@@ -500,6 +500,7 @@ export default {
         this.$store.dispatch('conversionDivideRate', {
           conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
           currencyFromUuid: this.pointOfSalesCurrency.uuid,
+          conversionDate: this.formatDate(new Date()),
           currencyToUuid: value
         })
       }
@@ -541,7 +542,6 @@ export default {
     this.defaultValueCurrency()
   },
   methods: {
-    formatDate,
     formatNumber({ displayType, number }) {
       let fixed = 0
       // Amount, Costs+Prices, Number
@@ -812,6 +812,18 @@ export default {
           this.$store.dispatch('updateOrderPos', false)
           this.$store.dispatch('updatePaymentPos', false)
         })
+    },
+    formatDate(date) {
+      let month = '' + (date.getMonth() + 1)
+      let day = '' + date.getDate()
+      const year = date.getFullYear()
+      if (month.length < 2) {
+        month = '0' + month
+      }
+      if (day.length < 2) {
+        day = '0' + day
+      }
+      return [year, month, day].join('-')
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {

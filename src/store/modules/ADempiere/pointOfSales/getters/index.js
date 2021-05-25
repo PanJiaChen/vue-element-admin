@@ -67,7 +67,7 @@ export default {
    * Search Product
    */
   getProductPrice: (state) => {
-    if (isEmptyValue(state.productPrice) || !state.productPrice.isLoaded) {
+    if (isEmptyValue(state.productPrice)) {
       return {
         ...withoutResponse,
         productPricesList: []

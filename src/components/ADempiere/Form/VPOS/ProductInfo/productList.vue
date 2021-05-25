@@ -147,18 +147,6 @@ export default {
       return (!isLoaded || isReload) // && this.isShowProductsPriceList
     }
   },
-  watch: {
-    isReadyFromGetData(isToLoad) {
-      if (isToLoad) {
-        this.loadProductsPricesList()
-      }
-    }
-    // currentPointOfSales(value) {
-    //   if (!this.isEmptyValue(value)) {
-    //     this.loadProductsPricesList()
-    //   }
-    // }
-  },
   created() {
     this.unsubscribe = this.subscribeChanges()
     this.$store.commit('setListProductPrice', {
