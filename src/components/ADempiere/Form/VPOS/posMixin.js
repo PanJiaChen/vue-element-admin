@@ -269,18 +269,17 @@ export default {
       if (this.isEmptyValue(orderUuid)) {
         const posUuid = this.currentPointOfSales.uuid
         let customerUuid = this.$store.getters.getValueOfField({
-          containerUuid: this.containerUuid,
+          containerUuid: this.metadata.containerUuid,
           columnName: 'C_BPartner_ID_UUID'
         })
         const id = this.$store.getters.getValueOfField({
-          containerUuid: this.containerUuid,
+          containerUuid: this.metadata.containerUuid,
           columnName: 'C_BPartner_ID'
         })
         if (this.isEmptyValue(customerUuid) || id === 1000006) {
           customerUuid = this.currentPointOfSales.templateBusinessPartner.uuid
         }
         // user session
-        // alert(name)
         this.$store.dispatch('createOrder', {
           posUuid,
           customerUuid,

@@ -17,6 +17,7 @@
 import {
   requestListOrderLines
 } from '@/api/ADempiere/form/point-of-sales.js'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
 /**
  * Order Line Actions
@@ -26,6 +27,9 @@ export default {
     commit('setListOrderLine', params)
   },
   listOrderLinesFromServer({ commit }, orderUuid) {
+    if (isEmptyValue(orderUuid)) {
+      return
+    }
     requestListOrderLines({
       orderUuid
     })

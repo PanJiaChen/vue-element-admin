@@ -475,7 +475,7 @@ export default {
       requestCreateOrder({
         posUuid,
         customerUuid: this.currentOrder.businessPartner.uuid,
-        salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid
+        salesRepresentativeUuid: this.currentOrder.salesRepresentative.uuid
       })
         .then(order => {
           this.$store.dispatch('currentOrder', order)

@@ -28,7 +28,7 @@
       >
         <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
           <el-row :gutter="24" style="display: flex;">
-            <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
+            <el-col :span="isEmptyValue(currentOrder) ? 14 : 11 " style="padding-left: 0px; padding-right: 0px;">
               <template
                 v-for="(field) in fieldsList"
               >
@@ -39,7 +39,7 @@
                 />
               </template>
             </el-col>
-            <el-col :span="6" style="padding-left: 0px; padding-right: 0px;">
+            <el-col :span="isEmptyValue(currentOrder) ? 9 : 7" style="padding-left: 0px; padding-right: 0px;">
               <business-partner
                 :parent-metadata="{
                   name: panelMetadata.name,
@@ -50,20 +50,26 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="2" :style="isShowedPOSKeyLayout ? 'margin-top: 3.4%;padding: 0px;' : 'padding: 0px;margin-top: 2.4%;'">
-              <el-tag
-                v-if="!isEmptyValue(currentOrder.documentStatus.value)"
-                :type="tagStatus(currentOrder.documentStatus.value)"
-              >
-                <span v-if="!isEmptyValue(currentOrder.documentStatus.value)">
-                  {{ currentOrder.documentStatus.name }}
-                </span>
-              </el-tag>
-            </el-col>
-            <el-col :span="2" :style="isShowedPOSKeyLayout ? 'margin-top: 3.4%;' : 'padding: 0px;margin-top: 2.4%;'">
-              <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
-                {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
-              </el-button>
+            <el-col :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px;' : 'padding: 0px;margin-top: 2.9%;'">
+              <el-form-item>
+                <el-row :gutter="24">
+                  <el-col :span="10" style="padding-left: 0px; padding-right: 0px;">
+                    <el-tag
+                      v-if="!isEmptyValue(currentOrder.documentStatus.value)"
+                      :type="tagStatus(currentOrder.documentStatus.value)"
+                    >
+                      <span v-if="!isEmptyValue(currentOrder.documentStatus.value)">
+                        {{ currentOrder.documentStatus.name }}
+                      </span>
+                    </el-tag>
+                  </el-col>
+                  <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
+                    <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
+                      {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
+                    </el-button>
+                  </el-col>
+                </el-row>
+              </el-form-item>
             </el-col>
           </el-row>
         </el-form>
