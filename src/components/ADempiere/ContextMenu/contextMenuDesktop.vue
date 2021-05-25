@@ -356,6 +356,9 @@ export default {
 </script>
 
 <style>
+  .el-dropdown .el-button-group {
+    display: inline-flex;
+  }
   .el-dropdown-menu--medium .el-dropdown-menu__item {
     line-height: 17px;
     padding: 0 17px;
