@@ -35,3 +35,29 @@ En la versión de escritorio se hace clic sobre el icono de ADempiere "**AD**", 
 En la versión móvil se hace clic sobre el icono de ADempiere "**AD**", ubicado en la parte superior derecha de la ventana, para visualizar el menú que es desplegado por el mismo y seleccionar el rol en el campo "**Rol**".
 
 <img :src="$withBase('/images/components/change-role/how-to-use-it-in-the-mobile-version.gif')" />
+
+## Opciones para el Desarrollador
+
+El panel de **Cambiar Rol** se encuentra en el icono a la derecha en la barra de navegacion.
+
+```bash
+└── src                                 # Código fuente principal
+    └── views                           # Vistas
+        └── profile                     # Perfil
+                └── components          # Componente
+                    └── RolesNavbar     # Barra de navegación de los Roles
+```
+
+Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+El llamado al consumo de servicio de **Cambiar Rol** se encuentra en la siguiente ruta:
+
+```bash
+└─ src                            # Código fuente principal
+    └─ api                        # Servicios globales
+        └─ role                   # Directorio principal de los servicios de roles
+```
+
+Los servicios llamados del componente son <br>
+[GET /api/user/roles](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user.html#get-api-user-roles)<br>
+[POST /api/user/change-role](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user.html#post-api-user-change-role)<br>

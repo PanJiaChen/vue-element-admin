@@ -35,3 +35,28 @@ ADempiere 自動執行角色更改，並更新視圖，以便僅顯示先前選�
 在移動版本中，單擊窗口右上方的 ADempiere 圖標 “**AD**”，以查看顯示的菜單並在 “**角色**” 字段中選擇角色。
 
 <img :src="$withBase('/images/components/change-role/how-to-use-it-in-the-mobile-version.gif')" />
+
+导航栏##开发者选项
+
+**改变角色**面板位于导航栏中右侧的图标上。
+
+```bash
+└── src                                   # 主要源代码
+    └── views                             # 观点
+        └── profile                       # 形象
+                └── components            # 组成部分
+                    └── RolesNavbar       # 导航栏的作用
+```
+在这里你可以看到一个 [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+在以下路径中可以找到**改变角色**的服务消费调用:
+
+```bash
+└─ src                            # 主要源代码
+    └─ api                        # 全球服务
+        └─ role                   # 角色服务的主要目录
+```
+
+从该组件中调用的服务有 <br>
+[GET /api/user/roles](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#get-api-user-roles)<br>
+[POST /api/user/change-role](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#post-api-user-change-role)<br>
