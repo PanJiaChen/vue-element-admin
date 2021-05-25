@@ -47,27 +47,19 @@
             <el-col :key="key" :span="size">
               <el-card
                 :body-style="{ padding: '0px' }"
-                :data="getImage(keyValue.resourceReference)"
                 shadow="always"
               >
                 <span>
                   <p style="padding-left: 10px; font-size: 12px; color: #0e2ea4">
                     <b>{{ keyValue.name }}</b>
                   </p>
-                  <!--
-                  <b style="padding-left: 10px; font-size: 10px; color: #359e43">
-                    Available
-                  </b>
-                  -->
                 </span>
                 <div @click="setKeyActionToOrderLine(keyValue)">
                   <el-image
-                    v-if="getDefaultImage(keyValue)"
                     :src="getImageFromSource(keyValue)"
                     class="key-layout"
                     fit="contain"
                   />
-                  <vue-content-loading v-else :width="300" :height="300" />
                 </div>
                 <div class="footer-product">
                   <p class="quantity">
@@ -101,16 +93,10 @@
 </template>
 
 <script>
-import VueContentLoading from '@/components/ADempiere/ContentLoader'
-import { requestImage } from '@/api/ADempiere/common/resource.js'
-import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
+import { getImagePath } from '@/utils/ADempiere/resource.js'
 import { formatQuantity } from '@/utils/ADempiere/valueFormat.js'
-
 export default {
   name: 'KeyLayout',
-  components: {
-    VueContentLoading
-  },
   data() {
     return {
       resource: {},
@@ -119,7 +105,8 @@ export default {
         identifier: 'undefined',
         value: '',
         isLoaded: true
-      }]
+      }],
+      hola: ''
     }
   },
   computed: {
@@ -133,7 +120,16 @@ export default {
       return this.$store.getters.getKeyLayout
     },
     getKeyList() {
-      return this.getKeyLayout.keysList
+      const keylist = this.getKeyLayout.keysList
+      if (!this.isEmptyValue) {
+        return keylist.map(item => {
+          return {
+            ...item,
+            isLoaded: true
+          }
+        })
+      }
+      return keylist
     },
     getLayoutHeader() {
       const keyLayout = this.getKeyLayout
@@ -188,55 +184,6 @@ export default {
           this.isLoadedKeyLayout = true
         })
     },
-    getImage(resource) {
-      if (this.isEmptyValue(resource) || this.isEmptyValue(resource.fileName)) {
-        return
-      }
-
-      const { fileName, contentType } = resource
-      if (!this.valuesImage.some(item => item.identifier === fileName)) {
-        this.valuesImage.push({
-          identifier: fileName,
-          value: '',
-          isLoaded: false
-        })
-      }
-      if (this.resource[fileName]) {
-        this.valuesImage.forEach(item => {
-          if (item.identifier === fileName) {
-            item.value = this.resource[fileName]
-            item.isLoaded = true
-          }
-        })
-      } else { // Reload
-        if (!this.valuesImage.some(item => item.identifier === fileName)) {
-          this.valuesImage.push({
-            identifier: fileName,
-            value: '',
-            isLoaded: false
-          })
-        }
-        // the name of the image plus the height and width of the container is sent
-        requestImage({
-          file: fileName,
-          width: 300,
-          height: 300
-        }).then(responseImage => {
-          const arrayBufferAsImage = buildImageFromArrayBuffer({
-            arrayBuffer: responseImage,
-            contentType
-          })
-
-          this.resource[fileName] = arrayBufferAsImage
-          this.valuesImage.forEach(item => {
-            if (item.identifier === fileName) {
-              item.value = arrayBufferAsImage
-              item.isLoaded = true
-            }
-          })
-        })
-      }
-    },
     setKeyActionToOrderLine(keyValue) {
       if (!this.isEmptyValue(keyValue.subKeyLayoutUuid)) {
         this.loadKeyLayout(keyValue.subKeyLayoutUuid)
@@ -274,18 +221,17 @@ export default {
       return image.isLoaded
     },
     getImageFromSource(keyValue) {
-      const { fileName } = keyValue.resourceReference
+      const fileName = keyValue.resourceReference.fileName
 
       if (this.isEmptyValue(fileName)) {
         return this.defaultImage
       }
-
-      // const image = this.valuesImage.find(item => item.identifier === fileName).value
-      const image = this.resource[fileName]
-      if (this.isEmptyValue(image)) {
-        return this.defaultImage
-      }
-      return image
+      const image = getImagePath({
+        file: fileName,
+        width: 300,
+        height: 300
+      })
+      return image.uri
     }
   }
 }

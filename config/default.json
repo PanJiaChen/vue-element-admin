@@ -9,7 +9,7 @@
       "timeout": 10000
     },
     "images": {
-      "url": "https://api.erpya.com/api/adempiere/"
+      "url": "https://api.erpya.com/adempiere-api/img/"
     }
   },
   "repository": {
