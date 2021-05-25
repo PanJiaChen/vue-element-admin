@@ -35,3 +35,34 @@ In the desktop version, the tab where the registry is located is located and fin
 In the mobile version, the tab where the record is located is located and finally the lock icon located on the left side of the name of the tab is selected. To unlock the registry, the same procedure is performed.
 
 <img :src="$withBase('/images/components/lock-unlock-records/how-to-use-it-in-the-mobile-version.gif')" />
+
+## Developer Options
+
+The **Lock/Unlock Records** button is located in the following path:
+
+```bash
+└── src                     # main source code
+    └── components          # Global components.
+        └─── ADempiere      # ADempiere specific components.
+            └─── Tab        # Main directory where the Lock/Unlock Records button is located.
+```
+
+Here you can see a [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+The **Lock/Unlock Records** service consumption call is located in the following path:
+
+```bash
+└─ src                              # Main source code.
+    └─ api                          # Global services.
+      └─ ADempiere                  # ADempiere specific services.
+            └─ actions              # Main directory of registration actions services.
+                └─ private-access   # Main directory of the Lock/Unlock Logs service.
+```
+
+The called services of the component are:
+
+[POST /api/user-interface/component/private-access/unlock-private-access](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#post-api-user-interface-component-private-access-unlock-private-access)
+
+[POST /api/user-interface/component/private-access/lock-private-access](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#post-api-user-interface-component-private-access-lock-private-access)
+
+[GET /api/user-interface/component/private-access/private-access](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#get-api-user-interface-component-private-access-private-access)
