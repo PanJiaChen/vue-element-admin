@@ -20,5 +20,12 @@
     "api": {
       "url": "https://api.github.com/repos/adempiere/"
     }
+  },
+  "betaFunctionality": {
+    "window": false,
+    "process": false,
+    "report": false,
+    "smartBrowser": false,
+    "form": false
   }
 }
