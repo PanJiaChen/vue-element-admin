@@ -35,3 +35,29 @@ En la versión de escritorio se hace clic sobre el icono "**i**", ubicado en la 
 En la versión móvil se debe posicionar en la parte inferior de la ventana para visualizar las pestañas "**Notas**" y "**Actividad**", luego se selecciona la pestaña "**Actividad**", para acceder a todos los cambios efectuados en el registro de la ventana.
 
 <img :src="$withBase('/images/components/activity/how-to-use-it-in-the-mobile-version.gif')" />
+
+## Opciones para el Desarrollador
+
+El panel de **Actividad** se encuentra en el icono a la derecha en la barra de navegacion.
+
+```bash
+    └─ src                              # Código fuente principal
+        └── components                  # Componentes globales
+                └─ADempiere             # Componentes específicos de ADempiere
+                    └── containerInfo   # Contenedor de informacion del registro
+                        └── recordLogs  # Registro de Actividades
+```
+
+Aquí puede ver un [Demo](https://demo-ui.erpya.com/#/7aa4242a-93c0-42d8-92be-8250002d3e3c/d97027fd-4cd5-445e-8fd8-ef5d3f7959b4/window/53418?tabParent=0&action=fa50908e-40f1-11e9-91a1-0242ac140002)
+
+El llamado al consumo de servicio de **Actividad** se encuentra en la siguiente ruta:
+
+```bash
+└─ src                            # Código fuente principal
+    └─ api                        # Servicios globales
+        └─ ADempiere              # Directorio principal de los servicios de roles
+            └─ windows            # Directorio principal de los servicios de roles
+```
+
+Los servicios llamados del componente son <br>
+[POST /adempiere-api/logs/list-entity-logs](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-logs)<br>

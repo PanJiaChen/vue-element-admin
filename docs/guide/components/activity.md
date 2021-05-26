@@ -35,3 +35,26 @@ In the desktop version, click on the icon "**i**", located in the central right 
 In the mobile version, it must be positioned at the bottom of the window to view the "**Notes**" and "**Activity**" tabs, then select the "**Activity**" tab, to access all changes made to the window registry.
 
 <img :src="$withBase('/images/components/activity/how-to-use-it-in-the-mobile-version.gif')" />
+
+## Developer Options
+
+The **Activity** panel is located in the icon on the right side of the navigation bar.
+
+```bash
+    └─ src                              # Main source code
+        └── components                  # Global components
+                └─ADempiere             # ADempiere specific components
+                    └── containerInfo   # Record Information Container
+                        └── recordLogs  # Record Logs
+```
+
+The **Activity** service consumption call can be found in the following path:
+
+```bash
+└─ src                      # Main source code.
+    └─ api                  # Global services.
+        └─ ADempiere        # Main directory of role services.
+            └─ windows      # Main directory of role services.
+```
+The services called from the component are <br>
+[POST /adempiere-api/logs/list-entity-logs](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-logs)

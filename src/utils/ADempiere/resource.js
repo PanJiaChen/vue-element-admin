@@ -76,7 +76,7 @@ export function getImagePath({
   operation = 'fit'
 }) {
   const url = config.adempiere.images.url
-  const urn = `/img?action=${operation}&width=${width}&height=${height}&url=${file}`
+  const urn = `img?action=${operation}&width=${width}&height=${height}&url=${file}`
   const uri = `${url}${urn}`
 
   return {

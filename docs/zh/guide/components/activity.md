@@ -35,3 +35,28 @@
 在移動版本中，必須將其放置在窗口的底部，以查看 “**筆記**” 和 “**活動**” 選項卡，然後選擇 “**活動**” 選項卡以訪問所有對窗口註冊表所做的更改。
 
 <img :src="$withBase('/images/components/activity/how-to-use-it-in-the-mobile-version.gif')" />
+
+## 开发者选项
+
+**活动**面板位于导航栏右侧的图标中。
+
+```bash
+    └─ src                                  # 主要源代码
+        └── components                      # 全局组件
+                └──ADempiere                # ADempiere特定组件
+                    └── containerInfo       # 记录信息容器
+                        └── recordLogs      # 记录日志
+```
+
+在以下路径中可以找到**活动**服务消费调用。
+
+```bash
+└─ src                      # 主要源代码。
+    └─ api                  # 全局服务。
+        └─ ADempiere        # 角色服务的主目录。
+            └──windows      # 角色服务的主目录。
+```
+
+从该组件中调用的服务有：<br>
+
+[POST /adempiere-api/logs/list-entity-logs](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-logs)
