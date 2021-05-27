@@ -1,6 +1,6 @@
 // ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
 // Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
-// Contributor(s): Edwin Betancourt edwinBetanc0urt@hotmail.com www.erpya.com
+// Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -60,6 +60,17 @@ export function generateField({
     isTranslatedField = false
     parsedDefaultValue = undefined
     parsedDefaultValueTo = undefined
+
+    // mandatory, read only and displayed is changed to FilterFields component
+    evaluatedLogics = {
+      isDisplayedFromLogic: true,
+      isMandatoryFromLogic: false,
+      isReadOnlyFromLogic: false
+    }
+    fieldToGenerate.isDisplayed = true
+    fieldToGenerate.isReadOnly = false
+    // Is mandatory to showed available filter fields
+    fieldToGenerate.isMandatory = false
 
     // set field operators list
     isComparisonField = !['FieldBinary', 'FieldButton', 'FieldImage'].includes(componentReference.componentPath)
@@ -460,7 +471,7 @@ export function evalutateTypeField(displayTypeId, isAllInfo = true) {
   if (isAllInfo) {
     return component
   }
-  return component.type
+  return component.componentPath
 }
 
 /**
