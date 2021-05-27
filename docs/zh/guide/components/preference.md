@@ -71,8 +71,8 @@
 
 ```
 该组件被调用的服务有<br>
-[GET adempiere-api/ui/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
-[POST adempiere-api/ui/delete-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
+[POST /api/user-interface/component/preference/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#preferencias)<br>
+[POST /api/user-interface/component/preference/delete-preference](https://adempiere.github.io/proxy-adempiere-api/user-interface.html#post-api-user-interface-component-preference-delete-preference)
 ### 去做
 
 在ADempiere-UI版本中，未設置字段首選項。因此，要求糾正問題，以便可以建立這些首選項。

@@ -127,7 +127,7 @@ module.exports = {
             {
               title: 'Componentes',
               collapsable: false,
-              children: genComponentSidebar()
+              children: genComponentSidebar('/es')
             },
             {
               title: 'Otro',

@@ -67,6 +67,6 @@ El llamado al consumo de servicio de **Notas** se encuentra en la siguiente ruta
 ```
 
 Los servicios llamados del componente son <br>
-[POST /adempiere-api/logs/list-entity-chat](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-chats)<br>
 [POST /adempiere-api/logs/list-chat-entries](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-chat-entries)<br>
-[POST /adempiere-api/ui/create-chat-entry](https://adempiere.github.io/proxy-adempiere-api/guide/es)
+[POST /api/user-interface/component/notes/create-chat-entry](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-interface.html#post-api-user-interface-component-notes-create-chat-entry)<br>
+[POST /adempiere-api/logs/list-entity-chats](https://adempiere.github.io/proxy-adempiere-api/guide/es/default-modules/adempiere-api/user-log.html#post-adempiere-api-logs-list-entity-chats)

@@ -72,8 +72,8 @@ El llamado al consumo de servicio de  **Preferencia** se encuentra en la siguien
 
 
 Los servicios llamados del componente son <br>
-[GET adempiere-api/ui/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
-[POST adempiere-api/ui/delete-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
+[POST /api/user-interface/component/preference/set-preference](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#preferencias)<br>
+[POST /api/user-interface/component/preference/delete-preference](https://adempiere.github.io/proxy-adempiere-api/user-interface.html#post-api-user-interface-component-preference-delete-preference)
 
 ### Por hacer
 

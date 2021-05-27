@@ -88,5 +88,5 @@
 
 
 从该组件中调用的服务有 <br>
-[GET adempiere-api/ui/getRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)<br>
-[POST adempiere-api/ui/setRecordAccess](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user.html#user-service)
+[GET /api/user-interface/component/record-access/record-access](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#get-api-user-interface-component-record-access-record-access)<br>
+[POST /api/user-interface/component/record-access/record-access](https://adempiere.github.io/proxy-adempiere-api/guide/default-modules/adempiere-api/user-interface.html#get-api-user-interface-component-record-access-record-access)
