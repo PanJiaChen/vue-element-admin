@@ -54,7 +54,9 @@ const lookup = {
           isBooleanToString: true
         }).value
       }
-
+      if (parsedDirectQuery.includes('?')) {
+        parsedDirectQuery = directQuery.replace('?', value)
+      }
       return requestLookup({
         tableName,
         directQuery: parsedDirectQuery,

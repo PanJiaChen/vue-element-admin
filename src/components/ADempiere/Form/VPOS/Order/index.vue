@@ -451,11 +451,10 @@ export default {
     formatPrice,
     formatQuantity,
     openCollectionPanel() {
-      this.isShowedPOSKeyLayout = !this.isShowedPOSKeyLayout
+      this.isShowedPOSKeyLayout = true
       this.$store.commit('setShowPOSCollection', true)
       const orderUuid = this.$route.query.action
       this.$store.dispatch('listPayments', { orderUuid })
-      this.isShowedPOSKeyLaout = !this.isShowedPOSKeyLaout
       this.$store.commit('setShowPOSOptions', false)
     },
     open() {

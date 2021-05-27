@@ -480,6 +480,9 @@ export default {
           return currency
         }
       })
+    },
+    fieldsPaymentType() {
+      return this.fieldsList[2]
     }
   },
   watch: {
@@ -533,6 +536,15 @@ export default {
           columnName: 'PayAmt',
           value: this.pending
         })
+      }
+    },
+    fieldsPaymentType(value) {
+      const displayPaymentType = this.$store.getters.getValueOfField({
+        containerUuid: 'Collection',
+        columnName: 'DisplayColumn_PaymentType'
+      })
+      if (!this.isEmptyValue(value.reference) && this.isEmptyValue(displayPaymentType)) {
+        value.reference.directQuery = value.reference.query
       }
     }
   },

@@ -53,6 +53,7 @@ export default [
     columnName: 'TenderType',
     isFromDictionary: true,
     overwriteDefinition: {
+      defaultValue: 'X',
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
