@@ -165,15 +165,11 @@ export default {
     },
     displayedValue: {
       get() {
-        const busineesPartner = this.$store.getters.posAttributes.currentPointOfSales.currentOrder.businessPartner.name
-        if (this.isEmptyValue(busineesPartner)) {
-          return this.$store.getters.getValueOfField({
-            containerUuid: this.parentMetadata.containerUuid,
-            // DisplayColumn_'ColumnName'
-            columnName: 'DisplayColumn_C_BPartner_ID' // this.parentMetadata.displayColumnName
-          })
-        }
-        return busineesPartner
+        return this.$store.getters.getValueOfField({
+          containerUuid: this.parentMetadata.containerUuid,
+          // DisplayColumn_'ColumnName'
+          columnName: 'DisplayColumn_C_BPartner_ID' // this.parentMetadata.displayColumnName
+        })
       },
       set(value) {
         this.$store.commit('updateValueOfField', {

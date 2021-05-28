@@ -228,7 +228,7 @@ export default {
       }
       const image = getImagePath({
         file: fileName,
-        width: 200,
+        width: 300,
         height: 300
       })
       return image.uri
@@ -304,7 +304,7 @@ export default {
 
 <style lang="scss">
   .custom-card {
-    margin: 10px;
+    margin: 1px;
     cursor: pointer;
   }
   .custom-card:hover {

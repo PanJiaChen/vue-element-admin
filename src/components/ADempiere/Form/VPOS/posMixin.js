@@ -283,7 +283,7 @@ export default {
         this.$store.dispatch('createOrder', {
           posUuid,
           customerUuid,
-          salesRepresentativeUuid: this.currentPointOfSales.templateBusinessPartner.uuid
+          salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid
         })
           .then(response => {
             // this.order = response
