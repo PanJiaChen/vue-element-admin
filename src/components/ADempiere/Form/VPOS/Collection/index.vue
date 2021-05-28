@@ -108,6 +108,7 @@
             :currency="pointOfSalesCurrency"
             :list-types-payment="fieldsList[2]"
             :is-loaded="isLoadedPayments"
+            :list-payment-type="fieldsPaymentType"
           />
           <div
             v-else

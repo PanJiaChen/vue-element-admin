@@ -111,11 +111,19 @@ export default {
       type: Array,
       default: undefined
     },
+    openPanel: {
+      type: Boolean,
+      default: false
+    },
     currency: {
       type: Object,
       default: undefined
     },
     listTypesPayment: {
+      type: Object,
+      default: undefined
+    },
+    listPaymentType: {
       type: Object,
       default: undefined
     },
@@ -142,10 +150,23 @@ export default {
       return this.$store.getters.getConvertionPayment
     }
   },
+  watch: {
+    listPaymentType(value) {
+      if (!this.isEmptyValue(value.reference)) {
+        this.tenderTypeDisplaye({
+          tableName: value.reference.tableName,
+          query: value.reference.query
+        })
+      }
+    }
+  },
   created() {
     this.convertingPaymentMethods()
     if (this.isEmptyValue(this.labelTypesPayment)) {
-      this.tenderTypeDisplaye(this.listTypesPayment)
+      this.tenderTypeDisplaye({
+        tableName: this.listPaymentType.reference.tableName,
+        query: this.listPaymentType.reference.query
+      })
     }
   },
   methods: {
@@ -228,19 +249,18 @@ export default {
         paymentUuid
       })
     },
-    tenderTypeDisplaye(value) {
-      if (!this.isEmptyValue(value.reference)) {
-        const tenderType = value.reference
-        if (!this.isEmptyValue(tenderType)) {
-          this.$store.dispatch('getLookupListFromServer', {
-            tableName: tenderType.tableName,
-            query: tenderType.query,
-            filters: []
+    tenderTypeDisplaye({
+      tableName,
+      query
+    }) {
+      if (!this.isEmptyValue(tableName)) {
+        this.$store.dispatch('getLookupListFromServer', {
+          tableName,
+          query
+        })
+          .then(response => {
+            this.labelTypesPayment = response
           })
-            .then(response => {
-              this.labelTypesPayment = response
-            })
-        }
       }
     }
   }
