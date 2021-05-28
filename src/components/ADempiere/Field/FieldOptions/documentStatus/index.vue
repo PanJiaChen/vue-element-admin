@@ -1,7 +1,7 @@
 <!--
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
- Contributor(s): Edwin Betancourt edwinBetanc0urt@hotmail.com www.erpya.com
+ Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -17,7 +17,7 @@
 -->
 <template>
   <el-popover
-    v-if="(field.columnName === 'DocStatus') && (!isEmptyValue(processOrderUuid))"
+    v-if="(fieldAttributes.columnName === 'DocStatus') && (!isEmptyValue(processOrderUuid))"
     placement="right"
     width="400"
     trigger="click"
@@ -37,9 +37,9 @@
     </el-select>
     <el-tag
       v-if="isEmptyValue(valueActionDocument)"
-      :type="tagStatus(field.value)"
+      :type="tagStatus(fieldAttributes.value)"
     >
-      {{ field.displayColumn }}
+      {{ fieldAttributes.displayColumn }}
     </el-tag>
     <el-tag
       v-else
@@ -47,7 +47,7 @@
     >
       {{ labelDocumentActions }}
     </el-tag>
-    <p v-if="isEmptyValue(valueActionDocument)"> {{ field.description }} </p>
+    <p v-if="isEmptyValue(valueActionDocument)"> {{ fieldAttributes.description }} </p>
     <p v-else> {{ descriptionDocumentActions }} </p>
     <el-button
       slot="reference"
@@ -60,12 +60,14 @@
 <script>
 export default {
   name: 'FieldDocumentStatus',
+
   props: {
-    field: {
+    fieldAttributes: {
       type: Object,
       required: true
     }
   },
+
   data() {
     return {
       valueActionDocument: ''
@@ -126,8 +128,8 @@ export default {
     },
     documentActionChange(value) {
       // this.$store.dispatch('notifyFieldChange', {
-      //   parentUuid: this.field.parentUuid,
-      //   containerUuid: this.field.containerUuid,
+      //   parentUuid: this.fieldAttributes.parentUuid,
+      //   containerUuid: this.fieldAttributes.containerUuid,
       //   columnName: 'DocAction',
       //   isSendToServer: true,
       //   newValue: value
@@ -144,13 +146,13 @@ export default {
         recordId: this.$route.params.recordId,
         recordUuid: this.$route.query.action,
         parametersList: [{
-          columnName: this.field.columnName,
+          columnName: this.fieldAttributes.columnName,
           value: this.valueActionDocument
         }],
         isActionDocument: true,
-        parentUuid: this.field.parentUuid,
-        panelType: this.field.panelType,
-        containerUuid: this.field.containerUuid // determinate if get table name and record id (window) or selection (browser)
+        parentUuid: this.fieldAttributes.parentUuid,
+        panelType: this.fieldAttributes.panelType,
+        containerUuid: this.fieldAttributes.containerUuid // determinate if get table name and record id (window) or selection (browser)
       })
       this.valueActionDocument = ''
     }

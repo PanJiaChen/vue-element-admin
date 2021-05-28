@@ -321,6 +321,7 @@ export default {
         addNote: 'Add Note'
       }
     },
+    documentStatus: 'Document Status',
     callout: {
       error: 'Error In Callout'
     }
@@ -380,6 +381,7 @@ export default {
     sequence: 'Sequence'
   },
   operators: {
+    compareSearch: 'Compare the Search',
     operator: 'Comparison operator',
     EQUAL: 'Equal to "="',
     NOT_EQUAL: 'Not equal to "<>"',
