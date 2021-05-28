@@ -73,13 +73,17 @@ export default {
       currentTable: 0,
       visible: this.getShowContextMenuTable,
       searchTable: '', // text from search
+      searchTableChildren: '', // text from search
       defaultMaxPagination: 50,
       activeName,
       rowStyle: {
         height: '52px'
       },
       uuidCurrentRecordSelected: '',
-      showTableSearch: false
+      showTableSearch: false,
+      searchColumnName: [],
+      recordsSearchTable: [],
+      recordsSearchTableChildren: []
     }
   },
   computed: {
@@ -257,6 +261,15 @@ export default {
         return this.currentTable
       }
       return this.currentTable + 1
+    },
+
+    allRecordsData() {
+      if (this.isParent && !this.isEmptyValue(this.searchTable)) {
+        return this.recordsSearchTable
+      } else if (!this.isParent && !this.isEmptyValue(this.searchTableChildren)) {
+        return this.recordsSearchTableChildren
+      }
+      return this.recordsData
     }
   },
   watch: {
@@ -631,21 +644,37 @@ export default {
         selection: rowsSelection
       })
     },
-    filterResult() {
-      const data = this.recordsData.filter(rowItem => {
-        if (this.searchTable.trim().length) {
-          let find = false
-          Object.keys(rowItem).forEach(key => {
-            if (String(rowItem[key]).toLowerCase().includes(String(this.searchTable).toLowerCase())) {
-              find = true
-              return find
-            }
-          })
-          return find
+    filterResult(value) {
+      const selectionColumn = this.fieldsList.filter(element => element.isSelectionColumn)
+      this.searchColumnName = selectionColumn.map(element => {
+        if (element.isSelectionColumn) {
+          return element.columnName
         }
-        return true
       })
-      return data
+      if (this.isParent) {
+        this.searchTable = value
+      } else {
+        this.searchTableChildren = value
+      }
+      const result = this.getterDataRecordsAndSelection.record.filter(record => {
+        let list
+        this.searchColumnName.forEach(validate => {
+          if (typeof record[validate] !== 'boolean' && !this.isEmptyValue(record[validate]) || !this.isEmptyValue(record['DisplayColumn_' + validate])) {
+            const SearchColumns = typeof record[validate] === 'number' ? record['DisplayColumn_' + validate] : record[validate]
+            if (SearchColumns.includes(value)) {
+              list = record
+            }
+          }
+        })
+        return list
+      })
+      if (this.isParent) {
+        this.searchTable = value
+        this.recordsSearchTable = result
+      } else {
+        this.searchTableChildren = value
+        this.recordsSearchTableChildren = result
+      }
     },
     /**
      * Verify is displayed field in column table

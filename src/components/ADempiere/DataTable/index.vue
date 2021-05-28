@@ -84,6 +84,7 @@
                 size="mini"
                 :placeholder="$t('table.dataTable.search')"
                 class="header-search-input"
+                @input="filterResult"
               />
             </div>
           </div>
@@ -138,7 +139,6 @@
             :is-mobile="isMobile"
             :panel-metadata="panelMetadata"
           />
-
           <el-table
             ref="multipleTable"
             v-loading="!isCreateNewRoute && isLoaded"
@@ -149,7 +149,7 @@
             reserve-selection
             highlight-current-row
             :row-style="rowStyle"
-            :data="showTableSearch ? filterResult() : recordsData"
+            :data="allRecordsData"
             :element-loading-text="$t('notifications.loading')"
             element-loading-background="rgba(255, 255, 255, 0.8)"
             cell-class-name="datatable-max-cell-height"
