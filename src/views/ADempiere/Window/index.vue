@@ -327,23 +327,21 @@
         v-if="panelContextMenu && isMobile"
       >
         <chat-entries
-          v-if="contextMenuField.name === $t('data.addNote')"
+          v-if="currentFieldOption.name === $t('data.addNote')"
           :table-name="getTableName"
           :record-id="recordId"
           :right-panel="true"
         />
         <record-access
-          v-else-if="showRecordAccess && contextMenuField.name !== $t('data.addNote')"
+          v-else-if="showRecordAccess && currentFieldOption.name !== $t('data.addNote')"
           :table-name="getTableName"
           :record="getRecord"
         />
         <component
           :is="componentRender"
-          v-else-if="!showRecordAccess && contextMenuField.name !== $t('data.addNote')"
-          :field-attributes="contextMenuField.fieldAttributes"
-          :source-field="contextMenuField.fieldAttributes"
-          :record-uuid="contextMenuField.fieldAttributes.recordUuid"
-          :field-value="contextMenuField.valueField"
+          v-else-if="!showRecordAccess && currentFieldOption.name !== $t('data.addNote')"
+          :field-attributes="currentFieldOption.fieldAttributes"
+          :field-value="currentFieldOption.valueField"
         />
       </right-panel>
     </el-container>

@@ -91,7 +91,7 @@ export default {
     }
   },
   computed: {
-    contextMenuField() {
+    currentFieldOption() {
       return this.$store.getters.getFieldContextMenu
     },
     panelContextMenu() {
@@ -99,21 +99,21 @@ export default {
     },
     componentRender() {
       let component
-      switch (this.contextMenuField.name) {
+      switch (this.currentFieldOption.name) {
         case this.$t('field.info'):
-          component = () => import('@/components/ADempiere/Field/contextMenuField/contextInfo')
+          component = () => import('@/components/ADempiere/Field/FieldOptions/contextInfo')
           break
         case this.$t('language'):
-          component = () => import('@/components/ADempiere/Field/contextMenuField/translated')
+          component = () => import('@/components/ADempiere/Field/FieldOptions/translated')
           break
         case this.$t('field.calculator'):
-          component = () => import('@/components/ADempiere/Field/contextMenuField/calculator')
+          component = () => import('@/components/ADempiere/Field/FieldOptions/calculator')
           break
         case this.$t('field.preference'):
           component = () => import('@/components/ADempiere/Field/FieldOptions/preference')
           break
         case this.$t('field.logsField'):
-          component = () => import('@/components/ADempiere/Field/contextMenuField/changeLogs')
+          component = () => import('@/components/ADempiere/Field/FieldOptions/changeLogs')
           break
         case this.$t('operators.operator'):
           component = () => import('@/components/ADempiere/Field/FieldOptions/operatorComparison')

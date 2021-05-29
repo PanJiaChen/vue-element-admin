@@ -21,7 +21,7 @@ export const infoOptionItem = {
   enabled: true,
   svg: false,
   icon: 'el-icon-info',
-  componentRender: () => import('@/components/ADempiere/Field/contextMenuField/contextInfo')
+  componentRender: () => import('@/components/ADempiere/Field/FieldOptions/contextInfo')
 }
 
 /**
@@ -43,7 +43,7 @@ export const zoomInOptionItem = {
   enabled: true,
   svg: false,
   icon: 'el-icon-files',
-  componentRender: () => import('@/components/ADempiere/Field/contextMenuField/contextInfo')
+  componentRender: () => import('@/components/ADempiere/Field/FieldOptions/contextInfo')
 }
 
 /**
@@ -54,7 +54,7 @@ export const translateOptionItem = {
   enabled: true,
   svg: true,
   icon: 'language',
-  componentRender: () => import('@/components/ADempiere/Field/contextMenuField/translated')
+  componentRender: () => import('@/components/ADempiere/Field/FieldOptions/translated')
 }
 
 /**
@@ -65,7 +65,7 @@ export const calculatorOptionItem = {
   enabled: true,
   svg: false,
   icon: 'el-icon-s-operation',
-  componentRender: () => import('@/components/ADempiere/Field/contextMenuField/calculator')
+  componentRender: () => import('@/components/ADempiere/Field/FieldOptions/calculator')
 }
 
 export const preferenceOptionItem = {
@@ -81,7 +81,7 @@ export const logsOptionItem = {
   enabled: true,
   svg: true,
   icon: 'tree-table',
-  componentRender: () => import('@/components/ADempiere/Field/contextMenuField/changeLogs')
+  componentRender: () => import('@/components/ADempiere/Field/FieldOptions/changeLogs')
 }
 
 /**
