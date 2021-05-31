@@ -545,7 +545,10 @@ export default {
         columnName: 'DisplayColumn_PaymentType'
       })
       if (!this.isEmptyValue(value.reference) && this.isEmptyValue(displayPaymentType)) {
-        value.reference.directQuery = value.reference.query
+        this.$store.dispatch('getLookupListFromServer', {
+          tableName: value.reference.tableName,
+          query: value.reference.query
+        })
       }
     }
   },

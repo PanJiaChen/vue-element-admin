@@ -81,7 +81,7 @@ export default {
       })
       .catch(error => {
         console.error(error.message)
-        this.$message({
+        showMessage({
           type: 'error',
           message: error.message,
           showClose: true
@@ -114,7 +114,6 @@ export default {
     })
       .then(orderLine => {
         dispatch('updateOrderLines', orderLine)
-        // this.fillOrderLine(orderLine)
         this.reloadOrder(true, orderUuid)
       })
       .catch(error => {

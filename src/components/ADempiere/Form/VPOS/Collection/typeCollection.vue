@@ -162,7 +162,7 @@ export default {
   },
   created() {
     this.convertingPaymentMethods()
-    if (this.isEmptyValue(this.labelTypesPayment)) {
+    if (this.isEmptyValue(this.labelTypesPayment.reference) && !this.isEmptyValue(this.listPaymentType.reference)) {
       this.tenderTypeDisplaye({
         tableName: this.listPaymentType.reference.tableName,
         query: this.listPaymentType.reference.query
@@ -182,7 +182,9 @@ export default {
         })
           .then(response => {
             this.isAddTypePay.forEach(element => {
+              console.log({ element })
               if (element.currencyUuid !== this.pointOfSalesCurrency.uuid) {
+                element.amount = element.amount / response.multiplyRate
                 element.amountConvertion = element.amount / response.divideRate
                 element.currencyConvertion = response.currencyTo
               } else {

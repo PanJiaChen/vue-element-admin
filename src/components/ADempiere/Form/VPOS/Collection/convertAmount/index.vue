@@ -21,7 +21,7 @@
       <span>
         <b>
           {{ $t('form.pos.collect.convertAmount') }}:
-          {{ formatPrice(amount * convert, displayCurrency) }}
+          {{ formatPrice(amountConvertionTotal, displayCurrency) }}
         </b>
       </span>
     </div>
@@ -80,11 +80,16 @@ export default {
           containerUuid: 'Collection-Convert-Amount'
         }
       }
+    },
+    isOpen: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      fieldsList: fieldsListConvertAmountCollection
+      fieldsList: fieldsListConvertAmountCollection,
+      amountConvertionTotal: 0
     }
   },
   computed: {
@@ -105,6 +110,55 @@ export default {
         containerUuid: 'Collection-Convert-Amount',
         columnName: 'C_Currency_ID_UUID'
       })
+    },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
+    pointOfSalesCurrency() {
+      // const currency = this.currentPointOfSales
+      if (!this.isEmptyValue(this.currentPointOfSales.priceList)) {
+        return {
+          ...this.currentPointOfSales.priceList.currency,
+          amountConvertion: 1
+        }
+      }
+      return {
+        uuid: '',
+        iSOCode: '',
+        curSymbol: '',
+        amountConvertion: 1
+      }
+    },
+    dateRate() {
+      return this.$store.getters.getConvertionRate.find(currency => {
+        if (currency.id === this.typeCurrency) {
+          return currency
+        }
+      })
+    }
+  },
+  watch: {
+    dateRate(value) {
+      if (value && !this.isEmptyValue(value.amountConvertion)) {
+        this.amountConvertionTotal = this.amount / value.amountConvertion
+      } else {
+        this.amountConvertionTotal = this.amount
+      }
+    },
+    currencyUuid(value) {
+      const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
+        if (currency.uuid === value) {
+          return currency
+        }
+      })
+      if (listCurrency === undefined) {
+        this.$store.dispatch('conversionDivideRate', {
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+          currencyFromUuid: this.pointOfSalesCurrency.uuid,
+          conversionDate: this.formatDate(new Date()),
+          currencyToUuid: value
+        })
+      }
     }
   },
   created() {
@@ -112,6 +166,18 @@ export default {
   },
   methods: {
     formatPrice,
+    formatDate(date) {
+      let month = '' + (date.getMonth() + 1)
+      let day = '' + date.getDate()
+      const year = date.getFullYear()
+      if (month.length < 2) {
+        month = '0' + month
+      }
+      if (day.length < 2) {
+        day = '0' + day
+      }
+      return [year, month, day].join('-')
+    },
     defaultValueCurrency() {
       this.$store.commit('updateValueOfField', {
         containerUuid: this.containerUuid,

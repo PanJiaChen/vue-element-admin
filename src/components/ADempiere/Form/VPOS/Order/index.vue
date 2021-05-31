@@ -228,6 +228,7 @@
                       :convert="multiplyRate"
                       :amount="currentOrder.grandTotal"
                       :currency="pointOfSalesCurrency"
+                      :is-open="seeConversion"
                     />
                     <el-button slot="reference" type="text" style="color: #000000;font-weight: 604!important;font-size: 100%;" @click="seeConversion = !seeConversion">
                       {{ formatPrice(currentOrder.grandTotal, pointOfSalesCurrency.iSOCode) }}
