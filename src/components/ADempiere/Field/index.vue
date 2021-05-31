@@ -386,6 +386,13 @@ export default {
   }
 
   /**
+   * Maximum height to avoid distorting the field list
+   */
+  .el-form-item__content {
+    max-height: 36px !important;
+  }
+
+  /**
    * Reduce the spacing between the form element and its label
    */
   .el-form--label-top .el-form-item__label {
