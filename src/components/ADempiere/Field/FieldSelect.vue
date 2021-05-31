@@ -337,11 +337,14 @@ export default {
         value: this.value
       })
         .then(responseLookupItem => {
-          this.displayedValue = responseLookupItem.label
-          this.uuidValue = responseLookupItem.uuid
-          this.$nextTick(() => {
-            this.optionsList = this.getterLookupAll
-          })
+          // with value response update local component list
+          if (!this.isEmptyValue(responseLookupItem)) {
+            this.displayedValue = responseLookupItem.label
+            this.uuidValue = responseLookupItem.uuid
+            this.$nextTick(() => {
+              this.optionsList = this.getterLookupAll
+            })
+          }
         })
         .finally(() => {
           this.isLoading = false
