@@ -72,6 +72,11 @@ module.exports = {
               children: genComponentSidebar()
             },
             {
+              title: 'Forms',
+              collapsable: false,
+              children: genFormsSidebar()
+            },
+            {
               title: 'Other',
               collapsable: false,
               children: [
@@ -128,6 +133,11 @@ module.exports = {
               title: 'Componentes',
               collapsable: false,
               children: genComponentSidebar('/es')
+            },
+            {
+              title: 'Formularios',
+              collapsable: false,
+              children: genFormsSidebar('/es')
             },
             {
               title: 'Otro',
@@ -194,6 +204,11 @@ module.exports = {
               title: '成分',
               collapsable: false,
               children: genComponentSidebar()
+            },
+            {
+              title: '形式',
+              collapsable: false,
+              children: genFormsSidebar()
             },
             {
               title: '其它',
@@ -300,8 +315,16 @@ function genComponentSidebar(type = '') {
     '/guide/components/change-role.md',
     '/guide/components/hide-menu.md',
     '/guide/components/references.md',
-    '/guide/components/lock-unlock-records.md'
+    '/guide/components/lock-unlock-records.md',
+    '/guide/forms/point-of-sales.md'
   ]
+  return mapArr.map(i => {
+    return type + i
+  })
+}
+
+function genFormsSidebar(type = '') {
+  const mapArr = ['/guide/forms/point-of-sales.md']
   return mapArr.map(i => {
     return type + i
   })
