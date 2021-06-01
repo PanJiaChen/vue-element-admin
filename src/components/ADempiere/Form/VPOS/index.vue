@@ -1,7 +1,7 @@
 <!--
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
- Contributor(s): Yamel Senih ysenih@erpya.com www.erpya.com
+ Contributor(s): Elsio Sanchez elsiosanches@gmail.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -16,141 +16,32 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <el-container style="height: 100% !important;">
-    <el-main style="padding-right: 0px;padding-bottom: 0px;">
-
-      <Split :gutter-size="isShowedPOSOptions ? 10 : 0" @onDrag="onDragOption">
-        <SplitArea :size="isShowedPOSOptions ? 20 : 1" :min-size="400">
-          <el-container style="height: 100% !important;">
-            <el-aside :width="isShowedPOSOptions ? '100%' : '0%'" style="background: white; padding: 0px !important; margin-bottom: 0px">
-              <options
-                :metadata="metadata"
-              />
-            </el-aside>
-            <div style="width: 36px;padding-top: 30vh; z-index: 100;">
-              <el-button
-                :circle="true"
-                type="primary"
-                :icon="isShowedPOSOptions ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"
-                :style="isShowedPOSOptions ? 'position: absolute;': 'position: absolute;left: 0.8%;'"
-                @click="isShowedPOSOptions = !isShowedPOSOptions"
-              />
-            </div>
-          </el-container>
-        </SplitArea>
-
-        <SplitArea :size="isShowedPOSOptions ? 80 : 99" :min-size="990">
-          <Split :gutter-size="isShowedPOSKeyLaout ? 10 : 0" @onDrag="onDragKeyLayout">
-            <SplitArea :size="isShowedPOSKeyLaout ? 69 : 99" :min-size="900" style="overflow: hidden">
-              <order
-                :metadata="metadata"
-              />
-            </SplitArea>
-            <SplitArea
-              v-show="isShowedPOSKeyLaout"
-              :size="isShowedPOSKeyLaout ? 31: 1"
-              :min-size="300"
-              style="overflow: auto"
-            >
-              <key-layout
-                v-if="!showCollection"
-                key="layout-component"
-              />
-              <collection
-                v-else
-                key="collection-component"
-              />
-            </SplitArea>
-          </Split>
-        </SplitArea>
-      </Split>
-    </el-main>
-  </el-container>
+  <component
+    :is="templateDevice"
+    :metadata="metadata"
+  />
 </template>
 
 <script>
-import Order from '@/components/ADempiere/Form/VPOS/Order'
-import KeyLayout from '@/components/ADempiere/Form/VPOS/KeyLayout'
-import Options from '@/components/ADempiere/Form/VPOS/Options'
-import Collection from '@/components/ADempiere/Form/VPOS/Collection'
 
 export default {
   name: 'VPOS',
-  components: {
-    Order,
-    KeyLayout,
-    Options,
-    Collection
-  },
   props: {
     metadata: {
       type: Object,
       required: true
     }
   },
-  data() {
-    return {
-      unsubscribePOSList: () => {}
-    }
-  },
   computed: {
-    // options to POS, panel left
-    isShowedPOSOptions: {
-      get() {
-        return this.$store.getters.getIsShowPOSOptions
-      },
-      set(val) {
-        this.$store.commit('setShowPOSOptions', val)
+    // is Movile
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
+    templateDevice() {
+      if (this.isMobile) {
+        return () => import('@/components/ADempiere/Form/VPOS/templateDevice/mobile')
       }
-    },
-    isShowedPOSKeyLaout() {
-      return this.$store.getters.getShowPOSKeyLayout
-    },
-    showCollection() {
-      return this.$store.getters.getShowCollectionPos
-    },
-    listPointOfSales() {
-      return this.$store.getters.posAttributes.listPointOfSales
-    }
-  },
-  watch: {
-    isShowedPOSOptions(value) {
-      if (value) {
-        if (this.isShowedPOSKeyLaout) {
-          this.$store.dispatch('changeWidthRight', 3)
-        }
-      } else {
-        this.$store.dispatch('changeWidthRight', 3)
-      }
-    }
-  },
-  created() {
-    // load pont of sales list
-    if (this.isEmptyValue(this.listPointOfSales)) {
-      // set pos id with query path
-      this.$store.dispatch('listPointOfSalesFromServer', this.$route.query.pos)
-    }
-
-    this.unsubscribePOSList = this.posListWithOrganization()
-  },
-  beforeDestroy() {
-    this.unsubscribePOSList()
-  },
-  methods: {
-    posListWithOrganization() {
-      return this.$store.subscribe((mutation, state) => {
-        if (mutation.type === 'user/SET_ORGANIZATION') {
-          this.$store.dispatch('listPointOfSalesFromServer')
-        }
-      })
-    },
-    onDragKeyLayout(size) {
-      const sizeWidthRight = size[1] / 10
-      this.$store.dispatch('changeWidthRight', Math.trunc(sizeWidthRight))
-    },
-    onDragOption(size) {
-      const sizeWidthLeft = size[0] / 10
-      this.$store.dispatch('changeWidthLeft', Math.trunc(sizeWidthLeft))
+      return () => import('@/components/ADempiere/Form/VPOS/templateDevice/desktop')
     }
   }
 }

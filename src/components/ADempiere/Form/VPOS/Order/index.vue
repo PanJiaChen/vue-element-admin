@@ -28,7 +28,7 @@
       >
         <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
           <el-row :gutter="24" style="display: flex;">
-            <el-col :span="isEmptyValue(currentOrder) ? 14 : 11 " style="padding-left: 0px; padding-right: 0px;">
+            <el-col :span="colFieldProductCode" style="padding-left: 0px; padding-right: 0px;">
               <template
                 v-for="(field) in fieldsList"
               >
@@ -39,7 +39,7 @@
                 />
               </template>
             </el-col>
-            <el-col :span="isEmptyValue(currentOrder) ? 9 : 7" style="padding-left: 0px; padding-right: 0px;">
+            <el-col :span="colFieldBusinessPartner" style="padding-left: 0px; padding-right: 0px;">
               <business-partner
                 :parent-metadata="{
                   name: panelMetadata.name,
@@ -50,7 +50,7 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px;' : 'padding: 0px;margin-top: 2.9%;'">
+            <el-col v-if="!isMobile" :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px;' : 'padding: 0px;margin-top: 2.9%;'">
               <el-form-item>
                 <el-row :gutter="24">
                   <el-col :span="10" style="padding-left: 0px; padding-right: 0px;">
@@ -82,9 +82,9 @@
               v-shortkey="shortsKey"
               :data="listOrderLine"
               border
-              style="width: 100%; max-width: 100%; background-color: #FFFFFF; font-size: 14px; overflow: auto; color: #606266;"
               highlight-current-row
               fit
+              style="overflow: auto;"
               @current-change="handleCurrentLineChange"
               @shortkey.native="shortcutKeyMethod"
             >
@@ -170,7 +170,7 @@
             </el-table>
           </el-main>
 
-          <el-footer class="footer-table">
+          <el-footer :class="classOrderFooter">
             <div class="keypad">
               <el-button type="primary" icon="el-icon-top" :disabled="isDisabled" @click="arrowTop" />
               <el-button type="primary" icon="el-icon-bottom" :disabled="isDisabled" @click="arrowBottom" />
@@ -207,6 +207,27 @@
                 </el-dropdown>
               </p>
             </div>
+            <span v-if="isMobile" style="float: right;padding-right: 3%;">
+              <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
+              <p class="total">
+                {{ $t('form.pos.order.date') }}:
+                <b class="order-info">
+                  {{ orderDate }}
+                </b>
+              </p>
+              <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
+              <p class="total">
+                {{ $t('form.pos.order.itemQuantity') }}
+                <b class="order-info">
+                  {{ getItemQuantity }}
+                </b>
+              </p>
+              <p class="total">
+                {{ $t('form.pos.order.numberLines') }}
+                <b class="order-info">
+                  {{ numberOfLines }}
+                </b></p>
+            </span>
             <span style="float: right;">
               <p class="total">{{ $t('form.pos.order.seller') }}:<b style="float: right;">
                 {{ currentOrder.salesRepresentative.name }}
@@ -237,7 +258,7 @@
                 </b>
               </p>
             </span>
-            <span style="float: right;padding-right: 3%;">
+            <span v-if="!isMobile" style="float: right;padding-right: 3%;">
               <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
@@ -262,7 +283,15 @@
         </el-container>
       </el-main>
     </el-container>
-    <div style="position: relative;padding-top: 30vh; z-index: 100;">
+    <div v-if="isMobile && isShowedPOSKeyLayout" :style="classButtomRight">
+      <el-button
+        :circle="true"
+        type="primary"
+        :icon="isShowedPOSKeyLayout ? 'el-icon-arrow-left' : 'el-icon-arrow-right'"
+        @click="isShowedPOSKeyLayout = !isShowedPOSKeyLayout"
+      />
+    </div>
+    <div v-if="!isMobile" :style="classButtomRight">
       <el-button
         :circle="true"
         type="primary"
@@ -317,6 +346,42 @@ export default {
     }
   },
   computed: {
+    isMobile() {
+      return this.$store.state.app.device === 'mobile'
+    },
+    classOrderFooter() {
+      if (this.isMobile) {
+        return 'footer-mobile'
+      }
+      return 'footer-table'
+    },
+    classButtomRight() {
+      if (this.isMobile) {
+        if (this.$store.getters.getIsShowPOSOptions) {
+          return 'position: fixed'
+        }
+        return 'position: absolute;top: 34%;z-index: 100;right: 0;'
+      }
+      return 'position: relative;padding-top: 30vh; z-index: 100;'
+    },
+    colFieldBusinessPartner() {
+      if (this.isMobile) {
+        return 12
+      }
+      if (this.isEmptyValue(this.currentOrder)) {
+        return 14
+      }
+      return 11
+    },
+    colFieldProductCode() {
+      if (this.isMobile) {
+        return 12
+      }
+      if (this.isEmptyValue(this.currentOrder)) {
+        return 9
+      }
+      return 7
+    },
     shortsKey() {
       return {
         popoverConvet: ['ctrl', 'x']
@@ -452,7 +517,7 @@ export default {
     formatPrice,
     formatQuantity,
     openCollectionPanel() {
-      this.isShowedPOSKeyLayout = true
+      this.isShowedPOSKeyLayout = this.isMobile ? !this.isShowedPOSKeyLayout : true
       this.$store.commit('setShowPOSCollection', true)
       const orderUuid = this.$route.query.action
       this.$store.dispatch('listPayments', { orderUuid })
@@ -559,6 +624,12 @@ export default {
   .el-col-6 {
     padding-right: 0px !important;
     padding-left: 0px !important;
+  }
+  .footer-mobile {
+    padding: 0px;
+    height: auto !important;
+    overflow: auto;
+    display: contents;
   }
   .footer-table {
     padding-top: 0px;
