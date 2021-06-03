@@ -389,8 +389,8 @@ export default {
       processOrder({
         posUuid,
         orderUuid: this.$route.query.action,
-        createPayments: !this.isEmptyValue(this.currentOrder.listPayments),
-        payments: this.currentOrder.listPayments
+        createPayments: false,
+        payments: []
       })
         .then(response => {
           this.$store.dispatch('reloadOrder', response.uuid)

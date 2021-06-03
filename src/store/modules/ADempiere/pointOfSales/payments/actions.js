@@ -123,7 +123,8 @@ export default {
         if (!isEmptyValue(response.currencyTo)) {
           const currency = {
             ...response.currencyTo,
-            amountConvertion: response.divideRate
+            amountConvertion: response.divideRate,
+            multiplyRate: response.multiplyRate
           }
           dispatch('addRateConvertion', currency)
         }

@@ -472,6 +472,7 @@ export default {
         change: 'Change',
         convertAmount: 'Convert Quantity',
         fullPayment: 'Full Payment',
+        dayRate: 'Day Rate',
         TenderType: {
           directDeposit: 'Direct Deposit',
           creditCard: 'Credit Card',

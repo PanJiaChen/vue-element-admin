@@ -371,18 +371,18 @@ export default {
         return 12
       }
       if (this.isEmptyValue(this.currentOrder)) {
-        return 14
+        return 9
       }
-      return 11
+      return 7
     },
     colFieldProductCode() {
       if (this.isMobile) {
         return 12
       }
       if (this.isEmptyValue(this.currentOrder)) {
-        return 9
+        return 14
       }
-      return 7
+      return 11
     },
     shortsKey() {
       return {

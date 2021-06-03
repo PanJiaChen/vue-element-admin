@@ -732,7 +732,6 @@ const actions = {
     sqlStatement
   }) {
     // const contextInforField = getters.getContextInfoField(contextInfoUuid, sqlStatement)
-    // console.log({ contextInforField })
     // if (contextInforField) {
     //   return contextInforField
     // }
@@ -742,7 +741,6 @@ const actions = {
       query: sqlStatement
     })
       .then(contextInfoResponse => {
-        console.log({ contextInfoResponse })
         commit('setContextInfoField', {
           contextInfoUuid,
           sqlStatement,
