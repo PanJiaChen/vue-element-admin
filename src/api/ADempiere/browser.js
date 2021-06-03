@@ -47,14 +47,15 @@ export function requestBrowserSearch({
 }) {
   const filters = parametersList.map(parameter => {
     return {
-      key: parameter.columnName,
+      column_name: parameter.columnName,
       value: parameter.value,
-      values: parameter.values
+      value_to: parameter.valueTo
     }
   })
 
   return request({
     url: '/user-interface/smart-browser/browser-items',
+    method: 'post',
     data: {
       // Running Parameters
       uuid,

@@ -357,12 +357,11 @@ export default {
       })
     },
     headerLabel(field) {
-      if (field.isMandatory || field.isMandatoryFromLogic && field.isDisplayedGrid) {
+      if (field.isMandatory || field.isMandatoryFromLogic) {
         return '* ' + field.name
       }
-      if (field.isDisplayedGrid) {
-        return field.name
-      }
+
+      return field.name
     },
     /**
      * @param {object} row, row data

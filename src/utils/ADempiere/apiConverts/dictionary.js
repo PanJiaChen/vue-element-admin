@@ -20,10 +20,13 @@ import {
 } from '@/utils/ADempiere/apiConverts/field.js'
 import { convertContextInfo } from '@/utils/ADempiere/apiConverts/core.js'
 import { camelizeObjectKeys } from '../transformObject'
+import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 
 export function convertProcess(process) {
   const convertedProcess = camelizeObjectKeys(process)
-  convertedProcess.parameters = process.parameters.map(parameter => convertField(parameter))
+  if (!isEmptyValue(process.parameters)) {
+    convertedProcess.parameters = process.parameters.map(parameter => convertField(parameter))
+  }
   return convertedProcess
 }
 
@@ -35,7 +38,9 @@ export function convertReportExportType(reportExportType) {
 export function convertBrowser(browser) {
   const convertedBrowser = camelizeObjectKeys(browser)
   convertedBrowser.window = convertWindow(browser.window)
-  convertedBrowser.process = convertProcess(browser.process)
+  if (!isEmptyValue(browser.process)) {
+    convertedBrowser.process = convertProcess(browser.process)
+  }
   convertedBrowser.fields = browser.fields.map(fieldItem => convertField(fieldItem))
   return convertedBrowser
 }
