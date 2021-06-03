@@ -104,8 +104,9 @@ export default {
     code: 'Código',
     issues: 'Asuntos',
     downloadZip: 'descargar  Zip',
-    releaseNotes: 'Nota de Liberaciones'
-
+    releaseNotes: 'Nota de Liberaciones',
+    goRepository: 'Ir al Repositorio',
+    seeDocumentation: 'Ver Documentación'
   },
   permission: {
     addRole: 'Nuevo rol',

@@ -9,9 +9,16 @@
               <span>
                 <b> {{ RepositoryADVue.title }} </b>
               </span>
-              <a target="_blank" :href="RepositoryADVue.href" style="margin-left: 5px;">
-                <svg-icon icon-class="link" />
-              </a>
+              <el-tooltip class="item" effect="dark" :content="$t('documentation.goRepository')" placement="top-start">
+                <a target="_blank" :href="RepositoryADVue.href" style="margin-left: 5px;">
+                  <svg-icon icon-class="link" />
+                </a>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" :content="$t('documentation.seeDocumentation')" placement="top-start">
+                <a target="_blank" :href="RepositoryADVue.document" style="margin-left: 5px;">
+                  <svg-icon icon-class="education" />
+                </a>
+              </el-tooltip>
             </div>
             <div style="float: right;display: inline-flex;">
               <el-popover
@@ -47,7 +54,7 @@
                 </el-button>
                 <el-button slot="reference" icon="el-icon-download" type="success" size="mini" plain>
                   {{ $t('documentation.code') }}
-                </el-button>
+                </el-button>homepage
               </el-popover>
               <el-button type="primary" size="mini" plain style="margin: 0px;padding-right: 3px;">
                 <a target="_blank" :href="RepositoryADVue.href + '/branches'">
@@ -118,9 +125,16 @@
               <span>
                 <b> {{ RepositoryProxyApi.title }} </b>
               </span>
-              <a target="_blank" :href="RepositoryProxyApi.href" style="margin-left: 5px;">
-                <svg-icon icon-class="link" />
-              </a>
+              <el-tooltip class="item" effect="dark" :content="$t('documentation.goRepository')" placement="top-start">
+                <a target="_blank" :href="RepositoryProxyApi.href" style="margin-left: 5px;">
+                  <svg-icon icon-class="link" />
+                </a>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" :content="$t('documentation.seeDocumentation')" placement="top-start">
+                <a target="_blank" :href="RepositoryProxyApi.document" style="margin-left: 5px;">
+                  <svg-icon icon-class="education" />
+                </a>
+              </el-tooltip>
             </div>
             <div style="float: right;display: inline-flex;">
               <el-popover
@@ -377,6 +391,9 @@ export default {
     },
     activeListReleases() {
       const active = this.releasesListADVue.findIndex(releases => this.releaseNotes.title === releases.title)
+      if (this.isEmptyValue(active)) {
+        return 0
+      }
       return active
     },
     linkReleases() {
@@ -389,12 +406,14 @@ export default {
   methods: {
     // ADempiere Vue
     fetchRepositoryADVue() {
+      // Repository
       fetchReadme({
         repository: 'adempiere-vue'
       })
         .then(response => {
           this.RepositoryADVue = {
             title: response.name,
+            document: response.homepage,
             href: response.html_url,
             description: response.description,
             avatar: response.organization.avatar_url,
@@ -404,8 +423,7 @@ export default {
             downloadZip: response.html_url + '/archive/refs/heads/' + response.default_branch + '.zip'
           }
         })
-    },
-    fechReleases() {
+      // Releases
       fetchReleasesList({
         repository: '/adempiere-vue'
       })
@@ -435,12 +453,14 @@ export default {
     },
     // Proxy Adempiere Api
     fetchRepositoryProxy() {
+      // Repository
       fetchReadme({
         repository: 'proxy-adempiere-api'
       })
         .then(response => {
           this.RepositoryProxyApi = {
             title: response.name,
+            document: response.homepage,
             href: response.html_url,
             description: response.description,
             avatar: response.organization.avatar_url,
@@ -450,14 +470,13 @@ export default {
             downloadZip: response.html_url + '/archive/refs/heads/' + response.default_branch + '.zip'
           }
         })
-    },
-    fechReleasesProxy() {
+      // Releases
       fetchReleasesList({
         repository: '/proxy-adempiere-api'
       })
-        .then(response => {
-          if (response) {
-            response.forEach(release => {
+        .then(release => {
+          if (release) {
+            release.forEach(release => {
               this.releasesListProxyApi.push({
                 title: release.name,
                 href: release.html_url,
@@ -465,7 +484,7 @@ export default {
                 body: release.body,
                 created_at: release.created_at,
                 download: this.isEmptyValue(release.assets) ? release.assets : release.assets[0].browser_download_url,
-                titleDownload: this.isEmptyValue(release.assets) ? release.assets : release.assets[0].name
+                titleDownload: this.isEmptyValue(release.assets) ? release.name : release.assets[0].name
               })
             })
             if (config.repository.releaseNo !== undefined && this.releasesListProxyApi.length > 0) {
@@ -481,6 +500,7 @@ export default {
     },
     // Adempiere gRPC Server
     fetchRepositoryGRPC() {
+      // Repository
       fetchReadme({
         repository: 'adempiere-gRPC-Server'
       })
@@ -496,8 +516,7 @@ export default {
             downloadZip: response.html_url + '/archive/refs/heads/' + response.default_branch + '.zip'
           }
         })
-    },
-    fechReleasesgRPC() {
+      // Releases
       fetchReleasesList({
         repository: '/adempiere-gRPC-Server'
       })
@@ -525,16 +544,11 @@ export default {
           }
         })
     },
-    // load
+    // load Repository
     loadReleasesList() {
-      // Repository
       this.fetchRepositoryADVue()
       this.fetchRepositoryProxy()
       this.fetchRepositoryGRPC()
-      // Releases
-      this.fechReleases()
-      this.fechReleasesProxy()
-      this.fechReleasesgRPC()
     },
     // fallback Copy Text To Clip board
     fallbackCopyTextToClipboard(text) {

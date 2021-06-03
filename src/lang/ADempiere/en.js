@@ -104,7 +104,9 @@ export default {
     code: 'Code',
     issues: 'Issues',
     downloadZip: 'Download Zip',
-    releaseNotes: 'Release Notes'
+    releaseNotes: 'Release Notes',
+    goRepository: 'go to repository',
+    seeDocumentation: 'See documentation'
   },
   permission: {
     addRole: 'New Role',
