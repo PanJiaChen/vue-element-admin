@@ -89,7 +89,7 @@ export default {
   data() {
     return {
       fieldsList: fieldsListConvertAmountCollection,
-      amountConvertionTotal: 0
+      amountConvertionTotal: this.amount
     }
   },
   computed: {
