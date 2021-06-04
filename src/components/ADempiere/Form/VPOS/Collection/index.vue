@@ -89,7 +89,7 @@
                 style="float: right; display: flex; line-height: 10px;"
                 :disabled="isDisabled"
               >
-                <el-row>
+                <el-row id="fieldListCollection">
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <!-- Add selected currency symbol -->
                     <field-definition
@@ -104,7 +104,7 @@
               </el-form>
             </div>
           </el-card>
-          <samp style="float: right;padding-right: 10px;">
+          <samp id="buttonCollection" style="float: right;padding-right: 10px;">
             <el-button type="danger" icon="el-icon-close" @click="exit" />
             <el-button type="info" icon="el-icon-minus" :disabled="isDisabled" @click="undoPatment" />
             <el-button type="primary" :disabled="validPay || addPay || isDisabled" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
@@ -115,6 +115,7 @@
         <el-main style="padding-top: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px;">
           <type-collection
             v-if="!updateOrderPaymentPos"
+            id="cardCollection"
             :is-add-type-pay="listPayments"
             :currency="pointOfSalesCurrency"
             :list-types-payment="fieldsList[2]"
@@ -132,7 +133,7 @@
           />
         </el-main>
         <!-- Collection container bottom panel -->
-        <el-footer height="auto" style="padding-left: 0px; padding-right: 0px;">
+        <el-footer id="infoInvoce" height="auto" style="padding-left: 0px; padding-right: 0px;">
           <el-row :gutter="24" style="background-color: rgb(245, 247, 250);">
             <el-col :span="24">
               <span>

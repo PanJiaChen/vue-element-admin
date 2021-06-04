@@ -14,53 +14,13 @@
       <search id="header-search" class="right-menu-item" style="padding-top: 10px;" />
       <badge style="padding-top: 6px;" />
     </div>
-    <!--
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
-
-        <error-log class="errLog-container right-menu-item hover-effect" />
-
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
-
-        <el-tooltip content="Global Size" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-      </template>
-
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
-        </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>
-              {{ $t('navbar.profile') }}
-            </el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
-            </el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>
-              {{ $t('navbar.github') }}
-            </el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">{{ $t('navbar.logOut') }}</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
-      -->
     <div class="right-menu">
       <template v-if="device!=='mobile'">
+        <el-tooltip v-if="showGuide" content="Guia" placement="top-start">
+          <el-button icon="el-icon-info" type="text" style="color: black;font-size: larger" @click.prevent.stop="guide" />
+        </el-tooltip>
         <search id="header-search" class="right-menu-item" />
-        <badge />
+        <badge id="badge-navar" />
         <error-log class="errLog-container right-menu-item hover-effect" />
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
@@ -106,6 +66,9 @@ import LangSelect from '@/components/LangSelect'
 import Search from '@/components/HeaderSearch'
 import Badge from '@/components/ADempiere/Badge'
 import { getImagePath } from '@/utils/ADempiere/resource.js'
+import Driver from 'driver.js' // import driver.js
+import 'driver.js/dist/driver.min.css' // import driver.js css
+import steps from '@/components/ADempiere/Form/VPOS/Guide/steps'
 
 export default {
   components: {
@@ -122,12 +85,26 @@ export default {
   data() {
     return {
       user: {},
-      isMenuMobile: false
+      isMenuMobile: false,
+      driver: null
     }
   },
   computed: {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
+    },
+    isShowedPOSKeyLaout() {
+      return this.$store.getters.getShowPOSKeyLayout
+    },
+    showCollection() {
+      return this.$store.getters.getShowCollectionPos
+    },
+    showGuide() {
+      const typeViews = this.$route.meta.type
+      if (!this.isEmptyValue(typeViews) && typeViews === 'form') {
+        return true
+      }
+      return false
     },
     ...mapGetters([
       'sidebar',
@@ -148,7 +125,16 @@ export default {
       return uri
     }
   },
+  mounted() {
+    this.driver = new Driver()
+  },
   methods: {
+    guide(value) {
+      const stepsPos = steps.filter(steps => this.isEmptyValue(steps.panel))
+      value = this.showCollection && this.isShowedPOSKeyLaout ? steps : stepsPos
+      this.driver.defineSteps(value)
+      this.driver.start()
+    },
     handleOpen(key, keyPath) {
       console.log(key, keyPath)
     },
