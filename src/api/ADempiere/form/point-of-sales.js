@@ -16,22 +16,22 @@
 
 // Get Instance for connection
 import { request } from '@/utils/ADempiere/request'
-
+import { config } from '@/utils/ADempiere/config'
 import { isEmptyValue } from '@/utils/ADempiere'
 
 /**
- * method in api/price-checking.js as requestGetProductPrice
+ * method in api/price-checking.js as getProductPrice
  * @author elsiosanchez <elsiosanches@gmail.com>
  */
-export { requestGetProductPrice as findProduct } from '@/api/ADempiere/form/price-checking.js'
+export { getProductPrice as findProduct } from '@/api/ADempiere/form/price-checking.js'
 export { requestGetConversionRate } from '@/api/ADempiere/system-core.js'
 
 // List Point of sales
-export function requestGetPointOfSales({
+export function getPointOfSales({
   posUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/point-of-sales',
+    url: `${config.pointOfSales.endpoint}/point-of-sales`,
     method: 'get',
     params: {
       point_of_sales_uuid: posUuid
@@ -45,13 +45,13 @@ export function requestGetPointOfSales({
 }
 
 // List Point of sales
-export function requestListPointOfSales({
+export function listPointOfSales({
   userUuid,
   pageSize,
   pageToken
 }) {
   return request({
-    url: '/form/addons/point-of-sales/selling-points',
+    url: `${config.pointOfSales.endpoint}/selling-points`,
     method: 'get',
     params: {
       user_uuid: userUuid,
@@ -73,14 +73,14 @@ export function requestListPointOfSales({
 }
 
 // Create order from POS
-export function requestCreateOrder({
+export function createOrder({
   posUuid,
   customerUuid,
   documentTypeUuid,
   salesRepresentativeUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/create-order',
+    url: `${config.pointOfSales.endpoint}/create-order`,
     method: 'post',
     data: {
       pos_uuid: posUuid,
@@ -97,14 +97,14 @@ export function requestCreateOrder({
 }
 
 // Update order from POS
-export function requestUpdateOrder({
+export function updateOrder({
   orderUuid,
   posUuid,
   customerUuid,
   description
 }) {
   return request({
-    url: '/form/addons/point-of-sales/update-order',
+    url: `${config.pointOfSales.endpoint}/update-order`,
     method: 'post',
     data: {
       order_uuid: orderUuid,
@@ -121,9 +121,9 @@ export function requestUpdateOrder({
 }
 
 // Get order from uuid
-export function requestGetOrder(orderUuid) {
+export function getOrder(orderUuid) {
   return request({
-    url: '/form/addons/point-of-sales/order',
+    url: `${config.pointOfSales.endpoint}/order`,
     method: 'get',
     params: {
       order_uuid: orderUuid
@@ -137,7 +137,7 @@ export function requestGetOrder(orderUuid) {
 }
 
 // Create order from POS
-export function requestDeleteOrder({
+export function deleteOrder({
   orderUuid
   // posUuid,
   // customerUuid,
@@ -145,7 +145,7 @@ export function requestDeleteOrder({
   // salesRepresentativeUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/delete-order',
+    url: `${config.pointOfSales.endpoint}/delete-order`,
     method: 'post',
     data: {
       order_uuid: orderUuid
@@ -161,7 +161,7 @@ export function requestDeleteOrder({
 }
 
 // List orders from pos uuid
-export function requestListOrders({
+export function listOrders({
   posUuid,
   documentNo,
   businessPartnerUuid,
@@ -220,7 +220,7 @@ export function requestListOrders({
   */
 
   return request({
-    url: '/form/addons/point-of-sales/orders',
+    url: `${config.pointOfSales.endpoint}/orders`,
     method: 'get',
     params: {
       pos_uuid: posUuid,
@@ -253,7 +253,7 @@ export function requestListOrders({
 }
 
 // Create order line from order uuid and product
-export function requestCreateOrderLine({
+export function createOrderLine({
   orderUuid,
   warehouseUuid,
   productUuid,
@@ -264,7 +264,7 @@ export function requestCreateOrderLine({
   discountRate
 }) {
   return request({
-    url: '/form/addons/point-of-sales/create-order-line',
+    url: `${config.pointOfSales.endpoint}/create-order-line`,
     method: 'post',
     data: {
       order_uuid: orderUuid,
@@ -285,7 +285,7 @@ export function requestCreateOrderLine({
 }
 
 // updateOrderLine orders from pos uuid
-export function requestUpdateOrderLine({
+export function updateOrderLine({
   orderLineUuid,
   description,
   quantity,
@@ -293,7 +293,7 @@ export function requestUpdateOrderLine({
   discountRate
 }) {
   return request({
-    url: '/form/addons/point-of-sales/update-order-line',
+    url: `${config.pointOfSales.endpoint}/update-order-line`,
     method: 'post',
     data: {
       // is_add_quantity: true,
@@ -312,11 +312,11 @@ export function requestUpdateOrderLine({
 }
 
 // delete Order Line
-export function requestDeleteOrderLine({
+export function deleteOrderLine({
   orderLineUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/delete-order-line',
+    url: `${config.pointOfSales.endpoint}/delete-order-line`,
     method: 'post',
     data: {
       order_line_uuid: orderLineUuid
@@ -327,13 +327,13 @@ export function requestDeleteOrderLine({
     })
 }
 
-export function requestListOrderLines({
+export function listOrderLines({
   orderUuid,
   pageSize,
   pageToken
 }) {
   return request({
-    url: '/form/addons/point-of-sales/order-lines',
+    url: `${config.pointOfSales.endpoint}/order-lines`,
     method: 'get',
     params: {
       order_uuid: orderUuid,
@@ -356,7 +356,7 @@ export function requestListOrderLines({
 
 export function getKeyLayout({ keyLayoutUuid }) {
   return request({
-    url: '/form/addons/point-of-sales/key-layout',
+    url: `${config.pointOfSales.endpoint}/key-layout`,
     method: 'get',
     params: {
       key_layout_uuid: keyLayoutUuid
@@ -382,7 +382,7 @@ export function getProductPriceList({
   pageToken
 }) {
   return request({
-    url: '/form/addons/point-of-sales/product-prices',
+    url: `${config.pointOfSales.endpoint}/product-prices`,
     method: 'get',
     params: {
       price_list_uuid: priceListUuid,
@@ -467,7 +467,7 @@ export function createPayment({
   currencyUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/create-payment',
+    url: `${config.pointOfSales.endpoint}/create-payment`,
     method: 'post',
     data: {
       pos_uuid: posUuid,
@@ -499,7 +499,7 @@ export function updatePayment({
   tenderTypeCode
 }) {
   return request({
-    url: '/form/addons/point-of-sales/update-payment',
+    url: `${config.pointOfSales.endpoint}/update-payment`,
     method: 'post',
     data: {
       payment_uuid: paymentUuid,
@@ -522,7 +522,7 @@ export function deletePayment({
   paymentUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/delete-payment',
+    url: `${config.pointOfSales.endpoint}/delete-payment`,
     method: 'post',
     data: {
       payment_uuid: paymentUuid
@@ -540,7 +540,7 @@ export function getPaymentsList({
   orderUuid
 }) {
   return request({
-    url: '/form/addons/point-of-sales/payments',
+    url: `${config.pointOfSales.endpoint}/payments`,
     method: 'get',
     params: {
       pos_uuid: posUuid,
@@ -601,7 +601,7 @@ export function processOrder({
     })
   }
   return request({
-    url: '/form/addons/point-of-sales/process-order',
+    url: `${config.pointOfSales.endpoint}/process-order`,
     method: 'post',
     data: {
       pos_uuid: posUuid,
@@ -626,7 +626,7 @@ export function validatePin({
   pin
 }) {
   return request({
-    url: '/form/addons/point-of-sales/validate-pin',
+    url: `${config.pointOfSales.endpoint}/validate-pin`,
     method: 'post',
     data: {
       pos_uuid: posUuid,

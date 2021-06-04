@@ -103,7 +103,7 @@
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import fieldsList from './fieldsList.js'
-import { requestGetProductPrice } from '@/api/ADempiere/form/price-checking.js'
+import { getProductPrice } from '@/api/ADempiere/form/price-checking.js'
 import { formatPercent, formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import { buildImageFromArrayBuffer } from '@/utils/ADempiere/resource.js'
 import { requestImage } from '@/api/ADempiere/common/resource.js'
@@ -201,7 +201,7 @@ export default {
           // cleans all values except column name 'ProductValue'
           this.search = mutation.payload.value
           if (!this.isEmptyValue(this.search) && this.search.length >= 4) {
-            requestGetProductPrice({
+            getProductPrice({
               searchValue: mutation.payload.value,
               priceListUuid: this.currentPoint.priceList.uuid
             })
@@ -258,7 +258,7 @@ export default {
             if (typeof value[value.length - 1] === 'string') {
               value = mutation.payload.value.slice(0, -1)
             }
-            requestGetProductPrice({
+            getProductPrice({
               searchValue: mutation.payload.value,
               priceListUuid: this.currentPoint.priceList.uuid
             })

@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import {
-  requestListOrderLines
+  listOrderLines
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -30,7 +30,7 @@ export default {
     if (isEmptyValue(orderUuid)) {
       return
     }
-    requestListOrderLines({
+    listOrderLines({
       orderUuid
     })
       .then(response => {

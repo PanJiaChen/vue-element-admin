@@ -15,11 +15,11 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import {
-  requestCreateOrder,
-  requestGetOrder,
-  requestUpdateOrder,
-  requestCreateOrderLine,
-  requestListOrders
+  createOrder,
+  getOrder,
+  updateOrder,
+  createOrderLine,
+  listOrders
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue, extractPagingToken, convertValuesToSend } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -39,7 +39,7 @@ export default {
     customerUuid,
     salesRepresentativeUuid
   }) {
-    return requestCreateOrder({
+    return createOrder({
       posUuid,
       customerUuid,
       salesRepresentativeUuid
@@ -71,7 +71,7 @@ export default {
     posUuid,
     customerUuid
   }) {
-    requestUpdateOrder({
+    updateOrder({
       orderUuid,
       posUuid,
       customerUuid
@@ -108,7 +108,7 @@ export default {
     price,
     discountRate
   }) {
-    requestCreateOrderLine({
+    createOrderLine({
       orderUuid,
       productUuid
     })
@@ -134,7 +134,7 @@ export default {
       orderUuid = rootGetters.posAttributes.currentPointOfSales.currentOrder.uuid // this.currentOrder.uuid
     }
     if (!isEmptyValue(orderUuid)) {
-      requestGetOrder(orderUuid)
+      getOrder(orderUuid)
         .then(orderResponse => {
           dispatch('fillOrde', {
             attribute: orderResponse,
@@ -207,7 +207,7 @@ export default {
     })
     values = convertValuesToSend(values)
     const { documentNo, businessPartnerUuid, grandTotal, openAmount, isPaid, isProcessed, isAisleSeller, isInvoiced, dateOrderedFrom, dateOrderedTo, salesRepresentativeUuid } = values
-    requestListOrders({
+    listOrders({
       posUuid,
       documentNo,
       businessPartnerUuid,
@@ -254,7 +254,7 @@ export default {
   },
   findOrderServer({ commit }, orderUuid) {
     if (typeof orderUuid === 'string' && !isEmptyValue(orderUuid)) {
-      requestGetOrder(orderUuid)
+      getOrder(orderUuid)
         .then(responseOrder => {
           commit('findOrder', responseOrder)
         })

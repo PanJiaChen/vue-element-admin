@@ -16,7 +16,7 @@
 
 import {
   findProduct,
-  requestUpdateOrderLine
+  updateOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import {
   formatDate,
@@ -404,7 +404,7 @@ export default {
           this.arrowBottom()
           break
         case 'plus':
-          requestUpdateOrderLine({
+          updateOrderLine({
             orderLineUuid: this.currentOrderLine.uuid,
             quantity: this.listOrderLine[this.currentTable].quantity + 1
           })
@@ -423,7 +423,7 @@ export default {
 
           break
         case 'minus':
-          requestUpdateOrderLine({
+          updateOrderLine({
             orderLineUuid: this.currentOrderLine.uuid,
             quantity: this.listOrderLine[this.currentTable].quantity - 1
           })

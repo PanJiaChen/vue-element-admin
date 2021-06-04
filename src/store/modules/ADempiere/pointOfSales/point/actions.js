@@ -16,7 +16,7 @@
 
 import router from '@/router'
 import {
-  requestListPointOfSales
+  listPointOfSales
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -32,7 +32,7 @@ export default {
   listPointOfSalesFromServer({ commit, getters, dispatch }, posToSet = null) {
     const userUuid = getters['user/getUserUuid']
     let pos, listPos
-    requestListPointOfSales({
+    listPointOfSales({
       userUuid
     })
       .then(response => {

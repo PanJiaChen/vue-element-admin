@@ -15,9 +15,9 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import {
-  requestCreateOrderLine,
-  requestUpdateOrderLine,
-  requestDeleteOrderLine
+  createOrderLine,
+  updateOrderLine,
+  deleteOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { formatPercent } from '@/utils/ADempiere/valueFormat.js'
 
@@ -100,7 +100,7 @@ export default {
     },
     createOrderLine(orderUuid) {
       const productUuid = this.product.uuid
-      requestCreateOrderLine({
+      createOrderLine({
         orderUuid,
         productUuid
       })
@@ -143,7 +143,7 @@ export default {
           quantity = currentLine.quantity
           break
       }
-      requestUpdateOrderLine({
+      updateOrderLine({
         orderLineUuid: currentLine.uuid,
         quantity,
         price,
@@ -171,7 +171,7 @@ export default {
     },
     deleteOrderLine(lineSelection) {
       console
-      requestDeleteOrderLine({
+      deleteOrderLine({
         orderLineUuid: lineSelection.uuid
       })
         .then(() => {
