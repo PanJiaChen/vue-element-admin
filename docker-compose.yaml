@@ -62,15 +62,21 @@ services:
       - VS_ENV=dev
       - INDEX=vue_storefront_catalog
       - RESTORE_DB=N
+      - REDIS_HOST=adempiere-redis
+      - REDIS_PORT=6379
+      - REDIS_DB=0
     ports:
       - 8085:8085
 
   vue-app:
     image: erpya/adempiere-vue
     container_name: adempiere-frontend
+    depends_on:
+      - api-rest
+      - grpc-backend
     stdin_open: true
     tty: true
-    environment: 
+    environment:
       - API_URL=http://adempiere-proxy:8085
     ports:
       - 9526:80
@@ -78,6 +84,9 @@ services:
   e-commerce:
     image: erpya/adempiere-ecommerce
     container_name: adempiere-ecommerce
+    depends_on:
+      - api-rest
+      - grpc-backend
     stdin_open: true
     tty: true
     environment:
