@@ -23,7 +23,7 @@
     :value-format="formatSend"
     :type="typePicker"
     range-separator="-"
-    :placeholder="metadata.help"
+    :placeholder="metadata.placeholder"
     :start-placeholder="$t('components.dateStartPlaceholder')"
     :end-placeholder="$t('components.dateEndPlaceholder')"
     unlink-panels

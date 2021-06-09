@@ -20,7 +20,7 @@
     :ref="metadata.columnName"
     v-model="value"
     :filterable="!isMobile"
-    :placeholder="metadata.help"
+    :placeholder="metadata.placeholder"
     :loading="isLoading"
     value-key="id"
     :class="cssClassStyle"

@@ -24,11 +24,11 @@
     <el-col
       v-if="isDisplayed"
       key="is-panel-template"
-      :xs="sizeFieldResponsive.xs"
-      :sm="sizeFieldResponsive.sm"
-      :md="sizeFieldResponsive.md"
-      :lg="sizeFieldResponsive.lg"
-      :xl="sizeFieldResponsive.xl"
+      :xs="24"
+      :sm="12"
+      :md="8"
+      :lg="8"
+      :xl="8"
       :class="classField"
     >
       <el-form-item>
@@ -160,7 +160,6 @@ export default {
           break
       }
       return field
-      // return () => import(`@/components/ADempiere/Field/${this.field.componentPath}`)
     },
     fieldAttributes() {
       return {
@@ -173,7 +172,8 @@ export default {
         readonly: this.isReadOnly,
         displayed: this.isDisplayed,
         disabled: !this.field.isActive,
-        isSelectCreated: this.isSelectCreated
+        isSelectCreated: this.isSelectCreated,
+        placeholder: this.field.help ? this.field.help.slice(0, 40) + '...' : ''
       }
     },
     isDisplayed() {
@@ -269,75 +269,6 @@ export default {
       }
       return ''
     },
-    sizeFieldResponsive() {
-      if (!this.isDisplayed) {
-        return DEFAULT_SIZE
-      }
-
-      let sizeField = {}
-      if (this.field.size) {
-        // set field size property
-        sizeField = this.field.size
-      }
-      if (this.isEmptyValue(sizeField)) {
-        // set default size
-        sizeField = DEFAULT_SIZE
-      }
-
-      const newSizes = {}
-
-      // in table set max width, used by browser result and tab children of window
-      if (this.inTable) {
-        newSizes.xs = 24
-        newSizes.sm = 24
-        newSizes.md = 24
-        newSizes.lg = 24
-        newSizes.xl = 24
-        return newSizes
-      }
-      if (this.isAdvancedQuery) {
-        newSizes.xs = 24
-        newSizes.sm = 24
-        newSizes.md = 12
-        newSizes.lg = 12
-        newSizes.xl = 12
-        return newSizes
-      }
-
-      if (this.isPanelWindow) {
-        // TODO: Add FieldYesNo and name.length > 12 || 14
-        if (this.field.componentPath === 'FieldTextLong') {
-          return sizeField
-        }
-        // two columns if is mobile or desktop and show record navigation
-        if (this.getWidth <= 768 || (this.getWidth >= 768 && this.field.isShowedRecordNavigation)) {
-          newSizes.xs = 12
-          newSizes.sm = 12
-          newSizes.md = 12
-          newSizes.lg = 12
-          newSizes.xl = 12
-          return newSizes
-        } else if (this.inGroup && this.getWidth >= 992) {
-          newSizes.xs = sizeField.xs
-          newSizes.sm = sizeField.sm * 2
-          if (this.getWidth <= 1199) {
-            newSizes.md = sizeField.md
-          } else {
-            newSizes.md = sizeField.md * 2
-          }
-          if (this.field.groupAssigned !== '') {
-            newSizes.lg = sizeField.lg * 2
-            newSizes.xl = sizeField.xl * 2
-          } else {
-            newSizes.lg = sizeField.lg
-            newSizes.xl = sizeField.xl
-          }
-          return newSizes
-        }
-        return sizeField
-      }
-      return sizeField
-    }
   },
   watch: {
     metadataField(value) {
@@ -382,6 +313,7 @@ export default {
   .el-form-item {
     margin-bottom: 10px !important;
     margin-left: 10px;
+    // this.field.isShowedRecordNavigation
     margin-right: 10px;
   }
 
@@ -424,5 +356,11 @@ export default {
   }
   .pre-formatted {
     white-space: pre;
+  }
+  .el-submenu__title {
+    padding: 0;
+  }
+  .el-submenu .el-submenu__icon-arrow  {
+    visibility: hidden;
   }
 </style>

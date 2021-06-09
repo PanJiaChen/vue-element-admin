@@ -31,7 +31,7 @@
       type="number"
       :min="minValue"
       :max="maxValue"
-      :placeholder="metadata.help"
+      :placeholder="metadata.placeholder"
       :disabled="isDisabled"
       :precision="precision"
       :controls="isShowControls"
@@ -49,7 +49,7 @@
       key="number-displayed-blur"
       :ref="metadata.columnName"
       v-model="displayedValue"
-      :placeholder="metadata.help"
+      :placeholder="metadata.placeholder"
       :disabled="isDisabled"
       :class="cssClassStyle"
       readonly

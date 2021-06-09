@@ -19,7 +19,7 @@
   <el-cascader
     :ref="metadata.columnName"
     :v-model="[value]"
-    :placeholder="metadata.help"
+    :placeholder="metadata.placeholder"
     :options="options"
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"

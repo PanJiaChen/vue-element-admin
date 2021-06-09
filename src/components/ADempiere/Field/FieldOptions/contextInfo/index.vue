@@ -32,7 +32,7 @@
           <el-form-item :label="$t('field.container.description')">
             {{ fieldAttributes.description }}
           </el-form-item>
-          <el-form-item :label="$t('field.container.help')">
+          <el-form-item :label="$t('field.container.help')" style="word-break: normal">
             {{ fieldAttributes.help }}
           </el-form-item>
         </el-form>

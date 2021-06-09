@@ -23,7 +23,7 @@
     :rows="rows"
     :class="cssClassStyle"
     :type="typeTextBox"
-    :placeholder="metadata.help"
+    :placeholder="metadata.placeholder"
     :readonly="Boolean(metadata.readonly)"
     :disabled="isDisabled"
     :maxlength="maxLength"
@@ -110,8 +110,11 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
   .custom-field-text {
     max-height: 34px;
+  }
+  .el-textarea__inner {
+    resize: none !important;
   }
 </style>

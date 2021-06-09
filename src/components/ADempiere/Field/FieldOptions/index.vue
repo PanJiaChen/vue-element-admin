@@ -28,14 +28,7 @@
       @command="handleCommand"
       @click="false"
     >
-      <div style="display: flex;width: auto;">
-        <span :style="metadata.required && isEmptyValue(valueField) ? 'border: aqua; color: #f34b4b' : 'border: aqua;'">
-          <span key="is-field-name">
-            <!-- label or name of field in mobile -->
-            {{ metadata.name }}
-          </span>
-        </span>
-      </div>
+      <label-field :is-mandatory="metadata.required && isEmptyValue(valueField)" :label="metadata.name" :is-mobile="true" />
       <el-dropdown-menu slot="dropdown">
         <template
           v-for="(option, key) in optionsList"
@@ -46,29 +39,7 @@
             :command="option"
             divided
           >
-            <div class="contents">
-              <div
-                v-if="option.svg"
-                key="icon-svg-mobile"
-                style="margin-right: 5%"
-              >
-                <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
-              </div>
-              <div
-                v-else
-                key="icon-mobile"
-                style="margin-right: 5%;padding-top: 3%;"
-              >
-                <i :class="option.icon" style="font-weight: bolder;" />
-              </div>
-              <div>
-                <span class="contents">
-                  <b class="label">
-                    {{ option.name }}
-                  </b>
-                </span>
-              </div>
-            </div>
+            <label-popover-option :option="option" :is-mobile="true" />
           </el-dropdown-item>
         </template>
       </el-dropdown-menu>
@@ -88,14 +59,7 @@
     >
       <el-submenu index="menu">
         <template slot="title">
-          <div style="display: block;">
-            <span :style="metadata.required && isEmptyValue(valueField) ? 'border: aqua; color: #f34b4b' : 'border: aqua;'">
-              <span key="is-field-name">
-                <!-- label or name of field in desktop -->
-                {{ metadata.name }}
-              </span>
-            </span>
-          </div>
+          <label-field :is-mandatory="metadata.required && isEmptyValue(valueField)" :label="metadata.name" />
         </template>
         <el-menu-item
           v-for="(option, key) in optionsList"
@@ -115,29 +79,7 @@
               :field-value="valueField"
             />
             <el-button slot="reference" type="text" style="color: #606266;">
-              <div class="contents">
-                <div
-                  v-if="option.svg"
-                  key="icon-svg-desktop"
-                  style="margin-right: 5%;; padding-left: 2%;"
-                >
-                  <svg-icon :icon-class="option.icon" style="margin-right: 5px;" />
-                </div>
-                <div
-                  v-else
-                  key="icon-desktop"
-                  style="margin-right: 5%;padding-top: 3%;"
-                >
-                  <i :class="option.icon" style="font-weight: bolder;" />
-                </div>
-                <div>
-                  <span class="contents">
-                    <b class="label">
-                      {{ option.name }}
-                    </b>
-                  </span>
-                </div>
-              </div>
+              <label-popover-option :option="option" />
             </el-button>
           </el-popover>
         </el-menu-item>
@@ -158,10 +100,16 @@ import {
   documentStatusOptionItem, translateOptionItem,
   zoomInOptionItem, calculatorOptionItem
 } from '@/components/ADempiere/Field/FieldOptions/fieldOptionsList.js'
+import LabelField from './LabelField.vue'
+import LabelPopoverOption from './LabelPopoverOption.vue'
 import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils.js'
 
 export default defineComponent({
   name: 'FieldOptions',
+  components: {
+    LabelField,
+    LabelPopoverOption
+  },
 
   props: {
     metadata: {

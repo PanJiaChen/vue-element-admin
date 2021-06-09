@@ -19,8 +19,7 @@
   <el-switch
     :ref="metadata.columnName"
     v-model="value"
-    :inactive-text="$t('components.switchInactiveText')"
-    :active-text="$t('components.switchActiveText')"
+    :active-text="value ? $t('components.switchActiveText') : $t('components.switchInactiveText')"
     :class="cssClassStyle"
     :true-value="true"
     :false-value="false"
@@ -66,6 +65,7 @@ export default {
       return convertStringToBoolean(value)
     },
     preHandleChange(value) {
+      this.metadata.value = value
       this.handleFieldChange({ value })
       if (!this.metadata.inTable && !this.metadata.isAdvancedQuery) {
         this.isReadOnlyForm(this.value)
