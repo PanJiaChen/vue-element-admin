@@ -337,7 +337,7 @@ export default {
       return currentRecord
     },
     isDocumentTab() {
-      const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
+      const panel = this.isEmptyValue(this.windowMetadata.currentTabUuid) ? '' : this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
       if (!this.isEmptyValue(panel)) {
         return panel.isDocument
       }
@@ -345,7 +345,7 @@ export default {
       return this.windowMetadata.firstTab.isDocument
     },
     isWorkflowBarStatus() {
-      const panel = this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
+      const panel = this.isEmptyValue(this.windowMetadata.currentTabUuid) ? '' : this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
       if (!this.isEmptyValue(panel) && this.isDocumentTab && !this.isNewRecord) {
         return true
       }
