@@ -68,6 +68,15 @@
       width: 100% !important;
     }
 
+    .el-menu-item {
+      height: auto !important;
+      padding: 0;
+    }
+
+    .el-submenu__title {
+      height: auto !important;
+    }
+
     // menu hover
     .submenu-title-noDropdown,
     .el-submenu__title {
