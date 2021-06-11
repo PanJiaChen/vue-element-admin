@@ -112,7 +112,7 @@
                 <template slot-scope="scope">
                   <el-popover
                     v-if="!isEmptyValue(listOrderLine)"
-                    placement="right"
+                    placement="top-start"
                     trigger="click"
                     :title="$t('form.productInfo.productInformation')"
                   >
@@ -121,23 +121,29 @@
                       style="float: right; display: flex; line-height: 30px;"
                     >
                       <el-row :gutter="24">
-                        <el-col :span="4">
+                        <el-col :span="3">
                           <div>
-                            <el-avatar shape="square" :size="100" src="https://#" @error="true">
+                            <el-avatar v-if="isEmptyValue(scope.row.product.imageUrl)" shape="square" :size="100" src="https://#" @error="true">
                               <el-image>
                                 <div slot="error" class="image-slot">
                                   <i class="el-icon-picture-outline" />
                                 </div>
                               </el-image>
                             </el-avatar>
+                            <el-image
+                              v-else
+                              style="width: 100px; height: 100px"
+                              :src="scope.row.product.imageUrl"
+                              fit="contain"
+                            />
                           </div>
                         </el-col>
-                        <el-col :span="10">
+                        <el-col :span="16">
                           {{ $t('form.productInfo.code') }}: <b>{{ scope.row.product.value }}</b><br>
                           {{ $t('form.productInfo.name') }}: <b>{{ scope.row.product.name }}</b><br>
                           {{ $t('form.productInfo.description') }}: <b>{{ scope.row.product.description }}</b><br>
                         </el-col>
-                        <el-col :span="10">
+                        <el-col :span="5">
                           <div style="float: right">
                             {{ $t('form.productInfo.price') }}:
                             <b>{{ formatPrice(scope.row.product.priceStandard, pointOfSalesCurrency.iSOCode) }}</b>

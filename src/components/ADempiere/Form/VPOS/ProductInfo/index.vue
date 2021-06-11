@@ -52,37 +52,27 @@
             icon-class="shopping"
             class="el-input__icon"
           />
-          <!--
-          <i
-            class="el-icon-shopping-cart-full el-input__icon"
-          />
-          -->
         </template>
 
         <template slot-scope="props">
           <div class="header">
             <b> {{ props.item.product.value }} - {{ props.item.product.name }} </b>
           </div>
-          <el-row :gutter="20">
-            <el-col :span="12">
-              <span class="upc">
-                <!-- <b>UPC / EAN Barras:</b> <br> -->
+          <div>
+            <div style="float: left;width: 70%;">
+              <p style="overflow: hidden;text-overflow: ellipsis;text-align: inherit;">
                 {{ props.item.product.upc }} <br>
-                <span class="description">
-                  {{ props.item.product.description }}
-                </span>
-              </span>
-            </el-col>
-            <el-col :span="12">
-              <span class="price">
+                {{ props.item.product.description }}
+              </p>
+            </div>
+            <div style="width: 30%;float: right;">
+              <p style="overflow: hidden;text-overflow: ellipsis;text-align: end;">
                 {{ formatPrice(props.item.priceStandard, props.item.currency.iSOCode) }}
                 <br>
-                <span class="quantityAvailable">
-                  {{ formatQuantity(props.item.quantityAvailable) }}
-                </span>
-              </span>
-            </el-col>
-          </el-row>
+                {{ formatQuantity(props.item.quantityAvailable) }}
+              </p>
+            </div>
+          </div>
         </template>
       </el-autocomplete>
     </el-form-item>
