@@ -16,7 +16,7 @@
     </div>
     <div class="right-menu">
       <template v-if="device!=='mobile'">
-        <el-tooltip v-if="showGuide" content="Guia" placement="top-start">
+        <el-tooltip :content="$t('route.guide')" placement="top-start">
           <el-button icon="el-icon-info" type="text" style="color: black;font-size: larger" @click.prevent.stop="guide" />
         </el-tooltip>
         <search id="header-search" class="right-menu-item" />
@@ -101,7 +101,7 @@ export default {
     },
     showGuide() {
       const typeViews = this.$route.meta.type
-      if (!this.isEmptyValue(typeViews) && typeViews === 'form') {
+      if (!this.isEmptyValue(typeViews) && typeViews !== 'window') {
         return true
       }
       return false
@@ -123,23 +123,27 @@ export default {
       })
 
       return uri
+    },
+    fieldPanel() {
+      return this.$store.getters.getFieldsListFromPanel(this.$route.meta.uuid).filter(field => field.isShowedFromUser)
+    },
+    fieldWindow() {
+      const windowUuid = this.$store.getters.getWindow(this.$route.meta.uuid).currentTab.uuid
+      const list = this.$store.getters.getFieldsListFromPanel(windowUuid)
+      if (!this.isEmptyValue(list)) {
+        return list.filter(field => field.isShowedFromUserDefault)
+      }
+      return []
     }
   },
   mounted() {
     this.driver = new Driver()
   },
   methods: {
-    guide(value) {
-      const stepsPos = steps.filter(steps => this.isEmptyValue(steps.panel))
-      value = this.showCollection && this.isShowedPOSKeyLaout ? steps : stepsPos
+    guide() {
+      const value = this.formatGuide(this.$route.meta.type)
       this.driver.defineSteps(value)
       this.driver.start()
-    },
-    handleOpen(key, keyPath) {
-      console.log(key, keyPath)
-    },
-    handleClose(key, keyPath) {
-      console.log(key, keyPath)
     },
     isMenuOption() {
       this.isMenuMobile = !this.isMenuMobile
@@ -157,6 +161,51 @@ export default {
       this.$router.push({
         name: 'Profile'
       }, () => {})
+    },
+    formatGuide(type) {
+      let field
+      switch (type) {
+        case 'report':
+          field = this.fieldPanel.map(steps => {
+            return {
+              element: '#' + steps.columnName,
+              popover: {
+                title: steps.name,
+                description: steps.description,
+                position: 'top'
+              }
+            }
+          })
+          break
+        case 'process':
+          field = this.fieldPanel.map(steps => {
+            return {
+              element: '#' + steps.columnName,
+              popover: {
+                title: steps.name,
+                description: steps.description,
+                position: 'top'
+              }
+            }
+          })
+          break
+        case 'window':
+          field = this.fieldWindow.map(steps => {
+            return {
+              element: '#' + steps.columnName,
+              popover: {
+                title: steps.name,
+                description: steps.description,
+                position: 'top'
+              }
+            }
+          })
+          break
+        case 'form':
+          field = this.showCollection && this.isShowedPOSKeyLaout ? steps : steps.filter(steps => this.isEmptyValue(steps.panel))
+          break
+      }
+      return field
     }
   }
 }

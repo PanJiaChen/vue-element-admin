@@ -40,6 +40,7 @@
 
         <component
           :is="componentRender"
+          :id="field.panelType !== 'form' ? field.columnName : ''"
           :ref="field.columnName"
           :metadata="fieldAttributes"
           :value-model="recordDataFields"
@@ -50,6 +51,7 @@
   <component
     :is="componentRender"
     v-else
+    :id="field.panelType !== 'form' ? field.columnName : ''"
     key="is-table-template"
     :class="classField"
     :metadata="fieldAttributes"
