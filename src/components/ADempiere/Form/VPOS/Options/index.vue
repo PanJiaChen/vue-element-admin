@@ -30,7 +30,7 @@
     <el-collapse v-model="activeName" accordion>
       <el-collapse-item :title="$t('form.pos.optionsPoinSales.salesOrder.title')" name="salesOrder">
         <el-row :gutter="12" style="padding-right: 10px;">
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="isEmptyValue($route.query.action) ? 'cursor: not-allowed; text-align: center !important; color: gray;' : blockOption"
@@ -43,7 +43,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <el-popover
                 placement="right"
@@ -69,19 +69,11 @@
                     {{ $t('form.pos.optionsPoinSales.salesOrder.ordersHistory') }}
                   </el-button>
                 </p>
-                <!-- <p
-                  slot="reference"
-                  :style="blockOption"
-                >
-                  <svg-icon icon-class="list" />
-                  <br>
-                  {{ $t('form.pos.optionsPoinSales.salesOrder.ordersHistory') }}
-                </p> -->
               </el-popover>
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -94,7 +86,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -107,7 +99,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -120,7 +112,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -133,7 +125,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -146,7 +138,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -158,7 +150,7 @@
               </p>
             </el-card>
           </el-col>
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -170,7 +162,7 @@
               </p>
             </el-card>
           </el-col>
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -187,7 +179,7 @@
 
       <el-collapse-item :title="$t('form.pos.optionsPoinSales.cashManagement.title')" name="cashManagement">
         <el-row :gutter="12" style="padding-right: 10px;">
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -198,7 +190,7 @@
               </p>
             </el-card>
           </el-col>
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -209,7 +201,7 @@
               </p>
             </el-card>
           </el-col>
-          <el-col :span="size">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -225,12 +217,12 @@
       </el-collapse-item>
 
       <el-collapse-item :title="$t('form.pos.optionsPoinSales.generalOptions.title')" name="generalOptions">
-        <el-row :gutter="12" style="padding-right: 10px;">
+        <el-row :gutter="24" style="padding-right: 10px;">
           <el-col :span="size">
             <el-card shadow="hover">
-              <el-dropdown trigger="click" style="padding-top: 8px; color: black;" @command="changePos">
+              <el-dropdown trigger="click" style="padding-top: 8px;color: black;display: block;" @command="changePos">
                 <p
-                  :style="blockOption"
+                  style="cursor: pointer;text-align: center !important;color: black;min-height: 50px;margin: 0px;"
                 >
                   <i class="el-icon-mobile-phone" />
                   <br>
@@ -248,8 +240,8 @@
               </el-dropdown>
             </el-card>
           </el-col>
-
-          <el-col :span="8">
+          <!-- Product List Price -->
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <el-popover
                 placement="right"
@@ -272,7 +264,51 @@
               </el-popover>
             </el-card>
           </el-col>
-
+          <!-- List Warehouse -->
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
+            <el-card shadow="hover">
+              <el-dropdown trigger="click" style="padding-top: 8px;color: black;display: block;" @command="changePos">
+                <p
+                  style="cursor: pointer;text-align: center !important;color: black;min-height: 50px;margin: 0px;"
+                >
+                  <svg-icon icon-class="tree-table" />
+                  <br>
+                  {{ $t('form.pos.optionsPoinSales.generalOptions.changeWarehouseList') }}
+                </p>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    v-for="item in warehousesListPointOfSales"
+                    :key="item.uuid"
+                    :command="item"
+                  >
+                    {{ item.name }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-card>
+          </el-col>
+          <!-- List Price -->
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
+            <el-card shadow="hover">
+              <el-dropdown trigger="click" style="padding-top: 8px;color: black;display: block;" @command="changePos">
+                <p
+                  style="cursor: pointer;text-align: center !important;color: black;min-height: 50px;margin: 0px;"
+                >
+                  <svg-icon icon-class="list" />
+                  <br>
+                  {{ $t('form.pos.optionsPoinSales.generalOptions.changePriceList') }} </p>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item
+                    v-for="item in priceListPointOfSales"
+                    :key="item.uuid"
+                    :command="item"
+                  >
+                    {{ item.name }}
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
+            </el-card>
+          </el-col>
         </el-row>
       </el-collapse-item>
     </el-collapse>
@@ -347,9 +383,9 @@ export default {
     },
     blockOption() {
       if (!this.isEmptyValue(this.$route.query.pos)) {
-        return 'cursor: pointer; text-align: center !important; color: black'
+        return 'cursor: pointer; text-align: center !important; color: black;min-height: 50px;'
       }
-      return 'cursor: not-allowed; text-align: center !important; color: gray;'
+      return 'cursor: not-allowed; text-align: center !important; color: gray;min-height: 50px;'
     },
     size() {
       const size = this.$store.getters.getWidthLeft
@@ -475,7 +511,8 @@ export default {
       createOrder({
         posUuid,
         customerUuid: this.currentOrder.businessPartner.uuid,
-        salesRepresentativeUuid: this.currentOrder.salesRepresentative.uuid
+        salesRepresentativeUuid: this.currentOrder.salesRepresentative.uuid,
+        warehouseUuid: this.$store.getters.currentWarehouse.uuid
       })
         .then(order => {
           this.$store.dispatch('currentOrder', order)

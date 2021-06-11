@@ -144,22 +144,22 @@ export default {
       } else {
         this.amountConvertionTotal = this.amount
       }
-    },
-    currencyUuid(value) {
-      const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
-        if (currency.uuid === value) {
-          return currency
-        }
-      })
-      if (listCurrency === undefined) {
-        this.$store.dispatch('conversionDivideRate', {
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          conversionDate: this.formatDate(new Date()),
-          currencyToUuid: value
-        })
-      }
     }
+    // currencyUuid(value) {
+    //   const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
+    //     if (currency.uuid === value) {
+    //       return currency
+    //     }
+    //   })
+    //   if (listCurrency === undefined) {
+    //     this.$store.dispatch('conversionDivideRate', {
+    //       conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+    //       currencyFromUuid: this.pointOfSalesCurrency.uuid,
+    //       conversionDate: this.formatDate(new Date()),
+    //       currencyToUuid: value
+    //     })
+    //   }
+    // }
   },
   created() {
     this.defaultValueCurrency()

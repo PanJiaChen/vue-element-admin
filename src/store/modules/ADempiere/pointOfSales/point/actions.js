@@ -16,7 +16,10 @@
 
 import router from '@/router'
 import {
-  listPointOfSales
+  listPointOfSales,
+  listWarehouse,
+  listPrices,
+  listCurrencies
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -58,7 +61,55 @@ export default {
         })
       })
   },
-  setCurrentPOS({ commit, dispatch }, posToSet) {
+  listWarehouseFromServer({ commit }, posUuid) {
+    listWarehouse({
+      posUuid
+    })
+      .then(response => {
+        commit('listWarehouses', response.records)
+      })
+      .catch(error => {
+        console.warn(`listWarehouseFromServer: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
+  listPricesFromServer({ commit }, point) {
+    listPrices({
+      posUuid: point.uuid
+    })
+      .then(response => {
+        commit('listPrices', response.records)
+      })
+      .catch(error => {
+        console.warn(`listPricesFromServer: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
+  listCurrenciesFromServer({ commit }, posUuid) {
+    listCurrencies({
+      posUuid
+    })
+      .then(response => {
+        commit('listCurrencies', response.records)
+      })
+      .catch(error => {
+        console.warn(`listPricesFromServer: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
+  setCurrentPOS({ commit, dispatch, rootGetters }, posToSet) {
     commit('currentPointOfSales', posToSet)
     const oldRoute = router.app._route
     router.push({
@@ -71,7 +122,11 @@ export default {
         pos: posToSet.id
       }
     }, () => {})
-
+    dispatch('listWarehouseFromServer', posToSet.uuid)
+    dispatch('listCurrenciesFromServer', posToSet.uuid)
+    dispatch('listPricesFromServer', posToSet)
+    commit('currentListPrices', posToSet.priceList)
+    commit('currentWarehouse', rootGetters['user/getWarehouse'])
     commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')
     commit('setIsReloadProductPrice')

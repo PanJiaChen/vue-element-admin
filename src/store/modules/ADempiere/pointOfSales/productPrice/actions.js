@@ -58,9 +58,8 @@ export default {
         pageToken = token + '-' + pageNumber
       }
     }
-    const { priceList, templateBusinessPartner } = rootGetters.posAttributes.currentPointOfSales
+    const { templateBusinessPartner } = rootGetters.posAttributes.currentPointOfSales
     const { uuid: businessPartnerUuid } = templateBusinessPartner
-    const { uuid: priceListUuid } = priceList
     const { uuid: warehouseUuid } = rootGetters['user/getWarehouse']
     if (isEmptyValue(searchValue)) {
       searchValue = rootGetters.getValueOfField({
@@ -71,9 +70,9 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        priceListUuid,
+        priceListUuid: rootGetters.currentPriceList.uuid,
         businessPartnerUuid,
-        warehouseUuid,
+        warehouseUuid: rootGetters.currentWarehouse.uuid,
         pageToken
       }).then(responseProductPrice => {
         if (isEmptyValue(token) || isEmptyValue(pageToken)) {
@@ -130,9 +129,8 @@ export default {
       }
     }
 
-    const { priceList, templateBusinessPartner } = rootGetters.posAttributes.currentPointOfSales
+    const { templateBusinessPartner } = rootGetters.posAttributes.currentPointOfSales
     const { uuid: businessPartnerUuid } = templateBusinessPartner
-    const { uuid: priceListUuid } = priceList
     const { uuid: warehouseUuid } = rootGetters['user/getWarehouse']
 
     if (isEmptyValue(searchValue)) {
@@ -144,7 +142,7 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        priceListUuid,
+        priceListUuid: rootGetters.currentPriceList.uuid,
         businessPartnerUuid,
         warehouseUuid,
         pageToken

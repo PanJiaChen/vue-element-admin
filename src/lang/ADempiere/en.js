@@ -410,6 +410,7 @@ export default {
   form: {
     pos: {
       title: 'POS',
+      priceList: 'Price List',
       optionsPoinSales: {
         title: 'Quick Point of Sales Options',
         salesOrder: {
@@ -434,7 +435,9 @@ export default {
         generalOptions: {
           title: 'General Options',
           changePos: 'Change Point of Sale',
-          listProducts: 'Change Point of Sale'
+          listProducts: 'Change Point of Sale',
+          changeWarehouseList: 'Change Warehouse',
+          changePriceList: 'Change Price List'
         }
       },
       tableProduct: {
@@ -526,7 +529,7 @@ export default {
         description: 'Display the Point of Sale Options panel'
       },
       point: {
-        description: 'Displays the current point of sale'
+        description: 'Current point of sale information'
       },
       buttonPanelRightPos: {
         title: 'Show Right Panel',

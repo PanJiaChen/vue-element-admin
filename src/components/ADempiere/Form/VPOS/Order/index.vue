@@ -189,20 +189,62 @@
                 </el-button>
               </span>
               <br>
-              <p id="point">
+              <p id="point" style="margin-bottom: 5%;margin-top: 3%;">
                 <el-dropdown
                   v-if="!isEmptyValue(currentPointOfSales)"
                   trigger="click"
-                  style="padding-top: 8px; color: black;"
+                  class="info-pos"
                   @command="changePos"
                 >
-                  <p>
+                  <span>
                     <i class="el-icon-mobile-phone" />
                     {{ $t('form.pos.order.pointSale') }}: <b style="cursor: pointer"> {{ currentPointOfSales.name }} </b>
-                  </p>
+                  </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
                       v-for="item in listPointOfSales"
+                      :key="item.uuid"
+                      :command="item"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <br>
+                <el-dropdown
+                  v-if="!isEmptyValue(curretnWarehouse)"
+                  trigger="click"
+                  class="info-pos"
+                  @command="changeWarehouse"
+                >
+                  <span>
+                    <svg-icon icon-class="tree" />
+                    {{ $t('route.warehouse') }}: <b style="cursor: pointer"> {{ curretnWarehouse.name }} </b>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-for="item in listWarehouse"
+                      :key="item.uuid"
+                      :command="item"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <br>
+                <el-dropdown
+                  v-if="!isEmptyValue(curretnPriceList)"
+                  trigger="click"
+                  class="info-pos"
+                  @command="changePriceList"
+                >
+                  <span>
+                    <svg-icon icon-class="tree-table" />
+                    {{ $t('form.pos.priceList') }}: <b style="cursor: pointer"> {{ curretnPriceList.name }} </b>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-for="item in pointPriceList"
                       :key="item.uuid"
                       :command="item"
                     >
@@ -513,6 +555,31 @@ export default {
     currentLineOrder() {
       const line = this.$store.state['pointOfSales/orderLine/index'].line
       return line
+    },
+    curretnPriceList() {
+      if (!this.isEmptyValue(this.$store.getters.currentPriceList)) {
+        return this.$store.getters.currentPriceList
+      }
+      return {}
+    },
+    pointPriceList() {
+      const list = this.$store.getters.posAttributes.currentPointOfSales.listPrices
+      if (this.isEmptyValue(list)) {
+        return []
+      }
+      return list
+    },
+    curretnWarehouse() {
+      if (!this.isEmptyValue(this.$store.getters['user/getWarehouse'])) {
+        return this.$store.getters['user/getWarehouse']
+      }
+      return {}
+    },
+    listWarehouse() {
+      if (!this.isEmptyValue(this.$store.getters.currentWarehouse)) {
+        return this.$store.getters.currentWarehouse
+      }
+      return []
     }
   },
   mounted() {
@@ -598,6 +665,12 @@ export default {
       this.$store.dispatch('setCurrentPOS', posElement)
       this.newOrder()
     },
+    changeWarehouse(warehouse) {
+      this.$store.commit('currentWarehouse', warehouse)
+    },
+    changePriceList(priceList) {
+      this.$store.commit('currentListPrices', priceList)
+    },
     arrowTop() {
       if (this.currentTable > 0) {
         this.currentTable--
@@ -652,11 +725,15 @@ export default {
   .keypad {
     float: left;
     height: 20%;
-    padding-top: 25px;
+    padding-top: 10px;
   }
   .total {
     margin-top: 10px;
     margin-bottom: 10px
+  }
+  .info-pos {
+    padding-top: 10px;
+    color: black;
   }
   .split {
     -webkit-box-sizing: border-box;

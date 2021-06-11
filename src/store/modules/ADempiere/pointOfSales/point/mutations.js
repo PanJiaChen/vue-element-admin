@@ -30,6 +30,24 @@ export default {
   listPointOfSales(state, listPointOfSales) {
     state.listPointOfSales = listPointOfSales
   },
+  listWarehouses(state, listWarehouses) {
+    state.listWarehouses = listWarehouses
+  },
+  currentListPrices(state, listPrices) {
+    state.currentlistPrices = listPrices
+  },
+  currentWarehouse(state, warehouse) {
+    state.currentWarehouse = warehouse
+  },
+  listPrices(state, listPrices) {
+    state.listPrices = listPrices
+  },
+  listCurrencies(state, listCurrency) {
+    state.listCurrency = listCurrency
+  },
+  conversionList(state, conversion) {
+    state.conversionList.push(conversion)
+  },
   currentPointOfSales(state, currentPointOfSales) {
     state.currentPointOfSales = currentPointOfSales
   },

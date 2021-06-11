@@ -81,11 +81,32 @@ export default {
         uuid: '',
         iSOCode: '',
         curSymbol: '',
-        amountConvertion: 1
+        amountConvertion: 1,
+        divideRate: 1
       }
     },
     listPointOfSales() {
       return this.$store.getters.posAttributes.listPointOfSales
+    },
+    curretnPriceList() {
+      if (!this.isEmptyValue(this.$store.getters.currentPriceList)) {
+        return this.$store.getters.currentPriceList
+      }
+      return {}
+    },
+    priceListPointOfSales() {
+      const list = this.$store.getters.posAttributes.currentPointOfSales.listPrices
+      if (this.isEmptyValue(list)) {
+        return []
+      }
+      return list
+    },
+    warehousesListPointOfSales() {
+      const list = this.$store.getters.posAttributes.currentPointOfSales.listWarehouses
+      if (this.isEmptyValue(list)) {
+        return []
+      }
+      return list
     },
     ordersList() {
       if (this.isEmptyValue(this.currentPointOfSales)) {
@@ -223,10 +244,12 @@ export default {
       }
 
       const searchProduct = (typeof searchValue === 'object') ? searchValue.value : searchValue
-
+      if (this.isEmptyValue(this.curretnPriceList)) {
+        return
+      }
       findProduct({
         searchValue: searchProduct,
-        priceListUuid: this.currentPointOfSales.priceList.uuid
+        priceListUuid: this.curretnPriceList.uuid
       })
         .then(productPrice => {
           this.product = productPrice.product

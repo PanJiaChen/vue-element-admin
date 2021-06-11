@@ -111,6 +111,25 @@ export default {
     const payment = state.paymentBox
     payment.splice(0)
   },
+  searchConversion({ commit }, params) {
+    requestGetConversionRate({
+      conversionTypeUuid: params.conversionTypeUuid,
+      currencyFromUuid: params.currencyFromUuid,
+      currencyToUuid: params.currencyToUuid,
+      conversionDate: params.conversionDate
+    })
+      .then(response => {
+        commit('conversionList', response)
+      })
+      .catch(error => {
+        console.warn(`conversionDivideRate: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
   conversionDivideRate({ commit, dispatch }, params) {
     return requestGetConversionRate({
       conversionTypeUuid: params.conversionTypeUuid,

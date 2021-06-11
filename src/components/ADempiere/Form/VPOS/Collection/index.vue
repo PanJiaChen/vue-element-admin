@@ -63,17 +63,24 @@
                 <b>{{ $t('form.pos.collect.dayRate') }}:</b>
                 <!-- Conversion rate to date -->
                 <b v-if="!isEmptyValue(dateRate)" style="float: right;">
-                  <span v-if="formatConversionCurrenty(dateRate.amountConvertion) > 100">
-                    {{
-                      formatPrice(formatConversionCurrenty(dateRate.amountConvertion), dateRate.iSOCode)
-                    }}
+                  <span v-if="!isEmptyValue(dateRate.divideRate)">
+                    <span v-if="formatConversionCurrenty(dateRate.divideRate) > 1">
+                      {{
+                        formatPrice(formatConversionCurrenty(dateRate.divideRate), dateRate.currencyTo.iSOCode)
+                      }}
+                    </span>
+                    <span v-else>
+                      {{
+                        dateRate.currencyTo.iSOCode
+                      }}
+                      {{
+                        formatConversionCurrenty(dateRate.divideRate)
+                      }}
+                    </span>
                   </span>
                   <span v-else>
                     {{
-                      dateRate.iSOCode
-                    }}
-                    {{
-                      formatConversionCurrenty(dateRate.amountConvertion)
+                      formatPrice(1, dateRate.iSOCode)
                     }}
                   </span>
                 </b>
@@ -93,10 +100,38 @@
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <!-- Add selected currency symbol -->
                     <field-definition
+                      v-if="field.columnName === 'PayAmt' || field.columnName === 'TenderType'"
                       :key="field.columnName"
                       :metadata-field="field.columnName === 'PayAmt' ? {
                         ...field,
-                        labelCurrency: dateRate
+                        labelCurrency: isEmptyValue(dateRate.divideRate) ? dateRate : dateRate.currencyTo
+                      } : field"
+                    />
+                  </el-col>
+                  <el-col :span="8">
+                    <el-form-item :label="fieldsList[1].name">
+                      <el-select
+                        v-model="currentFieldCurrency"
+                        :placeholder="fieldsList[1].help"
+                        @change="changeCurrency"
+                      >
+                        <el-option
+                          v-for="item in listCurrency"
+                          :key="item.id"
+                          :label="item.name"
+                          :value="item.key"
+                        />
+                      </el-select>
+                    </el-form-item>
+                  </el-col>
+                  <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
+                    <!-- Add selected currency symbol -->
+                    <field-definition
+                      v-if="field.columnName !== 'PayAmt' && field.columnName !== 'TenderType' && field.columnName !== 'C_Currency_ID'"
+                      :key="field.columnName"
+                      :metadata-field="field.columnName === 'PayAmt' ? {
+                        ...field,
+                        labelCurrency: isEmptyValue(dateRate.divideRate) ? dateRate : dateRate.currencyTo
                       } : field"
                     />
                   </el-col>
@@ -272,10 +307,18 @@ export default {
       defaultLabel: '',
       fieldsList: fieldsListCollection,
       sendToServer: false,
-      amontSend: 0
+      value: '',
+      amontSend: 0,
+      currentFieldCurrency: ''
     }
   },
   computed: {
+    listCurrency() {
+      return this.$store.state['pointOfSales/point/index'].listCurrency
+    },
+    convertionList() {
+      return this.$store.state['pointOfSales/point/index'].conversionList
+    },
     validateCompleteCollection() {
       let collection
       if (this.pay === this.currentOrder.grandTotal) {
@@ -488,11 +531,15 @@ export default {
       return this.$store.getters.getUpdatePaymentPos
     },
     dateRate() {
-      return this.$store.getters.getConvertionRate.find(currency => {
-        if (currency.id === this.typeCurrency) {
+      const convertion = this.convertionList.find(currency => {
+        if ((currency.currencyTo.iSOCode === this.currentFieldCurrency) && (this.pointOfSalesCurrency.iSOCode !== currency.currencyTo.iSOCode)) {
           return currency
         }
       })
+      if (!this.isEmptyValue(convertion)) {
+        return convertion
+      }
+      return this.pointOfSalesCurrency
     },
     fieldsPaymentType() {
       return this.fieldsList[2]
@@ -503,24 +550,24 @@ export default {
       this.$store.commit('updateValueOfField', {
         containerUuid: this.containerUuid,
         columnName: 'PayAmt',
-        value
+        value: value
       })
     },
-    currencyUuid(value) {
-      const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
-        if (currency.uuid === value) {
-          return currency
-        }
-      })
-      if (listCurrency === undefined) {
-        this.$store.dispatch('conversionDivideRate', {
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          conversionDate: this.formatDate(new Date()),
-          currencyToUuid: value
-        })
-      }
-    },
+    // currencyUuid(value) {
+    //   const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
+    //     if (currency.uuid === value) {
+    //       return currency
+    //     }
+    //   })
+    //   if (listCurrency === undefined) {
+    //     this.$store.dispatch('conversionDivideRate', {
+    //       conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+    //       currencyFromUuid: this.pointOfSalesCurrency.uuid,
+    //       conversionDate: this.formatDate(new Date()),
+    //       currencyToUuid: value
+    //     })
+    //   }
+    // },
     convertAllPayment(value) {
       if (!this.isEmptyValue(value)) {
         this.allPayCurrency = this.pay / value
@@ -537,11 +584,11 @@ export default {
       }
     },
     dateRate(value) {
-      if (value && !this.isEmptyValue(value.amountConvertion)) {
+      if (!this.isEmptyValue(value.divideRate)) {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
-          value: this.pending / value.amountConvertion
+          value: this.pending / value.divideRate
         })
       } else {
         this.$store.commit('updateValueOfField', {
@@ -565,6 +612,7 @@ export default {
     }
   },
   created() {
+    this.currentFieldCurrency = this.pointOfSalesCurrency.iSOCode
     this.$store.dispatch('addRateConvertion', this.pointOfSalesCurrency)
     this.unsubscribe = this.subscribeChanges()
     this.defaultValueCurrency()
@@ -724,6 +772,7 @@ export default {
       this.defaultValueCurrency()
       this.$store.commit('currencyDivideRateCollection', 1)
       this.$store.commit('currencyMultiplyRate', 1)
+      this.currentFieldCurrency = this.pointOfSalesCurrency.iSOCode
     },
     exit() {
       this.$store.commit('setShowPOSCollection', false)
@@ -865,6 +914,19 @@ export default {
           }
         }
       })
+    },
+    changeCurrency(value) {
+      this.currentFieldCurrency = value
+      const currency = this.listCurrency.find(currency => currency.key === value)
+      const findCoventionList = this.convertionList.find(convertion => convertion.currencyTo.iSOCode === value)
+      if (!this.isEmptyValue(currency) && this.isEmptyValue(findCoventionList) && (value !== this.pointOfSalesCurrency.iSOCode)) {
+        this.$store.dispatch('searchConversion', {
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+          currencyFromUuid: this.pointOfSalesCurrency.uuid,
+          conversionDate: this.formatDate(new Date()),
+          currencyToUuid: currency.uuid
+        })
+      }
     }
   }
 }

@@ -34,7 +34,7 @@ export default {
    * @param {string} customerUuid Customer Uuid
    * @param {string} salesRepresentativeUuid Sales Representative Uuid
    */
-  createOrder({ commit, dispatch }, {
+  createOrder({ commit, dispatch, rootGetters }, {
     posUuid,
     customerUuid,
     salesRepresentativeUuid
@@ -42,7 +42,8 @@ export default {
     return createOrder({
       posUuid,
       customerUuid,
-      salesRepresentativeUuid
+      salesRepresentativeUuid,
+      warehouseUuid: rootGetters.currentWarehouse.uuid
     })
       .then(order => {
         commit('setOrder', order)
@@ -66,7 +67,7 @@ export default {
    * @param {string} posUuid Order Uuid
    * @param {string} customerUuid Customer Uuid
    */
-  updateOrder({ commit, dispatch }, {
+  updateOrder({ commit, dispatch, rootGetters }, {
     orderUuid,
     posUuid,
     customerUuid
@@ -74,7 +75,7 @@ export default {
     updateOrder({
       orderUuid,
       posUuid,
-      customerUuid
+      warehouseUuid: rootGetters.currentWarehouse.uuid
     })
       .then(response => {
         dispatch('reloadOrder', { orderUuid: response.uuid })
