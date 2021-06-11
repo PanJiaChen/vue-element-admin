@@ -20,6 +20,7 @@ import {
   deleteOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { formatPercent } from '@/utils/ADempiere/valueFormat.js'
+import { showMessage } from '@/utils/ADempiere/notification.js'
 
 export default {
   name: 'OrderLineMixin',
@@ -55,6 +56,12 @@ export default {
           label: 'Total',
           isNumeric: true,
           size: 'auto'
+        },
+        convertedAmount: {
+          columnName: 'ConvertedAmount',
+          label: this.$t('form.pos.collect.convertedAmount'),
+          isNumeric: true,
+          size: 'auto'
         }
       },
       currentOrderLine: {
@@ -67,11 +74,18 @@ export default {
         taxIndicator: 0,
         quantityOrdered: 0,
         uuid: ''
+      },
+      totalAmountConvertedLine: {
       }
     }
   },
   computed: {
 
+  },
+  created() {
+    const currentCurrency = this.$store.getters.posAttributes.listPointOfSales.find(pos =>
+      pos.priceList.currency.uuid !== this.$store.getters.posAttributes.currentPointOfSales.priceList.currency.uuid)
+    this.convertedAmountAsTotal(currentCurrency.priceList.currency)
   },
   methods: {
     formatPercent,
@@ -186,6 +200,40 @@ export default {
           })
         })
     },
+    convertedAmountAsTotal(value) {
+      this.$store.dispatch('conversionDivideRate', {
+        conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+        currencyFromUuid: this.pointOfSalesCurrency.uuid,
+        currencyToUuid: value.uuid
+      })
+        .then(response => {
+          if (!this.isEmptyValue(response.currencyTo)) {
+            const currency = {
+              ...response.currencyTo,
+              amountConvertion: response.divideRate,
+              multiplyRate: response.multiplyRate
+            }
+            this.totalAmountConvertedLine = currency
+          } else {
+            this.totalAmountConvertedLine.multiplyRate = '1'
+            this.totalAmountConvertedLine.iSOCode = value.iSOCode
+          }
+        })
+        .catch(error => {
+          console.warn(`conversionDivideRate: ${error.message}. Code: ${error.code}.`)
+          showMessage({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+    },
+    getTotalAmount(basePrice, multiplyRate) {
+      if (this.isEmptyValue(basePrice) || this.isEmptyValue(multiplyRate)) {
+        return 0
+      }
+      return (basePrice * multiplyRate)
+    },
     /**
      * Show the correct display format
      * @param {object} row record
@@ -205,6 +253,8 @@ export default {
         return this.formatPercent(row.discount / 100)
       } else if (columnName === 'GrandTotal') {
         return this.formatPrice(row.grandTotal, currency)
+      } else if (columnName === 'ConvertedAmount') {
+        return this.formatPrice(this.getTotalAmount(row.grandTotal, this.totalAmountConvertedLine.multiplyRate), this.totalAmountConvertedLine.iSOCode)
       }
     },
     productPrice(price, discount) {

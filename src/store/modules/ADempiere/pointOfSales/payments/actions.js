@@ -112,7 +112,7 @@ export default {
     payment.splice(0)
   },
   conversionDivideRate({ commit, dispatch }, params) {
-    requestGetConversionRate({
+    return requestGetConversionRate({
       conversionTypeUuid: params.conversionTypeUuid,
       currencyFromUuid: params.currencyFromUuid,
       currencyToUuid: params.currencyToUuid,
@@ -137,6 +137,7 @@ export default {
           commit('currencyMultiplyRate', multiplyRate)
           commit('currencyDivideRateCollection', divideRate)
         }
+        return response
       })
       .catch(error => {
         console.warn(`conversionDivideRate: ${error.message}. Code: ${error.code}.`)
