@@ -83,9 +83,9 @@ export default {
 
   },
   created() {
-    const currentCurrency = this.$store.getters.posAttributes.listPointOfSales.find(pos =>
-      pos.priceList.currency.uuid !== this.$store.getters.posAttributes.currentPointOfSales.priceList.currency.uuid)
-    this.convertedAmountAsTotal(currentCurrency.priceList.currency)
+    if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency)) {
+      this.convertedAmountAsTotal(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency)
+    }
   },
   methods: {
     formatPercent,

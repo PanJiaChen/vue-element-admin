@@ -474,6 +474,7 @@ export default {
         payment: 'Payment',
         change: 'Change',
         convertAmount: 'Convert Quantity',
+        convertedAmount: 'Converted Amount',
         fullPayment: 'Full Payment',
         dayRate: 'Day Rate',
         TenderType: {

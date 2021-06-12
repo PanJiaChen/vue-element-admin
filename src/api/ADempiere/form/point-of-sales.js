@@ -376,10 +376,9 @@ export function getKeyLayout({ keyLayoutUuid }) {
 // ListProductPrice
 export function getProductPriceList({
   searchValue,
-  priceListUuid,
   businessPartnerUuid,
-  warehouseUuid,
   validFrom,
+  posUuid,
   // Query
   // criteria,
   pageSize,
@@ -389,11 +388,10 @@ export function getProductPriceList({
     url: `${config.pointOfSales.endpoint}/product-prices`,
     method: 'get',
     params: {
-      price_list_uuid: priceListUuid,
+      pos_uuid: posUuid,
       search_value: searchValue,
       valid_from: validFrom,
       business_partner_uuid: businessPartnerUuid,
-      warehouse_uuid: warehouseUuid,
       page_size: pageSize,
       page_token: pageToken
     }

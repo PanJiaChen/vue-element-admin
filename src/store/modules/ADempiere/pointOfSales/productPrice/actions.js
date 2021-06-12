@@ -58,7 +58,8 @@ export default {
         pageToken = token + '-' + pageNumber
       }
     }
-    const { templateBusinessPartner } = rootGetters.posAttributes.currentPointOfSales
+    const currentPointOfSales = rootGetters.posAttributes.currentPointOfSales
+    const { templateBusinessPartner } = currentPointOfSales
     const { uuid: businessPartnerUuid } = templateBusinessPartner
     const { uuid: warehouseUuid } = rootGetters['user/getWarehouse']
     if (isEmptyValue(searchValue)) {
@@ -70,9 +71,8 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        priceListUuid: rootGetters.currentPriceList.uuid,
+        posUuid: currentPointOfSales.uuid,
         businessPartnerUuid,
-        warehouseUuid: rootGetters.currentWarehouse.uuid,
         pageToken
       }).then(responseProductPrice => {
         if (isEmptyValue(token) || isEmptyValue(pageToken)) {
@@ -91,7 +91,7 @@ export default {
 
         resolve(responseProductPrice)
       }).catch(error => {
-        console.warn(`getKeyLayoutFromServer: ${error.message}. Code: ${error.code}.`)
+        console.warn(`getProductPriceList: ${error.message}. Code: ${error.code}.`)
         showMessage({
           type: 'error',
           message: error.message,
@@ -142,9 +142,8 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        priceListUuid: rootGetters.currentPriceList.uuid,
+        posUuid: rootGetters.currentPointOfSales.uuid,
         businessPartnerUuid,
-        warehouseUuid,
         pageToken
       }).then(responseProductPrice => {
         if (isEmptyValue(token) || isEmptyValue(pageToken)) {

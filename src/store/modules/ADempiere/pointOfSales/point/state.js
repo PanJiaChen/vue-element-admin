@@ -30,7 +30,7 @@ export default {
   listPointOfSales: {},
   listWarehouses: {},
   listPrices: {},
-  currentlistPrices: {},
+  currentPriceList: {},
   currentWarehouse: {},
   listCurrency: [],
   conversionList: [],

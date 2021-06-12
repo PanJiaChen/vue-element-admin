@@ -115,8 +115,8 @@ export default {
    * Current Price List
    */
   currentPriceList: (state) => {
-    if (!isEmptyValue(state.currentlistPrices)) {
-      return state.currentlistPrices
+    if (!isEmptyValue(state.currentPriceList)) {
+      return state.currentPriceList
     }
     return {}
   },
@@ -129,4 +129,5 @@ export default {
     }
     return {}
   }
+  // Current POS, it can be s
 }

@@ -25,9 +25,8 @@ export function getProductPrice({
   upc,
   value,
   name,
-  priceListUuid,
+  posUuid,
   businessPartnerUuid,
-  warehouseUuid,
   validFrom
 }) {
   return request({
@@ -38,9 +37,8 @@ export function getProductPrice({
       upc,
       value,
       name,
-      price_list_uuid: priceListUuid,
+      pos_uuid: posUuid,
       business_partner_uuid: businessPartnerUuid,
-      warehouse_uuid: warehouseUuid,
       valid_from: validFrom
     }
   })

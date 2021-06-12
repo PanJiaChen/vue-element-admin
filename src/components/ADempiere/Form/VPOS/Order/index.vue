@@ -675,7 +675,7 @@ export default {
       this.$store.commit('currentWarehouse', warehouse)
     },
     changePriceList(priceList) {
-      this.$store.commit('currentListPrices', priceList)
+      this.$store.commit('currentPriceList', priceList)
     },
     arrowTop() {
       if (this.currentTable > 0) {
