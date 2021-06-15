@@ -111,7 +111,7 @@ export default {
       return this.$store.getters.getShowCollectionPos
     },
     listPointOfSales() {
-      return this.$store.getters.posAttributes.listPointOfSales
+      return this.$store.getters.posAttributes.pointOfSalesList
     }
   },
   watch: {

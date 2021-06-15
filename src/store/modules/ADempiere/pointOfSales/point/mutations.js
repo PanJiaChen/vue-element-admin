@@ -16,31 +16,31 @@
 
 /**
  * Pos Mutations
- * @author Elsio Sanchez <elsiosanches@gmail.com>
+ * All related to global store of Point of Sales
  */
 export default {
-  listPointOfSales(state, listPointOfSales) {
-    state.listPointOfSales = listPointOfSales
+  setPointOfSalesList(state, pointOfSalesList) {
+    state.pointOfSalesList = pointOfSalesList
   },
-  listWarehouses(state, listWarehouses) {
-    state.listWarehouses = listWarehouses
+  setWarehousesList(state, warehousesList) {
+    state.warehousesList = warehousesList
   },
-  currentPriceList(state, priceList) {
-    state.currentPriceList = priceList
+  setCurrentPriceList(state, currentPriceList) {
+    state.currentPriceList = currentPriceList
   },
-  currentWarehouse(state, warehouse) {
+  setCurrentWarehouse(state, warehouse) {
     state.currentWarehouse = warehouse
   },
-  listPrices(state, listPrices) {
-    state.listPrices = listPrices
+  setPricesList(state, pricesList) {
+    state.pricesList = pricesList
   },
-  listCurrencies(state, listCurrency) {
-    state.listCurrency = listCurrency
+  setCurrenciesList(state, currenciesList) {
+    state.currenciesList = currenciesList
   },
-  conversionList(state, conversion) {
-    state.conversionList.push(conversion)
+  addConversionToList(state, conversion) {
+    state.conversionsList.push(conversion)
   },
-  currentPointOfSales(state, currentPointOfSales) {
+  setCurrentPointOfSales(state, currentPointOfSales) {
     state.currentPointOfSales = currentPointOfSales
   },
   setShowPOSOptions(state, isShowedOptions) {

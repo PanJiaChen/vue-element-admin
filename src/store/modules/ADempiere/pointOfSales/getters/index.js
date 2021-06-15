@@ -50,12 +50,13 @@ export default {
    */
   posAttributes: (state) => {
     return {
-      listPointOfSales: state.listPointOfSales,
+      pointOfSalesList: state.pointOfSalesList,
       currentPointOfSales: {
         ...state.currentPointOfSales,
         listOrder: state.listOrder,
-        listWarehouses: state.listWarehouses,
-        listPrices: state.listPrices,
+        warehousesList: state.warehousesList,
+        pricesList: state.pricesList,
+        currentPriceList: state.currentPriceList,
         currentOrder: {
           ...state.order,
           lineOrder: state.listOrderLine,

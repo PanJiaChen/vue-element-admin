@@ -218,14 +218,14 @@
                 </el-dropdown>
                 <br>
                 <el-dropdown
-                  v-if="!isEmptyValue(curretnWarehouse)"
+                  v-if="!isEmptyValue(currentWarehouse)"
                   trigger="click"
                   class="info-pos"
                   @command="changeWarehouse"
                 >
                   <span>
                     <svg-icon icon-class="tree" />
-                    {{ $t('route.warehouse') }}: <b style="cursor: pointer"> {{ curretnWarehouse.name }} </b>
+                    {{ $t('route.warehouse') }}: <b style="cursor: pointer"> {{ currentWarehouse.name }} </b>
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
@@ -239,14 +239,14 @@
                 </el-dropdown>
                 <br>
                 <el-dropdown
-                  v-if="!isEmptyValue(curretnPriceList)"
+                  v-if="!isEmptyValue(currentPriceList)"
                   trigger="click"
                   class="info-pos"
                   @command="changePriceList"
                 >
                   <span>
                     <svg-icon icon-class="tree-table" />
-                    {{ $t('form.pos.priceList') }}: <b style="cursor: pointer"> {{ curretnPriceList.name }} </b>
+                    {{ $t('form.pos.priceList') }}: <b style="cursor: pointer"> {{ currentPriceList.name }} </b>
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
@@ -523,7 +523,7 @@ export default {
       }
     },
     listPointOfSales() {
-      return this.$store.getters.posAttributes.listPointOfSales
+      return this.$store.getters.posAttributes.pointOfSalesList
     },
     ordersList() {
       if (this.isEmptyValue(this.currentPointOfSales)) {
@@ -562,28 +562,28 @@ export default {
       const line = this.$store.state['pointOfSales/orderLine/index'].line
       return line
     },
-    curretnPriceList() {
+    currentPriceList() {
       if (!this.isEmptyValue(this.$store.getters.currentPriceList)) {
         return this.$store.getters.currentPriceList
       }
       return {}
     },
     pointPriceList() {
-      const list = this.$store.getters.posAttributes.currentPointOfSales.listPrices
+      const list = this.$store.getters.posAttributes.currentPointOfSales.pricesList
       if (this.isEmptyValue(list)) {
         return []
       }
       return list
     },
-    curretnWarehouse() {
+    currentWarehouse() {
       if (!this.isEmptyValue(this.$store.getters['user/getWarehouse'])) {
         return this.$store.getters['user/getWarehouse']
       }
       return {}
     },
     listWarehouse() {
-      if (!this.isEmptyValue(this.$store.getters.currentWarehouse)) {
-        return this.$store.getters.currentWarehouse
+      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.warehousesList)) {
+        return this.$store.getters.posAttributes.currentPointOfSales.warehousesList
       }
       return []
     }
@@ -667,15 +667,15 @@ export default {
         this.$store.dispatch('listOrderLine', [])
       })
     },
-    changePos(posElement) {
-      this.$store.dispatch('setCurrentPOS', posElement)
+    changePos(pointOfSales) {
+      this.$store.dispatch('setCurrentPOS', pointOfSales)
       this.newOrder()
     },
     changeWarehouse(warehouse) {
-      this.$store.commit('currentWarehouse', warehouse)
+      this.$store.commit('setCurrentWarehouse', warehouse)
     },
     changePriceList(priceList) {
-      this.$store.commit('currentPriceList', priceList)
+      this.$store.commit('setCurrentPriceList', priceList)
     },
     arrowTop() {
       if (this.currentTable > 0) {

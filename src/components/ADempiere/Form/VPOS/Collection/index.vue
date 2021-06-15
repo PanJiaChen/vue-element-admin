@@ -317,7 +317,7 @@ export default {
       return this.$store.state['pointOfSales/point/index'].listCurrency
     },
     convertionList() {
-      return this.$store.state['pointOfSales/point/index'].conversionList
+      return this.$store.state['pointOfSales/point/index'].conversionsList
     },
     validateCompleteCollection() {
       let collection

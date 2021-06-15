@@ -34,22 +34,22 @@ export default {
    */
   listPointOfSalesFromServer({ commit, getters, dispatch }, posToSet = null) {
     const userUuid = getters['user/getUserUuid']
-    let pos, listPos
+    let pos, pontOfSalesList
     listPointOfSales({
       userUuid
     })
       .then(response => {
-        listPos = response.sellingPointsList
+        pontOfSalesList = response.sellingPointsList
         if (!isEmptyValue(posToSet)) {
-          pos = listPos.find(itemPOS => itemPOS.id === parseInt(posToSet))
+          pos = pontOfSalesList.find(itemPOS => itemPOS.id === parseInt(posToSet))
         }
         if (isEmptyValue(pos) && isEmptyValue(posToSet)) {
-          pos = listPos.find(itemPOS => itemPOS.salesRepresentative.uuid === userUuid)
+          pos = pontOfSalesList.find(itemPOS => itemPOS.salesRepresentative.uuid === userUuid)
         }
         if (isEmptyValue(pos)) {
-          pos = listPos[0]
+          pos = pontOfSalesList[0]
         }
-        commit('listPointOfSales', listPos)
+        commit('setPointOfSalesList', pontOfSalesList)
         dispatch('setCurrentPOS', pos)
       })
       .catch(error => {
@@ -66,7 +66,7 @@ export default {
       posUuid
     })
       .then(response => {
-        commit('listWarehouses', response.records)
+        commit('setWarehousesList', response.records)
       })
       .catch(error => {
         console.warn(`listWarehouseFromServer: ${error.message}. Code: ${error.code}.`)
@@ -82,7 +82,7 @@ export default {
       posUuid: point.uuid
     })
       .then(response => {
-        commit('listPrices', response.records)
+        commit('setPricesList', response.records)
       })
       .catch(error => {
         console.warn(`listPricesFromServer: ${error.message}. Code: ${error.code}.`)
@@ -98,7 +98,7 @@ export default {
       posUuid
     })
       .then(response => {
-        commit('listCurrencies', response.records)
+        commit('setCurrenciesList', response.records)
       })
       .catch(error => {
         console.warn(`listPricesFromServer: ${error.message}. Code: ${error.code}.`)
@@ -110,7 +110,7 @@ export default {
       })
   },
   setCurrentPOS({ commit, dispatch, rootGetters }, posToSet) {
-    commit('currentPointOfSales', posToSet)
+    commit('setCurrentPointOfSales', posToSet)
     const oldRoute = router.app._route
     router.push({
       name: oldRoute.name,
@@ -125,8 +125,8 @@ export default {
     dispatch('listWarehouseFromServer', posToSet.uuid)
     dispatch('listCurrenciesFromServer', posToSet.uuid)
     dispatch('listPricesFromServer', posToSet)
-    commit('currentPriceList', posToSet.priceList)
-    commit('currentWarehouse', rootGetters['user/getWarehouse'])
+    commit('setCurrentPriceList', posToSet.priceList)
+    commit('setCurrentWarehouse', rootGetters['user/getWarehouse'])
     commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')
     commit('setIsReloadProductPrice')

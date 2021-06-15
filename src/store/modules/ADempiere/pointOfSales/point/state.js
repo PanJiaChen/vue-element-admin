@@ -27,13 +27,13 @@ export default {
   pointOfSales: {
     ...withoutResponse
   },
-  listPointOfSales: {},
-  listWarehouses: {},
-  listPrices: {},
+  pointOfSalesList: {},
+  warehousesList: {},
+  pricesList: {},
   currentPriceList: {},
   currentWarehouse: {},
   listCurrency: [],
-  conversionList: [],
+  conversionsList: [],
   currentPointOfSales: {},
   showPOSOptions: false,
   showPOSKeyLayout: false,
