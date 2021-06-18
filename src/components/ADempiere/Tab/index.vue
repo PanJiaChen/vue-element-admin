@@ -1,7 +1,7 @@
 <!--
  ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
  Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
- Contributor(s): Edwin Betancourt edwinBetanc0urt@hotmail.com www.erpya.com
+ Contributor(s): Edwin Betancourt EdwinBetanc0urt@outlook.com www.erpya.com
  This program is free software: you can redistribute it and/or modify
  it under the terms of the GNU General Public License as published by
  the Free Software Foundation, either version 3 of the License, or
@@ -28,19 +28,13 @@
         :disabled="Boolean(key > 0 && isCreateNew)"
         :style="tabParentStyle"
       >
-        <span v-if="key === 0" slot="label">
-          <el-tooltip v-if="key === 0" :content="lock ? $t('data.lockRecord') : $t('data.unlockRecord')" placement="top">
-            <el-button type="text" @click="lockRecord()">
-              <i :class="!lock ? 'el-icon-unlock' : 'el-icon-lock'" style="font-size: 15px;color: black;" />
-            </el-button>
-          </el-tooltip>
-          <span :style="!lock ? 'color: #1890ff;': 'color: red;'">
-            {{ tabAttributes.name }}
-          </span>
+        <span slot="label">
+          <lock-record
+            :tab-position="key"
+            :tab-name="tabAttributes.name"
+          />
         </span>
-        <span v-else slot="label">
-          {{ tabAttributes.name }}
-        </span>
+
         <main-panel
           :parent-uuid="windowUuid"
           :container-uuid="tabAttributes.uuid"
@@ -57,11 +51,13 @@
 <script>
 import tabMixin from './tabMixin.js'
 import MainPanel from '@/components/ADempiere/Panel'
+import LockRecord from '@/components/ADempiere/ContainerOptions/LockRecord'
 import { parseContext } from '@/utils/ADempiere/contextUtils'
 
 export default {
   name: 'TabParent',
   components: {
+    LockRecord,
     MainPanel
   },
   mixins: [tabMixin],
@@ -111,55 +107,9 @@ export default {
     },
     tabUuid(value) {
       this.setCurrentTab()
-    },
-    record(value) {
-      const tableName = this.windowMetadata.firstTab.tableName
-      if (value) {
-        this.$store.dispatch('getPrivateAccessFromServer', {
-          tableName,
-          recordId: this.record[tableName + '_ID'],
-          recordUuid: this.record.UUID
-        })
-          .then(privateAccessResponse => {
-            this.lock = privateAccessResponse.isLocked
-          })
-      }
     }
   },
   methods: {
-    lockRecord() {
-      const tableName = this.windowMetadata.firstTab.tableName
-      const action = this.lock ? 'unlockRecord' : 'lockRecord'
-      this.$store.dispatch(action, {
-        tableName,
-        recordId: this.record[tableName + '_ID'],
-        recordUuid: this.record.UUID
-      })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: this.$t('data.notification.' + action),
-            showClose: true
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'error',
-            message: this.$t('data.isError') + this.$t('data.' + action),
-            showClose: true
-          })
-        })
-        .finally(() => {
-          this.$store.dispatch('getPrivateAccessFromServer', {
-            tableName,
-            recordId: this.record[tableName + '_ID'],
-            recordUuid: this.record.UUID
-          })
-            .then(privateAccessResponse => {
-              this.lock = privateAccessResponse.isLocked
-            })
-        })
-    },
     setCurrentTab() {
       this.$store.dispatch('setCurrentTab', {
         parentUuid: this.windowUuid,
