@@ -20,14 +20,14 @@
     <el-col
       v-if="isDisplayedField"
       key="is-panel-template"
-      :xs="24"
-      :sm="12"
-      :md="8"
-      :lg="8"
-      :xl="8"
+      :xs="sizeField.xs"
+      :sm="sizeField.sm"
+      :md="sizeField.md"
+      :lg="sizeField.lg"
+      :xl="sizeField.xl"
       :class="classField"
     >
-      <el-form-item>
+      <el-form-item :class="classFrom">
         <template slot="label">
           <field-options
             :metadata="fieldAttributes"
@@ -102,6 +102,30 @@ export default {
   computed: {
     isMobile() {
       return this.$store.state.app.device === 'mobile'
+    },
+    classFrom() {
+      if (this.field.componentPath === 'FieldTextLong' || this.field.componentPath === 'FieldImage') {
+        return 'from-text-long'
+      }
+      return 'from-field'
+    },
+    sizeField() {
+      if (this.field.isShowedRecordNavigation) {
+        return {
+          xs: this.field.size.xs,
+          sm: this.field.size.sm * 2,
+          md: this.field.size.md * 2,
+          lg: this.field.size.lg * 2,
+          xl: this.field.size.xl * 2
+        }
+      }
+      return {
+        xs: this.field.size.xs,
+        sm: this.field.size.sm,
+        md: this.field.size.md,
+        lg: this.field.size.lg,
+        xl: this.field.size.xl
+      }
     },
     // load the component that is indicated in the attributes of received property
     componentRender() {
@@ -310,10 +334,16 @@ export default {
   /**
    * Separation between elements (item) of the form
    */
+  .from-text-long {
+    max-height: 300px;
+    min-height: 250px;
+  }
+  .from-field {
+    max-height: 100px;
+  }
   .el-form-item {
     margin-bottom: 10px !important;
     margin-left: 10px;
-    // this.field.isShowedRecordNavigation
     margin-right: 10px;
   }
 
