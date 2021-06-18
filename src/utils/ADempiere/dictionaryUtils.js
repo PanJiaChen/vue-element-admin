@@ -17,7 +17,7 @@
 import evaluator from '@/utils/ADempiere/evaluator'
 import { isEmptyValue, parsedValueComponent } from '@/utils/ADempiere/valueUtils'
 import { getContext, getParentFields, getPreference, parseContext } from '@/utils/ADempiere/contextUtils'
-import REFERENCES, { DEFAULT_SIZE, FIELDS_HIDDEN } from '@/utils/ADempiere/references'
+import REFERENCES, { BUTTON, DEFAULT_SIZE, FIELDS_HIDDEN } from '@/utils/ADempiere/references'
 import { FIELD_OPERATORS_LIST } from '@/utils/ADempiere/dataUtils'
 import language from '@/lang'
 
@@ -571,24 +571,95 @@ export function sortFields({
  * @returns {boolean}
  */
 export function fieldIsDisplayed({
+  // standard
   panelType,
   isActive,
   isDisplayed,
-  isDisplayedFromLogic,
-  isQueryCriteria
-}) {
-  // Verify if field is active
-  if (!isActive) {
+  displayType,
+  // panel
+  isQueryCriteria,
+  isKey,
+  // table
+  isDisplayedGrid,
+  // other
+  isDisplayedFromLogic
+}, isTable = false) {
+  // button field not showed
+  if (displayType === BUTTON.id) {
     return false
   }
 
+  // verify if field is active
+  if (!isActive || !isDisplayed) {
+    return false
+  }
+
+  // window (record navigation and tab childs), browser (table result)
+  if (isTable) {
+    return fieldIsDisplayedTable({
+      // standard
+      panelType,
+      // table,
+      isKey,
+      isDisplayedGrid,
+      // other
+      isDisplayedFromLogic
+    })
+  }
+
+  // window, process and report, browser (table result)
+  return fieldIsDisplayedPanel({
+    // standard
+    panelType,
+    // panel
+    isQueryCriteria,
+    // other
+    isDisplayedFromLogic
+  })
+}
+
+/**
+ * Determinate if field is displayed in panel
+ * @returns {boolean}
+ */
+export function fieldIsDisplayedPanel({
+  // standard
+  panelType,
+  // panel
+  isQueryCriteria,
+  // other
+  isDisplayedFromLogic
+}) {
   // browser query criteria
   if (panelType === 'browser') {
     return isQueryCriteria
   }
 
-  // window, table (advanced query), process and report, browser (table) result
-  return isDisplayed && isDisplayedFromLogic
+  // window, process and report
+  return isDisplayedFromLogic
+}
+
+/**
+ * Determinate if field/column is displayed in table
+ * @returns {boolean}
+ */
+export function fieldIsDisplayedTable({
+  // standard
+  panelType,
+  // table,
+  isKey,
+  isDisplayedGrid,
+  // other
+  isDisplayedFromLogic
+}) {
+  // window table
+  if (panelType === 'window' && !isDisplayedGrid) {
+    return false
+  }
+
+  // window , browser (table) result
+  return isDisplayedFromLogic &&
+    !isKey
 }
 
 // Convert action to action name for route

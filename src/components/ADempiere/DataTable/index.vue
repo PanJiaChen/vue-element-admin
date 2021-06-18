@@ -32,18 +32,19 @@
             @shortkey.native="actionAdvancedQuery()"
           >
             <el-collapse-item :title="$t('table.dataTable.advancedQuery')" name="PanelAdvancedQuery">
-              <main-panel
-                v-if="isLoadedPanel || !isEmptyValue(activeName) && activeName[0] === 'PanelAdvancedQuery'"
-                v-show="!isEmptyValue(activeName) && activeName[0] === 'PanelAdvancedQuery'"
-                :container-uuid="'table_' + containerUuid"
-                :parent-uuid="'table_' + parentUuid"
-                :metadata="panelMetadata"
-                panel-type="table"
-                is-advanced-query
-                class="collapse_item_wrap"
-              />
+              <template v-if="isLoadedPanel">
+                <main-panel
+                  :container-uuid="'table_' + containerUuid"
+                  :parent-uuid="'table_' + parentUuid"
+                  :metadata="panelMetadata"
+                  panel-type="table"
+                  is-advanced-query
+                  class="collapse_item_wrap"
+                />
+              </template>
             </el-collapse-item>
           </el-collapse>
+
           <div v-if="!isMobile">
             <table-main-menu
               :container-uuid="containerUuid"
@@ -172,7 +173,7 @@
             />
             <template v-for="(fieldAttributes, key) in fieldsList">
               <el-table-column
-                v-if="isDisplayed(fieldAttributes)"
+                v-if="isDisplayedField(fieldAttributes)"
                 :key="key"
                 :label="headerLabel(fieldAttributes)"
                 :column-key="fieldAttributes.columnName"

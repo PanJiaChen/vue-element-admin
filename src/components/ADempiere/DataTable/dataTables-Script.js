@@ -22,10 +22,9 @@ import TableMainMenu from '@/components/ADempiere/DataTable/menu'
 import IconElement from '@/components/ADempiere/IconElement'
 import { formatField } from '@/utils/ADempiere/valueFormat'
 import MainPanel from '@/components/ADempiere/Panel'
-import { sortFields } from '@/utils/ADempiere/dictionaryUtils'
+import { fieldIsDisplayed, sortFields } from '@/utils/ADempiere/dictionaryUtils.js'
 import { FIELDS_DECIMALS, FIELDS_QUANTITY, COLUMNS_READ_ONLY_FORM } from '@/utils/ADempiere/references'
 import { LOG_COLUMNS_NAME_LIST } from '@/utils/ADempiere/dataUtils.js'
-import { fieldIsDisplayed } from '@/utils/ADempiere'
 import evaluator from '@/utils/ADempiere/evaluator'
 import TableMixin from './mixin/tableMixin.js'
 import TableMixinSort from './mixin/mixinTableSort.js'
@@ -152,10 +151,11 @@ export default {
       return this.$store.getters.getHeigth
     },
     tableHeaderStyle() {
+      // record navigation
       if (this.isParent) {
         if (!this.isEmptyValue(this.activeName)) {
           return {
-            height: '55%',
+            height: '43%',
             overflow: 'auto'
           }
         } else if (this.isMobile) {
@@ -165,10 +165,12 @@ export default {
           }
         }
         return {
-          height: '11%',
+          height: '86px',
           overflow: 'hidden'
         }
       }
+
+      // tab children and browser result
       if (this.isMobile) {
         return {
           height: '10%'
@@ -291,6 +293,15 @@ export default {
   },
   methods: {
     sortFields,
+
+    /**
+     * Verify is displayed field in column table
+     */
+    isDisplayedField(field) {
+      return fieldIsDisplayed(field, true) &&
+        field.isShowedTableFromUser
+    },
+
     actionAdvancedQuery() {
       const activeNames = []
       if (!this.activeName.length) {
@@ -444,7 +455,7 @@ export default {
       if (this.preferenceClientId !== parseInt(row.AD_Client_ID, 10)) {
         return true
       }
-      if (fieldIsDisplayed(field)) {
+      if (this.isDisplayedField(field)) {
         // columnName: IsActive
         const fieldReadOnlyForm = COLUMNS_READ_ONLY_FORM.find(item => {
           return !item.isChangedAllForm &&
@@ -529,7 +540,7 @@ export default {
       return new Promise(resolve => {
         const fieldFocus = this.fieldsList.find(itemField => {
           if (Object.prototype.hasOwnProperty.call(this.$refs, itemField.columnName)) {
-            if (fieldIsDisplayed(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
+            if (this.isDisplayedField(itemField) && !itemField.isReadOnly && itemField.isUpdateable) {
               return true
             }
           }
@@ -674,17 +685,6 @@ export default {
         this.searchTableChildren = value
         this.recordsSearchTableChildren = result
       }
-    },
-    /**
-     * Verify is displayed field in column table
-     */
-    isDisplayed(field) {
-      const isDisplayed = field.isDisplayed &&
-        field.isDisplayedFromLogic &&
-        field.isShowedTableFromUser &&
-        !field.isKey
-      //  Verify for displayed and is active
-      return field.isActive && isDisplayed
     },
     /**
      * Get the tab object with all its attributes as well as the fields it contains

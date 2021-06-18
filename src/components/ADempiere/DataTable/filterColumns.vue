@@ -15,6 +15,7 @@
  You should have received a copy of the GNU General Public License
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
+
 <template>
   <el-select
     v-model="fieldsListShowed"
@@ -36,6 +37,8 @@
 </template>
 
 <script>
+import { fieldIsDisplayed } from '@/utils/ADempiere/dictionaryUtils.js'
+
 export default {
   name: 'FilterColumns',
   props: {
@@ -54,17 +57,14 @@ export default {
     // available fields
     fieldsListAvailable() {
       return this.fieldsList.filter(fieldItem => {
-        const isDisplayed = fieldItem.isDisplayed || fieldItem.isDisplayedFromLogic
-        return fieldItem.isActive && isDisplayed && !fieldItem.isKey
+        return fieldIsDisplayed(fieldItem, true)
       })
     },
     fieldsListShowed: {
       get() {
         // columns showed
-        return this.fieldsList.filter(itemField => {
-          if (itemField.isShowedTableFromUser && (itemField.isDisplayed || itemField.isDisplayedFromLogic) && !itemField.isKey) {
-            return true
-          }
+        return this.fieldsListAvailable.filter(itemField => {
+          return itemField.isShowedTableFromUser
         }).map(itemField => {
           return itemField.columnName
         })

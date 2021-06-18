@@ -16,13 +16,9 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <!--
-    this v-show is to indicate that if the field is not shown,
-    therefore you should not leave the column size spacing of your
-    <el-col></el-col> container-->
   <div v-if="!inTable">
     <el-col
-      v-if="isDisplayed"
+      v-if="isDisplayedField"
       key="is-panel-template"
       :xs="24"
       :sm="12"
@@ -171,19 +167,22 @@ export default {
         // DOM properties
         required: this.isMandatory,
         readonly: this.isReadOnly,
-        displayed: this.isDisplayed,
+        displayed: this.isDisplayedField,
         disabled: !this.field.isActive,
         isSelectCreated: this.isSelectCreated,
         placeholder: this.field.help ? this.field.help.slice(0, 40) + '...' : ''
       }
     },
-    isDisplayed() {
+
+    isDisplayedField() {
       if (this.isAdvancedQuery) {
         return this.field.isShowedFromUser
       }
+
       return fieldIsDisplayed(this.field) &&
         (this.isMandatory || this.field.isShowedFromUser || this.inTable)
     },
+
     isMandatory() {
       if (this.isAdvancedQuery) {
         return false
@@ -269,7 +268,7 @@ export default {
         return 'in-table'
       }
       return ''
-    },
+    }
   },
   watch: {
     metadataField(value) {
