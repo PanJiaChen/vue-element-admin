@@ -71,12 +71,14 @@
                 class="header-search-input"
               />
             </icon-element>
-            <filter-columns
+
+            <filter-fields
               v-if="isShowOptionalColumns"
               :container-uuid="containerUuid"
               :panel-type="panelType"
-              class="field-optional"
+              :in-table="true"
             />
+
             <div :class="{ show: showTableSearch }" class="local-search-container">
               <svg-icon class-name="search-icon" icon-class="search" @click.stop="click()" />
               <el-input

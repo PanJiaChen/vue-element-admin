@@ -15,7 +15,7 @@
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 import FieldDefinition from '@/components/ADempiere/Field'
-import FilterColumns from '@/components/ADempiere/DataTable/filterColumns'
+import FilterFields from '@/components/ADempiere/FilterFields'
 import FixedColumns from '@/components/ADempiere/DataTable/fixedColumns'
 import TableContextMenu from '@/components/ADempiere/DataTable/menu/tableContextMenu'
 import TableMainMenu from '@/components/ADempiere/DataTable/menu'
@@ -35,7 +35,7 @@ export default {
   components: {
     CustomPagination,
     FieldDefinition,
-    FilterColumns,
+    FilterFields,
     FixedColumns,
     IconElement,
     MainPanel,

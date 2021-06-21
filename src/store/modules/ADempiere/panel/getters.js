@@ -143,7 +143,7 @@ const getters = {
     return getters.getFieldsListFromPanel(containerUuid)
       .filter(fieldItem => {
         const isMandatory = fieldItem.isMandatory || fieldItem.isMandatoryFromLogic
-        if (isMandatory) {
+        if (isMandatory && !isTable) {
           return false
         }
 

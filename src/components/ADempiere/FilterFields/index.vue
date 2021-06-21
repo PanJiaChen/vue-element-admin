@@ -17,21 +17,24 @@
 -->
 
 <template>
-  <el-form class="form-filter-fields">
-    <!-- <el-form-item :label="groupField"> -->
+  <el-form :class="cssClass" style="float: right;">
     <el-form-item>
+      <template v-if="!isEmptyValue(groupField)" slot="label">
+        {{ groupField }}
+      </template>
+
       <el-select
-        v-model="selectedFields"
+        v-model="fieldsListShowed"
         :filterable="!isMobile"
         :placeholder="$t('components.filterableItems')"
         multiple
         collapse-tags
         value-key="key"
-        :popper-append-to-body="false"
-        @change="addField"
+        :size="size"
+        :popper-append-to-body="true"
       >
         <el-option
-          v-for="(item, key) in fieldsListOptional"
+          v-for="(item, key) in fieldsListAvailable"
           :key="key"
           :label="item.name"
           :value="item.columnName"
@@ -42,7 +45,7 @@
 </template>
 
 <script>
-import { defineComponent, computed, ref } from '@vue/composition-api'
+import { defineComponent, computed } from '@vue/composition-api'
 
 export default defineComponent({
   name: 'FilterFields',
@@ -59,18 +62,37 @@ export default defineComponent({
     panelType: {
       type: String,
       default: 'window'
+    },
+    /**
+     * If is used in table, by default false
+     */
+    inTable: {
+      type: Boolean,
+      default: false
     }
   },
 
   setup(props, { root }) {
     const isAdvancedQuery = props.panelType === 'table'
 
+    const size = props.inTable
+      ? 'mini'
+      : 'small'
+
+    const cssClass = props.inTable
+      ? 'form-filter-columns'
+      : 'form-filter-fields'
+
+    const showedAttibute = props.inTable
+      ? 'isShowedTableFromUser'
+      : 'isShowedFromUser'
+
     const isMobile = computed(() => {
       root.$store.state.app.device === 'mobile'
     })
 
-    const fieldsListOptional = computed(() => {
-      if (props.panelType === 'window' && !root.isEmptyValue(props.groupField)) {
+    const fieldsListAvailable = computed(() => {
+      if (!props.inTable && props.panelType === 'window' && !root.isEmptyValue(props.groupField)) {
         // compare group fields to window
         return root.$store.getters.getFieldsListNotMandatory({
           containerUuid: props.containerUuid
@@ -81,27 +103,40 @@ export default defineComponent({
       }
       // get fields not mandatory
       return root.$store.getters.getFieldsListNotMandatory({
-        containerUuid: props.containerUuid
+        containerUuid: props.containerUuid,
+        isTable: props.inTable
       })
     })
 
-    const getFieldSelected = computed(() => {
-      return fieldsListOptional.value
-        .filter(fieldItem => {
-          return fieldItem.isShowedFromUser
-        })
-        .map(itemField => {
+    // fields showed
+    const fieldsListShowed = computed({
+      get() {
+        return fieldsListAvailable.value.filter(itemField => {
+          return itemField[showedAttibute]
+        }).map(itemField => {
           return itemField.columnName
         })
+      },
+      set(selecteds) {
+        // set columns to show/hidden in vuex store
+        changeShowed(selecteds)
+      }
     })
 
-    // fields optional showed
-    const selectedFields = ref(getFieldSelected.value)
+    const changeShowed = (selectedValues) => {
+      if (props.inTable) {
+        return changeShowedTable(selectedValues)
+      }
+      return changeShowedPanel(selectedValues)
+    }
 
     /**
+     * Set fields to hidden/showed in panel
+     * if is advanced query or browser panel with values or null/not null
+     * operator, dispatch search
      * @param {array} selectedValues
      */
-    const addField = (selectedValues) => {
+    const changeShowedPanel = (selectedValues) => {
       root.$store.dispatch('changeFieldShowedFromUser', {
         containerUuid: props.containerUuid,
         fieldsUser: selectedValues,
@@ -109,15 +144,30 @@ export default defineComponent({
         groupField: props.groupField,
         isAdvancedQuery
       })
-      selectedFields.value = selectedValues
+    }
+
+    /**
+     * Set columns to hidden/showed in table
+     * @param {array} selectedValues
+     */
+    const changeShowedTable = (selectedValues) => {
+      root.$store.dispatch('changeFieldAttributesBoolean', {
+        containerUuid: props.containerUuid,
+        fieldsIncludes: selectedValues,
+        attribute: 'isShowedTableFromUser',
+        valueAttribute: true
+      })
     }
 
     return {
+      cssClass,
+      // computeds
       isMobile,
-      addField,
-      fieldsListOptional,
-      getFieldSelected,
-      selectedFields
+      size,
+      fieldsListShowed,
+      fieldsListAvailable,
+      // methods
+      changeShowed
     }
   }
 })
@@ -131,12 +181,14 @@ export default defineComponent({
     margin-right: 0px !important;
   }
 }
+
+.form-filter-columns {
+  margin: 0px;
+}
 </style>
 <style lang="scss">
+/*
 .form-filter-fields {
-  // position
-  float: right;
-
   .el-tag--small {
     max-width: 132px !important;
   }
@@ -177,4 +229,5 @@ export default defineComponent({
     }
   }
 }
+*/
 </style>
