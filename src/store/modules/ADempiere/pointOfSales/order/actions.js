@@ -37,13 +37,15 @@ export default {
   createOrder({ commit, dispatch, rootGetters }, {
     posUuid,
     customerUuid,
-    salesRepresentativeUuid
+    salesRepresentativeUuid,
+    documentTypeUuid
   }) {
     return createOrder({
       posUuid,
       customerUuid,
       salesRepresentativeUuid,
-      warehouseUuid: rootGetters.currentWarehouse.uuid
+      warehouseUuid: rootGetters.currentWarehouse.uuid,
+      documentTypeUuid
     })
       .then(order => {
         commit('setOrder', order)
@@ -70,12 +72,16 @@ export default {
   updateOrder({ commit, dispatch, rootGetters }, {
     orderUuid,
     posUuid,
-    customerUuid
+    customerUuid,
+    documentTypeUuid,
+    warehouseUuid
   }) {
     updateOrder({
       orderUuid,
       posUuid,
-      warehouseUuid: rootGetters.currentWarehouse.uuid
+      documentTypeUuid,
+      customerUuid,
+      warehouseUuid
     })
       .then(response => {
         dispatch('reloadOrder', { orderUuid: response.uuid })

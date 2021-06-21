@@ -149,22 +149,22 @@ export default {
         this.$store.dispatch('listOrderLine', [])
         this.listOrderLines()
       } else {
-        this.$store.commit('updateValuesOfContainer', {
-          parentUuid: this.parentUuid,
-          containerUuid: this.containerUuid,
-          attributes: [{
-            columnName: 'C_BPartner_ID',
-            value: value.businessPartner.id
-          },
-          {
-            columnName: 'DisplayColumn_C_BPartner_ID',
-            value: value.businessPartner.name
-          },
-          {
-            columnName: ' C_BPartner_ID_UUID',
-            value: value.businessPartner.uuid
-          }]
+        const businessPartner = this.$store.getters.getValueOfField({
+          containerUuid: this.$route.meta.uuid,
+          columnName: 'C_BPartner_ID' // this.parentMetadata.columnName
         })
+        const documentType = this.$store.getters.getValueOfField({
+          containerUuid: this.$route.meta.uuid,
+          columnName: 'C_DocTypeTarget_ID' // this.parentMetadata.columnName
+        })
+        if (!this.isEmptyValue(businessPartner) && businessPartner !== value.businessPartner.id) {
+          this.setBusinessPartner(value.businessPartner)
+        } else if (this.isEmptyValue(businessPartner) && value.businessPartner.id) {
+          this.setBusinessPartner(value.businessPartner)
+        }
+        if (!this.isEmptyValue(documentType) && documentType !== value.documentType.id) {
+          this.setDocumentType(value.documentType)
+        }
       }
     },
     updateOrderProcessPos(value) {
@@ -211,31 +211,53 @@ export default {
     },
     updateOrder(update) {
       // user session
+      const documentTypeUuid = this.$store.getters.getValueOfField({
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_DocTypeTarget_ID_UUID'
+      })
       if (!this.isEmptyValue(update.value) && update.value !== this.currentOrder.businessPartner.uuid && !this.isEmptyValue(this.currentPointOfSales)) {
         this.$store.dispatch('updateOrder', {
           orderUuid: this.$route.query.action,
           posUuid: this.currentPointOfSales.uuid,
-          customerUuid: update.value
+          customerUuid: update.value,
+          documentTypeUuid
         })
       }
     },
     setBusinessPartner({ name, id, uuid }) {
       // Use update values of container (without subscription)
-      this.$store.commit('updateValuesOfContainer', {
-        parentUuid: this.parentUuid,
-        containerUuid: this.containerUuid,
-        attributes: [{
-          columnName: 'C_BPartner_ID',
-          value: id
-        },
-        {
-          columnName: 'DisplayColumn_C_BPartner_ID',
-          value: name
-        },
-        {
-          columnName: ' C_BPartner_ID_UUID',
-          value: uuid
-        }]
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_BPartner_ID',
+        value: id
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'DisplayColumn_C_BPartner_ID',
+        value: name
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_BPartner_ID_UUID',
+        value: uuid
+      })
+    },
+    setDocumentType({ name, id, uuid }) {
+      // Use update values of container (without subscription)
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_DocTypeTarget_ID',
+        value: id
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'DisplayColumn_C_DocTypeTarget_ID',
+        value: name
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_DocTypeTarget_ID_UUID',
+        value: uuid
       })
     },
     findProduct(searchValue) {
@@ -299,6 +321,10 @@ export default {
           containerUuid: this.metadata.containerUuid,
           columnName: 'C_BPartner_ID'
         })
+        const documentTypeUuid = this.$store.getters.getValueOfField({
+          containerUuid: this.$route.meta.uuid,
+          columnName: 'C_DocTypeTarget_ID_UUID'
+        })
         if (this.isEmptyValue(customerUuid) || id === 1000006) {
           customerUuid = this.currentPointOfSales.templateBusinessPartner.uuid
         }
@@ -306,7 +332,8 @@ export default {
         this.$store.dispatch('createOrder', {
           posUuid,
           customerUuid,
-          salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid
+          salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid,
+          documentTypeUuid
         })
           .then(response => {
             // this.order = response
@@ -363,11 +390,6 @@ export default {
           ...orderToPush
         })
       }
-      if (!this.isEmptyValue(order.businessPartner)) {
-        const { businessPartner } = order
-        this.setBusinessPartner(businessPartner)
-      }
-      // this.order = orderToPush
     },
     getOrderTax(currency) {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
@@ -390,6 +412,20 @@ export default {
                 this.updateOrderLine(mutation.payload)
               }
               break
+            case 'C_DocTypeTarget_ID': {
+              const documentTypeUuid = this.$store.getters.getValueOfField({
+                containerUuid: mutation.payload.containerUuid,
+                columnName: 'C_DocTypeTarget_ID_UUID'
+              })
+              if (!this.isEmptyValue(documentTypeUuid) && !this.isEmptyValue(this.currentOrder.documentType.uuid) && this.currentOrder.documentType.uuid !== documentTypeUuid) {
+                this.$store.dispatch('updateOrder', {
+                  orderUuid: this.$route.query.action,
+                  posUuid: this.currentPointOfSales.uuid,
+                  documentTypeUuid
+                })
+              }
+              break
+            }
           }
         } else if (mutation.type === 'updateValueOfField') {
           switch (mutation.payload.columnName) {

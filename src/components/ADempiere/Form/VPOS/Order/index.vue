@@ -26,7 +26,7 @@
         height="auto"
         :style="isShowedPOSKeyLayout ? 'padding-right: 20px; padding-left: 0px;' : 'padding-right: 0px; padding-left: 0px;'"
       >
-        <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
+        <el-form label-position="top" label-width="500px" @submit.native.prevent="notSubmitForm">
           <el-row :gutter="24" style="display: flex;">
             <el-col :span="colFieldProductCode" style="padding-left: 0px; padding-right: 0px;">
               <template
@@ -40,7 +40,7 @@
                 />
               </template>
             </el-col>
-            <el-col :span="isEmptyValue(currentOrder) ? 9 : 7" :style="styleTab">
+            <el-col :span="isEmptyValue(currentOrder) ? 5 : 5" :style="styleTab">
               <business-partner
                 id="BusinessPartner"
                 :parent-metadata="{
@@ -51,6 +51,20 @@
                 }"
                 :is-disabled="isDisabled"
               />
+            </el-col>
+            <el-col :span="5" :style="styleTab">
+              <el-form-item>
+                <template
+                  v-for="(field) in fieldsList"
+                >
+                  <field
+                    v-if="field.columnName === 'C_DocTypeTarget_ID'"
+                    :key="field.columnName"
+                    :metadata-field="field"
+                    :v-model="field.value"
+                  />
+                </template>
+              </el-form-item>
             </el-col>
             <el-col :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px; margin-top: 3.%;' : 'padding: 0px; margin-top: 2.4%;'">
               <el-form-item>
@@ -178,7 +192,6 @@
               </el-table-column>
             </el-table>
           </el-main>
-
           <el-footer :class="classOrderFooter">
             <div class="keypad">
               <span id="toolPoint">
@@ -454,7 +467,7 @@ export default {
     styleTab() {
       const isShowedPOSOptions = this.$store.getters.getIsShowPOSOptions
       if (this.isShowedPOSKeyLayout || isShowedPOSOptions) {
-        return 'adding-left: 0px; padding-left: 0px; padding-right: 0px; padding: 0px; '
+        return 'padding-left: 0px; padding-left: 0px; padding-right: 0px; padding: 0px; '
       }
       return 'padding-left: 0px; padding-right: 0px; '
     },
@@ -481,7 +494,7 @@ export default {
     },
     numberOfLines() {
       if (this.isEmptyValue(this.currentOrder)) {
-        return
+        return 0
       }
       return this.listOrderLine.length
     },
@@ -560,7 +573,10 @@ export default {
     },
     currentLineOrder() {
       const line = this.$store.state['pointOfSales/orderLine/index'].line
-      return line
+      if (!this.isEmptyValue(line)) {
+        return line
+      }
+      return {}
     },
     currentPriceList() {
       if (!this.isEmptyValue(this.$store.getters.currentPriceList)) {

@@ -23,25 +23,33 @@ export default [
     isFromDictionary: true,
     overwriteDefinition: {
       size: 24,
-      sequence: 10,
       handleFocusGained: true,
       handleActionPerformed: true,
       handleActionKeyPerformed: true
     }
+  },
+  {
+    elementColumnName: 'C_DocType_ID',
+    tabindex: '2',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      size: 24,
+      handleActionPerformed: true,
+      handleContentSelection: true,
+      handleActionKeyPerformed: true
+    }
+  },
+  {
+    elementColumnName: 'C_DocTypeTarget_ID',
+    tabindex: '2',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      size: 24,
+      handleActionPerformed: true,
+      handleContentSelection: true,
+      handleActionKeyPerformed: true
+    }
   }
-  // {
-  //   elementColumnName: 'QtyEntered',
-  //   columnName: 'QtyEntered',
-  //   tabindex: '2',
-  //   isFromDictionary: true,
-  //   overwriteDefinition: {
-  //     size: 24,
-  //     sequence: 8,
-  //     handleActionPerformed: true,
-  //     handleContentSelection: true,
-  //     handleActionKeyPerformed: true
-  //   }
-  // },
   // {
   //   elementColumnName: 'PriceEntered',
   //   columnName: 'PriceEntered',

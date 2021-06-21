@@ -103,6 +103,7 @@ export function updateOrder({
   orderUuid,
   posUuid,
   customerUuid,
+  documentTypeUuid,
   description,
   warehouseUuid
 }) {
@@ -113,6 +114,7 @@ export function updateOrder({
       order_uuid: orderUuid,
       pos_uuid: posUuid,
       customer_uuid: customerUuid,
+      document_type_uuid: documentTypeUuid,
       description,
       warehouse_uuid: warehouseUuid
     }
