@@ -194,7 +194,6 @@ export default {
   // },
   data() {
     return {
-      loading: false,
       id: this.$route.params.id,
       form: {
         hidden_danger__hidden_code: '',
@@ -256,13 +255,9 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       api.getFormDate(this.id).then(data => {
         if (data.success) {
           this.form = data.data.root[0]
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }

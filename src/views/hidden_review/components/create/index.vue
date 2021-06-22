@@ -177,7 +177,6 @@ export default {
   // },
   data() {
     return {
-      loading: false,
       form: {
         hidden_danger__hidden_code: '',
         hidden_danger__hidden_state: '1',
@@ -224,13 +223,9 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       api.getFormDate().then(data => {
         if (data.success) {
           this.form = data.data.root[0]
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }

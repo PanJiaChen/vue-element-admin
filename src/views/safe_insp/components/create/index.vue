@@ -139,7 +139,6 @@ export default {
   // },
   data() {
     return {
-      loading: false,
       form: {
         safe_insp__insp_code: '',
         safe_insp__insp_name: '',
@@ -206,13 +205,9 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       api.getFormDate().then(data => {
         if (data.success) {
           this.form = data.data.root[0]
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }

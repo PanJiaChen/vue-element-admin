@@ -116,7 +116,6 @@ export default {
   // },
   data() {
     return {
-      loading: false,
       form: {},
       id: this.$route.params.id,
       disabled: false,
@@ -131,13 +130,9 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       api.getFormDate(this.id).then(data => {
         if (data.success) {
           this.form = data.data.root[0]
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }

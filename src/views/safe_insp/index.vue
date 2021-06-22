@@ -14,7 +14,6 @@
     <el-card>
       <el-table
         ref="table"
-        v-loading="loading"
         :data="data"
         style="width: 100%"
         border
@@ -81,7 +80,6 @@ export default {
   data() {
     return {
       parseDay,
-      loading: false,
       data: [],
       deptTree: [],
       ids: [],
@@ -205,7 +203,6 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       let pageNo = this.pager.pageNo * this.pager.pageSize - this.pager.pageSize
       if (pageNo < 0) {
         pageNo = 0
@@ -218,9 +215,6 @@ export default {
         if (data.success) {
           this.data = data.data.root
           this.pager.total = data.data.total
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }

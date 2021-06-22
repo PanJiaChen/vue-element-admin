@@ -12,7 +12,6 @@
     <el-card>
       <el-table
         ref="deptTable"
-        v-loading="loading"
         :data="list"
         style="width: 100%"
         stripe
@@ -96,7 +95,6 @@ export default {
   data() {
     return {
       parseDay,
-      loading: false,
       data: [],
       list: [],
       keyids: [],
@@ -207,7 +205,6 @@ export default {
   },
   methods: {
     getList() {
-      this.loading = true
       let pageNo = this.pager.pageNo * this.pager.pageSize - this.pager.pageSize
       if (pageNo < 0) {
         pageNo = 0
@@ -224,9 +221,6 @@ export default {
             return d.hidden_danger__hidden_danger_id
           }).join()
           this.queryAttach()
-          setTimeout(() => {
-            this.loading = false
-          }, 200)
         } else {
           this.$message.error(data.message)
         }
