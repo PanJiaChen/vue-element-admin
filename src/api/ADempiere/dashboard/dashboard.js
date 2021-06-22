@@ -41,8 +41,8 @@ export function requestLisDashboards({
 
       return {
         recordCount: dashboardsListResponse.record_count,
-        dashboardsList: dashboardsListResponse.records.map(favorite => {
-          return convertDashboard(favorite)
+        dashboardsList: dashboardsListResponse.records.map(dashboard => {
+          return convertDashboard(dashboard)
         }),
         nextPageToken: dashboardsListResponse.next_page_token
       }

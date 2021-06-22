@@ -22,7 +22,7 @@
     accordion
   >
     <el-collapse-item
-      :name="dashboard.dashboardName"
+      :name="dashboard.name"
       :disabled="!dashboard.isCollapsible"
       class="custom-collapse-item"
     >
@@ -33,7 +33,7 @@
       </template>
       <component
         :is="renderDashboard"
-        :ref="dashboard.dashboardName"
+        :ref="dashboard.name"
         :metadata="dashboard"
       />
     </el-collapse-item>
@@ -53,7 +53,7 @@ export default {
     return {
       dashboard: this.metadata,
       unsupportedDashboards: ['activities', 'views', 'performance'],
-      activeDashboard: this.metadata.isOpenByDefault ? this.metadata.dashboardName : undefined
+      activeDashboard: this.metadata.isOpenByDefault ? this.metadata.name : undefined
     }
   },
   computed: {
