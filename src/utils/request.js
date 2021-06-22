@@ -3,6 +3,7 @@ import { MessageBox, Message } from 'element-ui'
 import store from '@/store'
 import { getToken } from '@/utils/auth'
 import router from '@/router'
+import { loading } from './loading'
 
 // create an axios instance
 const service = axios.create({
@@ -15,6 +16,7 @@ const service = axios.create({
 service.interceptors.request.use(
   config => {
     // do something before request is sent
+    loading.open()
 
     if (store.getters.token) {
       // let each request carry token
@@ -25,6 +27,7 @@ service.interceptors.request.use(
     return config
   },
   error => {
+    loading.close()
     // do something with request error
     console.log(error) // for debug
     return Promise.reject(error)
@@ -44,6 +47,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    loading.close()
     const res = response
     // if the custom code is not 20000, it is judged as an error.
     if (res.status !== 200) {
