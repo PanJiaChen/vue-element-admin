@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="hidden_review" @Create="editCreate" @Del="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="audit">提交</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
       </div>
       <Search funid="hidden_review" @search="search" />
     </div>
@@ -73,14 +74,12 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import Attach from '@/components/sys_attach'
 import { parseDay } from '@/utils/index'
 export default {
   name: 'HiddenReview',
   components: {
-    buttons,
     Search,
     Attach
   },
@@ -261,6 +260,7 @@ export default {
     editSave() {
       console.log('editSave')
     },
+    audit() {},
     upload() {
       console.log('upload')
     },

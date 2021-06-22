@@ -2,8 +2,13 @@
   <div>
     <el-card>
       <div class="head">
-        <div>
-          <buttons funid="insp_item" style="margin-bottom:10px" @editCreate="editCreate" @editDelete="editDelete" />
+        <div style="margin-bottom:20px;">
+          <el-button type="primary" @click="editCreate">新增</el-button>
+          <el-button type="primary" @click="editDelete">删除</el-button>
+          <el-button type="primary" @click="editSave">保存</el-button>
+          <el-button type="primary" @click="editCopy">复制</el-button>
+          <el-button type="primary" @click="upload">图文附件</el-button>
+          <el-button type="primary" @click="expxls">另存数据</el-button>
         </div>
         <Search funid="insp_item" :wsql="where_sql" :wvalue="id" :wtype="where_type" @search="search" />
       </div>
@@ -67,12 +72,10 @@
 <script>
 import api from './api'
 import publicApi from '@/api/public'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons,
     Search
   },
 
@@ -216,6 +219,10 @@ export default {
       this.dialogFormVisible = true
       this.form = JSON.parse(JSON.stringify(row))
     },
+    editSave() {},
+    editCopy() {},
+    upload() {},
+    expxls() {},
     Delete(row) {
       this.ids = []
       this.ids.push(row.insp_item__insp_item_id)

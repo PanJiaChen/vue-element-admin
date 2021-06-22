@@ -2,12 +2,14 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="editCreate">新增</el-button>
+        <el-button type="primary" @click="editDelete">删除</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
       </div>
       <Search funid="sys_user" @search="search" />
     </div>
     <el-row>
-      <el-col :span="3">
+      <el-col :span="3" class="tree">
         <el-card>
           <div class="tree_title">安全组织架构</div>
           <el-tree :data="treeData" default-expand-all :props="defaultProps" @node-click="handleNodeClick" />
@@ -117,14 +119,12 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import AdutiUser from './components/auditUser'
 import Attach from '@/components/sys_attach'
 export default {
   name: 'User',
   components: {
-    buttons,
     Search,
     AdutiUser,
     Attach
@@ -463,8 +463,10 @@ export default {
   .el-card {
     margin-top: 10px;
   }
-  ::v-deep .el-card__body {
-    padding: 0px;
+  .tree{
+    ::v-deep .el-card__body {
+      padding: 0px;
+    }
   }
   .tree_title{
     width: 100%;

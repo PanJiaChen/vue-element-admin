@@ -2,7 +2,10 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="hidden_check" @Create="editCreate" @Del="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="create">新增</el-button>
+        <el-button type="primary" @click="del">删除</el-button>
+        <el-button type="primary" @click="audit">提交</el-button>
+        <el-button type="primary" @click="unaudit">反提交</el-button>
       </div>
       <Search funid="hidden_check" @search="search" />
     </div>
@@ -81,14 +84,12 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import Attach from '@/components/sys_attach'
 import { parseDay } from '@/utils/index'
 export default {
   name: 'HiddenCheck',
   components: {
-    buttons,
     Search,
     Attach
   },
@@ -253,11 +254,13 @@ export default {
         }
       })
     },
-    editCreate() {
+    create() {
       const param = `/hidden_danger/hidden_check/create`
       this.$router.push(param)
     },
-    Delete(row) {
+    audit() {},
+    unaudit() {},
+    del(row) {
       this.ids = []
       this.ids.push(row.hidden_danger__hidden_danger_id)
       this.editDelete()

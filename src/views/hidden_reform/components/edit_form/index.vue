@@ -2,7 +2,9 @@
   <div>
     <el-card>
       <div class="buttons">
-        <buttons funid="hidden_check" style="margin-bottom:20px" @save="save" @upload="upload" />
+        <el-button type="primary" @click="audit">提交</el-button>
+        <el-button type="primary" @click="unaudit">反提交</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
         <el-button type="primary" @click="back">返回列表</el-button>
       </div>
       <el-form ref="form" :model="form" label-width="80px" :rules="rules">
@@ -206,7 +208,6 @@
 <script>
 import api from '../../api'
 import publicApi from '@/api/public'
-import buttons from '@/components/formBtn'
 import SelUser from '@/components/selUser'
 import SelDept from '@/components/selDept'
 import ShowImages from '@/components/show_images'
@@ -214,7 +215,6 @@ import Attach from '@/components/sys_attach'
 export default {
   name: 'HiddenReformAuditForm',
   components: {
-    buttons,
     SelUser,
     SelDept,
     ShowImages,
@@ -298,6 +298,8 @@ export default {
         }
       })
     },
+    audit() {},
+    unaudit() {},
     upload() {
       this.dialogUploadVisible = true
     },
@@ -407,6 +409,7 @@ export default {
 }
 .buttons {
   display: flex;
+  margin-bottom: 20px;
   .el-button--primary {
     margin-left: 10px;
     height: 26.8px;

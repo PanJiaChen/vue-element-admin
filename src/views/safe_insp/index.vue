@@ -2,7 +2,12 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="insp_det" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="editCreate">新增</el-button>
+        <el-button type="primary" @click="editDelete">删除</el-button>
+        <el-button type="primary" @click="editSave">保存</el-button>
+        <el-button type="primary" @click="editCopy">复制</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
+        <el-button type="primary" @click="expxls">另存数据</el-button>
       </div>
       <Search funid="safe_insp" @search="search" />
     </div>
@@ -66,13 +71,11 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import { parseDay } from '@/utils/index'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons,
     Search
   },
   data() {
@@ -103,7 +106,6 @@ export default {
         }, {
           prop: 'safe_insp__insp_name',
           label: '巡检名称',
-          width: '250px',
           show: true
         },
         {
@@ -319,6 +321,8 @@ export default {
         }
       })
     },
+    editCopy() {},
+    expxls() {},
     Delete(row) {
       this.ids = []
       this.ids.push(row.sys_dept__dept_id)

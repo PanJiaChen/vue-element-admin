@@ -2,8 +2,12 @@
   <div class="app-container">
     <el-card>
       <div class="head">
-        <div>
-          <buttons funid="insp_det" style="margin-bottom:10px" @Create="editCreate" @Del="editDelete" @upload="upload" />
+        <div class="buttons">
+          <el-button type="primary" @click="editCreate">新增</el-button>
+          <el-button type="primary" @click="editDelete">删除</el-button>
+          <el-button type="primary" @click="editCopy">复制</el-button>
+          <el-button type="primary" @click="upload">图文附件</el-button>
+          <el-button type="primary" @click="expxls">另存数据</el-button>
         </div>
         <Search funid="insp_det" :wsql="where_sql" :wvalue="where_value" :wtype="where_type" @search="search" />
       </div>
@@ -98,13 +102,11 @@
 <script>
 import api from './api'
 import publicApi from '@/api/public'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import Attach from '@/components/sys_attach'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons,
     Search,
     Attach
   },
@@ -237,6 +239,8 @@ export default {
       this.whereSql = sql
       this.getList()
     },
+    editCopy() {},
+    expxls() {},
     upload() {
       if (this.ids.length > 1) {
         this.$message.warning('只能选择一条数据！')
@@ -343,5 +347,8 @@ export default {
   }
   .el-card {
     margin-top: 10px;
+  }
+  .buttons {
+    margin-bottom: 20px;
   }
 </style>

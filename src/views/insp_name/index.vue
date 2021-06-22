@@ -2,7 +2,12 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="insp_name" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="editCreate">新增</el-button>
+        <el-button type="primary" @click="editDelete">删除</el-button>
+        <el-button type="primary" @click="editSave">保存</el-button>
+        <el-button type="primary" @click="editCopy">复制</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
+        <el-button type="primary" @click="expxls">另存数据</el-button>
       </div>
       <!-- <Search funid="insp_name" @search="search" /> -->
     </div>
@@ -87,13 +92,11 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import InspItem from './components/insp_item'
 export default {
   name: 'SafeIdsp',
   components: {
-    buttons,
     Search,
     InspItem
   },
@@ -207,6 +210,8 @@ export default {
       this.dialogFormVisible = true
       this.form = JSON.parse(JSON.stringify(row))
     },
+    editCopy() {},
+    expxls() {},
     Delete(row) {
       this.ids = []
       this.ids.push(row.insp_name__insp_name_id)

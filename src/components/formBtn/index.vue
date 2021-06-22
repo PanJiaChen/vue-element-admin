@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button v-for="d in data" :key="d.method" type="primary" @click="Fn(d.method)">{{ d.text }}</el-button>
+    <el-button v-for="d in data" :key="d.method" type="primary" @click="Fn(d.method)">{{ d.text }}{{ d.method }}</el-button>
 
   </div>
 </template>

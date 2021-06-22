@@ -2,7 +2,8 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="hidden_reform" @Create="editCreate" @Del="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="audit">提交</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
       </div>
       <Search funid="hidden_reform" @search="search" />
     </div>
@@ -77,14 +78,12 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import Attach from '@/components/sys_attach'
 import { parseDay } from '@/utils/index'
 export default {
   name: 'HiddenReform',
   components: {
-    buttons,
     Search,
     Attach
   },
@@ -285,6 +284,7 @@ export default {
     editSave() {
       console.log('editSave')
     },
+    audit() {},
     upload() {
       if (this.ids.length > 1) {
         this.$message.warning('只能选择一条数据！')

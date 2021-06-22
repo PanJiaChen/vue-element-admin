@@ -2,17 +2,20 @@
   <div class="app-container">
     <div class="head">
       <div>
-        <buttons funid="sys_dept" @editCreate="editCreate" @editDelete="editDelete" @editSave="editSave" @upload="upload" />
+        <el-button type="primary" @click="editCreate">新增</el-button>
+        <el-button type="primary" @click="editDelete">删除</el-button>
+        <el-button type="primary" @click="upload">图文附件</el-button>
       </div>
       <Search funid="sys_dept" @search="search" />
     </div>
     <el-row>
-      <el-col :span="5">
+      <el-col :span="3" class="tree">
         <el-card>
+          <div class="tree_title">安全组织架构</div>
           <el-tree :data="treeData" default-expand-all :props="defaultProps" @node-click="handleNodeClick" />
         </el-card>
       </el-col>
-      <el-col :span="19">
+      <el-col :span="21">
         <el-card>
           <el-table
             ref="deptTable"
@@ -99,13 +102,11 @@
 
 <script>
 import api from './api'
-import buttons from '@/components/Buttons'
 import Search from '@/components/Search'
 import AdutiDept from './components/auditDept'
 export default {
   name: 'Guide',
   components: {
-    buttons,
     Search,
     AdutiDept
   },
@@ -420,5 +421,21 @@ export default {
     height: 500px;
     overflow-x:auto;
     overflow-y:auto;
+  }
+  .tree{
+    ::v-deep .el-card__body {
+      padding: 0px;
+    }
+  }
+  .tree_title{
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    padding: 2px;
+    line-height: 30px;
+    color: #fff;
+    font-weight: bold;
+    background-color: #42b983;
+    text-align: center;
   }
 </style>
