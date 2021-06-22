@@ -89,7 +89,7 @@
         <el-button type="primary" @click="create">确 定</el-button>
       </div>
     </el-dialog>
-    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="35%" @close="closeUploadDialog">
       <Attach ref="attach" :data-id="ids" table-name="insp_det" fun-id="insp_det" @change="auditFormChange" />
       <div slot="footer" class="dialog-footer">
         <!-- <el-button @click="dialogUploadVisible = false">取 消</el-button> -->

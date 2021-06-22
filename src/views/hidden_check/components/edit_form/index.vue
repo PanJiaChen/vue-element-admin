@@ -165,7 +165,7 @@
         <el-button type="primary" @click="selReformDept">确 定</el-button>
       </span>
     </el-dialog>
-    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="45%" @close="closeUploadDialog">
+    <el-dialog v-if="dialogUploadVisible" title="附件" :visible.sync="dialogUploadVisible" width="35%" @close="closeUploadDialog">
       <Attach ref="attach" :data-id="[id]" table-name="hidden_danger" fun-id="hidden_check" />
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogUploadVisible = false">返回</el-button>
