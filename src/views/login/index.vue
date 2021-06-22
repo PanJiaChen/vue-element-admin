@@ -46,7 +46,7 @@
             </span>
           </el-form-item>
 
-          <el-form-item prop="verification">
+          <!-- <el-form-item prop="verification">
             <span class="svg-container">
               <svg-icon icon-class="guide" />
             </span>
@@ -59,13 +59,13 @@
               tabindex="1"
               auto-complete="on"
             />
-          </el-form-item>
+          </el-form-item> -->
 
           <div class="password-manage">
             <el-checkbox v-model="checked">记住密码</el-checkbox>
           </div>
 
-          <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登 录</el-button>
+          <el-button :loading="loading" type="primary" style="width:100%;margin-top:30px;" @click.native.prevent="handleLogin">登 录</el-button>
 
         <!-- <div class="tips">
             <span style="margin-right:20px;">username: admin</span>
@@ -100,8 +100,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '888'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -129,6 +129,8 @@ export default {
   },
   created() {
     // window.addEventListener('storage', this.afterQRScan)
+    this.loginForm.username = localStorage.getItem('UserName')
+    this.loginForm.password = localStorage.getItem('Password')
   },
   mounted() {
     if (this.loginForm.username === '') {
@@ -161,6 +163,13 @@ export default {
           this.loading = true
           this.$store.dispatch('user/login', this.loginForm)
             .then(() => {
+              if (this.checked) {
+                localStorage.setItem('UserName', this.loginForm.username)
+                localStorage.setItem('Password', this.loginForm.password)
+              } else {
+                localStorage.setItem('UserName', '')
+                localStorage.setItem('Password', '')
+              }
               this.$router.push({ path: '/', query: this.otherQuery })
               this.loading = false
             })
