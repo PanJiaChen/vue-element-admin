@@ -39,7 +39,7 @@ module.exports = {
     },
     proxy: {
       '/bwhse': {
-        target: 'http://localhost:8088',
+        target: 'https://buwan.cloud:8443',
         ws: false,
         changeOrigin: true,
         pathRewrite: { '^/bwhse': '/bwhse' }

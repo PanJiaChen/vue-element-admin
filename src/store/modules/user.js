@@ -47,10 +47,10 @@ const mutations = {
 
 const actions = {
   // user login
-  login({ commit }, userInfo) {
+  login({ commit, dispatch }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login(`funid=login&eventcode=login&pagetype=login&user_code=${username.trim()}&user_pass=${password}`).then(res => {
+      login(`funid=login&eventcode=login&pagetype=login&user_code=${username.trim()}&user_pass=${password}`).then(async res => {
         if (res.data.success) {
           commit('SET_ROLES', res.data.data.role_id)
           // const { data } = res.data
@@ -65,6 +65,10 @@ const actions = {
           sessionStorage.setItem('USER_ID', res.data.data.user_id)
           sessionStorage.setItem('DEPT_NAME', res.data.data.dept_name)
           sessionStorage.setItem('DEPT_ID', res.data.data.dept_id)
+          // generate accessible routes map based on roles
+          const accessRoutes = await dispatch('permission/generateRoutes', res.data.data.role_id, { root: true })
+          // dynamically add accessible routes
+          router.addRoutes(accessRoutes)
           resolve()
         } else {
           Vue.prototype.$message.error(res.data.message)
