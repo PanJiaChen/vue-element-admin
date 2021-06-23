@@ -6,10 +6,10 @@
     <a href="https://github.com/ElemeFE/element">
       <img src="https://img.shields.io/badge/element--ui-2.7.0-brightgreen.svg" alt="element-ui">
     </a>
-    <a href="https://travis-ci.org/adempiere/adempiere-vue" rel="nofollow">
-      <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Build Status">
+    <a :href="'https://github.com/adempiere/' + repository + '/releases'">
+      <img :src="'https://img.shields.io/github/release/adempiere/' + repository + '.svg'" alt="GitHub release">
     </a>
-    <a href="https://github.com/adempiere/adempiere-vue/blob/master/LICENSE">
+    <a :href="'https://github.com/adempiere/' + repository + '/blob/master/LICENSE'">
       <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="license">
     </a>
     <a href="https://gitter.im/adempiere/adempiere-vue">
@@ -17,8 +17,16 @@
     </a>
   </div>
 </template>
+
 <script>
 export default {
-  name: 'Tags'
+  name: 'RepositoryTags',
+
+  props: {
+    repository: {
+      type: String,
+      required: true
+    }
+  }
 }
 </script>
