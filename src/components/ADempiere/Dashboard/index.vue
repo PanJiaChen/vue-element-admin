@@ -28,7 +28,7 @@
     >
       <template slot="title">
         <span class="custom-title">
-          {{ dashboard.dashboardName }}
+          {{ dashboard.name }}
         </span>
       </template>
       <component
@@ -63,21 +63,52 @@ export default {
       if (this.unsupportedDashboards.includes(this.metadata.fileName)) {
         return
       }
-
       let dashboard
-      switch (this.metadata.fileName) {
-        case 'recentItems':
-          dashboard = () => import('@/components/ADempiere/Dashboard/recentItems')
-          break
-        case 'userfavorites':
-          dashboard = () => import('@/components/ADempiere/Dashboard/userfavorites')
-          break
-        case 'docstatus':
-          dashboard = () => import('@/components/ADempiere/Dashboard/docstatus')
-          break
-        default:
-          dashboard = () => import('@/components/ADempiere/Dashboard/calendar')
-          break
+      if (this.metadata.dashboardType === 'dashboard') {
+        switch (this.metadata.fileName) {
+          case 'recentItems':
+            dashboard = () => import('@/components/ADempiere/Dashboard/recentItems')
+            break
+          case 'userfavorites':
+            dashboard = () => import('@/components/ADempiere/Dashboard/userfavorites')
+            break
+          case 'docstatus':
+            dashboard = () => import('@/components/ADempiere/Dashboard/docstatus')
+            break
+          default:
+            dashboard = () => import('@/components/ADempiere/Dashboard/calendar')
+            break
+        }
+      } else {
+        switch (this.metadata.chartType) {
+          //  Bar Chart
+          case 'BC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/BarChart')
+            break
+          //  Area Chart
+          case 'AC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/RaddarChart')
+            break
+          //  Line Chart
+          case 'LC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/LineChart')
+            break
+          //  Pie Chart
+          case 'PC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/PieChart')
+            break
+          //  Ring Chart
+          case 'RC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/PieChart')
+            break
+          //  Waterfall Chart
+          case 'WC':
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/RaddarChart')
+            break
+          default:
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/LineChart')
+            break
+        }
       }
       return dashboard
       // return () => import(`@/components/ADempiere/Dashboard/${this.metadata.fileName}`)
