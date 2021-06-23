@@ -452,6 +452,7 @@ export default {
         convertedAmount: 'Monto Convertido',
         fullPayment: 'Cobro Completo',
         dayRate: 'Tasa del Día',
+        noDayRate: 'No se a generado una tasa del día para la moneda',
         TenderType: {
           directDeposit: 'Depósito Directo',
           creditCard: 'Tarjeta de Crédito',

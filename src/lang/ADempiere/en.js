@@ -477,6 +477,7 @@ export default {
         convertedAmount: 'Converted Amount',
         fullPayment: 'Full Payment',
         dayRate: 'Day Rate',
+        noDayRate: 'No daily rate has been generated for the currency.',
         TenderType: {
           directDeposit: 'Direct Deposit',
           creditCard: 'Credit Card',
