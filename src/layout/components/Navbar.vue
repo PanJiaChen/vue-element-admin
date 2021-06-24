@@ -73,8 +73,7 @@ export default {
       logout().then(data => {
         if (data.success) {
           this.$store.dispatch('user/logout')
-          this.$router.push(`/login?redirect=${this.$route.fullPath}`)
-          this.$message.success('已退出登录！')
+          this.$router.push(`/login`)
         } else {
           this.$message.error(data.message)
         }

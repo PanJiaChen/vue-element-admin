@@ -278,7 +278,7 @@ $light_gray:#eee;
       height: 450px;
       border-radius: 10px 0 0 10px;
       background-color: #1890ff;
-      background-image: url('../../assets/login/left.svg');
+      background-image: url('../../assets/login/left.png');
       background-size: 100%;
       background-repeat: no-repeat;
       background-position: 100% 80%;
