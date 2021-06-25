@@ -1,6 +1,5 @@
 import {
-  requestRunProcess,
-  requestListProcessesLogs
+  requestRunProcess
 } from '@/api/ADempiere/process'
 import { showNotification } from '@/utils/ADempiere/notification'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils'
@@ -989,60 +988,7 @@ export default {
       })
     }
   },
-  /**
-   * List log of process/reports executed
-   * @author Edwin Betancourt <EdwinBetanc0urt@outlook.com>
-   * @param {string} pageToken
-   * @param {number} pageSize default 50
-   */
-  getSessionProcessFromServer({ commit, dispatch, getters, rootGetters }, {
-    pageToken,
-    pageSize
-  }) {
-    // process Activity
-    return requestListProcessesLogs({ pageToken, pageSize })
-      .then(processActivityResponse => {
-        const responseList = processActivityResponse.processLogsList.map(processLogItem => {
-          const processMetadata = rootGetters.getProcess(processLogItem.uuid)
 
-          // if no exists metadata into store and no request in progess
-          if (isEmptyValue(processMetadata)) {
-            const processRequest = getters.getInRequestMetadata(processLogItem.uuid)
-            if (isEmptyValue(processRequest)) {
-              commit('addInRequestMetadata', processLogItem.uuid)
-              dispatch('getProcessFromServer', {
-                containerUuid: processLogItem.uuid
-              })
-                .finally(() => {
-                  commit('deleteInRequestMetadata', processLogItem.uuid)
-                })
-            }
-          }
-
-          const process = {
-            ...processLogItem,
-            processUuid: processLogItem.uuid
-          }
-          return process
-        })
-
-        const processResponseList = {
-          recordCount: processActivityResponse.recordCount,
-          processList: responseList,
-          nextPageToken: processActivityResponse.nextPageToken
-        }
-        commit('setSessionProcess', processResponseList)
-        return processResponseList
-      })
-      .catch(error => {
-        showNotification({
-          title: language.t('notifications.error'),
-          message: error.message,
-          type: 'error'
-        })
-        console.warn(`Error getting process activity: ${error.message}. Code: ${error.code}.`)
-      })
-  },
   /**
    * Show modal dialog with process/report, tab (sequence) metadata
    * @param {String} type of panel or panelType ('process', 'report', 'window')

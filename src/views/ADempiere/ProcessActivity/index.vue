@@ -22,168 +22,29 @@
 </template>
 
 <script>
-import { recursiveTreeSearch } from '@/utils/ADempiere/valueUtils'
+import { defineComponent, computed } from '@vue/composition-api'
 
-export default {
-  name: 'MixinProcessActivity',
-  data() {
-    return {
-      processActivity: [],
-      recordCount: 0,
-      pageToken: '',
-      pageSize: 50
-    }
-  },
-  computed: {
-    // process local not sent
-    getterAllInExecution() {
-      return this.$store.getters.getAllInExecution
-    },
-    // process local and send with response
-    getterAllFinishProcess() {
-      return this.$store.getters.getAllFinishProcess
-    },
-    // session process from server
-    getterAllSessionProcess() {
-      return this.$store.getters.getAllSessionProcess
-    },
-    // all process
-    getRunProcessAll() {
-      var processAll = this.getterAllInExecution.concat(this.getterAllFinishProcess, this.getterAllSessionProcess)
-      var processAllReturned = []
+export default defineComponent({
+  name: 'ProcessActivityFromDevice',
 
-      processAll.forEach(element => {
-        var processMetadataReturned = {}
-        var infoMetadata = this.getProcessMetadata(element.processUuid)
-        if (!infoMetadata) {
-          infoMetadata = {}
-        }
-        Object.assign(processMetadataReturned, element, infoMetadata)
-        processMetadataReturned.parametersList = element.parametersList
-        var indexRepeat = processAllReturned.findIndex(item => item.instanceUuid === element.instanceUuid && !this.isEmptyValue(element.instanceUuid))
-        if (indexRepeat > -1) {
-          // update attributes in exists process to return
-          // Object.assign(processAllReturned[indexRepeat], processMetadataReturned)
-          var other = Object.assign(processMetadataReturned, processAllReturned[indexRepeat])
-          processAllReturned[indexRepeat] = other
-          return
-        }
+  setup(props, { root }) {
+    const isMobile = computed(() => {
+      return root.$store.state.app.device === 'mobile'
+    })
 
-        // add new process to show
-        processAllReturned.push(processMetadataReturned)
-      })
-      return processAllReturned.sort((a, b) => {
-        // sort by date and reverse string to order by most recently
-        return new Date(a.lastRun) - new Date(b.lastRun)
-      }).reverse()
-    },
-    getProcessLog() {
-      var log = this.getRunProcessAll.filter(element => {
-        if (element.isError !== undefined && (element.isProcessing !== undefined)) {
-          return element
-        }
-      })
-      return log
-    },
-    language() {
-      return this.$store.getters.language
-    },
-    permissionRoutes() {
-      return this.$store.getters.permission_routes
-    },
-    isMobile() {
-      return this.$store.state.app.device === 'mobile'
-    },
-    templateDevice() {
-      if (this.isMobile) {
+    const templateDevice = computed(() => {
+      if (isMobile.value) {
         return () => import('@/views/ADempiere/ProcessActivity/modeMobile')
       }
       return () => import('@/views/ADempiere/ProcessActivity/modeDesktop')
-    }
-  },
-  beforeMount() {
-    this.$store.dispatch('getSessionProcessFromServer', {
-      pageToken: this.pageToken,
-      pageSize: this.pageSize
     })
-      .then(response => {
-        if (response.nextPageToken !== this.pageToken) {
-          this.pageToken = response.nextPageToken
-        }
-      })
-  },
-  methods: {
-    getProcessMetadata(uuid) {
-      return this.$store.getters.getProcess(uuid)
-    },
-    handleCommand(activity) {
-      if (activity.command === 'seeReport') {
-        this.$router.push({
-          name: 'Report Viewer',
-          params: {
-            processId: activity.processId,
-            instanceUuid: activity.instanceUuid,
-            fileName: activity.output.fileName
-          }
-        }, () => {})
-      } else if (activity.command === 'zoomIn') {
-        const viewSearch = recursiveTreeSearch({
-          treeData: this.permissionRoutes,
-          attributeValue: activity.uuid,
-          attributeName: 'meta',
-          secondAttribute: 'uuid',
-          attributeChilds: 'children'
-        })
-        if (viewSearch) {
-          this.$router.push({
-            name: viewSearch.name,
-            query: {
-              ...this.$route.query,
-              ...activity.parametersList
-            }
-          }, () => {})
-        }
-      }
-    },
-    checkStatus({ isError, isProcessing, isReport }) {
-      const status = {
-        text: this.$t('notifications.completed'),
-        type: 'success',
-        color: '#67C23A'
-      }
-      // if (isReport) {
-      //   return status
-      // }
-      // is executing
-      if (isProcessing) {
-        status.text = this.$t('notifications.processing')
-        status.type = 'info'
-        status.color = '#909399'
-        return status
-      }
-      if (isError) {
-        status.text = this.$t('notifications.error')
-        status.type = 'danger'
-        status.color = '#F56C6C'
-        return status
-      }
-      // is completed
-      return status
-    },
-    generateTitle(title) {
-      const hasKey = this.$te('table.ProcessActivity.' + title)
-      if (hasKey) {
-        // $t :this method from vue-i18n, inject in @/lang/index.js
-        const translatedTitle = this.$t('table.ProcessActivity.' + title)
-        return translatedTitle
-      }
-      return title
-    },
-    translateDate(value) {
-      return this.$d(new Date(value), 'long', this.language)
+
+    return {
+      // computeds
+      templateDevice
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped src="./processActivityStyle.scss">

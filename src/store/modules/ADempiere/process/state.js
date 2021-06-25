@@ -9,9 +9,7 @@ export default {
   reportList: [],
   metadata: {},
   process: [], // process to run finish
-  sessionProcess: [],
   notificationProcess: [],
-  inRequestMetadata: [],
   reportViewList: [],
   totalResponse: 0,
   totalRequest: 0,

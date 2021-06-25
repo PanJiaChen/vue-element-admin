@@ -18,14 +18,7 @@ export default {
   deleteInExecution(state, payload) {
     state.inExecution = state.inExecution.filter(item => item.containerUuid !== payload.containerUuid)
   },
-  // Add process in request metadata from server
-  addInRequestMetadata(state, payload) {
-    state.inRequestMetadata.push(payload)
-  },
-  // Delete process in request metadata
-  deleteInRequestMetadata(state, payload) {
-    state.inRequestMetadata = state.inRequestMetadata.filter(item => item !== payload)
-  },
+
   addStartedProcess(state, payload) {
     state.process.push(payload)
   },
@@ -52,9 +45,7 @@ export default {
       state.reportList.push(payload)
     }
   },
-  setSessionProcess(state, payload) {
-    state.sessionProcess = payload.processList
-  },
+
   changeFormatReport(state, payload) {
     state.reportFormat = payload
   },
@@ -64,9 +55,7 @@ export default {
   setTotalResponse(state, payload) {
     state.totalResponse = payload
   },
-  setTotalSelection(state, payload) {
-    state.totalSelection = payload
-  },
+
   setSuccessSelection(state, payload) {
     state.successSelection = payload
   },
