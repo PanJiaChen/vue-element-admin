@@ -28,12 +28,13 @@
         :disabled="Boolean(key > 0 && isCreateNew)"
         :style="tabParentStyle"
       >
-        <span slot="label">
-          <lock-record
-            :tab-position="key"
-            :tab-name="tabAttributes.name"
-          />
-        </span>
+        <lock-record
+          slot="label"
+          :tab-position="key"
+          :tab-uuid="tabAttributes.uuid"
+          :table-name="tabAttributes.tableName"
+          :tab-name="tabAttributes.name"
+        />
 
         <main-panel
           :parent-uuid="windowUuid"
