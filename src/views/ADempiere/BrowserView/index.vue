@@ -58,10 +58,9 @@
         </el-collapse-item>
       </el-collapse>
 
-      <data-table
+      <!-- result of records in the table -->
+      <default-table
         :container-uuid="browserUuid"
-        :panel-type="panelType"
-        :metadata="browserMetadata"
       />
     </el-main>
   </el-container>
@@ -83,14 +82,14 @@ import ContextMenu from '@/components/ADempiere/ContextMenu'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import TitleAndHelp from '@/components/ADempiere/TitleAndHelp'
 import PanelDefinition from '@/components/ADempiere/PanelDefinition'
-import DataTable from '@/components/ADempiere/DataTable'
+import DefaultTable from '@/components/ADempiere/DefaultTable'
 
 export default defineComponent({
   name: 'BrowserView',
 
   components: {
     ContextMenu,
-    DataTable,
+    DefaultTable,
     ModalDialog,
     PanelDefinition,
     TitleAndHelp
