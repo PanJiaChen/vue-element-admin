@@ -119,6 +119,18 @@ export default {
           trigger: 'item',
           formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
+        toolbox: {
+          // y: 'bottom',
+          feature: {
+            magicType: {
+              type: ['stack', 'tiled']
+            },
+            dataView: {},
+            saveAsImage: {
+              pixelRatio: 2
+            }
+          }
+        },
         legend: {
           left: 'center',
           bottom: '10',

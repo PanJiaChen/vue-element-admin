@@ -117,6 +117,18 @@ export default {
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
+        toolbox: {
+          // y: 'bottom',
+          feature: {
+            magicType: {
+              type: ['stack', 'tiled']
+            },
+            dataView: {},
+            saveAsImage: {
+              pixelRatio: 2
+            }
+          }
+        },
         radar: {
           radius: '66%',
           center: ['50%', '42%'],
@@ -142,13 +154,11 @@ export default {
           type: 'radar',
           symbolSize: 0,
           areaStyle: {
-            normal: {
-              shadowBlur: 13,
-              shadowColor: 'rgba(0,0,0,.2)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 10,
-              opacity: 1
-            }
+            shadowBlur: 13,
+            shadowColor: 'rgba(0,0,0,.2)',
+            shadowOffsetX: 0,
+            shadowOffsetY: 10,
+            opacity: 1
           },
           data: seriesToShow,
           animationDuration: animationDuration

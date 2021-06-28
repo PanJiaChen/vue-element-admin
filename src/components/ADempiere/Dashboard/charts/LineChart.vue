@@ -118,12 +118,8 @@ export default {
             smooth: true,
             type: 'line',
             animationEasing: 'quadraticOut',
-            itemStyle: {
-              normal: {
-                lineStyle: {
-                  width: 2
-                }
-              }
+            lineStyle: {
+              width: 2
             }
           }
         })
@@ -135,6 +131,18 @@ export default {
           boundaryGap: false,
           axisTick: {
             show: false
+          }
+        },
+        toolbox: {
+          // y: 'bottom',
+          feature: {
+            magicType: {
+              type: ['stack', 'tiled']
+            },
+            dataView: {},
+            saveAsImage: {
+              pixelRatio: 2
+            }
           }
         },
         grid: {

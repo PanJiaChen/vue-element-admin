@@ -25,7 +25,7 @@ require('echarts/theme/macarons') // echarts theme
 import resize from './mixins/resize'
 import { getMetrics } from '@/api/ADempiere/dashboard/chart'
 
-const animationDuration = 6000
+const animationDuration = 2800
 
 export default {
   mixins: [resize],
@@ -40,7 +40,11 @@ export default {
     },
     height: {
       type: String,
-      default: '300px'
+      default: '350px'
+    },
+    autoResize: {
+      type: Boolean,
+      default: true
     },
     metadata: {
       type: Object,
@@ -50,6 +54,14 @@ export default {
   data() {
     return {
       chart: null
+    }
+  },
+  watch: {
+    chartData: {
+      deep: true,
+      handler(val) {
+        this.setOptions(val)
+      }
     }
   },
   mounted() {
@@ -89,6 +101,7 @@ export default {
     loadChartMetrics(metrics) {
       let xAxisValues = []
       let seriesToShow = []
+      let legendToShow = []
       if (!this.isEmptyValue(metrics.series)) {
         if (metrics.series.length > 0) {
           metrics.series.forEach(serie => {
@@ -98,19 +111,34 @@ export default {
         seriesToShow = metrics.series.map(serie => {
           return {
             name: serie.name,
-            type: 'bar',
             stack: 'vistors',
-            barWidth: '60%',
             data: serie.data_set.map(set => set.value),
-            animationDuration
+            animationDuration,
+            smooth: true,
+            large: true,
+            type: 'line',
+            animationEasing: 'quadraticOut',
+            lineStyle: {
+              width: 2
+            },
+            areaStyle: {}
           }
         })
+        legendToShow = metrics.series.map(serie => serie.name)
       }
       this.chart.setOption({
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+        xAxis: {
+          data: xAxisValues,
+          boundaryGap: false,
+          axisTick: {
+            show: false
+          },
+          silent: false,
+          splitLine: {
+            show: false
+          },
+          splitArea: {
+            show: false
           }
         },
         toolbox: {
@@ -126,25 +154,27 @@ export default {
           }
         },
         grid: {
-          top: 10,
-          left: '2%',
-          right: '2%',
-          bottom: '3%',
+          left: 10,
+          right: 10,
+          bottom: 20,
+          top: 30,
           containLabel: true
         },
-        xAxis: [{
-          type: 'category',
-          data: xAxisValues,
-          axisTick: {
-            alignWithLabel: true
-          }
-        }],
-        yAxis: [{
-          type: 'value',
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross'
+          },
+          padding: [5, 10]
+        },
+        yAxis: {
           axisTick: {
             show: false
           }
-        }],
+        },
+        legend: {
+          data: legendToShow
+        },
         series: seriesToShow
       })
     }

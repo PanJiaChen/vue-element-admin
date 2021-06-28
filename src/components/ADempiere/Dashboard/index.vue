@@ -87,7 +87,7 @@ export default {
             break
           //  Area Chart
           case 'AC':
-            dashboard = () => import('@/components/ADempiere/Dashboard/charts/RaddarChart')
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/AreaChart')
             break
           //  Line Chart
           case 'LC':
@@ -103,7 +103,7 @@ export default {
             break
           //  Waterfall Chart
           case 'WC':
-            dashboard = () => import('@/components/ADempiere/Dashboard/charts/RaddarChart')
+            dashboard = () => import('@/components/ADempiere/Dashboard/charts/WaterfallChart')
             break
           default:
             dashboard = () => import('@/components/ADempiere/Dashboard/charts/LineChart')
