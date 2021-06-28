@@ -31,7 +31,7 @@
         :name="String(key)"
         lazy
         :disabled="isDisabledTab(key)"
-        :style="tabParentStyle"
+        :style="tabStyle"
       >
         <lock-record
           slot="label"
@@ -46,7 +46,6 @@
           :container-uuid="tabAttributes.uuid"
           :panel-metadata="tabAttributes"
           :group-tab="tabAttributes.tabGroup"
-          panel-type="window"
         />
       </el-tab-pane>
     </template>
@@ -83,10 +82,10 @@ export default defineComponent({
   },
 
   setup(props, { root }) {
-    const currentTab = ref(root.$route.query.tabParent)
+    const currentTab = ref(root.$route.query.tab)
     const tabUuid = ref(props.tabsList[0].uuid)
 
-    const tabParentStyle = computed(() => {
+    const tabStyle = computed(() => {
       return {
         height: '75vh',
         overflow: 'auto'
@@ -119,8 +118,8 @@ export default defineComponent({
     }
 
     // watch router query tab parent value
-    watch(() => root.$route.query.tabParent, (newValue) => {
-      if (root.isEmptyValue(newValue) || newValue === 'create-new') {
+    watch(() => root.$route.query.tab, (newValue) => {
+      if (root.isEmptyValue(newValue)) {
         setTabNumber('0')
         return
       }
@@ -133,7 +132,7 @@ export default defineComponent({
       root.$router.push({
         query: {
           ...root.$route.query,
-          tabParent: currentTab.value
+          tab: currentTab.value
         },
         params: {
           ...root.$route.params
@@ -148,7 +147,7 @@ export default defineComponent({
       currentTab,
       tabUuid,
       // computed
-      tabParentStyle,
+      tabStyle,
       // meyhods
       handleClick,
       isDisabledTab
