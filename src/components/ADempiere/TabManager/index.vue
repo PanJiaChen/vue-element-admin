@@ -113,11 +113,9 @@ export default defineComponent({
      * @param {object} tabHTML DOM HTML the tab clicked
      */
     const handleClick = (tabHTML) => {
-      if (tabUuid.value !== tabHTML.$attrs.tabuuid) {
-        tabUuid.value = tabHTML.$attrs.tabuuid
-        setCurrentTab()
-        setTabNumber(tabHTML.$attrs.key)
-      }
+      tabUuid.value = tabHTML.$attrs.tabuuid
+      setCurrentTab()
+      setTabNumber(tabHTML.index)
     }
 
     // watch router query tab parent value
