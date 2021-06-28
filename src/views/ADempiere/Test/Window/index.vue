@@ -17,39 +17,32 @@
 -->
 
 <template>
-  <tab-manager
-    :window-uuid="windowUuid"
-    :window-metadata="windowMetadata"
-    :tabs-list="windowMetadata.tabsListParent"
-    class="tab-window"
+  <component
+    :is="WindowView"
+    :uuid="uuid"
+    :metadata="metadata"
   />
 </template>
 
 <script>
 import { defineComponent } from '@vue/composition-api'
 
-import TabManager from '@/components/ADempiere/TabManager'
+import WindowView from '@/views/ADempiere/WindowView'
+import standardMetadata from './standardWindow.json'
 
 export default defineComponent({
-  name: 'StandardWindow',
-
-  components: {
-    TabManager
-  },
-
-  props: {
-    windowUuid: {
-      type: String,
-      required: true
-    },
-    windowMetadata: {
-      type: Object,
-      required: true
-    }
-  },
+  name: 'TestWindowView',
 
   setup() {
+    // Product Group
+    const uuid = 'a521b2f6-fb40-11e8-a479-7a0060f0aa01'
+    const metadata = standardMetadata.result
 
+    return {
+      WindowView,
+      metadata,
+      uuid
+    }
   }
 })
 </script>

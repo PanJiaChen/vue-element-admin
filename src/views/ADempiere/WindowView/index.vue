@@ -17,22 +17,21 @@
 -->
 
 <template>
-  <div v-if="isLoaded" key="window-loaded">
-    <context-menu
-      :menu-parent-uuid="$route.meta.parentUuid"
-      :parent-uuid="windowUuid"
-      :container-uuid="windowMetadata.currentTabUuid"
-      :table-name="windowMetadata.currentTab.tableName"
-      :panel-type="panelType"
-      :is-insert-record="windowMetadata.currentTab.isInsertRecord"
-    />
+  <div v-if="isLoaded" key="window-loaded" class="view-base">
+    <el-container style="min-height: calc(100vh - 84px)">
+      <el-aside width="100%">
 
-    <component
-      :is="renderWindowComponent"
-      :window-metadata="windowMetadata"
-      :window-uuid="windowUuid"
-    />
+        <!-- // TODO: Add header window component for auxiliary menu and worflow status -->
+
+        <component
+          :is="renderWindowComponent"
+          :window-metadata="windowMetadata"
+          :window-uuid="windowUuid"
+        />
+      </el-aside>
+    </el-container>
   </div>
+
   <div
     v-else
     key="window-loading"
@@ -45,21 +44,33 @@
 
 <script>
 import { defineComponent, computed, ref } from '@vue/composition-api'
-
-import ContextMenu from '@/components/ADempiere/ContextMenu'
+import { generateWindow as generateWindowRespose } from './windowUtils'
 
 export default defineComponent({
   name: 'WindowView',
 
-  components: {
-    ContextMenu
+  props: {
+    // implement by test view
+    uuid: {
+      type: String,
+      default: ''
+    },
+    metadata: {
+      type: Object,
+      default: () => {}
+    }
   },
 
   setup(props, { root }) {
     const panelType = 'window'
-    const windowUuid = root.$route.meta.uuid
     const isLoaded = ref(false)
     const windowMetadata = ref({})
+
+    let windowUuid = root.$route.meta.uuid
+    // set uuid from test
+    if (!root.isEmptyValue(props.uuid)) {
+      windowUuid = props.uuid
+    }
 
     const generateWindow = (window) => {
       windowMetadata.value = window
@@ -72,11 +83,21 @@ export default defineComponent({
 
     // get window from vuex store or request from server
     const getWindow = () => {
+      // metadata props use for test
+      if (!root.isEmptyValue(props.metadata)) {
+        return new Promise(resolve => {
+          const windowResponse = generateWindowRespose(props.metadata)
+          generateWindow(windowResponse)
+          resolve(windowResponse)
+        })
+      }
+
       const window = getterWindow.value
       if (!root.isEmptyValue(window)) {
         generateWindow(window)
         return
       }
+
       root.$store.dispatch('getWindowFromServer', {
         windowUuid,
         routeToDelete: root.$route
@@ -113,6 +134,7 @@ export default defineComponent({
       panelType,
       windowUuid,
       windowMetadata,
+      // computed
       getterWindow,
       renderWindowComponent,
       isLoaded
