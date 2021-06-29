@@ -62,7 +62,6 @@ export default defineComponent({
   },
 
   setup(props, { root }) {
-    const panelType = 'window'
     const isLoaded = ref(false)
     const windowMetadata = ref({})
 
@@ -77,25 +76,26 @@ export default defineComponent({
       isLoaded.value = true
     }
 
-    const getterWindow = computed(() => {
+    const storedWindow = computed(() => {
       return root.$store.getters.getWindow(windowUuid)
     })
 
     // get window from vuex store or request from server
     const getWindow = () => {
+      const window = storedWindow.value
+      if (!root.isEmptyValue(window)) {
+        generateWindow(window)
+        return
+      }
+
       // metadata props use for test
       if (!root.isEmptyValue(props.metadata)) {
         return new Promise(resolve => {
           const windowResponse = generateWindowRespose(props.metadata)
+          root.$store.commit('addWindow', windowResponse)
           generateWindow(windowResponse)
           resolve(windowResponse)
         })
-      }
-
-      const window = getterWindow.value
-      if (!root.isEmptyValue(window)) {
-        generateWindow(window)
-        return
       }
 
       root.$store.dispatch('getWindowFromServer', {
@@ -131,11 +131,9 @@ export default defineComponent({
     getWindow()
 
     return {
-      panelType,
       windowUuid,
       windowMetadata,
       // computed
-      getterWindow,
       renderWindowComponent,
       isLoaded
     }

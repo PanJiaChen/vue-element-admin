@@ -317,7 +317,7 @@ const window = {
         let isTabsChildren = false
         if (!isAdvancedQuery) {
           const window = getters.getWindow(parentUuid)
-          if (window) {
+          if (window && window.tabsListChildren) {
             isTabsChildren = Boolean(window.tabsListChildren.length)
           }
         }

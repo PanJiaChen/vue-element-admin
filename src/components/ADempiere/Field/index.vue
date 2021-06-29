@@ -244,8 +244,9 @@ export default {
         // TODO: Evaluate record uuid without route.action
         // edit mode is diferent to create new
         let isWithRecord = this.field.recordUuid !== 'create-new'
+        // TODO: Remove false condition to production
         // evaluate context
-        if ((this.preferenceClientId !== this.metadataField.clientId) && isWithRecord) {
+        if ((this.preferenceClientId !== this.metadataField.clientId && 1 === 2) && isWithRecord) {
           return true
         }
 
