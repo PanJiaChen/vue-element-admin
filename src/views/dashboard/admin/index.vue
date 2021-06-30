@@ -1,8 +1,14 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row :gutter="8">
+      <el-col :span="24" style="padding-right:8px;margin-bottom:2px;">
+        <dashboard
+          :metadata="mainashboard"
+          :title="mainashboard.name"
+        />
+      </el-col>
       <template v-for="(dashboardAttributes, index) in dashboardList">
-        <el-col :key="index" :xs="{ span: 24 }" :sm="{ span: 24 }" :md="{ span: 24 }" :lg="{ span: 12 }" :xl="{ span: 12 }" style="padding-right:8px;margin-bottom:2px;">
+        <el-col v-if="index > 0" :key="index" :xs="{ span: 24 }" :sm="{ span: 24 }" :md="{ span: 24 }" :lg="{ span: 12 }" :xl="{ span: 12 }" style="padding-right:8px;margin-bottom:2px;">
           <dashboard :metadata="dashboardAttributes" />
         </el-col>
       </template>
@@ -33,10 +39,16 @@ export default {
     },
     getterRol() {
       return this.$store.getters.getRoleUuid
+    },
+    mainashboard() {
+      return this.$store.state.dashboard.mainashboard
     }
   },
   watch: {
     getterRol(value) {
+      this.getDashboardListFromServer()
+    },
+    mainashboard(value) {
       this.getDashboardListFromServer()
     }
   },
@@ -50,6 +62,9 @@ export default {
         roleUuid: this.currentRole.uuid
       })
         .then(response => {
+          if (this.isEmptyValue(this.mainashboard)) {
+            this.$store.commit('setMainDashboard', response.dashboardsList[1])
+          }
           this.dashboardList = response.dashboardsList
           this.$forceUpdate()
         })

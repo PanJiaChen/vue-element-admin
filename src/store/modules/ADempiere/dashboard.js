@@ -23,7 +23,8 @@ import { getCurrentRole } from '@/utils/auth'
 const dashboard = {
   state: {
     dashboard: [],
-    recentItems: []
+    recentItems: [],
+    mainashboard: {}
   },
   mutations: {
     addDashboard(state, payload) {
@@ -34,6 +35,9 @@ const dashboard = {
     },
     setRecentItems(state, payload) {
       state.recentItems = payload
+    },
+    setMainDashboard(state, payload) {
+      state.mainashboard = payload
     }
   },
   actions: {

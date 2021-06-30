@@ -16,28 +16,36 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <el-collapse
+  <el-card
     v-if="!unsupportedDashboards.includes(dashboard.fileName)"
-    v-model="activeDashboard"
-    accordion
+    style="height: auto;"
   >
-    <el-collapse-item
-      :name="dashboard.name"
-      :disabled="!dashboard.isCollapsible"
-      class="custom-collapse-item"
-    >
-      <template slot="title">
-        <span class="custom-title">
-          {{ dashboard.name }}
-        </span>
-      </template>
-      <component
-        :is="renderDashboard"
-        :ref="dashboard.name"
-        :metadata="dashboard"
-      />
-    </el-collapse-item>
-  </el-collapse>
+    <div class="clearfix">
+      <el-row :gutter="2">
+        <el-col :span="isEmptyValue(title) ? 22 : 23">
+          <el-button type="text" class="label-dashboard" @click="metadata.isCollapsible = !metadata.isCollapsible">
+            {{ labelDashboard }}
+          </el-button>
+        </el-col>
+        <el-col v-if="isEmptyValue(title)" :span="1">
+          <el-button type="text" icon="el-icon-files" @click="sendMain(metadata)" />
+        </el-col>
+        <el-col :span="1">
+          <el-button type="text" :icon="!metadata.isCollapsible ? 'el-icon-arrow-down' : 'el-icon-arrow-up'" @click="metadata.isCollapsible = !metadata.isCollapsible" />
+        </el-col>
+      </el-row>
+    </div>
+    <transition name="el-zoom-in-top">
+      <div v-show="metadata.isCollapsible" class="dashboard-transitio">
+        <component
+          :is="renderDashboard"
+          :ref="dashboard.name"
+          :metadata="metadata"
+          :height="'450px'"
+        />
+      </div>
+    </transition>
+  </el-card>
 </template>
 
 <script>
@@ -47,6 +55,10 @@ export default {
     metadata: {
       type: Object,
       required: true
+    },
+    title: {
+      type: String,
+      default: ''
     }
   },
   data() {
@@ -112,6 +124,18 @@ export default {
       }
       return dashboard
       // return () => import(`@/components/ADempiere/Dashboard/${this.metadata.fileName}`)
+    },
+    labelDashboard() {
+      if (this.isEmptyValue(this.title)) {
+        return this.dashboard.name
+      }
+      return this.title
+    }
+  },
+  methods: {
+    sendMain(dashboard) {
+      this.$store.commit('setMainDashboard', dashboard)
+      this.$forceUpdate()
     }
   }
 }
@@ -143,5 +167,35 @@ export default {
     .custom-title {
       color: #303133;
     }
+  }
+  .el-card__header {
+    border: 1px solid #36a3f7;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+  }
+  .dashboard-transitio {
+    margin: 0px;
+    width: 100%;
+    padding-right: 2%;
+    border-radius: 4px;
+    text-align: center;
+    color: #fff;
+    box-sizing: border-box;
+    height: 500px;
+    overflow: auto;
+  }
+  .label-dashboard{
+    color: black;
+    width: 95%;
+    text-align: inherit;
+    font-weight: 500;
+    font-size: large;
+    padding-left: 1%;
+  }
+</style>
+<style>
+  .el-card__body {
+    padding: 5px;
   }
 </style>

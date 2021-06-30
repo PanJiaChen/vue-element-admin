@@ -16,7 +16,7 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never" style="max-height: 40vh;">
+  <el-card class="box-card" :body-style="{ padding: '0px' }" shadow="never">
     <div class="recent-items">
       <el-table :data="dataResult" max-height="455" @row-click="handleClick">
         <el-table-column
