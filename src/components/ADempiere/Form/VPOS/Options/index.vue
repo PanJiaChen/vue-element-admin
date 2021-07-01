@@ -511,7 +511,6 @@ export default {
       createOrder({
         posUuid,
         customerUuid: this.currentOrder.businessPartner.uuid,
-        salesRepresentativeUuid: this.currentOrder.salesRepresentative.uuid,
         warehouseUuid: this.$store.getters.currentWarehouse.uuid
       })
         .then(order => {

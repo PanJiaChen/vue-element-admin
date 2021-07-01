@@ -37,13 +37,11 @@ export default {
   createOrder({ commit, dispatch, rootGetters }, {
     posUuid,
     customerUuid,
-    salesRepresentativeUuid,
     documentTypeUuid
   }) {
     return createOrder({
       posUuid,
       customerUuid,
-      salesRepresentativeUuid,
       warehouseUuid: rootGetters.currentWarehouse.uuid,
       documentTypeUuid
     })
