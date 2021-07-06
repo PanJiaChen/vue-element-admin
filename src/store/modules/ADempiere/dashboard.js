@@ -73,6 +73,9 @@ const dashboard = {
             console.warn(`Error getting List Dashboards: ${error.message}. Code: ${error.code}.`)
           })
       })
+    },
+    mainDashboard({ commit }, dashboard) {
+      commit('setMainDashboard', dashboard)
     }
   },
   getters: {
@@ -85,6 +88,9 @@ const dashboard = {
       return state.dashboard.find(
         item => item.roleUuid === roleUuid
       )
+    },
+    getMainDashboard: (state) => {
+      return state.mainashboard
     }
   }
 }

@@ -134,7 +134,7 @@ export default {
   },
   methods: {
     sendMain(dashboard) {
-      this.$store.commit('setMainDashboard', dashboard)
+      this.$store.dispatch('mainDashboard', dashboard)
       this.$forceUpdate()
     }
   }

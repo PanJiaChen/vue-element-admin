@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-editor-container">
     <el-row :gutter="8">
-      <el-col :span="24" style="padding-right:8px;margin-bottom:2px;">
+      <el-col v-if="!isEmptyValue(mainashboard)" :span="24" style="padding-right:8px;margin-bottom:2px;">
         <dashboard
           :metadata="mainashboard"
           :title="mainashboard.name"
@@ -41,7 +41,7 @@ export default {
       return this.$store.getters.getRoleUuid
     },
     mainashboard() {
-      return this.$store.state.dashboard.mainashboard
+      return this.$store.getters.getMainDashboard
     }
   },
   watch: {
@@ -63,7 +63,7 @@ export default {
       })
         .then(response => {
           if (this.isEmptyValue(this.mainashboard)) {
-            this.$store.commit('setMainDashboard', response.dashboardsList[1])
+            this.$store.dispatch('mainDashboard', response.dashboardsList[1])
           }
           this.dashboardList = response.dashboardsList
           this.$forceUpdate()
