@@ -163,10 +163,10 @@ export function formatDate(date, isTime = false) {
 
 //  Get Formatted Price
 export function formatPrice(number, currency) {
-  if (this.isEmptyValue(number)) {
+  if (isEmptyValue(number)) {
     return undefined
   }
-  if (this.isEmptyValue(currency)) {
+  if (isEmptyValue(currency)) {
     currency = getCurrency()
   }
   //  Get formatted number
@@ -178,7 +178,7 @@ export function formatPrice(number, currency) {
 
 //  Format Quantity
 export function formatQuantity(number) {
-  if (this.isEmptyValue(number)) {
+  if (isEmptyValue(number)) {
     return undefined
   }
   if (!Number.isInteger(number)) {
@@ -190,7 +190,7 @@ export function formatQuantity(number) {
 
 // Format percentage based on Intl library
 export function formatPercent(number) {
-  if (this.isEmptyValue(number)) {
+  if (isEmptyValue(number)) {
     return undefined
   }
   //  Get formatted number
