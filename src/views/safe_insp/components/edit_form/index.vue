@@ -14,12 +14,12 @@
         <el-row>
           <el-col :span="7">
             <el-form-item label="巡检单编号">
-              <el-input v-model="form.safe_insp__insp_code" />
+              <el-input v-model="form.safe_insp__insp_code" disabled />
             </el-form-item>
           </el-col>
           <el-col :span="7">
             <el-form-item label="巡检状态">
-              <el-select v-model="form.safe_insp__insp_state" placeholder="请选择">
+              <el-select v-model="form.safe_insp__insp_state" disabled placeholder="请选择">
                 <el-option
                   v-for="item in options"
                   :key="item.funall_control__value_data"
@@ -96,7 +96,8 @@
         </el-row>
       </el-form>
     </el-card>
-    <InspDet :id="id" />
+    <InspDet :id="id" @updateList="getList" />
+    <InspDet :id="id" @updateList="getList" />
     <el-dialog
       v-if="selUserVisible"
       title="选择人员"

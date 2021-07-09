@@ -268,6 +268,7 @@ export default {
               this.dialogFormVisible = false
               this.$refs['form'].resetFields()
               this.$message.success('保存成功！')
+              this.$emit('updateList')
             } else {
               this.$message.error(data.message)
             }
