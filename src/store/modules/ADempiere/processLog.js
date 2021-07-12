@@ -59,7 +59,7 @@ const processLog = {
       pageSize
     }) {
       // process Activity
-      return requestListProcessesLogs({ pageToken, pageSize })
+      return requestListProcessesLogs({ userUuid: getters['user/getUserUuid'], pageToken, pageSize })
         .then(processActivityResponse => {
           const responseList = processActivityResponse.processLogsList.map(processLogItem => {
             const { uuid: containerUuid } = processLogItem
