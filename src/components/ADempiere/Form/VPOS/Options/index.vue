@@ -354,7 +354,8 @@ export default {
     return {
       activeName: '',
       processPos: '',
-      showFieldListOrder: false
+      showFieldListOrder: false,
+      posProcess
     }
   },
   computed: {
@@ -393,7 +394,7 @@ export default {
     }
   },
   created() {
-    this.findProcess()
+    this.findProcess(this.posProcess)
   },
   methods: {
     notSubmitForm(event) {
@@ -473,7 +474,7 @@ export default {
         },
         {
           columnName: 'C_DocTypeRMA_ID',
-          value: 'VO'
+          value: this.currentOrder.documentType.id
         }
       ]
       this.$store.dispatch('addParametersProcessPos', parametersList)
@@ -510,8 +511,7 @@ export default {
       this.$store.dispatch('addParametersProcessPos', parametersList)
       createOrder({
         posUuid,
-        customerUuid: this.currentOrder.businessPartner.uuid,
-        warehouseUuid: this.$store.getters.currentWarehouse.uuid
+        customerUuid: this.currentOrder.businessPartner.uuid
       })
         .then(order => {
           this.$store.dispatch('currentOrder', order)
@@ -538,13 +538,12 @@ export default {
           })
         })
         .finally(() => {
-          const process = this.$store.getters.getProcess(posProcess[1].uuid)
+          const process = this.$store.getters.getProcess(this.posProcess[1].uuid)
           this.showModal(process)
         })
     },
     copyLineOrder() {
-      this.processPos = posProcess[1].uuid
-      const process = this.$store.getters.getProcess(posProcess[1].uuid)
+      const process = this.$store.getters.getProcess(this.posProcess[1].uuid)
       this.showModal(process)
     },
     cashClosing() {
