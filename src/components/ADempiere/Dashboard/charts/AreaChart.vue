@@ -99,13 +99,17 @@ export default {
         })
     },
     loadChartMetrics(metrics) {
-      let xAxisValues = []
+      const xAxisValues = []
       let seriesToShow = []
       let legendToShow = []
       if (!this.isEmptyValue(metrics.series)) {
         if (metrics.series.length > 0) {
           metrics.series.forEach(serie => {
-            xAxisValues = xAxisValues.concat(serie.data_set.map(set => set.name))
+            serie.data_set.forEach(set => {
+              if (!xAxisValues.find(value => value === set.name)) {
+                xAxisValues.push(set.name)
+              }
+            })
           })
         }
         seriesToShow = metrics.series.map(serie => {
