@@ -435,7 +435,7 @@ export default {
 
             case 'C_BPartner_ID_UUID': {
               const bPartnerValue = mutation.payload.value
-              if (!this.isEmptyValue(this.currentPointOfSales)) {
+              if (!this.isEmptyValue(this.currentPointOfSales.templateBusinessPartner)) {
                 const bPartnerPOS = this.currentPointOfSales.templateBusinessPartner.uuid
                 // Does not send values to server, when empty values are set or
                 // if BPartner set equal to BPartner POS template

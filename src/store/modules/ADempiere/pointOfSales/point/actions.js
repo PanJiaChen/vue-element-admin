@@ -109,7 +109,7 @@ export default {
         })
       })
   },
-  setCurrentPOS({ commit, dispatch, rootGetters }, posToSet) {
+  setCurrentPOS({ commit, dispatch, state, rootGetters }, posToSet) {
     commit('setCurrentPointOfSales', posToSet)
     const oldRoute = router.app._route
     router.push({
@@ -122,6 +122,7 @@ export default {
         pos: posToSet.id
       }
     }, () => {})
+    state.currenciesList = []
     dispatch('listWarehouseFromServer', posToSet.uuid)
     dispatch('listCurrenciesFromServer', posToSet.uuid)
     dispatch('listPricesFromServer', posToSet)

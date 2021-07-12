@@ -62,25 +62,25 @@
               <p class="total">
                 <b>{{ $t('form.pos.collect.dayRate') }}:</b>
                 <!-- Conversion rate to date -->
-                <b v-if="!isEmptyValue(dateRate)" style="float: right;">
-                  <span v-if="!isEmptyValue(dateRate.divideRate)">
-                    <span v-if="formatConversionCurrenty(dateRate.divideRate) > 1">
+                <b v-if="!isEmptyValue(dayRate)" style="float: right;">
+                  <span v-if="!isEmptyValue(dayRate.divideRate)">
+                    <span v-if="formatConversionCurrenty(dayRate.divideRate) > 1">
                       {{
-                        formatPrice(formatConversionCurrenty(dateRate.divideRate), dateRate.currencyTo.iSOCode)
+                        formatPrice(formatConversionCurrenty(dayRate.divideRate), dayRate.currencyTo.iSOCode)
                       }}
                     </span>
                     <span v-else>
                       {{
-                        dateRate.currencyTo.iSOCode
+                        dayRate.currencyTo.iSOCode
                       }}
                       {{
-                        formatConversionCurrenty(dateRate.divideRate)
+                        formatConversionCurrenty(dayRate.divideRate)
                       }}
                     </span>
                   </span>
                   <span v-else>
                     {{
-                      formatPrice(1, dateRate.iSOCode)
+                      formatPrice(1, dayRate.iSOCode)
                     }}
                   </span>
                 </b>
@@ -100,11 +100,10 @@
                   <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
                     <!-- Add selected currency symbol -->
                     <field-definition
-                      v-if="field.columnName === 'PayAmt' || field.columnName === 'TenderType'"
-                      :key="field.columnName"
+                      v-if="field.sequence <= 1"
                       :metadata-field="field.columnName === 'PayAmt' ? {
                         ...field,
-                        labelCurrency: isEmptyValue(dateRate.divideRate) ? dateRate : dateRate.currencyTo
+                        labelCurrency: isEmptyValue(dayRate.divideRate) ? dayRate : dayRate.currencyTo
                       } : field"
                     />
                   </el-col>
@@ -124,14 +123,12 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
-                    <!-- Add selected currency symbol -->
+                  <el-col v-for="(field, key) in fieldsList" :key="key" :span="8">
                     <field-definition
-                      v-if="field.columnName !== 'PayAmt' && field.columnName !== 'TenderType' && field.columnName !== 'C_Currency_ID'"
-                      :key="field.columnName"
+                      v-if="field.sequence > 2"
                       :metadata-field="field.columnName === 'PayAmt' ? {
                         ...field,
-                        labelCurrency: isEmptyValue(dateRate.divideRate) ? dateRate : dateRate.currencyTo
+                        labelCurrency: isEmptyValue(dayRate.divideRate) ? dayRate : dayRate.currencyTo
                       } : field"
                     />
                   </el-col>
@@ -314,7 +311,7 @@ export default {
   },
   computed: {
     listCurrency() {
-      return this.$store.state['pointOfSales/point/index'].listCurrency
+      return this.$store.state['pointOfSales/point/index'].currenciesList
     },
     convertionList() {
       return this.$store.state['pointOfSales/point/index'].conversionsList
@@ -530,19 +527,41 @@ export default {
     updateOrderPaymentPos() {
       return this.$store.getters.getUpdatePaymentPos
     },
-    dateRate() {
-      const convertion = this.convertionList.find(currency => {
-        if ((currency.currencyTo.iSOCode === this.currentFieldCurrency) && (this.pointOfSalesCurrency.iSOCode !== currency.currencyTo.iSOCode)) {
-          return currency
+    convertionsList() {
+      return this.$store.state['pointOfSales/point/index'].conversionsList
+    },
+    currentConvertion() {
+      if (this.isEmptyValue(this.currentPointOfSales.displayCurrency)) {
+        return {}
+      }
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(convert.currencyTo) && !this.isEmptyValue(this.currentPointOfSales.displayCurrency) && convert.currencyTo.id === this.currentPointOfSales.displayCurrency.id) {
+          return convert
         }
       })
-      if (!this.isEmptyValue(convertion)) {
-        return convertion
+      if (convert) {
+        return convert
       }
-      return this.pointOfSalesCurrency
+      return {}
+    },
+    dayRate() {
+      const currency = this.listCurrency.find(currency => currency.key === this.currentFieldCurrency)
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(currency) && !this.isEmptyValue(convert.currencyTo) && currency.id === convert.currencyTo.id && this.currentPointOfSales.currentPriceList.currency.id !== currency.id) {
+          return convert
+        }
+      })
+      if (!this.isEmptyValue(convert)) {
+        return convert
+      }
+      return {
+        currencyTo: this.currentPointOfSales.currentPriceList.currency,
+        divideRate: 1,
+        iSOCode: this.currentPointOfSales.currentPriceList.currency.iSOCode
+      }
     },
     fieldsPaymentType() {
-      return this.fieldsList[2]
+      return this.fieldsList[1]
     }
   },
   watch: {
@@ -553,21 +572,6 @@ export default {
         value: value
       })
     },
-    // currencyUuid(value) {
-    //   const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
-    //     if (currency.uuid === value) {
-    //       return currency
-    //     }
-    //   })
-    //   if (listCurrency === undefined) {
-    //     this.$store.dispatch('conversionDivideRate', {
-    //       conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-    //       currencyFromUuid: this.pointOfSalesCurrency.uuid,
-    //       conversionDate: this.formatDate(new Date()),
-    //       currencyToUuid: value
-    //     })
-    //   }
-    // },
     convertAllPayment(value) {
       if (!this.isEmptyValue(value)) {
         this.allPayCurrency = this.pay / value
@@ -583,7 +587,7 @@ export default {
         })
       }
     },
-    dateRate(value) {
+    dayRate(value) {
       if (!this.isEmptyValue(value.divideRate)) {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
@@ -618,6 +622,13 @@ export default {
     this.defaultValueCurrency()
   },
   methods: {
+    amountConvert(currency) {
+      this.$store.dispatch('searchConversion', {
+        conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+        currencyFromUuid: this.currentPointOfSales.priceList.currency.uuid,
+        currencyToUuid: currency.uuid
+      })
+    },
     formatNumber({ displayType, number }) {
       let fixed = 0
       // Amount, Costs+Prices, Number
@@ -668,18 +679,7 @@ export default {
         containerUuid,
         columnName: 'ReferenceNo'
       })
-      const currencyUuid = this.$store.getters.getValueOfField({
-        containerUuid,
-        columnName: 'C_Currency_ID_UUID'
-      })
-      const currencyId = this.$store.getters.getValueOfField({
-        containerUuid,
-        columnName: 'C_Currency_ID'
-      })
-      const currencyToPay = this.isEmptyValue(currencyUuid) ? currencyId : currencyUuid
-      if (this.isEmptyValue(this.currencyDisplay(currencyToPay)) && this.currencyDisplay(currencyToPay).currencyUuid !== this.pointOfSalesCurrency.uuid) {
-        this.amontSend = this.convert.divideRate * this.amontSend
-      }
+      this.amontSend = this.dayRate.divideRate * this.amontSend
       if (this.sendToServer) {
         this.$store.dispatch('setPaymentBox', {
           posUuid,
@@ -689,7 +689,7 @@ export default {
           amount: this.amontSend * this.convertion,
           paymentDate,
           tenderTypeCode,
-          currencyUuid
+          currencyUuid: this.dayRate.currencyTo.uuid
         })
       } else {
         this.$store.dispatch('createPayments', {
@@ -700,7 +700,7 @@ export default {
           amount: this.amontSend * this.convertion,
           paymentDate,
           tenderTypeCode,
-          currencyUuid: this.currencyDisplay(currencyToPay)
+          currencyUuid: this.dayRate.currencyTo.uuid
         })
       }
       this.addCollect()
@@ -838,14 +838,6 @@ export default {
       }
       return currency
     },
-    convertCurrency() {
-      const convertCurrency = this.currencyDisplay(100)
-      this.$store.dispatch('convertionPayment', {
-        conversionTypeUuid: this.currentPointOfSales,
-        currencyFromUuid: this.pointOfSalesCurrency.uuid,
-        currencyToUuid: convertCurrency.currencyUuid
-      })
-    },
     undoPatment() {
       const list = this.listPayments[this.listPayments.length - 1]
       const orderUuid = list.orderUuid
@@ -918,14 +910,13 @@ export default {
     changeCurrency(value) {
       this.currentFieldCurrency = value
       const currency = this.listCurrency.find(currency => currency.key === value)
-      const findCoventionList = this.convertionList.find(convertion => convertion.currencyTo.iSOCode === value)
-      if (!this.isEmptyValue(currency) && this.isEmptyValue(findCoventionList) && (value !== this.pointOfSalesCurrency.iSOCode)) {
-        this.$store.dispatch('searchConversion', {
-          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-          currencyFromUuid: this.pointOfSalesCurrency.uuid,
-          conversionDate: this.formatDate(new Date()),
-          currencyToUuid: currency.uuid
-        })
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(currency) && !this.isEmptyValue(convert.currencyTo) && currency.id === convert.currencyTo.id && this.currentPointOfSales.currentPriceList.currency.id !== currency.id) {
+          return convert
+        }
+      })
+      if (!this.isEmptyValue(currency) && this.isEmptyValue(convert) && currency.uuid !== this.currentPointOfSales.currentPriceList.currency.uuid) {
+        this.amountConvert(currency)
       }
     }
   }

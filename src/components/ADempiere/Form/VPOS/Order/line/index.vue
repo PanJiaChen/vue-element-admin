@@ -51,6 +51,7 @@
                 <el-form-item :label="$t('form.pos.tableProduct.pin')">
                   <el-input
                     v-model="pin"
+                    type="password"
                     :placeholder="$t('form.pos.tableProduct.pin')"
                     clearable
                   />

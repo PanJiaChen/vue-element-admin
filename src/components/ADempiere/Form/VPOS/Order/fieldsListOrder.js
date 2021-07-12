@@ -45,9 +45,11 @@ export default [
     isFromDictionary: true,
     overwriteDefinition: {
       size: 24,
+      handleFocusGained: true,
       handleActionPerformed: true,
       handleContentSelection: true,
-      handleActionKeyPerformed: true
+      handleActionKeyPerformed: true,
+      isReadOnly: true
     }
   }
   // {

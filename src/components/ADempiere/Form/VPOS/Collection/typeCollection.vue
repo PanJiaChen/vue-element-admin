@@ -68,10 +68,7 @@
                         style="padding-bottom: 20px;"
                       >
                         <p class="total">
-                          <b v-if="!isEmptyValue(value.multiplyRate)" style="float: right;">
-                            {{ formatPrice(value.multiplyRate, currency.iSOCode) }}
-                          </b>
-                          <b v-else style="float: right;">
+                          <b style="float: right;">
                             {{ formatPrice(value.amount, currency.iSOCode) }}
                           </b>
                         </p>
@@ -152,9 +149,12 @@ export default {
     conevertionAmount() {
       return this.$store.getters.getConvertionPayment
     },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
     // Validate if there is a payment in a different type of currency to the point
     paymentCurrency() {
-      return this.$store.getters.posAttributes.currentPointOfSales.currentOrder.listPayments.payments.find(pay => pay.currencyUuid !== this.currency.uuid)
+      return this.currentPointOfSales.currentOrder.listPayments.payments.find(pay => pay.currencyUuid !== this.currency.uuid)
     }
   },
   watch: {
@@ -165,11 +165,16 @@ export default {
           query: value.reference.query
         })
       }
+    },
+    labelTypesPayment(value) {
+      console.log(value)
     }
   },
   created() {
-    this.convertingPaymentMethods()
-    if (this.isEmptyValue(this.labelTypesPayment.reference) && !this.isEmptyValue(this.listPaymentType.reference)) {
+    if (!this.isEmptyValue(this.isAddTypePay)) {
+      this.convertingPaymentMethods()
+    }
+    if (!this.isEmptyValue(this.listPaymentType.reference)) {
       this.tenderTypeDisplaye({
         tableName: this.listPaymentType.reference.tableName,
         query: this.listPaymentType.reference.query
@@ -189,9 +194,10 @@ export default {
         })
           .then(response => {
             this.$store.getters.posAttributes.currentPointOfSales.currentOrder.listPayments.payments.forEach(element => {
+              console.log({ response, element })
               if (element.currencyUuid !== this.pointOfSalesCurrency.uuid) {
                 element.multiplyRate = element.amount / response.multiplyRate
-                element.amountConvertion = element.multiplyRate / response.divideRate
+                element.amountConvertion = element.amount / response.divideRate
                 element.divideRate = response.multiplyRate
                 element.currencyConvertion = response.currencyTo
               }
@@ -267,6 +273,7 @@ export default {
           query
         })
           .then(response => {
+            console.log(response)
             this.labelTypesPayment = response
           })
       }

@@ -162,24 +162,19 @@ export default {
     }
   },
   mounted() {
-    if (this.isReadyFromGetData) {
-      this.loadKeyLayout()
+    if (this.isReadyFromGetData ||
+      (!this.isEmptyValue(this.$store.getters.getKeyLayout.uuid) &&
+      this.currentPointOfSales.keyLayoutUuid !== this.$store.getters.getKeyLayout.uuid)
+    ) {
+      this.loadKeyLayout(this.currentPointOfSales.keyLayoutUuid)
     }
   },
   methods: {
     formatQuantity,
     loadKeyLayout(uuid = null) {
-      const currentPOS = this.currentPointOfSales
-      if (this.isEmptyValue(currentPOS) || this.isEmptyValue(currentPOS.uuid)) {
-        this.$message({
-          type: 'warn',
-          message: 'Without POS Terminal',
-          shosClose: true
-        })
-        return
-      }
+      const KeyLayoutUuid = this.isEmptyValue(uuid) ? this.currentPointOfSales.keyLayoutUuid : uuid
 
-      this.$store.dispatch('getKeyLayoutFromServer', uuid)
+      this.$store.dispatch('getKeyLayoutFromServer', KeyLayoutUuid)
         .then(() => {
           this.isLoadedKeyLayout = true
         })

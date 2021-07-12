@@ -20,7 +20,6 @@ import {
   deleteOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { formatPercent } from '@/utils/ADempiere/valueFormat.js'
-import { showMessage } from '@/utils/ADempiere/notification.js'
 
 export default {
   name: 'OrderLineMixin',
@@ -80,11 +79,20 @@ export default {
     }
   },
   computed: {
-
-  },
-  created() {
-    if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency)) {
-      this.convertedAmountAsTotal(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency)
+    totalAmountConverted() {
+      const conversionsList = this.$store.state['pointOfSales/point/index'].conversionsList
+      if (this.isEmptyValue(conversionsList) && !this.isEmptyValue(this.currentPointOfSales.conversionTypeUuid)) {
+        return 1
+      }
+      const converted = conversionsList.find(converted => {
+        if (converted.conversionTypeUuid === this.currentPointOfSales.conversionTypeUuid) {
+          return converted
+        }
+      })
+      if (!this.isEmptyValue(converted)) {
+        return converted.divideRate
+      }
+      return 1
     }
   },
   methods: {
@@ -184,7 +192,6 @@ export default {
         })
     },
     deleteOrderLine(lineSelection) {
-      console
       deleteOrderLine({
         orderLineUuid: lineSelection.uuid
       })
@@ -200,39 +207,14 @@ export default {
           })
         })
     },
-    convertedAmountAsTotal(value) {
-      this.$store.dispatch('conversionDivideRate', {
-        conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-        currencyFromUuid: this.pointOfSalesCurrency.uuid,
-        currencyToUuid: value.uuid
-      })
-        .then(response => {
-          if (!this.isEmptyValue(response.currencyTo)) {
-            const currency = {
-              ...response.currencyTo,
-              amountConvertion: response.divideRate,
-              multiplyRate: response.multiplyRate
-            }
-            this.totalAmountConvertedLine = currency
-          } else {
-            this.totalAmountConvertedLine.multiplyRate = '1'
-            this.totalAmountConvertedLine.iSOCode = value.iSOCode
-          }
+    convertedAmount() {
+      if (!this.isEmptyValue(this.currentPointOfSales.displayCurrency) && this.totalAmountConverted === 1) {
+        this.$store.dispatch('searchConversion', {
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+          currencyFromUuid: this.currentPointOfSales.currentPriceList.currency.uuid,
+          currencyToUuid: this.currentPointOfSales.displayCurrency.uuid
         })
-        .catch(error => {
-          console.warn(`conversionDivideRate: ${error.message}. Code: ${error.code}.`)
-          showMessage({
-            type: 'error',
-            message: error.message,
-            showClose: true
-          })
-        })
-    },
-    getTotalAmount(basePrice, multiplyRate) {
-      if (this.isEmptyValue(basePrice) || this.isEmptyValue(multiplyRate)) {
-        return 0
       }
-      return (basePrice * multiplyRate)
     },
     /**
      * Show the correct display format
@@ -241,6 +223,7 @@ export default {
      */
     displayValue(row, orderLine) {
       const { columnName } = orderLine
+      // const iSOCode = this.isEmptyValue(this.currentPointOfSales.displayCurrency) ? '' : this.currentPointOfSales.displayCurrency.iSOCode
       if (columnName === 'LineDescription') {
         return row.lineDescription
       }
@@ -254,7 +237,7 @@ export default {
       } else if (columnName === 'GrandTotal') {
         return this.formatPrice(row.grandTotal, currency)
       } else if (columnName === 'ConvertedAmount') {
-        return this.formatPrice(this.getTotalAmount(row.grandTotal, this.totalAmountConvertedLine.multiplyRate), this.totalAmountConvertedLine.iSOCode)
+        return this.formatPrice(row.grandTotal / this.totalAmountConverted)
       }
     },
     productPrice(price, discount) {

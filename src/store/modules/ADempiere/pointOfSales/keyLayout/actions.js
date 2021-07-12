@@ -31,6 +31,10 @@ export default {
 
     if (isEmptyValue(keyLayoutUuid)) {
       console.info('not load key layout')
+      commit('setKeyLayout', {
+        isLoaded: false,
+        isReload: true
+      })
       return
     }
     getKeyLayout({

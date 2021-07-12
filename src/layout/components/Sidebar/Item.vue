@@ -32,6 +32,7 @@ export default {
       if (this.addMargin) {
         return 'margin-left: -20px;'
       }
+      return ''
     }
   }
 }

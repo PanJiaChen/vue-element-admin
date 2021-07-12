@@ -171,36 +171,6 @@ export default {
   addRateConvertion({ commit, state, getters }, currency) {
     commit('conversionRate', currency)
   },
-  conversionMultiplyRate({ commit }, {
-    containerUuid,
-    conversionTypeUuid,
-    currencyFromUuid,
-    currencyToUuid
-    // conversionDate
-  }) {
-    requestGetConversionRate({
-      conversionTypeUuid,
-      currencyFromUuid,
-      currencyToUuid
-      // conversionDate
-    })
-      .then(response => {
-        const multiplyRate = isEmptyValue(response.multiplyRate) ? 1 : response.multiplyRate
-        if (containerUuid === 'Collection') {
-          commit('currencyMultiplyRateCollection', multiplyRate)
-        } else {
-          commit('currencyMultiplyRate', multiplyRate)
-        }
-      })
-      .catch(error => {
-        console.warn(`conversionMultiplyRate: ${error.message}. Code: ${error.code}.`)
-        showMessage({
-          type: 'error',
-          message: error.message,
-          showClose: true
-        })
-      })
-  },
   changeMultiplyRate({ commit }, params) {
     commit('currencyMultiplyRate', params)
   },
@@ -321,27 +291,5 @@ export default {
       }
     })
     commit('setCurrencyDisplaye', displaycurrency)
-  },
-  convertionPayment({ commit }, {
-    conversionTypeUuid,
-    currencyFromUuid,
-    currencyToUuid
-  }) {
-    requestGetConversionRate({
-      conversionTypeUuid,
-      currencyFromUuid,
-      currencyToUuid
-    })
-      .then(response => {
-        commit('setConvertionPayment', response)
-      })
-      .catch(error => {
-        console.warn(`ConvertionPayment: ${error.message}. Code: ${error.code}.`)
-        showMessage({
-          type: 'error',
-          message: error.message,
-          showClose: true
-        })
-      })
   }
 }
