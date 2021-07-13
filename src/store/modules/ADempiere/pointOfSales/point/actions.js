@@ -17,7 +17,8 @@
 import router from '@/router'
 import {
   listPointOfSales,
-  listWarehouse,
+  listWarehouses,
+  listDocumentTypes,
   listPrices,
   listCurrencies
 } from '@/api/ADempiere/form/point-of-sales.js'
@@ -61,15 +62,31 @@ export default {
         })
       })
   },
-  listWarehouseFromServer({ commit }, posUuid) {
-    listWarehouse({
+  listWarehousesFromServer({ commit }, posUuid) {
+    listWarehouses({
       posUuid
     })
       .then(response => {
         commit('setWarehousesList', response.records)
       })
       .catch(error => {
-        console.warn(`listWarehouseFromServer: ${error.message}. Code: ${error.code}.`)
+        console.warn(`listWarehousesFromServer: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
+  listDocumentTypesFromServer({ commit }, posUuid) {
+    listDocumentTypes({
+      posUuid
+    })
+      .then(response => {
+        commit('setDocumentTypesList', response.records)
+      })
+      .catch(error => {
+        console.warn(`listDocumentTypesFromServer: ${error.message}. Code: ${error.code}.`)
         showMessage({
           type: 'error',
           message: error.message,
@@ -123,10 +140,12 @@ export default {
       }
     }, () => {})
     state.currenciesList = []
-    dispatch('listWarehouseFromServer', posToSet.uuid)
+    dispatch('listWarehousesFromServer', posToSet.uuid)
+    dispatch('listDocumentTypesFromServer', posToSet.uuid)
     dispatch('listCurrenciesFromServer', posToSet.uuid)
     dispatch('listPricesFromServer', posToSet)
     commit('setCurrentPriceList', posToSet.priceList)
+    commit('setCurrentDocumentTypePos', posToSet.documentType)
     commit('setCurrentWarehousePos', rootGetters['user/getWarehouse'])
     commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')

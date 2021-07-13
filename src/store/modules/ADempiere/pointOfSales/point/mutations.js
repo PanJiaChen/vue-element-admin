@@ -25,11 +25,17 @@ export default {
   setWarehousesList(state, warehousesList) {
     state.warehousesList = warehousesList
   },
+  setDocumentTypesList(state, documentTypesList) {
+    state.documentTypesList = documentTypesList
+  },
   setCurrentPriceList(state, currentPriceList) {
     state.currentPriceList = currentPriceList
   },
   setCurrentWarehousePos(state, warehouse) {
     state.currentWarehousePos = warehouse
+  },
+  setCurrentDocumentTypePos(state, documentType) {
+    state.currentDocumentTypePos = documentType
   },
   setPricesList(state, pricesList) {
     state.pricesList = pricesList

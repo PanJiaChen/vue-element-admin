@@ -55,6 +55,7 @@ export default {
         ...state.currentPointOfSales,
         listOrder: state.listOrder,
         warehousesList: state.warehousesList,
+        documentTypesList: state.documentTypesList,
         pricesList: state.pricesList,
         currentPriceList: state.currentPriceList,
         currentOrder: {
@@ -124,9 +125,19 @@ export default {
   /**
    * Current Warehouse
    */
-  getcurrentWarehousePos: (state) => {
+  getCurrentWarehousePos: (state) => {
     if (!isEmptyValue(state.currentWarehousePos)) {
       return state.currentWarehousePos
+    }
+    return {}
+  },
+
+  /**
+   * Current Document Type
+   */
+  getCurrentDocumentTypePos: (state) => {
+    if (!isEmptyValue(state.currentDocumentTypePos)) {
+      return state.currentDocumentTypePos
     }
     return {}
   }

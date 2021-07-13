@@ -245,6 +245,9 @@ export default {
           case 'changeWarehouse':
             this.$store.commit('setCurrentWarehousePos', action)
             break
+          case 'changeDocumentType':
+            this.$store.commit('setCurrentDocumentTypePos', action)
+            break
           case 'changePriceList':
             this.$store.commit('setCurrentPriceList', action)
             break

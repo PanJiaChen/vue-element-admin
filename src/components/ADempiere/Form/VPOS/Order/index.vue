@@ -54,11 +54,28 @@
             </el-col>
             <el-col :span="5" :style="styleTab">
               <el-form-item>
-                <field
-                  :key="fieldsList[2].columnName"
-                  :metadata-field="fieldsList[2]"
-                  :v-model="fieldsList[2].value"
-                />
+                <br>
+                <el-dropdown
+                  v-if="!isEmptyValue(currentWarehouse)"
+                  trigger="click"
+                  class="info-pos"
+                  @command="changeDocumentType"
+                >
+                  <span>
+                    <svg-icon icon-class="tree" />
+                    <b style="cursor: pointer"> {{ currentDocumentType.name }} </b>
+                  </span>
+                  <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item
+                      v-for="item in listDocumentTypes"
+                      :key="item.uuid"
+                      :command="item"
+                    >
+                      {{ item.name }}
+                    </el-dropdown-item>
+                  </el-dropdown-menu>
+                </el-dropdown>
+                <br>
               </el-form-item>
             </el-col>
             <el-col :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px; margin-top: 3.%;' : 'padding: 0px; margin-top: 2.4%;'">
@@ -262,7 +279,7 @@
                   </span>
                   <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item
-                      v-for="item in listWarehouse"
+                      v-for="item in listWarehouses"
                       :key="item.uuid"
                       :command="item"
                     >
@@ -573,7 +590,6 @@ export default {
     currentOrder() {
       if (this.isEmptyValue(this.currentPointOfSales)) {
         return {
-          documentType: {},
           documentStatus: {
             value: ''
           },
@@ -619,13 +635,25 @@ export default {
     },
     currentWarehouse() {
       if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.warehouse)) {
-        return this.$store.getters.getcurrentWarehousePos
+        return this.$store.getters.getCurrentWarehousePos
       }
       return {}
     },
-    listWarehouse() {
+    currentDocumentType() {
+      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.documentType)) {
+        return this.$store.getters.getCurrentDocumentTypePos
+      }
+      return {}
+    },
+    listWarehouses() {
       if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.warehousesList)) {
         return this.$store.getters.posAttributes.currentPointOfSales.warehousesList
+      }
+      return []
+    },
+    listDocumentTypes() {
+      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.documentTypesList)) {
+        return this.$store.getters.posAttributes.currentPointOfSales.documentTypesList
       }
       return []
     }
@@ -764,6 +792,14 @@ export default {
       this.attributePin = {
         ...warehouse,
         action: 'changeWarehouse',
+        type: 'actionPos'
+      }
+      this.visible = true
+    },
+    changeDocumentType(documentType) {
+      this.attributePin = {
+        ...documentType,
+        action: 'changeDocumentType',
         type: 'actionPos'
       }
       this.visible = true

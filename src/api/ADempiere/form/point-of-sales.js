@@ -643,10 +643,10 @@ export function validatePin({
 }
 
 /**
- * list Warehouse
+ * list Warehouses
  * @param {string} posUuidd - POS UUID reference
  */
-export function listWarehouse({
+export function listWarehouses({
   posUuid
 }) {
   return request({
@@ -658,6 +658,25 @@ export function listWarehouse({
   })
     .then(listWarehouseResponse => {
       return listWarehouseResponse
+    })
+}
+
+/**
+ * list Document Types
+ * @param {string} posUuidd - POS UUID reference
+ */
+export function listDocumentTypes({
+  posUuid
+}) {
+  return request({
+    url: `${config.pointOfSales.endpoint}/available-document-types`,
+    method: 'get',
+    params: {
+      pos_uuid: posUuid
+    }
+  })
+    .then(response => {
+      return response
     })
 }
 
