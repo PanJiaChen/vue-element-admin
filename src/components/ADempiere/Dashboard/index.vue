@@ -22,12 +22,12 @@
   >
     <div class="clearfix">
       <el-row :gutter="2">
-        <el-col :span="isEmptyValue(title) ? 22 : 23">
+        <el-col :span="main ? 22 : 23">
           <el-button type="text" class="label-dashboard" @click="metadata.isCollapsible = !metadata.isCollapsible">
             {{ labelDashboard }}
           </el-button>
         </el-col>
-        <el-col v-if="isEmptyValue(title)" :span="1">
+        <el-col v-if="main" :span="1">
           <el-button type="text" icon="el-icon-files" @click="sendMain(metadata)" />
         </el-col>
         <el-col :span="1">
@@ -59,6 +59,10 @@ export default {
     title: {
       type: String,
       default: ''
+    },
+    main: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
