@@ -124,9 +124,9 @@ export default {
   /**
    * Current Warehouse
    */
-  currentWarehouse: (state) => {
-    if (!isEmptyValue(state.currentWarehouse)) {
-      return state.currentWarehouse
+  getcurrentWarehousePos: (state) => {
+    if (!isEmptyValue(state.currentWarehousePos)) {
+      return state.currentWarehousePos
     }
     return {}
   }

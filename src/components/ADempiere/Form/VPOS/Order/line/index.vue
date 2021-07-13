@@ -32,7 +32,6 @@
               :metadata-field="{
                 ...field,
                 labelCurrency: currencyPointOfSales,
-                isReadOnly: !isModifyPrice
               }"
             />
             <field
@@ -40,45 +39,11 @@
               :key="field.columnName"
               :metadata-field="field"
             />
-            <el-popover
-              v-if="columnNameVisible === field.columnName && visible"
-              ref="ping"
-              v-model="visible"
-              placement="right"
-              trigger="click"
-            >
-              <el-form label-position="top" label-width="10px" @submit.native.prevent="notSubmitForm">
-                <el-form-item :label="$t('form.pos.tableProduct.pin')">
-                  <el-input
-                    v-model="pin"
-                    type="password"
-                    :placeholder="$t('form.pos.tableProduct.pin')"
-                    clearable
-                  />
-                </el-form-item>
-              </el-form>
-              <span style="float: right;">
-                <el-button
-                  type="danger"
-                  icon="el-icon-close"
-                  @click="closePing"
-                />
-                <el-button
-                  type="primary"
-                  icon="el-icon-check"
-                  @click="checkclosePin(pin, field.columnName)"
-                />
-              </span>
-              <el-button slojt="reference" type="text" disabled />
-            </el-popover>
             <field
               v-if="field.columnName === 'Discount'"
               :ref="field.columnName"
               :key="field.columnName"
-              :metadata-field="{
-                ...field,
-                isReadOnly: !isModifyPrice
-              }"
+              :metadata-field="field"
             />
           </el-form>
         </el-col>
@@ -132,10 +97,7 @@ export default {
       isLoadedField: false,
       panelType: 'custom',
       fieldsListLine,
-      fieldsList: [],
-      pin: '',
-      visible: false,
-      columnNameVisible: ''
+      fieldsList: []
     }
   },
   computed: {

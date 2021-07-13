@@ -22,7 +22,6 @@ export default [
     overwriteDefinition: {
       size: 24,
       sequence: 8,
-      isReadOnly: true,
       handleActionPerformed: true,
       handleContentSelection: true,
       handleFocusGained: true,

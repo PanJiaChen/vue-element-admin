@@ -31,7 +31,7 @@ export default {
   warehousesList: {},
   pricesList: {},
   currentPriceList: {},
-  currentWarehouse: {},
+  currentWarehousePos: {},
   listCurrency: [],
   conversionsList: [],
   currentPointOfSales: {},

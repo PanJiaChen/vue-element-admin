@@ -127,7 +127,7 @@ export default {
     dispatch('listCurrenciesFromServer', posToSet.uuid)
     dispatch('listPricesFromServer', posToSet)
     commit('setCurrentPriceList', posToSet.priceList)
-    commit('setCurrentWarehouse', rootGetters['user/getWarehouse'])
+    commit('setCurrentWarehousePos', rootGetters['user/getWarehouse'])
     commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')
     commit('setIsReloadProductPrice')

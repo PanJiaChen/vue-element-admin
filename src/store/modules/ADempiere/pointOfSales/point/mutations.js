@@ -28,8 +28,8 @@ export default {
   setCurrentPriceList(state, currentPriceList) {
     state.currentPriceList = currentPriceList
   },
-  setCurrentWarehouse(state, warehouse) {
-    state.currentWarehouse = warehouse
+  setCurrentWarehousePos(state, warehouse) {
+    state.currentWarehousePos = warehouse
   },
   setPricesList(state, pricesList) {
     state.pricesList = pricesList
