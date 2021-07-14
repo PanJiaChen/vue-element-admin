@@ -359,17 +359,6 @@ export default {
             message: error.message,
             showClose: true
           })
-
-          this.$store.commit('updateValueOfField', {
-            containerUuid: 'Products-Price-List',
-            columnName: 'ProductValue',
-            value: `${searchProduct}`
-          })
-
-          this.$store.commit('showListProductPrice', {
-            attribute: 'isShowPopoverField',
-            isShowed: true
-          })
         })
         .finally(() => {
           this.$store.commit('updateValuesOfContainer', {
