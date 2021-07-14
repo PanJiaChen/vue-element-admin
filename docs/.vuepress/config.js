@@ -324,7 +324,10 @@ function genComponentSidebar(type = '') {
 }
 
 function genFormsSidebar(type = '') {
-  const mapArr = ['/guide/forms/point-of-sales.md']
+  const mapArr = [
+    '/guide/forms/point-of-sales.md',
+    '/guide/forms/check-price.md'
+  ]
   return mapArr.map(i => {
     return type + i
   })
