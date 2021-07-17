@@ -556,6 +556,17 @@ export default {
       toolsPoint: {
         title: 'Point of Sale Tools'
       }
+    },
+    activity: {
+      title: 'Your Workflow Activities',
+      filtersSearch: {
+        history: 'History records',
+        forward: 'Re-send'
+      },
+      table: {
+        priority: 'Priority',
+        node: 'Node'
+      }
     }
   }
 }

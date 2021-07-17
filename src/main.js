@@ -12,6 +12,7 @@ import enLang from 'element-ui/lib/locale/lang/en'// 如果使用中文语言包
 import VueSplit from 'vue-split-panel'
 import 'vue-resize/dist/vue-resize.css'
 import VueResize from 'vue-resize'
+import WorkflowChart from 'vue-workflow-chart'
 /**
  * TODO: Waiting for PR to:
  * https://github.com/vue-extend/v-markdown/pull/4
@@ -53,6 +54,7 @@ Vue.use(VMarkdown)
 Vue.use(VueShortkey)
 Vue.use(VueSplit)
 Vue.use(VueResize)
+Vue.use(WorkflowChart)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
   i18n: (key, value) => i18n.t(key, value),

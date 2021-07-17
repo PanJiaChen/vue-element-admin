@@ -92,3 +92,28 @@ export function requestListDocumentActions({
       }
     })
 }
+
+// Request a list of Activities from the user's Workflows
+export function workflowActivities({
+  userUuid,
+  pageSize,
+  pageToken
+}) {
+  return request({
+    url: '/workflow/workflow-activities',
+    method: 'get',
+    params: {
+      user_uuid: userUuid,
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(listWorkflowActivities => {
+      return {
+        nextPageToken: listWorkflowActivities.next_page_token,
+        recordCount: listWorkflowActivities.record_count,
+        listWorkflowActivities: listWorkflowActivities.records
+      }
+    })
+}

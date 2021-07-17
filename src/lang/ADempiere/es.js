@@ -531,6 +531,17 @@ export default {
       toolsPoint: {
         title: 'Herramientas del Punto de Venta'
       }
+    },
+    activity: {
+      title: 'Sus Actividades de Flujo de Trabajo',
+      filtersSearch: {
+        history: 'Registros históricos',
+        forward: 'Re-enviar'
+      },
+      table: {
+        priority: 'Prioridad',
+        node: 'Nodo'
+      }
     }
   }
 }

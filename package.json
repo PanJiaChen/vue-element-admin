@@ -66,6 +66,7 @@
     "vue-shortkey": "^3.1.7",
     "vue-split-panel": "^1.0.4",
     "vue-splitpane": "1.0.6",
+    "vue-workflow-chart": "^0.4.5",
     "vuedraggable": "2.24.3",
     "vuex": "3.6.2",
     "xlsx": "0.16.9"
