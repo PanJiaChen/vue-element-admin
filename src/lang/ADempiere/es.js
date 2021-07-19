@@ -57,6 +57,7 @@ export default {
   navbar: {
     badge: {
       Notifications: 'Notificaciones',
+      activity: 'Actividades pendiente',
       link: 'Ir a Histórico de Procesos'
     },
     logOut: 'Salir',

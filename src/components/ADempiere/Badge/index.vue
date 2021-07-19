@@ -33,11 +33,25 @@
         </el-table-column>
         <el-table-column
           width="50"
-          class-name="procesActivity"
         >
-          <el-tooltip effect="dark" :content="$t('navbar.badge.link')" placement="top-start">
+          <template slot="header">
+            <!-- <el-button"
+              type="text"
+              @click="handleCurrentChange()"
+            > -->
             <svg-icon icon-class="tree-table" />
-          </el-tooltip>
+            <!-- </el-button> -->
+          </template>
+          <template slot-scope="scope">
+            <el-button
+              type="text"
+              size="small"
+              style="color: black"
+              @click="openProcess(scope.$index, getRecordNotification)"
+            >
+              <svg-icon icon-class="tree-table" />
+            </el-button>
+          </template>
         </el-table-column>
       </el-table>
       <el-button slot="reference" type="text" icon="el-icon-bell" style="float: left;color: #000000;font-size: 121%;font-weight: 615!important;padding-top: 14px;" />
@@ -74,6 +88,9 @@ export default {
       this.show = false
     },
     handleCurrentChange(getRecordNotification, val, index, rows) {
+      if (!this.isEmptyValue(getRecordNotification.typeActivity) && getRecordNotification.typeActivity) {
+        return ''
+      }
       if (val !== null) {
         let options = {
           name: 'ProcessActivity'
@@ -91,6 +108,10 @@ export default {
 
         this.$router.push(options, () => {})
       }
+    },
+    openProcess(index, rows) {
+      this.$router.push({ name: '8e51c232-fb40-11e8-a479-7a0060f0aa01' }, () => {})
+      this.deleteRow(index, this.getRecordNotification)
     },
     deleteRow(index, rows) {
       rows.splice(index, 1)

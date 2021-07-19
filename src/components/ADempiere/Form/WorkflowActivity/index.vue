@@ -15,7 +15,7 @@
 -->
 <template>
   <el-container style="height: 100% !important;">
-    <el-header class="header" :style="!collapse ? 'height: 35% !important;' : 'height: 10%!important'">
+    <el-header id="WorkflowActivity" class="header" :style="!collapse ? 'height: 35% !important;' : 'height: 10%!important'">
       <el-card :style="!collapse ? 'height: 100% !important;' : 'height: auto'">
         <div slot="header">
           <span> {{ $t('form.activity.title') }} </span>
@@ -23,7 +23,6 @@
         </div>
         <el-table
           v-show="!collapse"
-          ref="WorkflowActivity"
           v-loading="isEmptyValue(activityList)"
           :data="activityList"
           highlight-current-row
@@ -44,45 +43,61 @@
       </el-card>
     </el-header>
     <el-main class="main">
-      <transition name="el-zoom-in-center">
-        <el-card v-show="show" :style="{position: 'absolute', zIndex: '5', left: leftContextualMenu + 'px', top: topContextualMenu + 'px'}" class="box-card">
-          <div slot="header" class="clearfix">
-            <span>
-              <b> {{ infoNode.name }} </b>
-            </span>
-            <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-close" @click="show = !show" />
-          </div>
-          <div class="text item" style="padding: 20px">
-            <el-timeline class="info">
-              <el-timeline-item :timestamp="currentWorkflow.created" placement="top">
-                <el-card style="padding: 20px!important;">
-                  <b> Usuario: </b> {{ currentWorkflow.user_name }} <br>
-                  <b> {{ $t('table.ProcessActivity.Description') }}: </b> {{ infoNode.description }}
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
-        </el-card>
-      </transition>
-      <workflow-chart
-        v-if="!isEmptyValue(node) && !isEmptyValue(currentWorkflow)"
-        :transitions="listWorkflowTransition"
-        :states="node"
-        :state-semantics="currentNode"
-        @state-click="onLabelClicked(node, $event)"
-      />
-      <el-scrollbar v-if="!isEmptyValue(currentWorkflow)" wrap-class="scroll-child">
-        <el-timeline class="info">
-          <el-timeline-item
-            v-for="(nodes, key) in currentWorkflow.workflow_process.workflow_events"
-            :key="key"
-            :timestamp="translateDate(nodes.log_date)"
-            placement="top"
-          >
-            <b>  {{ nodes.node_name }} </b> {{ nodes.text_message }}
-          </el-timeline-item>
-        </el-timeline>
-      </el-scrollbar>
+      <el-container style="height: 100%;">
+        <el-aside v-if="!isEmptyValue(currentActivity)" width="70%" style="background: white;">
+          <transition name="el-zoom-in-center">
+            <el-card v-show="show" :style="{position: 'absolute', zIndex: '5', left: leftContextualMenu + 'px', top: topContextualMenu + 'px'}" class="box-card">
+              <div slot="header" class="clearfix">
+                <span>
+                  {{ infoNode.description }}
+                </span>
+                <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-close" @click="show = !show" />
+              </div>
+              <div v-if="!isEmptyValue(infoNode.nodeLogs)" class="text item" style="padding: 20px">
+                <el-timeline class="info">
+                  <el-timeline-item
+                    v-for="(logs, key) in infoNode.nodeLogs"
+                    :key="key"
+                    :timestamp="translateDate(logs.log_date)"
+                    placement="top"
+                  >
+                    <el-card style="padding: 20px!important;">
+                      <b> {{ $t('login.userName') }} </b> {{ logs.user_name }} <br>
+                      {{ logs.text_message }}
+                    </el-card>
+                  </el-timeline-item>
+                </el-timeline>
+              </div>
+            </el-card>
+          </transition>
+          <workflow-chart
+            v-if="!isEmptyValue(node) && !isEmptyValue(currentActivity)"
+            :transitions="listWorkflowTransition"
+            :states="node"
+            :state-semantics="currentNode"
+            @state-click="onLabelClicked(node, $event)"
+          />
+        </el-aside>
+        <el-main v-if="!isEmptyValue(currentActivity)">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              {{ $t('field.logsField') }}
+            </div>
+            <el-scrollbar v-if="!isEmptyValue(currentActivity)" wrap-class="scroll-child">
+              <el-timeline class="info">
+                <el-timeline-item
+                  v-for="(nodes, key) in listProcessWorkflow"
+                  :key="key"
+                  :timestamp="translateDate(nodes.log_date)"
+                  placement="top"
+                >
+                  <b>  {{ nodes.node_name }} </b> {{ nodes.text_message }}
+                </el-timeline-item>
+              </el-timeline>
+            </el-scrollbar>
+          </el-card>
+        </el-main>
+      </el-container>
     </el-main>
     <el-footer :class="styleFooter">
       <el-card shadow="hover" class="search">
@@ -138,6 +153,7 @@ export default {
       topContextualMenu: 0,
       leftContextualMenu: 0,
       infoNode: {},
+      visible: false,
       show: false,
       collapse: false,
       currentNode: [{
@@ -145,11 +161,12 @@ export default {
         id: ''
       }],
       currentWorkflow: {},
+      listProcessWorkflow: [],
       listWorkflowTransition: [],
       orderLineDefinition: [
         {
           columnName: 'workflow.name',
-          name: 'Nombre',
+          name: this.$t('table.ProcessActivity.Name'),
           isNumeric: false
         },
         {
@@ -159,7 +176,7 @@ export default {
         },
         {
           columnName: 'node.description',
-          name: 'Descripcion',
+          name: this.$t('table.ProcessActivity.Description'),
           isNumeric: false
         }
       ]
@@ -184,23 +201,37 @@ export default {
       return this.$store.getters.getCurrentActivity
     }
   },
-  mounted() {
-    this.$store.dispatch('serverListActivity')
-    if (!this.isEmptyValue(this.currentActivity)) {
+  watch: {
+    activityList(list) {
+      this.SendActivityListNotifier(list)
+    },
+    currentActivity(value) {
+      this.listWorkflow(value)
       this.setCurrent()
     }
   },
+  mounted() {
+    this.$store.dispatch('serverListActivity')
+    if (!this.isEmptyValue(this.currentActivity)) {
+      this.listWorkflow(this.currentActivity)
+    }
+  },
   methods: {
+    SendActivityListNotifier() {
+      this.$store.commit('addNotificationProcess', { name: this.$t('navbar.badge.activity') + ' ' + this.activityList.length, typeActivity: true })
+    },
     setCurrent() {
       const activity = this.activityList.find(activity => activity.node === this.currentActivity.node)
       this.$refs.WorkflowActivity.setCurrentRow(activity)
     },
     handleCurrentChange(activity) {
-      this.listWorkflow(activity)
       this.$store.dispatch('selectedActivity', activity)
     },
     onLabelClicked(type, id) {
+      this.visible = true
       this.infoNode = type.find(node => node.id === id)
+      const nodeLogs = this.listProcessWorkflow.filter(node => node.node_uuid === this.infoNode.uuid)
+      this.infoNode.nodeLogs = nodeLogs
       const menuMinWidth = 105
       const offsetLeft = this.$el.getBoundingClientRect().left // container margin left
       const offsetWidth = this.$el.offsetWidth // container width
@@ -223,6 +254,7 @@ export default {
     listWorkflow(activity) {
       // Highlight Current Node
       this.currentWorkflow = activity
+      this.listProcessWorkflow = !this.isEmptyValue(this.currentWorkflow.workflow_process) ? this.currentWorkflow.workflow_process.workflow_events.reverse() : []
       this.transitions = []
       if (!this.isEmptyValue(activity.node.uuid)) {
         this.currentNode = [{
@@ -337,7 +369,7 @@ export default {
   margin: 0px;
   font-size: 14px;
   list-style: none;
-  padding: 0px;
+  padding: 10px;
 }
 .vue-workflow-chart-state {
     background-color: #fff;
@@ -360,6 +392,9 @@ export default {
   }
 </style>
 <style lang='scss'>
+.scroll-child {
+  max-height: 450px;
+}
 .el-card {
   border-radius: 4px;
   border: 1px solid #e6ebf5;
