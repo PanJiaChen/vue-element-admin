@@ -2,13 +2,16 @@
   <el-collapse @change="handleChange">
     <el-collapse-item :title="title" name="1">
       <el-card>
-        <div v-if="imgList.length > 0">
+        <div v-if="imgList.length > 0" class="img-item">
           <div v-for="(item , i) in imgList" :key="i" class="img-box">
             <div class="img">
               <el-image :preview-src-list="imgPathList" :src="baseUrl +'?funid=sys_attach&pagetype=editgrid&eventcode=down&nousercheck=1&dataType=byte&keyid='+ item.sys_attach__attach_id +'&is_highimage=1'" />
             </div>
-            <span>{{ item.sys_attach__attach_name }}</span>
+            <div class="img-name" :title="item.sys_attach__attach_name">{{ item.sys_attach__attach_name }}</div>
           </div>
+          <template v-if="imgList.length % 3 > 0">
+            <div v-for="(l ,k) of (3 - imgList.length % 3)" :key="k" class="img-box" />
+          </template>
         </div>
         <div v-else class="no-data">
           无{{ title }}
@@ -143,6 +146,14 @@ export default {
       text-decoration: underline;
     }
   }
+  .img-item {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding-bottom: 20rpx;
+    align-content: flex-start;
+    align-items: flex-start;
+  }
   .buttons{
     display: flex;
   }
@@ -154,8 +165,13 @@ export default {
     overflow: auto;
   }
   .img-box{
-    display: inline-block;
     text-align: center;
+    width: 33%;
+  }
+  .img-name {
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   .img{
     width: 188px;
@@ -186,5 +202,9 @@ export default {
   .no-data{
     text-align: center;
     color: #8a8f93;
+  }
+  .uploader__img {
+    height: 200px;
+    width: 200px;
   }
 </style>
