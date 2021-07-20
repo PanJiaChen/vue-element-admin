@@ -15,7 +15,7 @@
 -->
 <template>
   <el-container style="height: 100% !important;">
-    <el-header id="WorkflowActivity" class="header" :style="!collapse ? 'height: 35% !important;' : 'height: 10%!important'">
+    <el-header id="WorkflowActivity" class="header" :style="!collapse ? 'height: 45% !important;' : 'height: 10%!important'">
       <el-card :style="!collapse ? 'height: 100% !important;' : 'height: auto'">
         <div slot="header">
           <span> {{ $t('form.activity.title') }} </span>
@@ -44,7 +44,7 @@
     </el-header>
     <el-main class="main">
       <el-container style="height: 100%;">
-        <el-aside v-if="!isEmptyValue(currentActivity)" width="70%" style="background: white;">
+        <el-aside v-if="!isEmptyValue(currentActivity)" id="workflow" width="70%" style="background: white;">
           <transition name="el-zoom-in-center">
             <el-card v-show="show" :style="{position: 'absolute', zIndex: '5', left: leftContextualMenu + 'px', top: topContextualMenu + 'px'}" class="box-card">
               <div slot="header" class="clearfix">
@@ -78,8 +78,8 @@
             @state-click="onLabelClicked(node, $event)"
           />
         </el-aside>
-        <el-main v-if="!isEmptyValue(currentActivity)">
-          <el-card class="box-card">
+        <el-main v-if="!isEmptyValue(currentActivity)" style="overflow: hidden;">
+          <el-card id="logsWorkflow" class="box-card">
             <div slot="header" class="clearfix">
               {{ $t('field.logsField') }}
             </div>
@@ -99,24 +99,6 @@
         </el-main>
       </el-container>
     </el-main>
-    <el-footer :class="styleFooter">
-      <el-card shadow="hover" class="search">
-        <el-form v-if="!isEmptyValue(fieldsList)" :disabled="isEmptyValue(currentActivity)" label-position="top" class="from-main">
-          <el-form-item>
-            <el-row>
-              <el-col v-for="(field, index) in fieldsList" :key="index" :span="6">
-                <field
-                  :key="field.columnName"
-                  :metadata-field="field"
-                  :v-model="field.value"
-                />
-              </el-col>
-            </el-row>
-          </el-form-item>
-        </el-form>
-        <el-button type="primary" icon="el-icon-check" style="float: right;" :disabled="isEmptyValue(currentActivity)" />
-      </el-card>
-    </el-footer>
   </el-container>
 </template>
 

@@ -68,7 +68,6 @@ import Badge from '@/components/ADempiere/Badge'
 import { getImagePath } from '@/utils/ADempiere/resource.js'
 import Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
-import steps from '@/components/ADempiere/Form/VPOS/Guide/steps'
 
 export default {
   components: {
@@ -134,6 +133,26 @@ export default {
         return list.filter(field => field.isShowedFromUserDefault)
       }
       return []
+    },
+    getForm() {
+      return this.$store.getters.getForm(this.$route.meta.uuid)
+    },
+    formSteps() {
+      let form
+      switch (this.getForm.fileName) {
+        case 'WFActivity':
+          form = require('@/components/ADempiere/Form/WorkflowActivity/Guide/steps')
+          break
+        case 'VPOS':
+          form = require('@/components/ADempiere/Form/VPOS/Guide/steps')
+          break
+        default:
+          form = {
+            default: []
+          }
+          break
+      }
+      return form.default
     }
   },
   mounted() {
@@ -202,7 +221,7 @@ export default {
           })
           break
         case 'form':
-          field = this.showCollection && this.isShowedPOSKeyLaout ? steps : steps.filter(steps => this.isEmptyValue(steps.panel))
+          field = this.formSteps
           break
       }
       return field

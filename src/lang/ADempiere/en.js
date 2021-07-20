@@ -566,6 +566,14 @@ export default {
       table: {
         priority: 'Priority',
         node: 'Node'
+      },
+      workflow: {
+        title: 'Workflow',
+        description: 'Workflow life cycle diagram. The highlighted Node is the one currently awaiting verification.'
+      },
+      workflowLogs: {
+        title: 'Change Log',
+        description: 'Workflow timeline'
       }
     }
   }

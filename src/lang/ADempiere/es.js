@@ -57,7 +57,7 @@ export default {
   navbar: {
     badge: {
       Notifications: 'Notificaciones',
-      activity: 'Actividades pendiente',
+      activity: 'Flujos de Trabajos por Aprobar',
       link: 'Ir a Histórico de Procesos'
     },
     logOut: 'Salir',
@@ -542,6 +542,20 @@ export default {
       table: {
         priority: 'Prioridad',
         node: 'Nodo'
+      },
+      guide: {
+        table: {
+          title: 'Lista de Flujos de trabajos por aprobar',
+          description: 'Seleccione al menos uno para ver el detalle y responsable de aprobación. De igual manera puede decidir si aprueba, rechaza o redirecciona el mismo'
+        },
+        workflow: {
+          title: 'Flujo de Trabajo',
+          description: 'Diagrama del ciclo de vida del flijo de trabajo. El Nodo resaltado es el que se encuentra actualmente a la espera de verificación.'
+        },
+        workflowLogs: {
+          title: 'Bitacora de Cambios',
+          description: 'Linea de tiempo del flujo de trabajo'
+        }
       }
     }
   }
