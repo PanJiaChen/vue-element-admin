@@ -317,7 +317,8 @@ function genComponentSidebar(type = '') {
     '/guide/components/references.md',
     '/guide/components/lock-unlock-records.md',
     '/guide/components/dashboard.md',
-    '/guide/components/guide.md'
+    '/guide/components/guide.md',
+    '/guide/components/workflows-and-activities.md'
   ]
   return mapArr.map(i => {
     return type + i
