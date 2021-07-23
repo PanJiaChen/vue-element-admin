@@ -30,7 +30,8 @@ const initStateUtils = {
   parametersProcessPos: [],
   updateOrder: false,
   updatePayment: false,
-  createBusinessPartner: false
+  createBusinessPartner: false,
+  step: 0
 }
 
 export default {
@@ -102,6 +103,9 @@ export default {
     },
     setUpdatePayment(state, payment) {
       state.updatePayment = payment
+    },
+    setStepCurrent(state, step) {
+      state.step = step
     },
     popoverCreateBusinessPartner(state, createBusinessPartner) {
       state.createBusinessPartner = createBusinessPartner
@@ -249,6 +253,9 @@ export default {
     },
     getPopoverCreateBusinessParnet: (state) => {
       return state.createBusinessPartner
+    },
+    getStepCurrent: (state) => {
+      return state.step
     }
   }
 }
