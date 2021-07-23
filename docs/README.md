@@ -20,11 +20,18 @@ features:
 footer: GNU/GPL v3 Licensed | Copyright © 2019-present ADempiere
 ---
 
+<p align="center">
+  <img width="320" src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Adempiere-logo.png">
+</p>
+
 ## Getting Started
 
 ```bash
 # clone the project
 git clone https://github.com/adempiere/adempiere-vue.git
+
+# be located on the path
+cd adempiere-vue/docs/
 
 # install dependency
 yarn install
@@ -33,6 +40,8 @@ yarn install
 yarn dev
 ```
 
-## Demo
+## Live Preview
 
 [ADempiere UI Demo](https://demo-ui.erpya.com/)
+
+[ADempiere UI Documentation](https://adempiere.github.io/adempiere-vue/)

@@ -2,17 +2,18 @@
 # For more information see: https://help.github.com/actions/language-and-framework-guides/publishing-nodejs-packages
 # This file was contributed by Carlos Parada and Yamel Senih from ERP Consultores y Asociados, C.A
 
-name: Build Project
+name: Deploy on Github Pages
 
 # Controls when the action will run. 
 on:
   push:
-    branches: [ master, develop ]
-  release:
-    types: [created]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    branches: 
+      # Push events on master and develop branchs
+      - master
+      - develop
+    # takes only the directory changes
+    paths:
+      - 'docs/**'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -20,33 +21,39 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [14.x]
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: set -e
-      - run: |
-             cd docs
-             npm i
-             npm run build
-      - run: |
-            cd docs
-            git clone https://github.com/adempiere/adempiere-vue.git --branch gh-pages --single-branch gh-pages
-            cp -r .vuepress/dist/* gh-pages/
-            cd gh-pages
-            touch .nojekyll 
-            git init 
-            git config --local user.email "action@github.com"
-            git config --local user.name "GitHub Action"
-            git add .
-            git commit -m "Update documentation" -a || true
-      - uses: ad-m/github-push-action@master
+
+      - name: Generate static vuepress files
+        run: |
+          cd docs
+          npm i
+          npm run build
+
+      - name: Init new repo in dist folder and commit generated files
+        run: |
+          cd docs/.vuepress/dist
+          touch .nojekyll
+          git init
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add -A
+          git commit -m "docs: ${{ github.event.head_commit.message }}" -a || true
+
+      - name: Force push to destination branch
+        uses: ad-m/github-push-action@v0.6.0
         with:
           branch: gh-pages
-          directory: docs/gh-pages
+          force: true
+          directory: docs/.vuepress/dist
           github_token: ${{ secrets.GITHUB_TOKEN }}
