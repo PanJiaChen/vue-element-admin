@@ -19,8 +19,6 @@ selenium-debug.log
 *.sln
 *.local
 
-package-lock.json
-yarn.lock
 /bin/
 config/local.json
 config/certs/*.pem
