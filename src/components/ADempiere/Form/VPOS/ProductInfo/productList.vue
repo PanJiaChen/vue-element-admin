@@ -33,12 +33,11 @@
         :metadata-field="field"
       />
     </el-form>
-
     <el-table
       ref="listProducto"
       v-shortkey="shortsKey"
-      v-loading="!productPrice.isLoaded"
-      :data="listWithPrice"
+      v-loading="isEmptyValue(listWithPrice) || isLoadedServer"
+      :data="localTableSearch(listWithPrice)"
       border
       fit
       height="450"
@@ -112,6 +111,7 @@ export default {
     return {
       defaultMaxPagination: 50,
       fieldsList: fieldsListProductPrice,
+      isLoadedServer: false,
       isCustomForm: true,
       timeOut: null
     }
@@ -145,6 +145,12 @@ export default {
     isReadyFromGetData() {
       const { isLoaded, isReload } = this.productPrice
       return (!isLoaded || isReload) // && this.isShowProductsPriceList
+    },
+    searchValue() {
+      return this.$store.getters.getValueOfField({
+        containerUuid: this.metadata.containerUuid,
+        columnName: 'ProductValue'
+      })
     }
   },
   created() {
@@ -161,6 +167,37 @@ export default {
   },
   methods: {
     formatPrice,
+    localTableSearch(listWithPrice) {
+      let filtersProduct = []
+      if (!this.isEmptyValue(this.searchValue)) {
+        filtersProduct = listWithPrice.filter(data => data.product.name.toLowerCase().includes(this.searchValue.toLowerCase()) || data.product.value.toLowerCase().includes(this.searchValue.toLowerCase()))
+        if (!this.isEmptyValue(filtersProduct)) {
+          return filtersProduct
+        }
+        this.isLoadedServer = true
+        this.timeOut = setTimeout(() => {
+          this.$store.dispatch('listProductPriceFromServer', {
+            containerUuid: 'Products-Price-List',
+            pageNumber: 1,
+            searchValue: this.searchValue
+          })
+            .then(() => {
+              const recordsList = this.listWithPrice
+
+              if (this.isEmptyValue(recordsList)) {
+                this.$message({
+                  message: 'Sin resultados coincidentes con la busqueda',
+                  type: 'info',
+                  showClose: true
+                })
+              }
+              this.isLoadedServer = false
+              return recordsList
+            })
+        }, 2000)
+      }
+      return listWithPrice
+    },
     keyAction(event) {
       switch (event.srcKey) {
         case 'refreshList':
@@ -215,6 +252,12 @@ export default {
           this.timeOut = setTimeout(() => {
             this.$store.commit('setIsReloadProductPrice')
           }, 1000)
+        } else if (mutation.type === 'addActionKeyPerformed' && mutation.payload.containerUuid === this.metadata.containerUuid) {
+          this.$store.dispatch('listProductPriceFromServer', {
+            containerUuid: mutation.payload.containerUuid,
+            pageNumber: 1,
+            searchValue: mutation.payload.value
+          })
         }
       })
     },

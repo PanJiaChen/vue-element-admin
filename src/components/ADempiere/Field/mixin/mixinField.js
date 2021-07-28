@@ -158,7 +158,6 @@ export default {
     },
     actionKeyPerformed(value) {
       // TODO: Delete for production
-      console.info('actionKeyPerformed ', value)
       if (this.metadata.handleActionKeyPerformed) {
         this.$store.dispatch('notifyActionKeyPerformed', {
           containerUuid: this.metadata.containerUuid,

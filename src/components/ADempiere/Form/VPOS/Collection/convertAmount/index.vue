@@ -21,7 +21,7 @@
       <span>
         <b>
           {{ $t('form.pos.collect.convertAmount') }}:
-          {{ formatPrice(amountConvertionTotal, displayCurrency) }}
+          {{ formatPrice(amount / dayRate.divideRate, dayRate.iSOCode) }}
         </b>
       </span>
     </div>
@@ -33,12 +33,20 @@
             label-width="10px"
             style="float: right; display: flex; line-height: 10px;"
           >
-            <span v-for="(field, index) in fieldsList" :key="index">
-              <field-definition
-                :key="field.columnName"
-                :metadata-field="field"
-              />
-            </span>
+            <el-form-item :label="fieldsList[0].name">
+              <el-select
+                v-model="currentFieldCurrency"
+                :placeholder="fieldsList[0].help"
+                @change="changeCurrency"
+              >
+                <el-option
+                  v-for="item in listCurrency"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.key"
+                />
+              </el-select>
+            </el-form-item>
           </el-form>
         </el-col>
       </el-row>
@@ -89,10 +97,23 @@ export default {
   data() {
     return {
       fieldsList: fieldsListConvertAmountCollection,
-      amountConvertionTotal: this.amount
+      amountConvertionTotal: this.amount,
+      currentFieldCurrency: '',
+      grandTotalConverted: {
+        divideRate: 1,
+        currencyTo: {
+          iSOCode: this.currency.iSOCode
+        }
+      }
     }
   },
   computed: {
+    listCurrency() {
+      return this.$store.getters.getCurrenciesList
+    },
+    convertionsList() {
+      return this.$store.state['pointOfSales/point/index'].conversionsList
+    },
     displayCurrency() {
       return this.$store.getters.getValueOfField({
         containerUuid: 'Collection-Convert-Amount',
@@ -129,37 +150,33 @@ export default {
         amountConvertion: 1
       }
     },
-    dateRate() {
-      return this.$store.getters.getConvertionRate.find(currency => {
-        if (currency.id === this.typeCurrency) {
-          return currency
+    dayRate() {
+      if (this.isEmptyValue(this.currentFieldCurrency)) {
+        return {
+          currencyTo: this.currentPointOfSales.currentPriceList.currency,
+          divideRate: 1,
+          iSOCode: this.currency.iSOCode
+        }
+      }
+      const currency = this.listCurrency.find(currency => currency.key === this.currentFieldCurrency)
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(currency) &&
+          !this.isEmptyValue(convert.currencyTo) &&
+          currency.id === convert.currencyTo.id &&
+          this.currentPointOfSales.currentPriceList.currency.id !== currency.id
+        ) {
+          return convert
         }
       })
-    }
-  },
-  watch: {
-    dateRate(value) {
-      if (value && !this.isEmptyValue(value.amountConvertion)) {
-        this.amountConvertionTotal = this.amount / value.amountConvertion
-      } else {
-        this.amountConvertionTotal = this.amount
+      if (!this.isEmptyValue(convert)) {
+        return convert
+      }
+      return {
+        currencyTo: this.currentPointOfSales.currentPriceList.currency,
+        divideRate: 1,
+        iSOCode: this.currency.iSOCode
       }
     }
-    // currencyUuid(value) {
-    //   const listCurrency = this.$store.getters.getConvertionRate.find(currency => {
-    //     if (currency.uuid === value) {
-    //       return currency
-    //     }
-    //   })
-    //   if (listCurrency === undefined) {
-    //     this.$store.dispatch('conversionDivideRate', {
-    //       conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
-    //       currencyFromUuid: this.pointOfSalesCurrency.uuid,
-    //       conversionDate: this.formatDate(new Date()),
-    //       currencyToUuid: value
-    //     })
-    //   }
-    // }
   },
   created() {
     this.defaultValueCurrency()
@@ -189,6 +206,30 @@ export default {
         columnName: 'C_Currency_ID',
         value: this.currency.id
       })
+    },
+    amountConvert(currency) {
+      this.$store.dispatch('searchConversion', {
+        conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+        currencyFromUuid: this.currentPointOfSales.priceList.currency.uuid,
+        currencyToUuid: currency.uuid
+      })
+    },
+    changeCurrency(value) {
+      this.currentFieldCurrency = value
+      const currency = this.listCurrency.find(currency => currency.key === value)
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(currency) && !this.isEmptyValue(convert.currencyTo) && currency.id === convert.currencyTo.id && this.currentPointOfSales.currentPriceList.currency.id !== currency.id) {
+          return convert
+        }
+      })
+      this.grandTotalConverted = convert
+      if (!this.isEmptyValue(currency) && this.isEmptyValue(convert) && currency.uuid !== this.currentPointOfSales.currentPriceList.currency.uuid) {
+        this.$store.dispatch('searchConversion', {
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+          currencyFromUuid: this.currentPointOfSales.priceList.currency.uuid,
+          currencyToUuid: currency.uuid
+        })
+      }
     }
   }
 }

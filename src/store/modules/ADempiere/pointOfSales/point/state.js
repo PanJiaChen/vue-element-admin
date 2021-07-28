@@ -35,6 +35,7 @@ export default {
   currentWarehousePos: {},
   currentDocumentTypePos: {},
   listCurrency: [],
+  currenciesList: [],
   conversionsList: [],
   currentPointOfSales: {},
   showPOSOptions: false,

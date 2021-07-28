@@ -311,7 +311,7 @@ export default {
   },
   computed: {
     listCurrency() {
-      return this.$store.state['pointOfSales/point/index'].currenciesList
+      return this.$store.getters.getCurrenciesList
     },
     convertionList() {
       return this.$store.state['pointOfSales/point/index'].conversionsList

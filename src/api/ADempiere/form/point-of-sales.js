@@ -379,10 +379,7 @@ export function getKeyLayout({ keyLayoutUuid }) {
 export function getProductPriceList({
   searchValue,
   businessPartnerUuid,
-  validFrom,
   posUuid,
-  // Query
-  // criteria,
   pageSize,
   pageToken
 }) {
@@ -392,7 +389,6 @@ export function getProductPriceList({
     params: {
       pos_uuid: posUuid,
       search_value: searchValue,
-      valid_from: validFrom,
       business_partner_uuid: businessPartnerUuid,
       page_size: pageSize,
       page_token: pageToken

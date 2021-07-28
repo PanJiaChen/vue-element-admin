@@ -330,7 +330,6 @@ import {
 } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
-import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
 import orderLineMixin from '@/components/ADempiere/Form/VPOS/Order/orderLineMixin.js'
 
 export default {
@@ -341,8 +340,7 @@ export default {
     ModalDialog
   },
   mixins: [
-    orderLineMixin,
-    posMixin
+    orderLineMixin
   ],
   props: {
     metadata: {
@@ -391,6 +389,50 @@ export default {
     size() {
       const size = this.$store.getters.getWidthLeft
       return 24 / size
+    },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    },
+    listPointOfSales() {
+      return this.$store.getters.posAttributes.pointOfSalesList
+    },
+    priceListPointOfSales() {
+      const list = this.$store.getters.posAttributes.currentPointOfSales.pricesList
+      if (this.isEmptyValue(list)) {
+        return []
+      }
+      return list
+    },
+    warehousesListPointOfSales() {
+      const list = this.$store.getters.posAttributes.currentPointOfSales.warehousesList
+      if (this.isEmptyValue(list)) {
+        return []
+      }
+      return list
+    },
+    ordersList() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return []
+      }
+      return this.currentPointOfSales.listOrder
+    },
+    currentOrder() {
+      if (this.isEmptyValue(this.currentPointOfSales)) {
+        return {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        }
+      }
+      return this.currentPointOfSales.currentOrder
     }
   },
   created() {
@@ -585,6 +627,62 @@ export default {
           this.$store.dispatch('getProcessFromServer', { containerUuid: item.uuid, processId: item.id })
         })
       }
+    },
+    changePos(posElement) {
+      this.$store.dispatch('setCurrentPOS', posElement)
+      this.newOrder()
+    },
+    newOrder() {
+      this.$router.push({
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          pos: this.currentPointOfSales.id
+        }
+      }).catch(() => {
+      }).finally(() => {
+        this.$store.commit('setListPayments', [])
+        const { templateBusinessPartner } = this.currentPointOfSales
+        this.$store.commit('updateValuesOfContainer', {
+          containerUuid: this.metadata.containerUuid,
+          attributes: [{
+            columnName: 'UUID',
+            value: undefined
+          },
+          {
+            columnName: 'ProductValue',
+            value: undefined
+          },
+          {
+            columnName: 'C_BPartner_ID',
+            value: templateBusinessPartner.id
+          },
+          {
+            columnName: 'DisplayColumn_C_BPartner_ID',
+            value: templateBusinessPartner.name
+          },
+          {
+            columnName: ' C_BPartner_ID_UUID',
+            value: templateBusinessPartner.uuid
+          }]
+        })
+        this.$store.dispatch('setOrder', {
+          documentType: {},
+          documentStatus: {
+            value: ''
+          },
+          totalLines: 0,
+          grandTotal: 0,
+          salesRepresentative: {},
+          businessPartner: {
+            value: '',
+            uuid: ''
+          }
+        })
+        this.$store.commit('setShowPOSCollection', false)
+        this.$store.dispatch('listOrderLine', [])
+      })
     }
   }
 }

@@ -684,7 +684,6 @@ export default {
     formatPrice,
     formatQuantity,
     focusPin() {
-      console.log(this.$refs)
       this.$refs.pin.focus()
     },
     openPin(pin) {

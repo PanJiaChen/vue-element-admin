@@ -140,6 +140,9 @@ export default {
       return state.currentDocumentTypePos
     }
     return {}
-  }
+  },
   // Current POS, it can be s
+  getCurrenciesList: (state) => {
+    return state.currenciesList
+  }
 }

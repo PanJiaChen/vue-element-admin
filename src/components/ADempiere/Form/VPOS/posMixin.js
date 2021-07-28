@@ -346,7 +346,8 @@ export default {
       }
       findProduct({
         searchValue: searchProduct,
-        priceListUuid: this.curretnPriceList.uuid
+        priceListUuid: this.curretnPriceList.uuid,
+        posUuid: this.currentPointOfSales.uuid
       })
         .then(productPrice => {
           this.product = productPrice.product
@@ -471,6 +472,10 @@ export default {
         } else if (mutation.type === 'addActionPerformed') {
           switch (mutation.payload.columnName) {
             case 'QtyEntered':
+              if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+                this.updateOrderLine(mutation.payload)
+              }
+              break
             case 'PriceEntered':
             case 'Discount':
               if (this.isPosRequiredPin && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {

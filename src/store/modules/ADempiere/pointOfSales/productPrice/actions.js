@@ -71,7 +71,7 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        posUuid: currentPointOfSales.uuid,
+        posUuid,
         businessPartnerUuid,
         pageToken
       }).then(responseProductPrice => {
@@ -103,9 +103,10 @@ export default {
   listProductPriceFromServerProductInfo({ state, commit, rootGetters }, {
     containerUuid = 'Products-Price-List-ProductInfo',
     pageNumber, // 1
-    searchValue
+    searchValue,
+    currentPOS
   }) {
-    const posUuid = rootGetters.posAttributes.currentPointOfSales.uuid
+    const posUuid = isEmptyValue(currentPOS) ? rootGetters.posAttributes.currentPointOfSales.uuid : currentPOS.uuid
     if (isEmptyValue(posUuid)) {
       const message = 'Sin punto de venta seleccionado'
       showMessage({
@@ -142,7 +143,7 @@ export default {
     return new Promise(resolve => {
       getProductPriceList({
         searchValue,
-        posUuid: rootGetters.currentPointOfSales.uuid,
+        posUuid: posUuid,
         businessPartnerUuid,
         pageToken
       }).then(responseProductPrice => {
