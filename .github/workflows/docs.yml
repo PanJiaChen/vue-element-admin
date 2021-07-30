@@ -19,6 +19,7 @@ on:
 jobs:
   # This workflow contains a single job called "build"
   build:
+    name: Build and deploy ADempiere-Vue docs
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -28,9 +29,11 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - uses: actions/checkout@v2
+      - name: Check out the repo
+        uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v1
+      - name: Node configuration
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
 

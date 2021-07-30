@@ -23,10 +23,10 @@
   "author": "PanJiaChen",
   "license": "ISC",
   "devDependencies": {
-    "prettier": "1.14.2",
-    "vuepress": "0.14.9",
     "husky": "0.14.3",
-    "lint-staged": "7.2.2"
+    "lint-staged": "7.2.2",
+    "prettier": "1.14.2",
+    "vuepress": "0.14.9"
   },
   "dependencies": {
     "axios": ">=0.21.1",

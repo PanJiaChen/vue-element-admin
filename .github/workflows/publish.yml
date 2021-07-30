@@ -6,47 +6,168 @@ name: Publish Project
 
 on:
   release:
-    types: [created]
+    types: 
+      - created
+      - edited
 
 jobs:
-  build:
+
+  # Build dist application ADempiere-Vue
+  build-app:
+    name: Build dist ADempiere-Vue
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x, 14.x]
-
+        node-version: [12.x]
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Node configuration
+        uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm i
-      - run: npm test
-      - run: npm run build:prod --if-present
-      - run: set -e
-      - run: |
-             cd docs
-             npm i
-             npm run build
+          cache: 'npm'
 
-  publish-dist:
-    needs: build
+      - name: Set tag version into config file
+        run: sed -i "s|releaseNoForDocumentation|${{ github.event.release.tag_name }}|g" config/default.json
+      - name: Install packages
+        run: npm ci
+      - name: Run test
+        run: npm test
+      - name: Compile dist
+        run: npm run build:prod --if-present
+
+      - name: Upload dist app
+        uses: actions/upload-artifact@v2
+        with:
+          name: adempiere-vue
+          path: dist
+
+
+  # Publish dist binaries to application
+  publish-app-dist:
+    name: Upload ADempiere-Vue binaries
+    needs:
+      - build-app
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Download build dist app
+        uses: actions/download-artifact@v2
         with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org/
-      - run: npm i
-      - run: sed -i "s|releaseNoForDocumentation|${{ github.event.release.tag_name }}|g" config/default.json
-      - run: npm run build:prod --if-present
-      - uses: TheDoctor0/zip-release@0.4.1
+          name: adempiere-vue
+
+      - name: Compress files for application dist
+        uses: TheDoctor0/zip-release@0.6.0
         with:
           filename: 'Adempiere-Vue.zip'
-          path: 'dist/'
-      - uses: skx/github-action-publish-binaries@master
+          path: './'
+
+      - name: Publish application binary in repository
+        uses: skx/github-action-publish-binaries@master
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_ACCESS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           args: 'Adempiere-Vue.zip'
+
+
+  # Publish docker image to application
+  push-imame-gpr:
+    name: Push Docker image to GitHub Packages
+    needs:
+      - build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Download build dist app
+        uses: actions/download-artifact@v2
+        with:
+          name: adempiere-vue
+          path: dist
+
+      - name: Log in to GitHub Docker Registry
+        uses: docker/login-action@v1
+        with:
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: set lower case owner name
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
+          echo "REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
+          echo "IMAGE_NAME=adempiere-vue" >> ${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
+          REPO: '${{ github.repository }}'
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./build/Dockerfile.prod
+          push: true
+          tags: |
+            docker.pkg.github.com/${{ env.REPO_LC }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+            docker.pkg.github.com/${{ env.REPO_LC }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
+  # Build dist documentation ADempiere-Vue
+  build-docs:
+    name: Build dist ADempiere-Vue docs
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Node configuration
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Generate dist docs
+        run: |
+          cd docs
+          npm i
+          npm run build --if-present
+
+      - name: Upload dist docs
+        uses: actions/upload-artifact@v2
+        with:
+          name: adempiere-vue-docs
+          path: docs/.vuepress/dist
+
+
+  # Publish dist binaries to documentation
+  publish-docs-dist:
+    name: Upload ADempiere-Vue docs binaries
+    needs:
+      - build-docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download build dist docs
+        uses: actions/download-artifact@v2
+        with:
+          name: adempiere-vue-docs
+
+      - name: Compress files for documentation dist
+        uses: TheDoctor0/zip-release@0.6.0
+        with:
+          filename: 'Adempiere-Vue-Documentation.zip'
+          path: './'
+
+      - name: Publish documentation binary in repository
+        uses: skx/github-action-publish-binaries@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          args: 'Adempiere-Vue-Documentation.zip'
