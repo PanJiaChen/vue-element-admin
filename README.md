@@ -4,22 +4,25 @@
 
 <p align="center">
   <a href="https://github.com/vuejs/vue">
-    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue">
+    <img src="https://img.shields.io/badge/vue-2.6.10-brightgreen.svg" alt="vue version">
   </a>
   <a href="https://github.com/ElemeFE/element">
-    <img src="https://img.shields.io/badge/element--ui-2.7.0-brightgreen.svg" alt="element-ui">
+    <img src="https://img.shields.io/badge/element--ui-2.15.3-brightgreen.svg" alt="element-ui">
   </a>
-  <a href="https://travis-ci.org/adempiere/adempiere-vue" rel="nofollow">
-    <img src="https://travis-ci.org/adempiere/adempiere=vue.svg?branch=develop" alt="Build Status">
+  <a href="https://hub.docker.com/r/erpya/adempiere-vue/">
+    <img src="https://img.shields.io/docker/pulls/erpya/adempiere-vue.svg" alt="Docker Pulls">
+  </a>
+  <a href="https://github.com/adempiere/adempiere-vue/actions/workflows/publish.yml">
+    <img src="https://github.com/adempiere/adempiere-vue/actions/workflows/publish.yml/badge.svg" alt="Publish GH Action">
   </a>
   <a href="https://github.com/adempiere/adempiere-vue/blob/master/LICENSE">
     <img src="https://img.shields.io/badge/license-GNU/GPL%20(v3)-blue" alt="license">
   </a>
-  <a href="https://github.com/adempiere/adempiere-vue/releases">
+  <a href="https://github.com/adempiere/adempiere-vue/releases/latest">
     <img src="https://img.shields.io/github/release/adempiere/adempiere-vue.svg" alt="GitHub release">
   </a>
   <a href="https://gitter.im/adempiere/adempiere-vue">
-    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="gitter">
+    <img src="https://badges.gitter.im/Join%20Chat.svg" alt="Gitter">
   </a>
 </p>
 
@@ -37,7 +40,7 @@ It is a great UI for [ADempiere ERP, CRM & SCM](https://github.com/adempiere/ade
 [adempiere-vue](https://github.com/adempiere/adempiere-vue) use the modern open source high performance RPC framework that can run in any environment [gRPC](https://grpc.io/) as [server](https://github.com/adempiere/adempiere-gRPC-Server).
 
 - [Preview](https://demo-ui.erpya.com/)
-  
+
   - **User**: demo
   - **Password**: demo
 

@@ -1,4 +1,4 @@
-FROM nginx:1.19.9-alpine
+FROM nginx:1.21.1-alpine
 
 
 LABEL maintainer="EdwinBetanc0urt@outlook.com" \

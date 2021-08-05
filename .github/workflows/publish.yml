@@ -6,7 +6,7 @@ name: Publish Project
 
 on:
   release:
-    types: 
+    types:
       - created
       - edited
 
@@ -71,9 +71,9 @@ jobs:
           args: 'Adempiere-Vue.zip'
 
 
-  # Publish docker image to application
-  push-imame-gpr:
-    name: Push Docker image to GitHub Packages
+  # Publish docker image in Github Container Registry to application
+  push-imame-ghcr:
+    name: Push Docker image to GitHub Container
     needs:
       - build-app
     runs-on: ubuntu-latest
@@ -87,20 +87,72 @@ jobs:
           name: adempiere-vue
           path: dist
 
-      - name: Log in to GitHub Docker Registry
+      - name: Login to GitHub Container Registry
         uses: docker/login-action@v1
         with:
-          registry: docker.pkg.github.com
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: set lower case owner name
+      - name: Set Lower Case to owner and repository
         run: |
           echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
-          echo "REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
-          echo "IMAGE_NAME=adempiere-vue" >> ${GITHUB_ENV}
+          echo "REPO_LC=${NAME,,}" >> ${GITHUB_ENV}
+          echo "OWNER_REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
         env:
           OWNER: '${{ github.repository_owner }}'
+          NAME: '${{ github.event.repository.name }}'
+          REPO: '${{ github.repository }}'
+
+      - run: echo ${{ env }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./build/Dockerfile.prod
+          push: true
+          # load: true
+          tags: |
+            ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_LC }}:latest
+            ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.sha }}
+            ghcr.io/${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.event.release.tag_name }}
+
+      - name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+
+
+  # Publish docker image in Docker Hub registry to application
+  push-imame-dhr:
+    name: Push Docker image to Docker Hub
+    needs:
+      - build-app
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+
+      - name: Download build dist app
+        uses: actions/download-artifact@v2
+        with:
+          name: adempiere-vue
+          path: dist
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
+        with:
+          # CONFIGURE DOCKER SECRETS INTO REPOSITORY
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set Lower Case to owner and repository
+        run: |
+          echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
+          echo "REPO_LC=${NAME,,}" >> ${GITHUB_ENV}
+          echo "OWNER_REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
+        env:
+          OWNER: '${{ github.repository_owner }}'
+          NAME: '${{ github.event.repository.name }}'
           REPO: '${{ github.repository }}'
 
       - name: Build and push Docker image
@@ -110,8 +162,9 @@ jobs:
           file: ./build/Dockerfile.prod
           push: true
           tags: |
-            docker.pkg.github.com/${{ env.REPO_LC }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-            docker.pkg.github.com/${{ env.REPO_LC }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:latest
+            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.sha }}
+            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.event.release.tag_name }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
