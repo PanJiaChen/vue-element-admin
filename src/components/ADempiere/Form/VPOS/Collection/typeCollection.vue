@@ -165,9 +165,6 @@ export default {
           query: value.reference.query
         })
       }
-    },
-    labelTypesPayment(value) {
-      console.log(value)
     }
   },
   created() {
@@ -194,7 +191,6 @@ export default {
         })
           .then(response => {
             this.$store.getters.posAttributes.currentPointOfSales.currentOrder.listPayments.payments.forEach(element => {
-              console.log({ response, element })
               if (element.currencyUuid !== this.pointOfSalesCurrency.uuid) {
                 element.multiplyRate = element.amount / response.multiplyRate
                 element.amountConvertion = element.amount / response.divideRate
@@ -273,7 +269,6 @@ export default {
           query
         })
           .then(response => {
-            console.log(response)
             this.labelTypesPayment = response
           })
       }

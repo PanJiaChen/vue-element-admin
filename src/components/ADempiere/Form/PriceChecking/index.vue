@@ -90,7 +90,7 @@
           <el-row>
             <el-col>
               <div v-if="!isEmptyValue(currentConvertion)" class="rate-date">
-                {{ $t('form.pos.collect.dayRate') }}: {{ formatQuantity(currentConvertion.multiplyRate) }} ~ ({{ formatPrice(1, productPrice.currency.iSOCode) }} = {{ formatPrice(currentConvertion.multiplyRate) }} {{ currentPointOfSales.displayCurrency.iso_code }})
+                {{ $t('form.pos.collect.dayRate') }}: {{ formatQuantity(currentConvertion.divideRate) }} ~ ({{ formatPrice(1, productPrice.currency.iSOCode) }} = {{ formatPrice(currentConvertion.divideRate) }} {{ currentPointOfSales.displayCurrency.iso_code }})
               </div>
               <div v-else class="rate-date">
                 {{ $t('form.pos.collect.noDayRate') }} {{ currentPointOfSales.displayCurrency.description }}
@@ -163,6 +163,7 @@ export default {
         }
       })
       if (convert) {
+        console.log(convert)
         return convert
       }
       return {}

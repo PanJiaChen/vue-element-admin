@@ -473,11 +473,13 @@ export default {
         pending: 'Pending',
         payment: 'Payment',
         change: 'Change',
+        totalInvoiced: 'Total Invoiced',
         convertAmount: 'Convert Quantity',
         convertedAmount: 'Converted Amount',
         fullPayment: 'Full Payment',
         dayRate: 'Day Rate',
         noDayRate: 'No daily rate has been generated for the currency.',
+        Currency: 'Currency',
         TenderType: {
           directDeposit: 'Direct Deposit',
           creditCard: 'Credit Card',
@@ -488,6 +490,15 @@ export default {
           account: 'Account',
           cash: 'Cash',
           zelle: 'Zelle'
+        },
+        overdrawnInvoice: {
+          title: 'OverdrawnInvoice',
+          below: 'Would you like to leave the Invoice with an Open balance',
+          above: 'Customer Details',
+          returned: 'Your change is',
+          coupon: 'Generate a Gift Card or Vale',
+          returnMoney: 'Return money in another form of payment',
+          adjustDocument: 'You want to Adjust Document'
         }
       },
       keyLayout: {

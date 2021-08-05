@@ -427,7 +427,7 @@ export default {
     reloadOrder(requery, orderUuid) {
       if (requery) {
         if (this.isEmptyValue(orderUuid)) {
-          orderUuid = this.$route.query.action
+          orderUuid = this.currentOrder.uuid
           // if (this.isEmptyValue(orderUuid)) {
           //   orderUuid = this.$store.getters.currentOrder.uuid // this.currentOrder.uuid
           // }

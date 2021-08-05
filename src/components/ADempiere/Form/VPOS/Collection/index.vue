@@ -19,6 +19,14 @@
   <el-container style="background: white; height: 100% !important;">
     <el-main style="background: white; padding: 0px; height: 100% !important; overflow: hidden">
       <el-container style="background: white; padding: 0px; height: 100% !important;">
+        <!-- Invoice Overdrawn at time of collection -->
+        <overdrawn-invoice
+          :change="change"
+          :pay="pay"
+          :pending="pending"
+          :total-order="currentOrder.grandTotal"
+          :currency="pointOfSalesCurrency"
+        />
         <!-- Collection container top panel -->
         <el-header style="height: auto; padding-bottom: 10px; padding-right: 0px; padding-left: 0px">
           <el-card class="box-card" style="padding-left: 0px; padding-right: 0px">
@@ -97,10 +105,12 @@
                 :disabled="isDisabled"
               >
                 <el-row id="fieldListCollection">
-                  <el-col v-for="(field, index) in fieldsList" :key="index" :span="8">
-                    <!-- Add selected currency symbol -->
+                  <el-col
+                    v-for="field in primaryFieldsList"
+                    :key="field.sequence"
+                    :span="8"
+                  >
                     <field-definition
-                      v-if="field.sequence <= 1"
                       :metadata-field="field.columnName === 'PayAmt' ? {
                         ...field,
                         labelCurrency: isEmptyValue(dayRate.divideRate) ? dayRate : dayRate.currencyTo
@@ -108,10 +118,9 @@
                     />
                   </el-col>
                   <el-col :span="8">
-                    <el-form-item :label="fieldsList[1].name">
+                    <el-form-item :label="$t('form.pos.collect.Currency')">
                       <el-select
                         v-model="currentFieldCurrency"
-                        :placeholder="fieldsList[1].help"
                         @change="changeCurrency"
                       >
                         <el-option
@@ -123,13 +132,13 @@
                       </el-select>
                     </el-form-item>
                   </el-col>
-                  <el-col v-for="(field, key) in fieldsList" :key="key" :span="8">
+                  <el-col
+                    v-for="field in hiddenFieldsList"
+                    :key="field.sequence"
+                    :span="8"
+                  >
                     <field-definition
-                      v-if="field.sequence > 2"
-                      :metadata-field="field.columnName === 'PayAmt' ? {
-                        ...field,
-                        labelCurrency: isEmptyValue(dayRate.divideRate) ? dayRate : dayRate.currencyTo
-                      } : field"
+                      :metadata-field="field"
                     />
                   </el-col>
                 </el-row>
@@ -140,7 +149,7 @@
             <el-button type="danger" icon="el-icon-close" @click="exit" />
             <el-button type="info" icon="el-icon-minus" :disabled="isDisabled" @click="undoPatment" />
             <el-button type="primary" :disabled="validPay || addPay || isDisabled" icon="el-icon-plus" @click="addCollectToList(paymentBox)" />
-            <el-button type="success" :disabled="validateCompleteCollection || isDisabled" icon="el-icon-shopping-cart-full" @click="completePreparedOrder(listPayments)" />
+            <el-button type="success" :disabled="isDisabled || isDisabled" icon="el-icon-shopping-cart-full" @click="validateOrder(listPayments)" />
           </samp>
         </el-header>
         <!-- Panel where they show the payments registered from the collection container -->
@@ -263,12 +272,14 @@ import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAm
 import { formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import { processOrder } from '@/api/ADempiere/form/point-of-sales.js'
 import { FIELDS_DECIMALS } from '@/utils/ADempiere/references'
+import overdrawnInvoice from '@/components/ADempiere/Form/VPOS/Collection/overdrawnInvoice'
 
 export default {
   name: 'Collection',
   components: {
     typeCollection,
-    convertAmount
+    convertAmount,
+    overdrawnInvoice
   },
   mixins: [
     formMixin,
@@ -562,6 +573,15 @@ export default {
     },
     fieldsPaymentType() {
       return this.fieldsList[1]
+    },
+    primaryFieldsList() {
+      return this.fieldsList.filter(field => field.sequence <= 1)
+    },
+    hiddenFieldsList() {
+      return this.fieldsList.filter(field => field.sequence > 1)
+    },
+    overUnderPayment() {
+      return this.$store.state['pointOfSales/payments/index'].dialogoInvoce.success
     }
   },
   watch: {
@@ -658,7 +678,7 @@ export default {
     addCollectToList() {
       const containerUuid = this.containerUuid
       const posUuid = this.currentPointOfSales.uuid
-      const orderUuid = this.$route.query.action
+      const orderUuid = this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid
       const bankUuid = this.$store.getters.getValueOfField({
         containerUuid,
         columnName: 'C_Bank_ID_UUID'
@@ -846,6 +866,16 @@ export default {
         orderUuid,
         paymentUuid
       })
+    },
+    validateOrder(payment) {
+      this.porcessInvoce = true
+      if (this.pay > this.currentOrder.grandTotal) {
+        this.$store.commit('dialogoInvoce', { show: true, type: 1 })
+      } else if (this.pay < this.currentOrder.grandTotal) {
+        this.$store.commit('dialogoInvoce', { show: true, type: 2 })
+      } else {
+        this.completePreparedOrder(payment)
+      }
     },
     completePreparedOrder(payment) {
       const posUuid = this.currentPointOfSales.uuid

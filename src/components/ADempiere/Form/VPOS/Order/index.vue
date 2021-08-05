@@ -91,7 +91,7 @@
                     </el-tag>
                   </el-col>
                   <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
-                    <el-button type="primary" plain :disabled="isEmptyValue(this.$route.query.action)" @click="newOrder">
+                    <el-button type="primary" plain :disabled="isEmptyValue(currentOrder.documentNo)" @click="newOrder">
                       {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
                     </el-button>
                   </el-col>
@@ -452,6 +452,7 @@ export default {
       seeConversion: false,
       showFieldLine: false,
       pin: '',
+      attributePin: {},
       validatePin: true,
       visible: false
     }
@@ -678,6 +679,17 @@ export default {
     if (!this.isEmptyValue(this.$route.query.action)) {
       this.$store.dispatch('reloadOrder', { orderUuid: this.$route.query.action })
     }
+    if (this.isEmptyValue(this.$route.query.action) && !this.isEmptyValue(this.currentOrder.uuid)) {
+      this.$router.push({
+        params: {
+          ...this.$route.params
+        },
+        query: {
+          ...this.$route.query,
+          action: this.currentOrder.uuid
+        }
+      })
+    }
   },
   methods: {
     formatDate,
@@ -695,6 +707,7 @@ export default {
           this.validatePin = false
           this.pin = ''
           this.visible = false
+          this.pinAction(this.attributePin)
         })
         .catch(error => {
           console.error(error.message)
@@ -706,7 +719,7 @@ export default {
           this.pin = ''
         })
         .finally(() => {
-          this.closePing()
+          this.closePin()
         })
     },
     closePin() {
@@ -827,6 +840,41 @@ export default {
         this.currentTable++
         this.$refs.linesTable.setCurrentRow(this.listOrderLine[this.currentTable])
         this.currentOrderLine = this.listOrderLine[this.currentTable]
+      }
+    },
+    pinAction(action) {
+      if (action.type === 'updateOrder') {
+        switch (action.columnName) {
+          case 'QtyEntered':
+          case 'PriceEntered':
+          case 'Discount':
+            this.updateOrderLine(action)
+            break
+          case 'C_DocTypeTarget_ID': {
+            const documentTypeUuid = this.$store.getters.getValueOfField({
+              containerUuid: this.$route.meta.uuid,
+              columnName: 'C_DocTypeTarget_ID_UUID'
+            })
+            this.$store.dispatch('updateOrder', {
+              orderUuid: this.$route.query.action,
+              posUuid: this.currentPointOfSales.uuid,
+              documentTypeUuid
+            })
+            break
+          }
+        }
+      } else if (action.type === 'actionPos') {
+        switch (action.action) {
+          case 'changeWarehouse':
+            this.$store.commit('setCurrentWarehousePos', action)
+            break
+          case 'changeDocumentType':
+            this.$store.commit('setCurrentDocumentTypePos', action)
+            break
+          case 'changePriceList':
+            this.$store.commit('setCurrentPriceList', action)
+            break
+        }
       }
     }
   }

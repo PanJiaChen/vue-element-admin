@@ -616,6 +616,72 @@ export function processOrder({
 }
 
 /**
+ * Overdrawn Invoice
+ * This request allows you to process an order if the payment is more or less than the invoice.
+ *
+ * req.query.token - user token
+ * Body:
+ * req.body.pos_uuid - POS UUID reference
+ * req.body.order_uuid - Order UUID reference
+ * req.body.create_payments - Optional create payments (if is true then hope payments array)
+ * req.body.payments
+ * [
+ * invoice_uuid - Invoice UUID reference
+ * bank_uuid - Bank UUID reference
+ * reference_no - Reference no
+ * description - Description for Payment
+ * amount - Payment Amount
+ * tender_type_code - Tender Type
+ * payment_date - Payment Date (default now)
+ * currency_uuid - Currency UUID reference
+ * ]
+ * req.body.customer_details [
+ * key - columnName
+ * value - value
+ * ] - customer data in case of refund or voucher card
+ * req.body.option - reimbursement rate
+ */
+
+export function overdrawnInvoice({
+  posUuid,
+  orderUuid,
+  createPayments,
+  payments,
+  customerDetails,
+  option
+}) {
+  if (!isEmptyValue(payments)) {
+    payments = payments.map(parameter => {
+      return {
+        invoice_uuid: parameter.invoiceUuid,
+        bank_uuid: parameter.bankUuid,
+        reference_no: parameter.referenceNo,
+        description: parameter.description,
+        amount: parameter.amount,
+        tender_type_code: parameter.tenderTypeCode,
+        payment_ate: parameter.paymentDate,
+        currency_uid: parameter.currencyUuid
+      }
+    })
+  }
+  return request({
+    url: '/form/addons/point-of-sales/overdrawn-invoice',
+    method: 'post',
+    data: {
+      pos_uuid: posUuid,
+      order_uuid: orderUuid,
+      create_payments: createPayments,
+      payments: payments,
+      customer_details: customerDetails,
+      option: option
+    }
+  })
+    .then(processOrderResponse => {
+      return processOrderResponse
+    })
+}
+
+/**
  * Validate Ping
  * @param {string} posUuidd - POS UUID reference
  * @param {string} pin - User PIN

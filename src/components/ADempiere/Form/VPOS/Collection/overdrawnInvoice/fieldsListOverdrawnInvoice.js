@@ -17,19 +17,44 @@
 const tableName = 'C_Payment'
 
 export default [
-  // Amont
+  // Name
   {
-    tableName,
-    elementColumnName: 'PayAmt',
-    columnName: 'PayAmt',
+    elementColumnName: 'Name',
+    columnName: 'Name',
+    tableName: 'C_BPartner',
+    tabindex: '1',
     isFromDictionary: true,
     overwriteDefinition: {
       sequence: 0,
-      handleContentSelection: true,
-      handleActionPerformed: true,
+      isCustomField: true,
       size: 24,
-      isNumericField: true,
-      isActiveLogics: true,
+      isMandatory: true
+    }
+  },
+  // Code
+  {
+    elementColumnName: 'Value',
+    columnName: 'Value',
+    isFromDictionary: true,
+    tabindex: '0',
+    overwriteDefinition: {
+      sequence: 1,
+      isCustomField: true,
+      size: 24,
+      isMandatory: true
+    }
+  },
+  // Phone
+  {
+    elementColumnName: 'Phone',
+    columnName: 'Phone',
+    tableName: 'AD_user',
+    tabindex: '4',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 2,
+      isCustomField: true,
+      size: 24,
       isMandatory: true
     }
   },
@@ -41,53 +66,34 @@ export default [
     isFromDictionary: true,
     overwriteDefinition: {
       defaultValue: 'X',
-      sequence: 1,
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // Currency
-  // Bank
-  {
-    tableName,
-    columnName: 'C_Bank_ID',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 2,
-      handleActionKeyPerformed: true,
-      handleActionPerformed: true,
-      handleContentSelection: true,
-      displayLogic: `@TenderType@<>'X'`,
-      size: 24,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // Code
-  {
-    elementColumnName: 'Value',
-    columnName: 'Value',
-    isFromDictionary: true,
-    tabindex: '0',
-    overwriteDefinition: {
       sequence: 3,
-      isCustomField: true,
+      handleActionKeyPerformed: true,
+      handleContentSelection: true,
+      handleActionPerformed: true,
       size: 24,
-      isMandatory: true,
-      displayLogic: `@TenderType@=='P'&@TenderType@=='C'&@TenderType@=='D'`
+      isActiveLogics: true,
+      isMandatory: true
     }
   },
-  // Date
+  {
+    elementColumnName: 'EMail',
+    columnName: 'EMail',
+    tableName: 'AD_user',
+    tabindex: '3',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 4,
+      isCustomField: true,
+      displayLogic: `@TenderType@=='D'`,
+      size: 24
+    }
+  },
   {
     tableName,
     elementColumnName: 'DateTrx',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 4,
+      sequence: 5,
       handleFocusGained: true,
       handleFocusLost: true,
       handleKeyPressed: true,
@@ -100,18 +106,17 @@ export default [
       isMandatory: true
     }
   },
-  // ReferenceNo
+  // Bank
   {
-    tableName: 'HR_Attribute',
-    elementColumnName: 'ReferenceNo',
-    columnName: 'ReferenceNo',
+    tableName,
+    columnName: 'C_Bank_ID',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 5,
+      sequence: 6,
       handleActionKeyPerformed: true,
-      handleContentSelection: true,
       handleActionPerformed: true,
-      displayLogic: `@TenderType@<>'X'&@TenderType@<>'C' `,
+      handleContentSelection: true,
+      displayLogic: `@TenderType@<>'X'`,
       size: 24,
       isActiveLogics: true,
       isMandatory: true
@@ -124,7 +129,7 @@ export default [
     columnName: 'CreditCardType',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 6,
+      sequence: 7,
       defaultValue: 'M',
       handleActionKeyPerformed: true,
       handleContentSelection: true,
@@ -142,7 +147,7 @@ export default [
     columnName: 'CreditCardNumber',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 7,
+      sequence: 8,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
@@ -159,7 +164,7 @@ export default [
     columnName: 'AccountNo',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 8,
+      sequence: 9,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,

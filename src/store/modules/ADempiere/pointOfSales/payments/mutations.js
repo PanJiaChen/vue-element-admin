@@ -57,5 +57,12 @@ export default {
   },
   setFieldCurrency(state, currency) {
     state.fieldCurrency = currency
+  },
+  dialogoInvoce(state, { show, type, success }) {
+    state.dialogoInvoce = {
+      show,
+      type,
+      success
+    }
   }
 }
