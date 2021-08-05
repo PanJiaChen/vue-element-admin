@@ -147,10 +147,13 @@ jobs:
 
       - name: Set Lower Case to owner and repository
         run: |
+          echo "ORG_LC=${ORG,,}" >> ${GITHUB_ENV}
           echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
           echo "REPO_LC=${NAME,,}" >> ${GITHUB_ENV}
           echo "OWNER_REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
         env:
+          # to docker image namespace
+          ORG: '${{ secrets.DOCKERHUB_ORG }}'
           OWNER: '${{ github.repository_owner }}'
           NAME: '${{ github.event.repository.name }}'
           REPO: '${{ github.repository }}'
@@ -162,9 +165,9 @@ jobs:
           file: ./build/Dockerfile.prod
           push: true
           tags: |
-            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:latest
-            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.sha }}
-            ${{ env.OWNER_LC }}/${{ env.REPO_LC }}:${{ github.event.release.tag_name }}
+            ${{ env.ORG_LC }}/${{ env.REPO_LC }}:latest
+            ${{ env.ORG_LC }}/${{ env.REPO_LC }}:${{ github.sha }}
+            ${{ env.ORG_LC }}/${{ env.REPO_LC }}:${{ github.event.release.tag_name }}
 
       - name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
