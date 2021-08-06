@@ -139,16 +139,16 @@
                 <template slot-scope="scope">
                   <el-popover
                     v-if="!isEmptyValue(listOrderLine)"
-                    placement="top-start"
+                    placement="right-start"
                     trigger="click"
                     :title="$t('form.productInfo.productInformation')"
                   >
                     <el-form
                       label-position="top"
-                      style="float: right; display: flex; line-height: 30px;"
+                      style="float: right;display: contents;line-height: 30px;"
                     >
                       <el-row :gutter="24">
-                        <el-col :span="3">
+                        <el-col :span="4">
                           <div>
                             <el-avatar v-if="isEmptyValue(scope.row.product.imageUrl)" shape="square" :size="100" src="https://#" @error="true">
                               <el-image>
@@ -165,12 +165,12 @@
                             />
                           </div>
                         </el-col>
-                        <el-col :span="16">
+                        <el-col :span="12">
                           {{ $t('form.productInfo.code') }}: <b>{{ scope.row.product.value }}</b><br>
                           {{ $t('form.productInfo.name') }}: <b>{{ scope.row.product.name }}</b><br>
                           {{ $t('form.productInfo.description') }}: <b>{{ scope.row.product.description }}</b><br>
                         </el-col>
-                        <el-col :span="5">
+                        <el-col :span="8">
                           <div style="float: right">
                             {{ $t('form.productInfo.price') }}:
                             <b>{{ formatPrice(scope.row.product.priceStandard, pointOfSalesCurrency.iSOCode) }}</b>
@@ -1046,5 +1046,13 @@ export default {
     position: fixed;
     bottom: 5%;
     right: 5%;
+  }
+</style>
+
+<style>
+  .el-popper {
+    margin-left: 12px;
+    max-width: 65%;
+    min-width: 50%;
   }
 </style>
