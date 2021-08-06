@@ -21,10 +21,15 @@
       <template slot="label">
         {{ $t('form.productInfo.codeProduct') }}
         <el-popover
+          v-model="visible"
+          v-shortkey="keyShortcuts"
           placement="right"
           trigger="click"
           width="800"
+          @shortkey.native="close"
         >
+          <el-button icon="el-icon-close" type="text" style="float: right;padding: 1% 1% 0px 0px;font-size: 20px;" @click="close" />
+          <br>
           <product-info-list />
           <el-button
             slot="reference"
@@ -106,6 +111,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       timeOut: null
     }
   },
@@ -206,6 +212,9 @@ export default {
 
       // call callback function to return suggestions
       callBack(results)
+    },
+    close() {
+      this.visible = false
     },
     handleSelect(elementSelected) {
       const valueProduct = this.isEmptyValue(elementSelected.product) ? elementSelected.value : elementSelected.product.value

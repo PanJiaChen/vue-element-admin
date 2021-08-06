@@ -18,6 +18,7 @@
 <template>
   <el-main
     v-shortkey="shortsKey"
+    style="padding-top: 0px;"
     @shortkey.native="keyAction"
   >
     <el-form
