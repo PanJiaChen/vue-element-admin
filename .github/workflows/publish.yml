@@ -98,13 +98,9 @@ jobs:
         run: |
           echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
           echo "REPO_LC=${NAME,,}" >> ${GITHUB_ENV}
-          echo "OWNER_REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
         env:
           OWNER: '${{ github.repository_owner }}'
           NAME: '${{ github.event.repository.name }}'
-          REPO: '${{ github.repository }}'
-
-      - run: echo ${{ env }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
@@ -147,16 +143,20 @@ jobs:
 
       - name: Set Lower Case to owner and repository
         run: |
+          ORG=$OWNER
+          if [ -n "${{ secrets.DOCKERHUB_ORG }}" ]; then
+            echo "Set secret DOCKERHUB_ORG as namespace"
+            ORG=${{ secrets.DOCKERHUB_ORG }}
+          else
+            echo "Set OWNER ($OWNER) as namespace "
+          fi
           echo "ORG_LC=${ORG,,}" >> ${GITHUB_ENV}
           echo "OWNER_LC=${OWNER,,}" >> ${GITHUB_ENV}
           echo "REPO_LC=${NAME,,}" >> ${GITHUB_ENV}
-          echo "OWNER_REPO_LC=${REPO,,}" >> ${GITHUB_ENV}
         env:
           # to docker image namespace
-          ORG: '${{ secrets.DOCKERHUB_ORG }}'
           OWNER: '${{ github.repository_owner }}'
           NAME: '${{ github.event.repository.name }}'
-          REPO: '${{ github.repository }}'
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
