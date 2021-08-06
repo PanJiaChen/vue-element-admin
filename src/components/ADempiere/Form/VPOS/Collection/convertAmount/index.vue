@@ -33,7 +33,7 @@
             label-width="10px"
             style="float: right; display: flex; line-height: 10px;"
           >
-            <el-form-item :label="fieldsList[0].name">
+            <el-form-item :label="$t('form.pos.collect.Currency')">
               <el-select
                 v-model="currentFieldCurrency"
                 :placeholder="fieldsList[0].help"
@@ -169,7 +169,10 @@ export default {
         }
       })
       if (!this.isEmptyValue(convert)) {
-        return convert
+        return {
+          ...convert,
+          iSOCode: convert.currencyTo.iSOCode
+        }
       }
       return {
         currencyTo: this.currentPointOfSales.currentPriceList.currency,
