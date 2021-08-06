@@ -67,16 +67,16 @@ router.beforeEach((to, from, next) => {
 })
 
 // 判断当前路由是否配合当前用户的角色
-const hasPower = (pathRoles, userRoles) => {
-  return pathRoles.some(role => userRoles.includes(role))
+const isForbidden = (pathRoles, userRoles) => {
+  return !pathRoles.some(role => userRoles.includes(role))
 }
 
 router.afterEach((to, next) => {
   if (to.meta.roles && to.meta.roles.length > 0) {
     const roles = store.getters.roles
-    const power = hasPower(to.meta.roles, roles)
-    console.log(`power`, power)
-    if (!power) {
+    const forbidden = isForbidden(to.meta.roles, roles)
+    console.log(`forbidden`, forbidden)
+    if (forbidden) {
       router.replace('/401')
     }
   }
