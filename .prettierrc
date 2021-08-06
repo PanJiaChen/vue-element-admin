@@ -1,0 +1,16 @@
+{
+	"eslintIntegration": true,
+	"trailingComma": "none",
+  "singleQuote": true,
+  "semi": false,
+  "vetur.format.defaultFormatterOptions": {
+    "prettier": {
+      "semi": false, // 格式化不加分号
+      "singleQuote": true // 格式化以单引号为主
+    }
+  },
+  //分号和双引号确实不会再自动添加了，但是不会在方法括号之间插入空格，可以再加入这条配置即可
+  "javascript.format.insertSpaceBeforeFunctionParenthesis": true,
+	"vetur.format.defaultFormatter.js": "vscode-typescript",
+	"arrowParens": "avoid"
+}
