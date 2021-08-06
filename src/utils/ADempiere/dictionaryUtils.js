@@ -672,7 +672,6 @@ export function convertAction(action) {
     isIndex: false,
     component: () => import('@/views/ADempiere/Unsupported')
   }
-
   switch (action) {
     case 'B':
       actionAttributes.name = 'workbech'
@@ -681,6 +680,7 @@ export function convertAction(action) {
     case 'F':
       actionAttributes.name = 'workflow'
       actionAttributes.icon = 'example'
+      actionAttributes.component = () => import('@/views/ADempiere/Workflow')
       break
     case 'P':
       actionAttributes.name = 'process'

@@ -196,6 +196,7 @@ export default {
             })
             .finally(() => {
               this.loading = false
+              this.$store.dispatch('serverListActivity')
             })
         } else {
           console.log('error submit!!')

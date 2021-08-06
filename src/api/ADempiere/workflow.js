@@ -117,3 +117,29 @@ export function workflowActivities({
       }
     })
 }
+// GET Workflows
+/**
+ * Request Document Status List
+ * @param {string} tableName
+ * @param {number} pageSize
+ * @param {string} pageToken
+ */
+export function getWorkflow({
+  tableName,
+  pageSize,
+  pageToken
+}) {
+  return request({
+    url: '/workflow/workflows',
+    method: 'get',
+    params: {
+      table_name: tableName,
+      // Page Data
+      pageToken,
+      pageSize
+    }
+  })
+    .then(listWorkflowActivities => {
+      return listWorkflowActivities
+    })
+}

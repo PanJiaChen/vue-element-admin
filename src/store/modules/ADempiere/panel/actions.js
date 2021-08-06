@@ -783,6 +783,9 @@ const actions = {
       default:
         executeAction = 'getFieldsFromTab'
         break
+      case 'workflow':
+        executeAction = 'getWorkflowFromServer'
+        break
     }
 
     return dispatch(executeAction, {

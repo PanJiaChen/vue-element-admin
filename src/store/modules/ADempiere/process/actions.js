@@ -1220,5 +1220,17 @@ export default {
           dispatch('updateOrderPos', false)
         })
     })
+  },
+  updateNotifications({ commit, state },
+    update
+  ) {
+    const notification = state.notificationProcess.map(notification => {
+      if (notification.name === update.name && notification.typeActivity && notification.quantityActivities !== update.quantityActivities) {
+        return {
+          ...update
+        }
+      }
+    })
+    commit('updateNotificationProcess', notification)
   }
 }

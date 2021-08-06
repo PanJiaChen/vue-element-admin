@@ -69,7 +69,16 @@ export default {
   },
   computed: {
     getRecordNotification() {
-      return this.$store.getters.getNotificationProcess
+      return this.$store.getters.getNotificationProcess.map(item => {
+        if (item.typeActivity) {
+          return {
+            ...item,
+            name: item.name + ' ' + item.quantityActivities
+          }
+        } else {
+          return item
+        }
+      })
     }
   },
   watch: {

@@ -45,37 +45,12 @@
     <el-main class="main">
       <el-container style="height: 100%;">
         <el-aside v-if="!isEmptyValue(currentActivity)" id="workflow" width="70%" style="background: white;">
-          <transition name="el-zoom-in-center">
-            <el-card v-show="show" :style="{position: 'absolute', zIndex: '5', left: leftContextualMenu + 'px', top: topContextualMenu + 'px'}" class="box-card">
-              <div slot="header" class="clearfix">
-                <span>
-                  {{ infoNode.description }}
-                </span>
-                <el-button style="float: right; padding: 3px 0" type="text" icon="el-icon-close" @click="show = !show" />
-              </div>
-              <div v-if="!isEmptyValue(infoNode.nodeLogs)" class="text item" style="padding: 20px">
-                <el-timeline class="info">
-                  <el-timeline-item
-                    v-for="(logs, key) in infoNode.nodeLogs"
-                    :key="key"
-                    :timestamp="translateDate(logs.log_date)"
-                    placement="top"
-                  >
-                    <el-card style="padding: 20px!important;">
-                      <b> {{ $t('login.userName') }} </b> {{ logs.user_name }} <br>
-                      {{ logs.text_message }}
-                    </el-card>
-                  </el-timeline-item>
-                </el-timeline>
-              </div>
-            </el-card>
-          </transition>
-          <workflow-chart
+          <workflow
             v-if="!isEmptyValue(node) && !isEmptyValue(currentActivity)"
-            :transitions="listWorkflowTransition"
-            :states="node"
-            :state-semantics="currentNode"
-            @state-click="onLabelClicked(node, $event)"
+            :node-transition-list="listWorkflowTransition"
+            :node-list="node"
+            :current-node="currentNode"
+            :workflow-logs="listProcessWorkflow"
           />
         </el-aside>
         <el-main v-if="!isEmptyValue(currentActivity)" style="overflow: hidden;">
@@ -105,12 +80,12 @@
 <script>
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import fieldsList from './fieldsList.js'
-import WorkflowChart from 'vue-workflow-chart'
+import Workflow from '@/components/ADempiere/Workflow'
 
 export default {
   name: 'WorkflowActivity',
   components: {
-    WorkflowChart
+    Workflow
   },
   mixins: [
     formMixin
@@ -184,9 +159,6 @@ export default {
     }
   },
   watch: {
-    activityList(list) {
-      this.SendActivityListNotifier(list)
-    },
     currentActivity(value) {
       this.listWorkflow(value)
       this.setCurrent()
@@ -199,9 +171,6 @@ export default {
     }
   },
   methods: {
-    SendActivityListNotifier() {
-      this.$store.commit('addNotificationProcess', { name: this.$t('navbar.badge.activity') + ' ' + this.activityList.length, typeActivity: true })
-    },
     setCurrent() {
       const activity = this.activityList.find(activity => activity.node === this.currentActivity.node)
       this.$refs.WorkflowActivity.setCurrentRow(activity)
@@ -347,27 +316,6 @@ export default {
   }
 </style>
 <style scoped>
-.info {
-  margin: 0px;
-  font-size: 14px;
-  list-style: none;
-  padding: 10px;
-}
-.vue-workflow-chart-state {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 3px;
-    color: #11353d;
-    font-size: 15px;
-    font-family: Open Sans;
-    /* font-weight: 600; */
-    margin-right: 20px;
-    margin-bottom: 20px;
-    max-width: 15%;
-    text-align: center;
-    -webkit-box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
-    box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
-}
   .panel_main {
     height: 100%;
     width: 100%;
@@ -387,15 +335,3 @@ export default {
   transition: 0.3s;
   display: block;
 }
-@import '~vue-workflow-chart/dist/vue-workflow-chart.css';
-.vue-workflow-chart-state-delete {
-  color: white;
-  background: #AED5FE;
-}
-.vue-workflow-chart-transition-arrow-delete {
-  fill: #AED5FE;
-}
-.vue-workflow-chart-transition-path-delete {
-  stroke: #AED5FE;
-}
-</style>

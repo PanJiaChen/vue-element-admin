@@ -14,6 +14,9 @@ export default {
   addNotificationProcess(state, payload) {
     state.notificationProcess.push(payload)
   },
+  updateNotificationProcess(state, update) {
+    state.notificationProcess = update
+  },
   // Delete process in execution afther some response from server
   deleteInExecution(state, payload) {
     state.inExecution = state.inExecution.filter(item => item.containerUuid !== payload.containerUuid)
