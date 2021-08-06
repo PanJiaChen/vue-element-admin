@@ -112,9 +112,6 @@
         <el-card>
           <div slot="header" class="clearfix">
             <span> {{ $t('form.pos.collect.overdrawnInvoice.below') }} </span>
-            <el-radio v-model="option" :label="1" style="float: right; padding: 3px 0">
-              {{ $t('form.pos.collect.overdrawnInvoice.adjustDocument') }}
-            </el-radio>
           </div>
           <el-form label-width="120px">
             <el-form-item>
@@ -211,7 +208,7 @@ export default {
         containerUuid: 'OverdrawnInvoice',
         columnName: 'TenderType'
       })
-      if (tenderType === 'D' && tenderType === 'P') {
+      if (tenderType === 'D') {
         return true
       }
       return false
@@ -286,6 +283,7 @@ export default {
           break
         case 3:
           if (this.isEmptyValue(this.emptyMandatoryFields)) {
+            this.completePreparedOrder(posUuid, orderUuid, payments)
             overdrawnInvoice({
               posUuid,
               orderUuid,

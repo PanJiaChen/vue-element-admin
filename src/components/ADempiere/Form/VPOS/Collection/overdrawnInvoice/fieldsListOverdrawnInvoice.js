@@ -79,13 +79,16 @@ export default [
     elementColumnName: 'EMail',
     columnName: 'EMail',
     tableName: 'AD_user',
-    tabindex: '3',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 4,
-      isCustomField: true,
-      displayLogic: `@TenderType@=='D'`,
-      size: 24
+      sequence: 9,
+      handleActionKeyPerformed: true,
+      handleContentSelection: true,
+      handleActionPerformed: true,
+      size: 24,
+      displayLogic: `@TenderType@=='D' || @TenderType@=='Z'`,
+      isActiveLogics: true,
+      isMandatory: true
     }
   },
   {
@@ -116,7 +119,7 @@ export default [
       handleActionKeyPerformed: true,
       handleActionPerformed: true,
       handleContentSelection: true,
-      displayLogic: `@TenderType@<>'X'`,
+      displayLogic: `@TenderType@<>'X' & @TenderType@<>'Z'`,
       size: 24,
       isActiveLogics: true,
       isMandatory: true
@@ -169,7 +172,7 @@ export default [
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,
-      displayLogic: `@TenderType@=='M'`,
+      displayLogic: `@TenderType@=='M' || @TenderType@=='D'`,
       isActiveLogics: true,
       isMandatory: true
     }

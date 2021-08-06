@@ -493,7 +493,7 @@ export default {
         },
         overdrawnInvoice: {
           title: 'OverdrawnInvoice',
-          below: 'Would you like to leave the Invoice with an Open balance',
+          below: 'Invoice will remain with an open balance',
           above: 'Customer Details',
           returned: 'Your change is',
           coupon: 'Generate a Gift Card or Vale',

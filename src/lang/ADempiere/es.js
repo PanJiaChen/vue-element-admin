@@ -469,7 +469,7 @@ export default {
         },
         overdrawnInvoice: {
           title: 'Factura Sobregirada',
-          below: 'Desea dejar la Factura con un saldo Abierto',
+          below: 'Factura quedará con un saldo abierto',
           above: 'Datos del Cliente',
           returned: 'Su vuelto es',
           coupon: 'Generar una Tarjeta de Regalo o Vale',
