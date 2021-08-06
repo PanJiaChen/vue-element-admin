@@ -287,6 +287,7 @@ export default {
     deleteRecord: 'Eliminar Registro',
     undoNew: 'Descartar Nuevo Registro',
     containerInfo: {
+      attachment: 'Anexo',
       notes: 'Listado de Notas',
       changeLog: 'Actividad',
       workflowLog: 'Histórico de Flujo de Trabajo',

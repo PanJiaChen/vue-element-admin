@@ -311,6 +311,7 @@ export default {
     deleteRecord: 'Delete Record',
     undoNew: 'Undo New Record',
     containerInfo: {
+      attachment: 'Attachment',
       notes: 'Notes List',
       changeLog: 'ACtivity',
       workflowLog: 'Workflow Log',

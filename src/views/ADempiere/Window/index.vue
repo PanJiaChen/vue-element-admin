@@ -150,6 +150,19 @@
                                   <workflow-logs />
                                 </div>
                               </el-tab-pane>
+                              <el-tab-pane
+                                name="attachments"
+                              >
+                                <span slot="label">
+                                  <i class="el-icon-paperclip" />
+                                  {{ $t('window.containerInfo.attachment') }}
+                                </span>
+                                <div
+                                  key="attachment-logs"
+                                >
+                                  <attachment />
+                                </div>
+                              </el-tab-pane>
                             </el-tabs>
                           </el-card>
                         </div>
@@ -313,6 +326,19 @@
                           key="workflow-log-loaded"
                         >
                           <workflow-logs />
+                        </div>
+                      </el-tab-pane>
+                      <el-tab-pane
+                        name="attachments"
+                      >
+                        <span slot="label">
+                          <i class="el-icon-paperclip" />
+                          {{ $t('window.containerInfo.attachment') }}
+                        </span>
+                        <div
+                          key="attachment-logs"
+                        >
+                          <attachment />
                         </div>
                       </el-tab-pane>
                     </el-tabs>

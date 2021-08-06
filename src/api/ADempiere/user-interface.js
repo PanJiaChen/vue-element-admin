@@ -19,19 +19,19 @@ import { request } from '@/utils/ADempiere/request'
 
 /**
  * Get Attachment
- * @param {number}  recordId
- * @param {string}  recordUuid // TODO: Add suppport to record uuid on backend
+ * @param {number}  resourceId
+ * @param {string}  resourceUuid // TODO: Add suppport to resource uuid on backend
  */
 export function requestResourceReference({
-  recordId,
-  recordUuid
+  resourceId,
+  resourceUuid
 }) {
   return request({
-    url: '/ui/resource-reference',
+    url: '/user-interface/common/resource-reference',
     method: 'get',
     params: {
-      image_id: recordId,
-      image_uuid: recordUuid
+      resource_id: resourceId,
+      resource_uuid: resourceUuid
     }
   })
     .then(response => {
@@ -51,7 +51,7 @@ export function requestAttachment({
   recordUuid
 }) {
   return request({
-    url: '/ui/attachment',
+    url: '/user-interface/common/attachment',
     method: 'get',
     params: {
       table_name: tableName,

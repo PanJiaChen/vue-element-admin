@@ -25,6 +25,7 @@ import DataTable from '@/components/ADempiere/DataTable'
 import splitPane from 'vue-splitpane'
 // Container Info
 import ChatEntries from '@/components/ADempiere/ChatEntries'
+import Attachment from '@/components/ADempiere/Attachment/index.vue'
 import ListChatEntry from '@/components/ADempiere/ChatEntries/listChatEntry'
 import RecordLogs from '@/components/ADempiere/ContainerInfo/recordLogs'
 import WorkflowLogs from '@/components/ADempiere/ContainerInfo/workflowLogs'
@@ -52,6 +53,7 @@ export default {
     RightPanel,
     ChatEntries,
     ListChatEntry,
+    Attachment,
     RecordLogs,
     WorkflowLogs,
     WorkflowStatusBar,
