@@ -309,7 +309,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Refer to [Documentation](https://adempiere.github.io/adempiere-vue-site/guide/essentials/deploy.html#build) for more information
+Refer to [Documentation](https://adempiere.github.io/adempiere-vue/guide/essentials/deploy.html#build) for more information
 
 ## Docker Container
 
