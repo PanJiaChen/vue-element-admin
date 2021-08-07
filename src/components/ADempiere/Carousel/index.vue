@@ -27,7 +27,7 @@
             {{ item.description }}
           </p>
         </div>
-        <div class="text item" style="height: 95%;">
+        <div class="text item" style="height: 90%;overflow: auto;">
           <slot />
         </div>
       </el-card>

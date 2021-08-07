@@ -587,6 +587,30 @@ export default {
         title: 'Change Log',
         description: 'Workflow timeline'
       }
+    },
+    match: {
+      title: {
+        invoice: 'Invoice',
+        deliveryReceipt: 'Delivery / Receipt'
+      },
+      description: {
+        searchCriteria: 'Select a Business Partner to check the pending documents to be assigned',
+        invoice: 'Select an Invoice to assign the corresponding Delivery/Receipt to',
+        deliveryReceipt: 'Select at least one Delivery/Receipt to which you require to assign the selected invoice'
+      },
+      field: {
+        toAssigned: 'To be Assigned',
+        assigning: 'Assigning',
+        difference: 'Difference'
+      },
+      filtersSearch: {
+        sameBusinessPartner: 'Same Business Partner',
+        sameProduct: 'Same Product ',
+        sameQuantity: 'SameQuantity '
+      },
+      table: {
+        nrDocument: 'Nr Document'
+      }
     }
   }
 }
