@@ -291,7 +291,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información.
+Vaya a [Documentación](https://adempiere.github.io/adempiere-vue/es/guide/essentials/deploy.html#compilar) para mayor información.
 
 ## Contenedor Docker
 
