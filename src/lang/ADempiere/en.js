@@ -611,6 +611,7 @@ export default {
       table: {
         nrDocument: 'Nr Document'
       }
-    }
+    },
+    weight: 'Weight'
   }
 }

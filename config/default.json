@@ -36,5 +36,8 @@
   },
   "match": {
     "endpoint": "/form/addons/match"
+  },
+  "Weight": {
+    "endpoint": "/form/addons/weight"
   }
 }

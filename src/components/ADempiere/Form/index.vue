@@ -63,6 +63,9 @@ export default {
         case 'VPOS':
           form = import('@/components/ADempiere/Form/VPOS')
           break
+        case 'VGetWeight':
+          form = import('@/components/ADempiere/Form/VGetWeight')
+          break
         default:
           form = import('@/views/ADempiere/Unsupported')
           break

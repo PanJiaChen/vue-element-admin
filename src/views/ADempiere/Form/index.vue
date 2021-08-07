@@ -51,7 +51,7 @@
             >
               <el-button
                 type="text"
-                style="float: right"
+                style="float: right; z-index: 5"
                 :circle="true"
                 icon="el-icon-arrow-up"
                 @click="changeDisplatedTitle"
