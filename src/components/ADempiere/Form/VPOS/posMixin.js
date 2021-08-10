@@ -351,7 +351,7 @@ export default {
       })
         .then(productPrice => {
           this.product = productPrice.product
-          this.createOrder(true)
+          this.createOrder({ withLine: true })
         })
         .catch(error => {
           console.warn(error.message)
@@ -371,12 +371,12 @@ export default {
           })
         })
     },
-    createOrder(withLine) {
+    createOrder({ withLine = false, newOrder = false }) {
       if (this.withoutPOSTerminal()) {
         return
       }
       const orderUuid = this.$route.query.action
-      if (this.isEmptyValue(orderUuid)) {
+      if (this.isEmptyValue(orderUuid) || newOrder) {
         const posUuid = this.currentPointOfSales.uuid
         let customerUuid = this.$store.getters.getValueOfField({
           containerUuid: this.metadata.containerUuid,
@@ -583,7 +583,7 @@ export default {
           break
       }
     },
-    newOrder() {
+    clearOrder() {
       this.$router.push({
         params: {
           ...this.$route.params
@@ -637,7 +637,7 @@ export default {
     },
     changePos(posElement) {
       this.$store.dispatch('setCurrentPOS', posElement)
-      this.newOrder()
+      this.clearOrder()
     }
   }
 }

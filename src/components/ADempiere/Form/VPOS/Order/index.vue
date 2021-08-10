@@ -91,7 +91,7 @@
                     </el-tag>
                   </el-col>
                   <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
-                    <el-button type="primary" plain :disabled="isEmptyValue(currentOrder.documentNo)" @click="newOrder">
+                    <el-button type="primary" plain @click="newOrder">
                       {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
                     </el-button>
                   </el-col>
@@ -139,6 +139,7 @@
                 <template slot-scope="scope">
                   <el-popover
                     v-if="!isEmptyValue(listOrderLine)"
+                    popper-class="el-popper-info"
                     placement="right-start"
                     trigger="click"
                     :title="$t('form.productInfo.productInformation')"
@@ -635,7 +636,7 @@ export default {
     },
     currentWarehouse() {
       if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.warehouse)) {
-        return this.$store.getters.getCurrentWarehousePos
+        return this.$store.getters.posAttributes.currentPointOfSales.warehouse
       }
       return {}
     },
@@ -744,60 +745,11 @@ export default {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
     newOrder() {
-      this.$router.push({
-        params: {
-          ...this.$route.params
-        },
-        query: {
-          pos: this.currentPointOfSales.id
-        }
-      }).catch(() => {
-      }).finally(() => {
-        this.$store.commit('setListPayments', [])
-        const { templateBusinessPartner } = this.currentPointOfSales
-        this.$store.commit('updateValuesOfContainer', {
-          containerUuid: this.metadata.containerUuid,
-          attributes: [{
-            columnName: 'UUID',
-            value: undefined
-          },
-          {
-            columnName: 'ProductValue',
-            value: undefined
-          },
-          {
-            columnName: 'C_BPartner_ID',
-            value: templateBusinessPartner.id
-          },
-          {
-            columnName: 'DisplayColumn_C_BPartner_ID',
-            value: templateBusinessPartner.name
-          },
-          {
-            columnName: ' C_BPartner_ID_UUID',
-            value: templateBusinessPartner.uuid
-          }]
-        })
-        this.$store.dispatch('setOrder', {
-          documentType: {},
-          documentStatus: {
-            value: ''
-          },
-          totalLines: 0,
-          grandTotal: 0,
-          salesRepresentative: {},
-          businessPartner: {
-            value: '',
-            uuid: ''
-          }
-        })
-        this.$store.commit('setShowPOSCollection', false)
-        this.$store.dispatch('listOrderLine', [])
-      })
+      this.createOrder({ withLine: false, newOrder: true })
     },
     changePos(pointOfSales) {
       this.$store.dispatch('setCurrentPOS', pointOfSales)
-      this.newOrder()
+      this.clearOrder()
     },
     changeWarehouse(warehouse) {
       this.attributePin = {
@@ -1050,7 +1002,7 @@ export default {
 </style>
 
 <style>
-  .el-popper {
+  .el-popper-info {
     margin-left: 12px;
     max-width: 65%;
     min-width: 50%;

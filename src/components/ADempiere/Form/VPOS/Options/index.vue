@@ -33,7 +33,7 @@
           <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
-                :style="isEmptyValue($route.query.action) ? 'cursor: not-allowed; text-align: center !important; color: gray;' : blockOption"
+                style="cursor: pointer; text-align: center !important; color: black;min-height: 50px;"
                 @click="newOrder"
               >
                 <i class="el-icon-news" />
@@ -381,7 +381,7 @@ export default {
       }
     },
     blockOption() {
-      if (!this.isEmptyValue(this.$route.query.pos)) {
+      if (!this.isEmptyValue(this.currentOrder.uuid)) {
         return 'cursor: pointer; text-align: center !important; color: black;min-height: 50px;'
       }
       return 'cursor: not-allowed; text-align: center !important; color: gray;min-height: 50px;'
@@ -457,6 +457,9 @@ export default {
       })
     },
     completePreparedOrder() {
+      if (this.isEmptyValue(this.currentOrder.uuid)) {
+        return ''
+      }
       const posUuid = this.currentPointOfSales.uuid
       this.$store.dispatch('updateOrderPos', true)
       this.$store.dispatch('updatePaymentPos', true)
@@ -495,6 +498,9 @@ export default {
         })
     },
     reverseSalesTransaction() {
+      if (this.isEmptyValue(this.currentOrder.uuid)) {
+        return ''
+      }
       const process = this.$store.getters.getProcess(posProcess[0].uuid)
       this.showModal(process)
       const parametersList = [
@@ -544,6 +550,9 @@ export default {
       })
     },
     copyOrder() {
+      if (this.isEmptyValue(this.currentOrder.uuid)) {
+        return ''
+      }
       this.processPos = posProcess[1].uuid
       const posUuid = this.currentPointOfSales.uuid
       const parametersList = [{
@@ -596,6 +605,9 @@ export default {
       })
     },
     deleteOrder() {
+      if (this.isEmptyValue(this.currentOrder.uuid)) {
+        return ''
+      }
       this.$store.dispatch('updateOrderPos', true)
       deleteOrder({
         orderUuid: this.$route.query.action
@@ -630,9 +642,49 @@ export default {
     },
     changePos(posElement) {
       this.$store.dispatch('setCurrentPOS', posElement)
-      this.newOrder()
+      this.clearOrder()
     },
     newOrder() {
+      const posUuid = this.currentPointOfSales.uuid
+      let customerUuid = this.$store.getters.getValueOfField({
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_BPartner_ID_UUID'
+      })
+      const id = this.$store.getters.getValueOfField({
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_BPartner_ID'
+      })
+      const documentTypeUuid = this.$store.getters.getValueOfField({
+        containerUuid: this.$route.meta.uuid,
+        columnName: 'C_DocTypeTarget_ID_UUID'
+      })
+      if (this.isEmptyValue(customerUuid) || id === 1000006) {
+        customerUuid = this.currentPointOfSales.templateBusinessPartner.uuid
+      }
+      this.$store.dispatch('createOrder', {
+        posUuid,
+        customerUuid,
+        salesRepresentativeUuid: this.currentPointOfSales.salesRepresentative.uuid,
+        documentTypeUuid
+      })
+        .then(response => {
+          this.$store.dispatch('reloadOrder', { orderUuid: response.uuid })
+          this.$router.push({
+            params: {
+              ...this.$route.params
+            },
+            query: {
+              ...this.$route.query,
+              action: response.uuid
+            }
+          }).then(() => {
+            this.$store.dispatch('listOrdersFromServer', {
+              posUuid: this.currentPointOfSales.uuid
+            })
+          }).catch(() => {})
+        })
+    },
+    clearOrder() {
       this.$router.push({
         params: {
           ...this.$route.params
