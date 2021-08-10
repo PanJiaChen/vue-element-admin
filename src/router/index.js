@@ -92,13 +92,21 @@ export const constantRoutes = [
     path: '/documentation',
     component: Layout,
     redirect: '/documentation/index',
-    meta: { title: 'documentation', icon: 'documentation', affix: true, breadcrumb: false },
+    meta: {
+      title: 'documentation',
+      icon: 'documentation',
+      breadcrumb: false
+    },
     children: [
       {
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: language.t('documentation.releaseNotes'), icon: 'documentation', affix: true, isIndex: true }
+        meta: {
+          title: language.t('documentation.releaseNotes'),
+          icon: 'documentation',
+          isIndex: true
+        }
       }
     ]
   },
