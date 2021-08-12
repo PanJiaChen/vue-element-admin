@@ -24,6 +24,9 @@ export default {
     serverListActivity({ commit, state, dispatch, rootGetters }, params) {
       const userUuid = isEmptyValue(params) ? rootGetters['user/getUserUuid'] : params
       const name = language.t('navbar.badge.activity')
+      if (isEmptyValue(userUuid)) {
+        return
+      }
       workflowActivities({
         userUuid
       })

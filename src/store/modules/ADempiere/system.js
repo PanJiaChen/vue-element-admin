@@ -50,13 +50,14 @@ const system = {
           })
       })
     },
-    getLanguagesFromServer({ commit }) {
+    getLanguagesFromServer({ commit, dispatch, rootGetters }) {
       return new Promise(resolve => {
         requestLanguagesList({
           pageToke: undefined,
           pageSize: undefined
         })
           .then(languageResponse => {
+            dispatch('serverListActivity', rootGetters['user/getUserUuid'])
             const languagesList = languageResponse.languagesList.map(language => {
               return {
                 ...language,
