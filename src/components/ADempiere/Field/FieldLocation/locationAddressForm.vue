@@ -42,8 +42,7 @@
           style="min-height: calc(50vh - 84px)"
           class="loading-panel"
         />
-
-        <el-col :span="24">
+        <el-col :span="24" style="padding-left: 12px;padding-right: 12px;padding-top: 3%;padding-bottom: 3%;">
           <samp style="float: right; padding-right: 10px;">
             <el-button
               :disabled="!isLoaded"

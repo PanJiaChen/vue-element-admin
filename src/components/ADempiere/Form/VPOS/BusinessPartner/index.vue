@@ -24,6 +24,7 @@
         placement="right"
         width="400"
         trigger="click"
+        @hide="popoverClose"
       >
         <business-partner-create
           :parent-metadata="parentMetadata"
@@ -402,6 +403,9 @@ export default {
     },
     popoverOpen(value) {
       this.$store.dispatch('changePopover', true)
+    },
+    popoverClose(value) {
+      this.$store.commit('setShowedLocation', false)
     }
   }
 }

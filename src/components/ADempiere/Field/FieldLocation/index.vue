@@ -16,28 +16,26 @@
  along with this program.  If not, see <https:www.gnu.org/licenses/>.
 -->
 <template>
-  <div>
-    <el-popover
-      ref="locationAddress"
-      v-model="isShowedLocationForm"
-      :placement="popoverPlacement"
-      width="300"
-      trigger="manual"
-    >
-      <location-address-form
-        v-if="isShowedLocationForm"
-        :values="localValues"
-        :parent-metadata="metadata"
-      />
-    </el-popover>
-    <el-input
-      v-model="displayedValue"
-      readonly
-      @focus="setShowedLocationForm(true)"
-    >
-      <i slot="prefix" class="el-icon-location-information el-input__icon" />
-    </el-input>
-  </div>
+  <el-popover
+    ref="locationAddress"
+    v-model="isShowedLocationForm"
+    placement="left-end"
+    width="300"
+    trigger="manual"
+  >
+    <location-address-form
+      :values="localValues"
+      :parent-metadata="metadata"
+    />
+    <el-button slot="reference" type="text" style="width: -webkit-fill-available;" @click="setShowedLocationForm(true)">
+      <el-input
+        v-model="displayedValue"
+        readonly
+      >
+        <i slot="prefix" class="el-icon-location-information el-input__icon" />
+      </el-input>
+    </el-button>
+  </el-popover>
 </template>
 
 <script>
