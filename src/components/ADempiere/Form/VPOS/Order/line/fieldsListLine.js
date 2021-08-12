@@ -22,6 +22,7 @@ export default [
     overwriteDefinition: {
       size: 24,
       sequence: 8,
+      valueMin: 0,
       handleActionPerformed: true,
       handleContentSelection: true,
       handleFocusGained: true,
@@ -35,6 +36,7 @@ export default [
     overwriteDefinition: {
       size: 24,
       sequence: 9,
+      valueMin: 0,
       handleActionPerformed: true,
       handleContentSelection: true,
       handleActionKeyPerformed: true
@@ -46,6 +48,7 @@ export default [
     isFromDictionary: true,
     overwriteDefinition: {
       size: 24,
+      valueMin: 0,
       sequence: 10,
       handleActionPerformed: true,
       handleContentSelection: true,

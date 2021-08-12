@@ -39,7 +39,6 @@
       :class="cssClassStyle"
       autofocus
       @change="preHandleChange"
-      @blur="customFocusLost"
       @focus="focusGained"
       @keydown.native="keyPressed"
       @keyup.native="keyReleased"

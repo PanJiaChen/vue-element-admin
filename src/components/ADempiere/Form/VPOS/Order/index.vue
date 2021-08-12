@@ -62,7 +62,7 @@
                   @command="changeDocumentType"
                 >
                   <span>
-                    <icon class="el-icon-document" />
+                    <el-icon class="el-icon-document" />
                     <b style="cursor: pointer"> {{ currentDocumentType.name }} </b>
                   </span>
                   <el-dropdown-menu slot="dropdown">
