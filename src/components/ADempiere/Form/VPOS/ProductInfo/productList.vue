@@ -37,8 +37,9 @@
     <el-table
       ref="listProducto"
       v-shortkey="shortsKey"
-      v-loading="isEmptyValue(listWithPrice) || isLoadedServer"
+      v-loading="isLoadedServer"
       :data="localTableSearch(listWithPrice)"
+      :empty-text="$t('form.pos.tableProduct.empty')"
       border
       fit
       height="450"

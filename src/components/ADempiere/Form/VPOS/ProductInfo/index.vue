@@ -47,8 +47,10 @@
         clearable
         style="width: 100%;"
         popper-class="custom-field-prodcut-info"
+        :trigger-on-focus="true"
         :fetch-suggestions="localSearch"
         :select-when-unmatched="true"
+        :highlight-first-item="true"
         @shortkey.native="shortcutKeyMethod"
         @select="handleSelect"
       >
@@ -162,12 +164,6 @@ export default {
       }
     },
     localSearch(stringToMatch, callBack) {
-      if (this.isEmptyValue(stringToMatch)) {
-        // not show list
-        callBack([])
-        return
-      }
-
       let results = this.listWithPrice
       if (!this.isEmptyValue(stringToMatch)) {
         const parsedValue = stringToMatch.toLowerCase().trim()

@@ -423,7 +423,8 @@ export default {
         options: 'Opciones',
         editQuantities: 'Editar Cantidades',
         pin: 'Ingrese Pin',
-        remove: 'Eliminar'
+        remove: 'Eliminar',
+        empty: 'Ingrese el nombre del producto, código o UPC'
       },
       order: {
         order: 'Orden',

@@ -447,7 +447,8 @@ export default {
         options: 'Options',
         editQuantities: 'Edit Quantities',
         pin: 'Insert Pin',
-        remove: 'Remove'
+        remove: 'Remove',
+        empty: 'Enter the product name, code or UPC'
       },
       order: {
         order: 'Order',
