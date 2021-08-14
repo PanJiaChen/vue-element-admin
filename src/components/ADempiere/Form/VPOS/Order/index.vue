@@ -53,12 +53,16 @@
               />
             </el-col>
             <el-col :span="5" :style="styleTab">
-              <el-form-item>
+              <el-form-item style="margin-top: 11%">
                 <template slot="label" />
+                <el-button v-if="isDisabled" type="text" :disabled="isDisabled" style="color: gray;">
+                  <el-icon class="el-icon-document" />
+                  <b> {{ currentDocumentType.name }} </b>
+                </el-button>
                 <el-dropdown
-                  v-if="!isEmptyValue(currentDocumentType)"
+                  v-if="!isEmptyValue(currentDocumentType) && !isDisabled"
                   trigger="click"
-                  style="padding-top: 10%;font-size: 15px;color: black;"
+                  style="font-size: 15px;color: black;"
                   @command="changeDocumentType"
                 >
                   <span>
@@ -199,9 +203,9 @@
                       :show-field="showFieldLine"
                       :current-line="currentLineOrder"
                     />
-                    <el-button slot="reference" type="success" icon="el-icon-edit" size="mini" style="margin-right: 3%;" @click="showEditLine(scope.row)" />
+                    <el-button slot="reference" type="success" icon="el-icon-edit" :disabled="isDisabled" size="mini" style="margin-right: 3%;" @click="showEditLine(scope.row)" />
                   </el-popover>
-                  <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteOrderLine(scope.row)" />
+                  <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="isDisabled" @click="deleteOrderLine(scope.row)" />
                 </template>
               </el-table-column>
             </el-table>
@@ -748,8 +752,10 @@ export default {
       this.createOrder({ withLine: false, newOrder: true })
     },
     changePos(pointOfSales) {
-      this.$store.dispatch('setCurrentPOS', pointOfSales)
-      this.clearOrder()
+      if (pointOfSales.uuid !== this.currentPointOfSales.uuid) {
+        this.$store.dispatch('setCurrentPOS', pointOfSales)
+        this.clearOrder()
+      }
     },
     changeWarehouse(warehouse) {
       this.attributePin = {
