@@ -749,6 +749,7 @@ export default {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
     newOrder() {
+      this.$store.commit('setShowPOSCollection', false)
       this.createOrder({ withLine: false, newOrder: true })
     },
     changePos(pointOfSales) {

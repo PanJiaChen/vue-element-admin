@@ -679,6 +679,7 @@ export default {
               action: response.uuid
             }
           }).then(() => {
+            this.$store.commit('setShowPOSCollection', false)
             this.$store.dispatch('listOrdersFromServer', {
               posUuid: this.currentPointOfSales.uuid
             })
