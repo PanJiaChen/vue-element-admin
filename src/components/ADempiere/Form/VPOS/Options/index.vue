@@ -559,6 +559,7 @@ export default {
         columnName: 'C_Order_ID',
         value: this.currentOrder.id
       }]
+      this.$store.commit('setShowPOSCollection', false)
       this.$store.dispatch('addParametersProcessPos', parametersList)
       createOrder({
         posUuid,

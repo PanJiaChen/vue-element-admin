@@ -37,6 +37,7 @@ export default {
     referenceNo,
     description,
     amount,
+    convertedAmount,
     paymentDate,
     tenderTypeCode,
     currencyUuid
@@ -53,6 +54,7 @@ export default {
         referenceNo,
         description,
         amount,
+        convertedAmount,
         paymentDate,
         tenderTypeCode,
         currencyUuid
@@ -185,6 +187,7 @@ export default {
     referenceNo,
     description,
     amount,
+    convertedAmount,
     paymentDate,
     tenderTypeCode,
     currencyUuid
@@ -204,6 +207,7 @@ export default {
         referenceNo,
         description,
         amount,
+        convertedAmount,
         paymentDate,
         tenderTypeCode,
         currencyUuid

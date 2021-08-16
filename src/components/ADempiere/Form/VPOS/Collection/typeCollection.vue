@@ -62,20 +62,19 @@
                         {{ formatDate(value.paymentDate) }}
                       </el-button>
                       <div
-                        v-if="loginCovertion"
                         slot="header"
                         class="clearfix"
                         style="padding-bottom: 20px;"
                       >
-                        <p class="total">
+                        <p v-if="!isEmptyValue(value.currencyConvertion)" class="total">
                           <b style="float: right;">
-                            {{ formatPrice(value.amount, currency.iSOCode) }}
+                            {{ amountConvertion(value) }}
                           </b>
                         </p>
                         <br>
-                        <p v-if="!isEmptyValue(value.currencyConvertion)" class="total">
+                        <p class="total">
                           <b style="float: right;">
-                            {{ formatPrice(value.amountConvertion, value.currencyConvertion.iSOCode) }}
+                            {{ formatPrice(value.amount, iSOCode(value)) }}
                           </b>
                         </p>
                       </div>
@@ -155,6 +154,9 @@ export default {
     // Validate if there is a payment in a different type of currency to the point
     paymentCurrency() {
       return this.currentPointOfSales.currentOrder.listPayments.payments.find(pay => pay.currencyUuid !== this.currency.uuid)
+    },
+    convertionsList() {
+      return this.$store.state['pointOfSales/point/index'].conversionsList
     }
   },
   watch: {
@@ -181,6 +183,26 @@ export default {
   methods: {
     formatDate,
     formatPrice,
+    iSOCode(value) {
+      const currencyPay = this.convertionsList.find(currency => currency.currencyTo.uuid === value.currencyUuid)
+      if (!currencyPay) {
+        return ''
+      }
+      return currencyPay.currencyTo.iSOCode
+    },
+    amountConvertion(value) {
+      const currencyPay = this.convertionsList.find(currency => currency.currencyTo.uuid === value.currencyUuid)
+      if (!currencyPay) {
+        this.$store.dispatch('searchConversion', {
+          conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+          currencyFromUuid: this.currency.uuid,
+          currencyToUuid: value.currencyUuid
+        })
+        return this.formatPrice(0)
+      }
+      const rate = (currencyPay.divideRate > currencyPay.multiplyRate) ? currencyPay.divideRate : currencyPay.multiplyRate
+      return this.formatPrice(value.amount * rate, this.currency.iSOCode)
+    },
     // If there are payments in another currency, search for conversion
     convertingPaymentMethods() {
       if (!this.isEmptyValue(this.paymentCurrency)) {
@@ -193,7 +215,7 @@ export default {
             this.$store.getters.posAttributes.currentPointOfSales.currentOrder.listPayments.payments.forEach(element => {
               if (element.currencyUuid !== this.pointOfSalesCurrency.uuid) {
                 element.multiplyRate = element.amount / response.multiplyRate
-                element.amountConvertion = element.amount / response.divideRate
+                element.amountConvertion = element.amount * response.divideRate
                 element.divideRate = response.multiplyRate
                 element.currencyConvertion = response.currencyTo
               }

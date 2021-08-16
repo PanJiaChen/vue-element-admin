@@ -633,6 +633,19 @@ export default {
           query: value.reference.query
         })
       }
+    },
+    listPayments(payment) {
+      if (!this.isEmptyValue(this.convertionsList)) {
+        let rate
+        payment.forEach((pay) => {
+          rate = this.convertionsList.find(currency => currency.currencyTo.uuid === pay.currencyUuid)
+          if (!rate) {
+            if (this.currentPointOfSales.priceList.currency.uuid !== pay.currencyUuid) {
+              this.searchConversion(pay.currencyUuid)
+            }
+          }
+        })
+      }
     }
   },
   created() {
@@ -662,14 +675,27 @@ export default {
       let sum = 0
       if (cash) {
         cash.forEach((pay) => {
+          const amount = this.convertAmount(pay.currencyUuid)
           if (!this.isEmptyValue(pay.divideRate)) {
-            sum += pay.amountConvertion / pay.divideRate
+            sum += amount * pay.amount
           } else {
             sum += pay.amount
           }
         })
       }
       return sum
+    },
+    convertAmount(currencyUuid) {
+      const currencyPay = this.convertionsList.find(currency => {
+        if (!this.isEmptyValue(currency.currencyTo) && currency.currencyTo.uuid === currencyUuid) {
+          return currency
+        }
+      })
+      if (!currencyPay) {
+        return 0
+      }
+      const rate = (currencyPay.divideRate > currencyPay.multiplyRate) ? currencyPay.divideRate : currencyPay.multiplyRate
+      return rate
     },
     notSubmitForm(event) {
       event.preventDefault()
@@ -699,14 +725,14 @@ export default {
         containerUuid,
         columnName: 'ReferenceNo'
       })
-      this.amontSend = this.dayRate.divideRate * this.amontSend
       if (this.sendToServer) {
         this.$store.dispatch('setPaymentBox', {
           posUuid,
           orderUuid,
           bankUuid,
           referenceNo,
-          amount: this.amontSend * this.convertion,
+          amount: this.amontSend,
+          convertedAmount: this.amontSend * this.dayRate.divideRate,
           paymentDate,
           tenderTypeCode,
           currencyUuid: this.dayRate.currencyTo.uuid
@@ -717,7 +743,8 @@ export default {
           orderUuid,
           bankUuid,
           referenceNo,
-          amount: this.amontSend * this.convertion,
+          amount: this.amontSend,
+          convertedAmount: this.amontSend * this.dayRate.divideRate,
           paymentDate,
           tenderTypeCode,
           currencyUuid: this.dayRate.currencyTo.uuid
@@ -795,6 +822,7 @@ export default {
       this.currentFieldCurrency = this.pointOfSalesCurrency.iSOCode
     },
     exit() {
+      this.cancel()
       this.$store.commit('setShowPOSCollection', false)
     },
     getPriceApplyingDiscount(price, discount) {
@@ -948,6 +976,13 @@ export default {
       if (!this.isEmptyValue(currency) && this.isEmptyValue(convert) && currency.uuid !== this.currentPointOfSales.currentPriceList.currency.uuid) {
         this.amountConvert(currency)
       }
+    },
+    searchConversion(value) {
+      this.$store.dispatch('searchConversion', {
+        conversionTypeUuid: this.currentPointOfSales.conversionTypeUuid,
+        currencyFromUuid: this.currentPointOfSales.priceList.currency.uuid,
+        currencyToUuid: value
+      })
     }
   }
 }
