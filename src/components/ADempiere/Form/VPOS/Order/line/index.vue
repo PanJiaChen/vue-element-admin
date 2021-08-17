@@ -138,7 +138,7 @@ export default {
       }
       if (value) {
         this.fillOrderLineQuantities({
-          currentPrice: this.currentLine.price,
+          currentPrice: this.currentLine.priceList,
           quantityOrdered: this.currentLine.quantity,
           discount: this.currentLine.discountRate
         })

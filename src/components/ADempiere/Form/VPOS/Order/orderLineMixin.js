@@ -74,8 +74,7 @@ export default {
         quantityOrdered: 0,
         uuid: ''
       },
-      totalAmountConvertedLine: {
-      }
+      totalAmountConvertedLine: {}
     }
   },
   computed: {
@@ -93,6 +92,13 @@ export default {
         return converted.divideRate
       }
       return 1
+    },
+    isPosRequiredPin() {
+      const pos = this.$store.getters.posAttributes.currentPointOfSales
+      if (!this.isEmptyValue(pos.isPosRequiredPin)) {
+        return pos.isPosRequiredPin
+      }
+      return false
     }
   },
   methods: {
@@ -105,7 +111,7 @@ export default {
         //
         case this.$t('form.pos.tableProduct.editQuantities'):
           this.fillOrderLineQuantities({
-            currentPrice: this.currentOrderLine.currentPrice,
+            currentPrice: this.currentOrderLine.priceList,
             quantityOrdered: this.currentOrderLine.quantityOrdered,
             discount: this.currentOrderLine.discount
           })
@@ -173,7 +179,7 @@ export default {
       })
         .then(response => {
           this.fillOrderLineQuantities({
-            currentPrice: response.price,
+            currentPrice: response.priceList,
             quantityOrdered: response.quantity,
             discount: response.discountRate
           })
@@ -191,21 +197,24 @@ export default {
           })
         })
     },
+
     deleteOrderLine(lineSelection) {
-      deleteOrderLine({
-        orderLineUuid: lineSelection.uuid
-      })
-        .then(() => {
-          this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
+      if (!this.isPosRequiredPin) {
+        deleteOrderLine({
+          orderLineUuid: lineSelection.uuid
         })
-        .catch(error => {
-          console.error(error.message)
-          this.$message({
-            type: 'error',
-            message: error.message,
-            showClose: true
+          .then(() => {
+            this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
           })
-        })
+          .catch(error => {
+            console.error(error.message)
+            this.$message({
+              type: 'error',
+              message: error.message,
+              showClose: true
+            })
+          })
+      }
     },
     convertedAmount() {
       if (!this.isEmptyValue(this.currentPointOfSales.displayCurrency) && this.totalAmountConverted === 1) {
@@ -229,7 +238,7 @@ export default {
       }
       const currency = this.pointOfSalesCurrency.iSOCode
       if (columnName === 'CurrentPrice') {
-        return this.formatPrice(row.priceActual, currency)
+        return this.formatPrice(row.priceList, currency)
       } else if (columnName === 'QtyOrdered') {
         return this.formatQuantity(row.quantityOrdered)
       } else if (columnName === 'Discount') {

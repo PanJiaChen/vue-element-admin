@@ -53,20 +53,16 @@
               />
             </el-col>
             <el-col :span="5" :style="styleTab">
-              <el-form-item style="margin-top: 11%">
+              <el-form-item>
                 <template slot="label" />
-                <el-button v-if="isDisabled" type="text" :disabled="isDisabled" style="color: gray;">
-                  <el-icon class="el-icon-document" />
-                  <b> {{ currentDocumentType.name }} </b>
-                </el-button>
                 <el-dropdown
-                  v-if="!isEmptyValue(currentDocumentType) && !isDisabled"
+                  v-if="!isEmptyValue(currentDocumentType)"
                   trigger="click"
-                  style="font-size: 15px;color: black;"
+                  style="padding-top: 10%;font-size: 15px;color: black;"
                   @command="changeDocumentType"
                 >
                   <span>
-                    <el-icon class="el-icon-document" />
+                    <icon class="el-icon-document" />
                     <b style="cursor: pointer"> {{ currentDocumentType.name }} </b>
                   </span>
                   <el-dropdown-menu slot="dropdown">
@@ -178,7 +174,7 @@
                         <el-col :span="8">
                           <div style="float: right">
                             {{ $t('form.productInfo.price') }}:
-                            <b>{{ formatPrice(scope.row.product.priceStandard, pointOfSalesCurrency.iSOCode) }}</b>
+                            <b>{{ formatPrice(scope.row.product.priceActual, pointOfSalesCurrency.iSOCode) }}</b>
                             <br>
                             {{ $t('form.productInfo.taxAmount') }}:
                             <b>{{ scope.row.taxIndicator }}</b>
@@ -203,9 +199,9 @@
                       :show-field="showFieldLine"
                       :current-line="currentLineOrder"
                     />
-                    <el-button slot="reference" type="success" icon="el-icon-edit" :disabled="isDisabled" size="mini" style="margin-right: 3%;" @click="showEditLine(scope.row)" />
+                    <el-button slot="reference" type="success" icon="el-icon-edit" size="mini" style="margin-right: 3%;" @click="showEditLine(scope.row)" />
                   </el-popover>
-                  <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="isDisabled" @click="deleteOrderLine(scope.row)" />
+                  <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteOrderLine(scope.row)" />
                 </template>
               </el-table-column>
             </el-table>
@@ -315,23 +311,23 @@
               </p>
             </div>
             <span v-if="isMobile" style="float: right;padding-right: 3%;">
-              <p class="total">{{ $t('form.pos.order.order') }}: <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ currentOrder.documentNo }}</b></p>
+              <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ orderDate }}
                 </b>
               </p>
-              <p class="total">{{ $t('form.pos.order.type') }}:<b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ currentOrder.documentType.name }}</b></p>
+              <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.itemQuantity') }}
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ getItemQuantity }}
                 </b>
               </p>
               <p class="total">
                 {{ $t('form.pos.order.numberLines') }}
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ numberOfLines }}
                 </b></p>
             </span>
@@ -339,14 +335,13 @@
               <p class="total">{{ $t('form.pos.order.seller') }}:<b style="float: right;">
                 {{ currentOrder.salesRepresentative.name }}
               </b></p>
-              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ formatPrice(currentOrder.totalLines, pointOfSalesCurrency.iSOCode) }}</b></p>
-              <p class="total"> {{ $t('form.pos.order.discount') }}:<b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ formatPrice(0, pointOfSalesCurrency.iSOCode) }}</b> </p>
-              <p class="total"> {{ $t('form.pos.order.tax') }}:<b v-show="!isEmptyValue(currentOrder.uuid)" style="float: right;">{{ getOrderTax(pointOfSalesCurrency.iSOCode) }}</b> </p>
+              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b class="order-info">{{ formatPrice(currentOrder.totalLines, pointOfSalesCurrency.iSOCode) }}</b></p>
+              <p class="total"> {{ $t('form.pos.order.tax') }}:<b style="float: right;">{{ getOrderTax(pointOfSalesCurrency.iSOCode) }}</b> </p>
               <p class="total">
                 <b>
                   {{ $t('form.pos.order.total') }}:
                 </b>
-                <b v-show="!isEmptyValue(currentOrder.uuid)" style="float: right;">
+                <b style="float: right;">
                   <el-popover
                     :v-model="seeConversion"
                     placement="top-start"
@@ -368,23 +363,23 @@
               </p>
             </span>
             <span v-if="!isMobile" style="float: right;padding-right: 3%;">
-              <p class="total">{{ $t('form.pos.order.order') }}: <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ currentOrder.documentNo }}</b></p>
+              <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ orderDate }}
                 </b>
               </p>
               <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.itemQuantity') }}
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ getItemQuantity }}
                 </b>
               </p>
               <p class="total">
                 {{ $t('form.pos.order.numberLines') }}
-                <b v-show="!isEmptyValue(currentOrder.uuid)" class="order-info">
+                <b class="order-info">
                   {{ numberOfLines }}
                 </b></p>
             </span>
@@ -436,7 +431,7 @@ import {
   formatPrice,
   formatQuantity
 } from '@/utils/ADempiere/valueFormat.js'
-import { validatePin } from '@/api/ADempiere/form/point-of-sales.js'
+// import { validatePin } from '@/api/ADempiere/form/point-of-sales.js'
 
 export default {
   name: 'Order',
@@ -703,33 +698,33 @@ export default {
     focusPin() {
       this.$refs.pin.focus()
     },
-    openPin(pin) {
-      validatePin({
-        posUuid: this.currentPointOfSales.uuid,
-        pin
-      })
-        .then(response => {
-          this.validatePin = false
-          this.pin = ''
-          this.visible = false
-          this.pinAction(this.attributePin)
-        })
-        .catch(error => {
-          console.error(error.message)
-          this.$message({
-            type: 'error',
-            message: error.message,
-            showClose: true
-          })
-          this.pin = ''
-        })
-        .finally(() => {
-          this.closePin()
-        })
-    },
-    closePin() {
-      this.visible = false
-    },
+    // openPin(pin) {
+    //   validatePin({
+    //     posUuid: this.currentPointOfSales.uuid,
+    //     pin
+    //   })
+    //     .then(response => {
+    //       this.validatePin = false
+    //       this.pin = ''
+    //       this.visible = false
+    //       this.pinAction(this.attributePin)
+    //     })
+    //     .catch(error => {
+    //       console.error(error.message)
+    //       this.$message({
+    //         type: 'error',
+    //         message: error.message,
+    //         showClose: true
+    //       })
+    //       this.pin = ''
+    //     })
+    //     .finally(() => {
+    //       this.closePin()
+    //     })
+    // },
+    // closePin() {
+    //   this.visible = false
+    // },
     closeConvertion() {
       this.seeConversion = false
     },
@@ -753,10 +748,8 @@ export default {
       this.createOrder({ withLine: false, newOrder: true })
     },
     changePos(pointOfSales) {
-      if (pointOfSales.uuid !== this.currentPointOfSales.uuid) {
-        this.$store.dispatch('setCurrentPOS', pointOfSales)
-        this.clearOrder()
-      }
+      this.$store.dispatch('setCurrentPOS', pointOfSales)
+      this.clearOrder()
     },
     changeWarehouse(warehouse) {
       this.attributePin = {
@@ -800,42 +793,42 @@ export default {
         this.$refs.linesTable.setCurrentRow(this.listOrderLine[this.currentTable])
         this.currentOrderLine = this.listOrderLine[this.currentTable]
       }
-    },
-    pinAction(action) {
-      if (action.type === 'updateOrder') {
-        switch (action.columnName) {
-          case 'QtyEntered':
-          case 'PriceEntered':
-          case 'Discount':
-            this.updateOrderLine(action)
-            break
-          case 'C_DocTypeTarget_ID': {
-            const documentTypeUuid = this.$store.getters.getValueOfField({
-              containerUuid: this.$route.meta.uuid,
-              columnName: 'C_DocTypeTarget_ID_UUID'
-            })
-            this.$store.dispatch('updateOrder', {
-              orderUuid: this.$route.query.action,
-              posUuid: this.currentPointOfSales.uuid,
-              documentTypeUuid
-            })
-            break
-          }
-        }
-      } else if (action.type === 'actionPos') {
-        switch (action.action) {
-          case 'changeWarehouse':
-            this.$store.commit('setCurrentWarehousePos', action)
-            break
-          case 'changeDocumentType':
-            this.$store.commit('setCurrentDocumentTypePos', action)
-            break
-          case 'changePriceList':
-            this.$store.commit('setCurrentPriceList', action)
-            break
-        }
-      }
     }
+    // pinAction(action) {
+    //   if (action.type === 'updateOrder') {
+    //     switch (action.columnName) {
+    //       case 'QtyEntered':
+    //       case 'PriceEntered':
+    //       case 'Discount':
+    //         this.updateOrderLine(action)
+    //         break
+    //       case 'C_DocTypeTarget_ID': {
+    //         const documentTypeUuid = this.$store.getters.getValueOfField({
+    //           containerUuid: this.$route.meta.uuid,
+    //           columnName: 'C_DocTypeTarget_ID_UUID'
+    //         })
+    //         this.$store.dispatch('updateOrder', {
+    //           orderUuid: this.$route.query.action,
+    //           posUuid: this.currentPointOfSales.uuid,
+    //           documentTypeUuid
+    //         })
+    //         break
+    //       }
+    //     }
+    //   } else if (action.type === 'actionPos') {
+    //     switch (action.action) {
+    //       case 'changeWarehouse':
+    //         this.$store.commit('setCurrentWarehousePos', action)
+    //         break
+    //       case 'changeDocumentType':
+    //         this.$store.commit('setCurrentDocumentTypePos', action)
+    //         break
+    //       case 'changePriceList':
+    //         this.$store.commit('setCurrentPriceList', action)
+    //         break
+    //     }
+    //   }
+    // }
   }
 }
 </script>
