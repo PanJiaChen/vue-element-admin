@@ -257,6 +257,10 @@ export default {
     },
     handleChangePage(newPage) {
       this.$store.dispatch('setOrdersListPageNumber', newPage)
+      const point = this.$store.getters.posAttributes.currentPointOfSales.uuid
+      this.$store.dispatch('listOrdersFromServer', {
+        posUuid: point
+      })
     },
     handleCurrentChange(row) {
       // close popover

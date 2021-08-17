@@ -37,9 +37,8 @@
     <el-table
       ref="listProducto"
       v-shortkey="shortsKey"
-      v-loading="isLoadedServer"
+      v-loading="isEmptyValue(listWithPrice) || isLoadedServer"
       :data="localTableSearch(listWithPrice)"
-      :empty-text="$t('form.pos.tableProduct.empty')"
       border
       fit
       height="450"
@@ -226,6 +225,7 @@ export default {
      */
     handleChangePage(newPage) {
       this.$store.dispatch('setProductPicePageNumber', newPage)
+      this.$store.dispatch('listProductPriceFromServer', {})
     },
     findlistProductWithRow(row) {
       if (!this.isSelectable) {

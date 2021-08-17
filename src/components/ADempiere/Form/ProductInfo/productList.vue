@@ -340,6 +340,7 @@ export default {
      */
     handleChangePage(newPage) {
       this.$store.dispatch('setProductPicePageNumber', newPage)
+      this.$store.dispatch('listProductPriceFromServerProductInfo', {})
     },
     findlistProductWithRow(row) {
       if (!this.isSelectable) {
