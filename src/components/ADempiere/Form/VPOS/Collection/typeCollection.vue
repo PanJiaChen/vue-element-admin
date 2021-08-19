@@ -184,7 +184,7 @@ export default {
     formatDate,
     formatPrice,
     iSOCode(value) {
-      const currencyPay = this.convertionsList.find(currency => currency.currencyTo.uuid === value.currencyUuid)
+      const currencyPay = this.convertionsList.find(currency => !this.isEmptyValue(currency.currencyTo) && currency.currencyTo.uuid === value.currencyUuid)
       if (!currencyPay) {
         return ''
       }

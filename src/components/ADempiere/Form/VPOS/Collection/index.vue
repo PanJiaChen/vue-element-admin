@@ -638,7 +638,7 @@ export default {
       if (!this.isEmptyValue(this.convertionsList)) {
         let rate
         payment.forEach((pay) => {
-          rate = this.convertionsList.find(currency => currency.currencyTo.uuid === pay.currencyUuid)
+          rate = this.convertionsList.find(currency => !this.isEmptyValue(currency.currencyTo) && currency.currencyTo.uuid === pay.currencyUuid)
           if (!rate) {
             if (this.currentPointOfSales.priceList.currency.uuid !== pay.currencyUuid) {
               this.searchConversion(pay.currencyUuid)

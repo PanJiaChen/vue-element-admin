@@ -62,7 +62,7 @@
                   @command="changeDocumentType"
                 >
                   <span>
-                    <icon class="el-icon-document" />
+                    <el-icon class="el-icon-document" />
                     <b style="cursor: pointer"> {{ currentDocumentType.name }} </b>
                   </span>
                   <el-dropdown-menu slot="dropdown">
@@ -335,14 +335,15 @@
               <p class="total">{{ $t('form.pos.order.seller') }}:<b style="float: right;">
                 {{ currentOrder.salesRepresentative.name }}
               </b></p>
-              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b class="order-info">{{ formatPrice(currentOrder.totalLines, pointOfSalesCurrency.iSOCode) }}</b></p>
-              <p class="total"> {{ $t('form.pos.order.tax') }}:<b style="float: right;">{{ getOrderTax(pointOfSalesCurrency.iSOCode) }}</b> </p>
+              <p class="total"> {{ $t('form.pos.order.subTotal') }}:<b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">{{ formatPrice(currentOrder.totalLines, pointOfSalesCurrency.iSOCode) }}</b></p>
+              <p class="total"> {{ $t('form.pos.order.tax') }}:<b v-if="!isEmptyValue(currentOrder.uuid)" style="float: right;">{{ getOrderTax(pointOfSalesCurrency.iSOCode) }}</b> </p>
               <p class="total">
                 <b>
                   {{ $t('form.pos.order.total') }}:
                 </b>
                 <b style="float: right;">
                   <el-popover
+                    v-if="!isEmptyValue(currentOrder.uuid)"
                     :v-model="seeConversion"
                     placement="top-start"
                     trigger="click"
@@ -361,27 +362,29 @@
                   </el-popover>
                 </b>
               </p>
+              <p v-if="!isEmptyValue(currentPointOfSales.displayCurrency)" class="total"> <b> {{ $t('form.pos.collect.convertedAmount') }}: </b> <b v-if="!isEmptyValue(currentOrder.uuid)" style="float: right;">{{ formatPrice(currentOrder.grandTotal / totalAmountConverted, currentPointOfSales.displayCurrency.iso_code) }}</b> </p>
             </span>
             <span v-if="!isMobile" style="float: right;padding-right: 3%;">
               <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ orderDate }}
                 </b>
               </p>
               <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.itemQuantity') }}
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ getItemQuantity }}
                 </b>
               </p>
               <p class="total">
                 {{ $t('form.pos.order.numberLines') }}
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ numberOfLines }}
-                </b></p>
+                </b>
+              </p>
             </span>
           </el-footer>
         </el-container>
