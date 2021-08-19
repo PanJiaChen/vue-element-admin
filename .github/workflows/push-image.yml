@@ -1,5 +1,5 @@
 # This workflow will run tests using node and then publish a package to GitHub Container Registry and Docker Hub Regitry when a pushed into main branches
-# This file was contributed by Edwin Betancourt from ERP Consultores y Asociados, C.A
+# This file was contributed by EdwinBetanc0urt@outlook.com from ERP Consultores y Asociados, C.A
 
 name: Push Main Branches
 
@@ -8,6 +8,10 @@ on:
   push:
     branches:
       - develop
+      - master
+      - window-redefinition
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
 
