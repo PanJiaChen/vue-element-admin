@@ -91,7 +91,7 @@
                     </el-tag>
                   </el-col>
                   <el-col :span="14" style="padding-left: 0px; padding-right: 0px;">
-                    <el-button type="primary" plain @click="newOrder">
+                    <el-button type="primary" :disabled="allowsCreateOrder" plain @click="newOrder">
                       {{ $t('form.pos.optionsPoinSales.salesOrder.newOrder') }}
                     </el-button>
                   </el-col>
@@ -148,7 +148,7 @@
                       label-position="top"
                       style="float: right;display: contents;line-height: 30px;"
                     >
-                      <el-row :gutter="24">
+                      <el-row>
                         <el-col :span="4">
                           <div>
                             <el-avatar v-if="isEmptyValue(scope.row.product.imageUrl)" shape="square" :size="100" src="https://#" @error="true">
@@ -206,7 +206,7 @@
               </el-table-column>
             </el-table>
           </el-main>
-          <el-dialog ref="dialog" :title="$t('form.pos.tableProduct.pin')" width="30%" :visible.sync="visible">
+          <el-dialog ref="dialog" :title="$t('form.pos.pinMessage.pin') + infowOverdrawnInvoice.label" width="40%" :visible.sync="visible">
             <el-input
               id="pin"
               ref="pin"
@@ -239,6 +239,7 @@
                   v-show="isValidForDeleteLine(listOrderLine)"
                   type="success"
                   icon="el-icon-bank-card"
+                  :disabled="allowsCollectOrder"
                   @click="openCollectionPanel"
                 >
                   {{ labelButtonCollections }}
@@ -314,20 +315,20 @@
               <p class="total">{{ $t('form.pos.order.order') }}: <b class="order-info">{{ currentOrder.documentNo }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.date') }}:
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ orderDate }}
                 </b>
               </p>
               <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
               <p class="total">
                 {{ $t('form.pos.order.itemQuantity') }}
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ getItemQuantity }}
                 </b>
               </p>
               <p class="total">
                 {{ $t('form.pos.order.numberLines') }}
-                <b class="order-info">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ numberOfLines }}
                 </b></p>
             </span>
@@ -341,7 +342,7 @@
                 <b>
                   {{ $t('form.pos.order.total') }}:
                 </b>
-                <b style="float: right;">
+                <b v-if="!isEmptyValue(currentOrder.uuid)" style="float: right;">
                   <el-popover
                     v-if="!isEmptyValue(currentOrder.uuid)"
                     :v-model="seeConversion"
@@ -638,7 +639,7 @@ export default {
     },
     currentWarehouse() {
       if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.warehouse)) {
-        return this.$store.getters.posAttributes.currentPointOfSales.warehouse
+        return this.$store.getters.getCurrentWarehousePos
       }
       return {}
     },
@@ -659,9 +660,23 @@ export default {
         return this.$store.getters.posAttributes.currentPointOfSales.documentTypesList
       }
       return []
+    },
+    showOverdrawnInvoice() {
+      return this.$store.getters.getOverdrawnInvoice.visible
+    },
+    infowOverdrawnInvoice() {
+      if (this.$store.getters.getOverdrawnInvoice.attributePin) {
+        return this.$store.getters.getOverdrawnInvoice.attributePin
+      }
+      return ''
     }
   },
   watch: {
+    showOverdrawnInvoice(value) {
+      if (value) {
+        this.visible = value
+      }
+    },
     numberOfLines(value) {
       if (value > 0) {
         this.convertedAmount()
@@ -675,6 +690,8 @@ export default {
         setTimeout(() => {
           this.focusPin()
         }, 500)
+      } else {
+        this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: value })
       }
     }
   },
@@ -701,33 +718,6 @@ export default {
     focusPin() {
       this.$refs.pin.focus()
     },
-    // openPin(pin) {
-    //   validatePin({
-    //     posUuid: this.currentPointOfSales.uuid,
-    //     pin
-    //   })
-    //     .then(response => {
-    //       this.validatePin = false
-    //       this.pin = ''
-    //       this.visible = false
-    //       this.pinAction(this.attributePin)
-    //     })
-    //     .catch(error => {
-    //       console.error(error.message)
-    //       this.$message({
-    //         type: 'error',
-    //         message: error.message,
-    //         showClose: true
-    //       })
-    //       this.pin = ''
-    //     })
-    //     .finally(() => {
-    //       this.closePin()
-    //     })
-    // },
-    // closePin() {
-    //   this.visible = false
-    // },
     closeConvertion() {
       this.seeConversion = false
     },
@@ -747,35 +737,47 @@ export default {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
     newOrder() {
+      this.clearOrder()
       this.$store.commit('setShowPOSCollection', false)
-      this.createOrder({ withLine: false, newOrder: true })
+      this.createOrder({ withLine: false, newOrder: true, customer: this.currentPointOfSales.templateBusinessPartner.uuid })
     },
     changePos(pointOfSales) {
       this.$store.dispatch('setCurrentPOS', pointOfSales)
       this.clearOrder()
     },
     changeWarehouse(warehouse) {
-      this.attributePin = {
+      const attributePin = {
         ...warehouse,
         action: 'changeWarehouse',
-        type: 'actionPos'
+        type: 'actionPos',
+        label: this.$t('form.pos.pinMessage.warehouse')
       }
-      this.visible = true
+      const visible = true
+      this.visible = visible
+      this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
     },
     changeDocumentType(documentType) {
-      this.attributePin = {
-        ...documentType,
-        action: 'changeDocumentType',
-        type: 'actionPos'
+      if (this.adviserPin) {
+        this.$store.commit('setCurrentDocumentTypePos', documentType)
+      } else {
+        const attributePin = {
+          ...documentType,
+          action: 'changeDocumentType',
+          type: 'actionPos',
+          label: this.$t('form.pos.pinMessage.documentType')
+        }
+        this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+        this.visible = true
       }
-      this.visible = true
     },
     changePriceList(priceList) {
-      this.attributePin = {
+      const attributePin = {
         ...priceList,
         action: 'changePriceList',
-        type: 'actionPos'
+        type: 'actionPos',
+        label: this.$t('form.pos.pinMessage.priceList')
       }
+      this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
       this.visible = true
     },
     arrowTop() {
@@ -797,41 +799,6 @@ export default {
         this.currentOrderLine = this.listOrderLine[this.currentTable]
       }
     }
-    // pinAction(action) {
-    //   if (action.type === 'updateOrder') {
-    //     switch (action.columnName) {
-    //       case 'QtyEntered':
-    //       case 'PriceEntered':
-    //       case 'Discount':
-    //         this.updateOrderLine(action)
-    //         break
-    //       case 'C_DocTypeTarget_ID': {
-    //         const documentTypeUuid = this.$store.getters.getValueOfField({
-    //           containerUuid: this.$route.meta.uuid,
-    //           columnName: 'C_DocTypeTarget_ID_UUID'
-    //         })
-    //         this.$store.dispatch('updateOrder', {
-    //           orderUuid: this.$route.query.action,
-    //           posUuid: this.currentPointOfSales.uuid,
-    //           documentTypeUuid
-    //         })
-    //         break
-    //       }
-    //     }
-    //   } else if (action.type === 'actionPos') {
-    //     switch (action.action) {
-    //       case 'changeWarehouse':
-    //         this.$store.commit('setCurrentWarehousePos', action)
-    //         break
-    //       case 'changeDocumentType':
-    //         this.$store.commit('setCurrentDocumentTypePos', action)
-    //         break
-    //       case 'changePriceList':
-    //         this.$store.commit('setCurrentPriceList', action)
-    //         break
-    //     }
-    //   }
-    // }
   }
 }
 </script>

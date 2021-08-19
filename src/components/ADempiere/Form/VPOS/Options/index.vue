@@ -34,7 +34,7 @@
             <el-card shadow="hover">
               <p
                 style="cursor: pointer; text-align: center !important; color: black;min-height: 50px;"
-                @click="newOrder"
+                @click="allowsCreateOrder ? '' : newOrder"
               >
                 <i class="el-icon-news" />
                 <br>
@@ -90,7 +90,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="completePreparedOrder"
+                @click="adviserPin ? '' : completePreparedOrder"
               >
                 <i class="el-icon-success" />
                 <br>
@@ -103,7 +103,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="reverseSalesTransaction"
+                @click="adviserPin ? '' : reverseSalesTransaction"
               >
                 <i class="el-icon-error" />
                 <br>
@@ -129,7 +129,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="printOrder"
+                @click="adviserPin ? '' : printOrder"
               >
                 <i class="el-icon-printer" />
                 <br>
@@ -137,8 +137,7 @@
               </p>
             </el-card>
           </el-col>
-
-          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
+          <el-col v-if="allowsReturnOrder" :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -278,7 +277,7 @@
                 <el-dropdown-menu slot="dropdown">
                   <el-dropdown-item
                     v-for="item in warehousesListPointOfSales"
-                    :key="item.uuid"
+                    :key="item.id"
                     :command="item"
                   >
                     {{ item.name }}
@@ -357,6 +356,15 @@ export default {
     }
   },
   computed: {
+    allowsReturnOrder() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsReturnOrder
+    },
+    allowsCreateOrder() {
+      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder)) {
+        return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
+      }
+      return false
+    },
     isShowProductsPriceList: {
       get() {
         return this.$store.state['pointOfSales/point/index'].productPrice.isShowPopoverMenu
@@ -380,7 +388,13 @@ export default {
         }
       }
     },
+    adviserPin() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAisleSeller
+    },
     blockOption() {
+      if (this.adviserPin) {
+        return 'cursor: not-allowed; text-align: center !important; color: gray;min-height: 50px;'
+      }
       if (!this.isEmptyValue(this.currentOrder.uuid)) {
         return 'cursor: pointer; text-align: center !important; color: black;min-height: 50px;'
       }
@@ -536,9 +550,11 @@ export default {
       })
     },
     createNewCustomerReturnOrder() {
-      createNewReturnOrder({
-        orderUuid: this.$route.query.action
-      })
+      if (this.isPosRequiredPin) {
+        createNewReturnOrder({
+          orderUuid: this.$route.query.action
+        })
+      }
     },
     showModal(action) {
       this.$store.dispatch('setShowDialog', {

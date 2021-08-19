@@ -481,6 +481,18 @@ export default {
       },
       keyLayout: {
         noProducto: 'No hay producto disponible Regresar al Principio'
+      },
+      pinMessage: {
+        pin: 'Ingrese pin para ',
+        documentType: 'cambiar tipo de documento',
+        warehouse: 'cambiar almacen',
+        price: 'cambiar precio',
+        qtyEntered: 'cambiar cantidad',
+        priceList: 'cambiar lista de precio',
+        discount: 'agregar descuento',
+        delete: 'eliminar producto',
+        addProduct: 'agregar producto',
+        invoiceOpen: 'generar factura con un saldo abierto'
       }
     },
     priceChecking: {

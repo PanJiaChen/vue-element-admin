@@ -19,6 +19,7 @@ import {
   listPointOfSales,
   listWarehouses,
   listDocumentTypes,
+  listTenderTypes,
   listPrices,
   listCurrencies
 } from '@/api/ADempiere/form/point-of-sales.js'
@@ -126,6 +127,22 @@ export default {
         })
       })
   },
+  listTenderTypesFromServer({ commit }, posUuid) {
+    listTenderTypes({
+      posUuid
+    })
+      .then(response => {
+        commit('setTenderTypesList', response.records)
+      })
+      .catch(error => {
+        console.warn(`listTenderTypesFromServer: ${error.message}. Code: ${error.code}.`)
+        showMessage({
+          type: 'error',
+          message: error.message,
+          showClose: true
+        })
+      })
+  },
   setCurrentPOS({ commit, dispatch, state, rootGetters }, posToSet) {
     commit('setCurrentPointOfSales', posToSet)
     const oldRoute = router.app._route
@@ -143,10 +160,11 @@ export default {
     dispatch('listWarehousesFromServer', posToSet.uuid)
     dispatch('listDocumentTypesFromServer', posToSet.uuid)
     dispatch('listCurrenciesFromServer', posToSet.uuid)
+    dispatch('listTenderTypesFromServer', posToSet.uuid)
     dispatch('listPricesFromServer', posToSet)
     commit('setCurrentPriceList', posToSet.priceList)
     commit('setCurrentDocumentTypePos', posToSet.documentType)
-    commit('setCurrentWarehousePos', rootGetters['user/getWarehouse'])
+    commit('setCurrentWarehousePos', posToSet.warehouse)
     commit('resetConversionRate', [])
     commit('setIsReloadKeyLayout')
     commit('setIsReloadProductPrice')

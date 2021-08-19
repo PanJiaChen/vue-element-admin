@@ -91,6 +91,26 @@ export default {
       unsubscribe: () => {}
     }
   },
+  computed: {
+    adviserPin() {
+      const value = this.$store.getters.getValueOfField({
+        containerUuid: this.containerUuid,
+        columnName: 'Value'
+      })
+      const name = this.$store.getters.getValueOfField({
+        containerUuid: this.containerUuid,
+        columnName: 'Name'
+      })
+      const isSeller = this.$store.getters.posAttributes.currentPointOfSales.isAisleSeller
+      if (!this.isEmptyValue(value) && !this.isEmptyValue(name) && isSeller) {
+        return isSeller
+      }
+      return false
+    },
+    currentPointOfSales() {
+      return this.$store.getters.posAttributes.currentPointOfSales
+    }
+  },
   watch: {
     showField(value) {
       if (value) {
@@ -123,7 +143,7 @@ export default {
         containerUuid: this.containerUuid,
         formatReturn: 'name'
       })
-      if (this.isEmptyValue(emptyMandatoryFields)) {
+      if (this.isEmptyValue(emptyMandatoryFields) || this.adviserPin) {
         this.isLoadingRecord = true
         createCustomer(values)
           .then(responseBPartner => {

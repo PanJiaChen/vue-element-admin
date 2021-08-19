@@ -144,5 +144,9 @@ export default {
   // Current POS, it can be s
   getCurrenciesList: (state) => {
     return state.currenciesList
+  },
+  // get Payment type list
+  getPaymentTypeList: (state) => {
+    return state.tenderTypes
   }
 }

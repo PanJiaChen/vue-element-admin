@@ -505,6 +505,18 @@ export default {
       },
       keyLayout: {
         noProducto: 'No product available. Back to top'
+      },
+      pinMessage: {
+        pin: 'Enter pin for ',
+        documentType: 'change document type',
+        warehouse: 'change warehouse',
+        price: 'change price',
+        qtyEntered: 'change quantity',
+        priceList: 'change price list',
+        discount: 'add discount',
+        delete: 'delete product',
+        addProduct: 'add product',
+        invoiceOpen: 'generate invoice with an open balance'
       }
     },
     priceChecking: {

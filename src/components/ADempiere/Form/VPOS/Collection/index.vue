@@ -199,6 +199,8 @@
                   </b>
                 </p>
 
+                <p v-if="!isEmptyValue(currentPointOfSales.displayCurrency)" class="total"> <b> {{ $t('form.pos.collect.convertedAmount') }}: </b> <b style="float: right;">{{ formatPrice(currentOrder.grandTotal / totalAmountConverted, currentPointOfSales.displayCurrency.iso_code) }}</b> </p>
+
                 <p class="total">
                   {{ $t('form.pos.collect.pending') }}:
                   <b style="float: right;">
@@ -477,6 +479,13 @@ export default {
       }
       return true
     },
+    isPosRequiredPin() {
+      const pos = this.$store.getters.posAttributes.currentPointOfSales
+      if (!this.isEmptyValue(pos.isPosRequiredPin)) {
+        return pos.isPosRequiredPin
+      }
+      return false
+    },
     validPay() {
       const containerUuid = this.containerUuid
       // filter by visible fields
@@ -582,6 +591,21 @@ export default {
     },
     overUnderPayment() {
       return this.$store.state['pointOfSales/payments/index'].dialogoInvoce.success
+    },
+    totalAmountConverted() {
+      const conversionsList = this.$store.state['pointOfSales/point/index'].conversionsList
+      if (this.isEmptyValue(conversionsList) && !this.isEmptyValue(this.currentPointOfSales.conversionTypeUuid)) {
+        return 1
+      }
+      const converted = conversionsList.find(converted => {
+        if (converted.conversionTypeUuid === this.currentPointOfSales.conversionTypeUuid) {
+          return converted
+        }
+      })
+      if (!this.isEmptyValue(converted)) {
+        return converted.divideRate
+      }
+      return 1
     }
   },
   watch: {
@@ -900,6 +924,17 @@ export default {
       if (this.pay > this.currentOrder.grandTotal) {
         this.$store.commit('dialogoInvoce', { show: true, type: 1 })
       } else if (this.pay < this.currentOrder.grandTotal) {
+        if (this.isPosRequiredPin) {
+          const attributePin = {
+            ...payment,
+            action: 'openBalanceInvoice',
+            type: 'actionPos',
+            label: this.$t('form.pos.pinMessage.invoiceOpen')
+          }
+          this.visible = true
+          this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+          return
+        }
         this.$store.commit('dialogoInvoce', { show: true, type: 2 })
       } else {
         this.completePreparedOrder(payment)

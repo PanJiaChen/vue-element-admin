@@ -43,6 +43,12 @@ export default {
   setCurrenciesList(state, currenciesList) {
     state.currenciesList = currenciesList
   },
+  setTenderTypesList(state, tenderTypes) {
+    state.tenderTypes = tenderTypes
+  },
+  currentTenderChange(state, tenderChange) {
+    state.tenderChange = tenderChange
+  },
   addConversionToList(state, conversion) {
     state.conversionsList.push(conversion)
   },

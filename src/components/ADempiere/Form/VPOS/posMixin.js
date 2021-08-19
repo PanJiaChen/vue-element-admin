@@ -16,7 +16,8 @@
 
 import {
   findProduct,
-  updateOrderLine
+  updateOrderLine,
+  deleteOrderLine
 } from '@/api/ADempiere/form/point-of-sales.js'
 import {
   formatDate,
@@ -55,8 +56,26 @@ export default {
     }
   },
   computed: {
-    getWarehouse() {
-      return this.$store.getters['user/getWarehouse']
+    allowsCreateOrder() {
+      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder)) {
+        return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
+      }
+      return false
+    },
+    allowsCollectOrder() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCollectOrder
+    },
+    allowsModifyQuantity() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsModifyQuantity
+    },
+    allowsReturnOrder() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsReturnOrder
+    },
+    modifyPrice() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isModifyPrice
+    },
+    adviserPin() {
+      return this.$store.getters.posAttributes.currentPointOfSales.isAisleSeller
     },
     isSetTemplateBP() {
       const currentPOS = this.currentPointOfSales
@@ -205,6 +224,11 @@ export default {
           this.pin = ''
           this.visible = false
           this.pinAction(this.attributePin)
+          this.$message({
+            type: 'success',
+            message: 'Acción a realizar',
+            showClose: true
+          })
         })
         .catch(error => {
           console.error(error.message)
@@ -220,6 +244,7 @@ export default {
         })
     },
     pinAction(action) {
+      action = this.isEmptyValue(action) ? this.$store.getters.getOverdrawnInvoice.attributePin : action
       if (action.type === 'updateOrder') {
         switch (action.columnName) {
           case 'QtyEntered':
@@ -240,6 +265,8 @@ export default {
             break
           }
         }
+      } else if (action.type === 'addProduct') {
+        this.findProduct(action.value)
       } else if (action.type === 'actionPos') {
         switch (action.action) {
           case 'changeWarehouse':
@@ -251,11 +278,15 @@ export default {
           case 'changePriceList':
             this.$store.commit('setCurrentPriceList', action)
             break
+          case 'openBalanceInvoice':
+            this.$store.commit('dialogoInvoce', { show: true, type: 2 })
+            break
         }
       }
     },
     closePin() {
       this.visible = false
+      this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
       this.setDocumentType(this.currentOrder.documentType)
     },
     withoutPOSTerminal() {
@@ -371,7 +402,7 @@ export default {
           })
         })
     },
-    createOrder({ withLine = false, newOrder = false }) {
+    createOrder({ withLine = false, newOrder = false, customer }) {
       if (this.withoutPOSTerminal()) {
         return
       }
@@ -392,6 +423,9 @@ export default {
         })
         if (this.isEmptyValue(customerUuid) || id === 1000006) {
           customerUuid = this.currentPointOfSales.templateBusinessPartner.uuid
+        }
+        if (customer) {
+          customerUuid = customer
         }
         // user session
         this.$store.dispatch('createOrder', {
@@ -460,30 +494,91 @@ export default {
     getOrderTax(currency) {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
+    deleteOrderLine(lineSelection) {
+      if (this.isPosRequiredPin) {
+        if (this.adviserPin) {
+          deleteOrderLine({
+            orderLineUuid: lineSelection.uuid
+          })
+            .then(response => {
+              this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
+            })
+            .catch(error => {
+              console.error(error.message)
+              this.$message({
+                type: 'error',
+                message: error.message,
+                showClose: true
+              })
+            })
+        } else {
+          const attributePin = {
+            ...lineSelection,
+            type: 'deleteLine',
+            label: this.$t('form.pos.pinMessage.delete')
+          }
+          this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+          this.visible = true
+        }
+      }
+    },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
         // TODO: Add container uuid comparison
         if (mutation.type === 'addActionKeyPerformed') {
           switch (mutation.payload.columnName) {
             case 'ProductValue':
-              this.findProduct(mutation.payload.value)
+              // this.findProduct(mutation.payload.value)
+              // if (this.isPosRequiredPin) {
+              if (!this.allowsCreateOrder) {
+                this.findProduct(mutation.payload.value)
+              } else {
+                const attributePin = {
+                  ...mutation.payload,
+                  type: 'addProduct',
+                  label: this.$t('form.pos.pinMessage.addProduct')
+                }
+                this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+                this.visible = true
+              }
+              // } else {
+              //   this.findProduct(mutation.payload.value)
+              // }
               break
           }
         } else if (mutation.type === 'addActionPerformed') {
           switch (mutation.payload.columnName) {
             case 'QtyEntered':
-              if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+              if (this.isPosRequiredPin && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+                if (this.allowsModifyQuantity) {
+                  this.updateOrderLine(mutation.payload)
+                } else {
+                  const attributePin = {
+                    ...mutation.payload,
+                    type: 'updateOrder',
+                    label: this.$t('form.pos.pinMessage.qtyEntered')
+                  }
+                  this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+                  this.visible = true
+                }
+              } else if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
                 this.updateOrderLine(mutation.payload)
               }
               break
             case 'PriceEntered':
             case 'Discount':
               if (this.isPosRequiredPin && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
-                this.attributePin = {
-                  ...mutation.payload,
-                  type: 'updateOrder'
+                if (this.modifyPrice) {
+                  this.updateOrderLine(mutation.payload)
+                } else {
+                  const attributePin = {
+                    ...mutation.payload,
+                    type: 'updateOrder',
+                    label: mutation.payload.columnName === 'PriceEntered' ? this.$t('form.pos.pinMessage.price') : this.$t('form.pos.pinMessage.discount')
+                  }
+                  this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+                  this.visible = true
                 }
-                this.visible = true
               } else if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
                 this.updateOrderLine(mutation.payload)
               }
@@ -494,10 +589,11 @@ export default {
                 columnName: 'C_DocTypeTarget_ID_UUID'
               })
               if (this.isPosRequiredPin && !this.isEmptyValue(documentTypeUuid) && !this.isEmptyValue(this.currentOrder.documentType.uuid)) {
-                this.attributePin = {
+                const attributePin = {
                   ...mutation.payload,
                   type: 'updateOrder'
                 }
+                this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
                 this.visible = true
               } else if (!this.isEmptyValue(documentTypeUuid) && !this.isEmptyValue(this.currentOrder.documentType.uuid)) {
                 this.$store.dispatch('updateOrder', {

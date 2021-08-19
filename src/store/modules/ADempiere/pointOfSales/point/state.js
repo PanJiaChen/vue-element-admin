@@ -37,6 +37,8 @@ export default {
   listCurrency: [],
   currenciesList: [],
   conversionsList: [],
+  tenderTypes: [],
+  tenderChange: '',
   currentPointOfSales: {},
   showPOSOptions: false,
   showPOSKeyLayout: false,
