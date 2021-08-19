@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import { requestCreateBusinessPartner } from '@/api/ADempiere/system-core.js'
+import { createCustomer } from '@/api/ADempiere/form/point-of-sales.js'
 import formMixin from '@/components/ADempiere/Form/formMixin.js'
 import fieldsList from './fieldsListCreate.js'
 import BParterMixin from './mixinBusinessPartner.js'
@@ -125,7 +125,7 @@ export default {
       })
       if (this.isEmptyValue(emptyMandatoryFields)) {
         this.isLoadingRecord = true
-        requestCreateBusinessPartner(values)
+        createCustomer(values)
           .then(responseBPartner => {
             // TODO: Add new record into vuex store.
             this.setBusinessPartner(responseBPartner)

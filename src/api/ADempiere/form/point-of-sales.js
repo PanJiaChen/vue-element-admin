@@ -125,6 +125,128 @@ export function updateOrder({
       return convertOrder(updateOrderResponse)
     })
 }
+// Create Customer
+export function createCustomer({
+  value,
+  taxId,
+  duns,
+  naics,
+  name,
+  name2,
+  description,
+  contactName,
+  eMail,
+  phone,
+  businessPartnerGroupUuid,
+  // Location
+  address1,
+  address2,
+  address3,
+  address4,
+  cityUuid,
+  cityName,
+  postalCode,
+  regionUuid,
+  regionName,
+  countryUuid,
+  posUuid
+}) {
+  return request({
+    url: 'form/addons/point-of-sales/create-customer',
+    method: 'post',
+    data: {
+      value,
+      tax_id: taxId,
+      duns,
+      naics,
+      name,
+      last_name: name2,
+      description,
+      contact_name: contactName,
+      e_mail: eMail,
+      phone,
+      business_partner_group_uid: businessPartnerGroupUuid,
+      // Location
+      address1,
+      address2,
+      address3,
+      address4,
+      city_uuid: cityUuid,
+      city_name: cityName,
+      postal_code: postalCode,
+      region_uuid: regionUuid,
+      region_name: regionName,
+      country_uuid: countryUuid,
+      pos_uuid: posUuid
+    }
+  })
+    .then(businessPartnerResponse => {
+      const { convertBusinessPartner } = require('@/utils/ADempiere/apiConverts/core.js')
+
+      return convertBusinessPartner(businessPartnerResponse)
+    })
+}
+// Update Customer
+export function updateCustomer({
+  value,
+  taxId,
+  duns,
+  naics,
+  name,
+  name2,
+  description,
+  contactName,
+  eMail,
+  phone,
+  businessPartnerGroupUuid,
+  // Location
+  address1,
+  address2,
+  address3,
+  address4,
+  cityUuid,
+  cityName,
+  postalCode,
+  regionUuid,
+  regionName,
+  countryUuid,
+  posUuid
+}) {
+  return request({
+    url: 'form/addons/point-of-sales/update-customer',
+    method: 'post',
+    data: {
+      value,
+      tax_id: taxId,
+      duns,
+      naics,
+      name,
+      last_name: name2,
+      description,
+      contact_name: contactName,
+      e_mail: eMail,
+      phone,
+      business_partner_group_uid: businessPartnerGroupUuid,
+      // Location
+      address1,
+      address2,
+      address3,
+      address4,
+      city_uuid: cityUuid,
+      city_name: cityName,
+      postal_code: postalCode,
+      region_uuid: regionUuid,
+      region_name: regionName,
+      country_uuid: countryUuid,
+      pos_uuid: posUuid
+    }
+  })
+    .then(businessPartnerResponse => {
+      const { convertBusinessPartner } = require('@/utils/ADempiere/apiConverts/core.js')
+
+      return convertBusinessPartner(businessPartnerResponse)
+    })
+}
 
 // Get order from uuid
 export function getOrder(orderUuid) {
