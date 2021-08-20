@@ -34,7 +34,7 @@
             <el-card shadow="hover">
               <p
                 style="cursor: pointer; text-align: center !important; color: black;min-height: 50px;"
-                @click="allowsCreateOrder ? '' : newOrder"
+                @click="!allowsCreateOrder ? '' : newOrder"
               >
                 <i class="el-icon-news" />
                 <br>
@@ -99,7 +99,7 @@
             </el-card>
           </el-col>
 
-          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
+          <el-col v-if="allowsReturnOrder" :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
@@ -137,15 +137,15 @@
               </p>
             </el-card>
           </el-col>
-          <el-col v-if="allowsReturnOrder" :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
+          <el-col :span="size" style="padding-left: 12px;padding-right: 12px;padding-bottom: 10px;">
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="adviserPin ? validateOption('Crear Nueva Orden de Devolución') : createNewCustomerReturnOrder"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.createNewReturnOrder')) : createNewCustomerReturnOrder"
               >
                 <i class="el-icon-refresh-left" />
                 <br>
-                Crear Nueva Orden de Devolución
+                {{ $t('form.pos.optionsPoinSales.salesOrder.createNewReturnOrder') }}
               </p>
             </el-card>
           </el-col>
@@ -394,10 +394,7 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.isAllowsReturnOrder
     },
     allowsCreateOrder() {
-      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder)) {
-        return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
-      }
-      return false
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
     },
     isShowProductsPriceList: {
       get() {
@@ -541,7 +538,7 @@ export default {
     },
     optionPin(action) {
       switch (action.label) {
-        case 'Crear Nueva Orden de Devolución':
+        case this.$t('form.pos.optionsPoinSales.salesOrder.createNewReturnOrder'):
           this.createNewCustomerReturnOrder()
           break
         case this.$t('form.pos.optionsPoinSales.salesOrder.completePreparedOrder'):

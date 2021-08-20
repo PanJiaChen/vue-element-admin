@@ -476,7 +476,10 @@ export default {
           returned: 'Su vuelto es',
           coupon: 'Generar una Tarjeta de Regalo o Vale',
           returnMoney: 'Devolver dinero en otra forma de pago',
-          adjustDocument: 'Desea Ajustar Documento'
+          adjustDocument: 'Desea Ajustar Documento',
+          dailyLimit: 'Limite Diario',
+          customerLimit: 'Limite Cliente',
+          available: 'Disponible'
         }
       },
       keyLayout: {

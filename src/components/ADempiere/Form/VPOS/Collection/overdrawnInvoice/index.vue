@@ -60,8 +60,9 @@
         <el-card v-if="option === 3" class="box-card">
           <div slot="header" class="clearfix">
             <span>{{ $t('form.pos.collect.overdrawnInvoice.above') }}</span>
-            <span style="float: right">
-              <b>Limite Diario USD 20,00$ = Bs.S 85.000.000,00 </b> | <b>Disponible Bs.S 85.000.000,00 </b>
+            <span style="float: right;text-align: end">
+              <b>{{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(maximumDailyRefundAllowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }} | {{ $t('form.pos.collect.overdrawnInvoice.available') }}: {{ formatPrice(maximumDailyRefundAllowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }}</b> <br>
+              <b>{{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(maximumRefundAllowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }} </b>
             </span>
           </div>
           <div class="text item">
@@ -222,7 +223,18 @@ export default {
     caseOrder() {
       return this.$store.state['pointOfSales/payments/index'].dialogoInvoce.type
     },
+    isoCode() {
+      return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
+    },
+    maximumDailyRefundAllowed() {
+      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
+      return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
+    },
+    maximumRefundAllowed() {
+      return this.$store.getters.posAttributes.currentPointOfSales.maximumRefundAllowed
+    },
     displayeCurrency() {
+      console.log(this.$store.getters.posAttributes.currentPointOfSales)
       const tenderType = this.$store.getters.getValueOfField({
         containerUuid: 'OverdrawnInvoice',
         columnName: 'TenderType'
@@ -236,7 +248,7 @@ export default {
       return this.fieldsList.filter(field => field.sequence <= 2)
     },
     hiddenFieldsList() {
-      return this.fieldsList.filter(field => field.sequence > 4)
+      return this.fieldsList.filter(field => field.sequence >= 3)
     },
     listCurrency() {
       return this.$store.getters.getCurrenciesList

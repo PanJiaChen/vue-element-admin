@@ -91,24 +91,6 @@ export default [
       isMandatory: true
     }
   },
-  {
-    tableName,
-    elementColumnName: 'DateTrx',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 5,
-      handleFocusGained: true,
-      handleFocusLost: true,
-      handleKeyPressed: true,
-      handleKeyReleased: true,
-      handleActionKeyPerformed: true,
-      handleActionPerformed: true,
-      size: 24,
-      displayLogic: `@TenderType@=='K'`,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
   // Bank
   {
     tableName,
@@ -119,60 +101,8 @@ export default [
       handleActionKeyPerformed: true,
       handleActionPerformed: true,
       handleContentSelection: true,
-      displayLogic: `@TenderType@<>'X' & @TenderType@<>'Z'`,
+      displayLogic: `@TenderType@<>'X'|| @TenderType@<>'Z'`,
       size: 24,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // type credit card
-  {
-    tableName,
-    elementColumnName: 'CreditCardType',
-    columnName: 'CreditCardType',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 7,
-      defaultValue: 'M',
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      displayLogic: `@TenderType@=='C'`,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // number credit card
-  {
-    tableName,
-    elementColumnName: 'CreditCardNumber',
-    columnName: 'CreditCardNumber',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 8,
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      displayLogic: `@TenderType@=='C'`,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // accountno
-  {
-    tableName,
-    elementColumnName: 'AccountNo',
-    columnName: 'AccountNo',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 9,
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      displayLogic: `@TenderType@=='M' || @TenderType@=='D'`,
       isActiveLogics: true,
       isMandatory: true
     }

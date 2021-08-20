@@ -17,7 +17,8 @@
 import {
   findProduct,
   updateOrderLine,
-  deleteOrderLine
+  deleteOrderLine,
+  processOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
 import {
   formatDate,
@@ -57,10 +58,7 @@ export default {
   },
   computed: {
     allowsCreateOrder() {
-      if (!this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder)) {
-        return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
-      }
-      return false
+      return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCreateOrder
     },
     allowsCollectOrder() {
       return this.$store.getters.posAttributes.currentPointOfSales.isAllowsCollectOrder
@@ -282,6 +280,8 @@ export default {
               showClose: true
             })
           })
+      } else if (action.type === 'maximumRefundAllowed') {
+        this.refundAllowed(action.posUuid, action.orderUuid, action.payments)
       } else if (action.type === 'actionPos') {
         switch (action.action) {
           case 'changeWarehouse':
@@ -303,6 +303,44 @@ export default {
       this.visible = false
       this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
       this.setDocumentType(this.currentOrder.documentType)
+    },
+    refundAllowed(posUuid, orderUuid, payments) {
+      this.$store.dispatch('updateOrderPos', true)
+      this.$store.dispatch('updatePaymentPos', true)
+      this.$message({
+        type: 'info',
+        message: this.$t('notifications.processing'),
+        showClose: true
+      })
+      processOrder({
+        posUuid,
+        orderUuid,
+        createPayments: !this.isEmptyValue(payments),
+        payments: payments
+      })
+        .then(response => {
+          this.$store.dispatch('reloadOrder', response.uuid)
+          this.$message({
+            type: 'success',
+            message: this.$t('notifications.completed'),
+            showClose: true
+          })
+        })
+        .catch(error => {
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+        })
+        .finally(() => {
+          this.$store.dispatch('listOrdersFromServer', {
+            posUuid: this.currentPointOfSales.uuid
+          })
+          this.$store.dispatch('updateOrderPos', false)
+          this.$store.dispatch('updatePaymentPos', false)
+          this.$store.commit('dialogoInvoce', { show: false })
+        })
     },
     withoutPOSTerminal() {
       if (this.isEmptyValue(this.currentPointOfSales)) {
@@ -511,7 +549,7 @@ export default {
     },
     deleteOrderLine(lineSelection) {
       if (this.isPosRequiredPin) {
-        if (this.adviserPin) {
+        if (this.allowsModifyQuantity) {
           deleteOrderLine({
             orderLineUuid: lineSelection.uuid
           })
@@ -545,7 +583,7 @@ export default {
             case 'ProductValue':
               // this.findProduct(mutation.payload.value)
               // if (this.isPosRequiredPin) {
-              if (!this.allowsCreateOrder) {
+              if (this.allowsCreateOrder) {
                 this.findProduct(mutation.payload.value)
               } else {
                 const attributePin = {
