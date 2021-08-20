@@ -17,9 +17,11 @@
 -->
 <template>
   <el-popover
+    v-model="openPopover"
     placement="bottom"
     width="1010"
     trigger="click"
+    @hide="clear()"
   >
     <el-container>
       <el-header style="height: 2%;">
@@ -53,7 +55,7 @@
           <el-table-column
             prop="documentNo"
             :label="$t('form.byInvoice.documentNo')"
-            width="130"
+            width="135"
           />
           <el-table-column
             label="Fecha de Orden"
@@ -66,7 +68,7 @@
 
           <el-table-column
             :label="$t('form.byInvoice.businessPartner')"
-            min-width="150"
+            min-width="120"
           >
             <template slot-scope="scope">
               {{ scope.row.businessPartner.name }}
@@ -76,11 +78,11 @@
           <el-table-column
             prop="salesRepresentative.name"
             :label="$t('form.byInvoice.salesRepresentative')"
-            min-width="170"
+            min-width="100"
           />
 
           <el-table-column
-            :label="$t('table.status')"
+            :label="$t('table.ProcessActivity.Status')"
             width="100"
           >
             <template slot-scope="scope">
@@ -95,10 +97,10 @@
           <el-table-column
             :label="$t('form.productInfo.grandTotal')"
             align="right"
-            width="120"
+            width="150"
           >
             <template slot-scope="scope">
-              {{ formatQuantity(scope.row.grandTotal) }}
+              {{ formatPrice(scope.row.grandTotal) }}
             </template>
           </el-table-column>
         </el-table>
@@ -113,7 +115,7 @@
         />
       </el-footer>
     </el-container>
-    <el-button slot="reference" type="primary" plain style="margin-left: 5%;margin-top: 15%;font-size: 15px;" @click="openPopover = !openPopover">
+    <el-button slot="reference" type="primary" plain style="margin-left: 5%;margin-top: 15%;font-size: 15px;">
       <svg-icon icon-class="tree-table" />
       <b> {{ $t('form.byInvoice.label') }} </b>
     </el-button>
@@ -128,7 +130,7 @@ import {
 } from '@/utils/ADempiere/lookupFactory'
 import {
   formatDate,
-  formatQuantity
+  formatPrice
 } from '@/utils/ADempiere/valueFormat.js'
 import {
   listOrders
@@ -211,7 +213,7 @@ export default {
   },
   methods: {
     formatDate,
-    formatQuantity,
+    formatPrice,
     extractPagingToken,
     createFieldFromDictionary,
     notSubmitForm(event) {
@@ -240,6 +242,7 @@ export default {
         const orderUuid = this.$route.query.action
         this.$store.dispatch('listPayments', { orderUuid })
       }
+      this.clear()
     },
     subscribeChanges() {
       return this.$store.subscribe((mutation, state) => {
@@ -311,6 +314,25 @@ export default {
           this.isloading = false
           console.warn(`listOrdersFromServer: ${error.message}. Code: ${error.code}.`)
         })
+    },
+    clear() {
+      this.openPopover = false
+      this.input = ''
+      this.$store.commit('updateValueOfField', {
+        containerUuid: 'Aisle-Vendor-List',
+        columnName: 'C_BPartner_ID',
+        value: undefined
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: 'Aisle-Vendor-List',
+        columnName: 'DisplayColumn_C_BPartner_ID',
+        value: undefined
+      })
+      this.$store.commit('updateValueOfField', {
+        containerUuid: 'Aisle-Vendor-List',
+        columnName: 'C_BPartner_ID_UUID',
+        value: undefined
+      })
     }
   }
 }
