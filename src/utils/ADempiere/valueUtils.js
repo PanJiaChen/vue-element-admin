@@ -115,6 +115,13 @@ export function extractPagingToken(token) {
 }
 
 /**
+ * @param {number} number
+ */
+export function round(number, standardPrecision) {
+  const amount = number.toFixed(standardPrecision)
+  return Number(amount)
+}
+/**
  * zero pad
  * @author EdwinBetanc0urt <EdwinBetanc0urt@oulook.com>
  * @param {number|string} number

@@ -97,22 +97,6 @@
                     </el-select>
                   </el-form-item>
                 </el-col>
-                <el-col :span="8">
-                  <el-form-item v-if="displayeCurrency" :label="$t('form.pos.collect.Currency')">
-                    <el-select
-                      v-model="currentFieldCurrency"
-                      style="width: -webkit-fill-available;"
-                      @change="changeCurrency"
-                    >
-                      <el-option
-                        v-for="item in listCurrency"
-                        :key="item.id"
-                        :label="item.name"
-                        :value="item.key"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
                 <el-col
                   v-for="field in hiddenFieldsList"
                   :key="field.sequence"
