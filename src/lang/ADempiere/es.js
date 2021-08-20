@@ -499,6 +499,13 @@ export default {
       productNotFound: 'Producto No Disponible',
       basePrice: 'Precio Base'
     },
+    byInvoice: {
+      title: 'Pedidos Vendedor de Pasillo por Facturar',
+      label: 'Por Facturar',
+      salesRepresentative: 'Agente Comercial',
+      businessPartner: 'Socio de Negocio',
+      documentNo: 'Nro. Documento'
+    },
     productInfo: {
       product: 'Producto',
       codeProduct: 'Código de Producto',

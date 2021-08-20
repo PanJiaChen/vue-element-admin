@@ -523,6 +523,13 @@ export default {
       productNotFound: 'Unavailable Product',
       basePrice: 'Base price'
     },
+    byInvoice: {
+      title: 'Aisle Vendor Orders to be Invoiced',
+      label: 'To be invoiced',
+      salesRepresentative: 'Sales Agent',
+      businessPartner: 'Business Partner',
+      documentNo: 'Document No.'
+    },
     productInfo: {
       product: 'Product',
       codeProduct: 'Códe Product',

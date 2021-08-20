@@ -18,12 +18,12 @@
 <template>
   <el-popover
     placement="bottom"
-    width="700"
+    width="1010"
     trigger="click"
   >
     <el-container>
       <el-header style="height: 2%;">
-        <p style="text-align: center;"> <b> Pedidos Vendedor de Pasillo por Facturar </b></p>
+        <p style="text-align: center;"> <b> {{ $t('form.byInvoice.title') }} </b></p>
         <el-form label-position="top" :inline="true" class="demo-form-inline" @submit.native.prevent="notSubmitForm">
           <el-form-item label="No. del Documento">
             <el-input v-model="input" placeholder="Please input" @change="listOrdersInvoiced" />
@@ -52,11 +52,35 @@
         >
           <el-table-column
             prop="documentNo"
-            label="Nro. Documento"
+            :label="$t('form.byInvoice.documentNo')"
             width="130"
           />
           <el-table-column
-            label="Estado"
+            label="Fecha de Orden"
+            width="135"
+          >
+            <template slot-scope="scope">
+              {{ formatDate(scope.row.dateOrdered) }}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            :label="$t('form.byInvoice.businessPartner')"
+            min-width="150"
+          >
+            <template slot-scope="scope">
+              {{ scope.row.businessPartner.name }}
+            </template>
+          </el-table-column>
+
+          <el-table-column
+            prop="salesRepresentative.name"
+            :label="$t('form.byInvoice.salesRepresentative')"
+            min-width="170"
+          />
+
+          <el-table-column
+            :label="$t('table.status')"
             width="100"
           >
             <template slot-scope="scope">
@@ -69,30 +93,7 @@
           </el-table-column>
 
           <el-table-column
-            prop="salesRepresentative.name"
-            label="Agente Comercial"
-            min-width="170"
-          />
-
-          <el-table-column
-            label="Socio de Negocio"
-            min-width="150"
-          >
-            <template slot-scope="scope">
-              {{ scope.row.businessPartner.name }}
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            label="Fecha de Orden"
-            width="135"
-          >
-            <template slot-scope="scope">
-              {{ formatDate(scope.row.dateOrdered) }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="Total General"
+            :label="$t('form.productInfo.grandTotal')"
             align="right"
             width="120"
           >
@@ -112,9 +113,9 @@
         />
       </el-footer>
     </el-container>
-    <el-button slot="reference" type="text" style="color: black;margin-left: 5%;margin-top: 15%;font-size: 15px;" @click="openPopover = !openPopover">
+    <el-button slot="reference" type="primary" plain style="margin-left: 5%;margin-top: 15%;font-size: 15px;" @click="openPopover = !openPopover">
       <svg-icon icon-class="tree-table" />
-      <b> Por Facturar </b>
+      <b> {{ $t('form.byInvoice.label') }} </b>
     </el-button>
   </el-popover>
 </template>
