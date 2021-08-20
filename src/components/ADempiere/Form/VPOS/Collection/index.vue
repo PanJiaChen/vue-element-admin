@@ -777,8 +777,12 @@ export default {
           tenderTypeCode,
           currencyUuid: this.dayRate.currencyTo.uuid
         })
+          .then((response) => {
+            if (response.type !== 'error') {
+              this.addCollect()
+            }
+          })
       }
-      this.addCollect()
     },
     updateServer(listPaymentsLocal) {
       const posUuid = this.currentPointOfSales.uuid

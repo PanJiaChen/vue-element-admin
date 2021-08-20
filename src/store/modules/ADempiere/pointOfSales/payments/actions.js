@@ -199,7 +199,7 @@ export default {
       return undefined
     })
     if (isEmptyValue(listPayments)) {
-      createPayment({
+      return createPayment({
         posUuid,
         orderUuid,
         invoiceUuid,
@@ -215,6 +215,10 @@ export default {
         .then(response => {
           const orderUuid = response.order_uuid
           dispatch('listPayments', { orderUuid })
+          return {
+            ...response,
+            type: 'Success'
+          }
         })
         .catch(error => {
           console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
@@ -223,9 +227,13 @@ export default {
             message: error.message,
             showClose: true
           })
+          return {
+            ...error,
+            type: 'error'
+          }
         })
     } else {
-      updatePayment({
+      return updatePayment({
         paymentUuid: listPayments.uuid,
         bankUuid,
         referenceNo,
@@ -237,6 +245,10 @@ export default {
         .then(response => {
           const orderUuid = response.order_uuid
           dispatch('listPayments', { orderUuid })
+          return {
+            ...response,
+            type: 'Success'
+          }
         })
         .catch(error => {
           console.warn(`ListPaymentsFromServer: ${error.message}. Code: ${error.code}.`)
@@ -245,6 +257,10 @@ export default {
             message: error.message,
             showClose: true
           })
+          return {
+            ...error,
+            type: 'error'
+          }
         })
     }
   },
