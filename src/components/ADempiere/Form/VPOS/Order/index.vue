@@ -242,7 +242,7 @@
                   v-show="isValidForDeleteLine(listOrderLine)"
                   type="success"
                   icon="el-icon-bank-card"
-                  :disabled="allowsCollectOrder"
+                  :disabled="!allowsCollectOrder"
                   @click="openCollectionPanel"
                 >
                   {{ labelButtonCollections }}

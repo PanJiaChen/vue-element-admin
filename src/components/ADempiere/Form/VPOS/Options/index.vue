@@ -77,7 +77,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="generateImmediateInvoice"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.generateImmediateInvoice')) : generateImmediateInvoice"
               >
                 <i class="el-icon-document-add" />
                 <br>
@@ -90,7 +90,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="adviserPin ? '' : completePreparedOrder"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.completePreparedOrder')) : completePreparedOrder"
               >
                 <i class="el-icon-success" />
                 <br>
@@ -103,7 +103,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="adviserPin ? '' : reverseSalesTransaction"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.cancelSaleTransaction')) : reverseSalesTransaction"
               >
                 <i class="el-icon-error" />
                 <br>
@@ -116,7 +116,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="withdrawal"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.createPos')) : withdrawal"
               >
                 <i class="el-icon-document-remove" />
                 <br>
@@ -129,7 +129,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="adviserPin ? '' : printOrder"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.print')) : printOrder"
               >
                 <i class="el-icon-printer" />
                 <br>
@@ -141,7 +141,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="createNewCustomerReturnOrder"
+                @click="adviserPin ? validateOption('Crear Nueva Orden de Devolución') : createNewCustomerReturnOrder"
               >
                 <i class="el-icon-refresh-left" />
                 <br>
@@ -153,7 +153,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="copyOrder "
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.copyOrder')) : copyOrder "
               >
                 <i class="el-icon-document-copy" />
                 <br>
@@ -165,7 +165,7 @@
             <el-card shadow="hover">
               <p
                 :style="blockOption"
-                @click="deleteOrder"
+                @click="adviserPin ? validateOption($t('form.pos.optionsPoinSales.salesOrder.cancelOrder')) : deleteOrder"
               >
                 <i class="el-icon-close" />
                 <br>
@@ -219,7 +219,7 @@
         <el-row :gutter="24" style="padding-right: 10px;">
           <el-col :span="size">
             <el-card shadow="hover">
-              <el-dropdown trigger="click" style="padding-top: 8px;color: black;display: block;" @command="changePos">
+              <el-dropdown trigger="click" style="padding-top: 8px;color: black;display: block;" @command="adviserPin ? validateOption($t('form.pos.optionsPoinSales.generalOptions.changePos')) : changePos">
                 <p
                   style="cursor: pointer;text-align: center !important;color: black;min-height: 50px;margin: 0px;"
                 >
@@ -311,6 +311,29 @@
         </el-row>
       </el-collapse-item>
     </el-collapse>
+    <el-dialog ref="dialog" :title="$t('form.pos.pinMessage.pin') + attributePin.label" width="40%" :visible.sync="visible">
+      <el-input
+        id="pin"
+        ref="pin"
+        v-model="pin"
+        :autofocus="true"
+        type="password"
+        :placeholder="$t('form.pos.tableProduct.pin')"
+        :focus="true"
+      />
+      <span style="float: right;">
+        <el-button
+          type="danger"
+          icon="el-icon-close"
+          @click="closePin"
+        />
+        <el-button
+          type="primary"
+          icon="el-icon-check"
+          @click="openPin(pin)"
+        />
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -327,6 +350,7 @@ import {
   createOrder,
   processOrder
 } from '@/api/ADempiere/form/point-of-sales.js'
+import { validatePin } from '@/api/ADempiere/form/point-of-sales.js'
 import ModalDialog from '@/components/ADempiere/Dialog'
 import posProcess from '@/utils/ADempiere/constants/posProcess'
 import orderLineMixin from '@/components/ADempiere/Form/VPOS/Order/orderLineMixin.js'
@@ -351,11 +375,21 @@ export default {
     return {
       activeName: '',
       processPos: '',
+      pin: '',
+      attributePin: {},
+      validatePin: true,
+      visible: false,
       showFieldListOrder: false,
       posProcess
     }
   },
   computed: {
+    infowOverdrawnInvoice() {
+      if (this.$store.getters.getOverdrawnInvoice.attributePin) {
+        return this.$store.getters.getOverdrawnInvoice.attributePin
+      }
+      return ''
+    },
     allowsReturnOrder() {
       return this.$store.getters.posAttributes.currentPointOfSales.isAllowsReturnOrder
     },
@@ -389,12 +423,9 @@ export default {
       }
     },
     adviserPin() {
-      return this.$store.getters.posAttributes.currentPointOfSales.isAisleSeller
+      return this.$store.getters.posAttributes.currentPointOfSales.isPosRequiredPin
     },
     blockOption() {
-      if (this.adviserPin) {
-        return 'cursor: not-allowed; text-align: center !important; color: gray;min-height: 50px;'
-      }
       if (!this.isEmptyValue(this.currentOrder.uuid)) {
         return 'cursor: pointer; text-align: center !important; color: black;min-height: 50px;'
       }
@@ -449,10 +480,96 @@ export default {
       return this.currentPointOfSales.currentOrder
     }
   },
+  // watch: {
+  //   visible(value) {
+  //     if (value && !this.isEmptyValue(this.$refs)) {
+  //       setTimeout(() => {
+  //         this.focusPin()
+  //       }, 500)
+  //     } else {
+  //       this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: value })
+  //     }
+  //   }
+  // },
   created() {
     this.findProcess(this.posProcess)
   },
   methods: {
+    closePin() {
+      this.visible = false
+      this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
+      this.pin = ''
+    },
+    focusPin() {
+      this.$refs.pin.focus()
+    },
+    openPin(pin) {
+      validatePin({
+        posUuid: this.currentPointOfSales.uuid,
+        pin
+      })
+        .then(response => {
+          this.validatePin = true
+          this.pin = ''
+          this.visible = false
+          this.optionPin(this.attributePin)
+          this.$message({
+            type: 'success',
+            message: 'Acción a realizar',
+            showClose: true
+          })
+        })
+        .catch(error => {
+          console.error(error.message)
+          this.$message({
+            type: 'error',
+            message: error.message,
+            showClose: true
+          })
+          this.pin = ''
+        })
+        .finally(() => {
+          this.visible = false
+        })
+    },
+    validateOption(name) {
+      this.visible = true
+      this.attributePin = {
+        type: 'updateOrder',
+        label: name
+      }
+    },
+    optionPin(action) {
+      switch (action.label) {
+        case 'Crear Nueva Orden de Devolución':
+          this.createNewCustomerReturnOrder()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.completePreparedOrder'):
+          this.completePreparedOrder()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.generateImmediateInvoice'):
+          this.generateImmediateInvoice()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.cancelSaleTransaction'):
+          this.reverseSalesTransaction()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.createPos'):
+          this.withdrawal()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.print'):
+          this.printOrder()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.copyOrder'):
+          this.copyOrder()
+          break
+        case this.$t('form.pos.optionsPoinSales.salesOrder.cancelOrder'):
+          this.deleteOrder()
+          break
+        case this.$t('form.pos.optionsPoinSales.generalOptions.changePos'):
+          this.changePos()
+          break
+      }
+    },
     notSubmitForm(event) {
       event.preventDefault()
       return false
@@ -550,11 +667,9 @@ export default {
       })
     },
     createNewCustomerReturnOrder() {
-      if (this.isPosRequiredPin) {
-        createNewReturnOrder({
-          orderUuid: this.$route.query.action
-        })
-      }
+      createNewReturnOrder({
+        orderUuid: this.$route.query.action
+      })
     },
     showModal(action) {
       this.$store.dispatch('setShowDialog', {
@@ -627,7 +742,7 @@ export default {
       }
       this.$store.dispatch('updateOrderPos', true)
       deleteOrder({
-        orderUuid: this.$route.query.action
+        orderUuid: this.currentOrder.uuid
       })
         .then(response => {
           this.changePos(this.currentPointOfSales)

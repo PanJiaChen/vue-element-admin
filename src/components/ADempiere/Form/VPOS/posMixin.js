@@ -267,6 +267,21 @@ export default {
         }
       } else if (action.type === 'addProduct') {
         this.findProduct(action.value)
+      } else if (action.type === 'deleteLine') {
+        deleteOrderLine({
+          orderLineUuid: action.uuid
+        })
+          .then(response => {
+            this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
+          })
+          .catch(error => {
+            console.error(error.message)
+            this.$message({
+              type: 'error',
+              message: error.message,
+              showClose: true
+            })
+          })
       } else if (action.type === 'actionPos') {
         switch (action.action) {
           case 'changeWarehouse':

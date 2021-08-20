@@ -28,7 +28,6 @@
         <el-form>
           <el-form-item>
             <el-radio v-model="option" :label="1"> {{ $t('form.pos.collect.overdrawnInvoice.returned') }} {{ formatPrice(change, currency.iSOCode) }} </el-radio>
-            <el-radio v-model="option" :label="2"> {{ $t('form.pos.collect.overdrawnInvoice.coupon') }}</el-radio>
             <el-radio v-model="option" :label="3"> {{ $t('form.pos.collect.overdrawnInvoice.returnMoney') }}</el-radio>
             <el-radio v-model="option" :label="4"> {{ $t('form.pos.collect.overdrawnInvoice.adjustDocument') }}</el-radio>
           </el-form-item>
