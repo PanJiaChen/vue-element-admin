@@ -610,18 +610,17 @@ export default {
             case 'DisplayColumn_TenderType':
               this.displayType = mutation.payload.value
               break
-
             case 'C_BPartner_ID_UUID': {
               const bPartnerValue = mutation.payload.value
-              if (!this.isEmptyValue(this.currentPointOfSales.templateBusinessPartner)) {
+              if (!this.isEmptyValue(this.currentPointOfSales.templateBusinessPartner) && this.$route.meta.uuid === mutation.payload.containerUuid) {
                 const bPartnerPOS = this.currentPointOfSales.templateBusinessPartner.uuid
+                this.updateOrder(mutation.payload)
                 // Does not send values to server, when empty values are set or
                 // if BPartner set equal to BPartner POS template
                 if (this.isEmptyValue(bPartnerValue) || bPartnerValue === bPartnerPOS) {
                   break
                 }
               }
-              this.updateOrder(mutation.payload)
               break
             }
           }

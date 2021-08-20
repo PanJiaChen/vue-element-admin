@@ -52,13 +52,16 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
+            <el-col :span="4" :style="styleTab">
+              <fast-ordes-list />
+            </el-col>
             <el-col :span="5" :style="styleTab">
               <el-form-item>
                 <template slot="label" />
                 <el-dropdown
                   v-if="!isEmptyValue(currentDocumentType)"
                   trigger="click"
-                  style="padding-top: 10%;font-size: 15px;color: black;"
+                  style="padding-top: 15%;font-size: 15px;color: black;"
                   @command="changeDocumentType"
                 >
                   <span>
@@ -429,6 +432,7 @@ import BusinessPartner from '@/components/ADempiere/Form/VPOS/BusinessPartner'
 import fieldLine from '@/components/ADempiere/Form/VPOS/Order/line/index'
 import ProductInfo from '@/components/ADempiere/Form/VPOS/ProductInfo'
 import convertAmount from '@/components/ADempiere/Form/VPOS/Collection/convertAmount/index'
+import FastOrdesList from '@/components/ADempiere/Form/VPOS/OrderList/fastOrder'
 // Format of values ( Date, Price, Quantity )
 import {
   formatDate,
@@ -443,6 +447,7 @@ export default {
     BusinessPartner,
     ProductInfo,
     convertAmount,
+    FastOrdesList,
     fieldLine
   },
   mixins: [
