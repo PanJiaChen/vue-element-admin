@@ -503,7 +503,8 @@ export default {
           adjustDocument: 'You want to Adjust Document',
           dailyLimit: 'Daily Limit',
           customerLimit: 'Customer Limit',
-          available: 'Available'
+          available: 'Available',
+          emptyPayment: 'Payment method not supported'
         }
       },
       keyLayout: {
