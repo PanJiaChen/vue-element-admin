@@ -613,7 +613,7 @@ export default {
       this.$store.commit('updateValueOfField', {
         containerUuid: this.containerUuid,
         columnName: 'PayAmt',
-        value: value
+        value: this.round(value)
       })
     },
     convertAllPayment(value) {
@@ -627,7 +627,7 @@ export default {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
-          value: this.pending
+          value: this.round(this.pending)
         })
       }
     },
@@ -636,13 +636,13 @@ export default {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
-          value: this.pending / value.divideRate
+          value: this.round(this.pending / value.divideRate)
         })
       } else {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
-          value: this.pending
+          value: this.round(this.pending)
         })
       }
     },
@@ -817,7 +817,7 @@ export default {
         this.$store.commit('updateValueOfField', {
           containerUuid: this.containerUuid,
           columnName: 'PayAmt',
-          value: this.pending
+          value: this.round(this.pending)
         })
       })
       this.defaultValueCurrency()
@@ -846,7 +846,7 @@ export default {
       this.$store.commit('updateValueOfField', {
         containerUuid: this.containerUuid,
         columnName: 'PayAmt',
-        value: this.pending
+        value: this.round(this.pending)
       })
       this.defaultValueCurrency()
       this.$store.commit('currencyDivideRateCollection', 1)
