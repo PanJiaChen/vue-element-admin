@@ -339,6 +339,10 @@ export default {
       return currentRecord
     },
     isDocumentTab() {
+      if (this.isEmptyValue(this.windowMetadata)) {
+        return false
+      }
+
       const panel = this.isEmptyValue(this.windowMetadata.currentTabUuid) ? '' : this.$store.getters.getPanel(this.windowMetadata.currentTabUuid)
       if (!this.isEmptyValue(panel)) {
         return panel.isDocument
