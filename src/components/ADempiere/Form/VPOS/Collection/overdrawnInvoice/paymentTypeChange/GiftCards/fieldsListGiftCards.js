@@ -1,6 +1,6 @@
 // ADempiere-Vue (Frontend) for ADempiere ERP & CRM Smart Business Solution
 // Copyright (C) 2017-Present E.R.P. Consultores y Asociados, C.A.
-// Contributor(s): Elsio Sanchez esanchez@erpya.com www.erpya.com
+// Contributor(s): Yamel Senih ysenih@erpya.com www.erpya.com
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
@@ -14,27 +14,32 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-/**
- * Payment State
- */
-export default {
-  paymentBox: [],
-  multiplyRate: 1,
-  divideRate: 1,
-  multiplyRateCollection: 1,
-  divideRateCollection: 1,
-  listPayments: {
-    payments: [],
-    isLoaded: false
+export default [
+  // Name
+  {
+    elementColumnName: 'Name',
+    columnName: 'Name',
+    tableName: 'C_BPartner',
+    tabindex: '1',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 0,
+      isCustomField: true,
+      size: 24,
+      isMandatory: true
+    }
   },
-  currency: [],
-  convertion: {},
-  fieldCurrency: {},
-  convertionRate: [],
-  refundLoaded: [],
-  dialogoInvoce: {
-    show: false,
-    type: 0,
-    success: false
+  // Code
+  {
+    elementColumnName: 'Value',
+    columnName: 'Value',
+    isFromDictionary: true,
+    tabindex: '0',
+    overwriteDefinition: {
+      sequence: 1,
+      isCustomField: true,
+      size: 24,
+      isMandatory: true
+    }
   }
-}
+]

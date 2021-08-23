@@ -64,5 +64,8 @@ export default {
       type,
       success
     }
+  },
+  setRefundLoaded(state, refund) {
+    state.refundLoaded = refund
   }
 }

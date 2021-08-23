@@ -23,13 +23,16 @@
     >
       <el-row :gutter="12">
         <el-col
-          v-for="field in primaryFieldsList"
+          v-for="field in fieldsList"
           :key="field.sequence"
-          :span="8"
+          :span="6"
         >
           <field-definition
             :key="field.columnName"
-            :metadata-field="field"
+            :metadata-field="{
+              ...field,
+              labelCurrency: dayRate.currencyTo
+            }"
           />
         </el-col>
       </el-row>
@@ -41,10 +44,10 @@
 import { formatPrice } from '@/utils/ADempiere/valueFormat.js'
 import formMixin from '@/components/ADempiere/Form/formMixin'
 import posMixin from '@/components/ADempiere/Form/VPOS/posMixin.js'
-import fieldsListOverdrawnInvoice from '../fieldsListOverdrawnInvoice.js'
+import fieldsListGiftCards from './fieldsListGiftCards.js'
 
 export default {
-  name: 'MobilePayment',
+  name: 'GiftCards',
   mixins: [
     formMixin,
     posMixin
@@ -74,8 +77,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          uuid: 'OverdrawnInvoice',
-          containerUuid: 'OverdrawnInvoice'
+          uuid: 'GiftCards',
+          containerUuid: 'GiftCards'
         }
       }
     }
@@ -84,7 +87,7 @@ export default {
     return {
       option: 1,
       typePay: 0,
-      fieldsList: fieldsListOverdrawnInvoice,
+      fieldsList: fieldsListGiftCards,
       currentFieldCurrency: '',
       currentPaymentType: ''
     }
@@ -100,6 +103,7 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     maximumDailyRefundAllowed() {
+      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
     maximumRefundAllowed() {
@@ -142,7 +146,47 @@ export default {
     },
     paymentTypeList() {
       return this.$store.getters.getPaymentTypeList
+    },
+    convertionsList() {
+      return this.$store.state['pointOfSales/point/index'].conversionsList
+    },
+    currentConvertion() {
+      if (this.isEmptyValue(this.currentPointOfSales.displayCurrency)) {
+        return {}
+      }
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(convert.currencyTo) && !this.isEmptyValue(this.currentPointOfSales.displayCurrency) && convert.currencyTo.id === this.currentPointOfSales.displayCurrency.id) {
+          return convert
+        }
+      })
+      if (convert) {
+        return convert
+      }
+      return {}
+    },
+    dayRate() {
+      const currency = this.listCurrency.find(currency => currency.key === this.currentFieldCurrency)
+      const convert = this.convertionsList.find(convert => {
+        if (!this.isEmptyValue(currency) && !this.isEmptyValue(convert.currencyTo) && currency.id === convert.currencyTo.id && this.currentPointOfSales.currentPriceList.currency.id !== currency.id) {
+          return convert
+        }
+      })
+      if (!this.isEmptyValue(convert)) {
+        return convert
+      }
+      return {
+        currencyTo: this.currentPointOfSales.currentPriceList.currency,
+        divideRate: 1,
+        iSOCode: this.currentPointOfSales.currentPriceList.currency.iSOCode
+      }
     }
+  },
+  created() {
+    this.$store.commit('updateValueOfField', {
+      containerUuid: 'Cash',
+      columnName: 'PayAmt',
+      value: this.change
+    })
   },
   methods: {
     formatPrice,

@@ -48,5 +48,8 @@ export default {
   },
   getConvertionRate: (state) => {
     return state.convertionRate
+  },
+  getRefundLoaded: (state) => {
+    return state.refundLoaded
   }
 }

@@ -502,7 +502,7 @@ export default {
           returnMoney: 'Return money in another form of payment',
           adjustDocument: 'You want to Adjust Document',
           dailyLimit: 'Daily Limit',
-          customerLimit: 'Customer Limit',
+          customerLimit: 'Order Limit',
           available: 'Available',
           emptyPayment: 'Payment method not supported'
         }

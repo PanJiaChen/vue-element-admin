@@ -31,50 +31,6 @@ export default [
       isMandatory: true
     }
   },
-  // Code
-  {
-    elementColumnName: 'Value',
-    columnName: 'Value',
-    isFromDictionary: true,
-    tabindex: '0',
-    overwriteDefinition: {
-      sequence: 1,
-      isCustomField: true,
-      size: 24,
-      isMandatory: true
-    }
-  },
-  // Bank
-  {
-    tableName,
-    columnName: 'C_Bank_ID',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 6,
-      handleActionKeyPerformed: true,
-      handleActionPerformed: true,
-      handleContentSelection: true,
-      size: 24,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  // accountno
-  {
-    tableName,
-    elementColumnName: 'AccountNo',
-    columnName: 'AccountNo',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 8,
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
   {
     elementColumnName: 'EMail',
     columnName: 'EMail',
@@ -96,7 +52,7 @@ export default [
     columnName: 'PayAmt',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 3,
+      sequence: 1,
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,

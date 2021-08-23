@@ -311,5 +311,10 @@ export default {
       }
     })
     commit('setCurrencyDisplaye', displaycurrency)
+  },
+  addRefundLoaded({ commit, state }, refund) {
+    const addRefund = state.refundLoaded
+    addRefund.push(refund)
+    commit('setRefundLoaded', addRefund)
   }
 }

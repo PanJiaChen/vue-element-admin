@@ -31,16 +31,44 @@ export default [
       isMandatory: true
     }
   },
+  // Code
   {
-    elementColumnName: 'EMail',
-    columnName: 'EMail',
+    elementColumnName: 'Value',
+    columnName: 'Value',
+    isFromDictionary: true,
+    tabindex: '0',
+    overwriteDefinition: {
+      sequence: 1,
+      isCustomField: true,
+      size: 24,
+      isMandatory: true
+    }
+  },
+  // Phone
+  {
+    elementColumnName: 'Phone',
+    columnName: 'Phone',
     tableName: 'AD_user',
+    tabindex: '4',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 9,
+      sequence: 2,
+      isCustomField: true,
+      size: 24,
+      isMandatory: true
+    }
+  },
+  // Bank
+  {
+    tableName,
+    columnName: 'C_Bank_ID',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 6,
       handleActionKeyPerformed: true,
-      handleContentSelection: true,
       handleActionPerformed: true,
+      handleContentSelection: true,
+      displayLogic: `@TenderType@<>'X'|| @TenderType@<>'Z'`,
       size: 24,
       isActiveLogics: true,
       isMandatory: true
@@ -52,7 +80,7 @@ export default [
     columnName: 'PayAmt',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 0,
+      sequence: 3,
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,
