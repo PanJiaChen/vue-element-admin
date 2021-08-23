@@ -202,9 +202,9 @@
                       :show-field="showFieldLine"
                       :current-line="currentLineOrder"
                     />
-                    <el-button slot="reference" type="success" icon="el-icon-edit" size="mini" style="margin-right: 3%;" @click="showEditLine(scope.row)" />
+                    <el-button slot="reference" type="success" icon="el-icon-edit" size="mini" style="margin-right: 3%;" :disabled="isDisabled" @click="showEditLine(scope.row)" />
                   </el-popover>
-                  <el-button type="danger" icon="el-icon-delete" size="mini" @click="deleteOrderLine(scope.row)" />
+                  <el-button type="danger" icon="el-icon-delete" size="mini" :disabled="isDisabled" @click="deleteOrderLine(scope.row)" />
                 </template>
               </el-table-column>
             </el-table>
