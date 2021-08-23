@@ -71,14 +71,21 @@
             </template>
           </div>
           <div v-if="isEmptyValue(selectionTypeRefund)" class="text item">
-            <el-row :gutter="12">
-              <el-col v-for="(payment, index) in paymentTypeList" :key="index" :span="8">
+            <el-row :gutter="24">
+              <el-col v-for="(payment, index) in paymentTypeList" :key="index" :span="6">
                 <div @click="selectionTypeRefund = payment">
                   <el-card shadow="hover">
                     <div slot="header" class="clearfix" style="text-align: center;">
                       <span>
                         <b>{{ payment.name }}</b> <br>
                       </span>
+                    </div>
+                    <div class="text item">
+                      <el-image
+                        :src="imageCard(payment.key)"
+                        tyle="width: 100px; height: 100px"
+                        fit="contain"
+                      />
                     </div>
                   </el-card>
                 </div>
@@ -133,6 +140,7 @@
           @click="close"
         />
         <el-button
+          v-if="caseOrder === 1 && !isEmptyValue(selectionTypeRefund)"
           type="primary"
           class="custom-button-create-bp"
           icon="el-icon-plus"
@@ -228,9 +236,6 @@ export default {
         case 'Z':
           typePay = () => import('./paymentTypeChange/Zelle/index.vue')
           break
-        default:
-          typePay = () => import('./paymentTypeChange/empty.vue')
-          break
       }
       return typePay
     },
@@ -317,6 +322,30 @@ export default {
   },
   methods: {
     formatPrice,
+    imageCard(typeRefund) {
+      let image
+      switch (typeRefund) {
+        case 'P':
+          image = 'MobilePayment.jpg'
+          break
+        case 'X':
+          image = 'Cash.jpg'
+          break
+        case 'A':
+          image = 'ACH.jpg'
+          break
+        case 'M':
+          image = 'GiftCard.jpg'
+          break
+        case 'Z':
+          image = 'Zelle.jpg'
+          break
+        default:
+          image = 'Default.jpg'
+          break
+      }
+      return require('@/image/ADempiere/pos/typePayment/' + image)
+    },
     addRefund() {
       const values = this.$store.getters.getValuesView({
         containerUuid: this.renderComponentContainer,
