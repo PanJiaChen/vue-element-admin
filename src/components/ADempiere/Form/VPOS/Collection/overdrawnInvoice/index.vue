@@ -65,49 +65,31 @@
               <b>{{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(maximumRefundAllowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }} </b>
             </span>
           </div>
-          <div class="text item">
-            <el-form
-              label-position="top"
-              label-width="10px"
-            >
-              <el-row>
-                <el-col
-                  v-for="field in primaryFieldsList"
-                  :key="field.sequence"
-                  :span="8"
-                >
-                  <field-definition
-                    :key="field.columnName"
-                    :metadata-field="field"
-                  />
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label="Tipo de pago">
-                    <el-select
-                      v-model="currentPaymentType"
-                      style="width: -webkit-fill-available;"
-                      @change="changePaymentType"
-                    >
-                      <el-option
-                        v-for="item in paymentTypeList"
-                        :key="item.uuid"
-                        :label="item.name"
-                        :value="item.key"
-                      />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  v-for="field in hiddenFieldsList"
-                  :key="field.sequence"
-                  :span="8"
-                >
-                  <field-definition
-                    :metadata-field="field"
-                  />
-                </el-col>
-              </el-row>
-            </el-form>
+          <div v-if="optionTypePay === 0" class="text item">
+            <el-row :gutter="12">
+              <el-col v-for="(payment, index) in paymentTypeList" :key="index" :span="8">
+                <div @click="optionTypePay = payment.key">
+                  <el-card shadow="hover">
+                    <div slot="header" class="clearfix" style="text-align: center;">
+                      <span>
+                        {{ payment.name }}
+                      </span>
+                    </div>
+                    <p style="text-align: center;"> Nombre </p>
+                    <p style="text-align: center;"> Cedula </p>
+                    <p style="text-align: center;"> Telefono </p>
+                    <p style="text-align: center;"> Banco </p>
+                    <p style="text-align: center;"> Descripcion </p>
+                  </el-card>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="optionTypePay !== 0" class="text item">
+            <component
+              :is="componentRender"
+              :change="change"
+            />
           </div>
         </el-card>
       </div>
@@ -130,6 +112,13 @@
         </el-card>
       </div>
       <span slot="footer" class="dialog-footer">
+        <el-button
+          v-if="optionTypePay !== 0"
+          type="info"
+          class="custom-button-create-bp"
+          icon="el-icon-back"
+          @click="optionTypePay = 0"
+        />
         <el-button
           type="danger"
           class="custom-button-create-bp"
@@ -195,12 +184,25 @@ export default {
   data() {
     return {
       option: 1,
+      optionTypePay: 0,
       fieldsList: fieldsListOverdrawnInvoice,
       currentFieldCurrency: '',
       currentPaymentType: ''
     }
   },
   computed: {
+    componentRender() {
+      let typePay
+      switch (this.optionTypePay) {
+        case 'P':
+          typePay = () => import('./paymentTypeChange/MobilePayment.vue')
+          break
+        case 'A':
+          typePay = () => import('./paymentTypeChange/ACH/index.vue')
+          break
+      }
+      return typePay
+    },
     showDialogo() {
       return this.$store.state['pointOfSales/payments/index'].dialogoInvoce.show
     },
@@ -211,14 +213,12 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     maximumDailyRefundAllowed() {
-      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
     maximumRefundAllowed() {
       return this.$store.getters.posAttributes.currentPointOfSales.maximumRefundAllowed
     },
     displayeCurrency() {
-      console.log(this.$store.getters.posAttributes.currentPointOfSales)
       const tenderType = this.$store.getters.getValueOfField({
         containerUuid: 'OverdrawnInvoice',
         columnName: 'TenderType'
@@ -392,6 +392,11 @@ export default {
 </script>
 
 <style scoped>
+  .el-dialog__header {
+    padding: 20px;
+    padding-bottom: 10px;
+    background: #dae6f32e;
+  }
   .el-image {
     display: inline-block;
     overflow: hidden;
