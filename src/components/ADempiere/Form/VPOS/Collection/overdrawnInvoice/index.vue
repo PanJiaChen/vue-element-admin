@@ -65,8 +65,10 @@
                 {{ selectionTypeRefund.name }}
               </span>
               <span style="float: right;text-align: end">
-                <b>{{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(selectionTypeRefund.maximum_refund_allowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }}<br> {{ $t('form.pos.collect.overdrawnInvoice.available') }}: {{ formatPrice(selectionTypeRefund.maximum_daily_refund_allowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }}</b> <br>
-                <b>{{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(selectionTypeRefund.maximum_refund_allowed, currency.iSOCode) }} | {{ formatPrice(0, isoCode) }} </b>
+                <b>
+                  {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(maximumDailyRefundAllowed, refundReferenceCurrency) }}
+                  {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(maximumRefundAllowed, refundReferenceCurrency) }}
+                </b>
               </span>
             </template>
           </div>
@@ -266,14 +268,29 @@ export default {
     caseOrder() {
       return this.$store.state['pointOfSales/payments/index'].dialogoInvoce.type
     },
-    isoCode() {
-      return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
+    maximumRefundAllowed() {
+      if (!this.isEmptyValue(this.selectionTypeRefund) && !this.isEmptyValue(this.selectionTypeRefund.maximum_refund_allowed) && this.selectionTypeRefund.maximum_refund_allowed > 0) {
+        return this.selectionTypeRefund.maximum_refund_allowed
+      }
+      return this.$store.getters.posAttributes.currentPointOfSales.maximumRefundAllowed
     },
     maximumDailyRefundAllowed() {
+      if (!this.isEmptyValue(this.selectionTypeRefund) && !this.isEmptyValue(this.selectionTypeRefund.maximum_daily_refund_allowed) && this.selectionTypeRefund.maximum_daily_refund_allowed > 0) {
+        return this.selectionTypeRefund.maximum_daily_refund_allowed
+      }
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
-    maximumRefundAllowed() {
-      return this.$store.getters.posAttributes.currentPointOfSales.maximumRefundAllowed
+    refundReferenceCurrency() {
+      if (!this.isEmptyValue(this.selectionTypeRefund) && !this.isEmptyValue(this.selectionTypeRefund.refund_reference_currency)) {
+        return this.selectionTypeRefund.refund_reference_currency.iso_code
+      }
+      if (this.isEmptyValue(this.$store.getters.posAttributes.currentPointOfSales.refundReferenceCurrency.iso_code)) {
+        return ''
+      }
+      return this.$store.getters.posAttributes.currentPointOfSales.refundReferenceCurrency.iso_code
+    },
+    isoCode() {
+      return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     displayeCurrency() {
       const tenderType = this.$store.getters.getValueOfField({
