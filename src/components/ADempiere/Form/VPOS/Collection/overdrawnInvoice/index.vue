@@ -32,6 +32,52 @@
             <el-radio v-model="option" :label="4"> {{ $t('form.pos.collect.overdrawnInvoice.adjustDocument') }}</el-radio>
           </el-form-item>
         </el-form>
+        <el-card v-if="option === 1" class="box-card">
+          <div slot="header" class="clearfix">
+            <span v-if="isEmptyValue(selectionTypeRefund)">{{ $t('form.pos.collect.overdrawnInvoice.above') }}</span>
+            <template v-else>
+              <span>
+                {{ selectionTypeRefund.name }}
+              </span>
+              <span style="float: right;text-align: end">
+                <b>
+                  {{ $t('form.pos.collect.overdrawnInvoice.dailyLimit') }}: {{ formatPrice(maximumDailyRefundAllowed, refundReferenceCurrency) }}
+                  {{ $t('form.pos.collect.overdrawnInvoice.customerLimit') }}: {{ formatPrice(maximumRefundAllowed, refundReferenceCurrency) }}
+                </b>
+              </span>
+            </template>
+          </div>
+          <div class="text item">
+            <el-row :gutter="24">
+              <el-col v-for="(payment, index) in paymentTypeListRefund" :key="index" :span="6">
+                <div @click="selectPayment(payment)">
+                  <el-card shadow="hover">
+                    <div slot="header" class="clearfix" style="text-align: center;">
+                      <span>
+                        <b>{{ payment.name }}</b> <br>
+                      </span>
+                    </div>
+                    <div class="text item">
+                      <el-image
+                        :src="imageCard(payment.tender_type)"
+                        tyle="width: 100px; height: 100px"
+                        fit="contain"
+                      />
+                    </div>
+                  </el-card>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="!isEmptyValue(selectionTypeRefund)" class="text item">
+            <component
+              :is="componentRender"
+              :change="change"
+            />
+          </div>
+        </el-card>
+      </div>
+      <div>
         <el-card v-if="option === 2" class="box-card">
           <div slot="header" class="clearfix">
             <span>{{ $t('form.pos.collect.overdrawnInvoice.above') }}</span>
@@ -72,7 +118,7 @@
               </span>
             </template>
           </div>
-          <div v-if="isEmptyValue(selectionTypeRefund)" class="text item">
+          <div class="text item">
             <el-row :gutter="24">
               <el-col v-for="(payment, index) in paymentTypeList" :key="index" :span="6">
                 <div @click="selectPayment(payment)">
@@ -84,7 +130,7 @@
                     </div>
                     <div class="text item">
                       <el-image
-                        :src="imageCard(payment.key)"
+                        :src="imageCard(payment.tender_type)"
                         tyle="width: 100px; height: 100px"
                         fit="contain"
                       />
@@ -129,31 +175,16 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button
-          v-if="!isEmptyValue(selectionTypeRefund)"
-          type="info"
-          class="custom-button-create-bp"
-          icon="el-icon-back"
-          @click="selectionTypeRefund = {}"
-        />
-        <el-button
           type="danger"
           class="custom-button-create-bp"
           icon="el-icon-close"
           @click="close"
         />
         <el-button
-          v-if="caseOrder === 1 && !isEmptyValue(selectionTypeRefund)"
-          type="primary"
-          class="custom-button-create-bp"
-          icon="el-icon-plus"
-          :disabled="!isEmptyValue(refundLoaded)"
-          @click="addRefund"
-        />
-        <el-button
           type="success"
           class="custom-button-create-bp"
           icon="el-icon-check"
-          @click="success"
+          @click="addRefund"
         />
       </span>
     </el-dialog>
@@ -222,7 +253,7 @@ export default {
   computed: {
     componentRender() {
       let typePay
-      switch (this.selectionTypeRefund.key) {
+      switch (this.selectionTypeRefund.tender_type) {
         case 'P':
           typePay = () => import('./paymentTypeChange/MobilePayment/index')
           break
@@ -243,7 +274,7 @@ export default {
     },
     renderComponentContainer() {
       let container
-      switch (this.selectionTypeRefund.key) {
+      switch (this.selectionTypeRefund.tender_type) {
         case 'P':
           container = 'MobilePayment'
           break
@@ -328,10 +359,18 @@ export default {
       return this.$store.getters.getFieldsListEmptyMandatory({ containerUuid: 'OverdrawnInvoice', formatReturn: 'name' })
     },
     paymentTypeList() {
+      return this.$store.getters.getPaymentTypeList.filter(type => type.is_allowed_to_refund_open)
+    },
+    paymentTypeListRefund() {
       return this.$store.getters.getPaymentTypeList.filter(type => type.is_allowed_to_refund)
     },
     refundLoaded() {
       return this.$store.getters.getRefundLoaded
+    }
+  },
+  watch: {
+    option(value) {
+      this.selectionTypeRefund = {}
     }
   },
   mounted() {
@@ -342,8 +381,11 @@ export default {
     imageCard(typeRefund) {
       let image
       switch (typeRefund) {
-        case 'P':
+        case 'D':
           image = 'MobilePayment.jpg'
+          break
+        case 'P':
+          image = 'Mobile.jpg'
           break
         case 'X':
           image = 'Cash.jpg'
@@ -396,6 +438,7 @@ export default {
       })
       this.$store.dispatch('addRefundLoaded', values)
       this.selectionTypeRefund = {}
+      this.success()
     },
     success() {
       const customerDetails = []
@@ -458,13 +501,6 @@ export default {
                   showClose: true
                 })
               })
-              .catch(error => {
-                this.$message({
-                  type: 'error',
-                  message: error.message,
-                  showClose: true
-                })
-              })
             this.$store.commit('dialogoInvoce', { show: false, success: true })
           } else {
             this.$message({
@@ -476,8 +512,22 @@ export default {
           }
           break
         default:
-          this.completePreparedOrder(posUuid, orderUuid, payments)
-          this.$store.commit('dialogoInvoce', { show: false, success: true })
+          console.log(this.$store.getters.posAttributes.currentPointOfSales.isPosRequiredPin)
+          if (this.$store.getters.posAttributes.currentPointOfSales.isPosRequiredPin) {
+            const attributePin = {
+              posUuid,
+              orderUuid,
+              payments,
+              action: 'openBalanceInvoice',
+              type: 'actionPos',
+              label: this.$t('form.pos.pinMessage.invoiceOpen')
+            }
+            this.visible = true
+            this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+          } else {
+            this.completePreparedOrder(posUuid, orderUuid, payments)
+            this.$store.commit('dialogoInvoce', { show: false, success: true })
+          }
           break
       }
     },

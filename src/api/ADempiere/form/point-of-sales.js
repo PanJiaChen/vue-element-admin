@@ -910,7 +910,7 @@ export function listTenderTypes({
   posUuid
 }) {
   return request({
-    url: `${config.pointOfSales.endpoint}/available-tender-types`,
+    url: `${config.pointOfSales.endpoint}/available-payment-methods`,
     method: 'get',
     params: {
       pos_uuid: posUuid

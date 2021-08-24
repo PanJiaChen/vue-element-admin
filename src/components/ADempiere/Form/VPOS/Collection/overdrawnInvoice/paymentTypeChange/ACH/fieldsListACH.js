@@ -25,7 +25,7 @@ export default [
     tabindex: '1',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 0,
+      sequence: 1,
       isCustomField: true,
       size: 24,
       isMandatory: true
@@ -38,7 +38,7 @@ export default [
     isFromDictionary: true,
     tabindex: '0',
     overwriteDefinition: {
-      sequence: 1,
+      sequence: 0,
       isCustomField: true,
       size: 24,
       isMandatory: true
@@ -50,7 +50,7 @@ export default [
     columnName: 'C_Bank_ID',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 6,
+      sequence: 3,
       handleActionKeyPerformed: true,
       handleActionPerformed: true,
       handleContentSelection: true,
@@ -66,7 +66,7 @@ export default [
     columnName: 'AccountNo',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 8,
+      sequence: 4,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
@@ -81,7 +81,7 @@ export default [
     tableName: 'AD_user',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 9,
+      sequence: 2,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
@@ -96,7 +96,7 @@ export default [
     columnName: 'PayAmt',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 3,
+      sequence: 6,
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,

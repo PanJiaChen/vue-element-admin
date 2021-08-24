@@ -61,7 +61,7 @@ export default [
       handleActionKeyPerformed: true,
       handleActionPerformed: true,
       handleContentSelection: true,
-      displayLogic: `@TenderType@<>'X'`,
+      displayLogic: `@TenderType@<>'X'&@TenderType@<>'Z'`,
       size: 24,
       isActiveLogics: true,
       isMandatory: true
@@ -165,6 +165,22 @@ export default [
       handleActionPerformed: true,
       size: 24,
       displayLogic: `@TenderType@=='M'`,
+      isActiveLogics: true,
+      isMandatory: true
+    }
+  },
+  {
+    elementColumnName: 'EMail',
+    columnName: 'EMail',
+    tableName: 'AD_user',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 4,
+      handleActionKeyPerformed: true,
+      handleContentSelection: true,
+      handleActionPerformed: true,
+      size: 24,
+      displayLogic: `@TenderType@=='Z'`,
       isActiveLogics: true,
       isMandatory: true
     }

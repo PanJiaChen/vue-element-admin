@@ -36,6 +36,7 @@
           <el-form-item :label="$t('form.pos.collect.Currency')">
             <el-select
               v-model="currentFieldCurrency"
+              style="width: -webkit-fill-available;"
               @change="changeCurrency"
             >
               <el-option

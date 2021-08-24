@@ -551,7 +551,8 @@ export default {
       grandTotal: 'Grand Total',
       grandTotalConverted: 'Grand Total Converted',
       quantityAvailable: 'Available',
-      upc: 'UPC / EAN'
+      upc: 'UPC / EAN',
+      UM: 'UM'
     },
     guideSteps: {
       productValue: {

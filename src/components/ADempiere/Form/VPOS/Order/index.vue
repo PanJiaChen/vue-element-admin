@@ -52,10 +52,10 @@
                 :is-disabled="isDisabled"
               />
             </el-col>
-            <el-col :span="4" :style="styleTab">
+            <el-col :span="3" :style="styleTab">
               <fast-ordes-list />
             </el-col>
-            <el-col :span="5" :style="styleTab">
+            <el-col :span="4" :style="styleTab">
               <el-form-item>
                 <template slot="label" />
                 <el-dropdown
@@ -73,6 +73,7 @@
                       v-for="item in listDocumentTypes"
                       :key="item.uuid"
                       :command="item"
+                      :disabled="isDisabled"
                     >
                       {{ item.name }}
                     </el-dropdown-item>
@@ -80,7 +81,7 @@
                 </el-dropdown>
               </el-form-item>
             </el-col>
-            <el-col :span="isEmptyValue(currentOrder) ? 1 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px; margin-top: 3.%;' : 'padding: 0px; margin-top: 2.4%;'">
+            <el-col :span="isEmptyValue(currentOrder) ? 3 : 4" :style="isShowedPOSKeyLayout ? 'padding: 0px; margin-top: 3.%;' : 'padding: 0px; margin-top: 2.4%;'">
               <el-form-item>
                 <el-row :gutter="24">
                   <el-col :span="10" style="padding-left: 0px; padding-right: 0px;">
@@ -174,6 +175,7 @@
                           {{ $t('form.productInfo.code') }}: <b>{{ scope.row.product.value }}</b><br>
                           {{ $t('form.productInfo.name') }}: <b>{{ scope.row.product.name }}</b><br>
                           {{ $t('form.productInfo.description') }}: <b>{{ scope.row.product.description }}</b><br>
+                          {{ $t('form.productInfo.UM') }}: <b>{{ scope.row.product.uomName }}</b><br>
                         </el-col>
                         <el-col :span="8">
                           <div style="float: right; text-align: end;">

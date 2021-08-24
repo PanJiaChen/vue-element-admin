@@ -32,10 +32,11 @@
             :metadata-field="field"
           />
         </el-col>
-        <el-col :span="8">
+        <el-col :span="6">
           <el-form-item :label="$t('form.pos.collect.Currency')">
             <el-select
               v-model="currentFieldCurrency"
+              style="width: -webkit-fill-available;"
               @change="changeCurrency"
             >
               <el-option

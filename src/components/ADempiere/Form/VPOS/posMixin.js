@@ -295,6 +295,8 @@ export default {
             break
           case 'openBalanceInvoice':
             this.$store.commit('dialogoInvoce', { show: true, type: 2 })
+            this.$store.commit('dialogoInvoce', { show: false })
+            this.refundAllowed(action.posUuid, action.orderUuid, action.payments)
             break
         }
       }

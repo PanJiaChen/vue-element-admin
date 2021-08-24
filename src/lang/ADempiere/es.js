@@ -527,7 +527,8 @@ export default {
       grandTotal: 'Total General',
       grandTotalConverted: 'Gran Total Convertido',
       quantityAvailable: 'Disponible',
-      upc: 'Código de Barras'
+      upc: 'Código de Barras',
+      UM: 'UM'
     },
     guideSteps: {
       productValue: {
