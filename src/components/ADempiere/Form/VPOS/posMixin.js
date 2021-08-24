@@ -169,6 +169,9 @@ export default {
         return pos.isPosRequiredPin
       }
       return false
+    },
+    showOverdrawnInvoice() {
+      return this.$store.getters.getOverdrawnInvoice.visible
     }
   },
   watch: {
@@ -200,6 +203,9 @@ export default {
       if (!value && !this.isEmptyValue(this.$route.query)) {
         this.reloadOrder(true)
       }
+    },
+    showOverdrawnInvoice(value) {
+      this.visible = value
     }
   },
   beforeMount() {
@@ -602,38 +608,30 @@ export default {
         } else if (mutation.type === 'addActionPerformed') {
           switch (mutation.payload.columnName) {
             case 'QtyEntered':
-              if (this.isPosRequiredPin && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
-                if (this.allowsModifyQuantity) {
-                  this.updateOrderLine(mutation.payload)
-                } else {
-                  const attributePin = {
-                    ...mutation.payload,
-                    type: 'updateOrder',
-                    label: this.$t('form.pos.pinMessage.qtyEntered')
-                  }
-                  this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
-                  this.visible = true
-                }
-              } else if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+              if (this.allowsModifyQuantity && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
                 this.updateOrderLine(mutation.payload)
+              } else {
+                const attributePin = {
+                  ...mutation.payload,
+                  type: 'updateOrder',
+                  label: this.$t('form.pos.pinMessage.qtyEntered')
+                }
+                this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+                this.visible = true
               }
               break
             case 'PriceEntered':
             case 'Discount':
-              if (this.isPosRequiredPin && !this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
-                if (this.modifyPrice) {
-                  this.updateOrderLine(mutation.payload)
-                } else {
-                  const attributePin = {
-                    ...mutation.payload,
-                    type: 'updateOrder',
-                    label: mutation.payload.columnName === 'PriceEntered' ? this.$t('form.pos.pinMessage.price') : this.$t('form.pos.pinMessage.discount')
-                  }
-                  this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
-                  this.visible = true
-                }
-              } else if (!this.isEmptyValue(this.$store.state['pointOfSales/orderLine/index'].line)) {
+              if (this.modifyPrice) {
                 this.updateOrderLine(mutation.payload)
+              } else {
+                const attributePin = {
+                  ...mutation.payload,
+                  type: 'updateOrder',
+                  label: mutation.payload.columnName === 'PriceEntered' ? this.$t('form.pos.pinMessage.price') : this.$t('form.pos.pinMessage.discount')
+                }
+                this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+                this.visible = true
               }
               break
             case 'C_DocTypeTarget_ID': {

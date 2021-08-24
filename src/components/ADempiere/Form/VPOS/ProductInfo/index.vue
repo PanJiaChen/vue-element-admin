@@ -23,9 +23,9 @@
         <el-popover
           v-model="visible"
           v-shortkey="keyShortcuts"
-          placement="right"
+          placement="bottom-start"
           trigger="click"
-          width="800"
+          width="1250"
           @shortkey.native="close"
         >
           <el-button icon="el-icon-close" type="text" style="float: right;padding: 1% 1% 0px 0px;font-size: 20px;" @click="close" />

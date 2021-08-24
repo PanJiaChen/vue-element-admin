@@ -175,7 +175,7 @@
         </el-main>
         <!-- Collection container bottom panel -->
         <el-footer id="infoInvoce" height="auto" style="padding-left: 0px; padding-right: 0px;">
-          <el-row :gutter="24" style="background-color: rgb(245, 247, 250);">
+          <el-row :gutter="24">
             <el-col :span="24">
               <span>
                 <p class="total">

@@ -100,6 +100,22 @@ export default [
       isMandatory: true
     }
   },
+  {
+    elementColumnName: 'EMail',
+    columnName: 'EMail',
+    tableName: 'AD_user',
+    isFromDictionary: true,
+    overwriteDefinition: {
+      sequence: 5,
+      handleActionKeyPerformed: true,
+      handleContentSelection: true,
+      handleActionPerformed: true,
+      size: 24,
+      displayLogic: `@TenderType@=='Z'`,
+      isActiveLogics: true,
+      isMandatory: true
+    }
+  },
   // ReferenceNo
   {
     tableName: 'HR_Attribute',
@@ -107,7 +123,7 @@ export default [
     columnName: 'ReferenceNo',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 5,
+      sequence: 6,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
@@ -124,7 +140,7 @@ export default [
     columnName: 'CreditCardType',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 6,
+      sequence: 7,
       defaultValue: 'M',
       handleActionKeyPerformed: true,
       handleContentSelection: true,
@@ -142,7 +158,7 @@ export default [
     columnName: 'CreditCardNumber',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 7,
+      sequence: 8,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
@@ -159,28 +175,12 @@ export default [
     columnName: 'AccountNo',
     isFromDictionary: true,
     overwriteDefinition: {
-      sequence: 8,
+      sequence: 9,
       handleActionKeyPerformed: true,
       handleContentSelection: true,
       handleActionPerformed: true,
       size: 24,
       displayLogic: `@TenderType@=='M'`,
-      isActiveLogics: true,
-      isMandatory: true
-    }
-  },
-  {
-    elementColumnName: 'EMail',
-    columnName: 'EMail',
-    tableName: 'AD_user',
-    isFromDictionary: true,
-    overwriteDefinition: {
-      sequence: 4,
-      handleActionKeyPerformed: true,
-      handleContentSelection: true,
-      handleActionPerformed: true,
-      size: 24,
-      displayLogic: `@TenderType@=='Z'`,
       isActiveLogics: true,
       isMandatory: true
     }

@@ -21,7 +21,7 @@
     id="headerContainer"
     style="display: -webkit-box; height: 100%"
   >
-    <el-container style="background: white; height: 100%!important;">
+    <el-container v-shortkey="{ closeForm: ['esc'] }" style="background: white; height: 100%!important;" @shortkey.native="keyActionClosePin">
       <el-header
         height="auto"
         :style="isShowedPOSKeyLayout ? 'padding-right: 20px; padding-left: 0px;' : 'padding-right: 0px; padding-left: 0px;'"
@@ -214,7 +214,7 @@
               </el-table-column>
             </el-table>
           </el-main>
-          <el-dialog ref="dialog" :title="$t('form.pos.pinMessage.pin') + infowOverdrawnInvoice.label" width="40%" :visible.sync="visible">
+          <el-dialog ref="dialog" v-shortkey="{ closeForm: ['esc'] }" :title="$t('form.pos.pinMessage.pin') + infowOverdrawnInvoice.label" width="40%" :visible.sync="visible" @shortkey.native="keyActionClosePin">
             <el-input
               id="pin"
               ref="pin"
@@ -223,6 +223,7 @@
               type="password"
               :placeholder="$t('form.pos.tableProduct.pin')"
               :focus="true"
+              @change="openPin(pin)"
             />
             <span style="float: right;">
               <el-button
@@ -383,13 +384,13 @@
               </p>
               <p class="total">{{ $t('form.pos.order.type') }}:<b class="order-info">{{ currentOrder.documentType.name }}</b></p>
               <p class="total">
-                {{ $t('form.pos.order.itemQuantity') }}
+                {{ $t('form.pos.order.itemQuantity') }}:
                 <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ getItemQuantity }}
                 </b>
               </p>
               <p class="total">
-                {{ $t('form.pos.order.numberLines') }}
+                {{ $t('form.pos.order.numberLines') }}:
                 <b v-if="!isEmptyValue(currentOrder.uuid)" class="order-info">
                   {{ numberOfLines }}
                 </b>
@@ -683,9 +684,7 @@ export default {
   },
   watch: {
     showOverdrawnInvoice(value) {
-      if (value) {
-        this.visible = value
-      }
+      this.visible = value
     },
     numberOfLines(value) {
       if (value > 0) {
@@ -725,6 +724,10 @@ export default {
     formatDate,
     formatPrice,
     formatQuantity,
+    keyActionClosePin(event) {
+      this.visible = false
+      this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
+    },
     focusPin() {
       this.$refs.pin.focus()
     },

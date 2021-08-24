@@ -48,18 +48,27 @@
     >
       <el-table-column
         prop="product.value"
-        label="Codigo"
+        :label="$t('form.productInfo.code')"
       />
       <el-table-column
         prop="product.name"
-        label="Producto"
+        :label="$t('form.productInfo.name')"
       />
       <el-table-column
-        prop="priceListName"
-        label="Lista de Precio"
+        prop="quantityOnHand"
+        :label="$t('form.productInfo.quantityOnHand')"
+        align="right"
       />
       <el-table-column
-        label="Precio"
+        :label="$t('form.pos.collect.convertedAmount')"
+        align="right"
+      >
+        <template slot-scope="scope">
+          {{ formatPrice(scope.row.schemaPriceStandard, scope.row.schemaCurrency.iSOCode) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :label="$t('form.productInfo.price')"
         align="right"
       >
         <template slot-scope="scope">
@@ -133,6 +142,7 @@ export default {
     listWithPrice() {
       const { productPricesList } = this.productPrice
       if (!this.isEmptyValue(productPricesList)) {
+        console.log(productPricesList)
         return productPricesList
       }
       return []
