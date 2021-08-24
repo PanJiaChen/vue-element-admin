@@ -920,3 +920,30 @@ export function listTenderTypes({
       return listTenderType
     })
 }
+
+/**
+ * Create Customer Account
+ * @param {string} posUuidd - POS UUID reference
+ */
+export function createCustomerAccount({
+  posUuid,
+  orderUuid,
+  customerAccount,
+  tenderTypeCode,
+  currencyUuid
+}) {
+  return request({
+    url: `${config.pointOfSales.endpoint}/available-payment-methods`,
+    method: 'post',
+    data: {
+      pos_uuid: posUuid,
+      order_uuid: orderUuid,
+      customer_account: customerAccount,
+      tender_type_code: tenderTypeCode,
+      currency_uuid: currencyUuid
+    }
+  })
+    .then(responseCustomerAccount => {
+      return responseCustomerAccount
+    })
+}

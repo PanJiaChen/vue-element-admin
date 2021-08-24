@@ -19,7 +19,8 @@ import {
   createPayment,
   deletePayment,
   updatePayment,
-  getPaymentsList
+  getPaymentsList,
+  createCustomerAccount
 } from '@/api/ADempiere/form/point-of-sales.js'
 import { isEmptyValue } from '@/utils/ADempiere/valueUtils.js'
 import { showMessage } from '@/utils/ADempiere/notification.js'
@@ -316,5 +317,26 @@ export default {
     const addRefund = state.refundLoaded
     addRefund.push(refund)
     commit('setRefundLoaded', addRefund)
+  },
+  currencyRedund({ commit }, currency) {
+    commit('setCurrencyRedund', currency)
+  },
+  sendCreateCustomerAccount({ commit }, {
+    posUuid,
+    orderUuid,
+    customerAccount,
+    tenderTypeCode,
+    currencyUuid
+  }) {
+    createCustomerAccount({
+      posUuid,
+      orderUuid,
+      customerAccount,
+      tenderTypeCode,
+      currencyUuid
+    })
+      .then(response => {
+        console.log(response)
+      })
   }
 }

@@ -32,6 +32,7 @@ export default {
   fieldCurrency: {},
   convertionRate: [],
   refundLoaded: [],
+  currentFieldCurrencyRedund: {},
   dialogoInvoce: {
     show: false,
     type: 0,

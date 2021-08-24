@@ -51,5 +51,8 @@ export default {
   },
   getRefundLoaded: (state) => {
     return state.refundLoaded
+  },
+  getCurrencyRedund: (state) => {
+    return state.currentFieldCurrencyRedund
   }
 }

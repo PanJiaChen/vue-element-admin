@@ -203,6 +203,8 @@ export default {
     },
     changeCurrency(value) {
       this.currentFieldCurrency = value
+      const currency = this.listCurrency.find(currency => currency.key === value)
+      this.$store.dispatch('currencyRedund', currency)
     },
     changePaymentType(value) {
       this.$store.commit('currentTenderChange', value)

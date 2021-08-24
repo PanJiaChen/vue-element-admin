@@ -370,6 +370,11 @@ export default {
   },
   watch: {
     option(value) {
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.renderComponentContainer,
+        columnName: 'PayAmt',
+        value: this.change
+      })
       this.selectionTypeRefund = {}
     }
   },
@@ -418,9 +423,15 @@ export default {
         containerUuid: this.renderComponentContainer,
         format: 'object'
       })
-      values.tenderType = this.selectionTypeRefund.name
+      const customer = {
+        customerAccount: values,
+        currencyUuid: this.$store.getters.getCurrencyRedund.uuid,
+        orderUuid: this.currentOrder.uuid,
+        posUuid: this.currentPointOfSales.uuid,
+        tenderTypeCode: this.selectionTypeRefund.tender_type
+      }
       const emptyMandatoryFields = this.$store.getters.getFieldsListEmptyMandatory({ containerUuid: this.renderComponentContainer, formatReturn: 'name' })
-      if (!this.isEmptyValue(emptyMandatoryFields)) {
+      if (!this.isEmptyValue(emptyMandatoryFields) && this.isEmptyValue(this.$store.getters.getCurrencyRedund.uuid)) {
         this.$message({
           type: 'warning',
           message: this.$t('notifications.mandatoryFieldMissing') + emptyMandatoryFields,
@@ -437,6 +448,7 @@ export default {
         })
       })
       this.$store.dispatch('addRefundLoaded', values)
+      this.$store.dispatch('sendCreateCustomerAccount', customer)
       this.selectionTypeRefund = {}
       this.success()
     },
@@ -512,7 +524,6 @@ export default {
           }
           break
         default:
-          console.log(this.$store.getters.posAttributes.currentPointOfSales.isPosRequiredPin)
           if (this.$store.getters.posAttributes.currentPointOfSales.isPosRequiredPin) {
             const attributePin = {
               posUuid,

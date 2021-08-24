@@ -67,5 +67,8 @@ export default {
   },
   setRefundLoaded(state, refund) {
     state.refundLoaded = refund
+  },
+  setCurrencyRedund(state, currency) {
+    state.currentFieldCurrencyRedund = currency
   }
 }
