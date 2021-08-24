@@ -524,7 +524,7 @@ export default {
       taxAmount: 'Monto de Impuesto',
       grandTotal: 'Total General',
       grandTotalConverted: 'Gran Total Convertido',
-      quantityAvailable: 'Cantidad Disponible',
+      quantityAvailable: 'Disponible',
       upc: 'Código de Barras'
     },
     guideSteps: {

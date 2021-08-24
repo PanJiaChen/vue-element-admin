@@ -145,13 +145,14 @@
                     popper-class="el-popper-info"
                     placement="right-start"
                     trigger="click"
+                    width="300"
                     :title="$t('form.productInfo.productInformation')"
                   >
                     <el-form
                       label-position="top"
                       style="float: right;display: contents;line-height: 30px;"
                     >
-                      <el-row>
+                      <el-row style="margin: 10px!important;">
                         <el-col :span="4">
                           <div>
                             <el-avatar v-if="isEmptyValue(scope.row.product.imageUrl)" shape="square" :size="100" src="https://#" @error="true">
@@ -175,12 +176,14 @@
                           {{ $t('form.productInfo.description') }}: <b>{{ scope.row.product.description }}</b><br>
                         </el-col>
                         <el-col :span="8">
-                          <div style="float: right">
+                          <div style="float: right; text-align: end;">
                             {{ $t('form.productInfo.price') }}:
-                            <b>{{ formatPrice(scope.row.product.priceActual, pointOfSalesCurrency.iSOCode) }}</b>
+                            <b>{{ formatPrice(scope.row.priceList, pointOfSalesCurrency.iSOCode) }}</b>
                             <br>
-                            {{ $t('form.productInfo.taxAmount') }}:
-                            <b>{{ scope.row.taxIndicator }}</b>
+                            <b>{{ scope.row.taxRate.name }}</b>
+                            <br>
+                            {{ $t('form.productInfo.grandTotal') }}:
+                            <b>{{ formatPrice((scope.row.priceList * scope.row.taxRate.rate / 100) + scope.row.priceList, pointOfSalesCurrency.iSOCode) }}</b>
                             <br>
                             {{ $t('form.productInfo.quantityAvailable') }}:
                             <b>{{ formatQuantity(scope.row.quantityOrdered) }}</b>
@@ -991,7 +994,7 @@ export default {
 <style>
   .el-popper-info {
     margin-left: 12px;
-    max-width: 65%;
-    min-width: 50%;
+    max-width: 75%;
+    min-width: 60%;
   }
 </style>

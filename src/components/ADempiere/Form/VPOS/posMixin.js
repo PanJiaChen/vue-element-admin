@@ -548,31 +548,29 @@ export default {
       return this.formatPrice(this.currentOrder.grandTotal - this.currentOrder.totalLines, currency)
     },
     deleteOrderLine(lineSelection) {
-      if (this.isPosRequiredPin) {
-        if (this.allowsModifyQuantity) {
-          deleteOrderLine({
-            orderLineUuid: lineSelection.uuid
+      if (this.currentPointOfSales.isAllowsModifyQuantity) {
+        deleteOrderLine({
+          orderLineUuid: lineSelection.uuid
+        })
+          .then(response => {
+            this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
           })
-            .then(response => {
-              this.$store.dispatch('reloadOrder', { orderUuid: this.$store.getters.posAttributes.currentPointOfSales.currentOrder.uuid })
+          .catch(error => {
+            console.error(error.message)
+            this.$message({
+              type: 'error',
+              message: error.message,
+              showClose: true
             })
-            .catch(error => {
-              console.error(error.message)
-              this.$message({
-                type: 'error',
-                message: error.message,
-                showClose: true
-              })
-            })
-        } else {
-          const attributePin = {
-            ...lineSelection,
-            type: 'deleteLine',
-            label: this.$t('form.pos.pinMessage.delete')
-          }
-          this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
-          this.visible = true
+          })
+      } else {
+        const attributePin = {
+          ...lineSelection,
+          type: 'deleteLine',
+          label: this.$t('form.pos.pinMessage.delete')
         }
+        this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+        this.visible = true
       }
     },
     subscribeChanges() {

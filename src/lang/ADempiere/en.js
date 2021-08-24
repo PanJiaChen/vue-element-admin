@@ -548,7 +548,7 @@ export default {
       taxAmount: 'Tax Amount',
       grandTotal: 'Grand Total',
       grandTotalConverted: 'Grand Total Converted',
-      quantityAvailable: 'Quantity Avalible',
+      quantityAvailable: 'Available',
       upc: 'UPC / EAN'
     },
     guideSteps: {
