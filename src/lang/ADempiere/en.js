@@ -504,7 +504,8 @@ export default {
           dailyLimit: 'Daily Limit',
           customerLimit: 'Order Limit',
           available: 'Available',
-          emptyPayment: 'Payment method not supported'
+          emptyPayment: 'Unsupported payment method',
+          addPayment: 'You must add a change type to complete the operation'
         }
       },
       keyLayout: {

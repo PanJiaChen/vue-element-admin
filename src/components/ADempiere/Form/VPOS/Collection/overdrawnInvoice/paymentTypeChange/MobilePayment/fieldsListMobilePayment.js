@@ -86,7 +86,8 @@ export default [
       size: 24,
       isNumericField: true,
       isActiveLogics: true,
-      isMandatory: true
+      isMandatory: true,
+      isReadOnly: true
     }
   }
 ]

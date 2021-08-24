@@ -118,7 +118,6 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     maximumDailyRefundAllowed() {
-      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
     maximumRefundAllowed() {
@@ -195,13 +194,6 @@ export default {
         iSOCode: this.currentPointOfSales.currentPriceList.currency.iSOCode
       }
     }
-  },
-  created() {
-    this.$store.commit('updateValueOfField', {
-      containerUuid: 'Cash',
-      columnName: 'PayAmt',
-      value: this.change
-    })
   },
   methods: {
     formatPrice,

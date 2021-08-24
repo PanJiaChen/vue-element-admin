@@ -32,6 +32,21 @@
             :metadata-field="field"
           />
         </el-col>
+        <el-col :span="8">
+          <el-form-item :label="$t('form.pos.collect.Currency')">
+            <el-select
+              v-model="currentFieldCurrency"
+              @change="changeCurrency"
+            >
+              <el-option
+                v-for="item in listCurrency"
+                :key="item.id"
+                :label="item.name"
+                :value="item.key"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
   </div>
@@ -100,7 +115,6 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     maximumDailyRefundAllowed() {
-      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
     maximumRefundAllowed() {
@@ -144,13 +158,6 @@ export default {
     paymentTypeList() {
       return this.$store.getters.getPaymentTypeList
     }
-  },
-  created() {
-    this.$store.commit('updateValueOfField', {
-      containerUuid: 'ACH',
-      columnName: 'PayAmt',
-      value: this.change
-    })
   },
   methods: {
     formatPrice,

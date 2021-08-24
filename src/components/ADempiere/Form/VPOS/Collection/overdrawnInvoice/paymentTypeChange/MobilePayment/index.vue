@@ -32,6 +32,21 @@
             :metadata-field="field"
           />
         </el-col>
+        <el-col :span="8">
+          <el-form-item :label="$t('form.pos.collect.Currency')">
+            <el-select
+              v-model="currentFieldCurrency"
+              @change="changeCurrency"
+            >
+              <el-option
+                v-for="item in listCurrency"
+                :key="item.id"
+                :label="item.name"
+                :value="item.key"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
     </el-form>
   </div>

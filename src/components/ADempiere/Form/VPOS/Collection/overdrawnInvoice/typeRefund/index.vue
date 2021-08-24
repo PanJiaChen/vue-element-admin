@@ -149,27 +149,6 @@ export default {
       return this.$store.state['pointOfSales/point/index'].conversionsList
     }
   },
-  // watch: {
-  //   listPaymentType(value) {
-  //     if (!this.isEmptyValue(value.reference)) {
-  //       this.tenderTypeDisplaye({
-  //         tableName: value.reference.tableName,
-  //         query: value.reference.query
-  //       })
-  //     }
-  //   }
-  // },
-  // created() {
-  //   if (!this.isEmptyValue(this.isAddTypePay)) {
-  //     this.convertingPaymentMethods()
-  //   }
-  //   if (!this.isEmptyValue(this.listPaymentType.reference)) {
-  //     this.tenderTypeDisplaye({
-  //       tableName: this.listPaymentType.reference.tableName,
-  //       query: this.listPaymentType.reference.query
-  //     })
-  //   }
-  // },
   methods: {
     formatDate,
     formatPrice,

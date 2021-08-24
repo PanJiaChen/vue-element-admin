@@ -480,7 +480,8 @@ export default {
           dailyLimit: 'Limite Diario',
           customerLimit: 'Limite Order',
           available: 'Disponible',
-          emptyPayment: 'Método de pago no soportado'
+          emptyPayment: 'Método de pago no soportado',
+          addPayment: 'Debe agregar un tipo de vuelto para completar la operación'
         }
       },
       keyLayout: {

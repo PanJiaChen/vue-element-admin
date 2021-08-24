@@ -74,8 +74,8 @@ export default {
       type: Object,
       default: () => {
         return {
-          uuid: 'zelle',
-          containerUuid: 'zelle'
+          uuid: 'Zelle',
+          containerUuid: 'Zelle'
         }
       }
     }
@@ -100,7 +100,6 @@ export default {
       return this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code
     },
     maximumDailyRefundAllowed() {
-      console.log(this.$store.getters.posAttributes.currentPointOfSales.displayCurrency.iso_code)
       return this.$store.getters.posAttributes.currentPointOfSales.maximumDailyRefundAllowed
     },
     maximumRefundAllowed() {
@@ -144,13 +143,6 @@ export default {
     paymentTypeList() {
       return this.$store.getters.getPaymentTypeList
     }
-  },
-  created() {
-    this.$store.commit('updateValueOfField', {
-      containerUuid: 'zelle',
-      columnName: 'PayAmt',
-      value: this.change
-    })
   },
   methods: {
     formatPrice,

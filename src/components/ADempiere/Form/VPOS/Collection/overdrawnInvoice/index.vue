@@ -75,7 +75,7 @@
           <div v-if="isEmptyValue(selectionTypeRefund)" class="text item">
             <el-row :gutter="24">
               <el-col v-for="(payment, index) in paymentTypeList" :key="index" :span="6">
-                <div @click="selectionTypeRefund = payment">
+                <div @click="selectPayment(payment)">
                   <el-card shadow="hover">
                     <div slot="header" class="clearfix" style="text-align: center;">
                       <span>
@@ -363,12 +363,37 @@ export default {
       }
       return require('@/image/ADempiere/pos/typePayment/' + image)
     },
+    selectPayment(payment) {
+      this.selectionTypeRefund = payment
+      this.$store.commit('updateValueOfField', {
+        containerUuid: this.renderComponentContainer,
+        columnName: 'PayAmt',
+        value: this.change
+      })
+    },
     addRefund() {
       const values = this.$store.getters.getValuesView({
         containerUuid: this.renderComponentContainer,
         format: 'object'
       })
       values.tenderType = this.selectionTypeRefund.name
+      const emptyMandatoryFields = this.$store.getters.getFieldsListEmptyMandatory({ containerUuid: this.renderComponentContainer, formatReturn: 'name' })
+      if (!this.isEmptyValue(emptyMandatoryFields)) {
+        this.$message({
+          type: 'warning',
+          message: this.$t('notifications.mandatoryFieldMissing') + emptyMandatoryFields,
+          duration: 1500,
+          showClose: true
+        })
+        return
+      }
+      Object.keys(values).forEach(element => {
+        this.$store.commit('updateValueOfField', {
+          containerUuid: this.renderComponentContainer,
+          columnName: element,
+          value: undefined
+        })
+      })
       this.$store.dispatch('addRefundLoaded', values)
       this.selectionTypeRefund = {}
     },
@@ -411,20 +436,11 @@ export default {
     optionSelected({ posUuid, orderUuid, customerDetails, payments }) {
       switch (this.option) {
         case 2:
-          if (this.isEmptyValue(this.emptyFieldGiftCard)) {
-            this.completePreparedOrder(posUuid, orderUuid, payments)
-            this.$store.commit('dialogoInvoce', { show: false, success: true })
-          } else {
-            this.$message({
-              type: 'warn',
-              message: this.$t('notifications.mandatoryFieldMissing') + this.emptyFieldGiftCard,
-              duration: 1500,
-              showClose: true
-            })
-          }
+          this.completePreparedOrder(posUuid, orderUuid, payments)
+          this.$store.commit('dialogoInvoce', { show: false, success: true })
           break
         case 3:
-          if (this.isEmptyValue(this.emptyMandatoryFields)) {
+          if (!this.isEmptyValue(this.refundLoaded)) {
             this.completePreparedOrder(posUuid, orderUuid, payments)
             overdrawnInvoice({
               posUuid,
@@ -452,11 +468,11 @@ export default {
             this.$store.commit('dialogoInvoce', { show: false, success: true })
           } else {
             this.$message({
-              type: 'warn',
-              message: this.$t('notifications.mandatoryFieldMissing') + this.emptyMandatoryFields,
-              duration: 1500,
+              type: 'warning',
+              message: this.$t('form.pos.collect.overdrawnInvoice.addPayment'),
               showClose: true
             })
+            return
           }
           break
         default:
