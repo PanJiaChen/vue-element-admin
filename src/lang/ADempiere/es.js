@@ -401,7 +401,8 @@ export default {
           print: 'Imprimir Documento',
           cancelOrder: 'Cancelar Orden',
           orderRemoved: 'Orden Borrada',
-          copyOrder: 'Copiar Orden'
+          copyOrder: 'Copiar Orden',
+          createNewReturnOrder: 'Crear una nueva orden de devolución'
         },
         cashManagement: {
           title: 'Gestión de Caja',

@@ -425,7 +425,8 @@ export default {
           print: 'Print Document',
           cancelOrder: 'Cancel Order',
           orderRemoved: 'Order Deleted',
-          copyOrder: 'Copy Order'
+          copyOrder: 'Copy Order',
+          createNewReturnOrder: 'Create a new return order'
         },
         cashManagement: {
           title: 'Cash Management',
