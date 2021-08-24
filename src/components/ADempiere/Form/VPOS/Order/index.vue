@@ -751,19 +751,27 @@ export default {
       this.clearOrder()
     },
     changeWarehouse(warehouse) {
-      const attributePin = {
-        ...warehouse,
-        action: 'changeWarehouse',
-        type: 'actionPos',
-        label: this.$t('form.pos.pinMessage.warehouse')
+      if (warehouse.is_pos_required_pin) {
+        const attributePin = {
+          ...warehouse,
+          action: 'changeWarehouse',
+          type: 'actionPos',
+          label: this.$t('form.pos.pinMessage.warehouse')
+        }
+        const visible = true
+        this.visible = visible
+        this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+      } else {
+        this.$store.commit('setCurrentWarehousePos', warehouse)
       }
-      const visible = true
-      this.visible = visible
-      this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
     },
     changeDocumentType(documentType) {
-      if (this.adviserPin) {
-        this.$store.commit('setCurrentDocumentTypePos', documentType)
+      if (!documentType.is_pos_required_pin) {
+        this.$store.dispatch('updateOrder', {
+          orderUuid: this.currentOrder.uuid,
+          posUuid: this.currentPointOfSales.uuid,
+          documentTypeUuid: documentType.uuid
+        })
       } else {
         const attributePin = {
           ...documentType,
@@ -776,14 +784,18 @@ export default {
       }
     },
     changePriceList(priceList) {
-      const attributePin = {
-        ...priceList,
-        action: 'changePriceList',
-        type: 'actionPos',
-        label: this.$t('form.pos.pinMessage.priceList')
+      if (priceList.is_pos_required_pin) {
+        const attributePin = {
+          ...priceList,
+          action: 'changePriceList',
+          type: 'actionPos',
+          label: this.$t('form.pos.pinMessage.priceList')
+        }
+        this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
+        this.visible = true
+      } else {
+        this.$store.commit('setCurrentPriceList', priceList)
       }
-      this.$store.dispatch('changePopoverOverdrawnInvoice', { attributePin, visible: true })
-      this.visible = true
     },
     arrowTop() {
       if (this.currentTable > 0) {
