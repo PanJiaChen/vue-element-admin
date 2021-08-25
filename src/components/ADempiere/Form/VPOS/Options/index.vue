@@ -311,12 +311,12 @@
         </el-row>
       </el-collapse-item>
     </el-collapse>
-    <el-dialog ref="dialog" :title="$t('form.pos.pinMessage.pin') + attributePin.label" width="40%" :visible.sync="visible">
+    <el-dialog ref="dialog" v-shortkey="{close: ['esc'], enter: ['enter']}" :title="$t('form.pos.pinMessage.pin') + attributePin.label" width="40%" :visible.sync="visible" @shortkey.native="theAction">
       <el-input
         id="pin"
         ref="pin"
         v-model="pin"
-        :autofocus="true"
+        autofocus
         type="password"
         :placeholder="$t('form.pos.tableProduct.pin')"
         :focus="true"
@@ -477,21 +477,29 @@ export default {
       return this.currentPointOfSales.currentOrder
     }
   },
-  // watch: {
-  //   visible(value) {
-  //     if (value && !this.isEmptyValue(this.$refs)) {
-  //       setTimeout(() => {
-  //         this.focusPin()
-  //       }, 500)
-  //     } else {
-  //       this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: value })
-  //     }
-  //   }
-  // },
+  watch: {
+    visible(value) {
+      if (value && !this.isEmptyValue(this.$refs)) {
+        setTimeout(() => {
+          this.focusPin()
+        }, 300)
+      }
+    }
+  },
   created() {
     this.findProcess(this.posProcess)
   },
   methods: {
+    theAction(event) {
+      switch (event.srcKey) {
+        case 'enter':
+          this.openPin(this.pin)
+          break
+        case 'close':
+          this.closePin()
+          break
+      }
+    },
     closePin() {
       this.visible = false
       this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
@@ -501,6 +509,7 @@ export default {
       this.$refs.pin.focus()
     },
     openPin(pin) {
+      this.focusPin()
       validatePin({
         posUuid: this.currentPointOfSales.uuid,
         pin
@@ -526,6 +535,7 @@ export default {
           this.pin = ''
         })
         .finally(() => {
+          this.pin = ''
           this.visible = false
         })
     },

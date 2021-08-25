@@ -218,6 +218,16 @@ export default {
     formatDate,
     formatPrice,
     formatQuantity,
+    theAction(event) {
+      switch (event.srcKey) {
+        case 'enter':
+          this.openPin(this.pin)
+          break
+        case 'close':
+          this.closePin()
+          break
+      }
+    },
     openPin(pin) {
       validatePin({
         posUuid: this.currentPointOfSales.uuid,
@@ -245,6 +255,7 @@ export default {
         })
         .finally(() => {
           this.visible = false
+          this.pin = ''
         })
     },
     pinAction(action) {
@@ -309,6 +320,7 @@ export default {
     },
     closePin() {
       this.visible = false
+      this.pin = ''
       this.$store.dispatch('changePopoverOverdrawnInvoice', { visible: false })
       this.setDocumentType(this.currentOrder.documentType)
     },

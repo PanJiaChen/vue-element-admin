@@ -21,7 +21,7 @@
     id="headerContainer"
     style="display: -webkit-box; height: 100%"
   >
-    <el-container v-shortkey="{ closeForm: ['esc'] }" style="background: white; height: 100%!important;" @shortkey.native="keyActionClosePin">
+    <el-container style="background: white; height: 100%!important;">
       <el-header
         height="auto"
         :style="isShowedPOSKeyLayout ? 'padding-right: 20px; padding-left: 0px;' : 'padding-right: 0px; padding-left: 0px;'"
@@ -214,16 +214,15 @@
               </el-table-column>
             </el-table>
           </el-main>
-          <el-dialog ref="dialog" v-shortkey="{ closeForm: ['esc'] }" :title="$t('form.pos.pinMessage.pin') + infowOverdrawnInvoice.label" width="40%" :visible.sync="visible" @shortkey.native="keyActionClosePin">
+          <el-dialog ref="dialog" v-shortkey="{close: ['esc'], enter: ['enter']}" :title="$t('form.pos.pinMessage.pin') + infowOverdrawnInvoice.label" width="40%" :visible.sync="visible" @shortkey.native="theAction">
             <el-input
               id="pin"
               ref="pin"
               v-model="pin"
-              :autofocus="true"
+              autofocus
               type="password"
               :placeholder="$t('form.pos.tableProduct.pin')"
               :focus="true"
-              @change="openPin(pin)"
             />
             <span style="float: right;">
               <el-button
