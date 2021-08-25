@@ -41,7 +41,7 @@ export function convertOrder(order) {
   convertedOrder.documentType = convertDocumentType(order.document_type)
   convertedOrder.salesRepresentative = convertSalesRepresentative(order.sales_representative)
   convertedOrder.documentStatus = convertDocumentStatus(order.document_status)
-  convertedOrder.businessPartner = convertBusinessPartner(order.business_partner)
+  convertedOrder.businessPartner = convertBusinessPartner(order.customer)
   return convertedOrder
 }
 
