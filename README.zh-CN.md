@@ -31,24 +31,11 @@
 <p align="center">
   <b>SPONSORED BY</b>
 </p>
-<table align="center" cellspacing="0" cellpadding="0">
-  <tbody>
-    <tr>
-      <td align="center" valign="middle" width="250">
-        <a href="https://www.duohui.cn/?utm_source=vue-element-admin&utm_medium=web&utm_campaign=vue-element-admin_github" title="多会" target="_blank">
-          <img height="60px" src="https://qiniu.cdn.duohui.co/brand/duohui.png" title="多会 - 活动服务销售平台">
-          <p>活动服务销售平台</p>
-        </a>
-      </td>
-      <td align="center" valign="middle" width="250">
-        <a href="https://youke.co/?utm_source=vue-element-admin&utm_medium=web&utm_campaign=vue-element-admin_github" title="有客" target="_blank">
-          <img height="60px" src="https://qiniu.cdn.duohui.co/brand/youke.png" title="有客 - 客户消息直达工作群">
-          <p>客户消息直达工作群</p>
-        </a>
-      </td>
-    </tr>
-  </tbody>
-</table>
+<p align="center">
+   <a href="https://finclip.com?from=vue_element" title="FinClip" target="_blank">
+      <img height="200px" src="https://gitee.com/panjiachen/gitee-cdn/raw/master/vue%E8%B5%9E%E5%8A%A9.png" title="FinClip">
+   </a>
+</p>
 
 ## 简介
 
