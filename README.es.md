@@ -211,7 +211,3 @@ Navegadores modernos e Internet Explorer 10+.
 | IE10, IE11, Edge                                                                                                                                                                                                 | últimas 2 versiones                                                                                                                                                                                                | últimas 2 versiones                                                                                                                                                                                            | últimas 2 versiones                                                                                                                                                                                            |
 
 ## Licencia
-
-[MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
-
-C
