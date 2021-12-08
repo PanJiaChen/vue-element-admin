@@ -164,7 +164,7 @@ export default {
   bottom: 0;
   left: 0;
   min-width: 481px;
-  margin: 20px;
+  margin: 0px 20px;
   border-radius: none;
   border-color: #dee0e6;
   background: #7ad9fd;
@@ -175,6 +175,10 @@ export default {
 .card-content {
   background: #ffffff;
   padding: 20px;
+  border-radius: 6px;
+  min-height: 414px;
+  overflow: scroll;
+  box-shadow: 30px 30px 50px #77829840;
 }
 
 .injuries {
@@ -183,7 +187,7 @@ export default {
 
 .injuries-bloc {
   margin-left: 0px !important;
-  margin-right: -30px !important;
+  margin-right: -13px !important;
 }
 
 .injury-bloc {
@@ -204,10 +208,12 @@ export default {
   font: normal normal normal 13px/15px SF Pro Display;
   letter-spacing: 0px;
   color: #192440;
+  width: 149px;
 }
 
 .injury-name {
   margin-right: 5px;
+  width: 328px;
 }
 
 .el-row {

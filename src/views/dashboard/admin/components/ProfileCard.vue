@@ -167,7 +167,7 @@ export default {
   left: 211px;
   width: 479px;
   height: 38px;
-  box-shadow: 30px 30px 50px #9d248a6e;
+  box-shadow: 30px 30px 50px #19233F40;
   border-radius: 6px;
   opacity: 1;
   color: #778298;
@@ -180,10 +180,6 @@ export default {
   &-content {
     width: 521px;
     border-radius: 6px;
-    background: transparent
-      linear-gradient(180deg, #e03282 0%, #8a198e 85%, #8a198e 100%) 0% 0%
-      no-repeat padding-box;
-    box-shadow: 30px 30px 50px #9d248a6e;
     opacity: 1;
     &__right {
       position: absolute;
@@ -243,7 +239,7 @@ export default {
   bottom: 0;
   left: 0;
   min-width: 481px;
-  margin: 20px;
+  margin: 10px 20px;
   border-radius: none;
   border-color: #dee0e6;
   background: #dee0e6;
@@ -259,6 +255,10 @@ export default {
   padding: 10px;
   background: #778298;
   color: #FFFFFF;
+}
+
+.el-tabs__item {
+  width: 276px!important;
 }
 
 .el-row {
@@ -292,5 +292,34 @@ export default {
   .card {
     min-width: 376px;
   }
+}
+</style>
+<style lang="scss">
+// Override Element-UI inline style
+.el-tabs__item {
+  width: 258px!important;
+  text-align: center;
+  vertical-align: middle;
+  border-radius: 6px 6px 0px 0px;
+  background: #F2F3F5!important;
+  &.is-active {
+    font-family: SF Pro Display Bold!important;
+    background: #A0B8FA!important;
+    color: #19233F!important;
+  }
+}
+.el-tabs__content {
+  max-height: 408px;
+  overflow: scroll;
+}
+.el-form-item {
+  margin-bottom: 0px;
+}
+.upload-btn {
+  margin-top: -6px;
+  background: #778298!important;
+  border-radius: 0px 0px 5px 5px!important;
+  width: 101px!important;
+  height: 37px!important;
 }
 </style>

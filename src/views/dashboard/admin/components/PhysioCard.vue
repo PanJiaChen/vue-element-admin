@@ -49,7 +49,8 @@ export default {
     width: 521px;
     height: 293px;
     border-radius: 7px;
-    background-image: url('https://i.ibb.co/tMg8c4t/cover.png'), linear-gradient(180deg, #58B8EB 0%, #6E1C80 85%, #6E1C80 100%);
+    box-shadow: 30px 30px 50px #6E1C80;
+    background: url('https://i.ibb.co/tMg8c4t/cover.png'), linear-gradient(180deg, #58B8EB 0%, #6E1C80 85%, #6E1C80 100%);
     background-repeat: no-repeat;
     background-position: center;
     &__right {

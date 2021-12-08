@@ -153,10 +153,14 @@ export default {
 .border {
   &-bottom {
     width: 126px;
+    padding-top: 5px;
+    margin-bottom: -15px;
+    padding-bottom: 10px;
     border-bottom: 1px solid #ffd603;
   }
   &-right {
     width: 126px;
+    padding-top: 5px;
     border-right: 1px solid #ffd603;
   }
 }
@@ -190,7 +194,8 @@ export default {
     left: -3%;
   }
   &-right {
-    right: 11%;
+    position: relative;
+    right: 0;
   }
 }
 

@@ -5,7 +5,7 @@
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <!--template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
@@ -16,8 +16,11 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-      </template>
+      </template-->
 
+      <el-dropdown class="right-menu-item hover-effect" trigger="click">
+        <el-button icon="el-icon-bell" class="user-notif" />
+      </el-dropdown>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
           <img :src="require('@/assets/img/profile.png')" class="user-avatar">
@@ -31,19 +34,19 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
+// import ErrorLog from '@/components/ErrorLog'
+// import Screenfull from '@/components/Screenfull'
+// import SizeSelect from '@/components/SizeSelect'
+// import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
     Breadcrumb,
-    Hamburger,
-    ErrorLog,
-    Screenfull,
-    SizeSelect,
-    Search
+    Hamburger
+    // ErrorLog,
+    // Screenfull,
+    // SizeSelect,
+    // Search
   },
   computed: {
     ...mapGetters([
@@ -65,6 +68,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-notif {
+  width: 40px;
+  padding-left: 12px;
+  color: #FF0000;
+}
+
 .navbar {
   height: 50px;
   overflow: hidden;
@@ -102,10 +111,9 @@ export default {
     &:focus {
       outline: none;
     }
-
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 2px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;

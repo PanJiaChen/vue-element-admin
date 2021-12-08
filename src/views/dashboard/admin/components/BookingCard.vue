@@ -137,6 +137,10 @@ export default {
     text-transform: uppercase;
     opacity: 1;
   }
+
+  &-icon {
+    font: Bold;
+  }
 }
 
 .major {
@@ -156,10 +160,14 @@ export default {
   &-bottom {
     width: 126px;
     border-bottom: 1px solid #ffd603;
+    margin-bottom: -15px;
+    padding-bottom: 10px;
+    padding-top: 5px;
   }
   &-right {
     width: 126px;
     border-right: 1px solid #ffd603;
+    padding-top: 5px;
   }
 }
 
@@ -192,7 +200,8 @@ export default {
     left: -3%;
   }
   &-right {
-    right: 11%;
+    position: relative;
+    right: 0;
   }
 }
 
