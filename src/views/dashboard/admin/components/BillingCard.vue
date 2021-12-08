@@ -20,7 +20,10 @@
     <el-row :gutter="20" class="card-content">
       <el-tabs type="border-card">
         <el-tab-pane label="Statements">
-          <el-table :data="tableData" style="width: 100%">
+          <el-table
+            :data="tableData"
+            style="width: 100%"
+          >
             <el-table-column prop="date" label="DATE" width="180" />
             <el-table-column prop="orderId" label="ORDER ID" width="180" />
             <el-table-column prop="amount" label="AMOUNT" />
@@ -157,8 +160,12 @@ export default {
   padding-bottom: 30px;
 }
 
+thead {
+  background: red!important;
+}
+
 .el-table__header-wrapper {
-  background: #778298!important;
+  background: #778298 !important;
 }
 
 .el-row {
@@ -187,5 +194,12 @@ export default {
   .card {
     min-width: 376px;
   }
+}
+</style>
+<style lang="scss">
+// Override Element-UI inline style
+.el-tabs__content {
+  height: 371px;
+  border-radius: 0px 0px 6px 6px;
 }
 </style>

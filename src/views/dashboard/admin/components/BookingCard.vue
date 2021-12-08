@@ -186,6 +186,9 @@ export default {
   border-color: #6e1c80;
   background: #6e1c80;
   font: normal normal 14px/16px SF Pro Display Bold;
+  &:hover {
+    background: #b72687;
+  }
 }
 
 .arrow {
