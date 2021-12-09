@@ -193,6 +193,7 @@ export default {
 .injury-bloc {
   height: 60px;
   background: #f2f3f5;
+  border-radius: 5px;
 }
 
 .injury-text {
@@ -200,6 +201,7 @@ export default {
   font: normal normal 16px/21px SF Pro Display Bold;
   letter-spacing: 0px;
   color: #192440;
+  border-radius: 5px;
 }
 
 .injury-book {

@@ -20,14 +20,40 @@
     <el-row :gutter="20" class="card-content">
       <el-tabs type="border-card">
         <el-tab-pane label="Statements">
-          <el-table
-            :data="tableData"
-            style="width: 100%"
-          >
-            <el-table-column prop="date" label="DATE" width="180" />
-            <el-table-column prop="orderId" label="ORDER ID" width="180" />
-            <el-table-column prop="amount" label="AMOUNT" />
-          </el-table>
+          <table class="info-table" cellspacing="0">
+            <thead>
+              <tr>
+                <th class="thead-text">DATE</th>
+                <th class="thead-text">ORDER ID</th>
+                <th class="thead-text">AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>22-11-2021</td>
+                <td>4576786</td>
+                <td>£20</td>
+              </tr>
+
+              <tr>
+                <td>16-11-2021</td>
+                <td>4576786</td>
+                <td>£40</td>
+              </tr>
+
+              <tr>
+                <td>22-11-2021</td>
+                <td>4576786</td>
+                <td>£40</td>
+              </tr>
+
+              <tr>
+                <td>22-11-2021</td>
+                <td>4576786</td>
+                <td>£20</td>
+              </tr>
+            </tbody>
+          </table>
         </el-tab-pane>
         <el-tab-pane label="Credit Cards">
           <el-table :data="tableData" style="width: 100%">
@@ -160,12 +186,55 @@ export default {
   padding-bottom: 30px;
 }
 
-thead {
-  background: red!important;
+.info-table {
+  width: 481px;
+  background-color: white;
+  // border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 5px;
+  border-radius: 10px;
+  overflow: hidden;
+  th:not(:first-child) {
+    text-align: center;
+  }
 }
 
-.el-table__header-wrapper {
-  background: #778298 !important;
+thead {
+  background: #778298 0% 0% no-repeat padding-box;
+  color: white;
+  th {
+    padding: 10px;
+    height: 37px;
+    text-align: left;
+    font: normal normal 15px/18px SF Pro Display Bold;
+    letter-spacing: 0px;
+    color: #ffffff;
+    text-transform: uppercase;
+  }
+}
+
+tbody {
+  tr {
+    background: #F2F3F5;
+    padding-top: 10px;
+    margin-bottom: 10px;
+    td:not(:first-child) {
+      text-align: center;
+    }
+  }
+  color: #192440;
+  td {
+    padding: 20px 0px;
+  }
+
+  td:nth-child(1) {
+    padding: 10px;
+  }
+
+  td:nth-child(3) {
+    font-weight: bold;
+  }
+
 }
 
 .el-row {
