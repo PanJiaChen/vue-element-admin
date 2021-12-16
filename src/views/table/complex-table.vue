@@ -20,6 +20,11 @@
       <el-button v-waves :loading="downloadLoading" class="filter-item" type="primary" icon="el-icon-download" @click="handleDownload">
         Export
       </el-button>
+      <export-button class="filter-item" :columns="exportColumns" :total="total" :request="request">
+        <el-button type="primary" icon="el-icon-download">
+          async export
+        </el-button>
+      </export-button>
       <el-checkbox v-model="showReviewer" class="filter-item" style="margin-left:15px;" @change="tableKey=tableKey+1">
         reviewer
       </el-checkbox>
@@ -151,6 +156,7 @@ import { fetchList, fetchPv, createArticle, updateArticle } from '@/api/article'
 import waves from '@/directive/waves' // waves directive
 import { parseTime } from '@/utils'
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import ExportButton from '@/components/ExportButton/index'
 
 const calendarTypeOptions = [
   { key: 'CN', display_name: 'China' },
@@ -167,7 +173,10 @@ const calendarTypeKeyValue = calendarTypeOptions.reduce((acc, cur) => {
 
 export default {
   name: 'ComplexTable',
-  components: { Pagination },
+  components: {
+    Pagination,
+    ExportButton
+  },
   directives: { waves },
   filters: {
     statusFilter(status) {
@@ -223,7 +232,29 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      exportColumns: [
+        {
+          title: 'timestamp',
+          key: 'timestamp'
+        },
+        {
+          title: 'title',
+          key: 'title'
+        },
+        {
+          title: 'type',
+          key: 'type'
+        },
+        {
+          title: 'importance',
+          key: 'importance'
+        },
+        {
+          title: 'status',
+          key: 'status'
+        }
+      ]
     }
   },
   created() {
@@ -240,6 +271,20 @@ export default {
         setTimeout(() => {
           this.listLoading = false
         }, 1.5 * 1000)
+      })
+    },
+    // 导出请求
+    request(page, pageSize) {
+      const listQuery = JSON.parse(JSON.stringify(this.listQuery))
+      listQuery.page = page
+      listQuery.pageSize = pageSize
+      return new Promise(resolve => {
+        fetchList(listQuery).then(response => {
+          response.data.items.map(item => {
+            item.timestamp = parseTime(item.timestamp, '{y}-{m}-{d} {h}:{i}')
+          })
+          resolve(response.data.items)
+        })
       })
     },
     handleFilter() {
