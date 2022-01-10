@@ -40,7 +40,7 @@ export default {
       needTagsView: state => state.settings.tagsView,
       fixedHeader: state => state.settings.fixedHeader
     }),
-    classObj() {
+    classObj() { // 关闭侧边栏
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
