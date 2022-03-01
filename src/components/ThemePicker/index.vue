@@ -122,9 +122,9 @@ export default {
           green += Math.round(tint * (255 - green))
           blue += Math.round(tint * (255 - blue))
 
-          red = red.toString(16)
-          green = green.toString(16)
-          blue = blue.toString(16)
+          red = red.toString(16).padStart(2, 0)
+          green = green.toString(16).padStart(2, 0)
+          blue = blue.toString(16).padStart(2, 0)
 
           return `#${red}${green}${blue}`
         }
@@ -139,9 +139,9 @@ export default {
         green = Math.round((1 - shade) * green)
         blue = Math.round((1 - shade) * blue)
 
-        red = red.toString(16)
-        green = green.toString(16)
-        blue = blue.toString(16)
+        red = red.toString(16).padStart(2, 0)
+        green = green.toString(16).padStart(2, 0)
+        blue = blue.toString(16).padStart(2, 0)
 
         return `#${red}${green}${blue}`
       }
