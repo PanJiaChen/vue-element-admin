@@ -389,6 +389,7 @@ export const asyncRoutes = [
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
+  // base: process.env.VUE_APP_SRC, // use in hitory mode when publicPath is set
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
