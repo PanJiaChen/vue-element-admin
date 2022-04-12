@@ -164,7 +164,7 @@ export default {
       this.$nextTick(() => {
         const routes = this.generateRoutes(this.role.routes)
         this.$refs.tree.setCheckedNodes(this.generateArr(routes))
-        // set checked state of a node not affects its father and child nodes
+        // set checked state of a node not affects its parent and child nodes
         this.checkStrictly = false
       })
     },
