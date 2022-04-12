@@ -27,7 +27,7 @@
       <el-tag class="tag-title">
         Customize Toolbar:
       </el-tag>
-      <markdown-editor v-model="content3" :options="{ toolbarItems: ['heading','bold','italic']}" />
+      <markdown-editor v-model="content3" :options="{ toolbarItems: [['heading','bold','italic'], ['image']]}" @uploadImageEvent="uploadImage" />
     </div>
 
     <div class="editor-container">
@@ -86,6 +86,12 @@ export default {
     getHtml() {
       this.html = this.$refs.markdownEditor.getHtml()
       console.log(this.html)
+    },
+    // Custom picture upload
+    uploadImage(file, callback) {
+      const reader = new FileReader()
+      reader.onload = ({ target }) => { callback(target.result || '') }
+      reader.readAsDataURL(file)
     }
   }
 }
