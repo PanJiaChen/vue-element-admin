@@ -62,7 +62,7 @@
     "husky": "1.3.1",
     "lint-staged": "8.1.5",
     "mockjs": "1.0.1-beta3",
-    "plop": "2.3.0",
+    "plop": "2.7.4",
     "runjs": "4.3.2",
     "sass": "1.26.2",
     "sass-loader": "8.0.2",
