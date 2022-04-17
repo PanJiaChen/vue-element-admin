@@ -40,7 +40,7 @@ export default {
       needTagsView: state => state.settings.tagsView,
       fixedHeader: state => state.settings.fixedHeader
     }),
-    classObj() {
+    classObj() { // 关闭侧边栏
       return {
         hideSidebar: !this.sidebar.opened,
         openSidebar: this.sidebar.opened,
@@ -52,6 +52,7 @@ export default {
   methods: {
     handleClickOutside() {
       this.$store.dispatch('app/closeSideBar', { withoutAnimation: false })
+      console.log({ withoutAnimation: false })
     }
   }
 }
