@@ -4,7 +4,7 @@
       <router-link
         v-for="tag in visitedViews"
         ref="tag"
-        :key="tag.path"
+        :key="tag.fullPath"
         :class="isActive(tag)?'active':''"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         tag="span"
@@ -67,7 +67,7 @@ export default {
   },
   methods: {
     isActive(route) {
-      return route.path === this.$route.path
+      return route.fullPath === this.$route.fullPath
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix
