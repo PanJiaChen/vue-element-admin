@@ -182,14 +182,16 @@ export function export_json_to_excel({
           'wch': 10
         };
       }
-      /*再判断是否为中文*/
-      else if (val.toString().charCodeAt(0) > 255) {
+      /*再判断是否存在中文*/
+      val = val.toString()
+      const chineseCharacters = val.match(/[\u4E00-\u9FA5]/g)
+      if (chineseCharacters) {
         return {
-          'wch': val.toString().length * 2
+          'wch': chineseCharacters.length * 2 + (val.length - chineseCharacters.length)
         };
       } else {
         return {
-          'wch': val.toString().length
+          'wch': val.length
         };
       }
     }))
