@@ -226,6 +226,13 @@ npm run lint
 npm run lint -- --fix
 ```
 
+## Docker容器
+
+```bash
+# 需要操作系统的超级用户权限（“ su”或“ sudo”）
+docker-compose up
+```
+
 更多信息请参考 [使用文档](https://panjiachen.github.io/vue-element-admin-site/zh/)
 
 ## Changelog
