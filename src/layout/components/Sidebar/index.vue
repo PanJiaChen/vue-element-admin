@@ -1,7 +1,7 @@
 <template>
   <div :class="{'has-logo':showLogo}">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar wrap-class="scrollbar-wrapper">
+    <el-scrollbar wrap-class="scrollbar-wrapper" class="scrollbar">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
@@ -14,6 +14,7 @@
       >
         <sidebar-item v-for="route in permission_routes" :key="route.path" :item="route" :base-path="route.path" />
       </el-menu>
+      <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
     </el-scrollbar>
   </div>
 </template>
@@ -23,9 +24,10 @@ import { mapGetters } from 'vuex'
 import Logo from './Logo'
 import SidebarItem from './SidebarItem'
 import variables from '@/styles/variables.scss'
+import Hamburger from '@/components/Hamburger'
 
 export default {
-  components: { SidebarItem, Logo },
+  components: { SidebarItem, Logo, Hamburger },
   computed: {
     ...mapGetters([
       'permission_routes',
@@ -49,6 +51,16 @@ export default {
     isCollapse() {
       return !this.sidebar.opened
     }
+  },
+  methods: {
+    toggleSideBar() {
+      this.$store.dispatch('app/toggleSideBar')
+    }
   }
 }
 </script>
+<style lang="scss" scoped>
+.scrollbar {
+  margin-top: 50px;
+}
+</style>

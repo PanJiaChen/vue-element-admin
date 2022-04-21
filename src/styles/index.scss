@@ -5,6 +5,16 @@
 @import './sidebar.scss';
 @import './btn.scss';
 
+@font-face {
+  font-family: "SF Pro Display";
+  src: local("SFProDisplay"),   url(./fonts/SFProDisplay-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "SF Pro Display Bold";
+  src: local("SFProDisplayBold"),   url(./fonts/SFProDisplay-Heavy-1.ttf) format("truetype");
+}
+
 body {
   height: 100%;
   -moz-osx-font-smoothing: grayscale;

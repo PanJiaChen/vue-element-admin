@@ -1,11 +1,9 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb id="breadcrumb-container" class="breadcrumb-container" />
 
     <div class="right-menu">
-      <template v-if="device!=='mobile'">
+      <!--template v-if="device!=='mobile'">
         <search id="header-search" class="right-menu-item" />
 
         <error-log class="errLog-container right-menu-item hover-effect" />
@@ -16,30 +14,15 @@
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-      </template>
+      </template-->
 
+      <el-dropdown class="right-menu-item hover-effect" trigger="click">
+        <el-button icon="el-icon-bell" class="user-notif" />
+      </el-dropdown>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+          <img :src="require('@/assets/img/profile.png')" class="user-avatar">
         </div>
-        <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
-            <el-dropdown-item>Profile</el-dropdown-item>
-          </router-link>
-          <router-link to="/">
-            <el-dropdown-item>Dashboard</el-dropdown-item>
-          </router-link>
-          <a target="_blank" href="https://github.com/PanJiaChen/vue-element-admin/">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">Log Out</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
       </el-dropdown>
     </div>
   </div>
@@ -48,20 +31,18 @@
 <script>
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
-import Hamburger from '@/components/Hamburger'
-import ErrorLog from '@/components/ErrorLog'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import Search from '@/components/HeaderSearch'
+// import ErrorLog from '@/components/ErrorLog'
+// import Screenfull from '@/components/Screenfull'
+// import SizeSelect from '@/components/SizeSelect'
+// import Search from '@/components/HeaderSearch'
 
 export default {
   components: {
-    Breadcrumb,
-    Hamburger,
-    ErrorLog,
-    Screenfull,
-    SizeSelect,
-    Search
+    Breadcrumb
+    // ErrorLog,
+    // Screenfull,
+    // SizeSelect,
+    // Search
   },
   computed: {
     ...mapGetters([
@@ -71,9 +52,6 @@ export default {
     ])
   },
   methods: {
-    toggleSideBar() {
-      this.$store.dispatch('app/toggleSideBar')
-    },
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
@@ -83,6 +61,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.user-notif {
+  width: 40px;
+  padding-left: 12px;
+  color: #FF0000;
+}
+
 .navbar {
   height: 50px;
   overflow: hidden;
@@ -105,6 +89,7 @@ export default {
 
   .breadcrumb-container {
     float: left;
+    margin-left: 53px;
   }
 
   .errLog-container {
@@ -120,10 +105,9 @@ export default {
     &:focus {
       outline: none;
     }
-
     .right-menu-item {
       display: inline-block;
-      padding: 0 8px;
+      padding: 0 2px;
       height: 100%;
       font-size: 18px;
       color: #5a5e66;

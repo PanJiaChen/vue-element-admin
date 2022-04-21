@@ -36,9 +36,9 @@ export default {
 
 <style scoped>
 .pan-item {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
+  width: 38px;
+  height: 38px;
+  border-radius: 6px;
   display: inline-block;
   position: relative;
   cursor: default;
@@ -55,7 +55,7 @@ export default {
   height: 100%;
   background-position: center center;
   background-size: cover;
-  border-radius: 50%;
+  border-radius: 6px;
   overflow: hidden;
   position: absolute;
   transform-origin: 95% 40%;
