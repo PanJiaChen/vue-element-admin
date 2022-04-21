@@ -26,8 +26,8 @@ function generateArray(table) {
 
       //Handle Row Span
       if (rowspan || colspan) {
-        rowspan = rowspan || 1;
-        colspan = colspan || 1;
+        rowspan = Number(rowspan || 1);
+        colspan = Number(colspan || 1);
         ranges.push({
           s: {
             r: R,
