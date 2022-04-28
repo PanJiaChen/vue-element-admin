@@ -1,25 +1,28 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
     <scroll-pane ref="scrollPane" class="tags-view-wrapper" @scroll="handleScroll">
-      <router-link
-        v-for="tag in visitedViews"
-        ref="tag"
-        :key="tag.path"
-        :class="isActive(tag)?'active':''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
-        tag="span"
-        class="tags-view-item"
-        @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
-        @contextmenu.prevent.native="openMenu(tag,$event)"
-      >
-        {{ tag.title }}
-        <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
-      </router-link>
+      <div ref="sortable-wrap">
+        <router-link
+          v-for="tag in visitedViews"
+          :key="tag.path"
+          :class="{ active: isActive(tag), sortable: !isAffix(tag) }"
+          :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+          tag="span"
+          class="tags-view-item"
+          :data-full-path="tag.fullPath"
+          @click.middle.native="!isAffix(tag)?closeSelectedTag(tag):''"
+          @contextmenu.prevent.native="openMenu(tag,$event)"
+        >
+          {{ tag.title }}
+          <span v-if="!isAffix(tag)" class="el-icon-close" @click.prevent.stop="closeSelectedTag(tag)" />
+        </router-link>
+      </div>
     </scroll-pane>
     <ul v-show="visible" :style="{left:left+'px',top:top+'px'}" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">Refresh</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">Close</li>
       <li @click="closeOthersTags">Close Others</li>
+      <li v-if="!isLastView()" @click="closeRightTags">Close to the Right</li>
       <li @click="closeAllTags(selectedTag)">Close All</li>
     </ul>
   </div>
@@ -28,6 +31,7 @@
 <script>
 import ScrollPane from './ScrollPane'
 import path from 'path'
+import Sortable from 'sortablejs'
 
 export default {
   components: { ScrollPane },
@@ -64,6 +68,7 @@ export default {
   mounted() {
     this.initTags()
     this.addTags()
+    this.initSortableTags()
   },
   methods: {
     isActive(route) {
@@ -71,6 +76,13 @@ export default {
     },
     isAffix(tag) {
       return tag.meta && tag.meta.affix
+    },
+    isLastView() {
+      try {
+        return this.selectedTag.fullPath === this.visitedViews[this.visitedViews.length - 1].fullPath
+      } catch (err) {
+        return false
+      }
     },
     filterAffixTags(routes, basePath = '/') {
       let tags = []
@@ -104,24 +116,34 @@ export default {
     },
     addTags() {
       const { name } = this.$route
-      if (name) {
+      if (!name) {
+        return
+      }
+      const res = this.visitedViews.find(v => v.path === this.$route.path)
+      if (res) {
+        // when query is different then update
+        if (res.fullPath !== this.$route.fullPath) {
+          this.$store.dispatch('tagsView/updateVisitedView', this.$route)
+        }
+      } else {
         this.$store.dispatch('tagsView/addView', this.$route)
       }
-      return false
+    },
+    initSortableTags() {
+      this.$nextTick(() => {
+        new Sortable(this.$refs['sortable-wrap'], {
+          draggable: '.sortable',
+          animation: 200,
+          onUpdate: event => {
+            const { oldIndex, newIndex } = event
+            this.$store.dispatch('tagsView/moveView', { oldIndex, newIndex })
+          }
+        })
+      })
     },
     moveToCurrentTag() {
-      const tags = this.$refs.tag
       this.$nextTick(() => {
-        for (const tag of tags) {
-          if (tag.to.path === this.$route.path) {
-            this.$refs.scrollPane.moveToTarget(tag)
-            // when query is different then update
-            if (tag.to.fullPath !== this.$route.fullPath) {
-              this.$store.dispatch('tagsView/updateVisitedView', this.$route)
-            }
-            break
-          }
-        }
+        this.$refs.scrollPane.moveToTarget(this.$route)
       })
     },
     refreshSelectedTag(view) {
@@ -147,6 +169,13 @@ export default {
         this.moveToCurrentTag()
       })
     },
+    closeRightTags() {
+      this.$store.dispatch('tagsView/delRightTags', this.selectedTag).then(visitedViews => {
+        if (!visitedViews.find(i => i.fullPath === this.$route.fullPath)) {
+          this.toLastView(visitedViews)
+        }
+      })
+    },
     closeAllTags(view) {
       this.$store.dispatch('tagsView/delAllViews').then(({ visitedViews }) => {
         if (this.affixTags.some(tag => tag.path === view.path)) {
@@ -155,7 +184,7 @@ export default {
         this.toLastView(visitedViews, view)
       })
     },
-    toLastView(visitedViews, view) {
+    toLastView(visitedViews, view = {}) {
       const latestView = visitedViews.slice(-1)[0]
       if (latestView) {
         this.$router.push(latestView.fullPath)
