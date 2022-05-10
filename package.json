@@ -10,7 +10,6 @@
     "build:stage": "vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
     "new": "plop",
-    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
     "test:ci": "npm run lint && npm run test:unit"
   },
@@ -69,7 +68,8 @@
     "script-ext-html-webpack-plugin": "2.1.3",
     "serve-static": "1.13.2",
     "svg-sprite-loader": "4.1.3",
-    "svgo": "1.2.0",
+    "svgo-loader": "^3.0.0",
+    "svgo": "^2.3.0",
     "vue-template-compiler": "2.6.10"
   },
   "browserslist": [

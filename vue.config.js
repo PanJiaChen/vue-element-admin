@@ -1,6 +1,7 @@
 'use strict'
 const path = require('path')
 const defaultSettings = require('./src/settings.js')
+const { extendDefaultPlugins } = require('svgo')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
@@ -78,6 +79,19 @@ module.exports = {
       .loader('svg-sprite-loader')
       .options({
         symbolId: 'icon-[name]'
+      })
+      .end()
+      .use('svgo-loader')
+      .loader('svgo-loader')
+      .options({
+        plugins: extendDefaultPlugins([
+          {
+            name: 'removeAttrs',
+            params: {
+              attrs: ['fill', 'fill-rule']
+            }
+          }
+        ])
       })
       .end()
 
