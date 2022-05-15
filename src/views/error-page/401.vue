@@ -49,7 +49,9 @@ export default {
   methods: {
     back() {
       if (this.$route.query.noGoBack) {
-        this.$router.push({ path: '/dashboard' })
+        this.$router.push({
+          path: '/dashboard'
+        }, () => {})
       } else {
         this.$router.go(-1)
       }
