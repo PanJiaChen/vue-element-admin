@@ -95,6 +95,12 @@ const componentsRouter = {
       component: () => import('@/views/components-demo/drag-kanban'),
       name: 'DragKanbanDemo',
       meta: { title: 'Drag Kanban' }
+    },
+    {
+      path: 'tooltip-items',
+      component: () => import('@/views/components-demo/tooltip-items'),
+      name: 'TooltipItemsDome',
+      meta: { title: 'Tooltip Items' }
     }
   ]
 }
