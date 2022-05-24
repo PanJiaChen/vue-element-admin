@@ -1,7 +1,17 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="menu 1-2" type="success">
-      <router-view />
-    </el-alert>
+    <el-input v-model="input" />
+    <router-view />
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Menu12',
+  data() {
+    return {
+      input: 'Menu1-2'
+    }
+  }
+}
+</script>

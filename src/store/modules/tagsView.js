@@ -75,7 +75,13 @@ const actions = {
     commit('ADD_VISITED_VIEW', view)
   },
   addCachedView({ commit }, view) {
-    commit('ADD_CACHED_VIEW', view)
+    if (view.matched && view.matched.length > 1) {
+      for (let i = 1; i < view.matched.length; i++) { // 第0个是Layout，跳过
+        commit('ADD_CACHED_VIEW', view.matched[i])
+      }
+    } else {
+      commit('ADD_CACHED_VIEW', view)
+    }
   },
 
   delView({ dispatch, state }, view) {
@@ -94,11 +100,23 @@ const actions = {
       resolve([...state.visitedViews])
     })
   },
-  delCachedView({ commit, state }, view) {
-    return new Promise(resolve => {
-      commit('DEL_CACHED_VIEW', view)
-      resolve([...state.cachedViews])
-    })
+  delCachedView({ dispatch, commit, state, rootState }, view) {
+    if (view.matched && view.matched.length > 1) {
+      return new Promise(resolve => {
+        const deleteView = view.matched[view.matched.length - 1]
+        console.log('delete ' + deleteView.name)
+        commit('DEL_CACHED_VIEW', deleteView)
+
+        dispatch('recursionDeleteParent', { routes: rootState.permission.routes, view: deleteView.parent, excludeView: view.matched[0] })
+
+        resolve([...state.cachedViews])
+      })
+    } else {
+      return new Promise(resolve => {
+        commit('DEL_CACHED_VIEW', view)
+        resolve([...state.cachedViews])
+      })
+    }
   },
 
   delOthersViews({ dispatch, state }, view) {
@@ -149,6 +167,35 @@ const actions = {
 
   updateVisitedView({ commit }, view) {
     commit('UPDATE_VISITED_VIEW', view)
+  },
+
+  getRouteByName({ dispatch }, { routes, name }) {
+    let stark = []
+    stark = stark.concat(routes)
+    while (stark.length) {
+      const temp = stark.shift()
+      if (temp.children) {
+        stark = stark.concat(temp.children)
+      }
+      if (temp.name === name) {
+        return temp
+      }
+    }
+    return null
+  },
+  async recursionDeleteParent({ dispatch, commit, state }, { routes, view, excludeView }) {
+    const route = await dispatch('getRouteByName', { routes: routes, name: view.name })
+    if (route && route.children) {
+      const childrenNames = route.children.map(r => r.name).filter(Boolean)
+      const visitedViewNames = state.visitedViews.map(s => s.name)
+
+      const needDelete = !(childrenNames.some(item => visitedViewNames.includes(item)) || view === excludeView)
+      if (needDelete) {
+        console.log('delete ' + view.name)
+        commit('DEL_CACHED_VIEW', view)
+        dispatch('recursionDeleteParent', { routes: routes, view: view.parent, excludeView: excludeView })
+      }
+    }
   }
 }
 
