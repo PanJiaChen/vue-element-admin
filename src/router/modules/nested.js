@@ -42,7 +42,7 @@ const nestedRouter = {
               path: 'menu1-2-2',
               component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
               name: 'Menu1-2-2',
-              meta: { title: 'Menu 1-2-2' }
+              meta: { title: 'Menu 1-2-2', affix: true }
             }
           ]
         },
