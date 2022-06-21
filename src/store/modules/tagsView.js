@@ -13,9 +13,13 @@ const mutations = {
     )
   },
   ADD_CACHED_VIEW: (state, view) => {
-    if (state.cachedViews.includes(view.name)) return
     if (!view.meta.noCache) {
-      state.cachedViews.push(view.name)
+      for (const matchedView of view.matched) {
+        const { name } = matchedView.components.default
+        if (name && state.cachedViews.indexOf(name) === -1) {
+          state.cachedViews.push(name)
+        }
+      }
     }
   },
 
@@ -28,8 +32,9 @@ const mutations = {
     }
   },
   DEL_CACHED_VIEW: (state, view) => {
-    const index = state.cachedViews.indexOf(view.name)
-    index > -1 && state.cachedViews.splice(index, 1)
+    const deletedViewName = view.matched[view.matched.length - 1].components.default.name
+    const index = state.cachedViews.indexOf(deletedViewName)
+    state.cachedViews.splice(index, 1)
   },
 
   DEL_OTHERS_VISITED_VIEWS: (state, view) => {
@@ -38,9 +43,10 @@ const mutations = {
     })
   },
   DEL_OTHERS_CACHED_VIEWS: (state, view) => {
-    const index = state.cachedViews.indexOf(view.name)
+    const currentViewName = view.matched[view.matched.length - 1].components.default.name
+    const index = state.cachedViews.indexOf(currentViewName)
     if (index > -1) {
-      state.cachedViews = state.cachedViews.slice(index, index + 1)
+      state.cachedViews = view.matched.map(i => i.components.default.name)
     } else {
       // if index = -1, there is no cached tags
       state.cachedViews = []
