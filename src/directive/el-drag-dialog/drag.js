@@ -61,6 +61,16 @@ export default {
           top = maxDragDomTop
         }
 
+        // 当前元素宽度大于浏览器窗口宽度时,则将其向左偏移左侧可拖拽长度
+        if (maxDragDomLeft < 0) {
+          left = -minDragDomLeft
+        }
+
+        // 当前元素高度大于浏览器窗口高度时,则将其向上偏移顶侧可拖拽长度
+        if (maxDragDomTop < 0) {
+          top = -minDragDomTop
+        }
+
         // 移动当前元素
         dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`
 
