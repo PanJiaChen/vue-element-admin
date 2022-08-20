@@ -247,9 +247,8 @@ export default {
       lang,
       // 浏览器是否支持该控件
       isSupported,
-      // 浏览器是否支持触屏事件
-      // eslint-disable-next-line no-prototype-builtins
-      isSupportTouch: document.hasOwnProperty('ontouchstart'),
+      // Does the browser support touch screen events?
+      isSupportTouch: Object.prototype.hasOwnProperty.call(document, 'ontouchstart'),
       // 步骤
       step: 1, // 1选择文件 2剪裁 3上传
       // 上传状态及进度
@@ -574,7 +573,9 @@ export default {
       const dY = nY - mY
       let rX = x + dX
       let rY = y + dY
-      if (!on) return
+      if (!on) {
+        return
+      }
       if (rX > 0) {
         rX = 0
       }

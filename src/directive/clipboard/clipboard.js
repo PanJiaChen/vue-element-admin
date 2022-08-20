@@ -12,16 +12,20 @@ export default {
       el._v_clipboard_error = binding.value
     } else {
       const clipboard = new Clipboard(el, {
-        text() { return binding.value },
-        action() { return binding.arg === 'cut' ? 'cut' : 'copy' }
+        text() {
+          return binding.value
+        },
+        action() {
+          return binding.arg === 'cut' ? 'cut' : 'copy'
+        }
       })
       clipboard.on('success', e => {
         const callback = el._v_clipboard_success
-        callback && callback(e) // eslint-disable-line
+        callback && callback(e)
       })
       clipboard.on('error', e => {
         const callback = el._v_clipboard_error
-        callback && callback(e) // eslint-disable-line
+        callback && callback(e)
       })
       el._v_clipboard = clipboard
     }
@@ -32,8 +36,12 @@ export default {
     } else if (binding.arg === 'error') {
       el._v_clipboard_error = binding.value
     } else {
-      el._v_clipboard.text = function() { return binding.value }
-      el._v_clipboard.action = function() { return binding.arg === 'cut' ? 'cut' : 'copy' }
+      el._v_clipboard.text = function() {
+        return binding.value
+      }
+      el._v_clipboard.action = function() {
+        return binding.arg === 'cut' ? 'cut' : 'copy'
+      }
     }
   },
   unbind(el, binding) {

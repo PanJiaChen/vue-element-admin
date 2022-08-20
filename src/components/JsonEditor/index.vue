@@ -16,8 +16,12 @@ import 'codemirror/addon/lint/json-lint'
 
 export default {
   name: 'JsonEditor',
-  /* eslint-disable vue/require-prop-types */
-  props: ['value'],
+  props: {
+    value: {
+      type: [Array, Boolean, Number, Object, String, Symbol],
+      default: undefined
+    }
+  },
   data() {
     return {
       jsonEditor: false

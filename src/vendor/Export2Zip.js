@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { saveAs } from 'file-saver'
 import JSZip from 'jszip'
 
@@ -15,10 +14,11 @@ export function export_txt_to_zip(th, jsonData, txtName, zipName) {
   })
   zip.file(`${txt_name}.txt`, txtData)
   zip.generateAsync({
-    type: "blob"
+    type: 'blob'
   }).then((blob) => {
     saveAs(blob, `${zip_name}.zip`)
-  }, (err) => {
-    alert('导出失败')
+  }, (error) => {
+    alert('Export Failure')
+    console.warn(error)
   })
 }
