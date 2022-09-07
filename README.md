@@ -29,7 +29,7 @@
 English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
 
 <p align="center">
-  <b>SPONSORED BY</b>
+  <b>SPONSORLAR</b>
 </p>
 <table align="center" cellspacing="0" cellpadding="0">
   <tbody>
@@ -43,200 +43,202 @@ English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spa
   </tbody>
 </table>
 
-## Introduction
+## Giriş
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It is based on [vue](https://github.com/vuejs/vue) and uses the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) yönetici arayüzleri için üretime hazır bir ön uç çözümdür. dayandığı [vue](https://github.com/vuejs/vue) ve UI Toolkit'i kullanır [element-ui](https://github.com/ElemeFE/element).
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) is based on the newest development stack of vue and it has a built-in i18n solution, typical templates for enterprise applications, and lots of awesome features. It helps you build large and complex Single-Page Applications. I believe whatever your needs are, this project will help you.
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) vue'nun en yeni geliştirme yığınını temel alır ve yerleşik bir i18n çözümüne, kurumsal uygulamalar için tipik şablonlara ve birçok harika özelliğe sahiptir. Büyük ve karmaşık Tek Sayfalı Uygulamalar oluşturmanıza yardımcı olur. İhtiyaçlarınız ne olursa olsun, bu projenin size yardımcı olacağına inanıyorum.
 
-- [Preview](https://panjiachen.github.io/vue-element-admin)
+- [Ön izleme](https://panjiachen.github.io/vue-element-admin)
 
-- [Documentation](https://panjiachen.github.io/vue-element-admin-site/)
+- [Belgeler](https://panjiachen.github.io/vue-element-admin-site/)
 
 - [Gitter](https://gitter.im/vue-element-admin/discuss)
 
-- [Donate](https://panjiachen.github.io/vue-element-admin-site/donate/)
+- [Bağış](https://panjiachen.github.io/vue-element-admin-site/donate/)
 
 - [Wiki](https://github.com/PanJiaChen/vue-element-admin/wiki)
 
 - [Gitee](https://panjiachen.gitee.io/vue-element-admin/) 国内用户可访问该地址在线预览
 
-- Base template recommends using: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
-- Desktop: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
+- Temel şablon şunları kullanmanızı önerir:: [vue-admin-template](https://github.com/PanJiaChen/vue-admin-template)
+- Masaüstü: [electron-vue-admin](https://github.com/PanJiaChen/electron-vue-admin)
 - Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Credits: [@Armour](https://github.com/Armour))
 - [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-**After the `v4.1.0+` version, the default master branch will not support i18n. Please use [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), it will keep up with the master update**
+**`v4.1.0+` sürümünden sonra, varsayılan ana dal i18n'yi desteklemeyecektir. Lütfen [i18n Branch](https://github.com/PanJiaChen/vue-element-admin/tree/i18n) kullanın, ana güncellemeye ayak uyduracaktır**
 
-**The current version is `v4.0+` build on `vue-cli`. If you find a problem, please put [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). If you want to use the old version , you can switch branch to [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), it does not rely on `vue-cli`**
+**Geçerli sürüm, 'vue-cli' üzerine kurulu 'v4.0+'dır. Bir sorun bulursanız lütfen [sorunu](https://github.com/PanJiaChen/vue-element-admin/issues/new) sorun. Eski sürümü kullanmak istiyorsanız dalı [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0) olarak değiştirebilirsiniz, değil 'vue-cli'ye güvenin**
 
-**This project does not support low version browsers (e.g. IE). Please add polyfill by yourself.**
+**Bu proje, düşük sürüm tarayıcıları desteklemez (ör. IE). Lütfen polyfill'i kendiniz ekleyin.**
 
-## Preparation
+## Hazırlık
 
-You need to install [node](https://nodejs.org/) and [git](https://git-scm.com/) locally. The project is based on [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), all request data is simulated using [Mock.js](https://github.com/nuysoft/Mock).
-Understanding and learning this knowledge in advance will greatly help the use of this project.
+Öncelikle node.js'i yüklemeniz gerekiyor [node](https://nodejs.org/) ve [git](https://git-scm.com/) locally. Proje [ES2015+] üstü çalışmaktadır (https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) ve [element-ui](https://github.com/ElemeFE/element), tüm istek verileri kullanılarak simüle edilir [Mock.js](https://github.com/nuysoft/Mock).
+Bu bilgiyi önceden anlamak ve öğrenmek, bu projenin kullanılmasına büyük ölçüde yardımcı olacaktır.
 
-[![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
+[![CodeSandbox'da düzenle](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
 
 <p align="center">
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
-## Sponsors
+## Sponsorlar
 
-Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
+Sponsor olun ve logonuzu sitenize bir bağlantı ile GitHub'daki README'ye alın. [[Sponsor ol]](https://www.patreon.com/panjiachen)
 
 ### Akveo
-<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
+<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>SWB0RAZPZR1M kupon kodunu kullanarak 39$'a %20 indirimle Vue admin için Java arka ucunu edinin
 </p>
 
-### Flatlogic
+### Düz Mantık
 
-<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
+<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Vue, React ve Angular ile yapılan Admin Dashboard Şablonları.</p>
 
-## Features
+## Özellikler
 
 ```
-- Login / Logout
+- Giriş / Çıkış
 
-- Permission Authentication
-  - Page permission
-  - Directive permission
-  - Permission configuration page
-  - Two-step login
+- İzin Doğrulama
+  - Sayfa izni
+  - Direktif izni
+  - İzin yapılandırma sayfası
+  - İki adımlı giriş
 
-- Multi-environment build
-  - Develop (dev)
-  - sit
-  - Stage Test (stage)
-  - Production (prod)
+- Çok ortamlı yapı
+  - Geliştirmek (geliştirmek)
+  - oturmak
+  - Aşama Testi (aşama)
+  - Üretim (ürün)
 
-- Global Features
+- Küresel Özellikler
   - I18n
-  - Multiple dynamic themes
-  - Dynamic sidebar (supports multi-level routing)
-  - Dynamic breadcrumb
-  - Tags-view (Tab page Support right-click operation)
+  - Çoklu dinamik temalar
+  - Dinamik kenar çubuğu (çok seviyeli yönlendirmeyi destekler)
+  - Dinamik kırıntı
+  - Etiketler görünümü (Sekme sayfası Sağ tıklama işlemini destekler)
   - Svg Sprite
-  - Mock data
-  - Screenfull
-  - Responsive Sidebar
+  - Sahte veriler
+  - Ekran dolu
+  - Duyarlı Kenar Çubuğu
 
-- Editor
-  - Rich Text Editor
-  - Markdown Editor
-  - JSON Editor
+- Editör
+  - Zengin metin editörü
+  - İşaretleme Düzenleyicisi
+  - JSON Düzenleyici
 
 - Excel
-  - Export Excel
-  - Upload Excel
-  - Visualization Excel
-  - Export zip
+  - Excel'i Dışa Aktar
+  - Excel'i Yükle
+  - Görselleştirme Exceli
+  - Zip'i dışa aktar
 
-- Table
-  - Dynamic Table
-  - Drag And Drop Table
-  - Inline Edit Table
+- Masa
+  - Dinamik Tablo
+  - Sürükle ve Bırak Tablosu
+  - Satır İçi Düzenleme Tablosu
 
-- Error Page
+- Hatalı sayfa
   - 401
   - 404
 
-- Components
-  - Avatar Upload
-  - Back To Top
-  - Drag Dialog
-  - Drag Select
-  - Drag Kanban
-  - Drag List
-  - SplitPane
-  - Dropzone
-  - Sticky
-  - CountTo
+- Bileşenler
+  - Avatar Yükleme
+  - Başa dönüş
+  - Sürükle İletişim Kutusu
+  - Sürükle Seç
+  - Kanban'ı sürükleyin
+  - Listeyi Sürükle
+  - BölmeBölmesi
+  - Boşaltma noktası
+  - Yapışkan
+  - Saymak
 
-- Advanced Example
-- Error Log
-- Dashboard
-- Guide Page
-- ECharts
-- Clipboard
-- Markdown to html
+- Gelişmiş Örnek
+- Hata Günlüğü
+- Gösterge Paneli
+- Kılavuz Sayfası
+- Echart'lar
+- Pano
+- html'ye işaretleme
 ```
 
-## Getting started
+## Başlarken
 
 ```bash
-# clone the project
+# projeyi klonla
 git clone https://github.com/PanJiaChen/vue-element-admin.git
 
-# enter the project directory
+# proje dizinine girin
 cd vue-element-admin
 
-# install dependency
+# bağımlılık yükle
 npm install
 
-# develop
+# çalıştırmak
 npm run dev
 ```
 
-This will automatically open http://localhost:9527
+Bu otomatik olarak açılacaktır http://localhost:9527
 
-## Build
+## Projeyi build etmek
 
 ```bash
-# build for test environment
+# test ortamı için derleme
 npm run build:stage
 
-# build for production environment
+# üretim ortamı için inşa
 npm run build:prod
 ```
 
-## Advanced
+## Gelişmiş
 
 ```bash
-# preview the release environment effect
+# yayın ortamı efektini önizleyin
 npm run preview
 
-# preview the release environment effect + static resource analysis
+# yayın ortamı etkisi + statik kaynak analizini önizleyin
 npm run preview -- --report
 
-# code format check
+# kod formatı kontrolü
 npm run lint
 
-# code format check and auto fix
+# kod formatı kontrolü ve otomatik düzeltme
 npm run lint -- --fix
 ```
 
-Refer to [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) for more information
-
-## Changelog
+Daha fazla bilgi için bkz. [Documentation](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html)
 
 Detailed changes for each release are documented in the [release notes](https://github.com/PanJiaChen/vue-element-admin/releases).
 
-## Online Demo
+## Değişiklik günlüğü
 
-[Preview](https://panjiachen.github.io/vue-element-admin)
+Her sürüm için ayrıntılı değişiklikler [sürüm notlarında](https://github.com/PanJiaChen/vue-element-admin/releases). belgelenmiştir.
 
-## Donate
+## Çevrimiçi Demo
 
-If you find this project useful, you can buy author a glass of juice :tropical_drink:
+[Önizleme](https://panjiachen.github.io/vue-element-admin)
 
-![donate](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
+## Bağış
 
-[Paypal Me](https://www.paypal.me/panfree23)
+Bu projeyi faydalı bulursanız, yazara bir bardak meyve suyu :tropik içecek satın alabilirsiniz:
 
-[Buy me a coffee](https://www.buymeacoffee.com/Pan)
+![bağış](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
 
-## Browsers support
+[Paypal](https://www.paypal.me/panfree23)
 
-Modern browsers and Internet Explorer 10+.
+[Bana kahve satın al](https://www.buymeacoffee.com/Pan)
+
+## Tarayıcı Destekleri
+
+Modern tarayıcılar ve Internet Explorer 10+.
 
 | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="IE / Edge" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>IE / Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](https://godban.github.io/browsers-support-badges/)</br>Safari |
 | --------- | --------- | --------- | --------- |
 | IE10, IE11, Edge | last 2 versions | last 2 versions | last 2 versions |
 
-## License
+## Lisans
 
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 
