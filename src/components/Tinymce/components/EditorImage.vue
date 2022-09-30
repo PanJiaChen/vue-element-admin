@@ -3,7 +3,7 @@
     <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">
       upload
     </el-button>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog title="Upload" :visible.sync="dialogVisible">
       <el-upload
         :multiple="true"
         :file-list="fileList"
@@ -19,12 +19,14 @@
           Click upload
         </el-button>
       </el-upload>
-      <el-button @click="dialogVisible = false">
-        Cancel
-      </el-button>
-      <el-button type="primary" @click="handleSubmit">
-        Confirm
-      </el-button>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="handleSubmit">
+          Confirm
+        </el-button>
+        <el-button @click="dialogVisible = false">
+          Cancel
+        </el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
