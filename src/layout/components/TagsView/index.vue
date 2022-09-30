@@ -105,6 +105,10 @@ export default {
     addTags() {
       const { name } = this.$route
       if (name) {
+        const matchedRoutes = this.$route.matched
+        for (let i = 1; i < matchedRoutes.length - 1; i++) {
+          this.$store.dispatch('tagsView/addCachedView', matchedRoutes[i])
+        }
         this.$store.dispatch('tagsView/addView', this.$route)
       }
       return false
@@ -135,6 +139,12 @@ export default {
       })
     },
     closeSelectedTag(view) {
+      const matchedRoutes = view.matched
+      for (let i = 1; i < matchedRoutes.length - 1; i++) {
+        this.$store.dispatch('tagsView/delCachedView', matchedRoutes[i]).then(response => {
+          console.log('Deleted cached views')
+        })
+      }
       this.$store.dispatch('tagsView/delView', view).then(({ visitedViews }) => {
         if (this.isActive(view)) {
           this.toLastView(visitedViews, view)

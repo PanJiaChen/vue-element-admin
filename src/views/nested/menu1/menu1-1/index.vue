@@ -5,3 +5,13 @@
     </el-alert>
   </div>
 </template>
+
+<script>
+export default {
+  name: 'Menu11',
+  created() {
+    console.log('Menu-1-1 created')
+  }
+}
+
+</script>
