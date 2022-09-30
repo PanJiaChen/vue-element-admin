@@ -10,6 +10,8 @@
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
+        <!--ref获取本页面dom元素-->
+        <!--v-model双向数据绑定-->
         <el-input
           ref="username"
           v-model="loginForm.username"
