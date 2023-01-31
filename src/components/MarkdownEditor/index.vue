@@ -1,117 +1,40 @@
 <template>
-  <div :id="id" />
+  <div>
+    <editor ref="toastuiEditor" :options="editorOptions" height="500px" @load="onEditorLoad" @change="onEditorChange" />
+  </div>
 </template>
-
 <script>
-// deps for editor
-import 'codemirror/lib/codemirror.css' // codemirror
-import 'tui-editor/dist/tui-editor.css' // editor ui
-import 'tui-editor/dist/tui-editor-contents.css' // editor content
+import '@toast-ui/editor/dist/toastui-editor.css'
 
-import Editor from 'tui-editor'
-import defaultOptions from './default-options'
+import { Editor } from '@toast-ui/vue-editor'
 
 export default {
-  name: 'MarkdownEditor',
-  props: {
-    value: {
-      type: String,
-      default: ''
-    },
-    id: {
-      type: String,
-      required: false,
-      default() {
-        return 'markdown-editor-' + +new Date() + ((Math.random() * 1000).toFixed(0) + '')
-      }
-    },
-    options: {
-      type: Object,
-      default() {
-        return defaultOptions
-      }
-    },
-    mode: {
-      type: String,
-      default: 'markdown'
-    },
-    height: {
-      type: String,
-      required: false,
-      default: '300px'
-    },
-    language: {
-      type: String,
-      required: false,
-      default: 'en_US' // https://github.com/nhnent/tui.editor/tree/master/src/js/langs
-    }
+  components: {
+    editor: Editor
   },
   data() {
     return {
-      editor: null
-    }
-  },
-  computed: {
-    editorOptions() {
-      const options = Object.assign({}, defaultOptions, this.options)
-      options.initialEditType = this.mode
-      options.height = this.height
-      options.language = this.language
-      return options
-    }
-  },
-  watch: {
-    value(newValue, preValue) {
-      if (newValue !== preValue && newValue !== this.editor.getValue()) {
-        this.editor.setValue(newValue)
+      editorText: '',
+      editorOptions: {
+        hideModeSwitch: true
       }
-    },
-    language(val) {
-      this.destroyEditor()
-      this.initEditor()
-    },
-    height(newValue) {
-      this.editor.height(newValue)
-    },
-    mode(newValue) {
-      this.editor.changeMode(newValue)
     }
   },
   mounted() {
-    this.initEditor()
+    console.log(this.$route.query.editorText)
   },
-  destroyed() {
-    this.destroyEditor()
+  beforeDestroy() {
   },
   methods: {
-    initEditor() {
-      this.editor = new Editor({
-        el: document.getElementById(this.id),
-        ...this.editorOptions
+    onEditorLoad(editor) {
+      editor.setMarkdown(this.$route.query.editorText, true)
+    },
+    onEditorChange() {
+      const query = JSON.parse(JSON.stringify(this.$route.query)) // 获取路由参数信息
+      this.$nextTick(() => {
+        query.editorText = this.$refs.toastuiEditor.invoke('getMarkdown') // 改变参数
+        this.$router.push({ path: this.$route.path, query }) // 更新路由
       })
-      if (this.value) {
-        this.editor.setValue(this.value)
-      }
-      this.editor.on('change', () => {
-        this.$emit('input', this.editor.getValue())
-      })
-    },
-    destroyEditor() {
-      if (!this.editor) return
-      this.editor.off('change')
-      this.editor.remove()
-    },
-    setValue(value) {
-      this.editor.setValue(value)
-    },
-    getValue() {
-      return this.editor.getValue()
-    },
-    setHtml(value) {
-      this.editor.setHtml(value)
-    },
-    getHtml() {
-      return this.editor.getHtml()
     }
   }
 }
