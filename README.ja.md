@@ -69,13 +69,13 @@
 
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
 
+### Akveo
+<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
+</p>
+
+### Flatlogic
+
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
-
-### GitAds
-
-> vue-element-admin is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
-
-[<img src="https://images.gitads.io/vue-element-admin" alt="GitAds" />](https://tracking.gitads.io/?repo=vue-element-admin)
 
 ## 機能一覧
 

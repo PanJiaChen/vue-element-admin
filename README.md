@@ -28,6 +28,21 @@
 
 English | [简体中文](./README.zh-CN.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
 
+<p align="center">
+  <b>SPONSORED BY</b>
+</p>
+<table align="center" cellspacing="0" cellpadding="0">
+  <tbody>
+    <tr>
+      <td align="center" valign="middle">
+       <a href="https://www.vform666.com/" title="variantForm" target="_blank" style="padding-right: 20px;">
+        <img height="200px" style="padding-right: 20px;" src="https://s3.bmp.ovh/imgs/2022/04/11/3379c1c1cf2e3228.png" title="variantForm">
+        </a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 ## Introduction
 
 [vue-element-admin](https://panjiachen.github.io/vue-element-admin) is a production-ready front-end solution for admin interfaces. It is based on [vue](https://github.com/vuejs/vue) and uses the UI Toolkit [element-ui](https://github.com/ElemeFE/element).
@@ -72,13 +87,13 @@ Understanding and learning this knowledge in advance will greatly help the use o
 
 Become a sponsor and get your logo on our README on GitHub with a link to your site. [[Become a sponsor]](https://www.patreon.com/panjiachen)
 
+### Akveo
+<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
+</p>
+
+### Flatlogic
+
 <a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
-
-### GitAds
-
-> vue-element-admin is being sponsored by the following tool; please help to support us by taking a look and signing up to a free trial
-
-[<img src="https://images.gitads.io/vue-element-admin" alt="GitAds" />](https://tracking.gitads.io/?repo=vue-element-admin)
 
 ## Features
 
