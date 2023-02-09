@@ -5,6 +5,7 @@
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
     "dev": "vue-cli-service serve",
+    "serve": "vue-cli-service serve",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",
@@ -34,7 +35,7 @@
     "screenfull": "4.2.0",
     "script-loader": "0.7.2",
     "sortablejs": "1.8.4",
-    "tui-editor": "1.3.3",
+    "@toast-ui/editor": "^3.1.3",
     "vue": "2.6.10",
     "vue-count-to": "1.0.13",
     "vue-router": "3.0.2",
