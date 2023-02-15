@@ -12,7 +12,8 @@
     "new": "plop",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
     "test:unit": "jest --clearCache && vue-cli-service test:unit",
-    "test:ci": "npm run lint && npm run test:unit"
+    "test:ci": "npm run lint && npm run test:unit",
+    "dev_t": "set NODE_OPTIONS=\"--openssl-legacy-provider\" & npm run dev\n"
   },
   "dependencies": {
     "axios": "0.18.1",
