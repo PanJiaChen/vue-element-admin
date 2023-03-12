@@ -9,17 +9,19 @@
     </el-row>
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :span="8">
         <div class="chart-wrapper">
           <raddar-chart />
         </div>
       </el-col>
+      <!--
       <el-col :xs="24" :sm="24" :lg="8">
         <div class="chart-wrapper">
           <pie-chart />
         </div>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      -->
+      <el-col :span="16">
         <div class="chart-wrapper">
           <bar-chart />
         </div>
@@ -45,7 +47,7 @@
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
-import PieChart from './components/PieChart'
+// import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
 import TransactionTable from './components/TransactionTable'
 import TodoList from './components/TodoList'
@@ -77,7 +79,7 @@ export default {
     PanelGroup,
     LineChart,
     RaddarChart,
-    PieChart,
+    // PieChart,
     BarChart,
     TransactionTable,
     TodoList,
