@@ -49,7 +49,7 @@ const lineChartData = {
 }
 
 export default {
-  name: 'ExportExcel',
+  name: 'AnalyseJiaWang',
   components: {
     LineChart,
     RaddarChart,

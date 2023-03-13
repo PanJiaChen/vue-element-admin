@@ -5,12 +5,12 @@
 <script>
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
-import resize from './mixins/resize'
+// import resize from './mixins/resize'
 
 const animationDuration = 6000
 
 export default {
-  mixins: [resize],
+  // mixins: [resize],
   props: {
     className: {
       type: String,
@@ -47,14 +47,23 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
+        title: {
+          text: '2023年3月'
+        },
         tooltip: {
           trigger: 'axis',
           axisPointer: { // 坐标轴指示器，坐标轴触发有效
             type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
           }
         },
+        legend: {
+          // Try 'horizontal'
+          orient: 'vertical',
+          right: 10,
+          top: 'center'
+        },
         grid: {
-          top: 10,
+          top: 30,
           left: '2%',
           right: '2%',
           bottom: '3%',
@@ -68,31 +77,31 @@ export default {
         }],
         yAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['拖拉机', '抽水机', '无人机', '挖掘机', '收割机'],
           axisTick: {
             alignWithLabel: true
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '使用量',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
+          data: [179, 92, 200, 334, 390],
           animationDuration
         }, {
-          name: 'pageB',
+          name: '闲置量',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
+          data: [80, 12, 200, 334, 390],
           animationDuration
         }, {
-          name: 'pageC',
+          name: '故障量',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          data: [30, 2, 10, 24, 30],
           animationDuration
         }]
       })
