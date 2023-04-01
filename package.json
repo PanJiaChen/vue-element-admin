@@ -4,10 +4,10 @@
   "description": "A magical vue admin. An out-of-box UI solution for enterprise applications. Newest development stack of vue. Lots of awesome features",
   "author": "Pan <panfree23@gmail.com>",
   "scripts": {
-    "dev": "vue-cli-service serve",
+    "dev": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",
     "lint": "eslint --ext .js,.vue src",
-    "build:prod": "vue-cli-service build",
-    "build:stage": "vue-cli-service build --mode staging",
+    "build:prod": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build",
+    "build:stage": "SET NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service build --mode staging",
     "preview": "node build/index.js --preview",
     "new": "plop",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
