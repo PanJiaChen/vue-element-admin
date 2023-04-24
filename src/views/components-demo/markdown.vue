@@ -27,7 +27,7 @@
       <el-tag class="tag-title">
         Customize Toolbar:
       </el-tag>
-      <markdown-editor v-model="content3" :options="{ toolbarItems: ['heading','bold','italic']}" />
+      <markdown-editor v-model="content3" :options="{ toolbarItems: [['heading','bold','italic']]}" />
     </div>
 
     <div class="editor-container">
