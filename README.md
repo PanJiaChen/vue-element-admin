@@ -174,7 +174,7 @@ git clone https://github.com/PanJiaChen/vue-element-admin.git
 cd vue-element-admin
 
 # install dependency
-npm install
+npm install 或 yarn(推荐)
 
 # develop
 npm run dev
