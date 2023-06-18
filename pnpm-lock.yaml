@@ -18,6 +18,7 @@ specifiers:
   codemirror: 5.45.0
   connect: 3.6.6
   core-js: 3.6.5
+  cross-env: ^7.0.3
   driver.js: 0.9.5
   dropzone: 5.5.1
   echarts: 4.2.1
@@ -101,6 +102,7 @@ devDependencies:
   chalk: 2.4.2
   chokidar: 2.1.5
   connect: 3.6.6
+  cross-env: 7.0.3
   eslint: 6.7.2
   eslint-plugin-vue: 6.2.2_eslint@6.7.2
   html-webpack-plugin: 3.2.0_webpack@4.46.0
@@ -4960,6 +4962,14 @@ packages:
       ripemd160: 2.0.2
       safe-buffer: 5.2.1
       sha.js: 2.4.11
+    dev: true
+
+  /cross-env/7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: true
 
   /cross-spawn/5.1.0:
