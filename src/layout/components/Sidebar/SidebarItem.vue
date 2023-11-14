@@ -7,8 +7,8 @@
         </el-menu-item>
       </app-link>
     </template>
-
-    <el-submenu v-else ref="subMenu" :index="resolvePath(item.path)" popper-append-to-body>
+<!-- ResolvePath() used here, will cause the path repeat, such as nested menu `/nested/menu1` will wrong stitching for `/nested/menu1/menu1`,fix with `basePath` -->
+    <el-submenu v-else ref="subMenu" :index="basePath" popper-append-to-body>
       <template slot="title">
         <item v-if="item.meta" :icon="item.meta && item.meta.icon" :title="item.meta.title" />
       </template>
