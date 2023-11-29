@@ -62,8 +62,12 @@ export default {
         if (item.hidden) {
           return false
         } else {
+	  // Recursive children, determine whether multi-layer submenus need to be hidden.
+	  if (item.hidden) {
+	    return this.hasOneShowingChild(item.children, item)
+	  }
           // Temp set(will be used if only has one showing child)
-          this.onlyOneChild = item
+	  this.onlyOneChild = item
           return true
         }
       })
