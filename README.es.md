@@ -30,11 +30,11 @@ Español | [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本�
 
 ## Introducción
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) es una interfáz de administración preparada para producción. Está basada en [vue](https://github.com/vuejs/vue) y usa [element-ui](https://github.com/ElemeFE/element) como conjunto de herramientas de interfáz de usuario.
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) es una interfaz de administración preparada para producción. Está basada en [vue](https://github.com/vuejs/vue) y usa [element-ui](https://github.com/ElemeFE/element) como conjunto de herramientas de interfaz de usuario.
 
 Vue Element Admin es una solución práctica basada en la nueva plataforma de desarrollo de vue, construida con soporte a i18 para el manejo de múltiples lenguajes, plantillas estándares para aplicaciones de negocio y un conjunto de asombrosas características. Esta herramienta ayuda a construir largas y complejas Aplicacones de una sola página (SPA). Creo que lo que necesites hacer, este proyecto te ayudará.
 
-- [Vista Prévia de la Aplicación](https://panjiachen.github.io/vue-element-admin)
+- [Vista Previa de la Aplicación](https://panjiachen.github.io/vue-element-admin)
 
 - [Documentación](https://panjiachen.github.io/vue-element-admin-site/)
 
@@ -70,15 +70,15 @@ Entendiendo y aprendiendo esto pudiera ayudarle con su proyecto.
 
 ## Patrocinantes
 
-Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace directo a su sitio web. [[Se un Patrocinante]](https://www.patreon.com/panjiachen)
+Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace directo a su sitio web. [[Sé un Patrocinante]](https://www.patreon.com/panjiachen)
 
 ### Akveo
-<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
+<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Obten Java backend para Vue admin con un 20% de descuento por 39$, usa el cupón SWB0RAZPZR1M
 </p>
 
 ### Flatlogic
 
-<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
+<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Plantillas de Admin Dashboard hechas con Vue, React y Angular.</p>
 
 ## Características
 
@@ -201,7 +201,7 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 
 ## Demostración en línea
 
-[Vista Prévia de la Aplicación](https://panjiachen.github.io/vue-element-admin)
+[Vista Previa de la Aplicación](https://panjiachen.github.io/vue-element-admin)
 
 ## Donación
 
@@ -211,7 +211,7 @@ Si este proyecto es de mucha ayuda para ti, puedes comprarle al autor un vaso de
 
 [dona por Paypal](https://www.paypal.me/panfree23)
 
-[Comprame un Café](https://www.buymeacoffee.com/Pan)
+[Cómprame un Café](https://www.buymeacoffee.com/Pan)
 
 ## Navegadores Soportados
 
