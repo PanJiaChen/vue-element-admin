@@ -235,6 +235,16 @@ $cursor: #fff;
         box-shadow: 0 0 0px 1000px $bg inset !important;
         -webkit-text-fill-color: $cursor !important;
       }
+
+      /* 去除浏览器密码框默认的小眼睛 */
+      &::-webkit-credentials-cramble-button {
+        appearance: none;
+      }
+
+      &::-ms-reveal,
+      &::-ms-clear {
+        display: none;
+      }
     }
   }
 
