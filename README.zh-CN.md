@@ -28,20 +28,20 @@
 
 简体中文 | [English](./README.md) | [日本語](./README.ja.md) | [Spanish](./README.es.md)
 
-<p align="center">
+<!-- <p align="center">
   <b>SPONSORED BY</b>
 </p>
 <table align="center" cellspacing="0" cellpadding="0">
   <tbody>
     <tr>
       <td align="center" valign="middle">
-       <a href="https://www.vform666.com/" title="variantForm" target="_blank" style="padding-right: 20px;">
-        <img height="200px" style="padding-right: 20px;" src="https://s3.bmp.ovh/imgs/2022/04/11/3379c1c1cf2e3228.png" title="variantForm">
+       <a href="" title="" target="_blank" style="padding-right: 20px;">
+        <img height="200px" style="padding-right: 20px;" src="" title="variantForm">
         </a>
       </td>
     </tr>
-  </tbody>
-</table>
+  </tbody> 
+</table>-->
 
 ## 简介
 
