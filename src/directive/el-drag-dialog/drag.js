@@ -14,10 +14,37 @@ export default {
       }
     })()
 
-    dialogHeaderEl.onmousedown = (e) => {
+    const handleDialogMouseMove = (e, sty = { left: 0, top: 0 }, dis = { x: 0, y: 0 }, dragDomBoundary = { minDragDomTop: 0, maxDragDomTop: 0, minDragDomLeft: 0, maxDragDomLeft: 0 }) => {
+      // 通过事件委托，计算移动的距离
+      let left = e.clientX - dis.x
+      let top = e.clientY - dis.y
+
+      // 边界处理
+      if (-(left) > dragDomBoundary.minDragDomLeft) {
+        left = -dragDomBoundary.minDragDomLeft
+      } else if (left > dragDomBoundary.maxDragDomLeft) {
+        left = dragDomBoundary.maxDragDomLeft
+      }
+
+      if (-(top) > dragDomBoundary.minDragDomTop) {
+        top = -dragDomBoundary.minDragDomTop
+      } else if (top > dragDomBoundary.maxDragDomTop) {
+        top = dragDomBoundary.maxDragDomTop
+      }
+
+      // 移动当前元素
+      dragDom.style.cssText += `;left:${left + sty.left}px;top:${top + sty.top}px;`
+
+      // emit onDrag event
+      vnode.child.$emit('dragDialog')
+    }
+
+    dialogHeaderEl.addEventListener('mousedown', (e) => {
       // 鼠标按下，计算当前元素距离可视区的距离
-      const disX = e.clientX - dialogHeaderEl.offsetLeft
-      const disY = e.clientY - dialogHeaderEl.offsetTop
+      const dis = {
+        x: e.clientX - dialogHeaderEl.offsetLeft,
+        y: e.clientY - dialogHeaderEl.offsetTop
+      }
 
       const dragDomWidth = dragDom.offsetWidth
       const dragDomHeight = dragDom.offsetHeight
@@ -25,53 +52,38 @@ export default {
       const screenWidth = document.body.clientWidth
       const screenHeight = document.body.clientHeight
 
-      const minDragDomLeft = dragDom.offsetLeft
-      const maxDragDomLeft = screenWidth - dragDom.offsetLeft - dragDomWidth
-
-      const minDragDomTop = dragDom.offsetTop
-      const maxDragDomTop = screenHeight - dragDom.offsetTop - dragDomHeight
+      const dragDomBoundary = {
+        minDragDomTop: dragDom.offsetTop,
+        maxDragDomTop: screenHeight - dragDom.offsetTop - dragDomHeight,
+        minDragDomLeft: dragDom.offsetLeft,
+        maxDragDomLeft: screenWidth - dragDom.offsetLeft - dragDomWidth
+      }
 
       // 获取到的值带px 正则匹配替换
-      let styL = getStyle(dragDom, 'left')
-      let styT = getStyle(dragDom, 'top')
+      const sty = {
+        left: getStyle(dragDom, 'left'),
+        top: getStyle(dragDom, 'top')
+      }
 
-      if (styL.includes('%')) {
-        styL = +document.body.clientWidth * (+styL.replace(/\%/g, '') / 100)
-        styT = +document.body.clientHeight * (+styT.replace(/\%/g, '') / 100)
+      if (sty.left.includes('%')) {
+        sty.left = +document.body.clientWidth * (+sty.left.replace(/\%/g, '') / 100)
+        sty.top = +document.body.clientHeight * (+sty.top.replace(/\%/g, '') / 100)
       } else {
-        styL = +styL.replace(/\px/g, '')
-        styT = +styT.replace(/\px/g, '')
+        sty.left = +sty.left.replace(/\px/g, '')
+        sty.top = +sty.top.replace(/\px/g, '')
       }
 
-      document.onmousemove = function(e) {
-        // 通过事件委托，计算移动的距离
-        let left = e.clientX - disX
-        let top = e.clientY - disY
+      // 事件委托
+      const mouseMoveEventListenerSignal = new AbortController()
+      document.addEventListener('mousemove', (e) => {
+        handleDialogMouseMove(e, sty, dis, dragDomBoundary)
+      }, { signal: mouseMoveEventListenerSignal.signal })
 
-        // 边界处理
-        if (-(left) > minDragDomLeft) {
-          left = -minDragDomLeft
-        } else if (left > maxDragDomLeft) {
-          left = maxDragDomLeft
-        }
-
-        if (-(top) > minDragDomTop) {
-          top = -minDragDomTop
-        } else if (top > maxDragDomTop) {
-          top = maxDragDomTop
-        }
-
-        // 移动当前元素
-        dragDom.style.cssText += `;left:${left + styL}px;top:${top + styT}px;`
-
-        // emit onDrag event
-        vnode.child.$emit('dragDialog')
-      }
-
-      document.onmouseup = function(e) {
-        document.onmousemove = null
-        document.onmouseup = null
-      }
-    }
+      const mouseUpEventListenerSignal = new AbortController()
+      document.addEventListener('mouseup', () => {
+        mouseMoveEventListenerSignal.abort()
+        mouseUpEventListenerSignal.abort()
+      }, { signal: mouseUpEventListenerSignal.signal })
+    })
   }
 }
