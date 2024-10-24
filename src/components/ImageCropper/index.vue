@@ -225,6 +225,7 @@ export default {
     }
   },
   data() {
+    let fileName
     const { imgFormat, langType, langExt, width, height } = this
     let isSupported = true
     const allowImgFormat = ['jpg', 'png']
@@ -478,6 +479,7 @@ export default {
     },
     // 设置图片源
     setSourceImg(file) {
+      this.fileName = file.name.substr(0,file.name.lastIndexOf('.'))
       const fr = new FileReader()
       fr.onload = e => {
         this.sourceImgUrl = fr.result
@@ -773,7 +775,8 @@ export default {
       fmData.append(
         field,
         data2blob(createImgUrl, mime),
-        field + '.' + imgFormat
+        //field + '.' + imgFormat
+        this.fileName + '.' + imgFormat
       )
       // 添加其他参数
       if (typeof params === 'object' && params) {
