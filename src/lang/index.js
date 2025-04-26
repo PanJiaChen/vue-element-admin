@@ -5,10 +5,13 @@ import elementEnLocale from 'element-ui/lib/locale/lang/en' // element-ui lang
 import elementZhLocale from 'element-ui/lib/locale/lang/zh-CN'// element-ui lang
 import elementEsLocale from 'element-ui/lib/locale/lang/es'// element-ui lang
 import elementJaLocale from 'element-ui/lib/locale/lang/ja'// element-ui lang
+import elementRuLocale from 'element-ui/lib/locale/lang/ru-RU'// element-ui lang
 import enLocale from './en'
 import zhLocale from './zh'
 import esLocale from './es'
 import jaLocale from './ja'
+import ruLocale from './ru'
+import uzLocale from './uz'
 
 Vue.use(VueI18n)
 
@@ -28,8 +31,17 @@ const messages = {
   ja: {
     ...jaLocale,
     ...elementJaLocale
+  },
+  ru: {
+    ...ruLocale,
+    ...elementRuLocale
+  },
+  uz: {
+    ...uzLocale,
+    ...elementEnLocale // Using English Element UI for Uzbek as there's no Uzbek version
   }
 }
+
 export function getLanguage() {
   const chooseLanguage = Cookies.get('language')
   if (chooseLanguage) return chooseLanguage
@@ -44,9 +56,10 @@ export function getLanguage() {
   }
   return 'en'
 }
+
 const i18n = new VueI18n({
   // set locale
-  // options: en | zh | es
+  // options: en | zh | es | ja | ru | uz
   locale: getLanguage(),
   // set locale messages
   messages
