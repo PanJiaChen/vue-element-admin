@@ -34,7 +34,7 @@
     "screenfull": "4.2.0",
     "script-loader": "0.7.2",
     "sortablejs": "1.8.4",
-    "tui-editor": "1.3.3",
+    "@toast-ui/editor": "3.1.3",
     "vue": "2.6.10",
     "vue-count-to": "1.0.13",
     "vue-router": "3.0.2",
