@@ -20,14 +20,19 @@
       <el-tag class="tag-title">
         Markdown Mode:
       </el-tag>
-      <markdown-editor ref="markdownEditor" v-model="content2" :options="{hideModeSwitch:true,previewStyle:'tab'}" height="200px" />
+      <markdown-editor
+        ref="markdownEditor"
+        v-model="content2"
+        :options="{ hideModeSwitch: true, previewStyle: 'tab' }"
+        height="200px"
+      />
     </div>
 
     <div class="editor-container">
       <el-tag class="tag-title">
         Customize Toolbar:
       </el-tag>
-      <markdown-editor v-model="content3" :options="{ toolbarItems: ['heading','bold','italic']}" />
+      <markdown-editor v-model="content3" :options="{ toolbarItems: [['heading', 'bold', 'italic']] }" />
     </div>
 
     <div class="editor-container">
@@ -92,10 +97,11 @@ export default {
 </script>
 
 <style scoped>
-.editor-container{
+.editor-container {
   margin-bottom: 30px;
 }
-.tag-title{
+
+.tag-title {
   margin-bottom: 5px;
 }
 </style>
