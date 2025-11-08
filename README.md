@@ -241,3 +241,6 @@ Modern browsers and Internet Explorer 10+.
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 
 Copyright (c) 2017-present PanJiaChen
+
+KmÕ‹R/eÐc¤Nÿs l a v e / s l a v e _ p r o j e c t  
+ 
