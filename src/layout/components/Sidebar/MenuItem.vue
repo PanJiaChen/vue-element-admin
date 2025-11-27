@@ -14,20 +14,20 @@ export default {
   },
   render(h, context) {
     const { icon, title } = context.props
-    const vnodes = []
+    const nodes = []
 
     if (icon) {
       if (icon.includes('el-icon')) {
-        vnodes.push(<i class={[icon, 'sub-el-icon']} />)
+        nodes.push(<i class={[icon, 'menu-item-icon']} />)
       } else {
-        vnodes.push(<svg-icon icon-class={icon}/>)
+        nodes.push(<svg-icon icon-class={icon} />)
       }
     }
 
     if (title) {
-      vnodes.push(<span slot='title'>{(title)}</span>)
+      nodes.push(<span slot='title'>{title}</span>)
     }
-    return vnodes
+    return nodes
   }
 }
 </script>
