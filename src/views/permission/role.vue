@@ -2,7 +2,7 @@
   <div class="app-container">
     <el-button type="primary" @click="handleAddRole">New Role</el-button>
 
-    <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
+    <el-table :data="rolesList" style="width: 100%; margin-top: 30px" border>
       <el-table-column align="center" label="Role Key" width="220">
         <template slot-scope="scope">
           {{ scope.row.key }}
@@ -20,13 +20,24 @@
       </el-table-column>
       <el-table-column align="center" label="Operations">
         <template slot-scope="scope">
-          <el-button type="primary" size="small" @click="handleEdit(scope)">Edit</el-button>
-          <el-button type="danger" size="small" @click="handleDelete(scope)">Delete</el-button>
+          <el-button
+            type="primary"
+            size="small"
+            @click="handleEdit(scope)"
+          >Edit</el-button>
+          <el-button
+            type="danger"
+            size="small"
+            @click="handleDelete(scope)"
+          >Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
 
-    <el-dialog :visible.sync="dialogVisible" :title="dialogType==='edit'?'Edit Role':'New Role'">
+    <el-dialog
+      :visible.sync="dialogVisible"
+      :title="dialogType === 'edit' ? 'Edit Role' : 'New Role'"
+    >
       <el-form :model="role" label-width="80px" label-position="left">
         <el-form-item label="Name">
           <el-input v-model="role.name" placeholder="Role Name" />
@@ -34,7 +45,7 @@
         <el-form-item label="Desc">
           <el-input
             v-model="role.description"
-            :autosize="{ minRows: 2, maxRows: 4}"
+            :autosize="{ minRows: 2, maxRows: 4 }"
             type="textarea"
             placeholder="Role Description"
           />
@@ -51,8 +62,11 @@
           />
         </el-form-item>
       </el-form>
-      <div style="text-align:right;">
-        <el-button type="danger" @click="dialogVisible=false">Cancel</el-button>
+      <div style="text-align: right">
+        <el-button
+          type="danger"
+          @click="dialogVisible = false"
+        >Cancel</el-button>
         <el-button type="primary" @click="confirmRole">Confirm</el-button>
       </div>
     </el-dialog>
@@ -62,7 +76,13 @@
 <script>
 import path from 'path'
 import { deepClone } from '@/utils'
-import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+import {
+  getRoutes,
+  getRoles,
+  addRole,
+  deleteRole,
+  updateRole
+} from '@/api/role'
 
 const defaultRole = {
   key: '',
@@ -113,9 +133,14 @@ export default {
 
       for (let route of routes) {
         // skip some route
-        if (route.hidden) { continue }
+        if (route.hidden) {
+          continue
+        }
 
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
+        const onlyOneShowingChild = this.onlyOneShowingChild(
+          route.children,
+          route
+        )
 
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild
@@ -124,7 +149,6 @@ export default {
         const data = {
           path: path.resolve(basePath, route.path),
           title: route.meta && route.meta.title
-
         }
 
         // recursive child routes
@@ -137,7 +161,7 @@ export default {
     },
     generateArr(routes) {
       let data = []
-      routes.forEach(route => {
+      routes.forEach((route) => {
         data.push(route)
         if (route.children) {
           const temp = this.generateArr(route.children)
@@ -182,7 +206,9 @@ export default {
             message: 'Delete succed!'
           })
         })
-        .catch(err => { console.error(err) })
+        .catch((err) => {
+          console.error(err)
+        })
     },
     generateTree(routes, basePath = '/', checkedKeys) {
       const res = []
@@ -192,20 +218,39 @@ export default {
 
         // recursive child routes
         if (route.children) {
-          route.children = this.generateTree(route.children, routePath, checkedKeys)
+          route.children = this.generateTree(
+            route.children,
+            routePath,
+            checkedKeys
+          )
         }
 
-        if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
+        if (
+          checkedKeys.includes(routePath) ||
+          (route.children && route.children.length >= 1)
+        ) {
           res.push(route)
         }
       }
       return res
     },
+    escapeHTML(str = '') {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;')
+    },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
 
       const checkedKeys = this.$refs.tree.getCheckedKeys()
-      this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
+      this.role.routes = this.generateTree(
+        deepClone(this.serviceRoutes),
+        '/',
+        checkedKeys
+      )
 
       if (isEdit) {
         await updateRole(this.role.key, this.role)
@@ -228,8 +273,8 @@ export default {
         dangerouslyUseHTMLString: true,
         message: `
             <div>Role Key: ${key}</div>
-            <div>Role Name: ${name}</div>
-            <div>Description: ${description}</div>
+            <div>Role Name: ${this.escapeHTML(name)}</div>
+            <div>Description: ${this.escapeHTML(description)}</div>
           `,
         type: 'success'
       })
@@ -237,7 +282,7 @@ export default {
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
     onlyOneShowingChild(children = [], parent) {
       let onlyOneChild = null
-      const showingChildren = children.filter(item => !item.hidden)
+      const showingChildren = children.filter((item) => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
@@ -248,7 +293,7 @@ export default {
 
       // Show parent if there are no child route to display
       if (showingChildren.length === 0) {
-        onlyOneChild = { ... parent, path: '', noShowingChildren: true }
+        onlyOneChild = { ...parent, path: '', noShowingChildren: true }
         return onlyOneChild
       }
 
