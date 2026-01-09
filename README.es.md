@@ -30,11 +30,11 @@ Español | [English](./README.md) | [简体中文](./README.zh-CN.md) | [日本�
 
 ## Introducción
 
-[vue-element-admin](https://panjiachen.github.io/vue-element-admin) es una interfáz de administración preparada para producción. Está basada en [vue](https://github.com/vuejs/vue) y usa [element-ui](https://github.com/ElemeFE/element) como conjunto de herramientas de interfáz de usuario.
+[vue-element-admin](https://panjiachen.github.io/vue-element-admin) es una interfaz de administración preparada para producción. Está basada en [vue](https://github.com/vuejs/vue) y usa [element-ui](https://github.com/ElemeFE/element) como conjunto de herramientas de interfaz de usuario.
 
-Vue Element Admin es una solución práctica basada en la nueva plataforma de desarrollo de vue, construida con soporte a i18 para el manejo de múltiples lenguajes, plantillas estándares para aplicaciones de negocio y un conjunto de asombrosas características. Esta herramienta ayuda a construir largas y complejas Aplicacones de una sola página (SPA). Creo que lo que necesites hacer, este proyecto te ayudará.
+Vue Element Admin es una solución práctica basada en la nueva plataforma de desarrollo de vue, construida con soporte a i18 para el manejo de múltiples lenguajes, plantillas estándares para aplicaciones de negocio y un conjunto de asombrosas características. Esta herramienta ayuda a construir aplicaciones largas y complejas de una sola página (SPA). Creo que lo que necesites hacer, este proyecto te ayudará.
 
-- [Vista Prévia de la Aplicación](https://panjiachen.github.io/vue-element-admin)
+- [Vista Previa de la Aplicación](https://panjiachen.github.io/vue-element-admin)
 
 - [Documentación](https://panjiachen.github.io/vue-element-admin-site/)
 
@@ -51,16 +51,17 @@ Vue Element Admin es una solución práctica basada en la nueva plataforma de de
 - Plantilla de Typescript: [vue-typescript-admin-template](https://github.com/Armour/vue-typescript-admin-template) (Créditos: [@Armour](https://github.com/Armour))
 - [awesome-project](https://github.com/PanJiaChen/vue-element-admin/issues/2312)
 
-**Después de la versión `v4.1.0+`, la rama por defecto master no tendrá soporte para i18n. Por favor utilice la rama [i18n](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), los cambios serán incluidos en la rama master**
+**Después de la versión `v4.1.0+`, la rama por defecto master no tendrá soporte para i18n. Por favor, utilice la rama [i18n](https://github.com/PanJiaChen/vue-element-admin/tree/i18n), los cambios serán incluidos en la rama master.**
 
-**la versión actual es `v4.0+` construida con `vue-cli`. Si encuentra algún problema, por favor coloque un [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). Si desea usar la versión anterior, puede cambiar de rama a [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), no relacionado con `vue-cli`**
+**La versión actual es `v4.0+` construida con `vue-cli`. Si encuentra algún problema, por favor, coloque un [issue](https://github.com/PanJiaChen/vue-element-admin/issues/new). Si desea usar la versión anterior, puede cambiar de rama a [tag/3.11.0](https://github.com/PanJiaChen/vue-element-admin/tree/tag/3.11.0), no relacionado con `vue-cli`.**
 
-**Este proyecto no está soportado para versiones antigüas de navegadores (ej. IE).**
+**Este proyecto no está soportado para versiones antiguas de navegadores (ej. IE).**
 
 ## Preparación
 
-Necesita instalar [node](https://nodejs.org/) y [git](https://git-scm.com/) localmente. El proyecto es basado en [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) and [element-ui](https://github.com/ElemeFE/element), toda la solicitud de datos simulada se realiza a través de [Mock.js](https://github.com/nuysoft/Mock).
-Entendiendo y aprendiendo esto pudiera ayudarle con su proyecto.
+Necesita instalar [node](https://nodejs.org/) y [git](https://git-scm.com/) localmente. El proyecto está basado en [ES2015+](https://es6.ruanyifeng.com/), [vue](https://cn.vuejs.org/index.html), [vuex](https://vuex.vuejs.org/zh-cn/), [vue-router](https://router.vuejs.org/zh-cn/), [vue-cli](https://github.com/vuejs/vue-cli) , [axios](https://github.com/axios/axios) y [element-ui](https://github.com/ElemeFE/element), toda la solicitud de datos simulada se realiza a través de [Mock.js](https://github.com/nuysoft/Mock).
+
+Entendiendo y aprendiendo esto, podrá ayudarle con su proyecto.
 
 [![Edit on CodeSandbox](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/github/PanJiaChen/vue-element-admin/tree/CodeSandbox)
 
@@ -68,17 +69,17 @@ Entendiendo y aprendiendo esto pudiera ayudarle con su proyecto.
   <img width="900" src="https://wpimg.wallstcn.com/a5894c1b-f6af-456e-82df-1151da0839bf.png">
 </p>
 
-## Patrocinantes
+## Patrocinadores
 
-Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace directo a su sitio web. [[Se un Patrocinante]](https://www.patreon.com/panjiachen)
+Sea un patrocinador y coloque su logo en nuestro README en GitHub con un enlace directo a su sitio web. [[Sé un Patrocinador]](https://www.patreon.com/panjiachen)
 
 ### Akveo
-<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Get Java backend for Vue admin with 20% discount for 39$ use coupon code SWB0RAZPZR1M
+<a href="https://store.akveo.com/products/vue-java-admin-dashboard-spring?utm_campaign=akveo_store-Vue-Vue_demo%2Fgithub&utm_source=vue_admin&utm_medium=referral&utm_content=github_banner"><img width="500px" src="https://raw.githubusercontent.com/PanJiaChen/vue-element-admin-site/master/docs/.vuepress/public/images/vue-java-banner.png" /></a><p>Obtener Java backend para Vue admin con 20% de descuento, por 39$. Usando el código: SWB0RAZPZR1M
 </p>
 
 ### Flatlogic
 
-<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates made with Vue, React and Angular.</p>
+<a href="https://flatlogic.com/admin-dashboards?from=vue-element-admin"><img width="150px" src="https://wpimg.wallstcn.com/9c0b719b-5551-4c1e-b776-63994632d94a.png" /></a><p>Admin Dashboard Templates hecho con Vue, React y Angular.</p>
 
 ## Características
 
@@ -100,13 +101,13 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
 - Características Globales
   - I18n
   - Temas dinámicos
-  - Menu lateral dinámico (soporte a rutas multi-nivel)
+  - Menú lateral dinámico (soporte a rutas multi-nivel)
   - Barra de rutas dinámica
   - Tags-view (Pestañas de página, Soporta operación de clic derecho)
   - Svg Sprite
   - Datos de simulación con Mock
   - Pantalla completa
-  - Menu lateral responsivo
+  - Menú lateral responsivo
 
 - Editor
   - Editor de Texto Enriquecido
@@ -131,7 +132,7 @@ Sea un patrocinante y coloque su logo en nuestro LEEME en GitHub con un enlace d
 - Componentes
   - Carga de Avatar
   - Botón para subir al inicio
-  - Arrastrar y Soltar (Diaglogo)
+  - Arrastrar y Soltar (Dialog)
   - Arrastrar y Soltar (Seleccionar)
   - Arrastrar y Soltar (Kanban)
   - Arrastrar y Soltar (Lista)
@@ -193,7 +194,7 @@ npm run lint
 npm run lint -- --fix
 ```
 
-Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información
+Vaya a [Documentación](https://panjiachen.github.io/vue-element-admin-site/guide/essentials/deploy.html) para mayor información.
 
 ## Registro de Cambios
 
@@ -201,11 +202,11 @@ Los cambios detallados por cada liberación se encuentran en [notas de liberaci�
 
 ## Demostración en línea
 
-[Vista Prévia de la Aplicación](https://panjiachen.github.io/vue-element-admin)
+[Vista Previa de la Aplicación](https://panjiachen.github.io/vue-element-admin)
 
 ## Donación
 
-Si este proyecto es de mucha ayuda para ti, puedes comprarle al autor un vaso de jugo :tropical_drink:
+Si este proyecto es de ayuda para ti, puedes comprarle al autor un jugo :tropical_drink:
 
 ![Donar](https://wpimg.wallstcn.com/bd273f0d-83a0-4ef2-92e1-9ac8ed3746b9.png)
 
@@ -225,4 +226,4 @@ Navegadores modernos e Internet Explorer 10+.
 
 [MIT](https://github.com/PanJiaChen/vue-element-admin/blob/master/LICENSE)
 
-Copyright (c) 2017-presente PanJiaChen
+Copyright (c) 2017-Hoy PanJiaChen
