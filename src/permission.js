@@ -72,3 +72,11 @@ router.afterEach(() => {
   // finish progress bar
   NProgress.done()
 })
+
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g
+  const isChunkLoadFailed = error.message.match(pattern)
+  if (isChunkLoadFailed) {
+    window.location.reload()
+  }
+})
