@@ -373,6 +373,19 @@ export const asyncRoutes = [
   },
 
   {
+    path: '/user-card',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/user-card/index'),
+        name: 'UserCardDemo',
+        meta: { title: 'UserCard', icon: 'user' }
+      }
+    ]
+  },
+
+  {
     path: 'external-link',
     component: Layout,
     children: [
