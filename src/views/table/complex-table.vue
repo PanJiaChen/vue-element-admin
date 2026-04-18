@@ -25,6 +25,28 @@
       </el-checkbox>
     </div>
 
+    <div class="batch-operation-container">
+      <el-button 
+        type="danger" 
+        icon="el-icon-delete" 
+        :disabled="selectedList.length === 0" 
+        @click="handleBatchDelete"
+        class="batch-operation-item"
+      >
+        批量删除 ({{ selectedList.length }})
+      </el-button>
+      <el-button 
+        type="primary" 
+        icon="el-icon-download" 
+        :disabled="selectedList.length === 0" 
+        :loading="batchExportLoading"
+        @click="handleBatchExport"
+        class="batch-operation-item"
+      >
+        批量导出 ({{ selectedList.length }})
+      </el-button>
+    </div>
+
     <el-table
       :key="tableKey"
       v-loading="listLoading"
@@ -34,7 +56,9 @@
       highlight-current-row
       style="width: 100%;"
       @sort-change="sortChange"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -223,7 +247,9 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      selectedList: [],
+      batchExportLoading: false
     }
   },
   created() {
@@ -373,6 +399,69 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    handleSelectionChange(selection) {
+      this.selectedList = selection
+    },
+    handleBatchDelete() {
+      if (this.selectedList.length === 0) {
+        this.$message({
+          message: '请先选择要删除的记录',
+          type: 'warning'
+        })
+        return
+      }
+
+      this.$confirm(`确定要删除选中的 ${this.selectedList.length} 条记录吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 批量删除操作
+        const ids = this.selectedList.map(item => item.id)
+        const newList = this.list.filter(item => !ids.includes(item.id))
+        this.list = newList
+        this.selectedList = []
+        this.$notify({
+          title: 'Success',
+          message: `成功删除 ${ids.length} 条记录`,
+          type: 'success',
+          duration: 2000
+        })
+      }).catch(() => {
+        // 用户取消删除
+      })
+    },
+    handleBatchExport() {
+      if (this.selectedList.length === 0) {
+        this.$message({
+          message: '请先选择要导出的记录',
+          type: 'warning'
+        })
+        return
+      }
+
+      this.batchExportLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+        const data = this.formatJsonForSelected(filterVal)
+        excel.export_json_to_excel({
+          header: tHeader,
+          data,
+          filename: 'selected-table-list'
+        })
+        this.batchExportLoading = false
+      })
+    },
+    formatJsonForSelected(filterVal) {
+      return this.selectedList.map(v => filterVal.map(j => {
+        if (j === 'timestamp') {
+          return parseTime(v[j])
+        } else {
+          return v[j]
+        }
+      }))
     }
   }
 }
