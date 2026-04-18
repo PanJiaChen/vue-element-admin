@@ -366,6 +366,7 @@ export default {
         duration: 2000
       })
       this.list.splice(index, 1)
+      this.total = Math.max(0, this.total - 1)
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -376,19 +377,39 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
+        try {
+          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const data = this.formatJson(filterVal)
+          const timestamp = parseTime(new Date(), '{y}{m}{d}-{h}{i}{s}')
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: `article-list-${timestamp}`
+          })
+          this.$message({
+            message: '导出成功',
+            type: 'success'
+          })
+        } catch (error) {
+          this.$message({
+            message: '导出失败',
+            type: 'error'
+          })
+        } finally {
+          this.downloadLoading = false
+        }
+      }).catch(() => {
         this.downloadLoading = false
+        this.$message({
+          message: '导出失败',
+          type: 'error'
+        })
       })
     },
-    formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
+    formatJson(filterVal, dataSource) {
+      const data = dataSource || this.list
+      return data.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j])
         } else {
@@ -421,6 +442,7 @@ export default {
         const ids = this.selectedList.map(item => item.id)
         const newList = this.list.filter(item => !ids.includes(item.id))
         this.list = newList
+        this.total = Math.max(0, this.total - ids.length)
         this.selectedList = []
         this.$notify({
           title: 'Success',
@@ -443,25 +465,35 @@ export default {
 
       this.batchExportLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJsonForSelected(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'selected-table-list'
-        })
-        this.batchExportLoading = false
-      })
-    },
-    formatJsonForSelected(filterVal) {
-      return this.selectedList.map(v => filterVal.map(j => {
-        if (j === 'timestamp') {
-          return parseTime(v[j])
-        } else {
-          return v[j]
+        try {
+          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const data = this.formatJson(filterVal, this.selectedList)
+          const timestamp = parseTime(new Date(), '{y}{m}{d}-{h}{i}{s}')
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: `article-list-${timestamp}`
+          })
+          this.$message({
+            message: '导出成功',
+            type: 'success'
+          })
+        } catch (error) {
+          this.$message({
+            message: '导出失败',
+            type: 'error'
+          })
+        } finally {
+          this.batchExportLoading = false
         }
-      }))
+      }).catch(() => {
+        this.batchExportLoading = false
+        this.$message({
+          message: '导出失败',
+          type: 'error'
+        })
+      })
     }
   }
 }
