@@ -48,6 +48,7 @@
     </div>
 
     <el-table
+      ref="multipleTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -55,10 +56,11 @@
       fit
       highlight-current-row
       style="width: 100%;"
+      row-key="id"
       @sort-change="sortChange"
       @selection-change="handleSelectionChange"
     >
-      <el-table-column type="selection" width="55" align="center" />
+      <el-table-column type="selection" width="55" align="center" :reserve-selection="true" />
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -249,6 +251,7 @@ export default {
       },
       downloadLoading: false,
       selectedList: [],
+      selectedMap: {},
       batchExportLoading: false
     }
   },
@@ -269,8 +272,16 @@ export default {
       })
     },
     handleFilter() {
+      this.clearSelection()
       this.listQuery.page = 1
       this.getList()
+    },
+    clearSelection() {
+      if (this.$refs.multipleTable) {
+        this.$refs.multipleTable.clearSelection()
+      }
+      this.selectedMap = {}
+      this.selectedList = []
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -367,6 +378,8 @@ export default {
       })
       this.list.splice(index, 1)
       this.total = Math.max(0, this.total - 1)
+      delete this.selectedMap[row.id]
+      this.selectedList = Object.values(this.selectedMap)
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -422,7 +435,19 @@ export default {
       return sort === `+${key}` ? 'ascending' : 'descending'
     },
     handleSelectionChange(selection) {
-      this.selectedList = selection
+      if (!this.list || this.list.length === 0) return
+      
+      const currentPageIds = this.list.map(item => item.id)
+      
+      for (const id of currentPageIds) {
+        delete this.selectedMap[id]
+      }
+      
+      for (const row of selection) {
+        this.selectedMap[row.id] = row
+      }
+      
+      this.selectedList = Object.values(this.selectedMap)
     },
     handleBatchDelete() {
       if (this.selectedList.length === 0) {
@@ -443,7 +468,16 @@ export default {
         const newList = this.list.filter(item => !ids.includes(item.id))
         this.list = newList
         this.total = Math.max(0, this.total - ids.length)
-        this.selectedList = []
+        
+        for (const id of ids) {
+          delete this.selectedMap[id]
+        }
+        this.selectedList = Object.values(this.selectedMap)
+        
+        if (this.$refs.multipleTable) {
+          this.$refs.multipleTable.clearSelection()
+        }
+        
         this.$notify({
           title: 'Success',
           message: `成功删除 ${ids.length} 条记录`,
