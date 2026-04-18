@@ -25,7 +25,30 @@
       </el-checkbox>
     </div>
 
+    <div class="batch-operation-container">
+      <el-button 
+        type="danger" 
+        icon="el-icon-delete" 
+        :disabled="selectedList.length === 0" 
+        @click="handleBatchDelete"
+        class="batch-operation-item"
+      >
+        批量删除 ({{ selectedList.length }})
+      </el-button>
+      <el-button 
+        type="primary" 
+        icon="el-icon-download" 
+        :disabled="selectedList.length === 0" 
+        :loading="batchExportLoading"
+        @click="handleBatchExport"
+        class="batch-operation-item"
+      >
+        批量导出 ({{ selectedList.length }})
+      </el-button>
+    </div>
+
     <el-table
+      ref="multipleTable"
       :key="tableKey"
       v-loading="listLoading"
       :data="list"
@@ -33,8 +56,11 @@
       fit
       highlight-current-row
       style="width: 100%;"
+      row-key="id"
       @sort-change="sortChange"
+      @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" width="55" align="center" :reserve-selection="true" />
       <el-table-column label="ID" prop="id" sortable="custom" align="center" width="80" :class-name="getSortClass('id')">
         <template slot-scope="{row}">
           <span>{{ row.id }}</span>
@@ -223,7 +249,10 @@ export default {
         timestamp: [{ type: 'date', required: true, message: 'timestamp is required', trigger: 'change' }],
         title: [{ required: true, message: 'title is required', trigger: 'blur' }]
       },
-      downloadLoading: false
+      downloadLoading: false,
+      selectedList: [],
+      selectedMap: {},
+      batchExportLoading: false
     }
   },
   created() {
@@ -243,8 +272,16 @@ export default {
       })
     },
     handleFilter() {
+      this.clearSelection()
       this.listQuery.page = 1
       this.getList()
+    },
+    clearSelection() {
+      if (this.$refs.multipleTable) {
+        this.$refs.multipleTable.clearSelection()
+      }
+      this.selectedMap = {}
+      this.selectedList = []
     },
     handleModifyStatus(row, status) {
       this.$message({
@@ -340,6 +377,9 @@ export default {
         duration: 2000
       })
       this.list.splice(index, 1)
+      this.total = Math.max(0, this.total - 1)
+      delete this.selectedMap[row.id]
+      this.selectedList = Object.values(this.selectedMap)
     },
     handleFetchPv(pv) {
       fetchPv(pv).then(response => {
@@ -350,19 +390,39 @@ export default {
     handleDownload() {
       this.downloadLoading = true
       import('@/vendor/Export2Excel').then(excel => {
-        const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
-        const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
-        const data = this.formatJson(filterVal)
-        excel.export_json_to_excel({
-          header: tHeader,
-          data,
-          filename: 'table-list'
-        })
+        try {
+          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const data = this.formatJson(filterVal)
+          const timestamp = parseTime(new Date(), '{y}{m}{d}-{h}{i}{s}')
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: `article-list-${timestamp}`
+          })
+          this.$message({
+            message: '导出成功',
+            type: 'success'
+          })
+        } catch (error) {
+          this.$message({
+            message: '导出失败',
+            type: 'error'
+          })
+        } finally {
+          this.downloadLoading = false
+        }
+      }).catch(() => {
         this.downloadLoading = false
+        this.$message({
+          message: '导出失败',
+          type: 'error'
+        })
       })
     },
-    formatJson(filterVal) {
-      return this.list.map(v => filterVal.map(j => {
+    formatJson(filterVal, dataSource) {
+      const data = dataSource || this.list
+      return data.map(v => filterVal.map(j => {
         if (j === 'timestamp') {
           return parseTime(v[j])
         } else {
@@ -373,6 +433,101 @@ export default {
     getSortClass: function(key) {
       const sort = this.listQuery.sort
       return sort === `+${key}` ? 'ascending' : 'descending'
+    },
+    handleSelectionChange(selection) {
+      if (!this.list || this.list.length === 0) return
+      
+      const currentPageIds = this.list.map(item => item.id)
+      
+      for (const id of currentPageIds) {
+        delete this.selectedMap[id]
+      }
+      
+      for (const row of selection) {
+        this.selectedMap[row.id] = row
+      }
+      
+      this.selectedList = Object.values(this.selectedMap)
+    },
+    handleBatchDelete() {
+      if (this.selectedList.length === 0) {
+        this.$message({
+          message: '请先选择要删除的记录',
+          type: 'warning'
+        })
+        return
+      }
+
+      this.$confirm(`确定要删除选中的 ${this.selectedList.length} 条记录吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 批量删除操作
+        const ids = this.selectedList.map(item => item.id)
+        const newList = this.list.filter(item => !ids.includes(item.id))
+        this.list = newList
+        this.total = Math.max(0, this.total - ids.length)
+        
+        for (const id of ids) {
+          delete this.selectedMap[id]
+        }
+        this.selectedList = Object.values(this.selectedMap)
+        
+        if (this.$refs.multipleTable) {
+          this.$refs.multipleTable.clearSelection()
+        }
+        
+        this.$notify({
+          title: 'Success',
+          message: `成功删除 ${ids.length} 条记录`,
+          type: 'success',
+          duration: 2000
+        })
+      }).catch(() => {
+        // 用户取消删除
+      })
+    },
+    handleBatchExport() {
+      if (this.selectedList.length === 0) {
+        this.$message({
+          message: '请先选择要导出的记录',
+          type: 'warning'
+        })
+        return
+      }
+
+      this.batchExportLoading = true
+      import('@/vendor/Export2Excel').then(excel => {
+        try {
+          const tHeader = ['timestamp', 'title', 'type', 'importance', 'status']
+          const filterVal = ['timestamp', 'title', 'type', 'importance', 'status']
+          const data = this.formatJson(filterVal, this.selectedList)
+          const timestamp = parseTime(new Date(), '{y}{m}{d}-{h}{i}{s}')
+          excel.export_json_to_excel({
+            header: tHeader,
+            data,
+            filename: `article-list-${timestamp}`
+          })
+          this.$message({
+            message: '导出成功',
+            type: 'success'
+          })
+        } catch (error) {
+          this.$message({
+            message: '导出失败',
+            type: 'error'
+          })
+        } finally {
+          this.batchExportLoading = false
+        }
+      }).catch(() => {
+        this.batchExportLoading = false
+        this.$message({
+          message: '导出失败',
+          type: 'error'
+        })
+      })
     }
   }
 }
