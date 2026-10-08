@@ -7,6 +7,15 @@ export function getRoutes() {
   })
 }
 
+export function getUserRoutes(token) {
+  return request({
+    url: '/vue-element-admin/user/routes',
+    method: 'get',
+    // Match the existing user/info mock authentication contract.
+    params: { token }
+  })
+}
+
 export function getRoles() {
   return request({
     url: '/vue-element-admin/roles',

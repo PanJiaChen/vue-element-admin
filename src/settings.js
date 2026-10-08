@@ -1,6 +1,9 @@
 module.exports = {
   title: 'Vue Element Admin',
 
+  /** 'frontend' filters local routes by role; 'server' loads the user's route tree. */
+  permissionMode: 'frontend',
+
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel

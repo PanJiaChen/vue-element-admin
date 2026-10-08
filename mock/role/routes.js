@@ -76,7 +76,7 @@ const asyncRoutes = [
   {
     path: '/permission',
     component: 'layout/Layout',
-    redirect: '/permission/index',
+    redirect: '/permission/page',
     alwaysShow: true,
     meta: {
       title: 'Permission',
@@ -246,7 +246,7 @@ const asyncRoutes = [
       },
       {
         path: 'mixchart',
-        component: 'views/charts/mixChart',
+        component: 'views/charts/mix-chart',
         name: 'MixChart',
         meta: { title: 'Mix Chart', noCache: true }
       }
@@ -493,19 +493,6 @@ const asyncRoutes = [
         component: 'views/clipboard/index',
         name: 'ClipboardDemo',
         meta: { title: 'Clipboard Demo', icon: 'clipboard' }
-      }
-    ]
-  },
-
-  {
-    path: '/i18n',
-    component: 'layout/Layout',
-    children: [
-      {
-        path: 'index',
-        component: 'views/i18n-demo/index',
-        name: 'I18n',
-        meta: { title: 'I18n', icon: 'international' }
       }
     ]
   },

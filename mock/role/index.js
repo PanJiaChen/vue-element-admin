@@ -35,7 +35,30 @@ const roles = [
   }
 ]
 
+function userRoutes(token) {
+  const role = roles.find(item => token === item.key + '-token')
+  if (!role) return null
+  const publicPaths = constantRoutes.map(route => route.path || '/')
+  // Public pages stay in the local router; only protected pages are added here.
+  const protectedRoutes = role.routes.filter(route => !publicPaths.includes(route.path || '/') && route.path !== '*')
+  // Keep the public not-found page reachable even after a role's menus are edited.
+  const notFoundRoute = asyncRoutes.find(route => route.path === '*')
+  return deepClone(notFoundRoute ? protectedRoutes.concat(notFoundRoute) : protectedRoutes)
+}
+
+function notFound() {
+  return { code: 50000, message: 'Role does not exist.' }
+}
+
 module.exports = [
+  {
+    url: '/vue-element-admin/user/routes',
+    type: 'get',
+    response: config => {
+      const data = userRoutes(config.query.token)
+      return data ? { code: 20000, data } : { code: 50008, message: 'Invalid user token.' }
+    }
+  },
   // mock get all routes form server
   {
     url: '/vue-element-admin/routes',
@@ -64,35 +87,37 @@ module.exports = [
   {
     url: '/vue-element-admin/role',
     type: 'post',
-    response: {
-      code: 20000,
-      data: {
-        key: Mock.mock('@integer(300, 5000)')
-      }
+    response: config => {
+      const key = String(Mock.mock('@guid'))
+      const role = { ...deepClone(config.body), key }
+      roles.push(role)
+      return { code: 20000, data: deepClone(role) }
     }
   },
 
   // update role
   {
-    url: '/vue-element-admin/role/[A-Za-z0-9]',
+    url: '/vue-element-admin/role/[^/]+$',
     type: 'put',
-    response: {
-      code: 20000,
-      data: {
-        status: 'success'
-      }
+    response: config => {
+      const key = config.url.split('?')[0].split('/').pop()
+      const index = roles.findIndex(role => role.key === key)
+      if (index === -1) return notFound()
+      roles.splice(index, 1, { ...deepClone(config.body), key })
+      return { code: 20000, data: { status: 'success' } }
     }
   },
 
   // delete role
   {
-    url: '/vue-element-admin/role/[A-Za-z0-9]',
+    url: '/vue-element-admin/role/[^/]+$',
     type: 'delete',
-    response: {
-      code: 20000,
-      data: {
-        status: 'success'
-      }
+    response: config => {
+      const key = config.url.split('?')[0].split('/').pop()
+      const index = roles.findIndex(role => role.key === key)
+      if (index === -1) return notFound()
+      roles.splice(index, 1)
+      return { code: 20000, data: { status: 'success' } }
     }
   }
 ]

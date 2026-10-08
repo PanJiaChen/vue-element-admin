@@ -63,6 +63,7 @@
 import path from 'path'
 import { deepClone } from '@/utils'
 import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+import { permissionMode } from '@/settings'
 
 const defaultRole = {
   key: '',
@@ -100,7 +101,7 @@ export default {
     async getRoutes() {
       const res = await getRoutes()
       this.serviceRoutes = res.data
-      this.routes = this.generateRoutes(res.data)
+      this.routes = this.generateRoutes(deepClone(res.data))
     },
     async getRoles() {
       const res = await getRoles()
@@ -115,7 +116,7 @@ export default {
         // skip some route
         if (route.hidden) { continue }
 
-        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route)
+        const onlyOneShowingChild = this.onlyOneShowingChild(route.children, route, basePath)
 
         if (route.children && onlyOneShowingChild && !route.alwaysShow) {
           route = onlyOneShowingChild
@@ -193,6 +194,14 @@ export default {
         // recursive child routes
         if (route.children) {
           route.children = this.generateTree(route.children, routePath, checkedKeys)
+          if (!route.children.length) continue
+          const paths = this.leafRoutePaths(route.children, routePath)
+          if (route.redirect && route.redirect !== 'noRedirect' &&
+              !paths.includes(path.resolve(routePath, route.redirect))) {
+            // A saved parent must not redirect to a child which was unchecked.
+            if (paths.length) route.redirect = paths[0]
+            else delete route.redirect
+          }
         }
 
         if (checkedKeys.includes(routePath) || (route.children && route.children.length >= 1)) {
@@ -200,6 +209,16 @@ export default {
         }
       }
       return res
+    },
+    leafRoutePaths(routes, basePath) {
+      return routes.reduce((paths, route) => {
+        const routePath = path.resolve(basePath, route.path)
+        if (route.children && route.children.length) {
+          return paths.concat(this.leafRoutePaths(route.children, routePath))
+        }
+        if (!/[:*]/.test(route.path)) paths.push(routePath)
+        return paths
+      }, [])
     },
     async confirmRole() {
       const isEdit = this.dialogType === 'edit'
@@ -222,6 +241,10 @@ export default {
       }
 
       const { description, key, name } = this.role
+      if (permissionMode === 'server' && this.$store.getters.roles.includes(key)) {
+        // Re-fetch the saved server tree and discard the old router matcher/cache.
+        await this.$store.dispatch('user/changeRoles', key)
+      }
       this.dialogVisible = false
       this.$notify({
         title: 'Success',
@@ -235,14 +258,14 @@ export default {
       })
     },
     // reference: src/view/layout/components/Sidebar/SidebarItem.vue
-    onlyOneShowingChild(children = [], parent) {
+    onlyOneShowingChild(children = [], parent, basePath = '/') {
       let onlyOneChild = null
       const showingChildren = children.filter(item => !item.hidden)
 
       // When there is only one child route, the child route is displayed by default
       if (showingChildren.length === 1) {
-        onlyOneChild = showingChildren[0]
-        onlyOneChild.path = path.resolve(parent.path, onlyOneChild.path)
+        onlyOneChild = { ...showingChildren[0] }
+        onlyOneChild.path = path.resolve(basePath, parent.path, onlyOneChild.path)
         return onlyOneChild
       }
 

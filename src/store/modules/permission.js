@@ -1,4 +1,7 @@
 import { asyncRoutes, constantRoutes } from '@/router'
+import { resolveServerRoutes } from '@/router/server-routes'
+import { getUserRoutes } from '@/api/role'
+import { permissionMode } from '@/settings'
 
 /**
  * Use meta.role to determine if the current user has permission
@@ -47,17 +50,18 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
-    return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
-      commit('SET_ROUTES', accessedRoutes)
-      resolve(accessedRoutes)
-    })
+  async generateRoutes({ commit, rootState }, roles) {
+    let accessedRoutes
+    if (permissionMode === 'server') {
+      const { data } = await getUserRoutes(rootState.user.token)
+      accessedRoutes = resolveServerRoutes(data)
+    } else if (roles.includes('admin')) {
+      accessedRoutes = asyncRoutes || []
+    } else {
+      accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+    }
+    commit('SET_ROUTES', accessedRoutes)
+    return accessedRoutes
   }
 }
 
