@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import { handleChunkLoadError } from './chunk-load-error'
 
 Vue.use(Router)
 
@@ -394,6 +395,10 @@ const createRouter = () => new Router({
 })
 
 const router = createRouter()
+
+router.onError(error => {
+  handleChunkLoadError(error)
+})
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
